@@ -17,17 +17,17 @@ namespace CommonLib
 
         internal static void Debug(string? message, params object?[] args)
         {
-            Logger.LogDebug(message, args);
+            Logger?.LogDebug(message, args);
         }
         
         internal static void Log(string? message, params object?[] args)
         {
-            Logger.Log(LogLevel.Information, message, args);
+            Logger?.Log(LogLevel.Information, message, args);
         }
 
         internal static void Log(LogLevel level, string? message, params object?[] args)
         {
-            Logger.Log(level, message, args);
+            Logger?.Log(level, message, args);
         }
     }
 }

@@ -66,8 +66,9 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Cache\ISharpHoundCache.cs" />
-        <Compile Include="Cache\DefaultSharpHoundCache.cs" />
+        <Compile Include="Cache.cs" />
+        <Compile Include="Cache\BaseCacheProvider.cs" />
+        <Compile Include="Cache\DefaultBaseCacheProvider.cs" />
         <Compile Include="Class1.cs" />
         <Compile Include="Enums\Labels.cs" />
         <Compile Include="Extensions.cs" />
