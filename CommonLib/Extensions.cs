@@ -4,6 +4,7 @@ using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using CommonLib.Enums;
 
 namespace CommonLib
 {
@@ -175,59 +176,56 @@ namespace CommonLib
         }
 
         /// <summary>
-        /// Extension method to determine the type of a SearchResultEntry.
-        /// Requires objectsid, samaccounttype, objectclass
+        /// Extension method to determine the BloodHound type of a SearchResultEntry.
+        /// Requires ldap properties objectsid, samaccounttype, objectclass
         /// </summary>
-        /// <param name="searchResultEntry"></param>
+        /// <param name="entry"></param>
         /// <returns></returns>
-        public static LdapTypeEnum GetLdapType(this SearchResultEntry searchResultEntry)
+        public static Label GetLabel(this SearchResultEntry entry)
         {
-            var objectId = searchResultEntry.GetObjectIdentifier();
-            if (objectId == null)
-                return LdapTypeEnum.Unknown;
-
-            if (searchResultEntry.GetPropertyAsBytes("msds-groupmsamembership") != null)
+            //Test if we have the msds-groupmsamembership property first. We want to override this as a user object
+            if (entry.GetPropertyAsBytes("msds-groupmsamembership") != null)
             {
-                return LdapTypeEnum.User;
+                return Label.User;
             }
 
             if (CommonPrincipal.GetCommonSid(objectId, out var commonPrincipal))
                 return commonPrincipal.Type;
 
-            var objectType = LdapTypeEnum.Unknown;
-            var samAccountType = searchResultEntry.GetProperty("samaccounttype");
+            var objectType = Label.Unknown;
+            var samAccountType = entry.GetProperty("samaccounttype");
             //Its not a common principal. Lets use properties to figure out what it actually is
             if (samAccountType != null)
             {
                 if (samAccountType == "805306370")
-                    return LdapTypeEnum.Unknown;
+                    return Label.Unknown;
 
                 objectType = Helpers.SamAccountTypeToType(samAccountType);
             }
             else
             {
-                var objectClasses = searchResultEntry.GetPropertyAsArray("objectClass");
+                var objectClasses = entry.GetPropertyAsArray("objectClass");
                 if (objectClasses == null)
                 {
-                    objectType = LdapTypeEnum.Unknown;
+                    objectType = Label.Unknown;
                 }
                 else if (objectClasses.Contains("groupPolicyContainer"))
                 {
-                    objectType = LdapTypeEnum.GPO;
+                    objectType = Label.GPO;
                 }
                 else if (objectClasses.Contains("organizationalUnit"))
                 {
-                    objectType = LdapTypeEnum.OU;
+                    objectType = Label.OU;
                 }
                 else if (objectClasses.Contains("domain"))
                 {
-                    objectType = LdapTypeEnum.Domain;
+                    objectType = Label.Domain;
                 }
             }
 
             //Override GMSA object type
-            if (searchResultEntry.GetPropertyAsBytes("msds-groupmsamembership") != null)
-                objectType = LdapTypeEnum.User;
+            if (entry.GetPropertyAsBytes("msds-groupmsamembership") != null)
+                objectType = Label.User;
 
             return objectType;
         }
