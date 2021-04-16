@@ -176,7 +176,7 @@ namespace CommonLib
         }
 
         /// <summary>
-        /// Extension method to determine the BloodHound type of a SearchResultEntry.
+        /// Extension method to determine the BloodHound type of a SearchResultEntry using LDAP properties
         /// Requires ldap properties objectsid, samaccounttype, objectclass
         /// </summary>
         /// <param name="entry"></param>
@@ -185,11 +185,11 @@ namespace CommonLib
         {
             //Test if we have the msds-groupmsamembership property first. We want to override this as a user object
             if (entry.GetPropertyAsBytes("msds-groupmsamembership") != null)
-            {
                 return Label.User;
-            }
 
-            if (CommonPrincipal.GetCommonSid(objectId, out var commonPrincipal))
+            var objectId = entry.GetObjectIdentifier();
+            
+            if (objectId.StartsWith("S-1-5") && WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
                 return commonPrincipal.Type;
 
             var objectType = Label.Unknown;
@@ -197,35 +197,22 @@ namespace CommonLib
             //Its not a common principal. Lets use properties to figure out what it actually is
             if (samAccountType != null)
             {
-                if (samAccountType == "805306370")
-                    return Label.Unknown;
-
                 objectType = Helpers.SamAccountTypeToType(samAccountType);
             }
             else
             {
                 var objectClasses = entry.GetPropertyAsArray("objectClass");
                 if (objectClasses == null)
-                {
                     objectType = Label.Unknown;
-                }
                 else if (objectClasses.Contains("groupPolicyContainer"))
-                {
                     objectType = Label.GPO;
-                }
                 else if (objectClasses.Contains("organizationalUnit"))
-                {
                     objectType = Label.OU;
-                }
-                else if (objectClasses.Contains("domain"))
-                {
+                else if (objectClasses.Contains("domain")) 
                     objectType = Label.Domain;
-                }
+                else if (objectClasses.Contains("container")) 
+                    objectType = Label.Container;
             }
-
-            //Override GMSA object type
-            if (entry.GetPropertyAsBytes("msds-groupmsamembership") != null)
-                objectType = Label.User;
 
             return objectType;
         }
