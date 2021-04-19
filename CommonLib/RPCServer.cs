@@ -144,7 +144,7 @@ namespace CommonLib
 
         internal string GetMachineSid()
         {
-            if (Cache.Instance.GetMachineSid(_computerSID.ObjectId, out var machineSid))
+            if (Cache.GetMachineSid(_computerSID, out var machineSid))
             {
                 return machineSid;
             }
@@ -159,7 +159,7 @@ namespace CommonLib
                 {
                     machineSid = new SecurityIdentifier(temp).Value;
                     SamFreeMemory(temp);
-                    Cache.Instance.AddMachineSid(_computerSID, machineSid);
+                    Cache.AddMachineSid(_computerSID, machineSid);
                     return machineSid;
                 }
             }
@@ -233,7 +233,7 @@ namespace CommonLib
 
             machineSid = new SecurityIdentifier(machineSid).AccountDomainSid.Value;
             
-            Cache.Instance.AddMachineSid(_ldapEntry.ObjectId, machineSid);
+            Cache.AddMachineSid(_computerSID, machineSid);
             return machineSid;
         }
         

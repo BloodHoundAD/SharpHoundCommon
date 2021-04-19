@@ -17,7 +17,7 @@ namespace CommonLib
             set => _principalName = value?.ToUpper();
         }
 
-        public WellKnownPrincipal(string name, Label type)
+        private WellKnownPrincipal(string name, Label type)
         {
             Name = name;
             Type = type;
