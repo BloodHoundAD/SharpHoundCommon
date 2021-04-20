@@ -24,7 +24,7 @@ namespace CommonLib
         };
 
         /// <summary>
-        /// Creates an instance of an RPCServer which is used for making specific API calls for computers
+        /// Creates an instance of an RPCServer which is used for making SharpHound specific API calls for computers
         /// </summary>
         /// <param name="name">The name of the computer to connect too. This should be the network name of the computer</param>
         /// <param name="domain">The domain name of the computer</param>
@@ -250,6 +250,14 @@ namespace CommonLib
                 SamCloseHandle(_serverHandle);
                 _serverHandle = IntPtr.Zero;
             }
+        }
+        
+        internal enum LocalGroupRids
+        {
+            Administrators = 544,
+            RemoteDesktopUsers = 555,
+            DcomUsers = 562,
+            PSRemote = 580
         }
 
         #region SAMR Imports
