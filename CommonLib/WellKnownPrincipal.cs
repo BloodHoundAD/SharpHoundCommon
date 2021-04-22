@@ -246,7 +246,11 @@ namespace CommonLib
             {
                 if (sid == "S-1-5-9")
                 {
-                    var forest = GetForestName(domain);
+                    var forest = LDAPUtils.Instance.GetForest(domain)?.Name;
+                    if (forest == null)
+                    {
+                        Logging.Log("Error getting forest, ENTDC sid is likely incorrect");
+                    }
                     return $"{forest}-{sid}".ToUpper();
                 }
                 

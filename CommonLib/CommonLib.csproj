@@ -33,6 +33,10 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0-preview.3.21201.4\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
           <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0-preview.3.21201.4\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
           <Private>True</Private>
@@ -49,7 +53,12 @@
         </Reference>
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
+        <Reference Include="System.DirectoryServices" />
         <Reference Include="System.DirectoryServices.Protocols" />
+        <Reference Include="System.Linq.Async, Version=5.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263">
+          <HintPath>..\packages\System.Linq.Async.5.0.0\lib\net461\System.Linq.Async.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
           <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
           <Private>True</Private>
@@ -63,12 +72,17 @@
           <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Cache.cs" />
         <Compile Include="Enums\Labels.cs" />
         <Compile Include="Extensions.cs" />
+        <Compile Include="LDAPConfig.cs" />
         <Compile Include="Output\ACE.cs" />
         <Compile Include="Output\Computer.cs" />
         <Compile Include="Output\Container.cs" />
@@ -83,8 +97,8 @@
         <Compile Include="Output\SPNTarget.cs" />
         <Compile Include="Output\TypedPrincipal.cs" />
         <Compile Include="Output\User.cs" />
-        <Compile Include="ResolutionUtils.cs" />
-        <Compile Include="Utils.cs" />
+        <Compile Include="LDAPUtils.cs" />
+        <Compile Include="Helpers.cs" />
         <Compile Include="Logging.cs" />
         <Compile Include="NativeMethods.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

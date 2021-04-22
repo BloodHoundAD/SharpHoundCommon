@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using CommonLib.Enums;
 using Newtonsoft.Json;
 
 namespace CommonLib
@@ -10,7 +11,7 @@ namespace CommonLib
     public class Cache
     {
         private readonly ConcurrentDictionary<string, string> _valueToSidCache;
-        private readonly ConcurrentDictionary<string, string> _sidToTypeCache;
+        private readonly ConcurrentDictionary<string, Label> _sidToTypeCache;
         private readonly ConcurrentDictionary<string, string[]> _globalCatalogCache;
         private readonly ConcurrentDictionary<string, string> _machineSidCache;
         private string fileName;
@@ -22,7 +23,7 @@ namespace CommonLib
         private Cache()
         {
             _valueToSidCache = new ConcurrentDictionary<string, string>();
-            _sidToTypeCache = new ConcurrentDictionary<string, string>();
+            _sidToTypeCache = new ConcurrentDictionary<string, Label>();
             _globalCatalogCache = new ConcurrentDictionary<string, string[]>();
             _machineSidCache = new ConcurrentDictionary<string, string>();
         }
@@ -44,46 +45,46 @@ namespace CommonLib
             CacheInstance?._valueToSidCache.TryAdd(key, value);
         }
 
-        internal void AddPrefixedValue(string key, string domain, string value)
+        internal static void AddPrefixedValue(string key, string domain, string value)
         {
             CacheInstance?._valueToSidCache.TryAdd(GetPrefixKey(key, domain), value);
         }
 
-        internal void AddType(string key, string value)
+        internal static void AddType(string key, Label value)
         {
             CacheInstance?._sidToTypeCache.TryAdd(key, value);
         }
 
-        internal void AddGCCache(string key, string[] value)
+        internal static void AddGCCache(string key, string[] value)
         {
-            _globalCatalogCache?.TryAdd(key, value);
+            CacheInstance?._globalCatalogCache?.TryAdd(key, value);
         }
 
-        internal bool GetGCCache(string key, out string[] value)
+        internal static bool GetGCCache(string key, out string[] value)
         {
-            if (_globalCatalogCache != null) return _globalCatalogCache.TryGetValue(key, out value);
+            if (CacheInstance != null) return CacheInstance._globalCatalogCache.TryGetValue(key, out value);
             value = null;
             return false;
         }
 
-        internal bool GetConvertedValue(string key, out string value)
+        internal static bool GetConvertedValue(string key, out string value)
         {
-            if (_valueToSidCache != null) return _valueToSidCache.TryGetValue(key, out value);
+            if (CacheInstance != null) return CacheInstance._valueToSidCache.TryGetValue(key, out value);
             value = null;
             return false;
         }
         
         internal bool GetPrefixedValue(string key, string domain, out string value)
         {
-            if (_valueToSidCache != null) return _valueToSidCache.TryGetValue(GetPrefixKey(key, domain), out value);
+            if (CacheInstance != null) return CacheInstance._valueToSidCache.TryGetValue(GetPrefixKey(key, domain), out value);
             value = null;
             return false;
         }
 
-        internal bool GetSidType(string key, out string value)
+        internal static bool GetSidType(string key, out Label value)
         {
-            if (_sidToTypeCache != null) return _sidToTypeCache.TryGetValue(key, out value);
-            value = null;
+            if (CacheInstance != null) return CacheInstance._sidToTypeCache.TryGetValue(key, out value);
+            value = Label.Unknown;
             return false;
 
         }
