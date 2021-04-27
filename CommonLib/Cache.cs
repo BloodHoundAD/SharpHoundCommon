@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using CommonLib.Enums;
 using Newtonsoft.Json;
@@ -74,7 +73,7 @@ namespace CommonLib
             return false;
         }
         
-        internal bool GetPrefixedValue(string key, string domain, out string value)
+        internal static bool GetPrefixedValue(string key, string domain, out string value)
         {
             if (CacheInstance != null) return CacheInstance._valueToSidCache.TryGetValue(GetPrefixKey(key, domain), out value);
             value = null;

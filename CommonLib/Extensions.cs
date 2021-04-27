@@ -189,7 +189,7 @@ namespace CommonLib
 
             var objectId = entry.GetObjectIdentifier();
             
-            if (objectId.StartsWith("S-1-5") && WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
+            if (objectId.StartsWith("S-1") && WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
                 return commonPrincipal.Type;
 
             var objectType = Label.Unknown;

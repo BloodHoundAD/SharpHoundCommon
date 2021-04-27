@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.DirectoryServices.Protocols;
 using System.DirectoryServices.ActiveDirectory;
+using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
-using CommonLib.Enums;
 using CommonLib.Output;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
@@ -18,8 +20,23 @@ namespace CommonLib
         private readonly ConcurrentDictionary<string, LdapConnection> _ldapConnections = new();
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _domainControllerCache = new();
-        
+        private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
+        private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
+
         private readonly string[] ResolutionProps = { "distinguishedname", "samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership" };
+        
+        // The following byte stream contains the necessary message to request a NetBios name from a machine
+        // http://web.archive.org/web/20100409111218/http://msdn.microsoft.com/en-us/library/system.net.sockets.socket.aspx
+        private static readonly byte[] NameRequest =
+        {
+            0x80, 0x94, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x20, 0x43, 0x4b, 0x41,
+            0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41,
+            0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41,
+            0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41,
+            0x41, 0x41, 0x41, 0x41, 0x41, 0x00, 0x00, 0x21,
+            0x00, 0x01
+        };
         
         private const string NULL_CACHE_KEY = "UNIQUENULL";
         private readonly LDAPConfig _ldapConfig;
@@ -38,8 +55,244 @@ namespace CommonLib
             _ldapConfig = config;
         }
 
+        public async Task<string> ResolveHostToSid(string hostname, string domain)
+        {
+            var strippedHost = Helpers.StripServicePrincipalName(hostname).ToUpper().TrimEnd('$');
+
+            if (_hostResolutionMap.TryGetValue(strippedHost, out var sid))
+            {
+                return sid;
+            }
+
+            var normalDomain = await NormalizeDomainName(domain);
+
+            string tempName;
+            string tempDomain = null;
+
+            //Step 1: Handle non-IP address values
+            if (!IPAddress.TryParse(strippedHost, out _))
+            {
+                // Format: ABC.TESTLAB.LOCAL
+                if (strippedHost.Contains("."))
+                {
+                    var split = strippedHost.Split('.');
+                    tempName = split[0];
+                    tempDomain = string.Join(".", split.Skip(1).ToArray());
+                }
+                // Format: WINDOWS
+                else
+                {
+                    tempName = strippedHost;
+                    tempDomain = normalDomain;
+                }
+
+                // Add $ to the end of the name to match how computers are stored in AD
+                tempName = $"{tempName}$".ToUpper();
+                var principal = await ResolveAccountName(tempName, tempDomain);
+                sid = principal?.ObjectIdentifier;
+                if (sid != null)
+                {
+                    _hostResolutionMap.TryAdd(strippedHost, sid);
+                    return sid;
+                }
+            }
+            
+            //Step 2: Try NetWkstaGetInfo
+            //Next we'll try calling NetWkstaGetInfo in hopes of getting the NETBIOS name directly from the computer
+            //We'll use the hostname that we started with instead of the one from our previous step
+            var workstationInfo = await CallNetWkstaGetInfo(strippedHost);
+            if (workstationInfo.HasValue)
+            {
+                tempName = workstationInfo.Value.computer_name;
+                tempDomain = workstationInfo.Value.lan_group;
+                
+                if (string.IsNullOrEmpty(tempDomain))
+                    tempDomain = normalDomain;
+                
+                if (!string.IsNullOrEmpty(tempName))
+                {
+                    //Append the $ to indicate this is a computer
+                    tempName = $"{tempName}$".ToUpper();
+                    var principal = await ResolveAccountName(tempName, tempDomain);
+                    if (principal != null)
+                    {
+                        _hostResolutionMap.TryAdd(strippedHost, sid);
+                        return sid;
+                    }
+                }
+            }
+            
+            //Step 3: Socket magic
+            // Attempt to request the NETBIOS name of the computer directly
+            if (RequestNetbiosNameFromComputer(strippedHost, normalDomain, out tempName))
+            {
+                tempDomain ??= normalDomain;
+                tempName = $"{tempName}$".ToUpper();
+                
+                var principal = await ResolveAccountName(tempName, tempDomain);
+                sid = principal?.ObjectIdentifier;
+                if (sid != null)
+                {
+                    _hostResolutionMap.TryAdd(strippedHost, sid);
+                    return sid;
+                }
+            }
+            
+        }
+        
         /// <summary>
-        /// Converts a distinguishedname to its corresponding SID and object type.
+        /// Uses a socket and a set of bytes to request the NETBIOS name from a remote computer
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="domain"></param>
+        /// <param name="netbios"></param>
+        /// <returns></returns>
+        private static bool RequestNetbiosNameFromComputer(string server, string domain, out string netbios)
+        {
+            var receiveBuffer = new byte[1024];
+            var requestSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            try
+            {
+                //Set receive timeout to 1 second
+                requestSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+                EndPoint remoteEndpoint;
+
+                //We need to create an endpoint to bind too. If its an IP, just use that.
+                if (IPAddress.TryParse(server, out var parsedAddress)) remoteEndpoint = new IPEndPoint(parsedAddress, 137);
+                else
+                {
+                    //If its not an IP, we're going to try and resolve it from DNS
+                    try
+                    {
+                        IPAddress address;
+                        if (server.Contains("."))
+                        {
+                            address = Dns
+                                .GetHostAddresses(server).First(x => x.AddressFamily == AddressFamily.InterNetwork);
+                        }
+                        else
+                        {
+                            address = Dns.GetHostAddresses($"{server}.{domain}")[0];
+                        }
+
+                        if (address == null)
+                        {
+                            netbios = null;
+                            return false;
+                        }
+
+                        remoteEndpoint = new IPEndPoint(address, 137);
+                    }
+                    catch
+                    {
+                        //Failed to resolve an IP, so return null
+                        netbios = null;
+                        return false;
+                    }
+                }
+
+                var originEndpoint = new IPEndPoint(IPAddress.Any, 0);
+                requestSocket.Bind(originEndpoint);
+
+                try
+                {
+                    requestSocket.SendTo(NameRequest, remoteEndpoint);
+                    var receivedByteCount = requestSocket.ReceiveFrom(receiveBuffer, ref remoteEndpoint);
+                    if (receivedByteCount >= 90)
+                    {
+                        netbios = new ASCIIEncoding().GetString(receiveBuffer, 57, 16).Trim('\0', ' ');
+                        return true;
+                    }
+
+                    netbios = null;
+                    return false;
+                }
+                catch (SocketException)
+                {
+                    netbios = null;
+                    return false;
+                }
+            }
+            finally
+            {
+                //Make sure we close the socket if its open
+                requestSocket.Close();
+            }
+        }
+
+        /// <summary>
+        /// Calls the NetWkstaGetInfo API on a hostname
+        /// </summary>
+        /// <param name="hostname"></param>
+        /// <returns></returns>
+        private static async Task<WorkstationInfo100?> CallNetWkstaGetInfo(string hostname)
+        {
+            if (!await Helpers.CheckPort(hostname))
+                return null;
+
+            var wkstaData = IntPtr.Zero;
+            try
+            {
+                var result = NetWkstaGetInfo(hostname, 100, out wkstaData);
+                if (result != 0)
+                    return null;
+
+                var wkstaInfo = Marshal.PtrToStructure<WorkstationInfo100>(wkstaData);
+                return wkstaInfo;
+            }
+            finally
+            {
+                if (wkstaData != IntPtr.Zero)
+                    NetApiBufferFree(wkstaData);
+            }
+        }
+        
+        /// <summary>
+        /// Attempts to convert a bare account name (usually from session enumeration) to its corresponding ID and object type
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
+        public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
+        {
+            if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetSidType(id, out var type))
+            {
+                return new TypedPrincipal
+                {
+                    ObjectIdentifier = id,
+                    ObjectType = type
+                };
+            }
+
+            var d = NormalizeDomainName(domain);
+            var result = QueryLDAP($"(samaccountname={name})", SearchScope.Subtree, ResolutionProps,
+                domain).DefaultIfEmpty(null).FirstOrDefault();
+
+            if (result == null)
+                return null;
+            
+            type = result.GetLabel();
+            id = result.GetObjectIdentifier();
+
+            if (id == null)
+            {
+                Logging.Debug($"No resolved ID for {name}");
+                return null;
+            }
+            Cache.AddPrefixedValue(name, domain, id);
+            Cache.AddType(id, type);
+
+            id = WellKnownPrincipal.TryConvert(id, domain);
+            
+            return new TypedPrincipal
+            {
+                ObjectIdentifier = id,
+                ObjectType = type
+            };
+        }
+
+        /// <summary>
+        /// Attempts to convert a distinguishedname to its corresponding ID and object type.
         /// </summary>
         /// <param name="dn">DistinguishedName</param>
         /// <returns>A <c>TypedPrincipal</c> object with the SID and Label</returns>
@@ -55,9 +308,8 @@ namespace CommonLib
             }
 
             var domain = Helpers.DistinguishedNameToDomain(dn);
-            var result =
-                await QueryLDAP("(objectclass=*)", SearchScope.Base, ResolutionProps, domainName: domain, adsPath: dn)
-                    .DefaultIfEmpty(null).FirstOrDefaultAsync();
+            var result = QueryLDAP("(objectclass=*)", SearchScope.Base, ResolutionProps, domainName: domain, adsPath: dn)
+                    .DefaultIfEmpty(null).FirstOrDefault();
 
             if (result == null)
             {
@@ -74,9 +326,10 @@ namespace CommonLib
                 return null;
             }
             Cache.AddConvertedValue(dn, id);
-            Cache.AddType(dn, type);
+            Cache.AddType(id, type);
 
             id = WellKnownPrincipal.TryConvert(id, domain);
+            
             return new TypedPrincipal
             {
                 ObjectIdentifier = id,
@@ -97,13 +350,16 @@ namespace CommonLib
         /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
         /// <param name="skipCache">Skip the connection cache and force a new connection. You must dispose of this connection yourself.</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
-        public async IAsyncEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
-            string[] props, bool includeAcl = false, bool showDeleted = false, string domainName = null, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
+        public IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+            string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
             Logging.Debug("Creating ldap connection");
-            var conn = globalCatalog
-                ? await CreateGlobalCatalogConnection(domainName)
-                : await CreateLDAPConnection(domainName, skipCache);
+            var task = globalCatalog
+                ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
+                : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
+
+            task.Wait();
+            var conn = task.Result;
 
             if (conn == null)
             {
@@ -375,5 +631,144 @@ namespace CommonLib
             Logging.Debug($"Unable to find usable domain controller for {domain.Name}");
             return null;
         }
+        
+        /// <summary>
+        /// Normalizes a domain name to its full DNS name
+        /// </summary>
+        /// <param name="domain"></param>
+        /// <returns></returns>
+        internal async Task<string> NormalizeDomainName(string domain)
+        {
+            var resolved = domain;
+
+            if (resolved.Contains("."))
+                return domain.ToUpper();
+
+            resolved = await ResolveDomainNetbiosToDns(domain) ?? domain;
+
+            return resolved.ToUpper();
+        }
+        
+        /// <summary>
+        /// Turns a domain Netbios name into its FQDN using the DsGetDcName function (TESTLAB -> TESTLAB.LOCAL)
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
+        internal async Task<string> ResolveDomainNetbiosToDns(string domainName)
+        {
+            var key = domainName.ToUpper();
+            if (_netbiosCache.TryGetValue(key, out var flatName))
+                return flatName;
+
+            var domain = GetDomain(domainName);
+            if (domain == null)
+                return domainName.ToUpper();
+            
+            var computerName = _ldapConfig.Server ?? await GetUsableDomainController(domain);
+
+            var result = DsGetDcName(computerName, domainName, null, null,
+                (uint)(DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME),
+                out var pDomainControllerInfo);
+
+            try
+            {
+                if (result == 0)
+                {
+                    var info = Marshal.PtrToStructure<DOMAIN_CONTROLLER_INFO>(pDomainControllerInfo);
+                    flatName = info.DomainName;
+                }
+            }
+            finally
+            {
+                if (pDomainControllerInfo != IntPtr.Zero)
+                    NetApiBufferFree(pDomainControllerInfo);
+            }
+
+            _netbiosCache.TryAdd(key, flatName);
+            return flatName;
+        }
+        
+        
+        #region NetAPI PInvoke Calls
+        [DllImport("netapi32.dll", SetLastError = true)]
+        private static extern int NetWkstaGetInfo(
+            [MarshalAs(UnmanagedType.LPWStr)] string serverName,
+            uint level,
+            out IntPtr bufPtr);
+
+        private struct WorkstationInfo100
+        {
+
+            public int platform_id;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string computer_name;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string lan_group;
+            public int ver_major;
+            public int ver_minor;
+        }
+
+        [DllImport("Netapi32.dll", SetLastError = true)]
+        private static extern int NetApiBufferFree(IntPtr Buffer);
+        #endregion
+        
+        #region DSGetDcName Imports
+        [DllImport("Netapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern int DsGetDcName
+        (
+            [MarshalAs(UnmanagedType.LPTStr)]
+            string ComputerName,
+            [MarshalAs(UnmanagedType.LPTStr)]
+            string DomainName,
+            [In] GuidClass DomainGuid,
+            [MarshalAs(UnmanagedType.LPTStr)]
+            string SiteName,
+            uint Flags,
+            out IntPtr pDOMAIN_CONTROLLER_INFO
+        );
+
+        [StructLayout(LayoutKind.Sequential)]
+        public class GuidClass
+        {
+            public Guid TheGuid;
+        }
+
+        [Flags]
+        public enum DSGETDCNAME_FLAGS : uint
+        {
+            DS_FORCE_REDISCOVERY = 0x00000001,
+            DS_DIRECTORY_SERVICE_REQUIRED = 0x00000010,
+            DS_DIRECTORY_SERVICE_PREFERRED = 0x00000020,
+            DS_GC_SERVER_REQUIRED = 0x00000040,
+            DS_PDC_REQUIRED = 0x00000080,
+            DS_BACKGROUND_ONLY = 0x00000100,
+            DS_IP_REQUIRED = 0x00000200,
+            DS_KDC_REQUIRED = 0x00000400,
+            DS_TIMESERV_REQUIRED = 0x00000800,
+            DS_WRITABLE_REQUIRED = 0x00001000,
+            DS_GOOD_TIMESERV_PREFERRED = 0x00002000,
+            DS_AVOID_SELF = 0x00004000,
+            DS_ONLY_LDAP_NEEDED = 0x00008000,
+            DS_IS_FLAT_NAME = 0x00010000,
+            DS_IS_DNS_NAME = 0x00020000,
+            DS_RETURN_DNS_NAME = 0x40000000,
+            DS_RETURN_FLAT_NAME = 0x80000000
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        struct DOMAIN_CONTROLLER_INFO
+        {
+            [MarshalAs(UnmanagedType.LPTStr)] public string DomainControllerName;
+            [MarshalAs(UnmanagedType.LPTStr)] public string DomainControllerAddress;
+            public uint DomainControllerAddressType;
+            public Guid DomainGuid;
+            [MarshalAs(UnmanagedType.LPTStr)] public string DomainName;
+            [MarshalAs(UnmanagedType.LPTStr)] public string DnsForestName;
+            public uint Flags;
+            [MarshalAs(UnmanagedType.LPTStr)] public string DcSiteName;
+            [MarshalAs(UnmanagedType.LPTStr)] public string ClientSiteName;
+        }
+
+        #endregion
     }
 }
