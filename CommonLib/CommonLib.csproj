@@ -33,6 +33,10 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0-preview.3.21201.4\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
           <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
           <Private>True</Private>
@@ -50,6 +54,15 @@
         <Reference Include="System.DirectoryServices.Protocols" />
         <Reference Include="System.IO.Compression.FileSystem" />
         <Reference Include="System.Numerics" />
+        <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Cache.cs" />
@@ -58,20 +71,20 @@
         <Compile Include="Enums\UAC.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="LDAPConfig.cs" />
-        <Compile Include="Output\ACE.cs" />
-        <Compile Include="Output\Computer.cs" />
-        <Compile Include="Output\Container.cs" />
-        <Compile Include="Output\Domain.cs" />
-        <Compile Include="Output\GPLink.cs" />
-        <Compile Include="Output\GPO.cs" />
-        <Compile Include="Output\Group.cs" />
-        <Compile Include="Output\OU.cs" />
-        <Compile Include="Output\OutputBase.cs" />
-        <Compile Include="Output\DomainTrust.cs" />
-        <Compile Include="Output\Session.cs" />
-        <Compile Include="Output\SPNTarget.cs" />
-        <Compile Include="Output\TypedPrincipal.cs" />
-        <Compile Include="Output\User.cs" />
+        <Compile Include="OutputTypes\ACE.cs" />
+        <Compile Include="OutputTypes\Computer.cs" />
+        <Compile Include="OutputTypes\Container.cs" />
+        <Compile Include="OutputTypes\Domain.cs" />
+        <Compile Include="OutputTypes\GPLink.cs" />
+        <Compile Include="OutputTypes\GPO.cs" />
+        <Compile Include="OutputTypes\Group.cs" />
+        <Compile Include="OutputTypes\OU.cs" />
+        <Compile Include="OutputTypes\OutputBase.cs" />
+        <Compile Include="OutputTypes\DomainTrust.cs" />
+        <Compile Include="OutputTypes\Session.cs" />
+        <Compile Include="OutputTypes\SPNTarget.cs" />
+        <Compile Include="OutputTypes\TypedPrincipal.cs" />
+        <Compile Include="OutputTypes\User.cs" />
         <Compile Include="LDAPUtils.cs" />
         <Compile Include="Helpers.cs" />
         <Compile Include="Logging.cs" />

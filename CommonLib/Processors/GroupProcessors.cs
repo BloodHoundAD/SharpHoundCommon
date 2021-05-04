@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using System.Threading.Tasks;
 using CommonLib.Enums;
 using CommonLib.Output;
 
@@ -8,7 +7,7 @@ namespace CommonLib.Processors
 {
     public class GroupProcessors
     {
-        public static async Task<List<TypedPrincipal>> ReadGroupMembers(SearchResultEntry entry)
+        public static async IAsyncEnumerable<TypedPrincipal> ReadGroupMembers(SearchResultEntry entry)
         {
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
             var groupSid = entry.GetSid();
@@ -31,6 +30,10 @@ namespace CommonLib.Processors
                     {
                         
                     }
+                    else
+                    {
+                        yield return res;
+                    }
                 }
             }
             else
@@ -42,6 +45,10 @@ namespace CommonLib.Processors
                     if (res == null)
                     {
                         
+                    }
+                    else
+                    {
+                        yield return res;
                     }
                 }
             }

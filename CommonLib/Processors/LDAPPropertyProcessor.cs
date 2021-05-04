@@ -3,6 +3,7 @@ using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using CommonLib.Enums;
 using CommonLib.Output;
 
@@ -78,8 +79,9 @@ namespace CommonLib.Processors
             return props;
         }
 
-        public static Dictionary<string, object> ReadUserProperties(SearchResultEntry entry, out List<TypedPrincipal> allowedToDelegate, out TypedPrincipal[] sidHistory)
+        public static async Task<UserProperties> ReadUserProperties(SearchResultEntry entry)
         {
+            var userProps = new UserProperties();
             var props = new Dictionary<string, object>
             {
                 {"description", entry.GetProperty("description")}
@@ -127,7 +129,7 @@ namespace CommonLib.Processors
                 {
                     var hname = d.Contains("/") ? d.Split('/')[1] : d;
                     hname = hname.Split(':')[0];
-                    var resolvedHost = LDAPUtils.Instance.ResolveHostToSid(hname, domain).ConfigureAwait(false).GetAwaiter().GetResult();
+                    var resolvedHost = await LDAPUtils.Instance.ResolveHostToSid(hname, domain);
                     if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
                     {
                         comps.Add(new TypedPrincipal
@@ -139,8 +141,8 @@ namespace CommonLib.Processors
                 }
             }
 
-            allowedToDelegate = comps;
-            
+            userProps.AllowedToDelegate = comps.ToArray();
+
             props.Add("lastlogon", Helpers.ConvertToUnixEpoch(entry.GetProperty("lastlogon")));
             props.Add("lastlogontimestamp", Helpers.ConvertToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
             props.Add("pwdlastset", Helpers.ConvertToUnixEpoch(entry.GetProperty("pwdlastset")));
@@ -184,17 +186,19 @@ namespace CommonLib.Processors
 
                 sidHistoryPrincipals.Add(res);
             }
-
-            sidHistory = sidHistoryPrincipals.ToArray();
+            
+            userProps.SidHistory =sidHistoryPrincipals.ToArray(); 
             
             props.Add("sidhistory", sidHistoryList.ToArray());
 
-            return props;
+            userProps.Props = props;
+
+            return userProps;
         }
 
-        public static Dictionary<string, object> ReadComputerProperties(SearchResultEntry entry,
-            out TypedPrincipal[] allowedToDelegate, out TypedPrincipal[] allowedToAct, out TypedPrincipal[] sidHistory)
+        public static async Task<ComputerProperties> ReadComputerProperties(SearchResultEntry entry)
         {
+            var compProps = new ComputerProperties();
             var props = new Dictionary<string, object>();
             
             var uac = entry.GetProperty("useraccountcontrol");
@@ -225,7 +229,7 @@ namespace CommonLib.Processors
                 {
                     var hname = d.Contains("/") ? d.Split('/')[1] : d;
                     hname = hname.Split(':')[0];
-                    var resolvedHost = LDAPUtils.Instance.ResolveHostToSid(hname, domain).ConfigureAwait(false).GetAwaiter().GetResult();
+                    var resolvedHost = await LDAPUtils.Instance.ResolveHostToSid(hname, domain);
                     if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
                     {
                         comps.Add(new TypedPrincipal
@@ -237,8 +241,8 @@ namespace CommonLib.Processors
                 }
             }
 
-            allowedToDelegate = comps.ToArray();
-            
+            compProps.AllowedToDelegate = comps.ToArray();
+
             var allowedToActPrincipals = new List<TypedPrincipal>();
             var rawAllowedToAct = entry.GetPropertyAsBytes("msDS-AllowedToActOnBehalfOfOtherIdentity");
             if (rawAllowedToAct != null)
@@ -252,8 +256,8 @@ namespace CommonLib.Processors
                 }
             }
 
-            allowedToAct = allowedToActPrincipals.ToArray();
-            
+            compProps.AllowedToAct = allowedToActPrincipals.ToArray();
+
             props.Add("enabled", enabled);
             props.Add("unconstraineddelegation", unconstrained);
             props.Add("lastlogon", Helpers.ConvertToUnixEpoch(entry.GetProperty("lastlogon")));
@@ -291,11 +295,28 @@ namespace CommonLib.Processors
                 sidHistoryPrincipals.Add(res);
             }
 
-            sidHistory = sidHistoryPrincipals.ToArray();
-            
+            compProps.SidHistory = sidHistoryPrincipals.ToArray();
+
             props.Add("sidhistory", sidHistoryList.ToArray());
 
-            return props;
+            compProps.Props = props;
+
+            return compProps;
         }
+    }
+
+    public class UserProperties
+    {
+        public Dictionary<string, object> Props { get; set; }
+        public TypedPrincipal[] AllowedToDelegate { get; set; }
+        public TypedPrincipal[] SidHistory { get; set; }
+    }
+
+    public class ComputerProperties
+    {
+        public Dictionary<string, object> Props { get; set; }
+        public TypedPrincipal[] AllowedToDelegate { get; set; }
+        public TypedPrincipal[] AllowedToAct { get; set; }
+        public TypedPrincipal[] SidHistory { get; set; }
     }
 }
