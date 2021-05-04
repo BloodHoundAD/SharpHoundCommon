@@ -13,6 +13,7 @@ namespace CommonLib
         private readonly ConcurrentDictionary<string, Label> _sidToTypeCache;
         private readonly ConcurrentDictionary<string, string[]> _globalCatalogCache;
         private readonly ConcurrentDictionary<string, string> _machineSidCache;
+        private readonly ConcurrentDictionary<string, string> _sidToDomainCache;
         private string fileName;
 
         internal static Cache Instance => CacheInstance;
@@ -25,6 +26,19 @@ namespace CommonLib
             _sidToTypeCache = new ConcurrentDictionary<string, Label>();
             _globalCatalogCache = new ConcurrentDictionary<string, string[]>();
             _machineSidCache = new ConcurrentDictionary<string, string>();
+            _sidToDomainCache = new ConcurrentDictionary<string, string>();
+        }
+
+        internal static void AddSidToDomain(string key, string value)
+        {
+            CacheInstance?._sidToDomainCache.TryAdd(key, value);
+        }
+
+        internal static bool GetDomainSidMapping(string key, out string value)
+        {
+            if (CacheInstance != null) return CacheInstance._machineSidCache.TryGetValue(key, out value);
+            value = null;
+            return false;
         }
 
         internal static void AddMachineSid(string key, string value)

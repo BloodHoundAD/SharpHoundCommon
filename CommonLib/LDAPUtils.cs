@@ -7,8 +7,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using CommonLib.Enums;
 using CommonLib.Output;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
@@ -53,6 +55,100 @@ namespace CommonLib
         private LDAPUtils(LDAPConfig config)
         {
             _ldapConfig = config;
+        }
+
+        public TypedPrincipal ResolveSidAndType(string sid, string domain)
+        {
+            //This is a duplicated SID object which is weird and makes things unhappy. Throw it out
+            if (sid.Contains("0ACNF"))
+                return new TypedPrincipal
+                {
+                    ObjectIdentifier = null,
+                    ObjectType = Label.Unknown
+                };
+
+            if (WellKnownPrincipal.GetWellKnownPrincipal(sid, domain, out var principal))
+                return principal;
+
+            var type = LookupSidType(sid, domain);
+            return new TypedPrincipal(sid, type);
+        }
+
+        public Label LookupSidType(string sid, string domain)
+        {
+            if (Cache.GetSidType(sid, out var type))
+                return type;
+            
+            var hex = Helpers.ConvertSidToHexSid(sid);
+            if (hex == null)
+                return Label.Unknown;
+
+            var rDomain = GetDomainNameFromSid(sid) ?? domain;
+
+            var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, ResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
+
+            type = result?.GetLabel() ?? Label.Unknown;
+            Cache.AddType(sid, type);
+            return type;
+        }
+
+        public string GetDomainNameFromSid(string sid)
+        {
+            try
+            {
+                var parsedSid = new SecurityIdentifier(sid);
+                var domainSid = parsedSid.AccountDomainSid?.Value.ToUpper();
+                if (domainSid == null)
+                    return null;
+
+                if (Cache.GetDomainSidMapping(domainSid, out var domain))
+                    return domain;
+
+                domain = GetDomainNameFromSidLdap(sid);
+                if (domain != null)
+                {
+                    Cache.AddSidToDomain(sid, domain);
+                }
+
+                return domain;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        
+        private string GetDomainNameFromSidLdap(string sid)
+        {
+            var hexSid = Helpers.ConvertSidToHexSid(sid);
+
+            if (hexSid == null)
+                return null;
+
+            //Search using objectsid first
+            var result =
+                QueryLDAP($"(&(objectclass=domain)(objectsid={hexSid}))", SearchScope.Subtree,
+                    new[] {"distinguishedname"}, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+
+            if (result != null)
+            {
+                var domainName = Helpers.DistinguishedNameToDomain(result.DistinguishedName);
+                return domainName;
+            }
+
+            //Try trusteddomain objects with the securityidentifier attribute
+            result =
+                QueryLDAP($"(&(objectclass=trusteddomain)(securityidentifier={sid}))", SearchScope.Subtree,
+                    new[] {"cn"}, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+
+            if (result != null)
+            {
+                var domainName = result.GetProperty("cn");
+                return domainName;
+            }
+
+            //We didn't find anything so just return null
+            return null;
         }
 
         public async Task<string> ResolveHostToSid(string hostname, string domain)
@@ -138,6 +234,45 @@ namespace CommonLib
                 }
             }
             
+            //Try DNS resolution next
+            string resolvedHostname;
+            try
+            {
+                resolvedHostname = (await Dns.GetHostEntryAsync(strippedHost)).HostName;
+            }
+            catch
+            {
+                resolvedHostname = null;
+            }
+
+            if (resolvedHostname != null)
+            {
+                var splitName = resolvedHostname.Split('.');
+                tempName = $"{splitName[0]}$".ToUpper();
+                tempDomain = string.Join(".", splitName.Skip(1));
+                
+                var principal = await ResolveAccountName(tempName, tempDomain);
+                sid = principal?.ObjectIdentifier;
+                if (sid != null)
+                {
+                    _hostResolutionMap.TryAdd(strippedHost, sid);
+                    return sid;
+                }
+            }
+
+            //If we get here, everything has failed, and life is very sad.
+            tempName = strippedHost;
+            tempDomain = normalDomain;
+
+            if (tempName.Contains("."))
+            {
+                _hostResolutionMap.TryAdd(strippedHost, tempName);
+                return tempName;
+            }
+            
+            tempName = $"{tempName}.{tempDomain}";
+            _hostResolutionMap.TryAdd(strippedHost, tempName);
+            return tempName;
         }
         
         /// <summary>

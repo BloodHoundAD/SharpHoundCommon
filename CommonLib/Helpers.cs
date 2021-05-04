@@ -17,6 +17,9 @@ namespace CommonLib
         
         private static readonly Regex DCReplaceRegex = new Regex("DC=", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SPNRegex = new Regex(@".*\/.*", RegexOptions.Compiled);
+        private static readonly DateTime EpochDiff = new DateTime(1970,1,1);
+
+        
         
         /// <summary>
         /// Attempts to convert a SamAccountType value to the appropriate type enum
@@ -109,6 +112,34 @@ namespace CommonLib
             {
                 return false;
             }
+        }
+        
+        /// <summary>
+        /// Converts a windows file time to unix epoch time
+        /// </summary>
+        /// <param name="ldapTime"></param>
+        /// <returns></returns>
+        public static long ConvertToUnixEpoch(string ldapTime)
+        {
+            if (ldapTime == null)
+                return -1;
+            
+            var time = long.Parse(ldapTime);
+            if (time == 0)
+                return 0;
+
+            long toReturn;
+
+            try
+            {
+                toReturn = (long) Math.Floor(DateTime.FromFileTimeUtc(time).Subtract(EpochDiff).TotalSeconds);
+            }
+            catch
+            {
+                toReturn = -1;
+            }
+
+            return toReturn;
         }
     }
 }

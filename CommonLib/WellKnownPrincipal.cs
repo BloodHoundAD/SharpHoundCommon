@@ -1,5 +1,5 @@
-﻿using System.Text.RegularExpressions;
-using CommonLib.Enums;
+﻿using CommonLib.Enums;
+using CommonLib.Output;
 
 namespace CommonLib
 {
@@ -17,213 +17,215 @@ namespace CommonLib
             set => _principalName = value?.ToUpper();
         }
 
-        private WellKnownPrincipal(string name, Label type)
+        public static bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
         {
-            Name = name;
-            Type = type;
+            if (!GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
+            commonPrincipal.ObjectIdentifier = TryConvert(commonPrincipal.ObjectIdentifier, domain);
+            return true;
+
         }
         
         /// <summary>
-        /// Gets the principal associate with a well known SID
+        /// Gets the principal associated with a well known SID
         /// </summary>
         /// <param name="sid"></param>
         /// <param name="commonPrincipal"></param>
         /// <returns>True if SID matches a well known principal, false otherwise</returns>
-        public static bool GetWellKnownPrincipal(string sid, out WellKnownPrincipal commonPrincipal)
+        public static bool GetWellKnownPrincipal(string sid, out TypedPrincipal commonPrincipal)
         {
             switch (sid)
             {
                 case "S-1-0":
-                    commonPrincipal = new WellKnownPrincipal("Null Authority", Label.User);
+                    commonPrincipal = new TypedPrincipal("Null Authority", Label.User);
                     break;
                 case "S-1-0-0":
-                    commonPrincipal = new WellKnownPrincipal("Nobody", Label.User);
+                    commonPrincipal = new TypedPrincipal("Nobody", Label.User);
                     break;
                 case "S-1-1":
-                    commonPrincipal = new WellKnownPrincipal("World Authority", Label.User);
+                    commonPrincipal = new TypedPrincipal("World Authority", Label.User);
                     break;
                 case "S-1-1-0":
-                    commonPrincipal = new WellKnownPrincipal("Everyone", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Everyone", Label.Group);
                     break;
                 case "S-1-2":
-                    commonPrincipal = new WellKnownPrincipal("Local Authority", Label.User);
+                    commonPrincipal = new TypedPrincipal("Local Authority", Label.User);
                     break;
                 case "S-1-2-0":
-                    commonPrincipal = new WellKnownPrincipal("Local", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Local", Label.Group);
                     break;
                 case "S-1-2-1":
-                    commonPrincipal = new WellKnownPrincipal("Console Logon", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Console Logon", Label.Group);
                     break;
                 case "S-1-3":
-                    commonPrincipal = new WellKnownPrincipal("Creator Authority", Label.User);
+                    commonPrincipal = new TypedPrincipal("Creator Authority", Label.User);
                     break;
                 case "S-1-3-0":
-                    commonPrincipal = new WellKnownPrincipal("Creator Owner", Label.User);
+                    commonPrincipal = new TypedPrincipal("Creator Owner", Label.User);
                     break;
                 case "S-1-3-1":
-                    commonPrincipal = new WellKnownPrincipal("Creator Label.Group", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Creator Label.Group", Label.Group);
                     break;
                 case "S-1-3-2":
-                    commonPrincipal = new WellKnownPrincipal("Creator Owner Server", Label.Computer);
+                    commonPrincipal = new TypedPrincipal("Creator Owner Server", Label.Computer);
                     break;
                 case "S-1-3-3":
-                    commonPrincipal = new WellKnownPrincipal("Creator Label.Group Server", Label.Computer);
+                    commonPrincipal = new TypedPrincipal("Creator Label.Group Server", Label.Computer);
                     break;
                 case "S-1-3-4":
-                    commonPrincipal = new WellKnownPrincipal("Owner Rights", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Owner Rights", Label.Group);
                     break;
                 case "S-1-4":
-                    commonPrincipal = new WellKnownPrincipal("Non-unique Authority", Label.User);
+                    commonPrincipal = new TypedPrincipal("Non-unique Authority", Label.User);
                     break;
                 case "S-1-5":
-                    commonPrincipal = new WellKnownPrincipal("NT Authority", Label.User);
+                    commonPrincipal = new TypedPrincipal("NT Authority", Label.User);
                     break;
                 case "S-1-5-1":
-                    commonPrincipal = new WellKnownPrincipal("Dialup", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Dialup", Label.Group);
                     break;
                 case "S-1-5-2":
-                    commonPrincipal = new WellKnownPrincipal("Network", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Network", Label.Group);
                     break;
                 case "S-1-5-3":
-                    commonPrincipal = new WellKnownPrincipal("Batch", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Batch", Label.Group);
                     break;
                 case "S-1-5-4":
-                    commonPrincipal = new WellKnownPrincipal("Interactive", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Interactive", Label.Group);
                     break;
                 case "S-1-5-6":
-                    commonPrincipal = new WellKnownPrincipal("Service", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Service", Label.Group);
                     break;
                 case "S-1-5-7":
-                    commonPrincipal = new WellKnownPrincipal("Anonymous", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Anonymous", Label.Group);
                     break;
                 case "S-1-5-8":
-                    commonPrincipal = new WellKnownPrincipal("Proxy", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Proxy", Label.Group);
                     break;
                 case "S-1-5-9":
-                    commonPrincipal = new WellKnownPrincipal("Enterprise Domain Controllers", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Enterprise Domain Controllers", Label.Group);
                     break;
                 case "S-1-5-10":
-                    commonPrincipal = new WellKnownPrincipal("Principal Self", Label.User);
+                    commonPrincipal = new TypedPrincipal("Principal Self", Label.User);
                     break;
                 case "S-1-5-11":
-                    commonPrincipal = new WellKnownPrincipal("Authenticated Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Authenticated Label.Users", Label.Group);
                     break;
                 case "S-1-5-12":
-                    commonPrincipal = new WellKnownPrincipal("Restricted Code", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Restricted Code", Label.Group);
                     break;
                 case "S-1-5-13":
-                    commonPrincipal = new WellKnownPrincipal("Terminal Server Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Terminal Server Label.Users", Label.Group);
                     break;
                 case "S-1-5-14":
-                    commonPrincipal = new WellKnownPrincipal("Remote Interactive Logon", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Remote Interactive Logon", Label.Group);
                     break;
                 case "S-1-5-15":
-                    commonPrincipal = new WellKnownPrincipal("This Organization ", Label.Group);
+                    commonPrincipal = new TypedPrincipal("This Organization ", Label.Group);
                     break;
                 case "S-1-5-17":
-                    commonPrincipal = new WellKnownPrincipal("This Organization ", Label.Group);
+                    commonPrincipal = new TypedPrincipal("This Organization ", Label.Group);
                     break;
                 case "S-1-5-18":
-                    commonPrincipal = new WellKnownPrincipal("Local System", Label.User);
+                    commonPrincipal = new TypedPrincipal("Local System", Label.User);
                     break;
                 case "S-1-5-19":
-                    commonPrincipal = new WellKnownPrincipal("NT Authority", Label.User);
+                    commonPrincipal = new TypedPrincipal("NT Authority", Label.User);
                     break;
                 case "S-1-5-20":
-                    commonPrincipal = new WellKnownPrincipal("NT Authority", Label.User);
+                    commonPrincipal = new TypedPrincipal("NT Authority", Label.User);
                     break;
                 case "S-1-5-113":
-                    commonPrincipal = new WellKnownPrincipal("Local Account", Label.User);
+                    commonPrincipal = new TypedPrincipal("Local Account", Label.User);
                     break;
                 case "S-1-5-114":
-                    commonPrincipal = new WellKnownPrincipal("Local Account and Member of Administrators Label.Group", Label.User);
+                    commonPrincipal = new TypedPrincipal("Local Account and Member of Administrators Label.Group", Label.User);
                     break;
                 case "S-1-5-80-0":
-                    commonPrincipal = new WellKnownPrincipal("All Services ", Label.Group);
+                    commonPrincipal = new TypedPrincipal("All Services ", Label.Group);
                     break;
                 case "S-1-5-32-544":
-                    commonPrincipal = new WellKnownPrincipal("Administrators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Administrators", Label.Group);
                     break;
                 case "S-1-5-32-545":
-                    commonPrincipal = new WellKnownPrincipal("Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Label.Users", Label.Group);
                     break;
                 case "S-1-5-32-546":
-                    commonPrincipal = new WellKnownPrincipal("Guests", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Guests", Label.Group);
                     break;
                 case "S-1-5-32-547":
-                    commonPrincipal = new WellKnownPrincipal("Power Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Power Label.Users", Label.Group);
                     break;
                 case "S-1-5-32-548":
-                    commonPrincipal = new WellKnownPrincipal("Account Operators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Account Operators", Label.Group);
                     break;
                 case "S-1-5-32-549":
-                    commonPrincipal = new WellKnownPrincipal("Server Operators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Server Operators", Label.Group);
                     break;
                 case "S-1-5-32-550":
-                    commonPrincipal = new WellKnownPrincipal("Print Operators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Print Operators", Label.Group);
                     break;
                 case "S-1-5-32-551":
-                    commonPrincipal = new WellKnownPrincipal("Backup Operators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Backup Operators", Label.Group);
                     break;
                 case "S-1-5-32-552":
-                    commonPrincipal = new WellKnownPrincipal("Replicators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Replicators", Label.Group);
                     break;
                 case "S-1-5-32-554":
-                    commonPrincipal = new WellKnownPrincipal("Pre-Windows 2000 Compatible Access", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Pre-Windows 2000 Compatible Access", Label.Group);
                     break;
                 case "S-1-5-32-555":
-                    commonPrincipal = new WellKnownPrincipal("Remote Desktop Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Remote Desktop Label.Users", Label.Group);
                     break;
                 case "S-1-5-32-556":
-                    commonPrincipal = new WellKnownPrincipal("Network Configuration Operators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Network Configuration Operators", Label.Group);
                     break;
                 case "S-1-5-32-557":
-                    commonPrincipal = new WellKnownPrincipal("Incoming Forest Trust Builders", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Incoming Forest Trust Builders", Label.Group);
                     break;
                 case "S-1-5-32-558":
-                    commonPrincipal = new WellKnownPrincipal("Performance Monitor Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Performance Monitor Label.Users", Label.Group);
                     break;
                 case "S-1-5-32-559":
-                    commonPrincipal = new WellKnownPrincipal("Performance Log Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Performance Log Label.Users", Label.Group);
                     break;
                 case "S-1-5-32-560":
-                    commonPrincipal = new WellKnownPrincipal("Windows Authorization Access Label.Group", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Windows Authorization Access Label.Group", Label.Group);
                     break;
                 case "S-1-5-32-561":
-                    commonPrincipal = new WellKnownPrincipal("Terminal Server License Servers", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Terminal Server License Servers", Label.Group);
                     break;
                 case "S-1-5-32-562":
-                    commonPrincipal = new WellKnownPrincipal("Distributed COM Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Distributed COM Label.Users", Label.Group);
                     break;
                 case "S-1-5-32-568":
-                    commonPrincipal = new WellKnownPrincipal("IIS_IUSRS", Label.Group);
+                    commonPrincipal = new TypedPrincipal("IIS_IUSRS", Label.Group);
                     break;
                 case "S-1-5-32-569":
-                    commonPrincipal = new WellKnownPrincipal("Cryptographic Operators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Cryptographic Operators", Label.Group);
                     break;
                 case "S-1-5-32-573":
-                    commonPrincipal = new WellKnownPrincipal("Event Log Readers", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Event Log Readers", Label.Group);
                     break;
                 case "S-1-5-32-574":
-                    commonPrincipal = new WellKnownPrincipal("Certificate Service DCOM Access", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Certificate Service DCOM Access", Label.Group);
                     break;
                 case "S-1-5-32-575":
-                    commonPrincipal = new WellKnownPrincipal("RDS Remote Access Servers", Label.Group);
+                    commonPrincipal = new TypedPrincipal("RDS Remote Access Servers", Label.Group);
                     break;
                 case "S-1-5-32-576":
-                    commonPrincipal = new WellKnownPrincipal("RDS Endpoint Servers", Label.Group);
+                    commonPrincipal = new TypedPrincipal("RDS Endpoint Servers", Label.Group);
                     break;
                 case "S-1-5-32-577":
-                    commonPrincipal = new WellKnownPrincipal("RDS Management Servers", Label.Group);
+                    commonPrincipal = new TypedPrincipal("RDS Management Servers", Label.Group);
                     break;
                 case "S-1-5-32-578":
-                    commonPrincipal = new WellKnownPrincipal("Hyper-V Administrators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Hyper-V Administrators", Label.Group);
                     break;
                 case "S-1-5-32-579":
-                    commonPrincipal = new WellKnownPrincipal("Access Control Assistance Operators", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Access Control Assistance Operators", Label.Group);
                     break;
                 case "S-1-5-32-580":
-                    commonPrincipal = new WellKnownPrincipal("Remote Management Label.Users", Label.Group);
+                    commonPrincipal = new TypedPrincipal("Remote Management Label.Users", Label.Group);
                     break;
                 default:
                     commonPrincipal = null;

@@ -190,7 +190,7 @@ namespace CommonLib
             var objectId = entry.GetObjectIdentifier();
             
             if (objectId.StartsWith("S-1") && WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
-                return commonPrincipal.Type;
+                return commonPrincipal.ObjectType;
 
             var objectType = Label.Unknown;
             var samAccountType = entry.GetProperty("samaccounttype");
