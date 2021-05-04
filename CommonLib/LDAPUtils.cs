@@ -151,6 +151,95 @@ namespace CommonLib
             return null;
         }
 
+        
+        /// <summary>
+        /// Performs Attribute Ranged Retrieval
+        /// https://docs.microsoft.com/en-us/windows/win32/adsi/attribute-range-retrieval
+        /// The function self-determines the range and internally handles the maximum step allowed by the server
+        /// </summary>
+        /// <param name="distinguishedName"></param>
+        /// <param name="attributeName"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
+        {
+            var domainName = Helpers.DistinguishedNameToDomain(distinguishedName);
+            var task = Task.Run(() => Instance.CreateLDAPConnection(domainName));
+            
+            LdapConnection conn;
+
+            try
+            {
+                conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch
+            {
+                yield break;
+            }
+
+            if (conn == null)
+                yield break;
+
+            var index = 0;
+            var step = 0;
+            var baseString = $"{attributeName}";
+            //Example search string: member;range=0-1000
+            var currentRange = $"{baseString};range={index}-*";
+            var complete = false;
+
+            var searchRequest = Instance.CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] {currentRange},
+                distinguishedName);
+
+            if (searchRequest == null)
+                yield break;
+
+            while (true)
+            {
+                SearchResponse response;
+            
+                response = (SearchResponse) conn.SendRequest(searchRequest);
+
+                //If we ever get more than one response from here, something is horribly wrong
+                if (response?.Entries.Count == 0)
+                {
+                    var entry = response.Entries[0];
+                    //Process the attribute we get back to determine a few things
+                    foreach (string attr in entry.Attributes.AttributeNames)
+                    {
+                        //Set our current range to the name of the attribute, which will tell us how far we are in "paging"
+                        currentRange = attr;
+                        //Check if the string has the * character in it. If it does, we've reached the end of this search 
+                        complete = currentRange.IndexOf("*", 0, StringComparison.Ordinal) > 0;
+                        //Set our step to the number of attributes that came back.
+                        step = entry.Attributes[currentRange].Count;
+                    }
+
+                    foreach (string val in entry.Attributes[currentRange].GetValues(typeof(string)))
+                    {
+                        yield return val;
+                        index++;
+                    }
+                    
+                    if (complete) yield break;
+
+                    currentRange = $"{baseString};range={index}-{index + step}";
+                    searchRequest.Attributes.Clear();
+                    searchRequest.Attributes.Add(currentRange);
+                }
+                else
+                {
+                    //Something went wrong here.
+                    yield break;
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Takes a host in most applicable forms from AD and attempts to resolve it into a SID.
+        /// </summary>
+        /// <param name="hostname"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         public async Task<string> ResolveHostToSid(string hostname, string domain)
         {
             var strippedHost = Helpers.StripServicePrincipalName(hostname).ToUpper().TrimEnd('$');
@@ -399,9 +488,9 @@ namespace CommonLib
                 };
             }
 
-            var d = NormalizeDomainName(domain);
+            var d = await NormalizeDomainName(domain);
             var result = QueryLDAP($"(samaccountname={name})", SearchScope.Subtree, ResolutionProps,
-                domain).DefaultIfEmpty(null).FirstOrDefault();
+                d).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result == null)
                 return null;
@@ -493,9 +582,16 @@ namespace CommonLib
                 ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
                 : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
 
-            task.Wait();
-            var conn = task.Result;
-
+            LdapConnection conn;
+            try
+            {
+                conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch
+            {
+                yield break;
+            }
+            
             if (conn == null)
             {
                 Logging.Debug("LDAP connection is null");
