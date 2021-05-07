@@ -71,12 +71,9 @@
         <Compile Include="Enums\UAC.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="LDAPConfig.cs" />
-        <Compile Include="LDAPQueries\DomainFilter.cs" />
-        <Compile Include="LDAPQueries\FilterBase.cs" />
-        <Compile Include="LDAPQueries\ComputerFilter.cs" />
-        <Compile Include="LDAPQueries\InvalidFilterException.cs" />
-        <Compile Include="LDAPQueries\Query.cs" />
-        <Compile Include="LDAPQueries\UserFilter.cs" />
+        <Compile Include="LDAPQueries\CommonFilters.cs" />
+        <Compile Include="LDAPQueries\CommonProperties.cs" />
+        <Compile Include="LDAPQueries\LDAPFilter.cs" />
         <Compile Include="OutputTypes\ACE.cs" />
         <Compile Include="OutputTypes\Computer.cs" />
         <Compile Include="OutputTypes\Container.cs" />

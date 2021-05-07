@@ -2,62 +2,69 @@
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Linq;
-using System.Threading.Tasks;
+using CommonLib.LDAPQuery;
 
 namespace CommonLib.Output
 {
     public class ContainerProcessors
     {
-        public static async Task<OUContainerData> ReadOUContainerData(SearchResultEntry entry)
+        public static async IAsyncEnumerable<TypedPrincipal> GetContainerChildObjects(SearchResultEntry entry)
         {
-            var data = new OUContainerData();
-            var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
-
-            var opts = entry.GetProperty("gpoptions");
-            data.BlocksInheritance = opts is "1";
-
-            var gpLinkProp = entry.GetProperty("gplink");
-            var links = new List<GPLink>();
-            if (gpLinkProp != null)
+            var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
+            foreach (var childEntry in LDAPUtils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
+                CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(entry.DistinguishedName), adsPath: entry.DistinguishedName))
             {
-                foreach (var link in gpLinkProp.Split(']', '[').Where(x => x.StartsWith("LDAP")))
-                {
-                    var s = link.Split(';');
-                    var dn = s[0].Substring(s[0].IndexOf("CN=", StringComparison.OrdinalIgnoreCase));
-                    var status = s[1];
-                    
-                    // 1 and 3 represent Disabled, Not Enforced and Disabled, Enforced respectively.
-                    if (status is "3" or "1")
-                        continue;
+                var dn = childEntry.DistinguishedName.ToUpper();
+                
+                if (dn.Contains("CN=SYSTEM") || dn.Contains("CN=POLICIES") || dn.Contains("CN=PROGRAM DATA"))
+                    continue;
 
-                    var enforced = status.Equals("2");
+                var id = childEntry.GetObjectIdentifier();
+                if (id == null)
+                    continue;
 
-                    var res = await LDAPUtils.ResolveDistinguishedName(dn);
-                    
-                    if (res == null)
-                        continue;
-                    
-                    links.Add(new GPLink
-                    {
-                        GUID = res.ObjectIdentifier,
-                        IsEnforced = enforced
-                    });
-                }
-
-                data.Links = links.ToArray();
+                var res = LDAPUtils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(childEntry.DistinguishedName));
+                if (res == null)
+                    continue;
+                yield return res;
             }
-            else
+        }
+
+        public static async IAsyncEnumerable<GPLink> ReadContainerGPLinks(SearchResultEntry entry)
+        {
+            var gpLinkProp = entry.GetProperty("gplink");
+            if (gpLinkProp == null)
+                yield break;
+            
+            foreach (var link in gpLinkProp.Split(']', '[').Where(x => x.StartsWith("LDAP")))
             {
-                data.Links = new GPLink[0];
+                var s = link.Split(';');
+                var dn = s[0].Substring(s[0].IndexOf("CN=", StringComparison.OrdinalIgnoreCase));
+                var status = s[1];
+                    
+                // 1 and 3 represent Disabled, Not Enforced and Disabled, Enforced respectively.
+                if (status is "3" or "1")
+                    continue;
+
+                var enforced = status.Equals("2");
+
+                var res = await LDAPUtils.ResolveDistinguishedName(dn);
+                    
+                if (res == null)
+                    continue;
+
+                yield return new GPLink
+                {
+                    GUID = res.ObjectIdentifier,
+                    IsEnforced = enforced
+                };
             }
         }
         
-    }
-
-    public class OUContainerData
-    {
-        public bool BlocksInheritance { get; set; }
-        public TypedPrincipal[] ChildObjects { get; set; }
-        public GPLink[] Links { get; set; }
+        public static bool ReadBlocksInheritance(SearchResultEntry entry)
+        {
+            var opts = entry.GetProperty("gpoptions");
+            return opts is "1";
+        }
     }
 }

@@ -9,8 +9,8 @@ namespace CommonLib
 {
     public class Cache
     {
-        private readonly ConcurrentDictionary<string, string> _valueToSidCache;
-        private readonly ConcurrentDictionary<string, Label> _sidToTypeCache;
+        private readonly ConcurrentDictionary<string, string> _valueToIDCache;
+        private readonly ConcurrentDictionary<string, Label> _idToTypeCache;
         private readonly ConcurrentDictionary<string, string[]> _globalCatalogCache;
         private readonly ConcurrentDictionary<string, string> _machineSidCache;
         private readonly ConcurrentDictionary<string, string> _sidToDomainCache;
@@ -22,8 +22,8 @@ namespace CommonLib
         
         private Cache()
         {
-            _valueToSidCache = new ConcurrentDictionary<string, string>();
-            _sidToTypeCache = new ConcurrentDictionary<string, Label>();
+            _valueToIDCache = new ConcurrentDictionary<string, string>();
+            _idToTypeCache = new ConcurrentDictionary<string, Label>();
             _globalCatalogCache = new ConcurrentDictionary<string, string[]>();
             _machineSidCache = new ConcurrentDictionary<string, string>();
             _sidToDomainCache = new ConcurrentDictionary<string, string>();
@@ -55,17 +55,17 @@ namespace CommonLib
 
         internal static void AddConvertedValue(string key, string value)
         {
-            CacheInstance?._valueToSidCache.TryAdd(key, value);
+            CacheInstance?._valueToIDCache.TryAdd(key, value);
         }
 
         internal static void AddPrefixedValue(string key, string domain, string value)
         {
-            CacheInstance?._valueToSidCache.TryAdd(GetPrefixKey(key, domain), value);
+            CacheInstance?._valueToIDCache.TryAdd(GetPrefixKey(key, domain), value);
         }
 
         internal static void AddType(string key, Label value)
         {
-            CacheInstance?._sidToTypeCache.TryAdd(key, value);
+            CacheInstance?._idToTypeCache.TryAdd(key, value);
         }
 
         internal static void AddGCCache(string key, string[] value)
@@ -82,21 +82,21 @@ namespace CommonLib
 
         internal static bool GetConvertedValue(string key, out string value)
         {
-            if (CacheInstance != null) return CacheInstance._valueToSidCache.TryGetValue(key, out value);
+            if (CacheInstance != null) return CacheInstance._valueToIDCache.TryGetValue(key, out value);
             value = null;
             return false;
         }
         
         internal static bool GetPrefixedValue(string key, string domain, out string value)
         {
-            if (CacheInstance != null) return CacheInstance._valueToSidCache.TryGetValue(GetPrefixKey(key, domain), out value);
+            if (CacheInstance != null) return CacheInstance._valueToIDCache.TryGetValue(GetPrefixKey(key, domain), out value);
             value = null;
             return false;
         }
 
-        internal static bool GetSidType(string key, out Label value)
+        internal static bool GetIDType(string key, out Label value)
         {
-            if (CacheInstance != null) return CacheInstance._sidToTypeCache.TryGetValue(key, out value);
+            if (CacheInstance != null) return CacheInstance._idToTypeCache.TryGetValue(key, out value);
             value = Label.Unknown;
             return false;
 
@@ -127,7 +127,7 @@ namespace CommonLib
                 var json = new UTF8Encoding(true).GetString(bytes);
                 CacheInstance = JsonConvert.DeserializeObject<Cache>(json);
                 Logging.Log(
-                    $"Cache file loaded! Loaded {CacheInstance._sidToTypeCache.Count} SID to type mappings and {CacheInstance._valueToSidCache.Count} name to SID mappings.");
+                    $"Cache file loaded! Loaded {CacheInstance._idToTypeCache.Count} SID to type mappings and {CacheInstance._valueToIDCache.Count} name to SID mappings.");
             }
             catch (Exception e)
             {

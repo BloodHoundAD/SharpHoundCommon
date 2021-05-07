@@ -62,26 +62,30 @@ namespace CommonLib
             _ldapConfig = config;
         }
 
-        public static TypedPrincipal ResolveSidAndType(string sid, string domain)
+        public static TypedPrincipal ResolveIDAndType(string id, string domain)
         {
             //This is a duplicated SID object which is weird and makes things unhappy. Throw it out
-            if (sid.Contains("0ACNF"))
-                return new TypedPrincipal
-                {
-                    ObjectIdentifier = null,
-                    ObjectType = Label.Unknown
-                };
+            if (id.Contains("0ACNF"))
+                return null;
 
-            if (WellKnownPrincipal.GetWellKnownPrincipal(sid, domain, out var principal))
+            if (WellKnownPrincipal.GetWellKnownPrincipal(id, domain, out var principal))
                 return principal;
 
-            var type = LookupSidType(sid, domain);
-            return new TypedPrincipal(sid, type);
+            if (id.StartsWith("S-"))
+            {
+                var type = LookupSidType(id, domain);
+                return new TypedPrincipal(id, type);
+            }
+            else
+            {
+                var type = LookupGuidType(id, domain);
+                return new TypedPrincipal(id, type);
+            }
         }
 
         public static Label LookupSidType(string sid, string domain)
         {
-            if (Cache.GetSidType(sid, out var type))
+            if (Cache.GetIDType(sid, out var type))
                 return type;
             
             var hex = Helpers.ConvertSidToHexSid(sid);
@@ -94,6 +98,24 @@ namespace CommonLib
 
             type = result?.GetLabel() ?? Label.Unknown;
             Cache.AddType(sid, type);
+            return type;
+        }
+        
+        public static Label LookupGuidType(string guid, string domain)
+        {
+            if (Cache.GetIDType(guid, out var type))
+                return type;
+            
+            var hex = Helpers.ConvertSidToHexSid(guid);
+            if (hex == null)
+                return Label.Unknown;
+
+            var rDomain = GetDomainNameFromSid(guid) ?? domain;
+
+            var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, ResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
+
+            type = result?.GetLabel() ?? Label.Unknown;
+            Cache.AddType(guid, type);
             return type;
         }
 
@@ -484,7 +506,7 @@ namespace CommonLib
         /// <returns></returns>
         public static async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
         {
-            if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetSidType(id, out var type))
+            if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetIDType(id, out var type))
             {
                 return new TypedPrincipal
                 {
@@ -527,7 +549,7 @@ namespace CommonLib
         /// <returns>A <c>TypedPrincipal</c> object with the SID and Label</returns>
         public static async Task<TypedPrincipal> ResolveDistinguishedName(string dn)
         {
-            if (Cache.GetConvertedValue(dn, out var id) && Cache.GetSidType(id, out var type))
+            if (Cache.GetConvertedValue(dn, out var id) && Cache.GetIDType(id, out var type))
             {
                 return new TypedPrincipal
                 {

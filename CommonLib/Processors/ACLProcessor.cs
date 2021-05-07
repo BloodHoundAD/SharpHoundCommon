@@ -67,7 +67,7 @@ namespace CommonLib.Processors
 
             if (ownerSid != null)
             {
-                var resolvedOwner = LDAPUtils.ResolveSidAndType(ownerSid, objectDomain);
+                var resolvedOwner = LDAPUtils.ResolveIDAndType(ownerSid, objectDomain);
                 if (resolvedOwner != null)
                     yield return new ACE
                     {
@@ -95,7 +95,7 @@ namespace CommonLib.Processors
                 if (principalSid == null)
                     continue;
 
-                var resolvedPrincipal = LDAPUtils.ResolveSidAndType(principalSid, objectDomain);
+                var resolvedPrincipal = LDAPUtils.ResolveIDAndType(principalSid, objectDomain);
 
                 var aceRights = ace.ActiveDirectoryRights;
                 var aceType = ace.ObjectType.ToString();
@@ -270,7 +270,7 @@ namespace CommonLib.Processors
                 if (principalSid == null)
                     continue;
                 
-                var resolvedPrincipal = LDAPUtils.ResolveSidAndType(principalSid, objectDomain);
+                var resolvedPrincipal = LDAPUtils.ResolveIDAndType(principalSid, objectDomain);
                 
                 yield return new ACE
                 {

@@ -25,6 +25,22 @@ namespace CommonLib
             Logging.Log(sb.ToString());
         }
 
+        public static string LdapValue(this SecurityIdentifier s)
+        {
+            var bytes = new byte[s.BinaryLength];
+            s.GetBinaryForm(bytes, 0);
+            
+            var output = $"\\{BitConverter.ToString(bytes).Replace('-', '\\')}";
+            return output;
+        }
+
+        public static string LdapValue(this Guid s)
+        {
+            var bytes = s.ToByteArray();
+            var output = $"\\{BitConverter.ToString(bytes).Replace('-', '\\')}";
+            return output;
+        }
+
 
         #region SearchResultEntry
         /// <summary>

@@ -196,7 +196,7 @@ namespace CommonLib.Processors
                     continue;
                 }
 
-                var res = LDAPUtils.ResolveSidAndType(sSid, domain);
+                var res = LDAPUtils.ResolveIDAndType(sSid, domain);
 
                 sidHistoryPrincipals.Add(res);
             }
@@ -265,7 +265,7 @@ namespace CommonLib.Processors
                 sd.SetSecurityDescriptorBinaryForm(rawAllowedToAct, AccessControlSections.Access);
                 foreach (ActiveDirectoryAccessRule rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
                 {
-                    var res = LDAPUtils.ResolveSidAndType(rule.IdentityReference.Value, domain);
+                    var res = LDAPUtils.ResolveIDAndType(rule.IdentityReference.Value, domain);
                     allowedToActPrincipals.Add(res);
                 }
             }
@@ -304,7 +304,7 @@ namespace CommonLib.Processors
                     continue;
                 }
 
-                var res = LDAPUtils.ResolveSidAndType(sSid, domain);
+                var res = LDAPUtils.ResolveIDAndType(sSid, domain);
 
                 sidHistoryPrincipals.Add(res);
             }
