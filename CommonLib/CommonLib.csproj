@@ -71,6 +71,12 @@
         <Compile Include="Enums\UAC.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="LDAPConfig.cs" />
+        <Compile Include="LDAPQueries\DomainFilter.cs" />
+        <Compile Include="LDAPQueries\FilterBase.cs" />
+        <Compile Include="LDAPQueries\ComputerFilter.cs" />
+        <Compile Include="LDAPQueries\InvalidFilterException.cs" />
+        <Compile Include="LDAPQueries\Query.cs" />
+        <Compile Include="LDAPQueries\UserFilter.cs" />
         <Compile Include="OutputTypes\ACE.cs" />
         <Compile Include="OutputTypes\Computer.cs" />
         <Compile Include="OutputTypes\Container.cs" />
@@ -90,6 +96,7 @@
         <Compile Include="Logging.cs" />
         <Compile Include="NativeMethods.cs" />
         <Compile Include="Processors\ACLProcessor.cs" />
+        <Compile Include="Processors\ContainerProcessors.cs" />
         <Compile Include="Processors\GroupProcessors.cs" />
         <Compile Include="Processors\LDAPPropertyProcessor.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,6 +105,9 @@
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Exceptions" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -25,7 +25,7 @@ namespace CommonLib
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
 
-        private readonly string[] ResolutionProps = { "distinguishedname", "samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership" };
+        private static readonly string[] ResolutionProps = { "distinguishedname", "samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership" };
         
         // The following byte stream contains the necessary message to request a NetBios name from a machine
         // http://web.archive.org/web/20100409111218/http://msdn.microsoft.com/en-us/library/system.net.sockets.socket.aspx
@@ -41,23 +41,28 @@ namespace CommonLib
         };
         
         private const string NULL_CACHE_KEY = "UNIQUENULL";
-        private readonly LDAPConfig _ldapConfig;
+        private LDAPConfig _ldapConfig;
 
-        private static LDAPUtils _instance;
+        private static LDAPUtils _instance = new LDAPUtils();
 
-        public static void CreateInstance(LDAPConfig config)
+        public static void UpdateLDAPConfig(LDAPConfig config)
         {
-            _instance = new LDAPUtils(config);
+            _instance.SetLDAPConfig(config);
         }
 
         public static LDAPUtils Instance => _instance;
+        
+        private LDAPUtils()
+        {
+            _ldapConfig = new LDAPConfig();
+        }
 
-        private LDAPUtils(LDAPConfig config)
+        private void SetLDAPConfig(LDAPConfig config)
         {
             _ldapConfig = config;
         }
 
-        public TypedPrincipal ResolveSidAndType(string sid, string domain)
+        public static TypedPrincipal ResolveSidAndType(string sid, string domain)
         {
             //This is a duplicated SID object which is weird and makes things unhappy. Throw it out
             if (sid.Contains("0ACNF"))
@@ -74,7 +79,7 @@ namespace CommonLib
             return new TypedPrincipal(sid, type);
         }
 
-        public Label LookupSidType(string sid, string domain)
+        public static Label LookupSidType(string sid, string domain)
         {
             if (Cache.GetSidType(sid, out var type))
                 return type;
@@ -92,7 +97,7 @@ namespace CommonLib
             return type;
         }
 
-        public string GetDomainNameFromSid(string sid)
+        public static string GetDomainNameFromSid(string sid)
         {
             try
             {
@@ -118,7 +123,7 @@ namespace CommonLib
             }
         }
         
-        private string GetDomainNameFromSidLdap(string sid)
+        private static string GetDomainNameFromSidLdap(string sid)
         {
             var hexSid = Helpers.ConvertSidToHexSid(sid);
 
@@ -163,7 +168,7 @@ namespace CommonLib
         public static IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
         {
             var domainName = Helpers.DistinguishedNameToDomain(distinguishedName);
-            var task = Task.Run(() => Instance.CreateLDAPConnection(domainName));
+            var task = Task.Run(() => CreateLDAPConnection(domainName));
             
             LdapConnection conn;
 
@@ -186,7 +191,7 @@ namespace CommonLib
             var currentRange = $"{baseString};range={index}-*";
             var complete = false;
 
-            var searchRequest = Instance.CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] {currentRange},
+            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] {currentRange},
                 distinguishedName);
 
             if (searchRequest == null)
@@ -240,11 +245,11 @@ namespace CommonLib
         /// <param name="hostname"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public async Task<string> ResolveHostToSid(string hostname, string domain)
+        public static async Task<string> ResolveHostToSid(string hostname, string domain)
         {
             var strippedHost = Helpers.StripServicePrincipalName(hostname).ToUpper().TrimEnd('$');
 
-            if (_hostResolutionMap.TryGetValue(strippedHost, out var sid))
+            if (Instance._hostResolutionMap.TryGetValue(strippedHost, out var sid))
             {
                 return sid;
             }
@@ -277,7 +282,7 @@ namespace CommonLib
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
-                    _hostResolutionMap.TryAdd(strippedHost, sid);
+                    Instance._hostResolutionMap.TryAdd(strippedHost, sid);
                     return sid;
                 }
             }
@@ -301,7 +306,7 @@ namespace CommonLib
                     var principal = await ResolveAccountName(tempName, tempDomain);
                     if (principal != null)
                     {
-                        _hostResolutionMap.TryAdd(strippedHost, sid);
+                        Instance._hostResolutionMap.TryAdd(strippedHost, sid);
                         return sid;
                     }
                 }
@@ -318,7 +323,7 @@ namespace CommonLib
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
-                    _hostResolutionMap.TryAdd(strippedHost, sid);
+                    Instance._hostResolutionMap.TryAdd(strippedHost, sid);
                     return sid;
                 }
             }
@@ -344,7 +349,7 @@ namespace CommonLib
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
-                    _hostResolutionMap.TryAdd(strippedHost, sid);
+                    Instance._hostResolutionMap.TryAdd(strippedHost, sid);
                     return sid;
                 }
             }
@@ -355,12 +360,12 @@ namespace CommonLib
 
             if (tempName.Contains("."))
             {
-                _hostResolutionMap.TryAdd(strippedHost, tempName);
+                Instance._hostResolutionMap.TryAdd(strippedHost, tempName);
                 return tempName;
             }
             
             tempName = $"{tempName}.{tempDomain}";
-            _hostResolutionMap.TryAdd(strippedHost, tempName);
+            Instance._hostResolutionMap.TryAdd(strippedHost, tempName);
             return tempName;
         }
         
@@ -477,7 +482,7 @@ namespace CommonLib
         /// <param name="name"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
+        public static async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
         {
             if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetSidType(id, out var type))
             {
@@ -520,7 +525,7 @@ namespace CommonLib
         /// </summary>
         /// <param name="dn">DistinguishedName</param>
         /// <returns>A <c>TypedPrincipal</c> object with the SID and Label</returns>
-        public async Task<TypedPrincipal> ResolveDistinguishedName(string dn)
+        public static async Task<TypedPrincipal> ResolveDistinguishedName(string dn)
         {
             if (Cache.GetConvertedValue(dn, out var id) && Cache.GetSidType(id, out var type))
             {
@@ -574,7 +579,7 @@ namespace CommonLib
         /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
         /// <param name="skipCache">Skip the connection cache and force a new connection. You must dispose of this connection yourself.</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
-        public IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+        public static IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
             Logging.Debug("Creating ldap connection");
@@ -658,7 +663,7 @@ namespace CommonLib
         /// <param name="adsPath">ADS path to limit the query too</param>
         /// <param name="showDeleted">Include deleted objects in results</param>
         /// <returns>A built SearchRequest</returns>
-        private SearchRequest CreateSearchRequest(string filter, SearchScope scope, string[] attributes,
+        private static SearchRequest CreateSearchRequest(string filter, SearchScope scope, string[] attributes,
             string domainName = null, string adsPath = null, bool showDeleted = false)
         {
             var domain = GetDomain(domainName);
@@ -681,7 +686,7 @@ namespace CommonLib
         /// </summary>
         /// <param name="domainName">Domain to connect too</param>
         /// <returns>A connected LdapConnection or null</returns>
-        private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null)
+        private static async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null)
         {
             var domain = GetDomain(domainName);
             if (domain == null)
@@ -691,24 +696,24 @@ namespace CommonLib
             }
             
             string targetServer;
-            if (_ldapConfig.Server != null) targetServer = _ldapConfig.Server;
+            if (Instance._ldapConfig.Server != null) targetServer = Instance._ldapConfig.Server;
             else
             {
-                if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
+                if (!Instance._domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
             
             if (targetServer == null)
                 return null;
 
-            if (_globalCatalogConnections.TryGetValue(targetServer, out var connection))
+            if (Instance._globalCatalogConnections.TryGetValue(targetServer, out var connection))
                 return connection;
 
             connection = new LdapConnection(new LdapDirectoryIdentifier(targetServer, 3268));
             
             connection.SessionOptions.ProtocolVersion = 3;
 
-            if (_ldapConfig.DisableSigning)
+            if (Instance._ldapConfig.DisableSigning)
             {
                 connection.SessionOptions.Sealing = false;
                 connection.SessionOptions.Signing = false;
@@ -717,7 +722,7 @@ namespace CommonLib
             //Force kerberos auth
             connection.AuthType = AuthType.Kerberos;
 
-            _globalCatalogConnections.TryAdd(targetServer, connection);
+            Instance._globalCatalogConnections.TryAdd(targetServer, connection);
             return connection;
         }
 
@@ -727,7 +732,7 @@ namespace CommonLib
         /// <param name="domainName">The domain to connect too</param>
         /// <param name="skipCache">Skip the connection cache</param>
         /// <returns>A connected LDAP connection or null</returns>
-        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false)
+        private static async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false)
         {
             var domain = GetDomain(domainName);
             if (domain == null)
@@ -737,10 +742,10 @@ namespace CommonLib
             }
 
             string targetServer;
-            if (_ldapConfig.Server != null) targetServer = _ldapConfig.Server;
+            if (Instance._ldapConfig.Server != null) targetServer = Instance._ldapConfig.Server;
             else
             {
-                if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
+                if (!Instance._domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
             
@@ -748,15 +753,15 @@ namespace CommonLib
                 return null;
             
             if (!skipCache)
-                if (_ldapConnections.TryGetValue(targetServer, out var conn))
+                if (Instance._ldapConnections.TryGetValue(targetServer, out var conn))
                     return conn;
 
-            var port = _ldapConfig.GetPort();
+            var port = Instance._ldapConfig.GetPort();
             var ident = new LdapDirectoryIdentifier(targetServer, port, false, false);
             var connection = new LdapConnection(ident) {Timeout = new TimeSpan(0, 0, 5, 0)};
-            if (_ldapConfig.Username != null)
+            if (Instance._ldapConfig.Username != null)
             {
-                var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password, domain.Name);
+                var cred = new NetworkCredential(Instance._ldapConfig.Username, Instance._ldapConfig.Password, domain.Name);
                 connection.Credential = cred;
             }
 
@@ -764,29 +769,29 @@ namespace CommonLib
             connection.SessionOptions.ProtocolVersion = 3;
             connection.SessionOptions.ReferralChasing = ReferralChasingOptions.None;
 
-            if (_ldapConfig.DisableSigning)
+            if (Instance._ldapConfig.DisableSigning)
             {
                 connection.SessionOptions.Sealing = false;
                 connection.SessionOptions.Signing = false;
             }
 
-            if (_ldapConfig.SSL)
+            if (Instance._ldapConfig.SSL)
                 connection.SessionOptions.SecureSocketLayer = true;
 
             //Force kerberos auth
             connection.AuthType = AuthType.Kerberos;
 
             if (!skipCache)
-                _ldapConnections.TryAdd(targetServer, connection);
+                Instance._ldapConnections.TryAdd(targetServer, connection);
 
             return connection;
         }
 
-        internal Forest GetForest(string domainName = null)
+        internal static Forest GetForest(string domainName = null)
         {
             try
             {
-                if (domainName == null && _ldapConfig.Username == null)
+                if (domainName == null && Instance._ldapConfig.Username == null)
                     return Forest.GetCurrentForest();
 
                 var domain = GetDomain(domainName);
@@ -799,10 +804,10 @@ namespace CommonLib
             
         }
 
-        internal Domain GetDomain(string domainName = null)
+        internal static Domain GetDomain(string domainName = null)
         {
             var cacheKey = domainName ?? NULL_CACHE_KEY;
-            if (_domainCache.TryGetValue(cacheKey, out var domain))
+            if (Instance._domainCache.TryGetValue(cacheKey, out var domain))
             {
                 return domain;
             }
@@ -810,13 +815,13 @@ namespace CommonLib
             try
             {
                 DirectoryContext context;
-                if (_ldapConfig.Username != null)
+                if (Instance._ldapConfig.Username != null)
                 {
                     context = domainName != null
-                        ? new DirectoryContext(DirectoryContextType.Domain, domainName, _ldapConfig.Username,
-                            _ldapConfig.Password)
-                        : new DirectoryContext(DirectoryContextType.Domain, _ldapConfig.Username,
-                            _ldapConfig.Password);
+                        ? new DirectoryContext(DirectoryContextType.Domain, domainName, Instance._ldapConfig.Username,
+                            Instance._ldapConfig.Password)
+                        : new DirectoryContext(DirectoryContextType.Domain, Instance._ldapConfig.Username,
+                            Instance._ldapConfig.Password);
                 }
                 else
                 {
@@ -832,17 +837,17 @@ namespace CommonLib
                 domain = null;
             }
 
-            _domainCache.TryAdd(cacheKey, domain);
+            Instance._domainCache.TryAdd(cacheKey, domain);
             return domain;
         }
         
-        private async Task<string> GetUsableDomainController(Domain domain, bool gc = false)
+        private static async Task<string> GetUsableDomainController(Domain domain, bool gc = false)
         {
-            var port = gc ? 3268 : _ldapConfig.GetPort();
+            var port = gc ? 3268 : Instance._ldapConfig.GetPort();
             var pdc = domain.PdcRoleOwner.Name;
             if (await Helpers.CheckPort(pdc, port))
             {
-                _domainControllerCache.TryAdd(domain.Name, pdc);
+                Instance._domainControllerCache.TryAdd(domain.Name, pdc);
                 Logging.Debug($"Found usable Domain Controller for {domain.Name} : {pdc}");
                 return pdc;
             }
@@ -853,12 +858,12 @@ namespace CommonLib
                 var name = domainController.Name;
                 if (!await Helpers.CheckPort(name, port)) continue;
                 Logging.Debug($"Found usable Domain Controller for {domain.Name} : {name}");
-                _domainControllerCache.TryAdd(domain.Name, name);
+                Instance._domainControllerCache.TryAdd(domain.Name, name);
                 return name;
             }
 
             //If we get here, somehow we didn't get any usable DCs. Save it off as null
-            _domainControllerCache.TryAdd(domain.Name, null);
+            Instance._domainControllerCache.TryAdd(domain.Name, null);
             Logging.Debug($"Unable to find usable domain controller for {domain.Name}");
             return null;
         }
@@ -868,7 +873,7 @@ namespace CommonLib
         /// </summary>
         /// <param name="domain"></param>
         /// <returns></returns>
-        internal async Task<string> NormalizeDomainName(string domain)
+        internal static async Task<string> NormalizeDomainName(string domain)
         {
             var resolved = domain;
 
@@ -885,17 +890,17 @@ namespace CommonLib
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
-        internal async Task<string> ResolveDomainNetbiosToDns(string domainName)
+        internal static async Task<string> ResolveDomainNetbiosToDns(string domainName)
         {
             var key = domainName.ToUpper();
-            if (_netbiosCache.TryGetValue(key, out var flatName))
+            if (Instance._netbiosCache.TryGetValue(key, out var flatName))
                 return flatName;
 
             var domain = GetDomain(domainName);
             if (domain == null)
                 return domainName.ToUpper();
             
-            var computerName = _ldapConfig.Server ?? await GetUsableDomainController(domain);
+            var computerName = Instance._ldapConfig.Server ?? await GetUsableDomainController(domain);
 
             var result = DsGetDcName(computerName, domainName, null, null,
                 (uint)(DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME),
@@ -915,7 +920,7 @@ namespace CommonLib
                     NetApiBufferFree(pDomainControllerInfo);
             }
 
-            _netbiosCache.TryAdd(key, flatName);
+            Instance._netbiosCache.TryAdd(key, flatName);
             return flatName;
         }
         

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Sockets;
 using System.Security.Principal;
 using System.Text;
@@ -119,7 +120,7 @@ namespace CommonLib
         /// </summary>
         /// <param name="ldapTime"></param>
         /// <returns></returns>
-        public static long ConvertToUnixEpoch(string ldapTime)
+        public static long ConvertFileTimeToUnixEpoch(string ldapTime)
         {
             if (ldapTime == null)
                 return -1;
@@ -140,6 +141,17 @@ namespace CommonLib
             }
 
             return toReturn;
+        }
+        
+        /// <summary>
+        /// Converts a windows file time to unix epoch time
+        /// </summary>
+        /// <param name="ldapTime"></param>
+        /// <returns></returns>
+        public static long ConvertTimestampToUnixEpoch(string ldapTime)
+        {
+            var dt = DateTime.ParseExact(ldapTime, "yyyyMMddHHmmss.0K", CultureInfo.CurrentCulture);
+            return (long) dt.Subtract(EpochDiff).TotalSeconds;
         }
     }
 }

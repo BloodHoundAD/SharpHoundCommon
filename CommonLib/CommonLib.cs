@@ -7,7 +7,7 @@ namespace CommonLib
     {
         public static void InitializeCommonLib(LDAPConfig config, ILogger log = null, string cachePath = null)
         {
-            LDAPUtils.CreateInstance(config);
+            LDAPUtils.UpdateLDAPConfig(config);
             if (log != null)
                 Logging.ConfigureLogging(log);
             

@@ -31,15 +31,17 @@ namespace CommonLib.Processors
             };
         }
 
+        /// <summary>
+        /// Builds a mapping of GUID -> Name for LDAP rights. Used for rights that are created using an extended schema such as LAPS
+        /// </summary>
         internal static void BuildGUIDCache()
         {
-            var instance = LDAPUtils.Instance; 
-            var forest = instance.GetForest();
+            var forest = LDAPUtils.GetForest();
             if (forest == null)
                 return;
 
             var schema = forest.Schema.Name;
-            foreach (var entry in instance.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
+            foreach (var entry in LDAPUtils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
                 new[] {"schemaidguid", "name"}, adsPath: schema))
             {
                 var name = entry.GetProperty("name")?.ToLower();
@@ -48,18 +50,24 @@ namespace CommonLib.Processors
             }
         }
 
-        public static IEnumerable<ACE> ProcessNTSecurityDescriptor(SearchResultEntry entry, string objectDomain, Label objectType)
+        /// <summary>
+        /// Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that BloodHound is not interested in
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="objectDomain"></param>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
+        public static IEnumerable<ACE> ProcessACL(SearchResultEntry entry, string objectDomain, Label objectType)
         {
             var ntSecurityDescriptor = entry.GetPropertyAsBytes("ntsecuritydescriptor");
             var descriptor = new ActiveDirectorySecurity();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
-            var instance = LDAPUtils.Instance;
 
             var ownerSid = PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)).Value);
 
             if (ownerSid != null)
             {
-                var resolvedOwner = instance.ResolveSidAndType(ownerSid, objectDomain);
+                var resolvedOwner = LDAPUtils.ResolveSidAndType(ownerSid, objectDomain);
                 if (resolvedOwner != null)
                     yield return new ACE
                     {
@@ -87,7 +95,7 @@ namespace CommonLib.Processors
                 if (principalSid == null)
                     continue;
 
-                var resolvedPrincipal = instance.ResolveSidAndType(principalSid, objectDomain);
+                var resolvedPrincipal = LDAPUtils.ResolveSidAndType(principalSid, objectDomain);
 
                 var aceRights = ace.ActiveDirectoryRights;
                 var aceType = ace.ObjectType.ToString();
@@ -261,10 +269,8 @@ namespace CommonLib.Processors
                 
                 if (principalSid == null)
                     continue;
-
-                var instance = LDAPUtils.Instance;
-
-                var resolvedPrincipal = instance.ResolveSidAndType(principalSid, objectDomain);
+                
+                var resolvedPrincipal = LDAPUtils.ResolveSidAndType(principalSid, objectDomain);
                 
                 yield return new ACE
                 {
