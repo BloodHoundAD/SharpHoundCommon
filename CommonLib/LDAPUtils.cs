@@ -11,6 +11,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using CommonLib.Enums;
+using CommonLib.LDAPQuery;
 using CommonLib.Output;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
@@ -43,15 +44,13 @@ namespace CommonLib
         private const string NULL_CACHE_KEY = "UNIQUENULL";
         private LDAPConfig _ldapConfig;
 
-        private static LDAPUtils _instance = new LDAPUtils();
-
         public static void UpdateLDAPConfig(LDAPConfig config)
         {
-            _instance.SetLDAPConfig(config);
+            Instance.SetLDAPConfig(config);
         }
 
-        public static LDAPUtils Instance => _instance;
-        
+        public static LDAPUtils Instance { get; } = new();
+
         private LDAPUtils()
         {
             _ldapConfig = new LDAPConfig();
@@ -60,6 +59,18 @@ namespace CommonLib
         private void SetLDAPConfig(LDAPConfig config)
         {
             _ldapConfig = config;
+        }
+
+        public static string[] GetUserGlobalCatalogMatches(string name)
+        {
+            var tempName = name.ToLower();
+            if (Cache.GetGCCache(tempName, out var sids))
+                return sids;
+
+            var query = new LDAPFilter().AddUsers($"samaccountname={tempName}").GetFilter();
+            var results = QueryLDAP(query, SearchScope.Subtree, new[] {"objectsid"}, globalCatalog: true).Select(x => x.GetSid()).Where(x => x != null).ToArray();
+            Cache.AddGCCache(tempName, results);
+            return results;
         }
 
         public static TypedPrincipal ResolveIDAndType(string id, string domain)
@@ -476,7 +487,7 @@ namespace CommonLib
         /// </summary>
         /// <param name="hostname"></param>
         /// <returns></returns>
-        private static async Task<WorkstationInfo100?> CallNetWkstaGetInfo(string hostname)
+        private static async Task<NativeMethods.WorkstationInfo100?> CallNetWkstaGetInfo(string hostname)
         {
             if (!await Helpers.CheckPort(hostname))
                 return null;
@@ -484,17 +495,17 @@ namespace CommonLib
             var wkstaData = IntPtr.Zero;
             try
             {
-                var result = NetWkstaGetInfo(hostname, 100, out wkstaData);
+                var result = NativeMethods.NetWkstaGetInfo(hostname, 100, out wkstaData);
                 if (result != 0)
                     return null;
 
-                var wkstaInfo = Marshal.PtrToStructure<WorkstationInfo100>(wkstaData);
+                var wkstaInfo = Marshal.PtrToStructure<NativeMethods.WorkstationInfo100>(wkstaData);
                 return wkstaInfo;
             }
             finally
             {
                 if (wkstaData != IntPtr.Zero)
-                    NetApiBufferFree(wkstaData);
+                    NativeMethods.NetApiBufferFree(wkstaData);
             }
         }
         
@@ -924,109 +935,26 @@ namespace CommonLib
             
             var computerName = Instance._ldapConfig.Server ?? await GetUsableDomainController(domain);
 
-            var result = DsGetDcName(computerName, domainName, null, null,
-                (uint)(DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME),
+            var result = NativeMethods.DsGetDcName(computerName, domainName, null, null,
+                (uint)(NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME),
                 out var pDomainControllerInfo);
 
             try
             {
                 if (result == 0)
                 {
-                    var info = Marshal.PtrToStructure<DOMAIN_CONTROLLER_INFO>(pDomainControllerInfo);
+                    var info = Marshal.PtrToStructure<NativeMethods.DOMAIN_CONTROLLER_INFO>(pDomainControllerInfo);
                     flatName = info.DomainName;
                 }
             }
             finally
             {
                 if (pDomainControllerInfo != IntPtr.Zero)
-                    NetApiBufferFree(pDomainControllerInfo);
+                    NativeMethods.NetApiBufferFree(pDomainControllerInfo);
             }
 
             Instance._netbiosCache.TryAdd(key, flatName);
             return flatName;
         }
-        
-        
-        #region NetAPI PInvoke Calls
-        [DllImport("netapi32.dll", SetLastError = true)]
-        private static extern int NetWkstaGetInfo(
-            [MarshalAs(UnmanagedType.LPWStr)] string serverName,
-            uint level,
-            out IntPtr bufPtr);
-
-        private struct WorkstationInfo100
-        {
-
-            public int platform_id;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string computer_name;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string lan_group;
-            public int ver_major;
-            public int ver_minor;
-        }
-
-        [DllImport("Netapi32.dll", SetLastError = true)]
-        private static extern int NetApiBufferFree(IntPtr Buffer);
-        #endregion
-        
-        #region DSGetDcName Imports
-        [DllImport("Netapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern int DsGetDcName
-        (
-            [MarshalAs(UnmanagedType.LPTStr)]
-            string ComputerName,
-            [MarshalAs(UnmanagedType.LPTStr)]
-            string DomainName,
-            [In] GuidClass DomainGuid,
-            [MarshalAs(UnmanagedType.LPTStr)]
-            string SiteName,
-            uint Flags,
-            out IntPtr pDOMAIN_CONTROLLER_INFO
-        );
-
-        [StructLayout(LayoutKind.Sequential)]
-        public class GuidClass
-        {
-            public Guid TheGuid;
-        }
-
-        [Flags]
-        public enum DSGETDCNAME_FLAGS : uint
-        {
-            DS_FORCE_REDISCOVERY = 0x00000001,
-            DS_DIRECTORY_SERVICE_REQUIRED = 0x00000010,
-            DS_DIRECTORY_SERVICE_PREFERRED = 0x00000020,
-            DS_GC_SERVER_REQUIRED = 0x00000040,
-            DS_PDC_REQUIRED = 0x00000080,
-            DS_BACKGROUND_ONLY = 0x00000100,
-            DS_IP_REQUIRED = 0x00000200,
-            DS_KDC_REQUIRED = 0x00000400,
-            DS_TIMESERV_REQUIRED = 0x00000800,
-            DS_WRITABLE_REQUIRED = 0x00001000,
-            DS_GOOD_TIMESERV_PREFERRED = 0x00002000,
-            DS_AVOID_SELF = 0x00004000,
-            DS_ONLY_LDAP_NEEDED = 0x00008000,
-            DS_IS_FLAT_NAME = 0x00010000,
-            DS_IS_DNS_NAME = 0x00020000,
-            DS_RETURN_DNS_NAME = 0x40000000,
-            DS_RETURN_FLAT_NAME = 0x80000000
-        }
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        struct DOMAIN_CONTROLLER_INFO
-        {
-            [MarshalAs(UnmanagedType.LPTStr)] public string DomainControllerName;
-            [MarshalAs(UnmanagedType.LPTStr)] public string DomainControllerAddress;
-            public uint DomainControllerAddressType;
-            public Guid DomainGuid;
-            [MarshalAs(UnmanagedType.LPTStr)] public string DomainName;
-            [MarshalAs(UnmanagedType.LPTStr)] public string DnsForestName;
-            public uint Flags;
-            [MarshalAs(UnmanagedType.LPTStr)] public string DcSiteName;
-            [MarshalAs(UnmanagedType.LPTStr)] public string ClientSiteName;
-        }
-
-        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Sockets;
 using System.Security.Principal;
 using System.Text;
@@ -20,7 +21,26 @@ namespace CommonLib
         private static readonly Regex SPNRegex = new Regex(@".*\/.*", RegexOptions.Compiled);
         private static readonly DateTime EpochDiff = new DateTime(1970,1,1);
 
-        
+        public static IEnumerable<ParsedGPLink> SplitGPLinkProperty(string linkProp, bool filterDisabled = true)
+        {
+            foreach (var link in linkProp.Split(']', '[').Where(x => x.StartsWith("LDAP")))
+            {
+                var s = link.Split(';');
+                var dn = s[0].Substring(s[0].IndexOf("CN=", StringComparison.OrdinalIgnoreCase));
+                var status = s[1];
+
+                if (filterDisabled)
+                    // 1 and 3 represent Disabled, Not Enforced and Disabled, Enforced respectively.
+                    if (status is "3" or "1")
+                        continue;
+
+                yield return new ParsedGPLink
+                {
+                    Status = status,
+                    DistinguishedName = dn
+                };
+            }
+        }
         
         /// <summary>
         /// Attempts to convert a SamAccountType value to the appropriate type enum
@@ -153,5 +173,11 @@ namespace CommonLib
             var dt = DateTime.ParseExact(ldapTime, "yyyyMMddHHmmss.0K", CultureInfo.CurrentCulture);
             return (long) dt.Subtract(EpochDiff).TotalSeconds;
         }
+    }
+
+    public class ParsedGPLink
+    {
+        public string DistinguishedName { get; set; }
+        public string Status { get; set; }
     }
 }

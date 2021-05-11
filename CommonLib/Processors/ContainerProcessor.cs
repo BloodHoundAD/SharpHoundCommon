@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using System.Linq;
 using CommonLib.LDAPQuery;
 
 namespace CommonLib.Output
 {
-    public class ContainerProcessors
+    public class ContainerProcessor
     {
         public static async IAsyncEnumerable<TypedPrincipal> GetContainerChildObjects(SearchResultEntry entry)
         {
@@ -35,20 +33,12 @@ namespace CommonLib.Output
             var gpLinkProp = entry.GetProperty("gplink");
             if (gpLinkProp == null)
                 yield break;
-            
-            foreach (var link in gpLinkProp.Split(']', '[').Where(x => x.StartsWith("LDAP")))
+
+            foreach (var link in Helpers.SplitGPLinkProperty(gpLinkProp, true))
             {
-                var s = link.Split(';');
-                var dn = s[0].Substring(s[0].IndexOf("CN=", StringComparison.OrdinalIgnoreCase));
-                var status = s[1];
-                    
-                // 1 and 3 represent Disabled, Not Enforced and Disabled, Enforced respectively.
-                if (status is "3" or "1")
-                    continue;
+                var enforced = link.Status.Equals("2");
 
-                var enforced = status.Equals("2");
-
-                var res = await LDAPUtils.ResolveDistinguishedName(dn);
+                var res = await LDAPUtils.ResolveDistinguishedName(link.DistinguishedName);
                     
                 if (res == null)
                     continue;
