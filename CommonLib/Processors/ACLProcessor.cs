@@ -14,9 +14,8 @@ namespace CommonLib.Processors
     public static class ACLProcessor
     {
         private static readonly Dictionary<Type, string> BaseGuids;
-        private const string AllGuid = "00000000-0000-0000-0000-000000000000";
-        private static ConcurrentDictionary<string, string> _guidMap = new();
-
+        private static readonly ConcurrentDictionary<string, string> _guidMap = new();
+        
         static ACLProcessor()
         {
             //Create a dictionary with the base GUIDs of each object type
@@ -98,7 +97,8 @@ namespace CommonLib.Processors
                 var resolvedPrincipal = LDAPUtils.ResolveIDAndType(principalSid, objectDomain);
 
                 var aceRights = ace.ActiveDirectoryRights;
-                var aceType = ace.ObjectType.ToString();
+                //Lowercase this just in case. As far as I know it should always come back that way anyways, but better safe than sorry
+                var aceType = ace.ObjectType.ToString().ToLower();
                 var inherited = ace.IsInherited;
 
                 _guidMap.TryGetValue(aceType, out var mappedGuid);
@@ -113,7 +113,7 @@ namespace CommonLib.Processors
                 //GenericAll applies to every object
                 if (aceRights.HasFlag(ActiveDirectoryRights.GenericAll))
                 {
-                    if (aceType is AllGuid or "")
+                    if (aceType is ACEGuids.AllGuid or "")
                     {
                         bAce.AceType = "";
                         bAce.RightName = "GenericAll";
@@ -143,27 +143,27 @@ namespace CommonLib.Processors
                 {
                     if (objectType == Label.Domain)
                     {
-                        if (aceType == "1131f6aa-9c07-11d1-f79f-00c04fc2dcd2")
+                        if (aceType == ACEGuids.DSReplicationGetChanges)
                         {
                             bAce.RightName = "ExtendedRight";
                             bAce.AceType = "GetChanges";
                             yield return bAce;
-                        }else if (aceType == "1131f6ad-9c07-11d1-f79f-00c04fc2dcd2"){
+                        }else if (aceType == ACEGuids.DSReplicationGetChangesAll){
                             bAce.RightName = "ExtendedRight";
                             bAce.AceType = "GetChangesAll";
                             yield return bAce;
-                        }else if (aceType is AllGuid or "")
+                        }else if (aceType is ACEGuids.AllGuid or "")
                         {
                             bAce.RightName = "ExtendedRight";
                             bAce.AceType = "All";
                             yield return bAce;
                         }
                     }else if (objectType == Label.User){
-                        if (aceType == "00299570-246d-11d0-a768-00aa006e0529"){
+                        if (aceType == ACEGuids.UserForceChangePassword){
                             bAce.RightName = "ForceChangePassword";
                             bAce.AceType = "GetChangesAll";
                             yield return bAce;
-                        }else if (aceType is AllGuid or ""){
+                        }else if (aceType is ACEGuids.AllGuid or ""){
                             bAce.RightName = "ExtendedRight";
                             bAce.AceType = "All";
                             yield return bAce;
@@ -172,7 +172,7 @@ namespace CommonLib.Processors
                         //ReadLAPSPassword is only applicable if the computer actually has LAPS. Check the world readable property ms-mcs-admpwdexpirationtime
                         if (entry.GetProperty("ms-mcs-admpwdexpirationtime") != null)
                         {
-                            if (aceType is AllGuid or ""){
+                            if (aceType is ACEGuids.AllGuid or ""){
                                 bAce.RightName = "ExtendedRight";
                                 bAce.AceType = "All";
                                 yield return bAce;
@@ -192,7 +192,7 @@ namespace CommonLib.Processors
                 {
                     if (objectType is Label.User or Label.Group or Label.Computer or Label.GPO)
                     {
-                        if (aceType is AllGuid or "")
+                        if (aceType is ACEGuids.AllGuid or "")
                         {
                             bAce.RightName = "GenericWrite";
                             bAce.AceType = "";
@@ -200,12 +200,12 @@ namespace CommonLib.Processors
                         }
                     }
 
-                    if (objectType == Label.User && aceType == "f3a64788-5306-11d1-a9c5-0000f80367c1")
+                    if (objectType == Label.User && aceType == ACEGuids.WriteMember)
                     {
                         bAce.RightName = "WriteProperty";
                         bAce.AceType = "AddMember";
                         yield return bAce;
-                    }else if (objectType == Label.Computer && aceType == "3f78c3e5-f79a-46bd-a0b8-9d18116ddc79")
+                    }else if (objectType == Label.Computer && aceType == ACEGuids.WriteAllowedToAct)
                     {
                         bAce.RightName = "WriteProperty";
                         bAce.AceType = "AddAllowedToAct";
@@ -228,7 +228,7 @@ namespace CommonLib.Processors
 
             //The inheritedobjecttype needs to match the guid of the object type being enumerated or the guid for All
             var inheritedType = ace.InheritedObjectType.ToString();
-            isInherited = isInherited && (inheritedType == AllGuid || inheritedType == guid);
+            isInherited = isInherited && (inheritedType == ACEGuids.AllGuid || inheritedType == guid);
 
             //Special case for Exchange
             //If the ACE is not Inherited and is not an inherit-only ace, then it's set by exchange for reasons
