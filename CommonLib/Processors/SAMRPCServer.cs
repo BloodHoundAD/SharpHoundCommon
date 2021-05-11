@@ -4,11 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using Newtonsoft.Json;
+using System.Threading;
+using System.Threading.Tasks;
+using CommonLib.Output;
 
 namespace CommonLib
 {
-    public class RPCServer : IDisposable
+    public class SAMRPCServer : IDisposable
     {
         private readonly string _computerDomain;
         private readonly string _computerSAN;
@@ -23,6 +25,14 @@ namespace CommonLib
             "S-1-5-19", "S-1-5-20"
         };
 
+        private static readonly Lazy<byte[]> WellKnownSidBytes = new(() =>
+        {
+            var sid = new SecurityIdentifier("S-1-5-32");
+            var sidBytes = new byte[sid.BinaryLength];
+            sid.GetBinaryForm(sidBytes, 0);
+            return sidBytes;
+        }, LazyThreadSafetyMode.PublicationOnly);
+
         /// <summary>
         /// Creates an instance of an RPCServer which is used for making SharpHound specific API calls for computers
         /// </summary>
@@ -31,15 +41,12 @@ namespace CommonLib
         /// <param name="samAccountName">The samaccountname of the computer</param>
         /// <param name="computerSid">The security identifier for the computer</param>
         /// <exception cref="APIException">An exception if the an API fails to connect initially. Generally indicates the server is unavailable or permissions aren't available.</exception>
-        internal RPCServer(string name, string domain, string samAccountName, string computerSid)
+        public SAMRPCServer(string name, string domain, string samAccountName, string computerSid)
         {
             _computerDomain = domain;
             _computerSAN = samAccountName;
             _computerSID = computerSid;
-            var sid = new SecurityIdentifier("S-1-5-32");
-            var sidBytes = new byte[sid.BinaryLength];
-            sid.GetBinaryForm(sidBytes, 0);
-
+            
             var us = new NativeMethods.UNICODE_STRING(name);
             //Every API call we make relies on both SamConnect and SamOpenDomain
             //Make these calls immediately and save the handles. If either fails, nothing else is going to work
@@ -55,7 +62,7 @@ namespace CommonLib
                 };
             }
             
-            status = SamOpenDomain(_serverHandle, DomainAccessMask.Lookup, sidBytes, out _domainHandle);
+            status = SamOpenDomain(_serverHandle, DomainAccessMask.Lookup, WellKnownSidBytes.Value, out _domainHandle);
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
                 throw new APIException
@@ -66,9 +73,9 @@ namespace CommonLib
             }
         }
 
-        internal LocalGroupResult GetGroupMembers(LocalGroupRids rid)
+        public async Task<LocalGroupAPIResult> GetLocalGroupMembers(LocalGroupRids rid)
         {
-            var result = new LocalGroupResult();
+            var result = new LocalGroupAPIResult();
 
             var status = SamOpenAlias(_domainHandle, AliasOpenFlags.ListMembers, (int) rid, out var aliasHandle);
             if (status != NativeMethods.NtStatus.StatusSuccess)
@@ -103,8 +110,8 @@ namespace CommonLib
             {
                 try
                 {
-                    var intptr = Marshal.ReadIntPtr(members, Marshal.SizeOf(typeof(IntPtr)) * i);
-                    var sid = new SecurityIdentifier(intptr).Value;
+                    var raw = Marshal.ReadIntPtr(members, Marshal.SizeOf(typeof(IntPtr)) * i);
+                    var sid = new SecurityIdentifier(raw).Value;
                     sids.Add(sid);
                 }
                 catch (Exception e)
@@ -131,13 +138,13 @@ namespace CommonLib
                     return null;
                 }
 
-                x = WellKnownPrincipal.TryConvert(x, _computerDomain);
+                var res = LDAPUtils.ResolveIDAndType(x, LDAPUtils.GetDomainNameFromSid(x));
 
-                return x.StartsWith("S-1-5-21") ? x : null;
+                return res;
             }).Where(x => x != null);
 
             result.Collected = true;
-            result.Members = converted.ToArray();
+            result.Results = converted.ToArray();
 
             return result;
         }
@@ -252,7 +259,7 @@ namespace CommonLib
             }
         }
         
-        internal enum LocalGroupRids
+        public enum LocalGroupRids
         {
             Administrators = 544,
             RemoteDesktopUsers = 555,
@@ -405,16 +412,6 @@ namespace CommonLib
         }
     }
 
-    internal class LocalGroupResult
-    {
-        [JsonProperty(PropertyName = "collected")]
-        internal bool Collected { get; set; } = false;
-        [JsonProperty(PropertyName = "failure")]
-        internal string FailureReason { get; set; } = null;
-        [JsonProperty(PropertyName = "members")]
-        internal string[] Members { get; set; } = new string[0];
-    }
-        
     internal enum LocalGroupRids
     {
         Administrators = 544,

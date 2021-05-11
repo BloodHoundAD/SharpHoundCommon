@@ -232,7 +232,6 @@ namespace CommonLib
 
             return objectType;
         }
-
         #endregion
     }
 }

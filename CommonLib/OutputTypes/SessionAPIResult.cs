@@ -1,0 +1,10 @@
+﻿using Newtonsoft.Json;
+
+namespace CommonLib.Output
+{
+    public class SessionAPIResult : APIResult
+    {
+        [JsonProperty(PropertyName = "sessions")]
+        internal Session[] Results { get; set; } = new Session[0];
+    }
+}

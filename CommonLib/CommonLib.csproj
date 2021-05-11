@@ -74,8 +74,11 @@
         <Compile Include="LDAPQueries\CommonFilters.cs" />
         <Compile Include="LDAPQueries\CommonProperties.cs" />
         <Compile Include="LDAPQueries\LDAPFilter.cs" />
+        <Compile Include="LDAPQueries\SPNProcessors.cs" />
         <Compile Include="OutputTypes\ACE.cs" />
+        <Compile Include="OutputTypes\APIResult.cs" />
         <Compile Include="OutputTypes\Computer.cs" />
+        <Compile Include="OutputTypes\LocalGroupAPIResult.cs" />
         <Compile Include="OutputTypes\Container.cs" />
         <Compile Include="OutputTypes\Domain.cs" />
         <Compile Include="OutputTypes\GPLink.cs" />
@@ -85,6 +88,7 @@
         <Compile Include="OutputTypes\OutputBase.cs" />
         <Compile Include="OutputTypes\DomainTrust.cs" />
         <Compile Include="OutputTypes\Session.cs" />
+        <Compile Include="OutputTypes\SessionAPIResult.cs" />
         <Compile Include="OutputTypes\SPNTarget.cs" />
         <Compile Include="OutputTypes\TypedPrincipal.cs" />
         <Compile Include="OutputTypes\User.cs" />
@@ -92,19 +96,19 @@
         <Compile Include="Helpers.cs" />
         <Compile Include="Logging.cs" />
         <Compile Include="NativeMethods.cs" />
+        <Compile Include="Processors\ACEGuids.cs" />
         <Compile Include="Processors\ACLProcessor.cs" />
-        <Compile Include="Processors\ContainerProcessors.cs" />
+        <Compile Include="Processors\ComputerSessionProcessor.cs" />
+        <Compile Include="Processors\ContainerProcessor.cs" />
+        <Compile Include="Processors\GPOLocalGroupProcessor.cs" />
         <Compile Include="Processors\GroupProcessors.cs" />
         <Compile Include="Processors\LDAPPropertyProcessor.cs" />
+        <Compile Include="Processors\SAMRPCServer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="RPCServer.cs" />
         <Compile Include="WellKnownPrincipal.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Exceptions" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
