@@ -4,6 +4,8 @@ using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using CommonLib.Enums;
 
 namespace CommonLib
@@ -39,6 +41,16 @@ namespace CommonLib
             var bytes = s.ToByteArray();
             var output = $"\\{BitConverter.ToString(bytes).Replace('-', '\\')}";
             return output;
+        }
+        
+        public static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items,
+            CancellationToken cancellationToken = default)
+        {
+            var results = new List<T>();
+            await foreach (var item in items.WithCancellation(cancellationToken)
+                .ConfigureAwait(false))
+                results.Add(item);
+            return results;
         }
 
 

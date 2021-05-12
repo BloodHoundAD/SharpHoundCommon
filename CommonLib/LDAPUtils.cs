@@ -26,8 +26,6 @@ namespace CommonLib
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
 
-        private static readonly string[] ResolutionProps = { "distinguishedname", "samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership" };
-        
         // The following byte stream contains the necessary message to request a NetBios name from a machine
         // http://web.archive.org/web/20100409111218/http://msdn.microsoft.com/en-us/library/system.net.sockets.socket.aspx
         private static readonly byte[] NameRequest =
@@ -105,7 +103,7 @@ namespace CommonLib
 
             var rDomain = GetDomainNameFromSid(sid) ?? domain;
 
-            var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, ResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
+            var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
 
             type = result?.GetLabel() ?? Label.Unknown;
             Cache.AddType(sid, type);
@@ -123,7 +121,7 @@ namespace CommonLib
 
             var rDomain = GetDomainNameFromSid(guid) ?? domain;
 
-            var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, ResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
+            var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
 
             type = result?.GetLabel() ?? Label.Unknown;
             Cache.AddType(guid, type);
@@ -527,7 +525,7 @@ namespace CommonLib
             }
 
             var d = await NormalizeDomainName(domain);
-            var result = QueryLDAP($"(samaccountname={name})", SearchScope.Subtree, ResolutionProps,
+            var result = QueryLDAP($"(samaccountname={name})", SearchScope.Subtree, CommonProperties.TypeResolutionProps,
                 d).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result == null)
@@ -570,7 +568,7 @@ namespace CommonLib
             }
 
             var domain = Helpers.DistinguishedNameToDomain(dn);
-            var result = QueryLDAP("(objectclass=*)", SearchScope.Base, ResolutionProps, domainName: domain, adsPath: dn)
+            var result = QueryLDAP("(objectclass=*)", SearchScope.Base, CommonProperties.TypeResolutionProps, domainName: domain, adsPath: dn)
                     .DefaultIfEmpty(null).FirstOrDefault();
 
             if (result == null)

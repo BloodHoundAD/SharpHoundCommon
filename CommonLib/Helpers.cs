@@ -23,7 +23,7 @@ namespace CommonLib
 
         public static IEnumerable<ParsedGPLink> SplitGPLinkProperty(string linkProp, bool filterDisabled = true)
         {
-            foreach (var link in linkProp.Split(']', '[').Where(x => x.StartsWith("LDAP")))
+            foreach (var link in linkProp.Split(']', '[').Where(x => x.StartsWith("LDAP", StringComparison.OrdinalIgnoreCase)))
             {
                 var s = link.Split(';');
                 var dn = s[0].Substring(s[0].IndexOf("CN=", StringComparison.OrdinalIgnoreCase));

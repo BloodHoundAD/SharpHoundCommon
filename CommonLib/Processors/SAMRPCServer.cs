@@ -258,14 +258,6 @@ namespace CommonLib
                 _serverHandle = IntPtr.Zero;
             }
         }
-        
-        public enum LocalGroupRids
-        {
-            Administrators = 544,
-            RemoteDesktopUsers = 555,
-            DcomUsers = 562,
-            PSRemote = 580
-        }
 
         #region SAMR Imports
 
@@ -412,8 +404,9 @@ namespace CommonLib
         }
     }
 
-    internal enum LocalGroupRids
+    public enum LocalGroupRids
     {
+        None = 0,
         Administrators = 544,
         RemoteDesktopUsers = 555,
         DcomUsers = 562,
