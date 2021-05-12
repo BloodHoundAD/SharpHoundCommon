@@ -22,5 +22,5 @@ jobs:
     - name: Pack
       run: dotnet pack --no-restore -c Release --output .
     - name: Publish NuGet
-      run: dotnet nuget push *.nuphg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate
+      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate
       
