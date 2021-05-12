@@ -50,6 +50,23 @@ namespace CommonLib.Processors
         }
 
         /// <summary>
+        /// Gets the protection state 
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static bool IsACLProtected(SearchResultEntry entry)
+        {
+            var ntSecurityDescriptor = entry.GetPropertyAsBytes("ntsecuritydescriptor");
+            if (ntSecurityDescriptor == null)
+                return false;
+            
+            var descriptor = new ActiveDirectorySecurity();
+            descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
+
+            return descriptor.AreAccessRulesProtected;
+        }
+
+        /// <summary>
         /// Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that BloodHound is not interested in
         /// </summary>
         /// <param name="entry"></param>
@@ -59,6 +76,9 @@ namespace CommonLib.Processors
         public static IEnumerable<ACE> ProcessACL(SearchResultEntry entry, string objectDomain, Label objectType)
         {
             var ntSecurityDescriptor = entry.GetPropertyAsBytes("ntsecuritydescriptor");
+            if (ntSecurityDescriptor == null)
+                yield break;
+            
             var descriptor = new ActiveDirectorySecurity();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
 
@@ -88,6 +108,7 @@ namespace CommonLib.Processors
 
                 if (!IsAceInherited(ace, BaseGuids[objectType.GetType()]))
                     continue;
+                
 
                 var principalSid = PreProcessSID(ace.IdentityReference.Value);
                 
