@@ -22,9 +22,10 @@ jobs:
     - name: Pack
       run: dotnet pack --no-restore -c Release --output .
     - name: Publish NuGet
-      uses: brandedoutcast/publish-nuget@v2.5.5
+      uses: rohith/publish-nuget@v2
       with:
-        PROJECT_FILE_PATH: CommonLib\CommonLib.csproj
+        PROJECT_FILE_PATH: CommonLib/CommonLib.csproj
+        PACKAGE_NAME: SharpHoundCommon
         VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
         NUGET_KEY: ${{secrets.NUGET_TOKEN}}
       
