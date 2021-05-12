@@ -19,7 +19,9 @@ namespace CommonLib.Processors
         public TypedPrincipal[] RemoteDesktopUsers { get; set; }
         public TypedPrincipal[] DcomUsers { get; set; }
         public TypedPrincipal[] PSRemoteUsers { get; set; }
-        
+
+        public TypedPrincipal[] AffectedComputers { get; set; }
+
     }
     public class GPOLocalGroupProcessor
     {
@@ -49,7 +51,14 @@ namespace CommonLib.Processors
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
             var query = new LDAPFilter().AddComputers().GetFilter();
             var affectedComputers = LDAPUtils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.ObjectSID,
-                adsPath: entry.DistinguishedName).Select(x => x.GetSid()).Where(x => x != null).ToArray();
+                    adsPath: entry.DistinguishedName)
+                .Select(x => x.GetSid())
+                .Where(x => x != null)
+                .Select(x => new TypedPrincipal
+                {
+                    ObjectIdentifier = x,
+                    ObjectType = Label.Computer
+                }).ToArray();
             
             //If there's no computers then we don't care about this OU
             if (affectedComputers.Length == 0)
@@ -171,9 +180,13 @@ namespace CommonLib.Processors
                 }
             }
             
-            var rs = new ResultingGPOChanges();
+            var rs = new ResultingGPOChanges
+            {
+                AffectedComputers = affectedComputers
+            };
                 
-            //At this point, we've resolved individual add/substract methods for each linked GPO. Now we need to actually squish them together into the resulting set of changes
+            //At this point, we've resolved individual add/substract methods for each linked GPO.
+            //Now we need to actually squish them together into the resulting set of changes
             foreach (var kvp in data)
             {
                 var key = kvp.Key;

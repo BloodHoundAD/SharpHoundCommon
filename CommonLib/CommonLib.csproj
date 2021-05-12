@@ -84,6 +84,8 @@
         <Compile Include="OutputTypes\GPLink.cs" />
         <Compile Include="OutputTypes\GPO.cs" />
         <Compile Include="OutputTypes\Group.cs" />
+        <Compile Include="OutputTypes\MetaTag.cs" />
+        <Compile Include="OutputTypes\OutputWrapper.cs" />
         <Compile Include="OutputTypes\OU.cs" />
         <Compile Include="OutputTypes\OutputBase.cs" />
         <Compile Include="OutputTypes\DomainTrust.cs" />
