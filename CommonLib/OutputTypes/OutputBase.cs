@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CommonLib.Output
+namespace CommonLib.OutputTypes
 {
     /// <summary>
     /// Represents a base JSON object which other objects will inherit from.

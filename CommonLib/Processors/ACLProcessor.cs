@@ -6,7 +6,7 @@ using System.DirectoryServices.Protocols;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using CommonLib.Enums;
-using CommonLib.Output;
+using CommonLib.OutputTypes;
 using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 
 namespace CommonLib.Processors
@@ -14,7 +14,7 @@ namespace CommonLib.Processors
     public static class ACLProcessor
     {
         private static readonly Dictionary<Type, string> BaseGuids;
-        private static readonly ConcurrentDictionary<string, string> _guidMap = new();
+        private static readonly ConcurrentDictionary<string, string> GuidMap = new();
         
         static ACLProcessor()
         {
@@ -45,7 +45,7 @@ namespace CommonLib.Processors
             {
                 var name = entry.GetProperty("name")?.ToLower();
                 var guid = new Guid(entry.GetPropertyAsBytes("schemaidguid")).ToString();
-                _guidMap.TryAdd(guid, name);
+                GuidMap.TryAdd(guid, name);
             }
         }
 
@@ -122,7 +122,7 @@ namespace CommonLib.Processors
                 var aceType = ace.ObjectType.ToString().ToLower();
                 var inherited = ace.IsInherited;
 
-                _guidMap.TryGetValue(aceType, out var mappedGuid);
+                GuidMap.TryGetValue(aceType, out var mappedGuid);
 
                 var bAce = new ACE
                 {
@@ -266,9 +266,9 @@ namespace CommonLib.Processors
         /// <summary>
         /// Processes the msds-groupmsamembership property and returns ACEs representing principals that can read the GMSA password from an object
         /// </summary>
-        /// <param name="groupMSAMembership">The raw bytes representing the groupMSAMembership value</param>
-        /// <param name="objectDomain">The domain of the object the property is coming from</param>
-        /// <returns>An enumerable containing ACEs that allow reading the GMSA password</returns>
+        /// <param name="entry"></param>
+        /// <param name="objectDomain"></param>
+        /// <returns></returns>
         public static IEnumerable<ACE> ProcessGMSAReaders(SearchResultEntry entry, string objectDomain)
         {
             var groupMSAMembership = entry.GetPropertyAsBytes("msds-groupmsamembership");

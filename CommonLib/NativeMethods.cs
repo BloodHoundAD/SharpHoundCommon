@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace CommonLib
 {
-    public class NativeMethods
+    public static class NativeMethods
     {
         internal struct OBJECT_ATTRIBUTES : IDisposable
         {

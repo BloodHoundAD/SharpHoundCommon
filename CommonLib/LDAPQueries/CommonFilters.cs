@@ -1,4 +1,4 @@
-﻿namespace CommonLib.LDAPQuery
+﻿namespace CommonLib.LDAPQueries
 {
     public class CommonFilters
     {

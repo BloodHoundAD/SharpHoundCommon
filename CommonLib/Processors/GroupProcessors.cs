@@ -2,7 +2,7 @@
 using System.DirectoryServices.Protocols;
 using System.Security.Principal;
 using CommonLib.Enums;
-using CommonLib.Output;
+using CommonLib.OutputTypes;
 
 namespace CommonLib.Processors
 {
@@ -13,7 +13,7 @@ namespace CommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static async IAsyncEnumerable<TypedPrincipal> ReadGroupMembers(SearchResultEntry entry)
+        public static IEnumerable<TypedPrincipal> ReadGroupMembers(SearchResultEntry entry)
         {
             var groupSid = entry.GetSid();
             
@@ -29,7 +29,7 @@ namespace CommonLib.Processors
             {
                 foreach (var member in LDAPUtils.DoRangedRetrieval(entry.DistinguishedName, "member"))
                 {
-                    var res = await LDAPUtils.ResolveDistinguishedName(member);
+                    var res = LDAPUtils.ResolveDistinguishedName(member);
 
                     if (res == null)
                         yield return new TypedPrincipal
@@ -46,7 +46,7 @@ namespace CommonLib.Processors
                 //If we're here, we just read the data directly and life is good
                 foreach (var member in members)
                 {
-                    var res = await LDAPUtils.ResolveDistinguishedName(member);
+                    var res = LDAPUtils.ResolveDistinguishedName(member);
 
                     if (res == null)
                         yield return new TypedPrincipal

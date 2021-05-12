@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using CommonLib.Output;
+using CommonLib.OutputTypes;
 
 namespace CommonLib.Processors
 {

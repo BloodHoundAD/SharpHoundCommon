@@ -157,9 +157,8 @@ namespace CommonLib
         /// <returns>The specified property as an array of bytes if possible, else an empty array</returns>
         public static byte[][] GetPropertyAsArrayOfBytes(this SearchResultEntry entry, string property)
         {
-            var list = new List<byte[]>();
             if (!entry.Attributes.Contains(property))
-                return list.ToArray();
+                return new byte[0][];
 
             var values = entry.Attributes[property];
             var bytes = values.GetValues(typeof(byte[]));

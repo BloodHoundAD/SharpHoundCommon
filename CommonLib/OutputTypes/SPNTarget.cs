@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace CommonLib.Output
+namespace CommonLib.OutputTypes
 {
     public class SPNTarget
     {
@@ -13,6 +13,6 @@ namespace CommonLib.Output
     [JsonConverter(typeof(StringEnumConverter))]
     public enum SPNService
     {
-        MSSQl
+        MSSQL
     }
 }

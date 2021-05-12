@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CommonLib.Output
+namespace CommonLib.OutputTypes
 {
     public class MetaTag
     {

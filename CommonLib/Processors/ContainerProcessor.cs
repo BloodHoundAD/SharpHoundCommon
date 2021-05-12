@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using CommonLib.LDAPQuery;
+using CommonLib.LDAPQueries;
+using CommonLib.OutputTypes;
 
-namespace CommonLib.Output
+namespace CommonLib.Processors
 {
     public class ContainerProcessor
     {
-        public static async IAsyncEnumerable<TypedPrincipal> GetContainerChildObjects(SearchResultEntry entry)
+        public static IEnumerable<TypedPrincipal> GetContainerChildObjects(SearchResultEntry entry)
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
             foreach (var childEntry in LDAPUtils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
@@ -28,17 +29,17 @@ namespace CommonLib.Output
             }
         }
 
-        public static async IAsyncEnumerable<GPLink> ReadContainerGPLinks(SearchResultEntry entry)
+        public static IEnumerable<GPLink> ReadContainerGPLinks(SearchResultEntry entry)
         {
             var gpLinkProp = entry.GetProperty("gplink");
             if (gpLinkProp == null)
                 yield break;
 
-            foreach (var link in Helpers.SplitGPLinkProperty(gpLinkProp, true))
+            foreach (var link in Helpers.SplitGPLinkProperty(gpLinkProp))
             {
                 var enforced = link.Status.Equals("2");
 
-                var res = await LDAPUtils.ResolveDistinguishedName(link.DistinguishedName);
+                var res = LDAPUtils.ResolveDistinguishedName(link.DistinguishedName);
                     
                 if (res == null)
                     continue;

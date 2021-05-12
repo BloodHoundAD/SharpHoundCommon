@@ -1,5 +1,5 @@
 ﻿using CommonLib.Enums;
-using CommonLib.Output;
+using CommonLib.OutputTypes;
 
 namespace CommonLib
 {

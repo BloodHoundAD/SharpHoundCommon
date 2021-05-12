@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿#nullable enable
+using Microsoft.Extensions.Logging;
 
 namespace CommonLib
 {
@@ -42,6 +43,7 @@ namespace CommonLib
         /// <summary>
         /// Outputs a log message with a configurable level
         /// </summary>
+        /// <param name="level"></param>
         /// <param name="message"></param>
         /// <param name="args"></param>
         internal static void Log(LogLevel level, string? message, params object?[] args)

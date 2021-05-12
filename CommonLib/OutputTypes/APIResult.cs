@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 
-namespace CommonLib.Output
+namespace CommonLib.OutputTypes
 {
     public class APIResult
     {
         [JsonProperty(PropertyName = "collected")]
-        internal bool Collected { get; set; } = false;
+        internal bool Collected { get; set; }
         [JsonProperty(PropertyName = "failure")]
-        internal string FailureReason { get; set; } = null;
+        internal string FailureReason { get; set; }
     }
 }

@@ -11,8 +11,8 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using CommonLib.Enums;
-using CommonLib.LDAPQuery;
-using CommonLib.Output;
+using CommonLib.LDAPQueries;
+using CommonLib.OutputTypes;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace CommonLib
@@ -39,7 +39,7 @@ namespace CommonLib
             0x00, 0x01
         };
         
-        private const string NULL_CACHE_KEY = "UNIQUENULL";
+        private const string NullCacheKey = "UNIQUENULL";
         private LDAPConfig _ldapConfig;
 
         public static void UpdateLDAPConfig(LDAPConfig config)
@@ -556,7 +556,7 @@ namespace CommonLib
         /// </summary>
         /// <param name="dn">DistinguishedName</param>
         /// <returns>A <c>TypedPrincipal</c> object with the SID and Label</returns>
-        public static async Task<TypedPrincipal> ResolveDistinguishedName(string dn)
+        public static TypedPrincipal ResolveDistinguishedName(string dn)
         {
             if (Cache.GetConvertedValue(dn, out var id) && Cache.GetIDType(id, out var type))
             {
@@ -702,7 +702,7 @@ namespace CommonLib
                 return null;
 
             var dName = domain.Name;
-            var adPath = adsPath?.Replace("LDAP://", "") ?? $"DC={domainName.Replace(".", ",DC=")}";
+            var adPath = adsPath?.Replace("LDAP://", "") ?? $"DC={dName.Replace(".", ",DC=")}";
 
             var request = new SearchRequest(adPath, filter, scope, attributes);
             request.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
@@ -837,7 +837,7 @@ namespace CommonLib
 
         internal static Domain GetDomain(string domainName = null)
         {
-            var cacheKey = domainName ?? NULL_CACHE_KEY;
+            var cacheKey = domainName ?? NullCacheKey;
             if (Instance._domainCache.TryGetValue(cacheKey, out var domain))
             {
                 return domain;

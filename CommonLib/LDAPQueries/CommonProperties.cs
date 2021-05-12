@@ -1,6 +1,6 @@
-﻿namespace CommonLib.LDAPQuery
+﻿namespace CommonLib.LDAPQueries
 {
-    public class CommonProperties
+    public static class CommonProperties
     {
         public static readonly string[] TypeResolutionProps = { "samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership" };
         public static readonly string[] ObjectID = { "objectsid", "objectguid" };

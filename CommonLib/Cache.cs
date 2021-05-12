@@ -14,7 +14,6 @@ namespace CommonLib
         private readonly ConcurrentDictionary<string, string[]> _globalCatalogCache;
         private readonly ConcurrentDictionary<string, string> _machineSidCache;
         private readonly ConcurrentDictionary<string, string> _sidToDomainCache;
-        private string fileName;
 
         internal static Cache Instance => CacheInstance;
         

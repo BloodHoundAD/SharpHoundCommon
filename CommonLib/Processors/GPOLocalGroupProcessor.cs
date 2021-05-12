@@ -8,8 +8,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 using CommonLib.Enums;
-using CommonLib.LDAPQuery;
-using CommonLib.Output;
+using CommonLib.LDAPQueries;
+using CommonLib.OutputTypes;
 
 namespace CommonLib.Processors
 {
@@ -303,7 +303,6 @@ namespace CommonLib.Processors
                 if (rightMatches.Count > 0 && index > 0)
                 {
                     var account = key.Trim('*').Substring(0, index - 3).ToUpper();
-                    Label type;
 
                     var res = await GetSid(account, gpoDomain);
                     if (res == null)
@@ -389,7 +388,7 @@ namespace CommonLib.Processors
                 yield break;
 
             //Create an XPathDocument to let us navigate the XML
-            var doc = new XPathDocument(xmlPath);;
+            var doc = new XPathDocument(xmlPath);
             var navigator = doc.CreateNavigator();
             //Grab all the Groups nodes
             var groupsNodes = navigator.Select("/Groups");
@@ -431,7 +430,9 @@ namespace CommonLib.Processors
                                 if (Enum.IsDefined(typeof(LocalGroupRids), rid))
                                     targetGroup = (LocalGroupRids) rid;
                             }
-                        }else if (!string.IsNullOrWhiteSpace(groupName) && targetGroup == LocalGroupRids.None)
+                        }
+                        
+                        if (!string.IsNullOrWhiteSpace(groupName) && targetGroup == LocalGroupRids.None)
                         {
                             ValidGroupNames.TryGetValue(groupName, out targetGroup);
                         }

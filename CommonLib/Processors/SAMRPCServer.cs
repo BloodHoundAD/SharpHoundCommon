@@ -5,14 +5,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
-using CommonLib.Output;
+using CommonLib.OutputTypes;
 
-namespace CommonLib
+namespace CommonLib.Processors
 {
     public class SAMRPCServer : IDisposable
     {
-        private readonly string _computerDomain;
         private readonly string _computerSAN;
         private readonly string _computerSID;
         
@@ -37,13 +35,11 @@ namespace CommonLib
         /// Creates an instance of an RPCServer which is used for making SharpHound specific API calls for computers
         /// </summary>
         /// <param name="name">The name of the computer to connect too. This should be the network name of the computer</param>
-        /// <param name="domain">The domain name of the computer</param>
         /// <param name="samAccountName">The samaccountname of the computer</param>
         /// <param name="computerSid">The security identifier for the computer</param>
         /// <exception cref="APIException">An exception if the an API fails to connect initially. Generally indicates the server is unavailable or permissions aren't available.</exception>
-        public SAMRPCServer(string name, string domain, string samAccountName, string computerSid)
+        public SAMRPCServer(string name, string samAccountName, string computerSid)
         {
-            _computerDomain = domain;
             _computerSAN = samAccountName;
             _computerSID = computerSid;
             
@@ -73,7 +69,7 @@ namespace CommonLib
             }
         }
 
-        public async Task<LocalGroupAPIResult> GetLocalGroupMembers(LocalGroupRids rid)
+        public LocalGroupAPIResult GetLocalGroupMembers(LocalGroupRids rid)
         {
             var result = new LocalGroupAPIResult();
 
@@ -309,6 +305,7 @@ namespace CommonLib
         );
 
         [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         private enum AliasOpenFlags
         {
             AddMember = 0x1,
@@ -323,6 +320,7 @@ namespace CommonLib
         }
 
         [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         private enum LsaOpenMask
         {
             ViewLocalInfo = 0x1,
@@ -341,6 +339,7 @@ namespace CommonLib
         }
 
         [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         private enum DomainAccessMask
         {
             ReadPasswordParameters = 0x1,

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using CommonLib.Output;
+using CommonLib.OutputTypes;
 
-namespace CommonLib.LDAPQuery
+namespace CommonLib.LDAPQueries
 {
     public class SPNProcessors
     {
@@ -38,7 +38,7 @@ namespace CommonLib.LDAPQuery
                         {
                             ComputerSID = host,
                             Port = port,
-                            Service = SPNService.MSSQl
+                            Service = SPNService.MSSQL
                         };
                     }
                 }

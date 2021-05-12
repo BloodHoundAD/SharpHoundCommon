@@ -1,4 +1,4 @@
-﻿namespace CommonLib.Output
+﻿namespace CommonLib.OutputTypes
 {
     public class Container : OutputBase
     {

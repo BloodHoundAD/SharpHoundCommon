@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Linq;
@@ -8,13 +9,12 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using CommonLib.Enums;
-using CommonLib.Output;
+using CommonLib.OutputTypes;
 
 namespace CommonLib.Processors
 {
     public static class LDAPPropertyProcessor
     {
-        private static readonly string[] Props = { "distinguishedname", "samaccounttype", "samaccountname", "dnshostname" };
         private static readonly string[] ReservedAttributes =
         {
             "pwdlastset", "lastlogon", "lastlogontimestamp", "objectsid",
@@ -105,14 +105,14 @@ namespace CommonLib.Processors
             bool enabled, trustedToAuth, sensitive, dontReqPreAuth, passwdNotReq, unconstrained, pwdNeverExpires;
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UAC.UacFlags)flag;
-                enabled = (flags & UAC.UacFlags.AccountDisable) == 0;
-                trustedToAuth = (flags & UAC.UacFlags.TrustedToAuthForDelegation) != 0;
-                sensitive = (flags & UAC.UacFlags.NotDelegated) != 0;
-                dontReqPreAuth = (flags & UAC.UacFlags.DontReqPreauth) != 0;
-                passwdNotReq = (flags & UAC.UacFlags.PasswordNotRequired) != 0;
-                unconstrained = (flags & UAC.UacFlags.TrustedForDelegation) != 0;
-                pwdNeverExpires = (flags & UAC.UacFlags.DontExpirePassword) != 0;
+                var flags = (UacFlags)flag;
+                enabled = (flags & UacFlags.AccountDisable) == 0;
+                trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
+                sensitive = (flags & UacFlags.NotDelegated) != 0;
+                dontReqPreAuth = (flags & UacFlags.DontReqPreauth) != 0;
+                passwdNotReq = (flags & UacFlags.PasswordNotRequired) != 0;
+                unconstrained = (flags & UacFlags.TrustedForDelegation) != 0;
+                pwdNeverExpires = (flags & UacFlags.DontExpirePassword) != 0;
             }
             else
             {
@@ -195,6 +195,8 @@ namespace CommonLib.Processors
                 {
                     continue;
                 }
+                
+                sidHistoryList.Add(sSid);
 
                 var res = LDAPUtils.ResolveIDAndType(sSid, domain);
 
@@ -219,10 +221,10 @@ namespace CommonLib.Processors
             bool enabled, unconstrained, trustedToAuth;
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UAC.UacFlags)flag;
-                enabled = (flags & UAC.UacFlags.AccountDisable) == 0;
-                unconstrained = (flags & UAC.UacFlags.TrustedForDelegation) == UAC.UacFlags.TrustedForDelegation;
-                trustedToAuth = (flags & UAC.UacFlags.TrustedToAuthForDelegation) != 0;
+                var flags = (UacFlags)flag;
+                enabled = (flags & UacFlags.AccountDisable) == 0;
+                unconstrained = (flags & UacFlags.TrustedForDelegation) == UacFlags.TrustedForDelegation;
+                trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
             }
             else
             {
@@ -303,6 +305,8 @@ namespace CommonLib.Processors
                 {
                     continue;
                 }
+                
+                sidHistoryList.Add(sSid);
 
                 var res = LDAPUtils.ResolveIDAndType(sSid, domain);
 
@@ -407,7 +411,9 @@ namespace CommonLib.Processors
         private static extern bool IsTextUnicode(byte[] buf, int len, ref IsTextUnicodeFlags opt);
 
         [Flags]
-        private enum IsTextUnicodeFlags : int
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        private enum IsTextUnicodeFlags
         {
             IS_TEXT_UNICODE_ASCII16 = 0x0001,
             IS_TEXT_UNICODE_REVERSE_ASCII16 = 0x0010,

@@ -1,6 +1,6 @@
 ﻿using CommonLib.Enums;
 
-namespace CommonLib.Output
+namespace CommonLib.OutputTypes
 {
     public class TypedPrincipal
     {

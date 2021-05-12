@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace CommonLib.Output
+namespace CommonLib.OutputTypes
 {
     public class ACE
     {

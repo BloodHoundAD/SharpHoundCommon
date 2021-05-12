@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace CommonLib.Output
+namespace CommonLib.OutputTypes
 {
     public class OutputWrapper<T>
     {

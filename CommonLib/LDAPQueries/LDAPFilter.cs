@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CommonLib.LDAPQuery
+namespace CommonLib.LDAPQueries
 {
     public class LDAPFilter
     {
