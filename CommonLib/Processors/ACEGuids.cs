@@ -8,5 +8,6 @@
         public const string AllGuid = "00000000-0000-0000-0000-000000000000";
         public const string WriteMember = "f3a64788-5306-11d1-a9c5-0000f80367c1";
         public const string WriteAllowedToAct = "3f78c3e5-f79a-46bd-a0b8-9d18116ddc79";
+        public const string AddSelfToGroup = "bf9679c0-0de6-11d0-a285-00aa003049e2";
     }
 }

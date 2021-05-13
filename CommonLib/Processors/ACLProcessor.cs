@@ -159,6 +159,20 @@ namespace SharpHoundCommonLib.Processors
                     yield return bAce;
                 }
                 
+                //Cool ACE courtesy of @rookuu. Allows a principal to add itself to a group and no one else
+                if (aceRights.HasFlag(ActiveDirectoryRights.Self))
+                {
+                    if (objectType == Label.Group)
+                    {
+                        if (aceType == ACEGuids.AddSelfToGroup)
+                        {
+                            bAce.RightName = "WriteProperty";
+                            bAce.AceType = "AddSelf";
+                            yield return bAce;
+                        }
+                    }
+                }
+                
                 //Process object type specific ACEs. Extended rights apply to users, domains, and computers
                 if (aceRights.HasFlag(ActiveDirectoryRights.ExtendedRight))
                 {
