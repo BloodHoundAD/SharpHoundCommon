@@ -2,10 +2,10 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
-using CommonLib.Enums;
 using Newtonsoft.Json;
+using SharpHoundCommonLib.Enums;
 
-namespace CommonLib
+namespace SharpHoundCommonLib
 {
     public class Cache
     {

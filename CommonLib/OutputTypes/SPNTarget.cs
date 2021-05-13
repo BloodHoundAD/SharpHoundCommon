@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace CommonLib.OutputTypes
+namespace SharpHoundCommonLib.OutputTypes
 {
     public class SPNTarget
     {

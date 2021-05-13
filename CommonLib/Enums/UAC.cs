@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CommonLib.Enums
+namespace SharpHoundCommonLib.Enums
 {
     [Flags]
     public enum UacFlags

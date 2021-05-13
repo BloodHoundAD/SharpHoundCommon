@@ -5,9 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
-using CommonLib.OutputTypes;
+using SharpHoundCommonLib.OutputTypes;
 
-namespace CommonLib.Processors
+namespace SharpHoundCommonLib.Processors
 {
     public class SAMRPCServer : IDisposable
     {

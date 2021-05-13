@@ -1,16 +1,16 @@
 ﻿using Newtonsoft.Json;
 
-namespace CommonLib.OutputTypes
+namespace SharpHoundCommonLib.OutputTypes
 {
     public class MetaTag
     {
         [JsonProperty(PropertyName = "methods")]
-        internal long CollectionMethods { get; set; }
+        public long CollectionMethods { get; set; }
             
         [JsonProperty(PropertyName = "type")]
-        internal string DataType { get; set; }
+        public string DataType { get; set; }
         
         [JsonProperty(PropertyName = "count")]
-        internal long Count { get; set; }
+        public long Count { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿using CommonLib.Enums;
+﻿using SharpHoundCommonLib.Enums;
 
-namespace CommonLib.OutputTypes
+namespace SharpHoundCommonLib.OutputTypes
 {
     public class TypedPrincipal
     {

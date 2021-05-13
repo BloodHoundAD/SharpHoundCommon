@@ -9,13 +9,14 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using CommonLib.Enums;
-using CommonLib.LDAPQueries;
-using CommonLib.OutputTypes;
+using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.LDAPQueries;
+using SharpHoundCommonLib.OutputTypes;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
-namespace CommonLib
+namespace SharpHoundCommonLib
 {
     public class LDAPUtils
     {
@@ -47,7 +48,7 @@ namespace CommonLib
             Instance.SetLDAPConfig(config);
         }
 
-        public static LDAPUtils Instance { get; } = new();
+        private static LDAPUtils Instance { get; } = new();
 
         private LDAPUtils()
         {
@@ -56,7 +57,12 @@ namespace CommonLib
 
         private void SetLDAPConfig(LDAPConfig config)
         {
-            _ldapConfig = config;
+            _ldapConfig = config ?? throw new Exception("LDAP Configuration can not be null");
+        }
+
+        private void TestLDAPConfig()
+        {
+            
         }
 
         public static string[] GetUserGlobalCatalogMatches(string name)
@@ -595,6 +601,102 @@ namespace CommonLib
                 ObjectIdentifier = id,
                 ObjectType = type
             };
+        }
+        
+        /// <summary>
+        /// Performs an LDAP query using the parameters specified by the user.
+        /// </summary>
+        /// <param name="ldapFilter">LDAP filter</param>
+        /// <param name="scope">SearchScope to query</param>
+        /// <param name="props">LDAP properties to fetch for each object</param>
+        /// <param name="cancellationToken">Cancellation Token</param>
+        /// <param name="includeAcl">Include the DACL and Owner values in the NTSecurityDescriptor</param>
+        /// <param name="showDeleted">Include deleted objects</param>
+        /// <param name="domainName">Domain to query</param>
+        /// <param name="adsPath">ADS path to limit the query too</param>
+        /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
+        /// <param name="skipCache">Skip the connection cache and force a new connection. You must dispose of this connection yourself.</param>
+        /// <returns>All LDAP search results matching the specified parameters</returns>
+        public static IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+            string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
+        {
+            Logging.Debug("Creating ldap connection");
+            var task = globalCatalog
+                ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
+                : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
+
+            LdapConnection conn;
+            try
+            {
+                conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch
+            {
+                yield break;
+            }
+            
+            if (conn == null)
+            {
+                Logging.Debug("LDAP connection is null");
+                yield break;
+            }
+
+            var request = CreateSearchRequest(ldapFilter, scope, props, domainName, adsPath, showDeleted);
+
+            if (request == null)
+            {
+                Logging.Debug("Search request is null");
+                yield break;
+            }
+
+            var pageControl = new PageResultRequestControl(500);
+            request.Controls.Add(pageControl);
+
+            if (includeAcl)
+                request.Controls.Add(new SecurityDescriptorFlagControl
+                {
+                    SecurityMasks = SecurityMasks.Dacl | SecurityMasks.Owner
+                });
+
+            PageResultResponseControl pageResponse = null;
+            while (true)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    yield break;
+                
+                SearchResponse response;
+                try
+                {
+                    Logging.Debug("Sending LDAP request");
+                    response = (SearchResponse) conn.SendRequest(request);
+                    if (response != null)
+                        pageResponse = (PageResultResponseControl) response.Controls
+                            .Where(x => x is PageResultRequestControl).DefaultIfEmpty(null).FirstOrDefault();
+                }
+                catch (Exception e)
+                {
+                    Logging.Debug($"Exception in LDAP loop: {e}");
+                    yield break;
+                }
+                
+                if (cancellationToken.IsCancellationRequested)
+                    yield break;
+
+                if (response == null || pageResponse == null)
+                    continue;
+
+                foreach (SearchResultEntry entry in response.Entries)
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                        yield break;
+                    yield return entry;
+                }
+                
+                if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 || cancellationToken.IsCancellationRequested)
+                    yield break;
+
+                pageControl.Cookie = pageResponse.Cookie;
+            }
         }
 
         /// <summary>

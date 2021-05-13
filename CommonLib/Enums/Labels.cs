@@ -1,4 +1,4 @@
-﻿namespace CommonLib.Enums
+﻿namespace SharpHoundCommonLib.Enums
 {
     public enum Label
     {

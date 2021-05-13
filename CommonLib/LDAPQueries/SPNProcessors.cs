@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using CommonLib.OutputTypes;
+using SharpHoundCommonLib.OutputTypes;
 
-namespace CommonLib.LDAPQueries
+namespace SharpHoundCommonLib.LDAPQueries
 {
     public class SPNProcessors
     {

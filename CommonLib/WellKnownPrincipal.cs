@@ -1,7 +1,7 @@
-﻿using CommonLib.Enums;
-using CommonLib.OutputTypes;
+﻿using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.OutputTypes;
 
-namespace CommonLib
+namespace SharpHoundCommonLib
 {
     public class WellKnownPrincipal
     {

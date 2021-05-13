@@ -1,7 +1,7 @@
-﻿using CommonLib.Processors;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using SharpHoundCommonLib.Processors;
 
-namespace CommonLib
+namespace SharpHoundCommonLib
 {
     public class CommonLib
     {

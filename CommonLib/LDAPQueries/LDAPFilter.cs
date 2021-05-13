@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CommonLib.LDAPQueries
+namespace SharpHoundCommonLib.LDAPQueries
 {
     public class LDAPFilter
     {
@@ -52,6 +52,13 @@ namespace CommonLib.LDAPQueries
         public LDAPFilter AddGroups(params string[] conditions)
         {
             _filterParts.Add(BuildString("(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))", conditions));
+
+            return this;
+        }
+        
+        public LDAPFilter AddPrimaryGroups(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(primarygroupid=*)", conditions));
 
             return this;
         }

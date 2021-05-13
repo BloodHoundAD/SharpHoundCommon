@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CommonLib.OutputTypes
+namespace SharpHoundCommonLib.OutputTypes
 {
     public class SessionAPIResult : APIResult
     {

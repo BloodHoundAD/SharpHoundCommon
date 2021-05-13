@@ -6,9 +6,9 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using CommonLib.Enums;
+using SharpHoundCommonLib.Enums;
 
-namespace CommonLib
+namespace SharpHoundCommonLib
 {
     internal static class Extensions
     {

@@ -1,4 +1,4 @@
-﻿namespace CommonLib.OutputTypes
+﻿namespace SharpHoundCommonLib.OutputTypes
 {
     public class OU : OutputBase
     {

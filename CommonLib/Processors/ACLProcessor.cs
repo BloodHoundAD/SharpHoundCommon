@@ -5,11 +5,11 @@ using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using CommonLib.Enums;
-using CommonLib.OutputTypes;
+using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.OutputTypes;
 using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 
-namespace CommonLib.Processors
+namespace SharpHoundCommonLib.Processors
 {
     public static class ACLProcessor
     {

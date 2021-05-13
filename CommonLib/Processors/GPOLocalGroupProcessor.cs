@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.XPath;
-using CommonLib.Enums;
-using CommonLib.LDAPQueries;
-using CommonLib.OutputTypes;
+using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.LDAPQueries;
+using SharpHoundCommonLib.OutputTypes;
 
-namespace CommonLib.Processors
+namespace SharpHoundCommonLib.Processors
 {
     public class ResultingGPOChanges
     {

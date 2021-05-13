@@ -7,9 +7,9 @@ using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using CommonLib.Enums;
+using SharpHoundCommonLib.Enums;
 
-namespace CommonLib
+namespace SharpHoundCommonLib
 {
     public static class Helpers
     {

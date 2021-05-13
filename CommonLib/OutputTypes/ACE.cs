@@ -1,8 +1,8 @@
-﻿using CommonLib.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SharpHoundCommonLib.Enums;
 
-namespace CommonLib.OutputTypes
+namespace SharpHoundCommonLib.OutputTypes
 {
     public class ACE
     {

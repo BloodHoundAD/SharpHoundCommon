@@ -1,4 +1,4 @@
-﻿namespace CommonLib.OutputTypes
+﻿namespace SharpHoundCommonLib.OutputTypes
 {
     /// <summary>
     /// Represents a computer object in Active Directory. Contains all the properties BloodHound cares about 

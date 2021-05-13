@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using CommonLib.Enums;
-using CommonLib.OutputTypes;
+using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.OutputTypes;
 
-namespace CommonLib.Processors
+namespace SharpHoundCommonLib.Processors
 {
     public static class LDAPPropertyProcessor
     {

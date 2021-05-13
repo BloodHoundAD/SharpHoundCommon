@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLib", "CommonLib\CommonLib.csproj", "{88EB8B09-EB8A-4E59-BBF7-CA5374DFA9EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpHoundCommonLib", "CommonLib\SharpHoundCommonLib.csproj", "{88EB8B09-EB8A-4E59-BBF7-CA5374DFA9EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

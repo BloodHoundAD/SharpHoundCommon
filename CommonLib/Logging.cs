@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using Microsoft.Extensions.Logging;
 
-namespace CommonLib
+namespace SharpHoundCommonLib
 {
     internal static class Logging
     {

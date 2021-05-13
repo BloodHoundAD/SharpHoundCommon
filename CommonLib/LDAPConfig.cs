@@ -1,4 +1,4 @@
-﻿namespace CommonLib
+﻿namespace SharpHoundCommonLib
 {
     public class LDAPConfig
     {

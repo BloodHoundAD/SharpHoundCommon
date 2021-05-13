@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CommonLib.OutputTypes
+namespace SharpHoundCommonLib.OutputTypes
 {
     /// <summary>
     /// Represents a base JSON object which other objects will inherit from.

@@ -1,4 +1,4 @@
-﻿namespace CommonLib.Processors
+﻿namespace SharpHoundCommonLib.Processors
 {
     public class ACEGuids
     {

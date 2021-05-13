@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using CommonLib.LDAPQueries;
-using CommonLib.OutputTypes;
+using SharpHoundCommonLib.LDAPQueries;
+using SharpHoundCommonLib.OutputTypes;
 
-namespace CommonLib.Processors
+namespace SharpHoundCommonLib.Processors
 {
     public class ContainerProcessor
     {

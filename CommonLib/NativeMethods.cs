@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CommonLib
+namespace SharpHoundCommonLib
 {
     public static class NativeMethods
     {

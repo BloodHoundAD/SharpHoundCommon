@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using CommonLib.OutputTypes;
+using SharpHoundCommonLib.OutputTypes;
 
-namespace CommonLib.Processors
+namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
