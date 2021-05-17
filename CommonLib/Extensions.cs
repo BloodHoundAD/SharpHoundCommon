@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Security.Principal;
@@ -10,8 +11,19 @@ using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
 {
-    internal static class Extensions
+    public static class Extensions
     {
+        
+        internal static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items,
+            CancellationToken cancellationToken = default)
+        {
+            var results = new List<T>();
+            await foreach (var item in items.WithCancellation(cancellationToken)
+                .ConfigureAwait(false))
+                results.Add(item);
+            return results;
+        }
+        
         /// <summary>
         /// Helper function to print attributes of a SearchResultEntry
         /// </summary>
@@ -42,19 +54,134 @@ namespace SharpHoundCommonLib
             var output = $"\\{BitConverter.ToString(bytes).Replace('-', '\\')}";
             return output;
         }
-        
-        public static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items,
-            CancellationToken cancellationToken = default)
+
+        public static string GetSid(this DirectoryEntry result)
         {
-            var results = new List<T>();
-            await foreach (var item in items.WithCancellation(cancellationToken)
-                .ConfigureAwait(false))
-                results.Add(item);
-            return results;
+            if (!result.Properties.Contains("objectsid"))
+                return null;
+
+            var s = result.Properties["objectsid"][0];
+            return s switch
+            {
+                byte[] b => new SecurityIdentifier(b, 0).ToString(),
+                string st => new SecurityIdentifier(Encoding.ASCII.GetBytes(st), 0).ToString(),
+                _ => null
+            };
         }
 
-
         #region SearchResultEntry
+
+        public static async Task<ResolvedSearchResult> ResolveBHProps(this SearchResultEntry entry)
+        {
+            var res = new ResolvedSearchResult();
+
+            var itemID = entry.GetObjectIdentifier();
+            if (itemID == null)
+                return null;
+
+            res.ObjectId = itemID;
+            if (entry.IsDeleted())
+            {
+                res.Deleted = entry.IsDeleted();
+                return res;
+            }
+            
+            //Try to resolve the domain
+            var distinguishedName = entry.DistinguishedName;
+            string itemDomain;
+            if (distinguishedName == null)
+            {
+                if (itemID.StartsWith("S-1-"))
+                {
+                    itemDomain = LDAPUtils.GetDomainNameFromSid(itemID);    
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                itemDomain = Helpers.DistinguishedNameToDomain(distinguishedName);
+            }
+
+            res.Domain = itemDomain;
+
+            if (itemID.StartsWith("S-1-"))
+            {
+                res.DomainSid = new SecurityIdentifier(itemID).AccountDomainSid.Value;
+            }
+            else
+            {
+                res.DomainSid = await LDAPUtils.GetSidFromDomainName(itemDomain);
+            }
+
+            
+
+            if (WellKnownPrincipal.GetWellKnownPrincipal(itemID, out var wkPrincipal))
+            {
+                res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
+                res.ObjectType = wkPrincipal.ObjectType;
+                res.ObjectId = WellKnownPrincipal.TryConvert(itemID, itemDomain);
+
+                return res;
+            }
+
+            var samAccountName = entry.GetProperty("samaccountname");
+
+            var itemType = entry.GetLabel();
+            res.ObjectType = itemType;
+            
+            switch (itemType)
+            {
+                case Label.User:
+                case Label.Group:
+                    res.DisplayName = $"{samAccountName}@{itemDomain}";
+                    break;
+                case Label.Computer:
+                    var shortName = samAccountName?.TrimEnd('$');
+                    var dns = entry.GetProperty("dnshostname");
+                    var cn = entry.GetProperty("cn");
+                    
+                    //If we have this object class, override the object type
+                    if (entry.GetPropertyAsArray("objectclass").Contains("msds-groupmanagedserviceaccount",
+                        StringComparer.InvariantCultureIgnoreCase))
+                    {
+                        res.ObjectType = Label.User;
+                    }
+
+                    if (dns != null)
+                    {
+                        res.DisplayName = dns;
+                    }
+                    else
+                    {
+                        if (shortName == null && cn == null)
+                            res.DisplayName = $"UNKNOWN.{itemDomain}";
+                        else if (shortName != null)
+                            res.DisplayName = $"{shortName}.{itemDomain}";
+                        else
+                            res.DisplayName = $"{cn}.{itemDomain}";
+                    }
+                    break;
+                case Label.GPO:
+                    res.DisplayName = $"{entry.GetProperty("displayname")}@{itemDomain}";
+                    break;
+                case Label.Domain:
+                    res.DisplayName = itemDomain;
+                    break;
+                case Label.OU:
+                case Label.Container:
+                    res.DisplayName = $"{entry.GetProperty("name")}@{itemDomain}";
+                    break;
+                case Label.Unknown:
+                    res.DisplayName = $"{samAccountName}@{itemDomain}";
+                    break;
+            }
+
+            return res;
+        }
+        
         /// <summary>
         /// Gets the specified property as a string from the SearchResultEntry
         /// </summary>
@@ -200,6 +327,17 @@ namespace SharpHoundCommonLib
         public static string GetObjectIdentifier(this SearchResultEntry entry)
         {
             return entry.GetSid() ?? entry.GetGuid();
+        }
+
+        /// <summary>
+        /// Checks the isDeleted LDAP property to determine if an entry has been deleted from the directory
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static bool IsDeleted(this SearchResultEntry entry)
+        {
+            var deleted = entry.GetProperty("isDeleted");
+            return bool.TryParse(deleted, out var isDeleted) && isDeleted;
         }
 
         /// <summary>
