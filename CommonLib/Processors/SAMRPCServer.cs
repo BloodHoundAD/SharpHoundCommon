@@ -32,7 +32,7 @@ namespace SharpHoundCommonLib.Processors
         }, LazyThreadSafetyMode.PublicationOnly);
 
         /// <summary>
-        /// Creates an instance of an RPCServer which is used for making SharpHound specific API calls for computers
+        /// Creates an instance of an RPCServer which is used for making SharpHound specific SAMRPC API calls for computers
         /// </summary>
         /// <param name="name">The name of the computer to connect too. This should be the network name of the computer</param>
         /// <param name="samAccountName">The samaccountname of the computer</param>
@@ -145,7 +145,7 @@ namespace SharpHoundCommonLib.Processors
             return result;
         }
 
-        internal string GetMachineSid()
+        public string GetMachineSid()
         {
             if (Cache.GetMachineSid(_computerSID, out var machineSid))
             {
@@ -392,7 +392,7 @@ namespace SharpHoundCommonLib.Processors
         #endregion
     }
     
-    internal class APIException : Exception
+    public class APIException : Exception
     {
         internal string Status { get; set; }
         internal string APICall { get; set; }
