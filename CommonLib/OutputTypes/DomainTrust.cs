@@ -1,4 +1,6 @@
-﻿namespace SharpHoundCommonLib.OutputTypes
+﻿using SharpHoundCommonLib.Enums;
+
+namespace SharpHoundCommonLib.OutputTypes
 {
     public class DomainTrust
     {
@@ -8,22 +10,5 @@
         public bool SidFilteringEnabled { get; set; }
         public TrustDirection TrustDirection { get; set; }
         public TrustType TrustType { get; set; }
-    }
-    
-    public enum TrustDirection
-    {
-        Disabled = 0,
-        Inbound = 1,
-        Outbound = 2,
-        Bidirectional = 3
-    }
-
-    public enum TrustType
-    {
-        ParentChild,
-        CrossLink,
-        Forest,
-        External,
-        Unknown
     }
 }
