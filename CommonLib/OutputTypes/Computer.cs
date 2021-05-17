@@ -8,7 +8,8 @@
         public string PrimaryGroupSID { get; set; }
         public TypedPrincipal[] AllowedToDelegate { get; set; } = new TypedPrincipal[0];
         public TypedPrincipal[] AllowedToAct { get; set; } = new TypedPrincipal[0];
-        public Session[] Sessions { get; set; } = new Session[0];
+        public TypedPrincipal[] HasSIDHistory { get; set; } = new TypedPrincipal[0];
+        public SessionAPIResult Sessions { get; set; } = new();
         public LocalGroupAPIResult Admins { get; set; } = new();
         public LocalGroupAPIResult RemoteDesktopUsers { get; set; } = new();
         public LocalGroupAPIResult DcomUsers { get; set; } = new();
