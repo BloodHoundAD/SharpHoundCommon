@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib
 {
@@ -39,6 +40,24 @@ namespace SharpHoundCommonLib
                     Status = status,
                     DistinguishedName = dn
                 };
+            }
+        }
+        
+        public static string GetMachineSid(string computerSid, string computerName, string computerSamAccountName)
+        {
+            if (Cache.GetMachineSid(computerSid, out var sid))
+            {
+                return sid;
+            }
+
+            try
+            {
+                using var server = new SAMRPCServer(computerName, computerSamAccountName, computerSid);
+                return server.GetMachineSid();
+            }
+            catch
+            {
+                return null;
             }
         }
         
@@ -81,7 +100,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="distinguishedName">Distinguished Name to extract domain from</param>
         /// <returns>String representing the domain name of this object</returns>
-        internal static string DistinguishedNameToDomain(string distinguishedName)
+        public static string DistinguishedNameToDomain(string distinguishedName)
         {
             var temp = distinguishedName.Substring(distinguishedName.IndexOf("DC=",
                 StringComparison.CurrentCultureIgnoreCase));
