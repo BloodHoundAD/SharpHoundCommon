@@ -46,6 +46,8 @@
         {
             "serviceprincipalname", "samaccountname", "samaccounttype"
         };
+        
+        public static readonly string[] DomainTrustProps = { "trustattributes", "securityidentifier", "trustdirection", "trusttype", "cn" };
 
     }
 }
