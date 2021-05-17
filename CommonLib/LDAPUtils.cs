@@ -147,9 +147,12 @@ namespace SharpHoundCommonLib
                     return domain;
 
                 domain = GetDomainNameFromSidLdap(sid);
+                
+                //Cache both to and from so we can use this later
                 if (domain != null)
                 {
                     Cache.AddSidToDomain(sid, domain);
+                    Cache.AddSidToDomain(domain, sid);
                 }
 
                 return domain;
@@ -158,6 +161,34 @@ namespace SharpHoundCommonLib
             {
                 return null;
             }
+        }
+
+        public static async Task<string> GetSidFromDomainName(string domainName)
+        {
+            var tempDomainName = await NormalizeDomainName(domainName);
+            if (Cache.GetDomainSidMapping(tempDomainName, out var sid))
+            {
+                return sid;
+            }
+
+            var domainObj = GetDomain(tempDomainName);
+
+            if (domainObj != null)
+            {
+                sid = domainObj.GetDirectoryEntry().GetSid();
+            }
+            else
+            {
+                sid = null;
+            }
+
+            if (sid != null)
+            {
+                Cache.AddSidToDomain(sid, tempDomainName);
+                Cache.AddSidToDomain(tempDomainName, sid);
+            }
+
+            return sid;
         }
         
         private static string GetDomainNameFromSidLdap(string sid)
