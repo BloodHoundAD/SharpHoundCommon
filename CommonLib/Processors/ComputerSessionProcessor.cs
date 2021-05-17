@@ -112,12 +112,12 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerDomain"></param>
         /// <returns></returns>
-        public static async Task<LocalGroupAPIResult> ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerDomain)
+        public static async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerDomain, string computerSid)
         {
             var ptr = IntPtr.Zero;
             try
             {
-                var ret = new LocalGroupAPIResult();
+                var ret = new SessionAPIResult();
                 var resumeHandle = 0;
             
                 var result = NativeMethods.NetWkstaUserEnum(computerName, NetWkstaUserEnumQueryLevel, out ptr, -1, out var entriesRead,
@@ -130,6 +130,7 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 ret.Collected = true;
+                var machineSid = Helpers.GetMachineSid(computerSid, computerName, computerSamAccountName);
             
                 var results = new List<TypedPrincipal>();
                 for (var i = 0; i < entriesRead; i++)
@@ -155,11 +156,18 @@ namespace SharpHoundCommonLib.Processors
                     var res = await LDAPUtils.ResolveAccountName(username, computerDomain);
                     if (res == null)
                         continue;
+                    
+                    if (res.ObjectIdentifier.StartsWith(machineSid, StringComparison.OrdinalIgnoreCase))
+                        continue;
                 
                     results.Add(res);
                 }
 
-                ret.Results = results.ToArray();
+                ret.Results = results.Select(x => new Session
+                {
+                    Computer = computerSid,
+                    User = x.ObjectIdentifier
+                }).ToArray();
 
                 return ret;
             }
