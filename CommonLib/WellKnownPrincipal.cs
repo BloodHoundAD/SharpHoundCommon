@@ -3,28 +3,15 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib
 {
-    public class WellKnownPrincipal
+    public static class WellKnownPrincipal
     {
-        internal Label Type { get; set; }
-
-        private string _principalName;
-        /// <summary>
-        /// Setter to ensure that the principal name is always upper case
-        /// </summary>
-        internal string Name
-        {
-            get => _principalName;
-            set => _principalName = value?.ToUpper();
-        }
-
         public static bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
         {
             if (!GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
-            commonPrincipal.ObjectIdentifier = TryConvert(commonPrincipal.ObjectIdentifier, domain);
+            commonPrincipal.ObjectIdentifier = TryConvert(sid, domain);
             return true;
-
         }
-        
+
         /// <summary>
         /// Gets the principal associated with a well known SID
         /// </summary>
