@@ -11,5 +11,6 @@ namespace SharpHoundCommonLib.OutputTypes
         public string ObjectIdentifier { get; set; }
         public Dictionary<string, object> Properties = new Dictionary<string, object>();
         public bool IsDeleted { get; set; }
+        public bool IsACLProtected { get; set; }
     }
 }

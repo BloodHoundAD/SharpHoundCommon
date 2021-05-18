@@ -13,7 +13,6 @@ namespace SharpHoundCommonLib
 {
     public static class Extensions
     {
-        
         internal static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items,
             CancellationToken cancellationToken = default)
         {
