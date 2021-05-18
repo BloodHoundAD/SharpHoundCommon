@@ -7,6 +7,11 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ContainerProcessor
     {
+        /// <summary>
+        /// Finds all immediate child objects of a container. 
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static IEnumerable<TypedPrincipal> GetContainerChildObjects(SearchResultEntry entry)
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
@@ -29,6 +34,11 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
+        /// <summary>
+        /// Reads the "gplink" property from a SearchResult and converts the links into the acceptable SharpHound format
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static IEnumerable<GPLink> ReadContainerGPLinks(SearchResultEntry entry)
         {
             var gpLinkProp = entry.GetProperty("gplink");
@@ -52,6 +62,11 @@ namespace SharpHoundCommonLib.Processors
             }
         }
         
+        /// <summary>
+        /// Checks if a container blocks privilege inheritance
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static bool ReadBlocksInheritance(SearchResultEntry entry)
         {
             var opts = entry.GetProperty("gpoptions");

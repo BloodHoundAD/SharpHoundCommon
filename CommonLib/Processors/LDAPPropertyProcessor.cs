@@ -27,6 +27,11 @@ namespace SharpHoundCommonLib.Processors
             "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector", "member"
         };
 
+        /// <summary>
+        /// Reads specific LDAP properties related to Domains
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static Dictionary<string, object> ReadDomainProperties(SearchResultEntry entry)
         {
             var props = new Dictionary<string, object> {{"description", entry.GetProperty("description")}};
@@ -54,6 +59,11 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
+        /// <summary>
+        /// Reads specific LDAP properties related to GPOs
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static Dictionary<string, object> ReadGPOProperties(SearchResultEntry entry)
         {
             var props = new Dictionary<string, object>
@@ -64,6 +74,11 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
+        /// <summary>
+        /// Reads specific LDAP properties related to OUs
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static Dictionary<string, object> ReadOUProperties(SearchResultEntry entry)
         {
             var props = new Dictionary<string, object>
@@ -73,6 +88,11 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
         
+        /// <summary>
+        /// Reads specific LDAP properties related to Groups
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static Dictionary<string, object> ReadGroupProperties(SearchResultEntry entry)
         {
             var props = new Dictionary<string, object>
@@ -93,6 +113,11 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
+        /// <summary>
+        /// Reads specific LDAP properties related to Users
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static async Task<UserProperties> ReadUserProperties(SearchResultEntry entry)
         {
             var userProps = new UserProperties();
@@ -212,6 +237,11 @@ namespace SharpHoundCommonLib.Processors
             return userProps;
         }
 
+        /// <summary>
+        /// Reads specific LDAP properties related to Computers
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static async Task<ComputerProperties> ReadComputerProperties(SearchResultEntry entry)
         {
             var compProps = new ComputerProperties();

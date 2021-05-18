@@ -7,6 +7,15 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerAvailability
     {
+        /// <summary>
+        /// Checks if a computer is available for SharpHound enumeration using the following criteria:
+        /// The "operatingsystem" LDAP attribute must contain the string "Windows"
+        /// The "pwdlastset" LDAP attribute must be within 60 days of the current date.
+        /// Port 445 must be open to allow API calls to succeed
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="resolvedSearchResult"></param>
+        /// <returns>A <cref>ComputerStatus</cref> object that represents the availability of the computer</returns>
         public static async Task<ComputerStatus> IsComputerAvailable(SearchResultEntry entry, ResolvedSearchResult resolvedSearchResult)
         {
             var operatingSystem = entry.GetProperty("operatingsystem");
@@ -41,6 +50,11 @@ namespace SharpHoundCommonLib.Processors
             };
         }
         
+        /// <summary>
+        /// Converts an LDAP time string into a long
+        /// </summary>
+        /// <param name="ldapTime"></param>
+        /// <returns></returns>
         private static long ConvertLdapTime(string ldapTime)
         {
             if (ldapTime == null)

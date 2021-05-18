@@ -9,6 +9,11 @@ namespace SharpHoundCommonLib.Processors
 {
     public class DomainTrustProcessor
     {
+        /// <summary>
+        /// Processes domain trusts for a domain object
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static IEnumerable<DomainTrust> EnumerateDomainTrusts(SearchResultEntry entry)
         {
             var query = CommonFilters.TrustedDomains;

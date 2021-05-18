@@ -28,11 +28,22 @@ namespace SharpHoundCommonLib
             _sidToDomainCache = new ConcurrentDictionary<string, string>();
         }
 
+        /// <summary>
+        /// Add a SID <-> Domain mapping to the cache 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         internal static void AddSidToDomain(string key, string value)
         {
             CacheInstance?._sidToDomainCache.TryAdd(key, value);
         }
 
+        /// <summary>
+        /// Get a SID to Domain or Domain to SID mapping
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         internal static bool GetDomainSidMapping(string key, out string value)
         {
             if (CacheInstance != null) return CacheInstance._machineSidCache.TryGetValue(key, out value);
@@ -40,6 +51,11 @@ namespace SharpHoundCommonLib
             return false;
         }
 
+        /// <summary>
+        /// Add a Domain SID -> Computer SID mapping to the cache
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         internal static void AddMachineSid(string key, string value)
         {
             CacheInstance?._machineSidCache.TryAdd(key, value);

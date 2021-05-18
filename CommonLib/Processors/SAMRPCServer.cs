@@ -69,11 +69,17 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        public LocalGroupAPIResult GetLocalGroupMembers(LocalGroupRids rid)
+        /// <summary>
+        /// Reads the members in a specified local group. The group is referenced by its RID (Relative Identifier).
+        /// Groups current used by SharpHound can be found in <cref>LocalGroupRids</cref>
+        /// </summary>
+        /// <param name="groupRid"></param>
+        /// <returns></returns>
+        public LocalGroupAPIResult GetLocalGroupMembers(int groupRid)
         {
             var result = new LocalGroupAPIResult();
 
-            var status = SamOpenAlias(_domainHandle, AliasOpenFlags.ListMembers, (int) rid, out var aliasHandle);
+            var status = SamOpenAlias(_domainHandle, AliasOpenFlags.ListMembers, groupRid, out var aliasHandle);
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
                 SamCloseHandle(aliasHandle);
@@ -145,6 +151,11 @@ namespace SharpHoundCommonLib.Processors
             return result;
         }
 
+        /// <summary>
+        /// Uses API calls and caching to attempt to get the local SID of a computer.
+        /// The local SID of a computer will not match its domain SID, and is used to denote local machine accounts
+        /// </summary>
+        /// <returns></returns>
         public string GetMachineSid()
         {
             if (Cache.GetMachineSid(_computerSID, out var machineSid))

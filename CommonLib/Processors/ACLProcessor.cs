@@ -318,6 +318,11 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
+        /// <summary>
+        /// Removes some commonly seen SIDs that have no use in the schema
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <returns></returns>
         private static string PreProcessSID(string sid)
         {
             if (sid != null)

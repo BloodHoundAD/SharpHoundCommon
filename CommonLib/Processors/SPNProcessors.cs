@@ -2,7 +2,7 @@
 using System.DirectoryServices.Protocols;
 using SharpHoundCommonLib.OutputTypes;
 
-namespace SharpHoundCommonLib.LDAPQueries
+namespace SharpHoundCommonLib.Processors
 {
     public class SPNProcessors
     {
