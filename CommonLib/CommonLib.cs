@@ -7,9 +7,10 @@ namespace SharpHoundCommonLib
     {
         public static void InitializeCommonLib(LDAPConfig config, ILogger log = null, string cachePath = null)
         {
-            LDAPUtils.UpdateLDAPConfig(config);
             if (log != null)
                 Logging.ConfigureLogging(log);
+            
+            LDAPUtils.UpdateLDAPConfig(config);
             
             if (cachePath == null)
                 Cache.CreateNewCache();

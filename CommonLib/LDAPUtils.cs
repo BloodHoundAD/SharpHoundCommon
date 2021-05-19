@@ -793,8 +793,11 @@ namespace SharpHoundCommonLib
                     Logging.Debug("Sending LDAP request");
                     response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
+                    {
                         pageResponse = (PageResultResponseControl) response.Controls
-                            .Where(x => x is PageResultRequestControl).DefaultIfEmpty(null).FirstOrDefault();
+                            .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
+                        Logging.Debug("Response is not null");
+                    }
                 }
                 catch (Exception e)
                 {
@@ -804,6 +807,7 @@ namespace SharpHoundCommonLib
 
                 if (response == null || pageResponse == null)
                 {
+                    Logging.Debug($"Response is {response} and pageResponse is {pageResponse}");
                     continue;
                 }
 

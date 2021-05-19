@@ -5,7 +5,7 @@ namespace SharpHoundCommonLib
 {
     internal static class Logging
     {
-        private static ILogger Logger { get; set; }
+        private static ILogger? Logger { get; set; }
         
         /// <summary>
         /// Configures logging for the common library using an ILogger interface
