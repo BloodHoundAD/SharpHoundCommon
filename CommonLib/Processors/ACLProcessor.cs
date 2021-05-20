@@ -13,20 +13,21 @@ namespace SharpHoundCommonLib.Processors
 {
     public static class ACLProcessor
     {
-        private static readonly Dictionary<Type, string> BaseGuids;
+        private static readonly Dictionary<Label, string> BaseGuids;
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
         
         static ACLProcessor()
         {
             //Create a dictionary with the base GUIDs of each object type
-            BaseGuids = new Dictionary<Type, string>
+            BaseGuids = new Dictionary<Label, string>
             {
-                {typeof(User), "bf967aba-0de6-11d0-a285-00aa003049e2"},
-                {typeof(Computer), "bf967a86-0de6-11d0-a285-00aa003049e2"},
-                {typeof(Group), "bf967a9c-0de6-11d0-a285-00aa003049e2"},
-                {typeof(Domain), "19195a5a-6da0-11d0-afd3-00c04fd930c9"},
-                {typeof(GPO), "f30e3bc2-9ff0-11d1-b603-0000f80367c1"},
-                {typeof(OU), "bf967aa5-0de6-11d0-a285-00aa003049e2"}
+                {Label.User, "bf967aba-0de6-11d0-a285-00aa003049e2"},
+                {Label.Computer, "bf967a86-0de6-11d0-a285-00aa003049e2"},
+                {Label.Group, "bf967a9c-0de6-11d0-a285-00aa003049e2"},
+                {Label.Domain, "19195a5a-6da0-11d0-afd3-00c04fd930c9"},
+                {Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1"},
+                {Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2"},
+                {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"}
             };
         }
 
@@ -106,9 +107,8 @@ namespace SharpHoundCommonLib.Processors
                 if (ace.AccessControlType == AccessControlType.Deny)
                     continue;
 
-                if (!IsAceInherited(ace, BaseGuids[objectType.GetType()]))
+                if (!IsAceInherited(ace, BaseGuids[objectType]))
                     continue;
-                
 
                 var principalSid = PreProcessSID(ace.IdentityReference.Value);
                 

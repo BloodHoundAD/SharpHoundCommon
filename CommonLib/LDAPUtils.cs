@@ -11,6 +11,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -142,17 +143,21 @@ namespace SharpHoundCommonLib
                 var domainSid = parsedSid.AccountDomainSid?.Value.ToUpper();
                 if (domainSid == null)
                     return null;
+                
+                Logging.Debug($"Resolving sid {domainSid}");
 
                 if (Cache.GetDomainSidMapping(domainSid, out var domain))
                     return domain;
 
-                domain = GetDomainNameFromSidLdap(sid);
-                
+                Logging.Debug($"No cache hit for {domainSid}");
+                domain = GetDomainNameFromSidLdap(domainSid);
+                Logging.Debug($"Resolved to {domain}");
+
                 //Cache both to and from so we can use this later
                 if (domain != null)
                 {
-                    Cache.AddSidToDomain(sid, domain);
-                    Cache.AddSidToDomain(domain, sid);
+                    Cache.AddSidToDomain(domainSid, domain);
+                    Cache.AddSidToDomain(domain, domainSid);
                 }
 
                 return domain;
@@ -651,7 +656,7 @@ namespace SharpHoundCommonLib
         public static IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
-            Logging.Debug("Creating ldap connection");
+            Logging.Log(LogLevel.Trace,"Creating ldap connection");
             var task = globalCatalog
                 ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
                 : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
@@ -668,7 +673,7 @@ namespace SharpHoundCommonLib
             
             if (conn == null)
             {
-                Logging.Debug("LDAP connection is null");
+                Logging.Log(LogLevel.Trace,"LDAP connection is null");
                 yield break;
             }
 
@@ -676,7 +681,7 @@ namespace SharpHoundCommonLib
 
             if (request == null)
             {
-                Logging.Debug("Search request is null");
+                Logging.Log(LogLevel.Trace,"Search request is null");
                 yield break;
             }
 
@@ -698,15 +703,22 @@ namespace SharpHoundCommonLib
                 SearchResponse response;
                 try
                 {
-                    Logging.Debug("Sending LDAP request");
+                    Logging.Log(LogLevel.Trace, "Sending LDAP request");
                     response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
                         pageResponse = (PageResultResponseControl) response.Controls
-                            .Where(x => x is PageResultRequestControl).DefaultIfEmpty(null).FirstOrDefault();
+                            .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
+                }
+                catch (LdapException le)
+                {
+                    Logging.Debug($"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}");
+                    Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
+                    yield break;
                 }
                 catch (Exception e)
                 {
-                    Logging.Debug($"Exception in LDAP loop: {e}");
+                    Logging.Log(LogLevel.Trace,$"Exception in LDAP loop: {e}");
+                    Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
                     yield break;
                 }
                 
@@ -746,7 +758,7 @@ namespace SharpHoundCommonLib
         public static IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
-            Logging.Debug("Creating ldap connection");
+            Logging.Log(LogLevel.Trace, "Creating ldap connection");
             var task = globalCatalog
                 ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
                 : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
@@ -763,7 +775,7 @@ namespace SharpHoundCommonLib
             
             if (conn == null)
             {
-                Logging.Debug("LDAP connection is null");
+                Logging.Log(LogLevel.Trace, "LDAP connection is null");
                 yield break;
             }
 
@@ -771,7 +783,7 @@ namespace SharpHoundCommonLib
 
             if (request == null)
             {
-                Logging.Debug("Search request is null");
+                Logging.Log(LogLevel.Trace,"Search request is null");
                 yield break;
             }
 
@@ -790,24 +802,30 @@ namespace SharpHoundCommonLib
                 SearchResponse response;
                 try
                 {
-                    Logging.Debug("Sending LDAP request");
+                    Logging.Log(LogLevel.Trace, "Sending LDAP request");
                     response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
                     {
                         pageResponse = (PageResultResponseControl) response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
-                        Logging.Debug("Response is not null");
                     }
+                }
+                catch (LdapException le)
+                {
+                    Logging.Debug($"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}.");
+                    Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
+                    yield break;
                 }
                 catch (Exception e)
                 {
                     Logging.Debug($"Exception in LDAP loop: {e}");
+                    Logging.Debug(e.InnerException.Message);
+                    Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
                     yield break;
                 }
 
                 if (response == null || pageResponse == null)
                 {
-                    Logging.Debug($"Response is {response} and pageResponse is {pageResponse}");
                     continue;
                 }
 

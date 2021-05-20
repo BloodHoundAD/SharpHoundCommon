@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SharpHoundCommonLib.Enums;
 
@@ -9,14 +10,16 @@ namespace SharpHoundCommonLib
 {
     public class Cache
     {
+        [JsonProperty]
         private readonly ConcurrentDictionary<string, string> _valueToIDCache;
+        [JsonProperty]
         private readonly ConcurrentDictionary<string, Label> _idToTypeCache;
+        [JsonProperty]
         private readonly ConcurrentDictionary<string, string[]> _globalCatalogCache;
+        [JsonProperty]
         private readonly ConcurrentDictionary<string, string> _machineSidCache;
+        [JsonProperty]
         private readonly ConcurrentDictionary<string, string> _sidToDomainCache;
-
-        internal static Cache Instance => CacheInstance;
-        
         private static Cache CacheInstance { get; set; }
         
         private Cache()
@@ -127,6 +130,12 @@ namespace SharpHoundCommonLib
             CacheInstance = new Cache();
         }
 
+        private static string GetCacheStats()
+        {
+            return
+                $"{CacheInstance._idToTypeCache.Count} ID to type mappings.\n {CacheInstance._valueToIDCache.Count} name to SID mappings.\n {CacheInstance._machineSidCache.Count} machine sid mappings.\n {CacheInstance._sidToDomainCache.Count} sid to domain mappings.\n {CacheInstance._globalCatalogCache.Count} global catalog mappings.";
+        }
+
         public static void LoadExistingCache(string filePath)
         {
             if (!File.Exists(filePath))
@@ -142,7 +151,7 @@ namespace SharpHoundCommonLib
                 var json = new UTF8Encoding(true).GetString(bytes);
                 CacheInstance = JsonConvert.DeserializeObject<Cache>(json);
                 Logging.Log(
-                    $"Cache file loaded! Loaded {CacheInstance._idToTypeCache.Count} SID to type mappings and {CacheInstance._valueToIDCache.Count} name to SID mappings.");
+                    $"Cache file loaded!\n {GetCacheStats()}");
             }
             catch (Exception e)
             {
@@ -156,6 +165,7 @@ namespace SharpHoundCommonLib
             var serialized = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(CacheInstance));
             using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
             stream.Write(serialized, 0, serialized.Length);
+            Logging.Log(LogLevel.Information, $"Wrote cache file to {filePath}\n{GetCacheStats()}");
         }
     }
 }
