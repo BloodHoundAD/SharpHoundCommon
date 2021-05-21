@@ -1,0 +1,634 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  commentId: T:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  id: LDAPUtils.DSGETDCNAME_FLAGS
+  parent: CommonLib
+  children:
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  - CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  langs:
+  - csharp
+  - vb
+  name: LDAPUtils.DSGETDCNAME_FLAGS
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DSGETDCNAME_FLAGS
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 993
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum DSGETDCNAME_FLAGS : uint
+    content.vb: >-
+      <Flags>
+
+      Public Enum DSGETDCNAME_FLAGS As UInteger
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  id: DS_FORCE_REDISCOVERY
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_FORCE_REDISCOVERY
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_FORCE_REDISCOVERY
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 996
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_FORCE_REDISCOVERY = 1U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_FORCE_REDISCOVERY = 1UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  id: DS_DIRECTORY_SERVICE_REQUIRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_DIRECTORY_SERVICE_REQUIRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_DIRECTORY_SERVICE_REQUIRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 997
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_DIRECTORY_SERVICE_REQUIRED = 16U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_DIRECTORY_SERVICE_REQUIRED = 16UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  id: DS_DIRECTORY_SERVICE_PREFERRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_DIRECTORY_SERVICE_PREFERRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_DIRECTORY_SERVICE_PREFERRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 998
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_DIRECTORY_SERVICE_PREFERRED = 32U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_DIRECTORY_SERVICE_PREFERRED = 32UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  id: DS_GC_SERVER_REQUIRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_GC_SERVER_REQUIRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_GC_SERVER_REQUIRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 999
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_GC_SERVER_REQUIRED = 64U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_GC_SERVER_REQUIRED = 64UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  id: DS_PDC_REQUIRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_PDC_REQUIRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_PDC_REQUIRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1000
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_PDC_REQUIRED = 128U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_PDC_REQUIRED = 128UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  id: DS_BACKGROUND_ONLY
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_BACKGROUND_ONLY
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_BACKGROUND_ONLY
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1001
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_BACKGROUND_ONLY = 256U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_BACKGROUND_ONLY = 256UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  id: DS_IP_REQUIRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_IP_REQUIRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_IP_REQUIRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1002
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_IP_REQUIRED = 512U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_IP_REQUIRED = 512UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  id: DS_KDC_REQUIRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_KDC_REQUIRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_KDC_REQUIRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1003
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_KDC_REQUIRED = 1024U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_KDC_REQUIRED = 1024UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  id: DS_TIMESERV_REQUIRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_TIMESERV_REQUIRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_TIMESERV_REQUIRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1004
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_TIMESERV_REQUIRED = 2048U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_TIMESERV_REQUIRED = 2048UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  id: DS_WRITABLE_REQUIRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_WRITABLE_REQUIRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_WRITABLE_REQUIRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1005
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_WRITABLE_REQUIRED = 4096U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_WRITABLE_REQUIRED = 4096UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  id: DS_GOOD_TIMESERV_PREFERRED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_GOOD_TIMESERV_PREFERRED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_GOOD_TIMESERV_PREFERRED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1006
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_GOOD_TIMESERV_PREFERRED = 8192U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_GOOD_TIMESERV_PREFERRED = 8192UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  id: DS_AVOID_SELF
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_AVOID_SELF
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_AVOID_SELF
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1007
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_AVOID_SELF = 16384U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_AVOID_SELF = 16384UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  id: DS_ONLY_LDAP_NEEDED
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_ONLY_LDAP_NEEDED
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_ONLY_LDAP_NEEDED
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1008
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_ONLY_LDAP_NEEDED = 32768U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_ONLY_LDAP_NEEDED = 32768UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  id: DS_IS_FLAT_NAME
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_IS_FLAT_NAME
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_IS_FLAT_NAME
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1009
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_IS_FLAT_NAME = 65536U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_IS_FLAT_NAME = 65536UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  id: DS_IS_DNS_NAME
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_IS_DNS_NAME
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_IS_DNS_NAME
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1010
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_IS_DNS_NAME = 131072U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_IS_DNS_NAME = 131072UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  id: DS_RETURN_DNS_NAME
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_RETURN_DNS_NAME
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_RETURN_DNS_NAME
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1011
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_RETURN_DNS_NAME = 1073741824U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_RETURN_DNS_NAME = 1073741824UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  id: DS_RETURN_FLAT_NAME
+  parent: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_RETURN_FLAT_NAME
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/LDAPUtils.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DS_RETURN_FLAT_NAME
+    path: ../src/CommonLib/LDAPUtils.cs
+    startLine: 1012
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: DS_RETURN_FLAT_NAME = 2147483648U
+    return:
+      type: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+    content.vb: DS_RETURN_FLAT_NAME = 2147483648UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CommonLib
+  commentId: N:CommonLib
+  name: CommonLib
+  nameWithType: CommonLib
+  fullName: CommonLib
+- uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  commentId: T:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
+  parent: CommonLib
+  name: LDAPUtils.DSGETDCNAME_FLAGS
+  nameWithType: LDAPUtils.DSGETDCNAME_FLAGS
+  fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS

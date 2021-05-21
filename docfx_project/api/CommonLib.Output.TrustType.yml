@@ -1,0 +1,211 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Output.TrustType
+  commentId: T:CommonLib.Output.TrustType
+  id: TrustType
+  parent: CommonLib.Output
+  children:
+  - CommonLib.Output.TrustType.CrossLink
+  - CommonLib.Output.TrustType.External
+  - CommonLib.Output.TrustType.Forest
+  - CommonLib.Output.TrustType.ParentChild
+  - CommonLib.Output.TrustType.Unknown
+  langs:
+  - csharp
+  - vb
+  name: TrustType
+  nameWithType: TrustType
+  fullName: CommonLib.Output.TrustType
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: TrustType
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 20
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public enum TrustType
+    content.vb: Public Enum TrustType
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CommonLib.Output.TrustType.ParentChild
+  commentId: F:CommonLib.Output.TrustType.ParentChild
+  id: ParentChild
+  parent: CommonLib.Output.TrustType
+  langs:
+  - csharp
+  - vb
+  name: ParentChild
+  nameWithType: TrustType.ParentChild
+  fullName: CommonLib.Output.TrustType.ParentChild
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ParentChild
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 22
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: ParentChild = 0
+    return:
+      type: CommonLib.Output.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.TrustType.CrossLink
+  commentId: F:CommonLib.Output.TrustType.CrossLink
+  id: CrossLink
+  parent: CommonLib.Output.TrustType
+  langs:
+  - csharp
+  - vb
+  name: CrossLink
+  nameWithType: TrustType.CrossLink
+  fullName: CommonLib.Output.TrustType.CrossLink
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: CrossLink
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 23
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: CrossLink = 1
+    return:
+      type: CommonLib.Output.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.TrustType.Forest
+  commentId: F:CommonLib.Output.TrustType.Forest
+  id: Forest
+  parent: CommonLib.Output.TrustType
+  langs:
+  - csharp
+  - vb
+  name: Forest
+  nameWithType: TrustType.Forest
+  fullName: CommonLib.Output.TrustType.Forest
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Forest
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 24
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: Forest = 2
+    return:
+      type: CommonLib.Output.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.TrustType.External
+  commentId: F:CommonLib.Output.TrustType.External
+  id: External
+  parent: CommonLib.Output.TrustType
+  langs:
+  - csharp
+  - vb
+  name: External
+  nameWithType: TrustType.External
+  fullName: CommonLib.Output.TrustType.External
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: External
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 25
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: External = 3
+    return:
+      type: CommonLib.Output.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.TrustType.Unknown
+  commentId: F:CommonLib.Output.TrustType.Unknown
+  id: Unknown
+  parent: CommonLib.Output.TrustType
+  langs:
+  - csharp
+  - vb
+  name: Unknown
+  nameWithType: TrustType.Unknown
+  fullName: CommonLib.Output.TrustType.Unknown
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Unknown
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 26
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: Unknown = 4
+    return:
+      type: CommonLib.Output.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CommonLib.Output
+  commentId: N:CommonLib.Output
+  name: CommonLib.Output
+  nameWithType: CommonLib.Output
+  fullName: CommonLib.Output
+- uid: CommonLib.Output.TrustType
+  commentId: T:CommonLib.Output.TrustType
+  parent: CommonLib.Output
+  name: TrustType
+  nameWithType: TrustType
+  fullName: CommonLib.Output.TrustType

@@ -1,0 +1,514 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Output.TypedPrincipal
+  commentId: T:CommonLib.Output.TypedPrincipal
+  id: TypedPrincipal
+  parent: CommonLib.Output
+  children:
+  - CommonLib.Output.TypedPrincipal.#ctor
+  - CommonLib.Output.TypedPrincipal.#ctor(System.String,CommonLib.Enums.Label)
+  - CommonLib.Output.TypedPrincipal.ObjectIdentifier
+  - CommonLib.Output.TypedPrincipal.ObjectType
+  langs:
+  - csharp
+  - vb
+  name: TypedPrincipal
+  nameWithType: TypedPrincipal
+  fullName: CommonLib.Output.TypedPrincipal
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/TypedPrincipal.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: TypedPrincipal
+    path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
+    startLine: 4
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public class TypedPrincipal
+    content.vb: Public Class TypedPrincipal
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CommonLib.Output.TypedPrincipal.#ctor
+  commentId: M:CommonLib.Output.TypedPrincipal.#ctor
+  id: '#ctor'
+  parent: CommonLib.Output.TypedPrincipal
+  langs:
+  - csharp
+  - vb
+  name: TypedPrincipal()
+  nameWithType: TypedPrincipal.TypedPrincipal()
+  fullName: CommonLib.Output.TypedPrincipal.TypedPrincipal()
+  type: Constructor
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/TypedPrincipal.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: .ctor
+    path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
+    startLine: 6
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public TypedPrincipal()
+    content.vb: Public Sub New
+  overload: CommonLib.Output.TypedPrincipal.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.TypedPrincipal.#ctor(System.String,CommonLib.Enums.Label)
+  commentId: M:CommonLib.Output.TypedPrincipal.#ctor(System.String,CommonLib.Enums.Label)
+  id: '#ctor(System.String,CommonLib.Enums.Label)'
+  parent: CommonLib.Output.TypedPrincipal
+  langs:
+  - csharp
+  - vb
+  name: TypedPrincipal(String, Label)
+  nameWithType: TypedPrincipal.TypedPrincipal(String, Label)
+  fullName: CommonLib.Output.TypedPrincipal.TypedPrincipal(System.String, CommonLib.Enums.Label)
+  type: Constructor
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/TypedPrincipal.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: .ctor
+    path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
+    startLine: 11
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public TypedPrincipal(string objectIdentifier, Label type)
+    parameters:
+    - id: objectIdentifier
+      type: System.String
+    - id: type
+      type: CommonLib.Enums.Label
+    content.vb: Public Sub New(objectIdentifier As String, type As Label)
+  overload: CommonLib.Output.TypedPrincipal.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.TypedPrincipal.ObjectIdentifier
+  commentId: P:CommonLib.Output.TypedPrincipal.ObjectIdentifier
+  id: ObjectIdentifier
+  parent: CommonLib.Output.TypedPrincipal
+  langs:
+  - csharp
+  - vb
+  name: ObjectIdentifier
+  nameWithType: TypedPrincipal.ObjectIdentifier
+  fullName: CommonLib.Output.TypedPrincipal.ObjectIdentifier
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/TypedPrincipal.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ObjectIdentifier
+    path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
+    startLine: 17
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public string ObjectIdentifier { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ObjectIdentifier As String
+  overload: CommonLib.Output.TypedPrincipal.ObjectIdentifier*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.TypedPrincipal.ObjectType
+  commentId: P:CommonLib.Output.TypedPrincipal.ObjectType
+  id: ObjectType
+  parent: CommonLib.Output.TypedPrincipal
+  langs:
+  - csharp
+  - vb
+  name: ObjectType
+  nameWithType: TypedPrincipal.ObjectType
+  fullName: CommonLib.Output.TypedPrincipal.ObjectType
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/TypedPrincipal.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ObjectType
+    path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
+    startLine: 18
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public Label ObjectType { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Enums.Label
+    content.vb: Public Property ObjectType As Label
+  overload: CommonLib.Output.TypedPrincipal.ObjectType*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: CommonLib.Output
+  commentId: N:CommonLib.Output
+  name: CommonLib.Output
+  nameWithType: CommonLib.Output
+  fullName: CommonLib.Output
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CommonLib.Output.TypedPrincipal.#ctor*
+  commentId: Overload:CommonLib.Output.TypedPrincipal.#ctor
+  name: TypedPrincipal
+  nameWithType: TypedPrincipal.TypedPrincipal
+  fullName: CommonLib.Output.TypedPrincipal.TypedPrincipal
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CommonLib.Enums.Label
+  commentId: T:CommonLib.Enums.Label
+  parent: CommonLib.Enums
+  name: Label
+  nameWithType: Label
+  fullName: CommonLib.Enums.Label
+- uid: CommonLib.Enums
+  commentId: N:CommonLib.Enums
+  name: CommonLib.Enums
+  nameWithType: CommonLib.Enums
+  fullName: CommonLib.Enums
+- uid: CommonLib.Output.TypedPrincipal.ObjectIdentifier*
+  commentId: Overload:CommonLib.Output.TypedPrincipal.ObjectIdentifier
+  name: ObjectIdentifier
+  nameWithType: TypedPrincipal.ObjectIdentifier
+  fullName: CommonLib.Output.TypedPrincipal.ObjectIdentifier
+- uid: CommonLib.Output.TypedPrincipal.ObjectType*
+  commentId: Overload:CommonLib.Output.TypedPrincipal.ObjectType
+  name: ObjectType
+  nameWithType: TypedPrincipal.ObjectType
+  fullName: CommonLib.Output.TypedPrincipal.ObjectType

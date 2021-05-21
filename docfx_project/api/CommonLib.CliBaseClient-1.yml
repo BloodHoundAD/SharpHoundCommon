@@ -1,0 +1,769 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.CliBaseClient`1
+  commentId: T:CommonLib.CliBaseClient`1
+  id: CliBaseClient`1
+  parent: CommonLib
+  children:
+  - CommonLib.CliBaseClient`1.#ctor(CommonLib.ICliConsoleFacade)
+  - CommonLib.CliBaseClient`1.CheckCancellation
+  - CommonLib.CliBaseClient`1.Init(CommonLib.Options{`0})
+  - CommonLib.CliBaseClient`1.LDAPConnectionTest
+  - CommonLib.CliBaseClient`1.MainLoop
+  - CommonLib.CliBaseClient`1.Start``1(CommonLib.Options{``0})
+  langs:
+  - csharp
+  - vb
+  name: CliBaseClient<CollectionMethodResolved>
+  nameWithType: CliBaseClient<CollectionMethodResolved>
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/CliBaseClient.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: CliBaseClient
+    path: ../src/CommonLib/CliBaseClient.cs
+    startLine: 24
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\n\n"
+  example: []
+  syntax:
+    content: >-
+      public abstract class CliBaseClient<CollectionMethodResolved>
+          where CollectionMethodResolved : class
+    typeParameters:
+    - id: CollectionMethodResolved
+      description: ''
+    content.vb: Public MustInherit Class CliBaseClient(Of CollectionMethodResolved As Class)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved)
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved)
+  name.vb: CliBaseClient(Of CollectionMethodResolved)
+- uid: CommonLib.CliBaseClient`1.#ctor(CommonLib.ICliConsoleFacade)
+  commentId: M:CommonLib.CliBaseClient`1.#ctor(CommonLib.ICliConsoleFacade)
+  id: '#ctor(CommonLib.ICliConsoleFacade)'
+  parent: CommonLib.CliBaseClient`1
+  langs:
+  - csharp
+  - vb
+  name: CliBaseClient(ICliConsoleFacade)
+  nameWithType: CliBaseClient<CollectionMethodResolved>.CliBaseClient(ICliConsoleFacade)
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.CliBaseClient(CommonLib.ICliConsoleFacade)
+  type: Constructor
+  source:
+    remote:
+      path: src/CommonLib/CliBaseClient.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: .ctor
+    path: ../src/CommonLib/CliBaseClient.cs
+    startLine: 33
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: public CliBaseClient(ICliConsoleFacade console)
+    parameters:
+    - id: console
+      type: CommonLib.ICliConsoleFacade
+    content.vb: Public Sub New(console As ICliConsoleFacade)
+  overload: CommonLib.CliBaseClient`1.#ctor*
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).CliBaseClient(ICliConsoleFacade)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).CliBaseClient(CommonLib.ICliConsoleFacade)
+- uid: CommonLib.CliBaseClient`1.Init(CommonLib.Options{`0})
+  commentId: M:CommonLib.CliBaseClient`1.Init(CommonLib.Options{`0})
+  id: Init(CommonLib.Options{`0})
+  parent: CommonLib.CliBaseClient`1
+  langs:
+  - csharp
+  - vb
+  name: Init(Options<CollectionMethodResolved>)
+  nameWithType: CliBaseClient<CollectionMethodResolved>.Init(Options<CollectionMethodResolved>)
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.Init(CommonLib.Options<CollectionMethodResolved>)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/CliBaseClient.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Init
+    path: ../src/CommonLib/CliBaseClient.cs
+    startLine: 35
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: public void Init(Options<CollectionMethodResolved> o)
+    parameters:
+    - id: o
+      type: CommonLib.Options{{CollectionMethodResolved}}
+    content.vb: Public Sub Init(o As Options(Of CollectionMethodResolved))
+  overload: CommonLib.CliBaseClient`1.Init*
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).Init(Options(Of CollectionMethodResolved))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).Init(CommonLib.Options(Of CollectionMethodResolved))
+  name.vb: Init(Options(Of CollectionMethodResolved))
+- uid: CommonLib.CliBaseClient`1.Start``1(CommonLib.Options{``0})
+  commentId: M:CommonLib.CliBaseClient`1.Start``1(CommonLib.Options{``0})
+  id: Start``1(CommonLib.Options{``0})
+  parent: CommonLib.CliBaseClient`1
+  langs:
+  - csharp
+  - vb
+  name: Start<T>(Options<T>)
+  nameWithType: CliBaseClient<CollectionMethodResolved>.Start<T>(Options<T>)
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.Start<T>(CommonLib.Options<T>)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/CliBaseClient.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Start
+    path: ../src/CommonLib/CliBaseClient.cs
+    startLine: 112
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\n\n"
+  example: []
+  syntax:
+    content: public abstract Task Start<T>(Options<T> options)
+    parameters:
+    - id: options
+      type: CommonLib.Options{{T}}
+      description: ''
+    typeParameters:
+    - id: T
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public MustOverride Function Start(Of T)(options As Options(Of T)) As Task
+  overload: CommonLib.CliBaseClient`1.Start*
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).Start(Of T)(Options(Of T))
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).Start(Of T)(CommonLib.Options(Of T))
+  name.vb: Start(Of T)(Options(Of T))
+- uid: CommonLib.CliBaseClient`1.LDAPConnectionTest
+  commentId: M:CommonLib.CliBaseClient`1.LDAPConnectionTest
+  id: LDAPConnectionTest
+  parent: CommonLib.CliBaseClient`1
+  langs:
+  - csharp
+  - vb
+  name: LDAPConnectionTest()
+  nameWithType: CliBaseClient<CollectionMethodResolved>.LDAPConnectionTest()
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.LDAPConnectionTest()
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/CliBaseClient.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: LDAPConnectionTest
+    path: ../src/CommonLib/CliBaseClient.cs
+    startLine: 119
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\n\n"
+  example: []
+  syntax:
+    content: public virtual Task LDAPConnectionTest()
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Overridable Function LDAPConnectionTest As Task
+  overload: CommonLib.CliBaseClient`1.LDAPConnectionTest*
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).LDAPConnectionTest()
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).LDAPConnectionTest()
+- uid: CommonLib.CliBaseClient`1.CheckCancellation
+  commentId: M:CommonLib.CliBaseClient`1.CheckCancellation
+  id: CheckCancellation
+  parent: CommonLib.CliBaseClient`1
+  langs:
+  - csharp
+  - vb
+  name: CheckCancellation()
+  nameWithType: CliBaseClient<CollectionMethodResolved>.CheckCancellation()
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.CheckCancellation()
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/CliBaseClient.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: CheckCancellation
+    path: ../src/CommonLib/CliBaseClient.cs
+    startLine: 128
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\n\n"
+  example: []
+  syntax:
+    content: public virtual Task CheckCancellation()
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Overridable Function CheckCancellation As Task
+  overload: CommonLib.CliBaseClient`1.CheckCancellation*
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).CheckCancellation()
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).CheckCancellation()
+- uid: CommonLib.CliBaseClient`1.MainLoop
+  commentId: M:CommonLib.CliBaseClient`1.MainLoop
+  id: MainLoop
+  parent: CommonLib.CliBaseClient`1
+  langs:
+  - csharp
+  - vb
+  name: MainLoop()
+  nameWithType: CliBaseClient<CollectionMethodResolved>.MainLoop()
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.MainLoop()
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/CliBaseClient.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: MainLoop
+    path: ../src/CommonLib/CliBaseClient.cs
+    startLine: 137
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\n\n"
+  example: []
+  syntax:
+    content: public virtual Task MainLoop()
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Overridable Function MainLoop As Task
+  overload: CommonLib.CliBaseClient`1.MainLoop*
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).MainLoop()
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).MainLoop()
+references:
+- uid: CommonLib
+  commentId: N:CommonLib
+  name: CommonLib
+  nameWithType: CommonLib
+  fullName: CommonLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CommonLib.CliBaseClient`1.#ctor*
+  commentId: Overload:CommonLib.CliBaseClient`1.#ctor
+  name: CliBaseClient
+  nameWithType: CliBaseClient<CollectionMethodResolved>.CliBaseClient
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.CliBaseClient
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).CliBaseClient
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).CliBaseClient
+- uid: CommonLib.ICliConsoleFacade
+  commentId: T:CommonLib.ICliConsoleFacade
+  parent: CommonLib
+  name: ICliConsoleFacade
+  nameWithType: ICliConsoleFacade
+  fullName: CommonLib.ICliConsoleFacade
+- uid: CommonLib.CliBaseClient`1.Init*
+  commentId: Overload:CommonLib.CliBaseClient`1.Init
+  name: Init
+  nameWithType: CliBaseClient<CollectionMethodResolved>.Init
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.Init
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).Init
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).Init
+- uid: CommonLib.Options{{CollectionMethodResolved}}
+  commentId: T:CommonLib.Options{`0}
+  parent: CommonLib
+  definition: CommonLib.Options`1
+  name: Options<CollectionMethodResolved>
+  nameWithType: Options<CollectionMethodResolved>
+  fullName: CommonLib.Options<CollectionMethodResolved>
+  nameWithType.vb: Options(Of CollectionMethodResolved)
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved)
+  name.vb: Options(Of CollectionMethodResolved)
+  spec.csharp:
+  - uid: CommonLib.Options`1
+    name: Options
+    nameWithType: Options
+    fullName: CommonLib.Options
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: CollectionMethodResolved
+    nameWithType: CollectionMethodResolved
+    fullName: CollectionMethodResolved
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: CommonLib.Options`1
+    name: Options
+    nameWithType: Options
+    fullName: CommonLib.Options
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: CollectionMethodResolved
+    nameWithType: CollectionMethodResolved
+    fullName: CollectionMethodResolved
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CommonLib.Options`1
+  commentId: T:CommonLib.Options`1
+  parent: CommonLib
+  name: Options<CollectionMethodResolved>
+  nameWithType: Options<CollectionMethodResolved>
+  fullName: CommonLib.Options<CollectionMethodResolved>
+  nameWithType.vb: Options(Of CollectionMethodResolved)
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved)
+  name.vb: Options(Of CollectionMethodResolved)
+  spec.csharp:
+  - uid: CommonLib.Options`1
+    name: Options
+    nameWithType: Options
+    fullName: CommonLib.Options
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: CollectionMethodResolved
+    nameWithType: CollectionMethodResolved
+    fullName: CollectionMethodResolved
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: CommonLib.Options`1
+    name: Options
+    nameWithType: Options
+    fullName: CommonLib.Options
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: CollectionMethodResolved
+    nameWithType: CollectionMethodResolved
+    fullName: CollectionMethodResolved
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CommonLib.CliBaseClient`1.Start*
+  commentId: Overload:CommonLib.CliBaseClient`1.Start
+  name: Start
+  nameWithType: CliBaseClient<CollectionMethodResolved>.Start
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.Start
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).Start
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).Start
+- uid: CommonLib.Options{{T}}
+  commentId: T:CommonLib.Options{``0}
+  parent: CommonLib
+  definition: CommonLib.Options`1
+  name: Options<T>
+  nameWithType: Options<T>
+  fullName: CommonLib.Options<T>
+  nameWithType.vb: Options(Of T)
+  fullName.vb: CommonLib.Options(Of T)
+  name.vb: Options(Of T)
+  spec.csharp:
+  - uid: CommonLib.Options`1
+    name: Options
+    nameWithType: Options
+    fullName: CommonLib.Options
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: CommonLib.Options`1
+    name: Options
+    nameWithType: Options
+    fullName: CommonLib.Options
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+- uid: CommonLib.CliBaseClient`1.LDAPConnectionTest*
+  commentId: Overload:CommonLib.CliBaseClient`1.LDAPConnectionTest
+  name: LDAPConnectionTest
+  nameWithType: CliBaseClient<CollectionMethodResolved>.LDAPConnectionTest
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.LDAPConnectionTest
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).LDAPConnectionTest
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).LDAPConnectionTest
+- uid: CommonLib.CliBaseClient`1.CheckCancellation*
+  commentId: Overload:CommonLib.CliBaseClient`1.CheckCancellation
+  name: CheckCancellation
+  nameWithType: CliBaseClient<CollectionMethodResolved>.CheckCancellation
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.CheckCancellation
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).CheckCancellation
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).CheckCancellation
+- uid: CommonLib.CliBaseClient`1.MainLoop*
+  commentId: Overload:CommonLib.CliBaseClient`1.MainLoop
+  name: MainLoop
+  nameWithType: CliBaseClient<CollectionMethodResolved>.MainLoop
+  fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.MainLoop
+  nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).MainLoop
+  fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).MainLoop

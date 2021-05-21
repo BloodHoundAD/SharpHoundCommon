@@ -1,0 +1,451 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Helpers
+  commentId: T:CommonLib.Helpers
+  id: Helpers
+  parent: CommonLib
+  children:
+  - CommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
+  - CommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
+  langs:
+  - csharp
+  - vb
+  name: Helpers
+  nameWithType: Helpers
+  fullName: CommonLib.Helpers
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Helpers
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 12
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: public static class Helpers
+    content.vb: Public Module Helpers
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: CommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
+  commentId: M:CommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
+  id: ConvertFileTimeToUnixEpoch(System.String)
+  parent: CommonLib.Helpers
+  langs:
+  - csharp
+  - vb
+  name: ConvertFileTimeToUnixEpoch(String)
+  nameWithType: Helpers.ConvertFileTimeToUnixEpoch(String)
+  fullName: CommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ConvertFileTimeToUnixEpoch
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 122
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nConverts a windows file time to unix epoch time\n"
+  example: []
+  syntax:
+    content: public static long ConvertFileTimeToUnixEpoch(string ldapTime)
+    parameters:
+    - id: ldapTime
+      type: System.String
+      description: ''
+    return:
+      type: System.Int64
+      description: ''
+    content.vb: Public Shared Function ConvertFileTimeToUnixEpoch(ldapTime As String) As Long
+  overload: CommonLib.Helpers.ConvertFileTimeToUnixEpoch*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
+  commentId: M:CommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
+  id: ConvertTimestampToUnixEpoch(System.String)
+  parent: CommonLib.Helpers
+  langs:
+  - csharp
+  - vb
+  name: ConvertTimestampToUnixEpoch(String)
+  nameWithType: Helpers.ConvertTimestampToUnixEpoch(String)
+  fullName: CommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ConvertTimestampToUnixEpoch
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 150
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nConverts a windows file time to unix epoch time\n"
+  example: []
+  syntax:
+    content: public static long ConvertTimestampToUnixEpoch(string ldapTime)
+    parameters:
+    - id: ldapTime
+      type: System.String
+      description: ''
+    return:
+      type: System.Int64
+      description: ''
+    content.vb: Public Shared Function ConvertTimestampToUnixEpoch(ldapTime As String) As Long
+  overload: CommonLib.Helpers.ConvertTimestampToUnixEpoch*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: CommonLib
+  commentId: N:CommonLib
+  name: CommonLib
+  nameWithType: CommonLib
+  fullName: CommonLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CommonLib.Helpers.ConvertFileTimeToUnixEpoch*
+  commentId: Overload:CommonLib.Helpers.ConvertFileTimeToUnixEpoch
+  name: ConvertFileTimeToUnixEpoch
+  nameWithType: Helpers.ConvertFileTimeToUnixEpoch
+  fullName: CommonLib.Helpers.ConvertFileTimeToUnixEpoch
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  name: Int64
+  nameWithType: Int64
+  fullName: System.Int64
+- uid: CommonLib.Helpers.ConvertTimestampToUnixEpoch*
+  commentId: Overload:CommonLib.Helpers.ConvertTimestampToUnixEpoch
+  name: ConvertTimestampToUnixEpoch
+  nameWithType: Helpers.ConvertTimestampToUnixEpoch
+  fullName: CommonLib.Helpers.ConvertTimestampToUnixEpoch

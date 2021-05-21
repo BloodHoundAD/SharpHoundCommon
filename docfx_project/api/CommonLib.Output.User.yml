@@ -1,0 +1,624 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Output.User
+  commentId: T:CommonLib.Output.User
+  id: User
+  parent: CommonLib.Output
+  children:
+  - CommonLib.Output.User.AllowedToDelegate
+  - CommonLib.Output.User.HasSIDHistory
+  - CommonLib.Output.User.PrimaryGroupSID
+  - CommonLib.Output.User.SpnTargets
+  langs:
+  - csharp
+  - vb
+  name: User
+  nameWithType: User
+  fullName: CommonLib.Output.User
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/User.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: User
+    path: ../src/CommonLib/OutputTypes/User.cs
+    startLine: 2
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: 'public class User : OutputBase'
+    content.vb: >-
+      Public Class User
+          Inherits OutputBase
+  inheritance:
+  - System.Object
+  - CommonLib.Output.OutputBase
+  inheritedMembers:
+  - CommonLib.Output.OutputBase.Aces
+  - CommonLib.Output.OutputBase.ObjectIdentifier
+  - CommonLib.Output.OutputBase.Properties
+  - CommonLib.Output.OutputBase.IsDeleted
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CommonLib.Output.User.AllowedToDelegate
+  commentId: P:CommonLib.Output.User.AllowedToDelegate
+  id: AllowedToDelegate
+  parent: CommonLib.Output.User
+  langs:
+  - csharp
+  - vb
+  name: AllowedToDelegate
+  nameWithType: User.AllowedToDelegate
+  fullName: CommonLib.Output.User.AllowedToDelegate
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/User.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: AllowedToDelegate
+    path: ../src/CommonLib/OutputTypes/User.cs
+    startLine: 4
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public string[] AllowedToDelegate { get; set; }
+    parameters: []
+    return:
+      type: System.String[]
+    content.vb: Public Property AllowedToDelegate As String()
+  overload: CommonLib.Output.User.AllowedToDelegate*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.User.PrimaryGroupSID
+  commentId: P:CommonLib.Output.User.PrimaryGroupSID
+  id: PrimaryGroupSID
+  parent: CommonLib.Output.User
+  langs:
+  - csharp
+  - vb
+  name: PrimaryGroupSID
+  nameWithType: User.PrimaryGroupSID
+  fullName: CommonLib.Output.User.PrimaryGroupSID
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/User.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PrimaryGroupSID
+    path: ../src/CommonLib/OutputTypes/User.cs
+    startLine: 5
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public string PrimaryGroupSID { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property PrimaryGroupSID As String
+  overload: CommonLib.Output.User.PrimaryGroupSID*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.User.HasSIDHistory
+  commentId: P:CommonLib.Output.User.HasSIDHistory
+  id: HasSIDHistory
+  parent: CommonLib.Output.User
+  langs:
+  - csharp
+  - vb
+  name: HasSIDHistory
+  nameWithType: User.HasSIDHistory
+  fullName: CommonLib.Output.User.HasSIDHistory
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/User.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: HasSIDHistory
+    path: ../src/CommonLib/OutputTypes/User.cs
+    startLine: 6
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public TypedPrincipal[] HasSIDHistory { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.TypedPrincipal[]
+    content.vb: Public Property HasSIDHistory As TypedPrincipal()
+  overload: CommonLib.Output.User.HasSIDHistory*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.User.SpnTargets
+  commentId: P:CommonLib.Output.User.SpnTargets
+  id: SpnTargets
+  parent: CommonLib.Output.User
+  langs:
+  - csharp
+  - vb
+  name: SpnTargets
+  nameWithType: User.SpnTargets
+  fullName: CommonLib.Output.User.SpnTargets
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/User.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: SpnTargets
+    path: ../src/CommonLib/OutputTypes/User.cs
+    startLine: 7
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public SPNTarget[] SpnTargets { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.SPNTarget[]
+    content.vb: Public Property SpnTargets As SPNTarget()
+  overload: CommonLib.Output.User.SpnTargets*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: CommonLib.Output
+  commentId: N:CommonLib.Output
+  name: CommonLib.Output
+  nameWithType: CommonLib.Output
+  fullName: CommonLib.Output
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: CommonLib.Output.OutputBase
+  commentId: T:CommonLib.Output.OutputBase
+  parent: CommonLib.Output
+  name: OutputBase
+  nameWithType: OutputBase
+  fullName: CommonLib.Output.OutputBase
+- uid: CommonLib.Output.OutputBase.Aces
+  commentId: P:CommonLib.Output.OutputBase.Aces
+  parent: CommonLib.Output.OutputBase
+  name: Aces
+  nameWithType: OutputBase.Aces
+  fullName: CommonLib.Output.OutputBase.Aces
+- uid: CommonLib.Output.OutputBase.ObjectIdentifier
+  commentId: P:CommonLib.Output.OutputBase.ObjectIdentifier
+  parent: CommonLib.Output.OutputBase
+  name: ObjectIdentifier
+  nameWithType: OutputBase.ObjectIdentifier
+  fullName: CommonLib.Output.OutputBase.ObjectIdentifier
+- uid: CommonLib.Output.OutputBase.Properties
+  commentId: F:CommonLib.Output.OutputBase.Properties
+  parent: CommonLib.Output.OutputBase
+  name: Properties
+  nameWithType: OutputBase.Properties
+  fullName: CommonLib.Output.OutputBase.Properties
+- uid: CommonLib.Output.OutputBase.IsDeleted
+  commentId: P:CommonLib.Output.OutputBase.IsDeleted
+  parent: CommonLib.Output.OutputBase
+  name: IsDeleted
+  nameWithType: OutputBase.IsDeleted
+  fullName: CommonLib.Output.OutputBase.IsDeleted
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CommonLib.Output.User.AllowedToDelegate*
+  commentId: Overload:CommonLib.Output.User.AllowedToDelegate
+  name: AllowedToDelegate
+  nameWithType: User.AllowedToDelegate
+  fullName: CommonLib.Output.User.AllowedToDelegate
+- uid: System.String[]
+  isExternal: true
+  name: String[]
+  nameWithType: String[]
+  fullName: System.String[]
+  nameWithType.vb: String()
+  fullName.vb: System.String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CommonLib.Output.User.PrimaryGroupSID*
+  commentId: Overload:CommonLib.Output.User.PrimaryGroupSID
+  name: PrimaryGroupSID
+  nameWithType: User.PrimaryGroupSID
+  fullName: CommonLib.Output.User.PrimaryGroupSID
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CommonLib.Output.User.HasSIDHistory*
+  commentId: Overload:CommonLib.Output.User.HasSIDHistory
+  name: HasSIDHistory
+  nameWithType: User.HasSIDHistory
+  fullName: CommonLib.Output.User.HasSIDHistory
+- uid: CommonLib.Output.TypedPrincipal[]
+  isExternal: true
+  name: TypedPrincipal[]
+  nameWithType: TypedPrincipal[]
+  fullName: CommonLib.Output.TypedPrincipal[]
+  nameWithType.vb: TypedPrincipal()
+  fullName.vb: CommonLib.Output.TypedPrincipal()
+  name.vb: TypedPrincipal()
+  spec.csharp:
+  - uid: CommonLib.Output.TypedPrincipal
+    name: TypedPrincipal
+    nameWithType: TypedPrincipal
+    fullName: CommonLib.Output.TypedPrincipal
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CommonLib.Output.TypedPrincipal
+    name: TypedPrincipal
+    nameWithType: TypedPrincipal
+    fullName: CommonLib.Output.TypedPrincipal
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CommonLib.Output.User.SpnTargets*
+  commentId: Overload:CommonLib.Output.User.SpnTargets
+  name: SpnTargets
+  nameWithType: User.SpnTargets
+  fullName: CommonLib.Output.User.SpnTargets
+- uid: CommonLib.Output.SPNTarget[]
+  isExternal: true
+  name: SPNTarget[]
+  nameWithType: SPNTarget[]
+  fullName: CommonLib.Output.SPNTarget[]
+  nameWithType.vb: SPNTarget()
+  fullName.vb: CommonLib.Output.SPNTarget()
+  name.vb: SPNTarget()
+  spec.csharp:
+  - uid: CommonLib.Output.SPNTarget
+    name: SPNTarget
+    nameWithType: SPNTarget
+    fullName: CommonLib.Output.SPNTarget
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CommonLib.Output.SPNTarget
+    name: SPNTarget
+    nameWithType: SPNTarget
+    fullName: CommonLib.Output.SPNTarget
+  - name: ()
+    nameWithType: ()
+    fullName: ()

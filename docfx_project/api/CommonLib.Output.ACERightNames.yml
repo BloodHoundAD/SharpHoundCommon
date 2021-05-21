@@ -1,0 +1,289 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Output.ACERightNames
+  commentId: T:CommonLib.Output.ACERightNames
+  id: ACERightNames
+  parent: CommonLib.Output
+  children:
+  - CommonLib.Output.ACERightNames.GenericAll
+  - CommonLib.Output.ACERightNames.GenericWrite
+  - CommonLib.Output.ACERightNames.Owns
+  - CommonLib.Output.ACERightNames.ReadGMSAPassword
+  - CommonLib.Output.ACERightNames.ReadLAPSPassword
+  - CommonLib.Output.ACERightNames.WriteDacl
+  - CommonLib.Output.ACERightNames.WriteOwner
+  langs:
+  - csharp
+  - vb
+  name: ACERightNames
+  nameWithType: ACERightNames
+  fullName: CommonLib.Output.ACERightNames
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ACERightNames
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 20
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: >-
+      [JsonConverter(typeof(StringEnumConverter))]
+
+      public enum ACERightNames
+    content.vb: >-
+      <JsonConverter(GetType(StringEnumConverter))>
+
+      Public Enum ACERightNames
+  attributes:
+  - type: Newtonsoft.Json.JsonConverterAttribute
+    ctor: Newtonsoft.Json.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: Newtonsoft.Json.Converters.StringEnumConverter
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CommonLib.Output.ACERightNames.GenericAll
+  commentId: F:CommonLib.Output.ACERightNames.GenericAll
+  id: GenericAll
+  parent: CommonLib.Output.ACERightNames
+  langs:
+  - csharp
+  - vb
+  name: GenericAll
+  nameWithType: ACERightNames.GenericAll
+  fullName: CommonLib.Output.ACERightNames.GenericAll
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: GenericAll
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 23
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: GenericAll = 0
+    return:
+      type: CommonLib.Output.ACERightNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.ACERightNames.WriteDacl
+  commentId: F:CommonLib.Output.ACERightNames.WriteDacl
+  id: WriteDacl
+  parent: CommonLib.Output.ACERightNames
+  langs:
+  - csharp
+  - vb
+  name: WriteDacl
+  nameWithType: ACERightNames.WriteDacl
+  fullName: CommonLib.Output.ACERightNames.WriteDacl
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: WriteDacl
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 24
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: WriteDacl = 1
+    return:
+      type: CommonLib.Output.ACERightNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.ACERightNames.WriteOwner
+  commentId: F:CommonLib.Output.ACERightNames.WriteOwner
+  id: WriteOwner
+  parent: CommonLib.Output.ACERightNames
+  langs:
+  - csharp
+  - vb
+  name: WriteOwner
+  nameWithType: ACERightNames.WriteOwner
+  fullName: CommonLib.Output.ACERightNames.WriteOwner
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: WriteOwner
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 25
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: WriteOwner = 2
+    return:
+      type: CommonLib.Output.ACERightNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.ACERightNames.GenericWrite
+  commentId: F:CommonLib.Output.ACERightNames.GenericWrite
+  id: GenericWrite
+  parent: CommonLib.Output.ACERightNames
+  langs:
+  - csharp
+  - vb
+  name: GenericWrite
+  nameWithType: ACERightNames.GenericWrite
+  fullName: CommonLib.Output.ACERightNames.GenericWrite
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: GenericWrite
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 26
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: GenericWrite = 3
+    return:
+      type: CommonLib.Output.ACERightNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.ACERightNames.Owns
+  commentId: F:CommonLib.Output.ACERightNames.Owns
+  id: Owns
+  parent: CommonLib.Output.ACERightNames
+  langs:
+  - csharp
+  - vb
+  name: Owns
+  nameWithType: ACERightNames.Owns
+  fullName: CommonLib.Output.ACERightNames.Owns
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Owns
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 27
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: Owns = 4
+    return:
+      type: CommonLib.Output.ACERightNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.ACERightNames.ReadLAPSPassword
+  commentId: F:CommonLib.Output.ACERightNames.ReadLAPSPassword
+  id: ReadLAPSPassword
+  parent: CommonLib.Output.ACERightNames
+  langs:
+  - csharp
+  - vb
+  name: ReadLAPSPassword
+  nameWithType: ACERightNames.ReadLAPSPassword
+  fullName: CommonLib.Output.ACERightNames.ReadLAPSPassword
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ReadLAPSPassword
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 28
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: ReadLAPSPassword = 5
+    return:
+      type: CommonLib.Output.ACERightNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.ACERightNames.ReadGMSAPassword
+  commentId: F:CommonLib.Output.ACERightNames.ReadGMSAPassword
+  id: ReadGMSAPassword
+  parent: CommonLib.Output.ACERightNames
+  langs:
+  - csharp
+  - vb
+  name: ReadGMSAPassword
+  nameWithType: ACERightNames.ReadGMSAPassword
+  fullName: CommonLib.Output.ACERightNames.ReadGMSAPassword
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ReadGMSAPassword
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 29
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: ReadGMSAPassword = 6
+    return:
+      type: CommonLib.Output.ACERightNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CommonLib.Output
+  commentId: N:CommonLib.Output
+  name: CommonLib.Output
+  nameWithType: CommonLib.Output
+  fullName: CommonLib.Output
+- uid: CommonLib.Output.ACERightNames
+  commentId: T:CommonLib.Output.ACERightNames
+  parent: CommonLib.Output
+  name: ACERightNames
+  nameWithType: ACERightNames
+  fullName: CommonLib.Output.ACERightNames

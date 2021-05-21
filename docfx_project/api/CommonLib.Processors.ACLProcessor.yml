@@ -1,0 +1,563 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Processors.ACLProcessor
+  commentId: T:CommonLib.Processors.ACLProcessor
+  id: ACLProcessor
+  parent: CommonLib.Processors
+  children:
+  - CommonLib.Processors.ACLProcessor.ProcessACL(System.DirectoryServices.Protocols.SearchResultEntry,System.String,CommonLib.Enums.Label)
+  - CommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  langs:
+  - csharp
+  - vb
+  name: ACLProcessor
+  nameWithType: ACLProcessor
+  fullName: CommonLib.Processors.ACLProcessor
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACLProcessor.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ACLProcessor
+    path: ../src/CommonLib/Processors/ACLProcessor.cs
+    startLine: 13
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Processors
+  syntax:
+    content: public static class ACLProcessor
+    content.vb: Public Module ACLProcessor
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: CommonLib.Processors.ACLProcessor.ProcessACL(System.DirectoryServices.Protocols.SearchResultEntry,System.String,CommonLib.Enums.Label)
+  commentId: M:CommonLib.Processors.ACLProcessor.ProcessACL(System.DirectoryServices.Protocols.SearchResultEntry,System.String,CommonLib.Enums.Label)
+  id: ProcessACL(System.DirectoryServices.Protocols.SearchResultEntry,System.String,CommonLib.Enums.Label)
+  parent: CommonLib.Processors.ACLProcessor
+  langs:
+  - csharp
+  - vb
+  name: ProcessACL(SearchResultEntry, String, Label)
+  nameWithType: ACLProcessor.ProcessACL(SearchResultEntry, String, Label)
+  fullName: CommonLib.Processors.ACLProcessor.ProcessACL(System.DirectoryServices.Protocols.SearchResultEntry, System.String, CommonLib.Enums.Label)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACLProcessor.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ProcessACL
+    path: ../src/CommonLib/Processors/ACLProcessor.cs
+    startLine: 59
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Processors
+  summary: "\nRead&apos;s the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that BloodHound is not interested in\n"
+  example: []
+  syntax:
+    content: public static IEnumerable<ACE> ProcessACL(SearchResultEntry entry, string objectDomain, Label objectType)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    - id: objectDomain
+      type: System.String
+      description: ''
+    - id: objectType
+      type: CommonLib.Enums.Label
+      description: ''
+    return:
+      type: System.Collections.Generic.IEnumerable{CommonLib.Output.ACE}
+      description: ''
+    content.vb: Public Shared Function ProcessACL(entry As SearchResultEntry, objectDomain As String, objectType As Label) As IEnumerable(Of ACE)
+  overload: CommonLib.Processors.ACLProcessor.ProcessACL*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  commentId: M:CommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  id: ProcessGMSAReaders(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  parent: CommonLib.Processors.ACLProcessor
+  langs:
+  - csharp
+  - vb
+  name: ProcessGMSAReaders(SearchResultEntry, String)
+  nameWithType: ACLProcessor.ProcessGMSAReaders(SearchResultEntry, String)
+  fullName: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.DirectoryServices.Protocols.SearchResultEntry, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACLProcessor.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ProcessGMSAReaders
+    path: ../src/CommonLib/Processors/ACLProcessor.cs
+    startLine: 250
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Processors
+  summary: "\nProcesses the msds-groupmsamembership property and returns ACEs representing principals that can read the GMSA password from an object\n"
+  example: []
+  syntax:
+    content: public static IEnumerable<ACE> ProcessGMSAReaders(SearchResultEntry entry, string objectDomain)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+    - id: objectDomain
+      type: System.String
+      description: The domain of the object the property is coming from
+    return:
+      type: System.Collections.Generic.IEnumerable{CommonLib.Output.ACE}
+      description: An enumerable containing ACEs that allow reading the GMSA password
+    content.vb: Public Shared Function ProcessGMSAReaders(entry As SearchResultEntry, objectDomain As String) As IEnumerable(Of ACE)
+  overload: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: CommonLib.Processors
+  commentId: N:CommonLib.Processors
+  name: CommonLib.Processors
+  nameWithType: CommonLib.Processors
+  fullName: CommonLib.Processors
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CommonLib.Processors.ACLProcessor.ProcessACL*
+  commentId: Overload:CommonLib.Processors.ACLProcessor.ProcessACL
+  name: ProcessACL
+  nameWithType: ACLProcessor.ProcessACL
+  fullName: CommonLib.Processors.ACLProcessor.ProcessACL
+- uid: System.DirectoryServices.Protocols.SearchResultEntry
+  commentId: T:System.DirectoryServices.Protocols.SearchResultEntry
+  parent: System.DirectoryServices.Protocols
+  isExternal: true
+  name: SearchResultEntry
+  nameWithType: SearchResultEntry
+  fullName: System.DirectoryServices.Protocols.SearchResultEntry
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CommonLib.Enums.Label
+  commentId: T:CommonLib.Enums.Label
+  parent: CommonLib.Enums
+  name: Label
+  nameWithType: Label
+  fullName: CommonLib.Enums.Label
+- uid: System.Collections.Generic.IEnumerable{CommonLib.Output.ACE}
+  commentId: T:System.Collections.Generic.IEnumerable{CommonLib.Output.ACE}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<ACE>
+  nameWithType: IEnumerable<ACE>
+  fullName: System.Collections.Generic.IEnumerable<CommonLib.Output.ACE>
+  nameWithType.vb: IEnumerable(Of ACE)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CommonLib.Output.ACE)
+  name.vb: IEnumerable(Of ACE)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CommonLib.Output.ACE
+    name: ACE
+    nameWithType: ACE
+    fullName: CommonLib.Output.ACE
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CommonLib.Output.ACE
+    name: ACE
+    nameWithType: ACE
+    fullName: CommonLib.Output.ACE
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.DirectoryServices.Protocols
+  commentId: N:System.DirectoryServices.Protocols
+  isExternal: true
+  name: System.DirectoryServices.Protocols
+  nameWithType: System.DirectoryServices.Protocols
+  fullName: System.DirectoryServices.Protocols
+- uid: CommonLib.Enums
+  commentId: N:CommonLib.Enums
+  name: CommonLib.Enums
+  nameWithType: CommonLib.Enums
+  fullName: CommonLib.Enums
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders*
+  commentId: Overload:CommonLib.Processors.ACLProcessor.ProcessGMSAReaders
+  name: ProcessGMSAReaders
+  nameWithType: ACLProcessor.ProcessGMSAReaders
+  fullName: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders

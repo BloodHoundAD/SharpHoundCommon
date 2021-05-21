@@ -1,0 +1,310 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Enums.Label
+  commentId: T:CommonLib.Enums.Label
+  id: Label
+  parent: CommonLib.Enums
+  children:
+  - CommonLib.Enums.Label.Computer
+  - CommonLib.Enums.Label.Container
+  - CommonLib.Enums.Label.Domain
+  - CommonLib.Enums.Label.GPO
+  - CommonLib.Enums.Label.Group
+  - CommonLib.Enums.Label.OU
+  - CommonLib.Enums.Label.Unknown
+  - CommonLib.Enums.Label.User
+  langs:
+  - csharp
+  - vb
+  name: Label
+  nameWithType: Label
+  fullName: CommonLib.Enums.Label
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Label
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 2
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: public enum Label
+    content.vb: Public Enum Label
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CommonLib.Enums.Label.User
+  commentId: F:CommonLib.Enums.Label.User
+  id: User
+  parent: CommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: User
+  nameWithType: Label.User
+  fullName: CommonLib.Enums.Label.User
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: User
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 4
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: User = 0
+    return:
+      type: CommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.Label.Computer
+  commentId: F:CommonLib.Enums.Label.Computer
+  id: Computer
+  parent: CommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Computer
+  nameWithType: Label.Computer
+  fullName: CommonLib.Enums.Label.Computer
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Computer
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 5
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: Computer = 1
+    return:
+      type: CommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.Label.Group
+  commentId: F:CommonLib.Enums.Label.Group
+  id: Group
+  parent: CommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Group
+  nameWithType: Label.Group
+  fullName: CommonLib.Enums.Label.Group
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Group
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 6
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: Group = 2
+    return:
+      type: CommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.Label.GPO
+  commentId: F:CommonLib.Enums.Label.GPO
+  id: GPO
+  parent: CommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: GPO
+  nameWithType: Label.GPO
+  fullName: CommonLib.Enums.Label.GPO
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: GPO
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 7
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: GPO = 3
+    return:
+      type: CommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.Label.Domain
+  commentId: F:CommonLib.Enums.Label.Domain
+  id: Domain
+  parent: CommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Domain
+  nameWithType: Label.Domain
+  fullName: CommonLib.Enums.Label.Domain
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Domain
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 8
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: Domain = 4
+    return:
+      type: CommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.Label.OU
+  commentId: F:CommonLib.Enums.Label.OU
+  id: OU
+  parent: CommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: OU
+  nameWithType: Label.OU
+  fullName: CommonLib.Enums.Label.OU
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: OU
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 9
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: OU = 5
+    return:
+      type: CommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.Label.Container
+  commentId: F:CommonLib.Enums.Label.Container
+  id: Container
+  parent: CommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Container
+  nameWithType: Label.Container
+  fullName: CommonLib.Enums.Label.Container
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Container
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 10
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: Container = 6
+    return:
+      type: CommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.Label.Unknown
+  commentId: F:CommonLib.Enums.Label.Unknown
+  id: Unknown
+  parent: CommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Unknown
+  nameWithType: Label.Unknown
+  fullName: CommonLib.Enums.Label.Unknown
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Unknown
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 11
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: Unknown = 7
+    return:
+      type: CommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CommonLib.Enums
+  commentId: N:CommonLib.Enums
+  name: CommonLib.Enums
+  nameWithType: CommonLib.Enums
+  fullName: CommonLib.Enums
+- uid: CommonLib.Enums.Label
+  commentId: T:CommonLib.Enums.Label
+  parent: CommonLib.Enums
+  name: Label
+  nameWithType: Label
+  fullName: CommonLib.Enums.Label

@@ -1,0 +1,2383 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Options`1
+  commentId: T:CommonLib.Options`1
+  id: Options`1
+  parent: CommonLib
+  children:
+  - CommonLib.Options`1.CacheFilename
+  - CommonLib.Options`1.CollectAllProperties
+  - CommonLib.Options`1.CollectionMethods
+  - CommonLib.Options`1.ComputerFile
+  - CommonLib.Options`1.DisableKerberosSigning
+  - CommonLib.Options`1.Domain
+  - CommonLib.Options`1.DomainController
+  - CommonLib.Options`1.DumpComputerStatus
+  - CommonLib.Options`1.EncryptZip
+  - CommonLib.Options`1.ExcludeDomainControllers
+  - CommonLib.Options`1.Instance
+  - CommonLib.Options`1.InvalidateCache
+  - CommonLib.Options`1.Jitter
+  - CommonLib.Options`1.LdapFilter
+  - CommonLib.Options`1.LdapPassword
+  - CommonLib.Options`1.LdapPort
+  - CommonLib.Options`1.LdapUsername
+  - CommonLib.Options`1.Loop
+  - CommonLib.Options`1.LoopDuration
+  - CommonLib.Options`1.LoopInterval
+  - CommonLib.Options`1.NoOutput
+  - CommonLib.Options`1.NoRegistryLoggedOn
+  - CommonLib.Options`1.NoSaveCache
+  - CommonLib.Options`1.NoZip
+  - CommonLib.Options`1.OutputDirectory
+  - CommonLib.Options`1.OutputPrefix
+  - CommonLib.Options`1.OverrideUserName
+  - CommonLib.Options`1.PortScanTimeout
+  - CommonLib.Options`1.PrettyJson
+  - CommonLib.Options`1.RandomizeFilenames
+  - CommonLib.Options`1.RealDNSName
+  - CommonLib.Options`1.SearchBase
+  - CommonLib.Options`1.SecureLDAP
+  - CommonLib.Options`1.SkipPortScan
+  - CommonLib.Options`1.StatusInterval
+  - CommonLib.Options`1.Stealth
+  - CommonLib.Options`1.Throttle
+  - CommonLib.Options`1.Verbose
+  - CommonLib.Options`1.WindowsOnly
+  - CommonLib.Options`1.ZipFilename
+  langs:
+  - csharp
+  - vb
+  name: Options<CollectionMethodResolved>
+  nameWithType: Options<CollectionMethodResolved>
+  fullName: CommonLib.Options<CollectionMethodResolved>
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Options
+    path: ../src/CommonLib/Options.cs
+    startLine: 9
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: public abstract class Options<CollectionMethodResolved>
+    typeParameters:
+    - id: CollectionMethodResolved
+    content.vb: Public MustInherit Class Options(Of CollectionMethodResolved)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: Options(Of CollectionMethodResolved)
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved)
+  name.vb: Options(Of CollectionMethodResolved)
+- uid: CommonLib.Options`1.Instance
+  commentId: P:CommonLib.Options`1.Instance
+  id: Instance
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: Options<CollectionMethodResolved>.Instance
+  fullName: CommonLib.Options<CollectionMethodResolved>.Instance
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Instance
+    path: ../src/CommonLib/Options.cs
+    startLine: 13
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  syntax:
+    content: public static Options<CollectionMethodResolved> Instance { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Options`1
+    content.vb: Public Shared Property Instance As Options(Of CollectionMethodResolved)
+  overload: CommonLib.Options`1.Instance*
+  nameWithType.vb: Options(Of CollectionMethodResolved).Instance
+  modifiers.csharp:
+  - public
+  - static
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Instance
+- uid: CommonLib.Options`1.CollectionMethods
+  commentId: P:CommonLib.Options`1.CollectionMethods
+  id: CollectionMethods
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: CollectionMethods
+  nameWithType: Options<CollectionMethodResolved>.CollectionMethods
+  fullName: CommonLib.Options<CollectionMethodResolved>.CollectionMethods
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: CollectionMethods
+    path: ../src/CommonLib/Options.cs
+    startLine: 20
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nCollection Methods: Container, Group, LocalGroup, GPOLocalGroup, Session, LoggedOn, ObjectProps, ACL, ComputerOnly, Trusts, Default, RDP, DCOM, DCOnly\n"
+  example: []
+  syntax:
+    content: public IEnumerable<string> CollectionMethods { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: Public Property CollectionMethods As IEnumerable(Of String)
+  overload: CommonLib.Options`1.CollectionMethods*
+  nameWithType.vb: Options(Of CollectionMethodResolved).CollectionMethods
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CollectionMethods
+- uid: CommonLib.Options`1.Stealth
+  commentId: P:CommonLib.Options`1.Stealth
+  id: Stealth
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: Stealth
+  nameWithType: Options<CollectionMethodResolved>.Stealth
+  fullName: CommonLib.Options<CollectionMethodResolved>.Stealth
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Stealth
+    path: ../src/CommonLib/Options.cs
+    startLine: 25
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nUse Stealth Targetting/Enumeration Options\n"
+  example: []
+  syntax:
+    content: public bool Stealth { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Stealth As Boolean
+  overload: CommonLib.Options`1.Stealth*
+  nameWithType.vb: Options(Of CollectionMethodResolved).Stealth
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Stealth
+- uid: CommonLib.Options`1.Domain
+  commentId: P:CommonLib.Options`1.Domain
+  id: Domain
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: Domain
+  nameWithType: Options<CollectionMethodResolved>.Domain
+  fullName: CommonLib.Options<CollectionMethodResolved>.Domain
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Domain
+    path: ../src/CommonLib/Options.cs
+    startLine: 30
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nSpecify domain for enumeration\n"
+  example: []
+  syntax:
+    content: public string Domain { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Domain As String
+  overload: CommonLib.Options`1.Domain*
+  nameWithType.vb: Options(Of CollectionMethodResolved).Domain
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Domain
+- uid: CommonLib.Options`1.WindowsOnly
+  commentId: P:CommonLib.Options`1.WindowsOnly
+  id: WindowsOnly
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: WindowsOnly
+  nameWithType: Options<CollectionMethodResolved>.WindowsOnly
+  fullName: CommonLib.Options<CollectionMethodResolved>.WindowsOnly
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: WindowsOnly
+    path: ../src/CommonLib/Options.cs
+    startLine: 35
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nLimit collection to Windows hosts only\n"
+  example: []
+  syntax:
+    content: public bool WindowsOnly { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property WindowsOnly As Boolean
+  overload: CommonLib.Options`1.WindowsOnly*
+  nameWithType.vb: Options(Of CollectionMethodResolved).WindowsOnly
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).WindowsOnly
+- uid: CommonLib.Options`1.ComputerFile
+  commentId: P:CommonLib.Options`1.ComputerFile
+  id: ComputerFile
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: ComputerFile
+  nameWithType: Options<CollectionMethodResolved>.ComputerFile
+  fullName: CommonLib.Options<CollectionMethodResolved>.ComputerFile
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ComputerFile
+    path: ../src/CommonLib/Options.cs
+    startLine: 40
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nPath to textfile containing line seperated computer names/sids\n"
+  example: []
+  syntax:
+    content: public string ComputerFile { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ComputerFile As String
+  overload: CommonLib.Options`1.ComputerFile*
+  nameWithType.vb: Options(Of CollectionMethodResolved).ComputerFile
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ComputerFile
+- uid: CommonLib.Options`1.NoOutput
+  commentId: P:CommonLib.Options`1.NoOutput
+  id: NoOutput
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: NoOutput
+  nameWithType: Options<CollectionMethodResolved>.NoOutput
+  fullName: CommonLib.Options<CollectionMethodResolved>.NoOutput
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: NoOutput
+    path: ../src/CommonLib/Options.cs
+    startLine: 49
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nDon&apos;t output data from this run. Used for debugging purposes\n"
+  example: []
+  syntax:
+    content: public bool NoOutput { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property NoOutput As Boolean
+  overload: CommonLib.Options`1.NoOutput*
+  nameWithType.vb: Options(Of CollectionMethodResolved).NoOutput
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoOutput
+- uid: CommonLib.Options`1.OutputDirectory
+  commentId: P:CommonLib.Options`1.OutputDirectory
+  id: OutputDirectory
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: OutputDirectory
+  nameWithType: Options<CollectionMethodResolved>.OutputDirectory
+  fullName: CommonLib.Options<CollectionMethodResolved>.OutputDirectory
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: OutputDirectory
+    path: ../src/CommonLib/Options.cs
+    startLine: 54
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nFolder to output files too\n"
+  example: []
+  syntax:
+    content: public string OutputDirectory { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property OutputDirectory As String
+  overload: CommonLib.Options`1.OutputDirectory*
+  nameWithType.vb: Options(Of CollectionMethodResolved).OutputDirectory
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OutputDirectory
+- uid: CommonLib.Options`1.OutputPrefix
+  commentId: P:CommonLib.Options`1.OutputPrefix
+  id: OutputPrefix
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: OutputPrefix
+  nameWithType: Options<CollectionMethodResolved>.OutputPrefix
+  fullName: CommonLib.Options<CollectionMethodResolved>.OutputPrefix
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: OutputPrefix
+    path: ../src/CommonLib/Options.cs
+    startLine: 59
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nPrefix for output files\n"
+  example: []
+  syntax:
+    content: public string OutputPrefix { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property OutputPrefix As String
+  overload: CommonLib.Options`1.OutputPrefix*
+  nameWithType.vb: Options(Of CollectionMethodResolved).OutputPrefix
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OutputPrefix
+- uid: CommonLib.Options`1.PrettyJson
+  commentId: P:CommonLib.Options`1.PrettyJson
+  id: PrettyJson
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: PrettyJson
+  nameWithType: Options<CollectionMethodResolved>.PrettyJson
+  fullName: CommonLib.Options<CollectionMethodResolved>.PrettyJson
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PrettyJson
+    path: ../src/CommonLib/Options.cs
+    startLine: 64
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nOutput pretty(formatted) JSON\n"
+  example: []
+  syntax:
+    content: public bool PrettyJson { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property PrettyJson As Boolean
+  overload: CommonLib.Options`1.PrettyJson*
+  nameWithType.vb: Options(Of CollectionMethodResolved).PrettyJson
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).PrettyJson
+- uid: CommonLib.Options`1.CacheFilename
+  commentId: P:CommonLib.Options`1.CacheFilename
+  id: CacheFilename
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: CacheFilename
+  nameWithType: Options<CollectionMethodResolved>.CacheFilename
+  fullName: CommonLib.Options<CollectionMethodResolved>.CacheFilename
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: CacheFilename
+    path: ../src/CommonLib/Options.cs
+    startLine: 70
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nFilename for the cache file (defaults to b64 of machine sid)\n"
+  example: []
+  syntax:
+    content: public string CacheFilename { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property CacheFilename As String
+  overload: CommonLib.Options`1.CacheFilename*
+  nameWithType.vb: Options(Of CollectionMethodResolved).CacheFilename
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CacheFilename
+- uid: CommonLib.Options`1.RandomizeFilenames
+  commentId: P:CommonLib.Options`1.RandomizeFilenames
+  id: RandomizeFilenames
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: RandomizeFilenames
+  nameWithType: Options<CollectionMethodResolved>.RandomizeFilenames
+  fullName: CommonLib.Options<CollectionMethodResolved>.RandomizeFilenames
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: RandomizeFilenames
+    path: ../src/CommonLib/Options.cs
+    startLine: 75
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nRandomize filenames for JSON files\n"
+  example: []
+  syntax:
+    content: public bool RandomizeFilenames { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property RandomizeFilenames As Boolean
+  overload: CommonLib.Options`1.RandomizeFilenames*
+  nameWithType.vb: Options(Of CollectionMethodResolved).RandomizeFilenames
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).RandomizeFilenames
+- uid: CommonLib.Options`1.ZipFilename
+  commentId: P:CommonLib.Options`1.ZipFilename
+  id: ZipFilename
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: ZipFilename
+  nameWithType: Options<CollectionMethodResolved>.ZipFilename
+  fullName: CommonLib.Options<CollectionMethodResolved>.ZipFilename
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ZipFilename
+    path: ../src/CommonLib/Options.cs
+    startLine: 80
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nFilename for the Zip file\n"
+  example: []
+  syntax:
+    content: public string ZipFilename { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ZipFilename As String
+  overload: CommonLib.Options`1.ZipFilename*
+  nameWithType.vb: Options(Of CollectionMethodResolved).ZipFilename
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ZipFilename
+- uid: CommonLib.Options`1.NoSaveCache
+  commentId: P:CommonLib.Options`1.NoSaveCache
+  id: NoSaveCache
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: NoSaveCache
+  nameWithType: Options<CollectionMethodResolved>.NoSaveCache
+  fullName: CommonLib.Options<CollectionMethodResolved>.NoSaveCache
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: NoSaveCache
+    path: ../src/CommonLib/Options.cs
+    startLine: 85
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nDon&apos;t save cache to disk. Caching will still be done in memory\n"
+  example: []
+  syntax:
+    content: public bool NoSaveCache { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property NoSaveCache As Boolean
+  overload: CommonLib.Options`1.NoSaveCache*
+  nameWithType.vb: Options(Of CollectionMethodResolved).NoSaveCache
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoSaveCache
+- uid: CommonLib.Options`1.EncryptZip
+  commentId: P:CommonLib.Options`1.EncryptZip
+  id: EncryptZip
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: EncryptZip
+  nameWithType: Options<CollectionMethodResolved>.EncryptZip
+  fullName: CommonLib.Options<CollectionMethodResolved>.EncryptZip
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: EncryptZip
+    path: ../src/CommonLib/Options.cs
+    startLine: 90
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nEncrypt zip file using a random password\n"
+  example: []
+  syntax:
+    content: public bool EncryptZip { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EncryptZip As Boolean
+  overload: CommonLib.Options`1.EncryptZip*
+  nameWithType.vb: Options(Of CollectionMethodResolved).EncryptZip
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).EncryptZip
+- uid: CommonLib.Options`1.NoZip
+  commentId: P:CommonLib.Options`1.NoZip
+  id: NoZip
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: NoZip
+  nameWithType: Options<CollectionMethodResolved>.NoZip
+  fullName: CommonLib.Options<CollectionMethodResolved>.NoZip
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: NoZip
+    path: ../src/CommonLib/Options.cs
+    startLine: 95
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nDon&apos;t zip JSON files\n"
+  example: []
+  syntax:
+    content: public bool NoZip { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property NoZip As Boolean
+  overload: CommonLib.Options`1.NoZip*
+  nameWithType.vb: Options(Of CollectionMethodResolved).NoZip
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoZip
+- uid: CommonLib.Options`1.InvalidateCache
+  commentId: P:CommonLib.Options`1.InvalidateCache
+  id: InvalidateCache
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: InvalidateCache
+  nameWithType: Options<CollectionMethodResolved>.InvalidateCache
+  fullName: CommonLib.Options<CollectionMethodResolved>.InvalidateCache
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: InvalidateCache
+    path: ../src/CommonLib/Options.cs
+    startLine: 100
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nInvalidate and rebuild the cache\n"
+  example: []
+  syntax:
+    content: public bool InvalidateCache { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property InvalidateCache As Boolean
+  overload: CommonLib.Options`1.InvalidateCache*
+  nameWithType.vb: Options(Of CollectionMethodResolved).InvalidateCache
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).InvalidateCache
+- uid: CommonLib.Options`1.LdapFilter
+  commentId: P:CommonLib.Options`1.LdapFilter
+  id: LdapFilter
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: LdapFilter
+  nameWithType: Options<CollectionMethodResolved>.LdapFilter
+  fullName: CommonLib.Options<CollectionMethodResolved>.LdapFilter
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: LdapFilter
+    path: ../src/CommonLib/Options.cs
+    startLine: 109
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nCustom LDAP Filter to append to the search. Use this to filter collection\n"
+  example: []
+  syntax:
+    content: public string LdapFilter { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LdapFilter As String
+  overload: CommonLib.Options`1.LdapFilter*
+  nameWithType.vb: Options(Of CollectionMethodResolved).LdapFilter
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapFilter
+- uid: CommonLib.Options`1.DomainController
+  commentId: P:CommonLib.Options`1.DomainController
+  id: DomainController
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: DomainController
+  nameWithType: Options<CollectionMethodResolved>.DomainController
+  fullName: CommonLib.Options<CollectionMethodResolved>.DomainController
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DomainController
+    path: ../src/CommonLib/Options.cs
+    startLine: 114
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nDomain Controller to connect too. Specifying this value can result in data loss\n"
+  example: []
+  syntax:
+    content: public string DomainController { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property DomainController As String
+  overload: CommonLib.Options`1.DomainController*
+  nameWithType.vb: Options(Of CollectionMethodResolved).DomainController
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DomainController
+- uid: CommonLib.Options`1.LdapPort
+  commentId: P:CommonLib.Options`1.LdapPort
+  id: LdapPort
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: LdapPort
+  nameWithType: Options<CollectionMethodResolved>.LdapPort
+  fullName: CommonLib.Options<CollectionMethodResolved>.LdapPort
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: LdapPort
+    path: ../src/CommonLib/Options.cs
+    startLine: 119
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nPort LDAP is running on. Defaults to 389/636 for LDAPS\n"
+  example: []
+  syntax:
+    content: public int LdapPort { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property LdapPort As Integer
+  overload: CommonLib.Options`1.LdapPort*
+  nameWithType.vb: Options(Of CollectionMethodResolved).LdapPort
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapPort
+- uid: CommonLib.Options`1.SecureLDAP
+  commentId: P:CommonLib.Options`1.SecureLDAP
+  id: SecureLDAP
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: SecureLDAP
+  nameWithType: Options<CollectionMethodResolved>.SecureLDAP
+  fullName: CommonLib.Options<CollectionMethodResolved>.SecureLDAP
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: SecureLDAP
+    path: ../src/CommonLib/Options.cs
+    startLine: 124
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nConnect to LDAPS (LDAP SSL) instead of regular LDAP\n"
+  example: []
+  syntax:
+    content: public bool SecureLDAP { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property SecureLDAP As Boolean
+  overload: CommonLib.Options`1.SecureLDAP*
+  nameWithType.vb: Options(Of CollectionMethodResolved).SecureLDAP
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SecureLDAP
+- uid: CommonLib.Options`1.DisableKerberosSigning
+  commentId: P:CommonLib.Options`1.DisableKerberosSigning
+  id: DisableKerberosSigning
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: DisableKerberosSigning
+  nameWithType: Options<CollectionMethodResolved>.DisableKerberosSigning
+  fullName: CommonLib.Options<CollectionMethodResolved>.DisableKerberosSigning
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DisableKerberosSigning
+    path: ../src/CommonLib/Options.cs
+    startLine: 129
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nDisables Kerberos Signing/Sealing making LDAP traffic viewable\n"
+  example: []
+  syntax:
+    content: public bool DisableKerberosSigning { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property DisableKerberosSigning As Boolean
+  overload: CommonLib.Options`1.DisableKerberosSigning*
+  nameWithType.vb: Options(Of CollectionMethodResolved).DisableKerberosSigning
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DisableKerberosSigning
+- uid: CommonLib.Options`1.LdapUsername
+  commentId: P:CommonLib.Options`1.LdapUsername
+  id: LdapUsername
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: LdapUsername
+  nameWithType: Options<CollectionMethodResolved>.LdapUsername
+  fullName: CommonLib.Options<CollectionMethodResolved>.LdapUsername
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: LdapUsername
+    path: ../src/CommonLib/Options.cs
+    startLine: 134
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nUsername to use for LDAP\n"
+  example: []
+  syntax:
+    content: public string LdapUsername { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LdapUsername As String
+  overload: CommonLib.Options`1.LdapUsername*
+  nameWithType.vb: Options(Of CollectionMethodResolved).LdapUsername
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapUsername
+- uid: CommonLib.Options`1.LdapPassword
+  commentId: P:CommonLib.Options`1.LdapPassword
+  id: LdapPassword
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: LdapPassword
+  nameWithType: Options<CollectionMethodResolved>.LdapPassword
+  fullName: CommonLib.Options<CollectionMethodResolved>.LdapPassword
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: LdapPassword
+    path: ../src/CommonLib/Options.cs
+    startLine: 139
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nPassword to use for LDAP\n"
+  example: []
+  syntax:
+    content: public string LdapPassword { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LdapPassword As String
+  overload: CommonLib.Options`1.LdapPassword*
+  nameWithType.vb: Options(Of CollectionMethodResolved).LdapPassword
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapPassword
+- uid: CommonLib.Options`1.SearchBase
+  commentId: P:CommonLib.Options`1.SearchBase
+  id: SearchBase
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: SearchBase
+  nameWithType: Options<CollectionMethodResolved>.SearchBase
+  fullName: CommonLib.Options<CollectionMethodResolved>.SearchBase
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: SearchBase
+    path: ../src/CommonLib/Options.cs
+    startLine: 148
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nBase DistinguishedName to start search at. Use this to limit your search. Equivalent to the old --OU option\n"
+  example: []
+  syntax:
+    content: public string SearchBase { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SearchBase As String
+  overload: CommonLib.Options`1.SearchBase*
+  nameWithType.vb: Options(Of CollectionMethodResolved).SearchBase
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SearchBase
+- uid: CommonLib.Options`1.SkipPortScan
+  commentId: P:CommonLib.Options`1.SkipPortScan
+  id: SkipPortScan
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: SkipPortScan
+  nameWithType: Options<CollectionMethodResolved>.SkipPortScan
+  fullName: CommonLib.Options<CollectionMethodResolved>.SkipPortScan
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: SkipPortScan
+    path: ../src/CommonLib/Options.cs
+    startLine: 153
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nSkip SMB port checks when connecting to computers\n"
+  example: []
+  syntax:
+    content: public bool SkipPortScan { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property SkipPortScan As Boolean
+  overload: CommonLib.Options`1.SkipPortScan*
+  nameWithType.vb: Options(Of CollectionMethodResolved).SkipPortScan
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SkipPortScan
+- uid: CommonLib.Options`1.PortScanTimeout
+  commentId: P:CommonLib.Options`1.PortScanTimeout
+  id: PortScanTimeout
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: PortScanTimeout
+  nameWithType: Options<CollectionMethodResolved>.PortScanTimeout
+  fullName: CommonLib.Options<CollectionMethodResolved>.PortScanTimeout
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PortScanTimeout
+    path: ../src/CommonLib/Options.cs
+    startLine: 158
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nTimeout for SMB port check\n"
+  example: []
+  syntax:
+    content: public int PortScanTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property PortScanTimeout As Integer
+  overload: CommonLib.Options`1.PortScanTimeout*
+  nameWithType.vb: Options(Of CollectionMethodResolved).PortScanTimeout
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).PortScanTimeout
+- uid: CommonLib.Options`1.ExcludeDomainControllers
+  commentId: P:CommonLib.Options`1.ExcludeDomainControllers
+  id: ExcludeDomainControllers
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: ExcludeDomainControllers
+  nameWithType: Options<CollectionMethodResolved>.ExcludeDomainControllers
+  fullName: CommonLib.Options<CollectionMethodResolved>.ExcludeDomainControllers
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ExcludeDomainControllers
+    path: ../src/CommonLib/Options.cs
+    startLine: 163
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nExclude domain controllers from enumeration (useful to avoid Microsoft ATP/ATA)\n"
+  example: []
+  syntax:
+    content: public bool ExcludeDomainControllers { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property ExcludeDomainControllers As Boolean
+  overload: CommonLib.Options`1.ExcludeDomainControllers*
+  nameWithType.vb: Options(Of CollectionMethodResolved).ExcludeDomainControllers
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ExcludeDomainControllers
+- uid: CommonLib.Options`1.Throttle
+  commentId: P:CommonLib.Options`1.Throttle
+  id: Throttle
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: Throttle
+  nameWithType: Options<CollectionMethodResolved>.Throttle
+  fullName: CommonLib.Options<CollectionMethodResolved>.Throttle
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Throttle
+    path: ../src/CommonLib/Options.cs
+    startLine: 168
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nThrottle requests to computers in milliseconds\n"
+  example: []
+  syntax:
+    content: public int Throttle { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Throttle As Integer
+  overload: CommonLib.Options`1.Throttle*
+  nameWithType.vb: Options(Of CollectionMethodResolved).Throttle
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Throttle
+- uid: CommonLib.Options`1.Jitter
+  commentId: P:CommonLib.Options`1.Jitter
+  id: Jitter
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: Jitter
+  nameWithType: Options<CollectionMethodResolved>.Jitter
+  fullName: CommonLib.Options<CollectionMethodResolved>.Jitter
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Jitter
+    path: ../src/CommonLib/Options.cs
+    startLine: 173
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nJitter between requests to computers\n"
+  example: []
+  syntax:
+    content: public int Jitter { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Jitter As Integer
+  overload: CommonLib.Options`1.Jitter*
+  nameWithType.vb: Options(Of CollectionMethodResolved).Jitter
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Jitter
+- uid: CommonLib.Options`1.OverrideUserName
+  commentId: P:CommonLib.Options`1.OverrideUserName
+  id: OverrideUserName
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: OverrideUserName
+  nameWithType: Options<CollectionMethodResolved>.OverrideUserName
+  fullName: CommonLib.Options<CollectionMethodResolved>.OverrideUserName
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: OverrideUserName
+    path: ../src/CommonLib/Options.cs
+    startLine: 178
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nOverride username to filter for NetSessionEnum\n"
+  example: []
+  syntax:
+    content: public string OverrideUserName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property OverrideUserName As String
+  overload: CommonLib.Options`1.OverrideUserName*
+  nameWithType.vb: Options(Of CollectionMethodResolved).OverrideUserName
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OverrideUserName
+- uid: CommonLib.Options`1.NoRegistryLoggedOn
+  commentId: P:CommonLib.Options`1.NoRegistryLoggedOn
+  id: NoRegistryLoggedOn
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: NoRegistryLoggedOn
+  nameWithType: Options<CollectionMethodResolved>.NoRegistryLoggedOn
+  fullName: CommonLib.Options<CollectionMethodResolved>.NoRegistryLoggedOn
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: NoRegistryLoggedOn
+    path: ../src/CommonLib/Options.cs
+    startLine: 183
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nDisable remote registry check in LoggedOn collection\n"
+  example: []
+  syntax:
+    content: public bool NoRegistryLoggedOn { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property NoRegistryLoggedOn As Boolean
+  overload: CommonLib.Options`1.NoRegistryLoggedOn*
+  nameWithType.vb: Options(Of CollectionMethodResolved).NoRegistryLoggedOn
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoRegistryLoggedOn
+- uid: CommonLib.Options`1.DumpComputerStatus
+  commentId: P:CommonLib.Options`1.DumpComputerStatus
+  id: DumpComputerStatus
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: DumpComputerStatus
+  nameWithType: Options<CollectionMethodResolved>.DumpComputerStatus
+  fullName: CommonLib.Options<CollectionMethodResolved>.DumpComputerStatus
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DumpComputerStatus
+    path: ../src/CommonLib/Options.cs
+    startLine: 188
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nDump success/failures related to computer enumeration to a CSV file\n"
+  example: []
+  syntax:
+    content: public bool DumpComputerStatus { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property DumpComputerStatus As Boolean
+  overload: CommonLib.Options`1.DumpComputerStatus*
+  nameWithType.vb: Options(Of CollectionMethodResolved).DumpComputerStatus
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DumpComputerStatus
+- uid: CommonLib.Options`1.RealDNSName
+  commentId: P:CommonLib.Options`1.RealDNSName
+  id: RealDNSName
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: RealDNSName
+  nameWithType: Options<CollectionMethodResolved>.RealDNSName
+  fullName: CommonLib.Options<CollectionMethodResolved>.RealDNSName
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: RealDNSName
+    path: ../src/CommonLib/Options.cs
+    startLine: 193
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nOverride DNS name for API calls\n"
+  example: []
+  syntax:
+    content: public string RealDNSName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property RealDNSName As String
+  overload: CommonLib.Options`1.RealDNSName*
+  nameWithType.vb: Options(Of CollectionMethodResolved).RealDNSName
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).RealDNSName
+- uid: CommonLib.Options`1.CollectAllProperties
+  commentId: P:CommonLib.Options`1.CollectAllProperties
+  id: CollectAllProperties
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: CollectAllProperties
+  nameWithType: Options<CollectionMethodResolved>.CollectAllProperties
+  fullName: CommonLib.Options<CollectionMethodResolved>.CollectAllProperties
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: CollectAllProperties
+    path: ../src/CommonLib/Options.cs
+    startLine: 198
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nCollect all LDAP properties from objects instead of a subset during ObjectProps\n"
+  example: []
+  syntax:
+    content: public bool CollectAllProperties { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property CollectAllProperties As Boolean
+  overload: CommonLib.Options`1.CollectAllProperties*
+  nameWithType.vb: Options(Of CollectionMethodResolved).CollectAllProperties
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CollectAllProperties
+- uid: CommonLib.Options`1.StatusInterval
+  commentId: P:CommonLib.Options`1.StatusInterval
+  id: StatusInterval
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: StatusInterval
+  nameWithType: Options<CollectionMethodResolved>.StatusInterval
+  fullName: CommonLib.Options<CollectionMethodResolved>.StatusInterval
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: StatusInterval
+    path: ../src/CommonLib/Options.cs
+    startLine: 207
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nInterval in which to display status in milliseconds\n"
+  example: []
+  syntax:
+    content: public int StatusInterval { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property StatusInterval As Integer
+  overload: CommonLib.Options`1.StatusInterval*
+  nameWithType.vb: Options(Of CollectionMethodResolved).StatusInterval
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).StatusInterval
+- uid: CommonLib.Options`1.Verbose
+  commentId: P:CommonLib.Options`1.Verbose
+  id: Verbose
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: Verbose
+  nameWithType: Options<CollectionMethodResolved>.Verbose
+  fullName: CommonLib.Options<CollectionMethodResolved>.Verbose
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Verbose
+    path: ../src/CommonLib/Options.cs
+    startLine: 212
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nEnable Verbose Output\n"
+  example: []
+  syntax:
+    content: public bool Verbose { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Verbose As Boolean
+  overload: CommonLib.Options`1.Verbose*
+  nameWithType.vb: Options(Of CollectionMethodResolved).Verbose
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Verbose
+- uid: CommonLib.Options`1.Loop
+  commentId: P:CommonLib.Options`1.Loop
+  id: Loop
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: Loop
+  nameWithType: Options<CollectionMethodResolved>.Loop
+  fullName: CommonLib.Options<CollectionMethodResolved>.Loop
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Loop
+    path: ../src/CommonLib/Options.cs
+    startLine: 221
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nLoop Computer Collection\n"
+  example: []
+  syntax:
+    content: public bool Loop { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Loop As Boolean
+  overload: CommonLib.Options`1.Loop*
+  nameWithType.vb: Options(Of CollectionMethodResolved).Loop
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Loop
+- uid: CommonLib.Options`1.LoopDuration
+  commentId: P:CommonLib.Options`1.LoopDuration
+  id: LoopDuration
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: LoopDuration
+  nameWithType: Options<CollectionMethodResolved>.LoopDuration
+  fullName: CommonLib.Options<CollectionMethodResolved>.LoopDuration
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: LoopDuration
+    path: ../src/CommonLib/Options.cs
+    startLine: 226
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nDuration to perform looping (Default 02:00:00)\n"
+  example: []
+  syntax:
+    content: public TimeSpan LoopDuration { get; set; }
+    parameters: []
+    return:
+      type: System.TimeSpan
+    content.vb: Public Property LoopDuration As TimeSpan
+  overload: CommonLib.Options`1.LoopDuration*
+  nameWithType.vb: Options(Of CollectionMethodResolved).LoopDuration
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LoopDuration
+- uid: CommonLib.Options`1.LoopInterval
+  commentId: P:CommonLib.Options`1.LoopInterval
+  id: LoopInterval
+  parent: CommonLib.Options`1
+  langs:
+  - csharp
+  - vb
+  name: LoopInterval
+  nameWithType: Options<CollectionMethodResolved>.LoopInterval
+  fullName: CommonLib.Options<CollectionMethodResolved>.LoopInterval
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/Options.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: LoopInterval
+    path: ../src/CommonLib/Options.cs
+    startLine: 231
+  assemblies:
+  - CommonLib
+  namespace: CommonLib
+  summary: "\nInterval to sleep between loops\n"
+  example: []
+  syntax:
+    content: public TimeSpan LoopInterval { get; set; }
+    parameters: []
+    return:
+      type: System.TimeSpan
+    content.vb: Public Property LoopInterval As TimeSpan
+  overload: CommonLib.Options`1.LoopInterval*
+  nameWithType.vb: Options(Of CollectionMethodResolved).LoopInterval
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LoopInterval
+references:
+- uid: CommonLib
+  commentId: N:CommonLib
+  name: CommonLib
+  nameWithType: CommonLib
+  fullName: CommonLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CommonLib.Options`1.Instance*
+  commentId: Overload:CommonLib.Options`1.Instance
+  name: Instance
+  nameWithType: Options<CollectionMethodResolved>.Instance
+  fullName: CommonLib.Options<CollectionMethodResolved>.Instance
+  nameWithType.vb: Options(Of CollectionMethodResolved).Instance
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Instance
+- uid: CommonLib.Options`1
+  commentId: T:CommonLib.Options`1
+  parent: CommonLib
+  name: Options<CollectionMethodResolved>
+  nameWithType: Options<CollectionMethodResolved>
+  fullName: CommonLib.Options<CollectionMethodResolved>
+  nameWithType.vb: Options(Of CollectionMethodResolved)
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved)
+  name.vb: Options(Of CollectionMethodResolved)
+  spec.csharp:
+  - uid: CommonLib.Options`1
+    name: Options
+    nameWithType: Options
+    fullName: CommonLib.Options
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: CollectionMethodResolved
+    nameWithType: CollectionMethodResolved
+    fullName: CollectionMethodResolved
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: CommonLib.Options`1
+    name: Options
+    nameWithType: Options
+    fullName: CommonLib.Options
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: CollectionMethodResolved
+    nameWithType: CollectionMethodResolved
+    fullName: CollectionMethodResolved
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CommonLib.Options`1.CollectionMethods*
+  commentId: Overload:CommonLib.Options`1.CollectionMethods
+  name: CollectionMethods
+  nameWithType: Options<CollectionMethodResolved>.CollectionMethods
+  fullName: CommonLib.Options<CollectionMethodResolved>.CollectionMethods
+  nameWithType.vb: Options(Of CollectionMethodResolved).CollectionMethods
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CollectionMethods
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<String>
+  nameWithType: IEnumerable<String>
+  fullName: System.Collections.Generic.IEnumerable<System.String>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CommonLib.Options`1.Stealth*
+  commentId: Overload:CommonLib.Options`1.Stealth
+  name: Stealth
+  nameWithType: Options<CollectionMethodResolved>.Stealth
+  fullName: CommonLib.Options<CollectionMethodResolved>.Stealth
+  nameWithType.vb: Options(Of CollectionMethodResolved).Stealth
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Stealth
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: CommonLib.Options`1.Domain*
+  commentId: Overload:CommonLib.Options`1.Domain
+  name: Domain
+  nameWithType: Options<CollectionMethodResolved>.Domain
+  fullName: CommonLib.Options<CollectionMethodResolved>.Domain
+  nameWithType.vb: Options(Of CollectionMethodResolved).Domain
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Domain
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CommonLib.Options`1.WindowsOnly*
+  commentId: Overload:CommonLib.Options`1.WindowsOnly
+  name: WindowsOnly
+  nameWithType: Options<CollectionMethodResolved>.WindowsOnly
+  fullName: CommonLib.Options<CollectionMethodResolved>.WindowsOnly
+  nameWithType.vb: Options(Of CollectionMethodResolved).WindowsOnly
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).WindowsOnly
+- uid: CommonLib.Options`1.ComputerFile*
+  commentId: Overload:CommonLib.Options`1.ComputerFile
+  name: ComputerFile
+  nameWithType: Options<CollectionMethodResolved>.ComputerFile
+  fullName: CommonLib.Options<CollectionMethodResolved>.ComputerFile
+  nameWithType.vb: Options(Of CollectionMethodResolved).ComputerFile
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ComputerFile
+- uid: CommonLib.Options`1.NoOutput*
+  commentId: Overload:CommonLib.Options`1.NoOutput
+  name: NoOutput
+  nameWithType: Options<CollectionMethodResolved>.NoOutput
+  fullName: CommonLib.Options<CollectionMethodResolved>.NoOutput
+  nameWithType.vb: Options(Of CollectionMethodResolved).NoOutput
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoOutput
+- uid: CommonLib.Options`1.OutputDirectory*
+  commentId: Overload:CommonLib.Options`1.OutputDirectory
+  name: OutputDirectory
+  nameWithType: Options<CollectionMethodResolved>.OutputDirectory
+  fullName: CommonLib.Options<CollectionMethodResolved>.OutputDirectory
+  nameWithType.vb: Options(Of CollectionMethodResolved).OutputDirectory
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OutputDirectory
+- uid: CommonLib.Options`1.OutputPrefix*
+  commentId: Overload:CommonLib.Options`1.OutputPrefix
+  name: OutputPrefix
+  nameWithType: Options<CollectionMethodResolved>.OutputPrefix
+  fullName: CommonLib.Options<CollectionMethodResolved>.OutputPrefix
+  nameWithType.vb: Options(Of CollectionMethodResolved).OutputPrefix
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OutputPrefix
+- uid: CommonLib.Options`1.PrettyJson*
+  commentId: Overload:CommonLib.Options`1.PrettyJson
+  name: PrettyJson
+  nameWithType: Options<CollectionMethodResolved>.PrettyJson
+  fullName: CommonLib.Options<CollectionMethodResolved>.PrettyJson
+  nameWithType.vb: Options(Of CollectionMethodResolved).PrettyJson
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).PrettyJson
+- uid: CommonLib.Options`1.CacheFilename*
+  commentId: Overload:CommonLib.Options`1.CacheFilename
+  name: CacheFilename
+  nameWithType: Options<CollectionMethodResolved>.CacheFilename
+  fullName: CommonLib.Options<CollectionMethodResolved>.CacheFilename
+  nameWithType.vb: Options(Of CollectionMethodResolved).CacheFilename
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CacheFilename
+- uid: CommonLib.Options`1.RandomizeFilenames*
+  commentId: Overload:CommonLib.Options`1.RandomizeFilenames
+  name: RandomizeFilenames
+  nameWithType: Options<CollectionMethodResolved>.RandomizeFilenames
+  fullName: CommonLib.Options<CollectionMethodResolved>.RandomizeFilenames
+  nameWithType.vb: Options(Of CollectionMethodResolved).RandomizeFilenames
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).RandomizeFilenames
+- uid: CommonLib.Options`1.ZipFilename*
+  commentId: Overload:CommonLib.Options`1.ZipFilename
+  name: ZipFilename
+  nameWithType: Options<CollectionMethodResolved>.ZipFilename
+  fullName: CommonLib.Options<CollectionMethodResolved>.ZipFilename
+  nameWithType.vb: Options(Of CollectionMethodResolved).ZipFilename
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ZipFilename
+- uid: CommonLib.Options`1.NoSaveCache*
+  commentId: Overload:CommonLib.Options`1.NoSaveCache
+  name: NoSaveCache
+  nameWithType: Options<CollectionMethodResolved>.NoSaveCache
+  fullName: CommonLib.Options<CollectionMethodResolved>.NoSaveCache
+  nameWithType.vb: Options(Of CollectionMethodResolved).NoSaveCache
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoSaveCache
+- uid: CommonLib.Options`1.EncryptZip*
+  commentId: Overload:CommonLib.Options`1.EncryptZip
+  name: EncryptZip
+  nameWithType: Options<CollectionMethodResolved>.EncryptZip
+  fullName: CommonLib.Options<CollectionMethodResolved>.EncryptZip
+  nameWithType.vb: Options(Of CollectionMethodResolved).EncryptZip
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).EncryptZip
+- uid: CommonLib.Options`1.NoZip*
+  commentId: Overload:CommonLib.Options`1.NoZip
+  name: NoZip
+  nameWithType: Options<CollectionMethodResolved>.NoZip
+  fullName: CommonLib.Options<CollectionMethodResolved>.NoZip
+  nameWithType.vb: Options(Of CollectionMethodResolved).NoZip
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoZip
+- uid: CommonLib.Options`1.InvalidateCache*
+  commentId: Overload:CommonLib.Options`1.InvalidateCache
+  name: InvalidateCache
+  nameWithType: Options<CollectionMethodResolved>.InvalidateCache
+  fullName: CommonLib.Options<CollectionMethodResolved>.InvalidateCache
+  nameWithType.vb: Options(Of CollectionMethodResolved).InvalidateCache
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).InvalidateCache
+- uid: CommonLib.Options`1.LdapFilter*
+  commentId: Overload:CommonLib.Options`1.LdapFilter
+  name: LdapFilter
+  nameWithType: Options<CollectionMethodResolved>.LdapFilter
+  fullName: CommonLib.Options<CollectionMethodResolved>.LdapFilter
+  nameWithType.vb: Options(Of CollectionMethodResolved).LdapFilter
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapFilter
+- uid: CommonLib.Options`1.DomainController*
+  commentId: Overload:CommonLib.Options`1.DomainController
+  name: DomainController
+  nameWithType: Options<CollectionMethodResolved>.DomainController
+  fullName: CommonLib.Options<CollectionMethodResolved>.DomainController
+  nameWithType.vb: Options(Of CollectionMethodResolved).DomainController
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DomainController
+- uid: CommonLib.Options`1.LdapPort*
+  commentId: Overload:CommonLib.Options`1.LdapPort
+  name: LdapPort
+  nameWithType: Options<CollectionMethodResolved>.LdapPort
+  fullName: CommonLib.Options<CollectionMethodResolved>.LdapPort
+  nameWithType.vb: Options(Of CollectionMethodResolved).LdapPort
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapPort
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CommonLib.Options`1.SecureLDAP*
+  commentId: Overload:CommonLib.Options`1.SecureLDAP
+  name: SecureLDAP
+  nameWithType: Options<CollectionMethodResolved>.SecureLDAP
+  fullName: CommonLib.Options<CollectionMethodResolved>.SecureLDAP
+  nameWithType.vb: Options(Of CollectionMethodResolved).SecureLDAP
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SecureLDAP
+- uid: CommonLib.Options`1.DisableKerberosSigning*
+  commentId: Overload:CommonLib.Options`1.DisableKerberosSigning
+  name: DisableKerberosSigning
+  nameWithType: Options<CollectionMethodResolved>.DisableKerberosSigning
+  fullName: CommonLib.Options<CollectionMethodResolved>.DisableKerberosSigning
+  nameWithType.vb: Options(Of CollectionMethodResolved).DisableKerberosSigning
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DisableKerberosSigning
+- uid: CommonLib.Options`1.LdapUsername*
+  commentId: Overload:CommonLib.Options`1.LdapUsername
+  name: LdapUsername
+  nameWithType: Options<CollectionMethodResolved>.LdapUsername
+  fullName: CommonLib.Options<CollectionMethodResolved>.LdapUsername
+  nameWithType.vb: Options(Of CollectionMethodResolved).LdapUsername
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapUsername
+- uid: CommonLib.Options`1.LdapPassword*
+  commentId: Overload:CommonLib.Options`1.LdapPassword
+  name: LdapPassword
+  nameWithType: Options<CollectionMethodResolved>.LdapPassword
+  fullName: CommonLib.Options<CollectionMethodResolved>.LdapPassword
+  nameWithType.vb: Options(Of CollectionMethodResolved).LdapPassword
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapPassword
+- uid: CommonLib.Options`1.SearchBase*
+  commentId: Overload:CommonLib.Options`1.SearchBase
+  name: SearchBase
+  nameWithType: Options<CollectionMethodResolved>.SearchBase
+  fullName: CommonLib.Options<CollectionMethodResolved>.SearchBase
+  nameWithType.vb: Options(Of CollectionMethodResolved).SearchBase
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SearchBase
+- uid: CommonLib.Options`1.SkipPortScan*
+  commentId: Overload:CommonLib.Options`1.SkipPortScan
+  name: SkipPortScan
+  nameWithType: Options<CollectionMethodResolved>.SkipPortScan
+  fullName: CommonLib.Options<CollectionMethodResolved>.SkipPortScan
+  nameWithType.vb: Options(Of CollectionMethodResolved).SkipPortScan
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SkipPortScan
+- uid: CommonLib.Options`1.PortScanTimeout*
+  commentId: Overload:CommonLib.Options`1.PortScanTimeout
+  name: PortScanTimeout
+  nameWithType: Options<CollectionMethodResolved>.PortScanTimeout
+  fullName: CommonLib.Options<CollectionMethodResolved>.PortScanTimeout
+  nameWithType.vb: Options(Of CollectionMethodResolved).PortScanTimeout
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).PortScanTimeout
+- uid: CommonLib.Options`1.ExcludeDomainControllers*
+  commentId: Overload:CommonLib.Options`1.ExcludeDomainControllers
+  name: ExcludeDomainControllers
+  nameWithType: Options<CollectionMethodResolved>.ExcludeDomainControllers
+  fullName: CommonLib.Options<CollectionMethodResolved>.ExcludeDomainControllers
+  nameWithType.vb: Options(Of CollectionMethodResolved).ExcludeDomainControllers
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ExcludeDomainControllers
+- uid: CommonLib.Options`1.Throttle*
+  commentId: Overload:CommonLib.Options`1.Throttle
+  name: Throttle
+  nameWithType: Options<CollectionMethodResolved>.Throttle
+  fullName: CommonLib.Options<CollectionMethodResolved>.Throttle
+  nameWithType.vb: Options(Of CollectionMethodResolved).Throttle
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Throttle
+- uid: CommonLib.Options`1.Jitter*
+  commentId: Overload:CommonLib.Options`1.Jitter
+  name: Jitter
+  nameWithType: Options<CollectionMethodResolved>.Jitter
+  fullName: CommonLib.Options<CollectionMethodResolved>.Jitter
+  nameWithType.vb: Options(Of CollectionMethodResolved).Jitter
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Jitter
+- uid: CommonLib.Options`1.OverrideUserName*
+  commentId: Overload:CommonLib.Options`1.OverrideUserName
+  name: OverrideUserName
+  nameWithType: Options<CollectionMethodResolved>.OverrideUserName
+  fullName: CommonLib.Options<CollectionMethodResolved>.OverrideUserName
+  nameWithType.vb: Options(Of CollectionMethodResolved).OverrideUserName
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OverrideUserName
+- uid: CommonLib.Options`1.NoRegistryLoggedOn*
+  commentId: Overload:CommonLib.Options`1.NoRegistryLoggedOn
+  name: NoRegistryLoggedOn
+  nameWithType: Options<CollectionMethodResolved>.NoRegistryLoggedOn
+  fullName: CommonLib.Options<CollectionMethodResolved>.NoRegistryLoggedOn
+  nameWithType.vb: Options(Of CollectionMethodResolved).NoRegistryLoggedOn
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoRegistryLoggedOn
+- uid: CommonLib.Options`1.DumpComputerStatus*
+  commentId: Overload:CommonLib.Options`1.DumpComputerStatus
+  name: DumpComputerStatus
+  nameWithType: Options<CollectionMethodResolved>.DumpComputerStatus
+  fullName: CommonLib.Options<CollectionMethodResolved>.DumpComputerStatus
+  nameWithType.vb: Options(Of CollectionMethodResolved).DumpComputerStatus
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DumpComputerStatus
+- uid: CommonLib.Options`1.RealDNSName*
+  commentId: Overload:CommonLib.Options`1.RealDNSName
+  name: RealDNSName
+  nameWithType: Options<CollectionMethodResolved>.RealDNSName
+  fullName: CommonLib.Options<CollectionMethodResolved>.RealDNSName
+  nameWithType.vb: Options(Of CollectionMethodResolved).RealDNSName
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).RealDNSName
+- uid: CommonLib.Options`1.CollectAllProperties*
+  commentId: Overload:CommonLib.Options`1.CollectAllProperties
+  name: CollectAllProperties
+  nameWithType: Options<CollectionMethodResolved>.CollectAllProperties
+  fullName: CommonLib.Options<CollectionMethodResolved>.CollectAllProperties
+  nameWithType.vb: Options(Of CollectionMethodResolved).CollectAllProperties
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CollectAllProperties
+- uid: CommonLib.Options`1.StatusInterval*
+  commentId: Overload:CommonLib.Options`1.StatusInterval
+  name: StatusInterval
+  nameWithType: Options<CollectionMethodResolved>.StatusInterval
+  fullName: CommonLib.Options<CollectionMethodResolved>.StatusInterval
+  nameWithType.vb: Options(Of CollectionMethodResolved).StatusInterval
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).StatusInterval
+- uid: CommonLib.Options`1.Verbose*
+  commentId: Overload:CommonLib.Options`1.Verbose
+  name: Verbose
+  nameWithType: Options<CollectionMethodResolved>.Verbose
+  fullName: CommonLib.Options<CollectionMethodResolved>.Verbose
+  nameWithType.vb: Options(Of CollectionMethodResolved).Verbose
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Verbose
+- uid: CommonLib.Options`1.Loop*
+  commentId: Overload:CommonLib.Options`1.Loop
+  name: Loop
+  nameWithType: Options<CollectionMethodResolved>.Loop
+  fullName: CommonLib.Options<CollectionMethodResolved>.Loop
+  nameWithType.vb: Options(Of CollectionMethodResolved).Loop
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Loop
+- uid: CommonLib.Options`1.LoopDuration*
+  commentId: Overload:CommonLib.Options`1.LoopDuration
+  name: LoopDuration
+  nameWithType: Options<CollectionMethodResolved>.LoopDuration
+  fullName: CommonLib.Options<CollectionMethodResolved>.LoopDuration
+  nameWithType.vb: Options(Of CollectionMethodResolved).LoopDuration
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LoopDuration
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: CommonLib.Options`1.LoopInterval*
+  commentId: Overload:CommonLib.Options`1.LoopInterval
+  name: LoopInterval
+  nameWithType: Options<CollectionMethodResolved>.LoopInterval
+  fullName: CommonLib.Options<CollectionMethodResolved>.LoopInterval
+  nameWithType.vb: Options(Of CollectionMethodResolved).LoopInterval
+  fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LoopInterval

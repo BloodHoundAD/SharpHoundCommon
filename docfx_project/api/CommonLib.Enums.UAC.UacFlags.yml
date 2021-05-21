@@ -1,0 +1,782 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Enums.UAC.UacFlags
+  commentId: T:CommonLib.Enums.UAC.UacFlags
+  id: UAC.UacFlags
+  parent: CommonLib.Enums
+  children:
+  - CommonLib.Enums.UAC.UacFlags.AccountDisable
+  - CommonLib.Enums.UAC.UacFlags.DontExpirePassword
+  - CommonLib.Enums.UAC.UacFlags.DontReqPreauth
+  - CommonLib.Enums.UAC.UacFlags.EncryptedTextPwdAllowed
+  - CommonLib.Enums.UAC.UacFlags.HomeDirRequired
+  - CommonLib.Enums.UAC.UacFlags.InterdomainTrustAccount
+  - CommonLib.Enums.UAC.UacFlags.Lockout
+  - CommonLib.Enums.UAC.UacFlags.MnsLogonAccount
+  - CommonLib.Enums.UAC.UacFlags.NormalAccount
+  - CommonLib.Enums.UAC.UacFlags.NotDelegated
+  - CommonLib.Enums.UAC.UacFlags.PartialSecretsAccount
+  - CommonLib.Enums.UAC.UacFlags.PasswordCantChange
+  - CommonLib.Enums.UAC.UacFlags.PasswordExpired
+  - CommonLib.Enums.UAC.UacFlags.PasswordNotRequired
+  - CommonLib.Enums.UAC.UacFlags.Script
+  - CommonLib.Enums.UAC.UacFlags.ServerTrustAccount
+  - CommonLib.Enums.UAC.UacFlags.SmartcardRequired
+  - CommonLib.Enums.UAC.UacFlags.TempDuplicateAccount
+  - CommonLib.Enums.UAC.UacFlags.TrustedForDelegation
+  - CommonLib.Enums.UAC.UacFlags.TrustedToAuthForDelegation
+  - CommonLib.Enums.UAC.UacFlags.UseDesKeyOnly
+  - CommonLib.Enums.UAC.UacFlags.WorkstationTrustAccount
+  langs:
+  - csharp
+  - vb
+  name: UAC.UacFlags
+  nameWithType: UAC.UacFlags
+  fullName: CommonLib.Enums.UAC.UacFlags
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: UacFlags
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 6
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum UacFlags
+    content.vb: >-
+      <Flags>
+
+      Public Enum UacFlags
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CommonLib.Enums.UAC.UacFlags.Script
+  commentId: F:CommonLib.Enums.UAC.UacFlags.Script
+  id: Script
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: Script
+  nameWithType: UAC.UacFlags.Script
+  fullName: CommonLib.Enums.UAC.UacFlags.Script
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Script
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 9
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: Script = 1
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.AccountDisable
+  commentId: F:CommonLib.Enums.UAC.UacFlags.AccountDisable
+  id: AccountDisable
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: AccountDisable
+  nameWithType: UAC.UacFlags.AccountDisable
+  fullName: CommonLib.Enums.UAC.UacFlags.AccountDisable
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: AccountDisable
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 10
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: AccountDisable = 2
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.HomeDirRequired
+  commentId: F:CommonLib.Enums.UAC.UacFlags.HomeDirRequired
+  id: HomeDirRequired
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: HomeDirRequired
+  nameWithType: UAC.UacFlags.HomeDirRequired
+  fullName: CommonLib.Enums.UAC.UacFlags.HomeDirRequired
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: HomeDirRequired
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 11
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: HomeDirRequired = 8
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.Lockout
+  commentId: F:CommonLib.Enums.UAC.UacFlags.Lockout
+  id: Lockout
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: Lockout
+  nameWithType: UAC.UacFlags.Lockout
+  fullName: CommonLib.Enums.UAC.UacFlags.Lockout
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Lockout
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 12
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: Lockout = 16
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.PasswordNotRequired
+  commentId: F:CommonLib.Enums.UAC.UacFlags.PasswordNotRequired
+  id: PasswordNotRequired
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: PasswordNotRequired
+  nameWithType: UAC.UacFlags.PasswordNotRequired
+  fullName: CommonLib.Enums.UAC.UacFlags.PasswordNotRequired
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PasswordNotRequired
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 13
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: PasswordNotRequired = 32
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.PasswordCantChange
+  commentId: F:CommonLib.Enums.UAC.UacFlags.PasswordCantChange
+  id: PasswordCantChange
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: PasswordCantChange
+  nameWithType: UAC.UacFlags.PasswordCantChange
+  fullName: CommonLib.Enums.UAC.UacFlags.PasswordCantChange
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PasswordCantChange
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 14
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: PasswordCantChange = 64
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.EncryptedTextPwdAllowed
+  commentId: F:CommonLib.Enums.UAC.UacFlags.EncryptedTextPwdAllowed
+  id: EncryptedTextPwdAllowed
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: EncryptedTextPwdAllowed
+  nameWithType: UAC.UacFlags.EncryptedTextPwdAllowed
+  fullName: CommonLib.Enums.UAC.UacFlags.EncryptedTextPwdAllowed
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: EncryptedTextPwdAllowed
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 15
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: EncryptedTextPwdAllowed = 128
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.TempDuplicateAccount
+  commentId: F:CommonLib.Enums.UAC.UacFlags.TempDuplicateAccount
+  id: TempDuplicateAccount
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: TempDuplicateAccount
+  nameWithType: UAC.UacFlags.TempDuplicateAccount
+  fullName: CommonLib.Enums.UAC.UacFlags.TempDuplicateAccount
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: TempDuplicateAccount
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 16
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: TempDuplicateAccount = 256
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.NormalAccount
+  commentId: F:CommonLib.Enums.UAC.UacFlags.NormalAccount
+  id: NormalAccount
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: NormalAccount
+  nameWithType: UAC.UacFlags.NormalAccount
+  fullName: CommonLib.Enums.UAC.UacFlags.NormalAccount
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: NormalAccount
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 17
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: NormalAccount = 512
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.InterdomainTrustAccount
+  commentId: F:CommonLib.Enums.UAC.UacFlags.InterdomainTrustAccount
+  id: InterdomainTrustAccount
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: InterdomainTrustAccount
+  nameWithType: UAC.UacFlags.InterdomainTrustAccount
+  fullName: CommonLib.Enums.UAC.UacFlags.InterdomainTrustAccount
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: InterdomainTrustAccount
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 18
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: InterdomainTrustAccount = 2048
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.WorkstationTrustAccount
+  commentId: F:CommonLib.Enums.UAC.UacFlags.WorkstationTrustAccount
+  id: WorkstationTrustAccount
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: WorkstationTrustAccount
+  nameWithType: UAC.UacFlags.WorkstationTrustAccount
+  fullName: CommonLib.Enums.UAC.UacFlags.WorkstationTrustAccount
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: WorkstationTrustAccount
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 19
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: WorkstationTrustAccount = 4096
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.ServerTrustAccount
+  commentId: F:CommonLib.Enums.UAC.UacFlags.ServerTrustAccount
+  id: ServerTrustAccount
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: ServerTrustAccount
+  nameWithType: UAC.UacFlags.ServerTrustAccount
+  fullName: CommonLib.Enums.UAC.UacFlags.ServerTrustAccount
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: ServerTrustAccount
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 20
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: ServerTrustAccount = 8192
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.DontExpirePassword
+  commentId: F:CommonLib.Enums.UAC.UacFlags.DontExpirePassword
+  id: DontExpirePassword
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: DontExpirePassword
+  nameWithType: UAC.UacFlags.DontExpirePassword
+  fullName: CommonLib.Enums.UAC.UacFlags.DontExpirePassword
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DontExpirePassword
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 21
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: DontExpirePassword = 65536
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.MnsLogonAccount
+  commentId: F:CommonLib.Enums.UAC.UacFlags.MnsLogonAccount
+  id: MnsLogonAccount
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: MnsLogonAccount
+  nameWithType: UAC.UacFlags.MnsLogonAccount
+  fullName: CommonLib.Enums.UAC.UacFlags.MnsLogonAccount
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: MnsLogonAccount
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 22
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: MnsLogonAccount = 131072
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.SmartcardRequired
+  commentId: F:CommonLib.Enums.UAC.UacFlags.SmartcardRequired
+  id: SmartcardRequired
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: SmartcardRequired
+  nameWithType: UAC.UacFlags.SmartcardRequired
+  fullName: CommonLib.Enums.UAC.UacFlags.SmartcardRequired
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: SmartcardRequired
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 23
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: SmartcardRequired = 262144
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.TrustedForDelegation
+  commentId: F:CommonLib.Enums.UAC.UacFlags.TrustedForDelegation
+  id: TrustedForDelegation
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: TrustedForDelegation
+  nameWithType: UAC.UacFlags.TrustedForDelegation
+  fullName: CommonLib.Enums.UAC.UacFlags.TrustedForDelegation
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: TrustedForDelegation
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 24
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: TrustedForDelegation = 524288
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.NotDelegated
+  commentId: F:CommonLib.Enums.UAC.UacFlags.NotDelegated
+  id: NotDelegated
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: NotDelegated
+  nameWithType: UAC.UacFlags.NotDelegated
+  fullName: CommonLib.Enums.UAC.UacFlags.NotDelegated
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: NotDelegated
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 25
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: NotDelegated = 1048576
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.UseDesKeyOnly
+  commentId: F:CommonLib.Enums.UAC.UacFlags.UseDesKeyOnly
+  id: UseDesKeyOnly
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: UseDesKeyOnly
+  nameWithType: UAC.UacFlags.UseDesKeyOnly
+  fullName: CommonLib.Enums.UAC.UacFlags.UseDesKeyOnly
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: UseDesKeyOnly
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 26
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: UseDesKeyOnly = 2097152
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.DontReqPreauth
+  commentId: F:CommonLib.Enums.UAC.UacFlags.DontReqPreauth
+  id: DontReqPreauth
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: DontReqPreauth
+  nameWithType: UAC.UacFlags.DontReqPreauth
+  fullName: CommonLib.Enums.UAC.UacFlags.DontReqPreauth
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DontReqPreauth
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 27
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: DontReqPreauth = 4194304
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.PasswordExpired
+  commentId: F:CommonLib.Enums.UAC.UacFlags.PasswordExpired
+  id: PasswordExpired
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: PasswordExpired
+  nameWithType: UAC.UacFlags.PasswordExpired
+  fullName: CommonLib.Enums.UAC.UacFlags.PasswordExpired
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PasswordExpired
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 28
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: PasswordExpired = 8388608
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.TrustedToAuthForDelegation
+  commentId: F:CommonLib.Enums.UAC.UacFlags.TrustedToAuthForDelegation
+  id: TrustedToAuthForDelegation
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: TrustedToAuthForDelegation
+  nameWithType: UAC.UacFlags.TrustedToAuthForDelegation
+  fullName: CommonLib.Enums.UAC.UacFlags.TrustedToAuthForDelegation
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: TrustedToAuthForDelegation
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 29
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: TrustedToAuthForDelegation = 16777216
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Enums.UAC.UacFlags.PartialSecretsAccount
+  commentId: F:CommonLib.Enums.UAC.UacFlags.PartialSecretsAccount
+  id: PartialSecretsAccount
+  parent: CommonLib.Enums.UAC.UacFlags
+  langs:
+  - csharp
+  - vb
+  name: PartialSecretsAccount
+  nameWithType: UAC.UacFlags.PartialSecretsAccount
+  fullName: CommonLib.Enums.UAC.UacFlags.PartialSecretsAccount
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/UAC.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PartialSecretsAccount
+    path: ../src/CommonLib/Enums/UAC.cs
+    startLine: 30
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Enums
+  syntax:
+    content: PartialSecretsAccount = 67108864
+    return:
+      type: CommonLib.Enums.UAC.UacFlags
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CommonLib.Enums
+  commentId: N:CommonLib.Enums
+  name: CommonLib.Enums
+  nameWithType: CommonLib.Enums
+  fullName: CommonLib.Enums
+- uid: CommonLib.Enums.UAC.UacFlags
+  commentId: T:CommonLib.Enums.UAC.UacFlags
+  parent: CommonLib.Enums
+  name: UAC.UacFlags
+  nameWithType: UAC.UacFlags
+  fullName: CommonLib.Enums.UAC.UacFlags

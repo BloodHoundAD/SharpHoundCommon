@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  webfrontend:
+    image: ${DOCKER_REGISTRY-}webfrontend
+    build:
+      context: .
+      dockerfile: WebFrontEnd/Dockerfile
+
+  mywebapi:
+    image: ${DOCKER_REGISTRY-}mywebapi
+    build:
+      context: .
+      dockerfile: MyWebAPI/Dockerfile

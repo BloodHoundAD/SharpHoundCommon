@@ -1,0 +1,178 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Output.TrustDirection
+  commentId: T:CommonLib.Output.TrustDirection
+  id: TrustDirection
+  parent: CommonLib.Output
+  children:
+  - CommonLib.Output.TrustDirection.Bidirectional
+  - CommonLib.Output.TrustDirection.Disabled
+  - CommonLib.Output.TrustDirection.Inbound
+  - CommonLib.Output.TrustDirection.Outbound
+  langs:
+  - csharp
+  - vb
+  name: TrustDirection
+  nameWithType: TrustDirection
+  fullName: CommonLib.Output.TrustDirection
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: TrustDirection
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 12
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public enum TrustDirection
+    content.vb: Public Enum TrustDirection
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CommonLib.Output.TrustDirection.Disabled
+  commentId: F:CommonLib.Output.TrustDirection.Disabled
+  id: Disabled
+  parent: CommonLib.Output.TrustDirection
+  langs:
+  - csharp
+  - vb
+  name: Disabled
+  nameWithType: TrustDirection.Disabled
+  fullName: CommonLib.Output.TrustDirection.Disabled
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Disabled
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 14
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: Disabled = 0
+    return:
+      type: CommonLib.Output.TrustDirection
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.TrustDirection.Inbound
+  commentId: F:CommonLib.Output.TrustDirection.Inbound
+  id: Inbound
+  parent: CommonLib.Output.TrustDirection
+  langs:
+  - csharp
+  - vb
+  name: Inbound
+  nameWithType: TrustDirection.Inbound
+  fullName: CommonLib.Output.TrustDirection.Inbound
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Inbound
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 15
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: Inbound = 1
+    return:
+      type: CommonLib.Output.TrustDirection
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.TrustDirection.Outbound
+  commentId: F:CommonLib.Output.TrustDirection.Outbound
+  id: Outbound
+  parent: CommonLib.Output.TrustDirection
+  langs:
+  - csharp
+  - vb
+  name: Outbound
+  nameWithType: TrustDirection.Outbound
+  fullName: CommonLib.Output.TrustDirection.Outbound
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Outbound
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 16
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: Outbound = 2
+    return:
+      type: CommonLib.Output.TrustDirection
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CommonLib.Output.TrustDirection.Bidirectional
+  commentId: F:CommonLib.Output.TrustDirection.Bidirectional
+  id: Bidirectional
+  parent: CommonLib.Output.TrustDirection
+  langs:
+  - csharp
+  - vb
+  name: Bidirectional
+  nameWithType: TrustDirection.Bidirectional
+  fullName: CommonLib.Output.TrustDirection.Bidirectional
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Bidirectional
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 17
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: Bidirectional = 3
+    return:
+      type: CommonLib.Output.TrustDirection
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CommonLib.Output
+  commentId: N:CommonLib.Output
+  name: CommonLib.Output
+  nameWithType: CommonLib.Output
+  fullName: CommonLib.Output
+- uid: CommonLib.Output.TrustDirection
+  commentId: T:CommonLib.Output.TrustDirection
+  parent: CommonLib.Output
+  name: TrustDirection
+  nameWithType: TrustDirection
+  fullName: CommonLib.Output.TrustDirection

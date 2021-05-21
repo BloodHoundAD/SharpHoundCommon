@@ -1,0 +1,817 @@
+### YamlMime:ManagedReference
+items:
+- uid: CommonLib.Output.Computer
+  commentId: T:CommonLib.Output.Computer
+  id: Computer
+  parent: CommonLib.Output
+  children:
+  - CommonLib.Output.Computer.Admins
+  - CommonLib.Output.Computer.AllowedToAct
+  - CommonLib.Output.Computer.AllowedToDelegate
+  - CommonLib.Output.Computer.DcomUsers
+  - CommonLib.Output.Computer.PrimaryGroupSID
+  - CommonLib.Output.Computer.PSRemoteUsers
+  - CommonLib.Output.Computer.RemoteDesktopUsers
+  - CommonLib.Output.Computer.Sessions
+  - CommonLib.Output.Computer.Status
+  langs:
+  - csharp
+  - vb
+  name: Computer
+  nameWithType: Computer
+  fullName: CommonLib.Output.Computer
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Computer
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 7
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  summary: "\nRepresents a computer object in Active Directory. Contains all the properties BloodHound cares about \n"
+  example: []
+  syntax:
+    content: 'public class Computer : OutputBase'
+    content.vb: >-
+      Public Class Computer
+          Inherits OutputBase
+  inheritance:
+  - System.Object
+  - CommonLib.Output.OutputBase
+  inheritedMembers:
+  - CommonLib.Output.OutputBase.Aces
+  - CommonLib.Output.OutputBase.ObjectIdentifier
+  - CommonLib.Output.OutputBase.Properties
+  - CommonLib.Output.OutputBase.IsDeleted
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CommonLib.Output.Computer.PrimaryGroupSID
+  commentId: P:CommonLib.Output.Computer.PrimaryGroupSID
+  id: PrimaryGroupSID
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: PrimaryGroupSID
+  nameWithType: Computer.PrimaryGroupSID
+  fullName: CommonLib.Output.Computer.PrimaryGroupSID
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PrimaryGroupSID
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 9
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public string PrimaryGroupSID { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property PrimaryGroupSID As String
+  overload: CommonLib.Output.Computer.PrimaryGroupSID*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.Computer.AllowedToDelegate
+  commentId: P:CommonLib.Output.Computer.AllowedToDelegate
+  id: AllowedToDelegate
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: AllowedToDelegate
+  nameWithType: Computer.AllowedToDelegate
+  fullName: CommonLib.Output.Computer.AllowedToDelegate
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: AllowedToDelegate
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 10
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public TypedPrincipal[] AllowedToDelegate { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.TypedPrincipal[]
+    content.vb: Public Property AllowedToDelegate As TypedPrincipal()
+  overload: CommonLib.Output.Computer.AllowedToDelegate*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.Computer.AllowedToAct
+  commentId: P:CommonLib.Output.Computer.AllowedToAct
+  id: AllowedToAct
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: AllowedToAct
+  nameWithType: Computer.AllowedToAct
+  fullName: CommonLib.Output.Computer.AllowedToAct
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: AllowedToAct
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 11
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public TypedPrincipal[] AllowedToAct { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.TypedPrincipal[]
+    content.vb: Public Property AllowedToAct As TypedPrincipal()
+  overload: CommonLib.Output.Computer.AllowedToAct*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.Computer.Sessions
+  commentId: P:CommonLib.Output.Computer.Sessions
+  id: Sessions
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: Sessions
+  nameWithType: Computer.Sessions
+  fullName: CommonLib.Output.Computer.Sessions
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Sessions
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 12
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public Session[] Sessions { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.Session[]
+    content.vb: Public Property Sessions As Session()
+  overload: CommonLib.Output.Computer.Sessions*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.Computer.Admins
+  commentId: P:CommonLib.Output.Computer.Admins
+  id: Admins
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: Admins
+  nameWithType: Computer.Admins
+  fullName: CommonLib.Output.Computer.Admins
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Admins
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 13
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public LocalGroupResult Admins { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.LocalGroupResult
+    content.vb: Public Property Admins As LocalGroupResult
+  overload: CommonLib.Output.Computer.Admins*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.Computer.RemoteDesktopUsers
+  commentId: P:CommonLib.Output.Computer.RemoteDesktopUsers
+  id: RemoteDesktopUsers
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: RemoteDesktopUsers
+  nameWithType: Computer.RemoteDesktopUsers
+  fullName: CommonLib.Output.Computer.RemoteDesktopUsers
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: RemoteDesktopUsers
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 14
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public LocalGroupResult RemoteDesktopUsers { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.LocalGroupResult
+    content.vb: Public Property RemoteDesktopUsers As LocalGroupResult
+  overload: CommonLib.Output.Computer.RemoteDesktopUsers*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.Computer.DcomUsers
+  commentId: P:CommonLib.Output.Computer.DcomUsers
+  id: DcomUsers
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: DcomUsers
+  nameWithType: Computer.DcomUsers
+  fullName: CommonLib.Output.Computer.DcomUsers
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: DcomUsers
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 15
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public LocalGroupResult DcomUsers { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.LocalGroupResult
+    content.vb: Public Property DcomUsers As LocalGroupResult
+  overload: CommonLib.Output.Computer.DcomUsers*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.Computer.PSRemoteUsers
+  commentId: P:CommonLib.Output.Computer.PSRemoteUsers
+  id: PSRemoteUsers
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: PSRemoteUsers
+  nameWithType: Computer.PSRemoteUsers
+  fullName: CommonLib.Output.Computer.PSRemoteUsers
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: PSRemoteUsers
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 16
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public LocalGroupResult PSRemoteUsers { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.LocalGroupResult
+    content.vb: Public Property PSRemoteUsers As LocalGroupResult
+  overload: CommonLib.Output.Computer.PSRemoteUsers*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CommonLib.Output.Computer.Status
+  commentId: P:CommonLib.Output.Computer.Status
+  id: Status
+  parent: CommonLib.Output.Computer
+  langs:
+  - csharp
+  - vb
+  name: Status
+  nameWithType: Computer.Status
+  fullName: CommonLib.Output.Computer.Status
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/Computer.cs
+      branch: master
+      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+    id: Status
+    path: ../src/CommonLib/OutputTypes/Computer.cs
+    startLine: 17
+  assemblies:
+  - CommonLib
+  namespace: CommonLib.Output
+  syntax:
+    content: public ComputerStatus Status { get; set; }
+    parameters: []
+    return:
+      type: CommonLib.Output.ComputerStatus
+    content.vb: Public Property Status As ComputerStatus
+  overload: CommonLib.Output.Computer.Status*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: CommonLib.Output
+  commentId: N:CommonLib.Output
+  name: CommonLib.Output
+  nameWithType: CommonLib.Output
+  fullName: CommonLib.Output
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: CommonLib.Output.OutputBase
+  commentId: T:CommonLib.Output.OutputBase
+  parent: CommonLib.Output
+  name: OutputBase
+  nameWithType: OutputBase
+  fullName: CommonLib.Output.OutputBase
+- uid: CommonLib.Output.OutputBase.Aces
+  commentId: P:CommonLib.Output.OutputBase.Aces
+  parent: CommonLib.Output.OutputBase
+  name: Aces
+  nameWithType: OutputBase.Aces
+  fullName: CommonLib.Output.OutputBase.Aces
+- uid: CommonLib.Output.OutputBase.ObjectIdentifier
+  commentId: P:CommonLib.Output.OutputBase.ObjectIdentifier
+  parent: CommonLib.Output.OutputBase
+  name: ObjectIdentifier
+  nameWithType: OutputBase.ObjectIdentifier
+  fullName: CommonLib.Output.OutputBase.ObjectIdentifier
+- uid: CommonLib.Output.OutputBase.Properties
+  commentId: F:CommonLib.Output.OutputBase.Properties
+  parent: CommonLib.Output.OutputBase
+  name: Properties
+  nameWithType: OutputBase.Properties
+  fullName: CommonLib.Output.OutputBase.Properties
+- uid: CommonLib.Output.OutputBase.IsDeleted
+  commentId: P:CommonLib.Output.OutputBase.IsDeleted
+  parent: CommonLib.Output.OutputBase
+  name: IsDeleted
+  nameWithType: OutputBase.IsDeleted
+  fullName: CommonLib.Output.OutputBase.IsDeleted
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CommonLib.Output.Computer.PrimaryGroupSID*
+  commentId: Overload:CommonLib.Output.Computer.PrimaryGroupSID
+  name: PrimaryGroupSID
+  nameWithType: Computer.PrimaryGroupSID
+  fullName: CommonLib.Output.Computer.PrimaryGroupSID
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CommonLib.Output.Computer.AllowedToDelegate*
+  commentId: Overload:CommonLib.Output.Computer.AllowedToDelegate
+  name: AllowedToDelegate
+  nameWithType: Computer.AllowedToDelegate
+  fullName: CommonLib.Output.Computer.AllowedToDelegate
+- uid: CommonLib.Output.TypedPrincipal[]
+  isExternal: true
+  name: TypedPrincipal[]
+  nameWithType: TypedPrincipal[]
+  fullName: CommonLib.Output.TypedPrincipal[]
+  nameWithType.vb: TypedPrincipal()
+  fullName.vb: CommonLib.Output.TypedPrincipal()
+  name.vb: TypedPrincipal()
+  spec.csharp:
+  - uid: CommonLib.Output.TypedPrincipal
+    name: TypedPrincipal
+    nameWithType: TypedPrincipal
+    fullName: CommonLib.Output.TypedPrincipal
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CommonLib.Output.TypedPrincipal
+    name: TypedPrincipal
+    nameWithType: TypedPrincipal
+    fullName: CommonLib.Output.TypedPrincipal
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CommonLib.Output.Computer.AllowedToAct*
+  commentId: Overload:CommonLib.Output.Computer.AllowedToAct
+  name: AllowedToAct
+  nameWithType: Computer.AllowedToAct
+  fullName: CommonLib.Output.Computer.AllowedToAct
+- uid: CommonLib.Output.Computer.Sessions*
+  commentId: Overload:CommonLib.Output.Computer.Sessions
+  name: Sessions
+  nameWithType: Computer.Sessions
+  fullName: CommonLib.Output.Computer.Sessions
+- uid: CommonLib.Output.Session[]
+  isExternal: true
+  name: Session[]
+  nameWithType: Session[]
+  fullName: CommonLib.Output.Session[]
+  nameWithType.vb: Session()
+  fullName.vb: CommonLib.Output.Session()
+  name.vb: Session()
+  spec.csharp:
+  - uid: CommonLib.Output.Session
+    name: Session
+    nameWithType: Session
+    fullName: CommonLib.Output.Session
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CommonLib.Output.Session
+    name: Session
+    nameWithType: Session
+    fullName: CommonLib.Output.Session
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CommonLib.Output.Computer.Admins*
+  commentId: Overload:CommonLib.Output.Computer.Admins
+  name: Admins
+  nameWithType: Computer.Admins
+  fullName: CommonLib.Output.Computer.Admins
+- uid: CommonLib.Output.LocalGroupResult
+  commentId: T:CommonLib.Output.LocalGroupResult
+  parent: CommonLib.Output
+  name: LocalGroupResult
+  nameWithType: LocalGroupResult
+  fullName: CommonLib.Output.LocalGroupResult
+- uid: CommonLib.Output.Computer.RemoteDesktopUsers*
+  commentId: Overload:CommonLib.Output.Computer.RemoteDesktopUsers
+  name: RemoteDesktopUsers
+  nameWithType: Computer.RemoteDesktopUsers
+  fullName: CommonLib.Output.Computer.RemoteDesktopUsers
+- uid: CommonLib.Output.Computer.DcomUsers*
+  commentId: Overload:CommonLib.Output.Computer.DcomUsers
+  name: DcomUsers
+  nameWithType: Computer.DcomUsers
+  fullName: CommonLib.Output.Computer.DcomUsers
+- uid: CommonLib.Output.Computer.PSRemoteUsers*
+  commentId: Overload:CommonLib.Output.Computer.PSRemoteUsers
+  name: PSRemoteUsers
+  nameWithType: Computer.PSRemoteUsers
+  fullName: CommonLib.Output.Computer.PSRemoteUsers
+- uid: CommonLib.Output.Computer.Status*
+  commentId: Overload:CommonLib.Output.Computer.Status
+  name: Status
+  nameWithType: Computer.Status
+  fullName: CommonLib.Output.Computer.Status
+- uid: CommonLib.Output.ComputerStatus
+  commentId: T:CommonLib.Output.ComputerStatus
+  parent: CommonLib.Output
+  name: ComputerStatus
+  nameWithType: ComputerStatus
+  fullName: CommonLib.Output.ComputerStatus
