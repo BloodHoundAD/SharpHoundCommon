@@ -35,7 +35,7 @@ namespace SharpHoundCommonLib.Processors
                         yield return new TypedPrincipal
                         {
                             ObjectIdentifier = member,
-                            ObjectType = Label.Unknown
+                            ObjectType = Label.Base
                         };
                     else
                         yield return res;
@@ -52,7 +52,7 @@ namespace SharpHoundCommonLib.Processors
                         yield return new TypedPrincipal
                         {
                             ObjectIdentifier = member,
-                            ObjectType = Label.Unknown
+                            ObjectType = Label.Base
                         };
                     else
                         yield return res;

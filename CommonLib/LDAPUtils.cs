@@ -106,13 +106,13 @@ namespace SharpHoundCommonLib
             
             var hex = Helpers.ConvertSidToHexSid(sid);
             if (hex == null)
-                return Label.Unknown;
+                return Label.Base;
 
             var rDomain = GetDomainNameFromSid(sid) ?? domain;
 
             var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
 
-            type = result?.GetLabel() ?? Label.Unknown;
+            type = result?.GetLabel() ?? Label.Base;
             Cache.AddType(sid, type);
             return type;
         }
@@ -124,13 +124,13 @@ namespace SharpHoundCommonLib
             
             var hex = Helpers.ConvertSidToHexSid(guid);
             if (hex == null)
-                return Label.Unknown;
+                return Label.Base;
 
             var rDomain = GetDomainNameFromSid(guid) ?? domain;
 
             var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
 
-            type = result?.GetLabel() ?? Label.Unknown;
+            type = result?.GetLabel() ?? Label.Base;
             Cache.AddType(guid, type);
             return type;
         }

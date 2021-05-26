@@ -77,7 +77,7 @@ namespace SharpHoundCommonLib
             if (Computers.Contains(samAccountType))
                 return Label.Computer;
 
-            return Label.Unknown;
+            return Label.Base;
         }
         
         /// <summary>

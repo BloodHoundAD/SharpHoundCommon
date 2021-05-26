@@ -40,18 +40,17 @@ namespace SharpHoundCommonLib.Processors
             {"Distributed COM Users", LocalGroupRids.DcomUsers},
         };
 
-        public static async Task<ResultingGPOChanges> ReadGPOLocalGroups(SearchResultEntry entry)
+        public static async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName)
         {
-            var links = entry.GetProperty("gplink");
             //If the gplink property is null, we don't need to process anything
-            if (links == null)
+            if (gpLink == null)
                 return null;
 
             // First lets check if this OU actually has computers that it contains. If not, then we'll ignore it.
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
             var query = new LDAPFilter().AddComputers().GetFilter();
             var affectedComputers = LDAPUtils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.ObjectSID,
-                    adsPath: entry.DistinguishedName)
+                    adsPath: distinguishedName)
                 .Select(x => x.GetSid())
                 .Where(x => x != null)
                 .Select(x => new TypedPrincipal
@@ -68,7 +67,7 @@ namespace SharpHoundCommonLib.Processors
             var unenforced = new List<string>();
 
             // Split our link property up and remove disabled links
-            foreach (var link in Helpers.SplitGPLinkProperty(links))
+            foreach (var link in Helpers.SplitGPLinkProperty(gpLink))
             {
                 switch (link.Status)
                 {

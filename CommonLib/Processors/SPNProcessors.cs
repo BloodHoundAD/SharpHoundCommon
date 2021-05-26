@@ -1,20 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.DirectoryServices.Protocols;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class SPNProcessors
     {
-        public static async IAsyncEnumerable<SPNTarget> ReadSPNTargets(SearchResultEntry entry)
+        public static async IAsyncEnumerable<SPNTarget> ReadSPNTargets(string[] servicePrincipalNames, string distinguishedName)
         {
-            var spns = entry.GetPropertyAsArray("serviceprincipalname");
-            if (spns.Length == 0)
+            if (servicePrincipalNames.Length == 0)
                 yield break;
 
-            var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
+            var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
 
-            foreach (var spn in spns)
+            foreach (var spn in servicePrincipalNames)
             {
                 //This SPN format isn't useful for us right now (username@domain)
                 if (spn.Contains("@"))

@@ -10,13 +10,13 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Finds all immediate child objects of a container. 
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="distinguishedName"></param>
         /// <returns></returns>
-        public static IEnumerable<TypedPrincipal> GetContainerChildObjects(SearchResultEntry entry)
+        public static IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName)
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
             foreach (var childEntry in LDAPUtils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
-                CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(entry.DistinguishedName), adsPath: entry.DistinguishedName))
+                CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName), adsPath: distinguishedName))
             {
                 var dn = childEntry.DistinguishedName.ToUpper();
                 
@@ -37,15 +37,14 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Reads the "gplink" property from a SearchResult and converts the links into the acceptable SharpHound format
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="gpLink"></param>
         /// <returns></returns>
-        public static IEnumerable<GPLink> ReadContainerGPLinks(SearchResultEntry entry)
+        public static IEnumerable<GPLink> ReadContainerGPLinks(string gpLink)
         {
-            var gpLinkProp = entry.GetProperty("gplink");
-            if (gpLinkProp == null)
+            if (gpLink == null)
                 yield break;
 
-            foreach (var link in Helpers.SplitGPLinkProperty(gpLinkProp))
+            foreach (var link in Helpers.SplitGPLinkProperty(gpLink))
             {
                 var enforced = link.Status.Equals("2");
 
@@ -65,12 +64,11 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Checks if a container blocks privilege inheritance
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="gpOptions"></param>
         /// <returns></returns>
-        public static bool ReadBlocksInheritance(SearchResultEntry entry)
+        public static bool ReadBlocksInheritance(string gpOptions)
         {
-            var opts = entry.GetProperty("gpoptions");
-            return opts is "1";
+            return gpOptions is "1";
         }
     }
 }

@@ -53,11 +53,10 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Gets the protection state 
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="ntSecurityDescriptor"></param>
         /// <returns></returns>
-        public static bool IsACLProtected(SearchResultEntry entry)
+        public static bool IsACLProtected(byte[] ntSecurityDescriptor)
         {
-            var ntSecurityDescriptor = entry.GetPropertyAsBytes("ntsecuritydescriptor");
             if (ntSecurityDescriptor == null)
                 return false;
             
@@ -70,13 +69,12 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that BloodHound is not interested in
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="ntSecurityDescriptor"></param>
         /// <param name="objectDomain"></param>
         /// <param name="objectType"></param>
         /// <returns></returns>
-        public static IEnumerable<ACE> ProcessACL(SearchResultEntry entry, string objectDomain, Label objectType)
+        public static IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType, bool hasLaps)
         {
-            var ntSecurityDescriptor = entry.GetPropertyAsBytes("ntsecuritydescriptor");
             if (ntSecurityDescriptor == null)
                 yield break;
             
@@ -205,7 +203,7 @@ namespace SharpHoundCommonLib.Processors
                         }
                     }else if (objectType == Label.Computer){
                         //ReadLAPSPassword is only applicable if the computer actually has LAPS. Check the world readable property ms-mcs-admpwdexpirationtime
-                        if (entry.GetProperty("ms-mcs-admpwdexpirationtime") != null)
+                        if (hasLaps)
                         {
                             if (aceType is ACEGuids.AllGuid or ""){
                                 bAce.RightName = "ExtendedRight";

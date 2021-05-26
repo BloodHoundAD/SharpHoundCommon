@@ -173,7 +173,7 @@ namespace SharpHoundCommonLib
                 case Label.Container:
                     res.DisplayName = $"{entry.GetProperty("name")}@{itemDomain}";
                     break;
-                case Label.Unknown:
+                case Label.Base:
                     res.DisplayName = $"{samAccountName}@{itemDomain}";
                     break;
             }
@@ -356,7 +356,7 @@ namespace SharpHoundCommonLib
             if (objectId.StartsWith("S-1") && WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
                 return commonPrincipal.ObjectType;
 
-            var objectType = Label.Unknown;
+            var objectType = Label.Base;
             var samAccountType = entry.GetProperty("samaccounttype");
             //Its not a common principal. Lets use properties to figure out what it actually is
             if (samAccountType != null)
@@ -367,7 +367,7 @@ namespace SharpHoundCommonLib
             {
                 var objectClasses = entry.GetPropertyAsArray("objectClass");
                 if (objectClasses == null)
-                    objectType = Label.Unknown;
+                    objectType = Label.Base;
                 else if (objectClasses.Contains("groupPolicyContainer"))
                     objectType = Label.GPO;
                 else if (objectClasses.Contains("organizationalUnit"))

@@ -1,5 +1,9 @@
-﻿namespace SharpHoundCommonLib.Enums
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace SharpHoundCommonLib.Enums
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum Label
     {
         User,
@@ -9,6 +13,6 @@
         Domain,
         OU,
         Container,
-        Unknown
+        Base
     }
 }

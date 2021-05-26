@@ -115,7 +115,7 @@ namespace SharpHoundCommonLib
         internal static bool GetIDType(string key, out Label value)
         {
             if (CacheInstance != null) return CacheInstance._idToTypeCache.TryGetValue(key, out value);
-            value = Label.Unknown;
+            value = Label.Base;
             return false;
 
         }
@@ -150,14 +150,15 @@ namespace SharpHoundCommonLib
                 var bytes = File.ReadAllBytes(filePath);
                 var json = new UTF8Encoding(true).GetString(bytes);
                 CacheInstance = JsonConvert.DeserializeObject<Cache>(json);
-                Logging.Log(
-                    $"Cache file loaded!\n {GetCacheStats()}");
             }
             catch (Exception e)
             {
                 Logging.Log($"Exception loading cache: {e}. Creating empty cache.");
                 CacheInstance = new Cache();
             }
+            
+            Logging.Log(
+                $"Cache file loaded!\n {GetCacheStats()}");
         }
 
         public static void SaveCache(string filePath)

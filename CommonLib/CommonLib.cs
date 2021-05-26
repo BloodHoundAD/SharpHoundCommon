@@ -19,5 +19,10 @@ namespace SharpHoundCommonLib
             
             ACLProcessor.BuildGUIDCache();
         }
+
+        public static void ReconfigureLogging(ILogger log)
+        {
+            Logging.ConfigureLogging(log);
+        }
     }
 }

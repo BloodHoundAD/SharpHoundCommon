@@ -12,12 +12,12 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Processes domain trusts for a domain object
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="domain"></param>
         /// <returns></returns>
-        public static IEnumerable<DomainTrust> EnumerateDomainTrusts(SearchResultEntry entry)
+        public static IEnumerable<DomainTrust> EnumerateDomainTrusts(string domain)
         {
             var query = CommonFilters.TrustedDomains;
-            foreach (var result in LDAPUtils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps))
+            foreach (var result in LDAPUtils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps, domain))
             {
                 var trust = new DomainTrust();
                 var targetSidBytes = result.GetPropertyAsBytes("securityIdentifier");
