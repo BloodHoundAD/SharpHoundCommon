@@ -32,6 +32,8 @@ namespace SharpHoundCommonLib.Processors
 
                 var result = NativeMethods.NetSessionEnum(computerName, null, null, NetSessionEnumLevel, out ptr, -1,
                     out var entriesRead, out _, ref resumeHandle);
+                
+                Logging.Debug($"Result of NetSessionEnum is {result}");
 
                 if (result != NativeMethods.NERR.NERR_Success)
                 {
@@ -39,14 +41,20 @@ namespace SharpHoundCommonLib.Processors
                     return ret;
                 }
 
+                ret.Collected = true;
+
                 var results = new List<Session>();
+                var iter = ptr;
+                Logging.Debug($"NetSessionEnum returned {entriesRead} entries");
                 for (var i = 0; i < entriesRead; i++)
                 {
-                    var raw = Marshal.ReadIntPtr(ptr, Marshal.SizeOf<NativeMethods.SESSION_INFO_10>() * i);
-                    var data = Marshal.PtrToStructure<NativeMethods.SESSION_INFO_10>(raw);
+                    var data = Marshal.PtrToStructure<NativeMethods.SESSION_INFO_10>(iter);
+                    iter = (IntPtr)(iter.ToInt64() + Marshal.SizeOf(typeof(NativeMethods.SESSION_INFO_10)));
 
                     var username = data.sesi10_username;
                     var computerSessionName = data.sesi10_cname;
+                    
+                    Logging.Debug($"NetSessionEnum Entry: {username}@{computerSessionName}");
                     
                     //Filter out blank/null cnames/usernames
                     if (string.IsNullOrWhiteSpace(computerSessionName) || string.IsNullOrWhiteSpace(username))
@@ -119,10 +127,11 @@ namespace SharpHoundCommonLib.Processors
             {
                 var ret = new SessionAPIResult();
                 var resumeHandle = 0;
-            
+                
                 var result = NativeMethods.NetWkstaUserEnum(computerName, NetWkstaUserEnumQueryLevel, out ptr, -1, out var entriesRead,
                     out _, ref resumeHandle);
 
+                Logging.Debug($"Result is {result}");
                 if (result != NativeMethods.NERR.NERR_Success && result != NativeMethods.NERR.ERROR_MORE_DATA)
                 {
                     ret.FailureReason = result.ToString();
@@ -130,29 +139,32 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 ret.Collected = true;
+                
                 var machineSid = Helpers.GetMachineSid(computerSid, computerName, computerSamAccountName);
-            
+
                 var results = new List<TypedPrincipal>();
+                Logging.Debug($"NetWkstaUserEnum return {entriesRead} entries");
+                var iter = ptr;
                 for (var i = 0; i < entriesRead; i++)
                 {
-                    var raw = Marshal.ReadIntPtr(ptr, Marshal.SizeOf<NativeMethods.WKSTA_USER_INFO_1>() * i);
-                    var data = Marshal.PtrToStructure<NativeMethods.WKSTA_USER_INFO_1>(raw);
+                    var data = Marshal.PtrToStructure<NativeMethods.WKSTA_USER_INFO_1>(iter);
+                    iter = (IntPtr)(iter.ToInt64() + Marshal.SizeOf(typeof(NativeMethods.WKSTA_USER_INFO_1)));
 
                     var domain = data.wkui1_logon_domain;
-                    var username = data.wkui1_logon_server;
+                    var username = data.wkui1_username;
 
                     //These are local computer accounts.
                     if (domain.Equals(computerSamAccountName, StringComparison.CurrentCultureIgnoreCase))
                         continue;
-
+                    
                     //Filter out empty usernames and computer sessions
                     if (username.Trim() == "" || username.EndsWith("$", StringComparison.Ordinal))
                         continue;
-                
+
                     //Any domain with a space is unusable. It'll be things like NT Authority or Font Driver
                     if (domain.Contains(" "))
                         continue;
-
+                    
                     var res = await LDAPUtils.ResolveAccountName(username, computerDomain);
                     if (res == null)
                         continue;
