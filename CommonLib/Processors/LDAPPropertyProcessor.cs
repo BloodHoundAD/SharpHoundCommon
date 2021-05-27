@@ -192,7 +192,6 @@ namespace SharpHoundCommonLib.Processors
             props.Add("email", entry.GetProperty("mail"));
             props.Add("title", entry.GetProperty("title"));
             props.Add("homedirectory", entry.GetProperty("homedirectory"));
-            props.Add("description", entry.GetProperty("description"));
             props.Add("userpassword", entry.GetProperty("userpassword"));
 
             var ac = entry.GetProperty("admincount");
