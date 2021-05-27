@@ -85,6 +85,7 @@ namespace SharpHoundCommonLib
                 return res;
             }
             
+            
             //Try to resolve the domain
             var distinguishedName = entry.DistinguishedName;
             string itemDomain;
@@ -103,8 +104,19 @@ namespace SharpHoundCommonLib
             {
                 itemDomain = Helpers.DistinguishedNameToDomain(distinguishedName);
             }
+            
 
             res.Domain = itemDomain;
+            
+            if (WellKnownPrincipal.GetWellKnownPrincipal(itemID, out var wkPrincipal))
+            {
+                res.DomainSid = await LDAPUtils.GetSidFromDomainName(itemDomain); 
+                res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
+                res.ObjectType = wkPrincipal.ObjectType;
+                res.ObjectId = WellKnownPrincipal.TryConvert(itemID, itemDomain);
+
+                return res;
+            }
 
             if (itemID.StartsWith("S-1-"))
             {
@@ -114,22 +126,13 @@ namespace SharpHoundCommonLib
             {
                 res.DomainSid = await LDAPUtils.GetSidFromDomainName(itemDomain);
             }
-
             
-
-            if (WellKnownPrincipal.GetWellKnownPrincipal(itemID, out var wkPrincipal))
-            {
-                res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
-                res.ObjectType = wkPrincipal.ObjectType;
-                res.ObjectId = WellKnownPrincipal.TryConvert(itemID, itemDomain);
-
-                return res;
-            }
 
             var samAccountName = entry.GetProperty("samaccountname");
 
             var itemType = entry.GetLabel();
             res.ObjectType = itemType;
+            
             
             switch (itemType)
             {
@@ -177,6 +180,7 @@ namespace SharpHoundCommonLib
                     res.DisplayName = $"{samAccountName}@{itemDomain}";
                     break;
             }
+            
 
             return res;
         }
