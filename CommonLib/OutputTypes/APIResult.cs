@@ -5,8 +5,8 @@ namespace SharpHoundCommonLib.OutputTypes
     public class APIResult
     {
         [JsonProperty(PropertyName = "collected")]
-        internal bool Collected { get; set; }
+        public bool Collected { get; set; }
         [JsonProperty(PropertyName = "failure")]
-        internal string FailureReason { get; set; }
+        public string FailureReason { get; set; }
     }
 }
