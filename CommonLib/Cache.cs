@@ -11,15 +11,15 @@ namespace SharpHoundCommonLib
     public class Cache
     {
         [JsonProperty]
-        private readonly ConcurrentDictionary<string, string> _valueToIDCache;
+        private ConcurrentDictionary<string, string> _valueToIDCache;
         [JsonProperty]
-        private readonly ConcurrentDictionary<string, Label> _idToTypeCache;
+        private ConcurrentDictionary<string, Label> _idToTypeCache;
         [JsonProperty]
-        private readonly ConcurrentDictionary<string, string[]> _globalCatalogCache;
+        private ConcurrentDictionary<string, string[]> _globalCatalogCache;
         [JsonProperty]
-        private readonly ConcurrentDictionary<string, string> _machineSidCache;
+        private ConcurrentDictionary<string, string> _machineSidCache;
         [JsonProperty]
-        private readonly ConcurrentDictionary<string, string> _sidToDomainCache;
+        private ConcurrentDictionary<string, string> _sidToDomainCache;
         private static Cache CacheInstance { get; set; }
         
         private Cache()
@@ -147,6 +147,7 @@ namespace SharpHoundCommonLib
 
             try
             {
+                Logging.Log($"Loading cache from {filePath}");
                 var bytes = File.ReadAllBytes(filePath);
                 var json = new UTF8Encoding(true).GetString(bytes);
                 CacheInstance = JsonConvert.DeserializeObject<Cache>(json);
@@ -157,8 +158,20 @@ namespace SharpHoundCommonLib
                 CacheInstance = new Cache();
             }
             
+            CreateMissingDictionaries();
+
             Logging.Log(
                 $"Cache file loaded!\n {GetCacheStats()}");
+        }
+
+        private static void CreateMissingDictionaries()
+        {
+            CacheInstance ??= new Cache();
+            CacheInstance._idToTypeCache ??= new ConcurrentDictionary<string, Label>();
+            CacheInstance._globalCatalogCache ??= new ConcurrentDictionary<string, string[]>();
+            CacheInstance._machineSidCache ??= new ConcurrentDictionary<string, string>();
+            CacheInstance._sidToDomainCache ??= new ConcurrentDictionary<string, string>();
+            CacheInstance._valueToIDCache ??= new ConcurrentDictionary<string, string>();
         }
 
         public static void SaveCache(string filePath)
