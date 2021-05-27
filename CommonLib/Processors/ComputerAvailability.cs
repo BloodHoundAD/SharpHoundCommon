@@ -1,5 +1,4 @@
 ﻿using System;
-using System.DirectoryServices.Protocols;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.OutputTypes;
 
@@ -13,12 +12,12 @@ namespace SharpHoundCommonLib.Processors
         /// The "pwdlastset" LDAP attribute must be within 60 days of the current date.
         /// Port 445 must be open to allow API calls to succeed
         /// </summary>
-        /// <param name="entry"></param>
-        /// <param name="resolvedSearchResult"></param>
+        /// <param name="computerName">The computer to check availability for</param>
+        /// <param name="operatingSystem">The LDAP operatingsystem attribute value</param>
+        /// <param name="pwdLastSet">The LDAP pwdlastset attribute value</param>
         /// <returns>A <cref>ComputerStatus</cref> object that represents the availability of the computer</returns>
-        public static async Task<ComputerStatus> IsComputerAvailable(SearchResultEntry entry, ResolvedSearchResult resolvedSearchResult)
+        public static async Task<ComputerStatus> IsComputerAvailable(string computerName, string operatingSystem, string pwdLastSet)
         {
-            var operatingSystem = entry.GetProperty("operatingsystem");
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
                 return new ComputerStatus
                 {
@@ -26,7 +25,7 @@ namespace SharpHoundCommonLib.Processors
                     Error = "NonWindowsOS"
                 };
 
-            var passwordLastSet = ConvertLdapTime(entry.GetProperty("pwdlastset"));
+            var passwordLastSet = ConvertLdapTime(pwdLastSet);
             var threshold = DateTime.Now.AddDays(-60).ToFileTimeUtc();
 
             if (passwordLastSet < threshold)
@@ -36,7 +35,7 @@ namespace SharpHoundCommonLib.Processors
                     Error = "PwdLastSetOutOfRange"
                 };
 
-            if (!await Helpers.CheckPort(resolvedSearchResult.DisplayName))
+            if (!await Helpers.CheckPort(computerName))
                 return new ComputerStatus
                 {
                     Connectable = false,
