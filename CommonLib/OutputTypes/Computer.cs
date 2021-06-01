@@ -10,7 +10,7 @@
         public TypedPrincipal[] AllowedToAct { get; set; } = new TypedPrincipal[0];
         public TypedPrincipal[] HasSIDHistory { get; set; } = new TypedPrincipal[0];
         public SessionAPIResult Sessions { get; set; } = new();
-        public LocalGroupAPIResult Admins { get; set; } = new();
+        public LocalGroupAPIResult LocalAdmins { get; set; } = new();
         public LocalGroupAPIResult RemoteDesktopUsers { get; set; } = new();
         public LocalGroupAPIResult DcomUsers { get; set; } = new();
         public LocalGroupAPIResult PSRemoteUsers { get; set; } = new();

@@ -122,13 +122,11 @@ namespace SharpHoundCommonLib
             if (Cache.GetIDType(guid, out var type))
                 return type;
             
-            var hex = Helpers.ConvertSidToHexSid(guid);
+            var hex = Helpers.ConvertGuidToHexGuid(guid);
             if (hex == null)
                 return Label.Base;
 
-            var rDomain = GetDomainNameFromSid(guid) ?? domain;
-
-            var result = QueryLDAP($"(objectsid={hex})",SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain).DefaultIfEmpty(null).FirstOrDefault();
+            var result = QueryLDAP($"(objectguid={hex})",SearchScope.Subtree, CommonProperties.TypeResolutionProps, domain).DefaultIfEmpty(null).FirstOrDefault();
 
             type = result?.GetLabel() ?? Label.Base;
             Cache.AddType(guid, type);

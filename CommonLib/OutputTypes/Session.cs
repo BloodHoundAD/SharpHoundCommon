@@ -2,19 +2,19 @@
 {
     public class Session
     {
-        private string _computer;
-        private string _user;
+        private string _computerSID;
+        private string _userSID;
 
-        public string User
+        public string UserSID
         {
-            get => _user;
-            set => _user = value?.ToUpper();
+            get => _userSID;
+            set => _userSID = value?.ToUpper();
         }
 
-        public string Computer
+        public string ComputerSID
         {
-            get => _computer;
-            set => _computer = value?.ToUpper();
+            get => _computerSID;
+            set => _computerSID = value?.ToUpper();
         }
     }
 }

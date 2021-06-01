@@ -94,6 +94,19 @@ namespace SharpHoundCommonLib
             var output = $"\\{BitConverter.ToString(sidBytes).Replace('-', '\\')}";
             return output;
         }
+
+        /// <summary>
+        /// Converts a string GUID to its hex representation for LDAP searches
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        internal static string ConvertGuidToHexGuid(string guid)
+        {
+            var guidObj = new Guid(guid);
+            var guidBytes = guidObj.ToByteArray();
+            var output = $"\\{BitConverter.ToString(guidBytes).Replace('-', '\\')}";
+            return output;
+        }
         
         /// <summary>
         /// Extracts an active directory domain name from a DistinguishedName 

@@ -87,7 +87,7 @@ namespace SharpHoundCommonLib.Processors
                     var matches = LDAPUtils.GetUserGlobalCatalogMatches(username);
                     if (matches.Length > 0)
                     {
-                        results.AddRange(matches.Select(s => new Session {Computer = resolvedComputerSID, User = s}));
+                        results.AddRange(matches.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
                     }
                     else
                     {
@@ -95,8 +95,8 @@ namespace SharpHoundCommonLib.Processors
                         if (res != null)
                             results.Add(new Session
                             {
-                                Computer = resolvedComputerSID,
-                                User = res.ObjectIdentifier
+                                ComputerSID = resolvedComputerSID,
+                                UserSID = res.ObjectIdentifier
                             });
                     }
                 }
@@ -177,8 +177,8 @@ namespace SharpHoundCommonLib.Processors
 
                 ret.Results = results.Select(x => new Session
                 {
-                    Computer = computerSid,
-                    User = x.ObjectIdentifier
+                    ComputerSID = computerSid,
+                    UserSID = x.ObjectIdentifier
                 }).ToArray();
 
                 return ret;

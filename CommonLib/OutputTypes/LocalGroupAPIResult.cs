@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace SharpHoundCommonLib.OutputTypes
+﻿namespace SharpHoundCommonLib.OutputTypes
 {
     public class LocalGroupAPIResult : APIResult
     {
-        [JsonProperty(PropertyName = "members")]
-        internal TypedPrincipal[] Results { get; set; } = new TypedPrincipal[0];
+        public TypedPrincipal[] Results { get; set; } = new TypedPrincipal[0];
     }
 }
