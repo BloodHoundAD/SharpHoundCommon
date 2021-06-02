@@ -51,7 +51,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Gets the protection state 
+        /// Gets the protection state of the access control list
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>
         /// <returns></returns>
@@ -72,6 +72,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="ntSecurityDescriptor"></param>
         /// <param name="objectDomain"></param>
         /// <param name="objectType"></param>
+        /// <param name="hasLaps"></param>
         /// <returns></returns>
         public static IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType, bool hasLaps)
         {

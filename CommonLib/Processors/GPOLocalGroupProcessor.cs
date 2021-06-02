@@ -19,18 +19,17 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] RemoteDesktopUsers { get; set; }
         public TypedPrincipal[] DcomUsers { get; set; }
         public TypedPrincipal[] PSRemoteUsers { get; set; }
-
         public TypedPrincipal[] AffectedComputers { get; set; }
 
     }
     public class GPOLocalGroupProcessor
     {
-        private static readonly Regex KeyRegex = new Regex(@"(.+?)\s*=(.*)", RegexOptions.Compiled);
-        private static readonly Regex MemberRegex = new Regex(@"\[Group Membership\](.*)(?:\[|$)", RegexOptions.Compiled | RegexOptions.Singleline);
-        private static readonly Regex MemberLeftRegex = new Regex(@"(.*(?:S-1-5-32-544|S-1-5-32-555|S-1-5-32-562|S-1-5-32-580)__Members)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex MemberRightRegex = new Regex(@"(S-1-5-32-544|S-1-5-32-555|S-1-5-32-562|S-1-5-32-580)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex ExtractRid = new Regex(@"S-1-5-32-([0-9]{3})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly ConcurrentDictionary<string, List<GroupAction>> GpoActionCache = new ConcurrentDictionary<string, List<GroupAction>>();
+        private static readonly Regex KeyRegex = new(@"(.+?)\s*=(.*)", RegexOptions.Compiled);
+        private static readonly Regex MemberRegex = new(@"\[Group Membership\](.*)(?:\[|$)", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex MemberLeftRegex = new(@"(.*(?:S-1-5-32-544|S-1-5-32-555|S-1-5-32-562|S-1-5-32-580)__Members)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex MemberRightRegex = new(@"(S-1-5-32-544|S-1-5-32-555|S-1-5-32-562|S-1-5-32-580)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExtractRid = new(@"S-1-5-32-([0-9]{3})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly ConcurrentDictionary<string, List<GroupAction>> GpoActionCache = new();
 
         private static readonly Dictionary<string, LocalGroupRids> ValidGroupNames = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -541,7 +540,7 @@ namespace SharpHoundCommonLib.Processors
 
             public TypedPrincipal ToTypedPrincipal()
             {
-                return new TypedPrincipal
+                return new()
                 {
                     ObjectIdentifier = TargetSid,
                     ObjectType = TargetType
@@ -559,9 +558,9 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         public class GroupResults
         {
-            public List<TypedPrincipal> RestrictedMemberOf = new List<TypedPrincipal>();
-            public List<TypedPrincipal> RestrictedMember = new List<TypedPrincipal>();
-            public List<TypedPrincipal> LocalGroups = new List<TypedPrincipal>();
+            public List<TypedPrincipal> RestrictedMemberOf = new();
+            public List<TypedPrincipal> RestrictedMember = new();
+            public List<TypedPrincipal> LocalGroups = new();
         }
 
         private enum GroupActionOperation

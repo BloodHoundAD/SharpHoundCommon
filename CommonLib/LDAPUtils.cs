@@ -83,20 +83,12 @@ namespace SharpHoundCommonLib
             //This is a duplicated SID object which is weird and makes things unhappy. Throw it out
             if (id.Contains("0ACNF"))
                 return null;
-
+            
             if (WellKnownPrincipal.GetWellKnownPrincipal(id, domain, out var principal))
                 return principal;
 
-            if (id.StartsWith("S-"))
-            {
-                var type = LookupSidType(id, domain);
-                return new TypedPrincipal(id, type);
-            }
-            else
-            {
-                var type = LookupGuidType(id, domain);
-                return new TypedPrincipal(id, type);
-            }
+            var type = id.StartsWith("S-") ? LookupSidType(id, domain) : LookupGuidType(id, domain);
+            return new TypedPrincipal(id, type);
         }
 
         public static Label LookupSidType(string sid, string domain)
