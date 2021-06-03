@@ -19,28 +19,39 @@ namespace SharpHoundCommonLib.Processors
         public static async Task<ComputerStatus> IsComputerAvailable(string computerName, string operatingSystem, string pwdLastSet)
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
+            {
+                Logging.Trace($"{computerName} is not available because operating system does not match.");
                 return new ComputerStatus
                 {
                     Connectable = false,
                     Error = "NonWindowsOS"
                 };
+            }
 
             var passwordLastSet = ConvertLdapTime(pwdLastSet);
             var threshold = DateTime.Now.AddDays(-60).ToFileTimeUtc();
 
             if (passwordLastSet < threshold)
+            {
+                Logging.Trace($"{computerName} is not available because password last set is out of range");
                 return new ComputerStatus
                 {
                     Connectable = false,
                     Error = "PwdLastSetOutOfRange"
                 };
+            }
+
 
             if (!await Helpers.CheckPort(computerName))
+            {
+                Logging.Trace($"{computerName} is not available because port 445 is unavailable");
                 return new ComputerStatus
                 {
                     Connectable = false,
                     Error = "PortNotOpen"
-                };
+                }; 
+            }
+                
 
             return new ComputerStatus
             {

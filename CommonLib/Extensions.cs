@@ -35,7 +35,7 @@ namespace SharpHoundCommonLib
                 var property = propertyName.ToString();
                 sb.Append(property).Append("\t").Append(searchResultEntry.GetProperty(property)).Append("\n");
             }
-            Logging.Log(sb.ToString());
+            Logging.Trace(sb.ToString());
         }
 
         public static string LdapValue(this SecurityIdentifier s)
@@ -382,6 +382,8 @@ namespace SharpHoundCommonLib
                     objectType = Label.Container;
             }
 
+            Cache.AddConvertedValue(entry.DistinguishedName, objectId);
+            Cache.AddType(objectId, objectType);
             return objectType;
         }
         #endregion

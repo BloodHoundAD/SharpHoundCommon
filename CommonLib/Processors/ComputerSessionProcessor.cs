@@ -25,15 +25,16 @@ namespace SharpHoundCommonLib.Processors
         {
             var ptr = IntPtr.Zero;
             var ret = new SessionAPIResult();
-            
+
             try
             {
                 var resumeHandle = IntPtr.Zero;
 
+                Logging.Trace($"Beginning NetSessionEnum for {computerName}");
                 var result = NativeMethods.NetSessionEnum(computerName, null, null, NetSessionEnumLevel, out ptr, -1,
                     out var entriesRead, out _, ref resumeHandle);
                 
-                Logging.Debug($"Result of NetSessionEnum is {result}");
+                Logging.Trace($"Result of NetSessionEnum for {computerName} is {result}");
 
                 if (result != NativeMethods.NERR.NERR_Success)
                 {
@@ -45,7 +46,7 @@ namespace SharpHoundCommonLib.Processors
 
                 var results = new List<Session>();
                 var iter = ptr;
-                Logging.Debug($"NetSessionEnum returned {entriesRead} entries");
+                Logging.Trace($"NetSessionEnum for {computerName} returned {entriesRead} entries");
                 for (var i = 0; i < entriesRead; i++)
                 {
                     var data = Marshal.PtrToStructure<NativeMethods.SESSION_INFO_10>(iter);
@@ -54,7 +55,7 @@ namespace SharpHoundCommonLib.Processors
                     var username = data.sesi10_username;
                     var computerSessionName = data.sesi10_cname;
                     
-                    Logging.Debug($"NetSessionEnum Entry: {username}@{computerSessionName}");
+                    Logging.Trace($"NetSessionEnum Entry: {username}@{computerSessionName}");
                     
                     //Filter out blank/null cnames/usernames
                     if (string.IsNullOrWhiteSpace(computerSessionName) || string.IsNullOrWhiteSpace(username))
@@ -128,10 +129,11 @@ namespace SharpHoundCommonLib.Processors
                 var ret = new SessionAPIResult();
                 var resumeHandle = 0;
                 
+                Logging.Trace($"Beginning NetWkstaUserEnum for {computerName}");
                 var result = NativeMethods.NetWkstaUserEnum(computerName, NetWkstaUserEnumQueryLevel, out ptr, -1, out var entriesRead,
                     out _, ref resumeHandle);
 
-                Logging.Debug($"Result is {result}");
+                Logging.Trace($"Result of NetWkstaUserEnum for computer {computerName} is {result}");
                 if (result != NativeMethods.NERR.NERR_Success && result != NativeMethods.NERR.ERROR_MORE_DATA)
                 {
                     ret.FailureReason = result.ToString();
@@ -143,7 +145,7 @@ namespace SharpHoundCommonLib.Processors
                 var machineSid = Helpers.GetMachineSid(computerSid, computerName, computerSamAccountName);
 
                 var results = new List<TypedPrincipal>();
-                Logging.Debug($"NetWkstaUserEnum return {entriesRead} entries");
+                Logging.Trace($"NetWkstaUserEnum returned {entriesRead} entries for {computerName}");
                 var iter = ptr;
                 for (var i = 0; i < entriesRead; i++)
                 {
@@ -152,6 +154,8 @@ namespace SharpHoundCommonLib.Processors
 
                     var domain = data.wkui1_logon_domain;
                     var username = data.wkui1_username;
+                    
+                    Logging.Trace($"NetWkstaUserEnum entry: {username}@{domain}");
 
                     //These are local computer accounts.
                     if (domain.Equals(computerSamAccountName, StringComparison.CurrentCultureIgnoreCase))

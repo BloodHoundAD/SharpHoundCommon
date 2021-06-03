@@ -5,6 +5,7 @@ using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SearchScope = System.DirectoryServices.Protocols.SearchScope;
@@ -38,7 +39,11 @@ namespace SharpHoundCommonLib.Processors
         {
             var forest = LDAPUtils.GetForest();
             if (forest == null)
+            {
+                Logging.Log(LogLevel.Error, "Unable to resolve forest for GUID cache");
                 return;
+            }
+                
 
             var schema = forest.Schema.Name;
             foreach (var entry in LDAPUtils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
@@ -77,8 +82,11 @@ namespace SharpHoundCommonLib.Processors
         public static IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType, bool hasLaps)
         {
             if (ntSecurityDescriptor == null)
+            {
+                Logging.Log(LogLevel.Debug, "ProcessACL received null ntSecurityDescriptor");
                 yield break;
-            
+            }
+
             var descriptor = new ActiveDirectorySecurity();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
 
@@ -97,22 +105,39 @@ namespace SharpHoundCommonLib.Processors
                         IsInherited = false
                     };
             }
+            else
+            {
+                Logging.Log(LogLevel.Debug, "Owner on ACE is null");
+            }
 
             foreach (ActiveDirectoryAccessRule ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
                 if (ace == null)
+                {
+                    Logging.Trace("Skipping null ACE");
                     continue;
-                
+                }
+
                 if (ace.AccessControlType == AccessControlType.Deny)
+                {
+                    Logging.Trace("Skipping deny ACE");
                     continue;
+                }
+
 
                 if (!IsAceInherited(ace, BaseGuids[objectType]))
+                {
+                    Logging.Trace("Skipping ACE with unmatched GUID/inheritance");
                     continue;
+                }
 
                 var principalSid = PreProcessSID(ace.IdentityReference.Value);
-                
+
                 if (principalSid == null)
+                {
+                    Logging.Trace("Pre-Process excluded SID");
                     continue;
+                }
 
                 var resolvedPrincipal = LDAPUtils.ResolveIDAndType(principalSid, objectDomain);
 

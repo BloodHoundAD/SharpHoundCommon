@@ -132,8 +132,15 @@ namespace SharpHoundCommonLib
 
         private static string GetCacheStats()
         {
-            return
-                $"{CacheInstance._idToTypeCache.Count} ID to type mappings.\n {CacheInstance._valueToIDCache.Count} name to SID mappings.\n {CacheInstance._machineSidCache.Count} machine sid mappings.\n {CacheInstance._sidToDomainCache.Count} sid to domain mappings.\n {CacheInstance._globalCatalogCache.Count} global catalog mappings.";
+            try
+            {
+                return
+                    $"{CacheInstance._idToTypeCache.Count} ID to type mappings.\n {CacheInstance._valueToIDCache.Count} name to SID mappings.\n {CacheInstance._machineSidCache.Count} machine sid mappings.\n {CacheInstance._sidToDomainCache.Count} sid to domain mappings.\n {CacheInstance._globalCatalogCache.Count} global catalog mappings.";
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         public static void LoadExistingCache(string filePath)
@@ -141,26 +148,26 @@ namespace SharpHoundCommonLib
             if (!File.Exists(filePath))
             {
                 CacheInstance = new Cache();
-                Logging.Log("Cache file not found, empty cache created.");
+                Logging.Debug("Cache file not found, empty cache created.");
                 return;
             }
 
             try
             {
-                Logging.Log($"Loading cache from {filePath}");
+                Logging.Debug($"Loading cache from {filePath}");
                 var bytes = File.ReadAllBytes(filePath);
                 var json = new UTF8Encoding(true).GetString(bytes);
                 CacheInstance = JsonConvert.DeserializeObject<Cache>(json);
             }
             catch (Exception e)
             {
-                Logging.Log($"Exception loading cache: {e}. Creating empty cache.");
+                Logging.Debug($"Exception loading cache: {e}. Creating empty cache.");
                 CacheInstance = new Cache();
             }
             
             CreateMissingDictionaries();
 
-            Logging.Log(
+            Logging.Debug(
                 $"Cache file loaded!\n {GetCacheStats()}");
         }
 
@@ -176,7 +183,10 @@ namespace SharpHoundCommonLib
 
         public static void SaveCache(string filePath)
         {
-            var serialized = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(CacheInstance));
+            var serialized = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(CacheInstance, new JsonSerializerSettings
+            {
+                DefaultValueHandling = DefaultValueHandling.Include
+            }));
             using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
             stream.Write(serialized, 0, serialized.Length);
             Logging.Log(LogLevel.Information, $"Wrote cache file to {filePath}\n{GetCacheStats()}");

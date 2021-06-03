@@ -238,7 +238,7 @@ namespace SharpHoundCommonLib
                     var forest = LDAPUtils.GetForest(domain)?.Name;
                     if (forest == null)
                     {
-                        Logging.Log("Error getting forest, ENTDC sid is likely incorrect");
+                        Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
                     }
                     return $"{forest}-{sid}".ToUpper();
                 }
