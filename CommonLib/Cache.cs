@@ -157,7 +157,10 @@ namespace SharpHoundCommonLib
                 Logging.Debug($"Loading cache from {filePath}");
                 var bytes = File.ReadAllBytes(filePath);
                 var json = new UTF8Encoding(true).GetString(bytes);
-                CacheInstance = JsonConvert.DeserializeObject<Cache>(json);
+                CacheInstance = JsonConvert.DeserializeObject<Cache>(json, new JsonSerializerSettings
+                {
+                    DefaultValueHandling = DefaultValueHandling.Populate
+                });
             }
             catch (Exception e)
             {
