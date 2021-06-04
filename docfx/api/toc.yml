@@ -1,0 +1,141 @@
+### YamlMime:TableOfContent
+- uid: SharpHoundCommonLib
+  name: SharpHoundCommonLib
+  items:
+  - uid: SharpHoundCommonLib.Cache
+    name: Cache
+  - uid: SharpHoundCommonLib.CommonLib
+    name: CommonLib
+  - uid: SharpHoundCommonLib.Extensions
+    name: Extensions
+  - uid: SharpHoundCommonLib.Helpers
+    name: Helpers
+  - uid: SharpHoundCommonLib.LDAPConfig
+    name: LDAPConfig
+  - uid: SharpHoundCommonLib.LDAPUtils
+    name: LDAPUtils
+  - uid: SharpHoundCommonLib.NativeMethods
+    name: NativeMethods
+  - uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    name: NativeMethods.DSGETDCNAME_FLAGS
+  - uid: SharpHoundCommonLib.NativeMethods.GuidClass
+    name: NativeMethods.GuidClass
+  - uid: SharpHoundCommonLib.NativeMethods.NERR
+    name: NativeMethods.NERR
+  - uid: SharpHoundCommonLib.NativeMethods.SESSION_INFO_10
+    name: NativeMethods.SESSION_INFO_10
+  - uid: SharpHoundCommonLib.NativeMethods.WKSTA_USER_INFO_1
+    name: NativeMethods.WKSTA_USER_INFO_1
+  - uid: SharpHoundCommonLib.ParsedGPLink
+    name: ParsedGPLink
+  - uid: SharpHoundCommonLib.ResolvedSearchResult
+    name: ResolvedSearchResult
+  - uid: SharpHoundCommonLib.WellKnownPrincipal
+    name: WellKnownPrincipal
+- uid: SharpHoundCommonLib.Enums
+  name: SharpHoundCommonLib.Enums
+  items:
+  - uid: SharpHoundCommonLib.Enums.Label
+    name: Label
+  - uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod
+    name: ResolvedCollectionMethod
+  - uid: SharpHoundCommonLib.Enums.TrustAttributes
+    name: TrustAttributes
+  - uid: SharpHoundCommonLib.Enums.TrustDirection
+    name: TrustDirection
+  - uid: SharpHoundCommonLib.Enums.TrustType
+    name: TrustType
+  - uid: SharpHoundCommonLib.Enums.UacFlags
+    name: UacFlags
+- uid: SharpHoundCommonLib.LDAPQueries
+  name: SharpHoundCommonLib.LDAPQueries
+  items:
+  - uid: SharpHoundCommonLib.LDAPQueries.CommonFilters
+    name: CommonFilters
+  - uid: SharpHoundCommonLib.LDAPQueries.CommonProperties
+    name: CommonProperties
+  - uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter
+    name: LDAPFilter
+- uid: SharpHoundCommonLib.OutputTypes
+  name: SharpHoundCommonLib.OutputTypes
+  items:
+  - uid: SharpHoundCommonLib.OutputTypes.ACE
+    name: ACE
+  - uid: SharpHoundCommonLib.OutputTypes.ACERightNames
+    name: ACERightNames
+  - uid: SharpHoundCommonLib.OutputTypes.ACETypeNames
+    name: ACETypeNames
+  - uid: SharpHoundCommonLib.OutputTypes.APIResult
+    name: APIResult
+  - uid: SharpHoundCommonLib.OutputTypes.Computer
+    name: Computer
+  - uid: SharpHoundCommonLib.OutputTypes.ComputerStatus
+    name: ComputerStatus
+  - uid: SharpHoundCommonLib.OutputTypes.Container
+    name: Container
+  - uid: SharpHoundCommonLib.OutputTypes.Domain
+    name: Domain
+  - uid: SharpHoundCommonLib.OutputTypes.DomainTrust
+    name: DomainTrust
+  - uid: SharpHoundCommonLib.OutputTypes.GPLink
+    name: GPLink
+  - uid: SharpHoundCommonLib.OutputTypes.GPO
+    name: GPO
+  - uid: SharpHoundCommonLib.OutputTypes.Group
+    name: Group
+  - uid: SharpHoundCommonLib.OutputTypes.LocalGroupAPIResult
+    name: LocalGroupAPIResult
+  - uid: SharpHoundCommonLib.OutputTypes.MetaTag
+    name: MetaTag
+  - uid: SharpHoundCommonLib.OutputTypes.OU
+    name: OU
+  - uid: SharpHoundCommonLib.OutputTypes.OutputBase
+    name: OutputBase
+  - uid: SharpHoundCommonLib.OutputTypes.OutputWrapper`1
+    name: OutputWrapper<T>
+    name.vb: OutputWrapper(Of T)
+  - uid: SharpHoundCommonLib.OutputTypes.Session
+    name: Session
+  - uid: SharpHoundCommonLib.OutputTypes.SessionAPIResult
+    name: SessionAPIResult
+  - uid: SharpHoundCommonLib.OutputTypes.SPNService
+    name: SPNService
+  - uid: SharpHoundCommonLib.OutputTypes.SPNTarget
+    name: SPNTarget
+  - uid: SharpHoundCommonLib.OutputTypes.TypedPrincipal
+    name: TypedPrincipal
+  - uid: SharpHoundCommonLib.OutputTypes.User
+    name: User
+- uid: SharpHoundCommonLib.Processors
+  name: SharpHoundCommonLib.Processors
+  items:
+  - uid: SharpHoundCommonLib.Processors.ACEGuids
+    name: ACEGuids
+  - uid: SharpHoundCommonLib.Processors.ACLProcessor
+    name: ACLProcessor
+  - uid: SharpHoundCommonLib.Processors.ComputerAvailability
+    name: ComputerAvailability
+  - uid: SharpHoundCommonLib.Processors.ComputerProperties
+    name: ComputerProperties
+  - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor
+    name: ComputerSessionProcessor
+  - uid: SharpHoundCommonLib.Processors.ContainerProcessor
+    name: ContainerProcessor
+  - uid: SharpHoundCommonLib.Processors.DomainTrustProcessor
+    name: DomainTrustProcessor
+  - uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor
+    name: GPOLocalGroupProcessor
+  - uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GroupResults
+    name: GPOLocalGroupProcessor.GroupResults
+  - uid: SharpHoundCommonLib.Processors.GroupProcessors
+    name: GroupProcessors
+  - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor
+    name: LDAPPropertyProcessor
+  - uid: SharpHoundCommonLib.Processors.ResultingGPOChanges
+    name: ResultingGPOChanges
+  - uid: SharpHoundCommonLib.Processors.SAMRPCServer
+    name: SAMRPCServer
+  - uid: SharpHoundCommonLib.Processors.SPNProcessors
+    name: SPNProcessors
+  - uid: SharpHoundCommonLib.Processors.UserProperties
+    name: UserProperties

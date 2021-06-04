@@ -1,0 +1,91 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.OutputTypes.SPNService
+  commentId: T:SharpHoundCommonLib.OutputTypes.SPNService
+  id: SPNService
+  parent: SharpHoundCommonLib.OutputTypes
+  children:
+  - SharpHoundCommonLib.OutputTypes.SPNService.MSSQL
+  langs:
+  - csharp
+  - vb
+  name: SPNService
+  nameWithType: SPNService
+  fullName: SharpHoundCommonLib.OutputTypes.SPNService
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/SPNTarget.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: SPNService
+    path: ../src/CommonLib/OutputTypes/SPNTarget.cs
+    startLine: 12
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: >-
+      [JsonConverter(typeof(StringEnumConverter))]
+
+      public enum SPNService
+    content.vb: >-
+      <JsonConverter(GetType(StringEnumConverter))>
+
+      Public Enum SPNService
+  attributes:
+  - type: Newtonsoft.Json.JsonConverterAttribute
+    ctor: Newtonsoft.Json.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: Newtonsoft.Json.Converters.StringEnumConverter
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SharpHoundCommonLib.OutputTypes.SPNService.MSSQL
+  commentId: F:SharpHoundCommonLib.OutputTypes.SPNService.MSSQL
+  id: MSSQL
+  parent: SharpHoundCommonLib.OutputTypes.SPNService
+  langs:
+  - csharp
+  - vb
+  name: MSSQL
+  nameWithType: SPNService.MSSQL
+  fullName: SharpHoundCommonLib.OutputTypes.SPNService.MSSQL
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/SPNTarget.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: MSSQL
+    path: ../src/CommonLib/OutputTypes/SPNTarget.cs
+    startLine: 15
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: MSSQL = 0
+    return:
+      type: SharpHoundCommonLib.OutputTypes.SPNService
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SharpHoundCommonLib.OutputTypes
+  commentId: N:SharpHoundCommonLib.OutputTypes
+  name: SharpHoundCommonLib.OutputTypes
+  nameWithType: SharpHoundCommonLib.OutputTypes
+  fullName: SharpHoundCommonLib.OutputTypes
+- uid: SharpHoundCommonLib.OutputTypes.SPNService
+  commentId: T:SharpHoundCommonLib.OutputTypes.SPNService
+  parent: SharpHoundCommonLib.OutputTypes
+  name: SPNService
+  nameWithType: SPNService
+  fullName: SharpHoundCommonLib.OutputTypes.SPNService

@@ -1,0 +1,256 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  commentId: T:SharpHoundCommonLib.OutputTypes.ACETypeNames
+  id: ACETypeNames
+  parent: SharpHoundCommonLib.OutputTypes
+  children:
+  - SharpHoundCommonLib.OutputTypes.ACETypeNames.AddAllowedToAct
+  - SharpHoundCommonLib.OutputTypes.ACETypeNames.AddMember
+  - SharpHoundCommonLib.OutputTypes.ACETypeNames.AllExtendedRights
+  - SharpHoundCommonLib.OutputTypes.ACETypeNames.ForceChangePassword
+  - SharpHoundCommonLib.OutputTypes.ACETypeNames.GetChanges
+  - SharpHoundCommonLib.OutputTypes.ACETypeNames.GetChangesAll
+  langs:
+  - csharp
+  - vb
+  name: ACETypeNames
+  nameWithType: ACETypeNames
+  fullName: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ACETypeNames
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 32
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: >-
+      [JsonConverter(typeof(StringEnumConverter))]
+
+      public enum ACETypeNames
+    content.vb: >-
+      <JsonConverter(GetType(StringEnumConverter))>
+
+      Public Enum ACETypeNames
+  attributes:
+  - type: Newtonsoft.Json.JsonConverterAttribute
+    ctor: Newtonsoft.Json.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: Newtonsoft.Json.Converters.StringEnumConverter
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SharpHoundCommonLib.OutputTypes.ACETypeNames.AllExtendedRights
+  commentId: F:SharpHoundCommonLib.OutputTypes.ACETypeNames.AllExtendedRights
+  id: AllExtendedRights
+  parent: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  langs:
+  - csharp
+  - vb
+  name: AllExtendedRights
+  nameWithType: ACETypeNames.AllExtendedRights
+  fullName: SharpHoundCommonLib.OutputTypes.ACETypeNames.AllExtendedRights
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: AllExtendedRights
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 35
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: AllExtendedRights = 0
+    return:
+      type: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.OutputTypes.ACETypeNames.ForceChangePassword
+  commentId: F:SharpHoundCommonLib.OutputTypes.ACETypeNames.ForceChangePassword
+  id: ForceChangePassword
+  parent: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  langs:
+  - csharp
+  - vb
+  name: ForceChangePassword
+  nameWithType: ACETypeNames.ForceChangePassword
+  fullName: SharpHoundCommonLib.OutputTypes.ACETypeNames.ForceChangePassword
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ForceChangePassword
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 36
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: ForceChangePassword = 1
+    return:
+      type: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.OutputTypes.ACETypeNames.AddMember
+  commentId: F:SharpHoundCommonLib.OutputTypes.ACETypeNames.AddMember
+  id: AddMember
+  parent: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  langs:
+  - csharp
+  - vb
+  name: AddMember
+  nameWithType: ACETypeNames.AddMember
+  fullName: SharpHoundCommonLib.OutputTypes.ACETypeNames.AddMember
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: AddMember
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 37
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: AddMember = 2
+    return:
+      type: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.OutputTypes.ACETypeNames.AddAllowedToAct
+  commentId: F:SharpHoundCommonLib.OutputTypes.ACETypeNames.AddAllowedToAct
+  id: AddAllowedToAct
+  parent: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  langs:
+  - csharp
+  - vb
+  name: AddAllowedToAct
+  nameWithType: ACETypeNames.AddAllowedToAct
+  fullName: SharpHoundCommonLib.OutputTypes.ACETypeNames.AddAllowedToAct
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: AddAllowedToAct
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 38
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: AddAllowedToAct = 3
+    return:
+      type: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.OutputTypes.ACETypeNames.GetChanges
+  commentId: F:SharpHoundCommonLib.OutputTypes.ACETypeNames.GetChanges
+  id: GetChanges
+  parent: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  langs:
+  - csharp
+  - vb
+  name: GetChanges
+  nameWithType: ACETypeNames.GetChanges
+  fullName: SharpHoundCommonLib.OutputTypes.ACETypeNames.GetChanges
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetChanges
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 39
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: GetChanges = 4
+    return:
+      type: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.OutputTypes.ACETypeNames.GetChangesAll
+  commentId: F:SharpHoundCommonLib.OutputTypes.ACETypeNames.GetChangesAll
+  id: GetChangesAll
+  parent: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  langs:
+  - csharp
+  - vb
+  name: GetChangesAll
+  nameWithType: ACETypeNames.GetChangesAll
+  fullName: SharpHoundCommonLib.OutputTypes.ACETypeNames.GetChangesAll
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/ACE.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetChangesAll
+    path: ../src/CommonLib/OutputTypes/ACE.cs
+    startLine: 40
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: GetChangesAll = 5
+    return:
+      type: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SharpHoundCommonLib.OutputTypes
+  commentId: N:SharpHoundCommonLib.OutputTypes
+  name: SharpHoundCommonLib.OutputTypes
+  nameWithType: SharpHoundCommonLib.OutputTypes
+  fullName: SharpHoundCommonLib.OutputTypes
+- uid: SharpHoundCommonLib.OutputTypes.ACETypeNames
+  commentId: T:SharpHoundCommonLib.OutputTypes.ACETypeNames
+  parent: SharpHoundCommonLib.OutputTypes
+  name: ACETypeNames
+  nameWithType: ACETypeNames
+  fullName: SharpHoundCommonLib.OutputTypes.ACETypeNames

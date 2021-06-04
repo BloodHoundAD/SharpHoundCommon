@@ -1,0 +1,322 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.Enums.Label
+  commentId: T:SharpHoundCommonLib.Enums.Label
+  id: Label
+  parent: SharpHoundCommonLib.Enums
+  children:
+  - SharpHoundCommonLib.Enums.Label.Base
+  - SharpHoundCommonLib.Enums.Label.Computer
+  - SharpHoundCommonLib.Enums.Label.Container
+  - SharpHoundCommonLib.Enums.Label.Domain
+  - SharpHoundCommonLib.Enums.Label.GPO
+  - SharpHoundCommonLib.Enums.Label.Group
+  - SharpHoundCommonLib.Enums.Label.OU
+  - SharpHoundCommonLib.Enums.Label.User
+  langs:
+  - csharp
+  - vb
+  name: Label
+  nameWithType: Label
+  fullName: SharpHoundCommonLib.Enums.Label
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Label
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 5
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: >-
+      [JsonConverter(typeof(StringEnumConverter))]
+
+      public enum Label
+    content.vb: >-
+      <JsonConverter(GetType(StringEnumConverter))>
+
+      Public Enum Label
+  attributes:
+  - type: Newtonsoft.Json.JsonConverterAttribute
+    ctor: Newtonsoft.Json.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: Newtonsoft.Json.Converters.StringEnumConverter
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SharpHoundCommonLib.Enums.Label.User
+  commentId: F:SharpHoundCommonLib.Enums.Label.User
+  id: User
+  parent: SharpHoundCommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: User
+  nameWithType: Label.User
+  fullName: SharpHoundCommonLib.Enums.Label.User
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: User
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 8
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: User = 0
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.Label.Computer
+  commentId: F:SharpHoundCommonLib.Enums.Label.Computer
+  id: Computer
+  parent: SharpHoundCommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Computer
+  nameWithType: Label.Computer
+  fullName: SharpHoundCommonLib.Enums.Label.Computer
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Computer
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 9
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: Computer = 1
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.Label.Group
+  commentId: F:SharpHoundCommonLib.Enums.Label.Group
+  id: Group
+  parent: SharpHoundCommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Group
+  nameWithType: Label.Group
+  fullName: SharpHoundCommonLib.Enums.Label.Group
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Group
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 10
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: Group = 2
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.Label.GPO
+  commentId: F:SharpHoundCommonLib.Enums.Label.GPO
+  id: GPO
+  parent: SharpHoundCommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: GPO
+  nameWithType: Label.GPO
+  fullName: SharpHoundCommonLib.Enums.Label.GPO
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GPO
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 11
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: GPO = 3
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.Label.Domain
+  commentId: F:SharpHoundCommonLib.Enums.Label.Domain
+  id: Domain
+  parent: SharpHoundCommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Domain
+  nameWithType: Label.Domain
+  fullName: SharpHoundCommonLib.Enums.Label.Domain
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Domain
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 12
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: Domain = 4
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.Label.OU
+  commentId: F:SharpHoundCommonLib.Enums.Label.OU
+  id: OU
+  parent: SharpHoundCommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: OU
+  nameWithType: Label.OU
+  fullName: SharpHoundCommonLib.Enums.Label.OU
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: OU
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 13
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: OU = 5
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.Label.Container
+  commentId: F:SharpHoundCommonLib.Enums.Label.Container
+  id: Container
+  parent: SharpHoundCommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Container
+  nameWithType: Label.Container
+  fullName: SharpHoundCommonLib.Enums.Label.Container
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Container
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 14
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: Container = 6
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.Label.Base
+  commentId: F:SharpHoundCommonLib.Enums.Label.Base
+  id: Base
+  parent: SharpHoundCommonLib.Enums.Label
+  langs:
+  - csharp
+  - vb
+  name: Base
+  nameWithType: Label.Base
+  fullName: SharpHoundCommonLib.Enums.Label.Base
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/Labels.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Base
+    path: ../src/CommonLib/Enums/Labels.cs
+    startLine: 15
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: Base = 7
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SharpHoundCommonLib.Enums
+  commentId: N:SharpHoundCommonLib.Enums
+  name: SharpHoundCommonLib.Enums
+  nameWithType: SharpHoundCommonLib.Enums
+  fullName: SharpHoundCommonLib.Enums
+- uid: SharpHoundCommonLib.Enums.Label
+  commentId: T:SharpHoundCommonLib.Enums.Label
+  parent: SharpHoundCommonLib.Enums
+  name: Label
+  nameWithType: Label
+  fullName: SharpHoundCommonLib.Enums.Label

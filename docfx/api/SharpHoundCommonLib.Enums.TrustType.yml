@@ -1,0 +1,211 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.Enums.TrustType
+  commentId: T:SharpHoundCommonLib.Enums.TrustType
+  id: TrustType
+  parent: SharpHoundCommonLib.Enums
+  children:
+  - SharpHoundCommonLib.Enums.TrustType.CrossLink
+  - SharpHoundCommonLib.Enums.TrustType.External
+  - SharpHoundCommonLib.Enums.TrustType.Forest
+  - SharpHoundCommonLib.Enums.TrustType.ParentChild
+  - SharpHoundCommonLib.Enums.TrustType.Unknown
+  langs:
+  - csharp
+  - vb
+  name: TrustType
+  nameWithType: TrustType
+  fullName: SharpHoundCommonLib.Enums.TrustType
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/Enums/TrustType.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: TrustType
+    path: ../src/CommonLib/Enums/TrustType.cs
+    startLine: 2
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: public enum TrustType
+    content.vb: Public Enum TrustType
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SharpHoundCommonLib.Enums.TrustType.ParentChild
+  commentId: F:SharpHoundCommonLib.Enums.TrustType.ParentChild
+  id: ParentChild
+  parent: SharpHoundCommonLib.Enums.TrustType
+  langs:
+  - csharp
+  - vb
+  name: ParentChild
+  nameWithType: TrustType.ParentChild
+  fullName: SharpHoundCommonLib.Enums.TrustType.ParentChild
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/TrustType.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ParentChild
+    path: ../src/CommonLib/Enums/TrustType.cs
+    startLine: 4
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: ParentChild = 0
+    return:
+      type: SharpHoundCommonLib.Enums.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.TrustType.CrossLink
+  commentId: F:SharpHoundCommonLib.Enums.TrustType.CrossLink
+  id: CrossLink
+  parent: SharpHoundCommonLib.Enums.TrustType
+  langs:
+  - csharp
+  - vb
+  name: CrossLink
+  nameWithType: TrustType.CrossLink
+  fullName: SharpHoundCommonLib.Enums.TrustType.CrossLink
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/TrustType.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: CrossLink
+    path: ../src/CommonLib/Enums/TrustType.cs
+    startLine: 5
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: CrossLink = 1
+    return:
+      type: SharpHoundCommonLib.Enums.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.TrustType.Forest
+  commentId: F:SharpHoundCommonLib.Enums.TrustType.Forest
+  id: Forest
+  parent: SharpHoundCommonLib.Enums.TrustType
+  langs:
+  - csharp
+  - vb
+  name: Forest
+  nameWithType: TrustType.Forest
+  fullName: SharpHoundCommonLib.Enums.TrustType.Forest
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/TrustType.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Forest
+    path: ../src/CommonLib/Enums/TrustType.cs
+    startLine: 6
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: Forest = 2
+    return:
+      type: SharpHoundCommonLib.Enums.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.TrustType.External
+  commentId: F:SharpHoundCommonLib.Enums.TrustType.External
+  id: External
+  parent: SharpHoundCommonLib.Enums.TrustType
+  langs:
+  - csharp
+  - vb
+  name: External
+  nameWithType: TrustType.External
+  fullName: SharpHoundCommonLib.Enums.TrustType.External
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/TrustType.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: External
+    path: ../src/CommonLib/Enums/TrustType.cs
+    startLine: 7
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: External = 3
+    return:
+      type: SharpHoundCommonLib.Enums.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Enums.TrustType.Unknown
+  commentId: F:SharpHoundCommonLib.Enums.TrustType.Unknown
+  id: Unknown
+  parent: SharpHoundCommonLib.Enums.TrustType
+  langs:
+  - csharp
+  - vb
+  name: Unknown
+  nameWithType: TrustType.Unknown
+  fullName: SharpHoundCommonLib.Enums.TrustType.Unknown
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Enums/TrustType.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Unknown
+    path: ../src/CommonLib/Enums/TrustType.cs
+    startLine: 8
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Enums
+  syntax:
+    content: Unknown = 4
+    return:
+      type: SharpHoundCommonLib.Enums.TrustType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SharpHoundCommonLib.Enums
+  commentId: N:SharpHoundCommonLib.Enums
+  name: SharpHoundCommonLib.Enums
+  nameWithType: SharpHoundCommonLib.Enums
+  fullName: SharpHoundCommonLib.Enums
+- uid: SharpHoundCommonLib.Enums.TrustType
+  commentId: T:SharpHoundCommonLib.Enums.TrustType
+  parent: SharpHoundCommonLib.Enums
+  name: TrustType
+  nameWithType: TrustType
+  fullName: SharpHoundCommonLib.Enums.TrustType

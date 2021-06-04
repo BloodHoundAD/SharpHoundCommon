@@ -1,0 +1,489 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability
+  commentId: T:SharpHoundCommonLib.Processors.ComputerAvailability
+  id: ComputerAvailability
+  parent: SharpHoundCommonLib.Processors
+  children:
+  - SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(System.String,System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: ComputerAvailability
+  nameWithType: ComputerAvailability
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/Processors/ComputerAvailability.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ComputerAvailability
+    path: ../src/CommonLib/Processors/ComputerAvailability.cs
+    startLine: 6
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public class ComputerAvailability
+    content.vb: Public Class ComputerAvailability
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(System.String,System.String,System.String)
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(System.String,System.String,System.String)
+  id: IsComputerAvailable(System.String,System.String,System.String)
+  parent: SharpHoundCommonLib.Processors.ComputerAvailability
+  langs:
+  - csharp
+  - vb
+  name: IsComputerAvailable(String, String, String)
+  nameWithType: ComputerAvailability.IsComputerAvailable(String, String, String)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(System.String, System.String, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Processors/ComputerAvailability.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: IsComputerAvailable
+    path: ../src/CommonLib/Processors/ComputerAvailability.cs
+    startLine: 18
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  summary: "\nChecks if a computer is available for SharpHound enumeration using the following criteria:\nThe &quot;operatingsystem&quot; LDAP attribute must contain the string &quot;Windows&quot;\nThe &quot;pwdlastset&quot; LDAP attribute must be within 60 days of the current date.\nPort 445 must be open to allow API calls to succeed\n"
+  example: []
+  syntax:
+    content: public static Task<ComputerStatus> IsComputerAvailable(string computerName, string operatingSystem, string pwdLastSet)
+    parameters:
+    - id: computerName
+      type: System.String
+      description: The computer to check availability for
+    - id: operatingSystem
+      type: System.String
+      description: The LDAP operatingsystem attribute value
+    - id: pwdLastSet
+      type: System.String
+      description: The LDAP pwdlastset attribute value
+    return:
+      type: System.Threading.Tasks.Task{SharpHoundCommonLib.OutputTypes.ComputerStatus}
+      description: A <cref>ComputerStatus</cref> object that represents the availability of the computer
+    content.vb: Public Shared Function IsComputerAvailable(computerName As String, operatingSystem As String, pwdLastSet As String) As Task(Of ComputerStatus)
+  overload: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: SharpHoundCommonLib.Processors
+  commentId: N:SharpHoundCommonLib.Processors
+  name: SharpHoundCommonLib.Processors
+  nameWithType: SharpHoundCommonLib.Processors
+  fullName: SharpHoundCommonLib.Processors
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable*
+  commentId: Overload:SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable
+  name: IsComputerAvailable
+  nameWithType: ComputerAvailability.IsComputerAvailable
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Threading.Tasks.Task{SharpHoundCommonLib.OutputTypes.ComputerStatus}
+  commentId: T:System.Threading.Tasks.Task{SharpHoundCommonLib.OutputTypes.ComputerStatus}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  name: Task<ComputerStatus>
+  nameWithType: Task<ComputerStatus>
+  fullName: System.Threading.Tasks.Task<SharpHoundCommonLib.OutputTypes.ComputerStatus>
+  nameWithType.vb: Task(Of ComputerStatus)
+  fullName.vb: System.Threading.Tasks.Task(Of SharpHoundCommonLib.OutputTypes.ComputerStatus)
+  name.vb: Task(Of ComputerStatus)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    nameWithType: Task
+    fullName: System.Threading.Tasks.Task
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SharpHoundCommonLib.OutputTypes.ComputerStatus
+    name: ComputerStatus
+    nameWithType: ComputerStatus
+    fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    nameWithType: Task
+    fullName: System.Threading.Tasks.Task
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SharpHoundCommonLib.OutputTypes.ComputerStatus
+    name: ComputerStatus
+    nameWithType: ComputerStatus
+    fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    nameWithType: Task
+    fullName: System.Threading.Tasks.Task
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    nameWithType: Task
+    fullName: System.Threading.Tasks.Task
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks

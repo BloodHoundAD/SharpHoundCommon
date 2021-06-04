@@ -1,0 +1,587 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.Processors.ACEGuids
+  commentId: T:SharpHoundCommonLib.Processors.ACEGuids
+  id: ACEGuids
+  parent: SharpHoundCommonLib.Processors
+  children:
+  - SharpHoundCommonLib.Processors.ACEGuids.AddSelfToGroup
+  - SharpHoundCommonLib.Processors.ACEGuids.AllGuid
+  - SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChanges
+  - SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChangesAll
+  - SharpHoundCommonLib.Processors.ACEGuids.UserForceChangePassword
+  - SharpHoundCommonLib.Processors.ACEGuids.WriteAllowedToAct
+  - SharpHoundCommonLib.Processors.ACEGuids.WriteMember
+  langs:
+  - csharp
+  - vb
+  name: ACEGuids
+  nameWithType: ACEGuids
+  fullName: SharpHoundCommonLib.Processors.ACEGuids
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACEGuids.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ACEGuids
+    path: ../src/CommonLib/Processors/ACEGuids.cs
+    startLine: 2
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public class ACEGuids
+    content.vb: Public Class ACEGuids
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChanges
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChanges
+  id: DSReplicationGetChanges
+  parent: SharpHoundCommonLib.Processors.ACEGuids
+  langs:
+  - csharp
+  - vb
+  name: DSReplicationGetChanges
+  nameWithType: ACEGuids.DSReplicationGetChanges
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChanges
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACEGuids.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DSReplicationGetChanges
+    path: ../src/CommonLib/Processors/ACEGuids.cs
+    startLine: 4
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public const string DSReplicationGetChanges = "1131f6aa-9c07-11d1-f79f-00c04fc2dcd2"
+    return:
+      type: System.String
+    content.vb: Public Const DSReplicationGetChanges As String = "1131f6aa-9c07-11d1-f79f-00c04fc2dcd2"
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChangesAll
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChangesAll
+  id: DSReplicationGetChangesAll
+  parent: SharpHoundCommonLib.Processors.ACEGuids
+  langs:
+  - csharp
+  - vb
+  name: DSReplicationGetChangesAll
+  nameWithType: ACEGuids.DSReplicationGetChangesAll
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChangesAll
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACEGuids.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DSReplicationGetChangesAll
+    path: ../src/CommonLib/Processors/ACEGuids.cs
+    startLine: 5
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public const string DSReplicationGetChangesAll = "1131f6ad-9c07-11d1-f79f-00c04fc2dcd2"
+    return:
+      type: System.String
+    content.vb: Public Const DSReplicationGetChangesAll As String = "1131f6ad-9c07-11d1-f79f-00c04fc2dcd2"
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Processors.ACEGuids.UserForceChangePassword
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.UserForceChangePassword
+  id: UserForceChangePassword
+  parent: SharpHoundCommonLib.Processors.ACEGuids
+  langs:
+  - csharp
+  - vb
+  name: UserForceChangePassword
+  nameWithType: ACEGuids.UserForceChangePassword
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.UserForceChangePassword
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACEGuids.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: UserForceChangePassword
+    path: ../src/CommonLib/Processors/ACEGuids.cs
+    startLine: 6
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public const string UserForceChangePassword = "00299570-246d-11d0-a768-00aa006e0529"
+    return:
+      type: System.String
+    content.vb: Public Const UserForceChangePassword As String = "00299570-246d-11d0-a768-00aa006e0529"
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Processors.ACEGuids.AllGuid
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.AllGuid
+  id: AllGuid
+  parent: SharpHoundCommonLib.Processors.ACEGuids
+  langs:
+  - csharp
+  - vb
+  name: AllGuid
+  nameWithType: ACEGuids.AllGuid
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.AllGuid
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACEGuids.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: AllGuid
+    path: ../src/CommonLib/Processors/ACEGuids.cs
+    startLine: 7
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public const string AllGuid = "00000000-0000-0000-0000-000000000000"
+    return:
+      type: System.String
+    content.vb: Public Const AllGuid As String = "00000000-0000-0000-0000-000000000000"
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Processors.ACEGuids.WriteMember
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.WriteMember
+  id: WriteMember
+  parent: SharpHoundCommonLib.Processors.ACEGuids
+  langs:
+  - csharp
+  - vb
+  name: WriteMember
+  nameWithType: ACEGuids.WriteMember
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.WriteMember
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACEGuids.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: WriteMember
+    path: ../src/CommonLib/Processors/ACEGuids.cs
+    startLine: 8
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public const string WriteMember = "f3a64788-5306-11d1-a9c5-0000f80367c1"
+    return:
+      type: System.String
+    content.vb: Public Const WriteMember As String = "f3a64788-5306-11d1-a9c5-0000f80367c1"
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Processors.ACEGuids.WriteAllowedToAct
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.WriteAllowedToAct
+  id: WriteAllowedToAct
+  parent: SharpHoundCommonLib.Processors.ACEGuids
+  langs:
+  - csharp
+  - vb
+  name: WriteAllowedToAct
+  nameWithType: ACEGuids.WriteAllowedToAct
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.WriteAllowedToAct
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACEGuids.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: WriteAllowedToAct
+    path: ../src/CommonLib/Processors/ACEGuids.cs
+    startLine: 9
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public const string WriteAllowedToAct = "3f78c3e5-f79a-46bd-a0b8-9d18116ddc79"
+    return:
+      type: System.String
+    content.vb: Public Const WriteAllowedToAct As String = "3f78c3e5-f79a-46bd-a0b8-9d18116ddc79"
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.Processors.ACEGuids.AddSelfToGroup
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.AddSelfToGroup
+  id: AddSelfToGroup
+  parent: SharpHoundCommonLib.Processors.ACEGuids
+  langs:
+  - csharp
+  - vb
+  name: AddSelfToGroup
+  nameWithType: ACEGuids.AddSelfToGroup
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.AddSelfToGroup
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/Processors/ACEGuids.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: AddSelfToGroup
+    path: ../src/CommonLib/Processors/ACEGuids.cs
+    startLine: 10
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.Processors
+  syntax:
+    content: public const string AddSelfToGroup = "bf9679c0-0de6-11d0-a285-00aa003049e2"
+    return:
+      type: System.String
+    content.vb: Public Const AddSelfToGroup As String = "bf9679c0-0de6-11d0-a285-00aa003049e2"
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SharpHoundCommonLib.Processors
+  commentId: N:SharpHoundCommonLib.Processors
+  name: SharpHoundCommonLib.Processors
+  nameWithType: SharpHoundCommonLib.Processors
+  fullName: SharpHoundCommonLib.Processors
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String

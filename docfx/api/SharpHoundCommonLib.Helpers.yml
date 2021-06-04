@@ -1,0 +1,684 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.Helpers
+  commentId: T:SharpHoundCommonLib.Helpers
+  id: Helpers
+  parent: SharpHoundCommonLib
+  children:
+  - SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
+  - SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
+  - SharpHoundCommonLib.Helpers.DistinguishedNameToDomain(System.String)
+  - SharpHoundCommonLib.Helpers.GetMachineSid(System.String,System.String,System.String)
+  - SharpHoundCommonLib.Helpers.SplitGPLinkProperty(System.String,System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: Helpers
+  nameWithType: Helpers
+  fullName: SharpHoundCommonLib.Helpers
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Helpers
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 14
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public static class Helpers
+    content.vb: Public Module Helpers
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: SharpHoundCommonLib.Helpers.SplitGPLinkProperty(System.String,System.Boolean)
+  commentId: M:SharpHoundCommonLib.Helpers.SplitGPLinkProperty(System.String,System.Boolean)
+  id: SplitGPLinkProperty(System.String,System.Boolean)
+  parent: SharpHoundCommonLib.Helpers
+  langs:
+  - csharp
+  - vb
+  name: SplitGPLinkProperty(String, Boolean)
+  nameWithType: Helpers.SplitGPLinkProperty(String, Boolean)
+  fullName: SharpHoundCommonLib.Helpers.SplitGPLinkProperty(System.String, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: SplitGPLinkProperty
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 24
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public static IEnumerable<ParsedGPLink> SplitGPLinkProperty(string linkProp, bool filterDisabled = true)
+    parameters:
+    - id: linkProp
+      type: System.String
+    - id: filterDisabled
+      type: System.Boolean
+    return:
+      type: System.Collections.Generic.IEnumerable{SharpHoundCommonLib.ParsedGPLink}
+    content.vb: Public Shared Function SplitGPLinkProperty(linkProp As String, filterDisabled As Boolean = True) As IEnumerable(Of ParsedGPLink)
+  overload: SharpHoundCommonLib.Helpers.SplitGPLinkProperty*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Helpers.GetMachineSid(System.String,System.String,System.String)
+  commentId: M:SharpHoundCommonLib.Helpers.GetMachineSid(System.String,System.String,System.String)
+  id: GetMachineSid(System.String,System.String,System.String)
+  parent: SharpHoundCommonLib.Helpers
+  langs:
+  - csharp
+  - vb
+  name: GetMachineSid(String, String, String)
+  nameWithType: Helpers.GetMachineSid(String, String, String)
+  fullName: SharpHoundCommonLib.Helpers.GetMachineSid(System.String, System.String, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetMachineSid
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 45
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public static string GetMachineSid(string computerSid, string computerName, string computerSamAccountName)
+    parameters:
+    - id: computerSid
+      type: System.String
+    - id: computerName
+      type: System.String
+    - id: computerSamAccountName
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetMachineSid(computerSid As String, computerName As String, computerSamAccountName As String) As String
+  overload: SharpHoundCommonLib.Helpers.GetMachineSid*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Helpers.DistinguishedNameToDomain(System.String)
+  commentId: M:SharpHoundCommonLib.Helpers.DistinguishedNameToDomain(System.String)
+  id: DistinguishedNameToDomain(System.String)
+  parent: SharpHoundCommonLib.Helpers
+  langs:
+  - csharp
+  - vb
+  name: DistinguishedNameToDomain(String)
+  nameWithType: Helpers.DistinguishedNameToDomain(String)
+  fullName: SharpHoundCommonLib.Helpers.DistinguishedNameToDomain(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DistinguishedNameToDomain
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 115
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nExtracts an active directory domain name from a DistinguishedName \n"
+  example: []
+  syntax:
+    content: public static string DistinguishedNameToDomain(string distinguishedName)
+    parameters:
+    - id: distinguishedName
+      type: System.String
+      description: Distinguished Name to extract domain from
+    return:
+      type: System.String
+      description: String representing the domain name of this object
+    content.vb: Public Shared Function DistinguishedNameToDomain(distinguishedName As String) As String
+  overload: SharpHoundCommonLib.Helpers.DistinguishedNameToDomain*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
+  commentId: M:SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
+  id: ConvertFileTimeToUnixEpoch(System.String)
+  parent: SharpHoundCommonLib.Helpers
+  langs:
+  - csharp
+  - vb
+  name: ConvertFileTimeToUnixEpoch(String)
+  nameWithType: Helpers.ConvertFileTimeToUnixEpoch(String)
+  fullName: SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ConvertFileTimeToUnixEpoch
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 174
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nConverts a windows file time to unix epoch time\n"
+  example: []
+  syntax:
+    content: public static long ConvertFileTimeToUnixEpoch(string ldapTime)
+    parameters:
+    - id: ldapTime
+      type: System.String
+      description: ''
+    return:
+      type: System.Int64
+      description: ''
+    content.vb: Public Shared Function ConvertFileTimeToUnixEpoch(ldapTime As String) As Long
+  overload: SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
+  commentId: M:SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
+  id: ConvertTimestampToUnixEpoch(System.String)
+  parent: SharpHoundCommonLib.Helpers
+  langs:
+  - csharp
+  - vb
+  name: ConvertTimestampToUnixEpoch(String)
+  nameWithType: Helpers.ConvertTimestampToUnixEpoch(String)
+  fullName: SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Helpers.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ConvertTimestampToUnixEpoch
+    path: ../src/CommonLib/Helpers.cs
+    startLine: 202
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nConverts a windows file time to unix epoch time\n"
+  example: []
+  syntax:
+    content: public static long ConvertTimestampToUnixEpoch(string ldapTime)
+    parameters:
+    - id: ldapTime
+      type: System.String
+      description: ''
+    return:
+      type: System.Int64
+      description: ''
+    content.vb: Public Shared Function ConvertTimestampToUnixEpoch(ldapTime As String) As Long
+  overload: SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: SharpHoundCommonLib
+  commentId: N:SharpHoundCommonLib
+  name: SharpHoundCommonLib
+  nameWithType: SharpHoundCommonLib
+  fullName: SharpHoundCommonLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SharpHoundCommonLib.Helpers.SplitGPLinkProperty*
+  commentId: Overload:SharpHoundCommonLib.Helpers.SplitGPLinkProperty
+  name: SplitGPLinkProperty
+  nameWithType: Helpers.SplitGPLinkProperty
+  fullName: SharpHoundCommonLib.Helpers.SplitGPLinkProperty
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.Collections.Generic.IEnumerable{SharpHoundCommonLib.ParsedGPLink}
+  commentId: T:System.Collections.Generic.IEnumerable{SharpHoundCommonLib.ParsedGPLink}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<ParsedGPLink>
+  nameWithType: IEnumerable<ParsedGPLink>
+  fullName: System.Collections.Generic.IEnumerable<SharpHoundCommonLib.ParsedGPLink>
+  nameWithType.vb: IEnumerable(Of ParsedGPLink)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SharpHoundCommonLib.ParsedGPLink)
+  name.vb: IEnumerable(Of ParsedGPLink)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SharpHoundCommonLib.ParsedGPLink
+    name: ParsedGPLink
+    nameWithType: ParsedGPLink
+    fullName: SharpHoundCommonLib.ParsedGPLink
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SharpHoundCommonLib.ParsedGPLink
+    name: ParsedGPLink
+    nameWithType: ParsedGPLink
+    fullName: SharpHoundCommonLib.ParsedGPLink
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: SharpHoundCommonLib.Helpers.GetMachineSid*
+  commentId: Overload:SharpHoundCommonLib.Helpers.GetMachineSid
+  name: GetMachineSid
+  nameWithType: Helpers.GetMachineSid
+  fullName: SharpHoundCommonLib.Helpers.GetMachineSid
+- uid: SharpHoundCommonLib.Helpers.DistinguishedNameToDomain*
+  commentId: Overload:SharpHoundCommonLib.Helpers.DistinguishedNameToDomain
+  name: DistinguishedNameToDomain
+  nameWithType: Helpers.DistinguishedNameToDomain
+  fullName: SharpHoundCommonLib.Helpers.DistinguishedNameToDomain
+- uid: SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch*
+  commentId: Overload:SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch
+  name: ConvertFileTimeToUnixEpoch
+  nameWithType: Helpers.ConvertFileTimeToUnixEpoch
+  fullName: SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  name: Int64
+  nameWithType: Int64
+  fullName: System.Int64
+- uid: SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch*
+  commentId: Overload:SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch
+  name: ConvertTimestampToUnixEpoch
+  nameWithType: Helpers.ConvertTimestampToUnixEpoch
+  fullName: SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch

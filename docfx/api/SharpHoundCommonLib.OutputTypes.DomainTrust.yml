@@ -1,0 +1,619 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust
+  commentId: T:SharpHoundCommonLib.OutputTypes.DomainTrust
+  id: DomainTrust
+  parent: SharpHoundCommonLib.OutputTypes
+  children:
+  - SharpHoundCommonLib.OutputTypes.DomainTrust.IsTransitive
+  - SharpHoundCommonLib.OutputTypes.DomainTrust.SidFilteringEnabled
+  - SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainName
+  - SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid
+  - SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection
+  - SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType
+  langs:
+  - csharp
+  - vb
+  name: DomainTrust
+  nameWithType: DomainTrust
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DomainTrust
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 4
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public class DomainTrust
+    content.vb: Public Class DomainTrust
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid
+  commentId: P:SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid
+  id: TargetDomainSid
+  parent: SharpHoundCommonLib.OutputTypes.DomainTrust
+  langs:
+  - csharp
+  - vb
+  name: TargetDomainSid
+  nameWithType: DomainTrust.TargetDomainSid
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: TargetDomainSid
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 6
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public string TargetDomainSid { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property TargetDomainSid As String
+  overload: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainName
+  commentId: P:SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainName
+  id: TargetDomainName
+  parent: SharpHoundCommonLib.OutputTypes.DomainTrust
+  langs:
+  - csharp
+  - vb
+  name: TargetDomainName
+  nameWithType: DomainTrust.TargetDomainName
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainName
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: TargetDomainName
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 7
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public string TargetDomainName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property TargetDomainName As String
+  overload: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainName*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.IsTransitive
+  commentId: P:SharpHoundCommonLib.OutputTypes.DomainTrust.IsTransitive
+  id: IsTransitive
+  parent: SharpHoundCommonLib.OutputTypes.DomainTrust
+  langs:
+  - csharp
+  - vb
+  name: IsTransitive
+  nameWithType: DomainTrust.IsTransitive
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.IsTransitive
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: IsTransitive
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 8
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public bool IsTransitive { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsTransitive As Boolean
+  overload: SharpHoundCommonLib.OutputTypes.DomainTrust.IsTransitive*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.SidFilteringEnabled
+  commentId: P:SharpHoundCommonLib.OutputTypes.DomainTrust.SidFilteringEnabled
+  id: SidFilteringEnabled
+  parent: SharpHoundCommonLib.OutputTypes.DomainTrust
+  langs:
+  - csharp
+  - vb
+  name: SidFilteringEnabled
+  nameWithType: DomainTrust.SidFilteringEnabled
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.SidFilteringEnabled
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: SidFilteringEnabled
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 9
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public bool SidFilteringEnabled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property SidFilteringEnabled As Boolean
+  overload: SharpHoundCommonLib.OutputTypes.DomainTrust.SidFilteringEnabled*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection
+  commentId: P:SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection
+  id: TrustDirection
+  parent: SharpHoundCommonLib.OutputTypes.DomainTrust
+  langs:
+  - csharp
+  - vb
+  name: TrustDirection
+  nameWithType: DomainTrust.TrustDirection
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: TrustDirection
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 10
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public TrustDirection TrustDirection { get; set; }
+    parameters: []
+    return:
+      type: SharpHoundCommonLib.Enums.TrustDirection
+    content.vb: Public Property TrustDirection As TrustDirection
+  overload: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType
+  commentId: P:SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType
+  id: TrustType
+  parent: SharpHoundCommonLib.OutputTypes.DomainTrust
+  langs:
+  - csharp
+  - vb
+  name: TrustType
+  nameWithType: DomainTrust.TrustType
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/DomainTrust.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: TrustType
+    path: ../src/CommonLib/OutputTypes/DomainTrust.cs
+    startLine: 11
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public TrustType TrustType { get; set; }
+    parameters: []
+    return:
+      type: SharpHoundCommonLib.Enums.TrustType
+    content.vb: Public Property TrustType As TrustType
+  overload: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: SharpHoundCommonLib.OutputTypes
+  commentId: N:SharpHoundCommonLib.OutputTypes
+  name: SharpHoundCommonLib.OutputTypes
+  nameWithType: SharpHoundCommonLib.OutputTypes
+  fullName: SharpHoundCommonLib.OutputTypes
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid
+  name: TargetDomainSid
+  nameWithType: DomainTrust.TargetDomainSid
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainName*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainName
+  name: TargetDomainName
+  nameWithType: DomainTrust.TargetDomainName
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainName
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.IsTransitive*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DomainTrust.IsTransitive
+  name: IsTransitive
+  nameWithType: DomainTrust.IsTransitive
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.IsTransitive
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.SidFilteringEnabled*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DomainTrust.SidFilteringEnabled
+  name: SidFilteringEnabled
+  nameWithType: DomainTrust.SidFilteringEnabled
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.SidFilteringEnabled
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection
+  name: TrustDirection
+  nameWithType: DomainTrust.TrustDirection
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection
+- uid: SharpHoundCommonLib.Enums.TrustDirection
+  commentId: T:SharpHoundCommonLib.Enums.TrustDirection
+  parent: SharpHoundCommonLib.Enums
+  name: TrustDirection
+  nameWithType: TrustDirection
+  fullName: SharpHoundCommonLib.Enums.TrustDirection
+- uid: SharpHoundCommonLib.Enums
+  commentId: N:SharpHoundCommonLib.Enums
+  name: SharpHoundCommonLib.Enums
+  nameWithType: SharpHoundCommonLib.Enums
+  fullName: SharpHoundCommonLib.Enums
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType
+  name: TrustType
+  nameWithType: DomainTrust.TrustType
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType
+- uid: SharpHoundCommonLib.Enums.TrustType
+  commentId: T:SharpHoundCommonLib.Enums.TrustType
+  parent: SharpHoundCommonLib.Enums
+  name: TrustType
+  nameWithType: TrustType
+  fullName: SharpHoundCommonLib.Enums.TrustType

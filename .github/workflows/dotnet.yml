@@ -22,6 +22,6 @@ jobs:
     - name: Publish NuGet
       uses: rohith/publish-nuget@v2
       with:
-        PROJECT_FILE_PATH: CommonLib/SharpHoundCommonLib.csproj
+        PROJECT_FILE_PATH: src/CommonLib/SharpHoundCommonLib.csproj
         PACKAGE_NAME: SharpHoundCommon
         NUGET_KEY: ${{secrets.NUGET_TOKEN}}

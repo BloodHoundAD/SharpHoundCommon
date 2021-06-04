@@ -1,0 +1,40 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.LDAPQueries
+  commentId: N:SharpHoundCommonLib.LDAPQueries
+  id: SharpHoundCommonLib.LDAPQueries
+  children:
+  - SharpHoundCommonLib.LDAPQueries.CommonFilters
+  - SharpHoundCommonLib.LDAPQueries.CommonProperties
+  - SharpHoundCommonLib.LDAPQueries.LDAPFilter
+  langs:
+  - csharp
+  - vb
+  name: SharpHoundCommonLib.LDAPQueries
+  nameWithType: SharpHoundCommonLib.LDAPQueries
+  fullName: SharpHoundCommonLib.LDAPQueries
+  type: Namespace
+  assemblies:
+  - SharpHoundCommonLib
+references:
+- uid: SharpHoundCommonLib.LDAPQueries.CommonFilters
+  commentId: T:SharpHoundCommonLib.LDAPQueries.CommonFilters
+  name: CommonFilters
+  nameWithType: CommonFilters
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonFilters
+- uid: SharpHoundCommonLib.LDAPQueries.CommonProperties
+  commentId: T:SharpHoundCommonLib.LDAPQueries.CommonProperties
+  name: CommonProperties
+  nameWithType: CommonProperties
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonProperties
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter
+  commentId: T:SharpHoundCommonLib.LDAPQueries.LDAPFilter
+  parent: SharpHoundCommonLib.LDAPQueries
+  name: LDAPFilter
+  nameWithType: LDAPFilter
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter
+- uid: SharpHoundCommonLib.LDAPQueries
+  commentId: N:SharpHoundCommonLib.LDAPQueries
+  name: SharpHoundCommonLib.LDAPQueries
+  nameWithType: SharpHoundCommonLib.LDAPQueries
+  fullName: SharpHoundCommonLib.LDAPQueries

@@ -1,0 +1,1282 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.Extensions
+  commentId: T:SharpHoundCommonLib.Extensions
+  id: Extensions
+  parent: SharpHoundCommonLib
+  children:
+  - SharpHoundCommonLib.Extensions.GetGuid(System.DirectoryServices.Protocols.SearchResultEntry)
+  - SharpHoundCommonLib.Extensions.GetLabel(System.DirectoryServices.Protocols.SearchResultEntry)
+  - SharpHoundCommonLib.Extensions.GetObjectIdentifier(System.DirectoryServices.Protocols.SearchResultEntry)
+  - SharpHoundCommonLib.Extensions.GetProperty(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  - SharpHoundCommonLib.Extensions.GetPropertyAsArray(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  - SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  - SharpHoundCommonLib.Extensions.GetPropertyAsBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  - SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.DirectoryEntry)
+  - SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.Protocols.SearchResultEntry)
+  - SharpHoundCommonLib.Extensions.IsDeleted(System.DirectoryServices.Protocols.SearchResultEntry)
+  - SharpHoundCommonLib.Extensions.LdapValue(System.Guid)
+  - SharpHoundCommonLib.Extensions.LdapValue(System.Security.Principal.SecurityIdentifier)
+  - SharpHoundCommonLib.Extensions.PrintEntry(System.DirectoryServices.Protocols.SearchResultEntry)
+  - SharpHoundCommonLib.Extensions.ResolveBHProps(System.DirectoryServices.Protocols.SearchResultEntry)
+  langs:
+  - csharp
+  - vb
+  name: Extensions
+  nameWithType: Extensions
+  fullName: SharpHoundCommonLib.Extensions
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Extensions
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 13
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public static class Extensions
+    content.vb: Public Module Extensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: SharpHoundCommonLib.Extensions.PrintEntry(System.DirectoryServices.Protocols.SearchResultEntry)
+  commentId: M:SharpHoundCommonLib.Extensions.PrintEntry(System.DirectoryServices.Protocols.SearchResultEntry)
+  id: PrintEntry(System.DirectoryServices.Protocols.SearchResultEntry)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: PrintEntry(SearchResultEntry)
+  nameWithType: Extensions.PrintEntry(SearchResultEntry)
+  fullName: SharpHoundCommonLib.Extensions.PrintEntry(System.DirectoryServices.Protocols.SearchResultEntry)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: PrintEntry
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 29
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nHelper function to print attributes of a SearchResultEntry\n"
+  example: []
+  syntax:
+    content: public static void PrintEntry(this SearchResultEntry searchResultEntry)
+    parameters:
+    - id: searchResultEntry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Sub PrintEntry(searchResultEntry As SearchResultEntry)
+  overload: SharpHoundCommonLib.Extensions.PrintEntry*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.LdapValue(System.Security.Principal.SecurityIdentifier)
+  commentId: M:SharpHoundCommonLib.Extensions.LdapValue(System.Security.Principal.SecurityIdentifier)
+  id: LdapValue(System.Security.Principal.SecurityIdentifier)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: LdapValue(SecurityIdentifier)
+  nameWithType: Extensions.LdapValue(SecurityIdentifier)
+  fullName: SharpHoundCommonLib.Extensions.LdapValue(System.Security.Principal.SecurityIdentifier)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: LdapValue
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 40
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public static string LdapValue(this SecurityIdentifier s)
+    parameters:
+    - id: s
+      type: System.Security.Principal.SecurityIdentifier
+    return:
+      type: System.String
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function LdapValue(s As SecurityIdentifier) As String
+  overload: SharpHoundCommonLib.Extensions.LdapValue*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.LdapValue(System.Guid)
+  commentId: M:SharpHoundCommonLib.Extensions.LdapValue(System.Guid)
+  id: LdapValue(System.Guid)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: LdapValue(Guid)
+  nameWithType: Extensions.LdapValue(Guid)
+  fullName: SharpHoundCommonLib.Extensions.LdapValue(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: LdapValue
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 49
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public static string LdapValue(this Guid s)
+    parameters:
+    - id: s
+      type: System.Guid
+    return:
+      type: System.String
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function LdapValue(s As Guid) As String
+  overload: SharpHoundCommonLib.Extensions.LdapValue*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.DirectoryEntry)
+  commentId: M:SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.DirectoryEntry)
+  id: GetSid(System.DirectoryServices.DirectoryEntry)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetSid(DirectoryEntry)
+  nameWithType: Extensions.GetSid(DirectoryEntry)
+  fullName: SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.DirectoryEntry)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetSid
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 56
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public static string GetSid(this DirectoryEntry result)
+    parameters:
+    - id: result
+      type: System.DirectoryServices.DirectoryEntry
+    return:
+      type: System.String
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetSid(result As DirectoryEntry) As String
+  overload: SharpHoundCommonLib.Extensions.GetSid*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.ResolveBHProps(System.DirectoryServices.Protocols.SearchResultEntry)
+  commentId: M:SharpHoundCommonLib.Extensions.ResolveBHProps(System.DirectoryServices.Protocols.SearchResultEntry)
+  id: ResolveBHProps(System.DirectoryServices.Protocols.SearchResultEntry)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: ResolveBHProps(SearchResultEntry)
+  nameWithType: Extensions.ResolveBHProps(SearchResultEntry)
+  fullName: SharpHoundCommonLib.Extensions.ResolveBHProps(System.DirectoryServices.Protocols.SearchResultEntry)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ResolveBHProps
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 72
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public static Task<ResolvedSearchResult> ResolveBHProps(this SearchResultEntry entry)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+    return:
+      type: System.Threading.Tasks.Task{SharpHoundCommonLib.ResolvedSearchResult}
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function ResolveBHProps(entry As SearchResultEntry) As Task(Of ResolvedSearchResult)
+  overload: SharpHoundCommonLib.Extensions.ResolveBHProps*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetProperty(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  commentId: M:SharpHoundCommonLib.Extensions.GetProperty(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  id: GetProperty(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetProperty(SearchResultEntry, String)
+  nameWithType: Extensions.GetProperty(SearchResultEntry, String)
+  fullName: SharpHoundCommonLib.Extensions.GetProperty(System.DirectoryServices.Protocols.SearchResultEntry, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetProperty
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 193
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nGets the specified property as a string from the SearchResultEntry\n"
+  example: []
+  syntax:
+    content: public static string GetProperty(this SearchResultEntry entry, string property)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    - id: property
+      type: System.String
+      description: The LDAP name of the property you want to get
+    return:
+      type: System.String
+      description: The string value of the property if it exists or null
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetProperty(entry As SearchResultEntry, property As String) As String
+  overload: SharpHoundCommonLib.Extensions.GetProperty*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetGuid(System.DirectoryServices.Protocols.SearchResultEntry)
+  commentId: M:SharpHoundCommonLib.Extensions.GetGuid(System.DirectoryServices.Protocols.SearchResultEntry)
+  id: GetGuid(System.DirectoryServices.Protocols.SearchResultEntry)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetGuid(SearchResultEntry)
+  nameWithType: Extensions.GetGuid(SearchResultEntry)
+  fullName: SharpHoundCommonLib.Extensions.GetGuid(System.DirectoryServices.Protocols.SearchResultEntry)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetGuid
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 215
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nGet&apos;s the string representation of the &quot;objectguid&quot; property from the SearchResultEntry\n"
+  example: []
+  syntax:
+    content: public static string GetGuid(this SearchResultEntry entry)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    return:
+      type: System.String
+      description: The string representation of the object&apos;s GUID if possible, otherwise null
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetGuid(entry As SearchResultEntry) As String
+  overload: SharpHoundCommonLib.Extensions.GetGuid*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.Protocols.SearchResultEntry)
+  commentId: M:SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.Protocols.SearchResultEntry)
+  id: GetSid(System.DirectoryServices.Protocols.SearchResultEntry)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetSid(SearchResultEntry)
+  nameWithType: Extensions.GetSid(SearchResultEntry)
+  fullName: SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.Protocols.SearchResultEntry)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetSid
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 232
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nGets the &quot;objectsid&quot; property as a string from the SearchResultEntry\n"
+  example: []
+  syntax:
+    content: public static string GetSid(this SearchResultEntry entry)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    return:
+      type: System.String
+      description: The string representation of the object&apos;s SID if possible, otherwise null
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetSid(entry As SearchResultEntry) As String
+  overload: SharpHoundCommonLib.Extensions.GetSid*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsArray(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  commentId: M:SharpHoundCommonLib.Extensions.GetPropertyAsArray(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  id: GetPropertyAsArray(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetPropertyAsArray(SearchResultEntry, String)
+  nameWithType: Extensions.GetPropertyAsArray(SearchResultEntry, String)
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsArray(System.DirectoryServices.Protocols.SearchResultEntry, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetPropertyAsArray
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 269
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nGets the specified property as a string array from the SearchResultEntry\n"
+  example: []
+  syntax:
+    content: public static string[] GetPropertyAsArray(this SearchResultEntry entry, string property)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    - id: property
+      type: System.String
+      description: The LDAP name of the property you want to get
+    return:
+      type: System.String[]
+      description: The specified property as an array of strings if possible, else an empty array
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetPropertyAsArray(entry As SearchResultEntry, property As String) As String()
+  overload: SharpHoundCommonLib.Extensions.GetPropertyAsArray*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  commentId: M:SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  id: GetPropertyAsArrayOfBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetPropertyAsArrayOfBytes(SearchResultEntry, String)
+  nameWithType: Extensions.GetPropertyAsArrayOfBytes(SearchResultEntry, String)
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes(System.DirectoryServices.Protocols.SearchResultEntry, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetPropertyAsArrayOfBytes
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 287
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nGets the specified property as an array of byte arrays from the SearchResultEntry\nUsed for SIDHistory\n"
+  example: []
+  syntax:
+    content: public static byte[][] GetPropertyAsArrayOfBytes(this SearchResultEntry entry, string property)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    - id: property
+      type: System.String
+      description: The LDAP name of the property you want to get
+    return:
+      type: System.Byte[][]
+      description: The specified property as an array of bytes if possible, else an empty array
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetPropertyAsArrayOfBytes(entry As SearchResultEntry, property As String) As Byte()()
+  overload: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  commentId: M:SharpHoundCommonLib.Extensions.GetPropertyAsBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  id: GetPropertyAsBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetPropertyAsBytes(SearchResultEntry, String)
+  nameWithType: Extensions.GetPropertyAsBytes(SearchResultEntry, String)
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsBytes(System.DirectoryServices.Protocols.SearchResultEntry, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetPropertyAsBytes
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 307
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nGets the specified property as a byte array\n"
+  example: []
+  syntax:
+    content: public static byte[] GetPropertyAsBytes(this SearchResultEntry searchResultEntry, string property)
+    parameters:
+    - id: searchResultEntry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    - id: property
+      type: System.String
+      description: The LDAP name of the property you want to get
+    return:
+      type: System.Byte[]
+      description: An array of bytes if possible, else null
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetPropertyAsBytes(searchResultEntry As SearchResultEntry, property As String) As Byte()
+  overload: SharpHoundCommonLib.Extensions.GetPropertyAsBytes*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetObjectIdentifier(System.DirectoryServices.Protocols.SearchResultEntry)
+  commentId: M:SharpHoundCommonLib.Extensions.GetObjectIdentifier(System.DirectoryServices.Protocols.SearchResultEntry)
+  id: GetObjectIdentifier(System.DirectoryServices.Protocols.SearchResultEntry)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetObjectIdentifier(SearchResultEntry)
+  nameWithType: Extensions.GetObjectIdentifier(SearchResultEntry)
+  fullName: SharpHoundCommonLib.Extensions.GetObjectIdentifier(System.DirectoryServices.Protocols.SearchResultEntry)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetObjectIdentifier
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 329
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nAttempts to get the unique object identifier as used by BloodHound for the Search Result Entry. Tries to get objectsid first, and then objectguid next.\n"
+  example: []
+  syntax:
+    content: public static string GetObjectIdentifier(this SearchResultEntry entry)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    return:
+      type: System.String
+      description: String representation of the entry&apos;s object identifier or null
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetObjectIdentifier(entry As SearchResultEntry) As String
+  overload: SharpHoundCommonLib.Extensions.GetObjectIdentifier*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.IsDeleted(System.DirectoryServices.Protocols.SearchResultEntry)
+  commentId: M:SharpHoundCommonLib.Extensions.IsDeleted(System.DirectoryServices.Protocols.SearchResultEntry)
+  id: IsDeleted(System.DirectoryServices.Protocols.SearchResultEntry)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: IsDeleted(SearchResultEntry)
+  nameWithType: Extensions.IsDeleted(SearchResultEntry)
+  fullName: SharpHoundCommonLib.Extensions.IsDeleted(System.DirectoryServices.Protocols.SearchResultEntry)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: IsDeleted
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 339
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nChecks the isDeleted LDAP property to determine if an entry has been deleted from the directory\n"
+  example: []
+  syntax:
+    content: public static bool IsDeleted(this SearchResultEntry entry)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    return:
+      type: System.Boolean
+      description: ''
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function IsDeleted(entry As SearchResultEntry) As Boolean
+  overload: SharpHoundCommonLib.Extensions.IsDeleted*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: SharpHoundCommonLib.Extensions.GetLabel(System.DirectoryServices.Protocols.SearchResultEntry)
+  commentId: M:SharpHoundCommonLib.Extensions.GetLabel(System.DirectoryServices.Protocols.SearchResultEntry)
+  id: GetLabel(System.DirectoryServices.Protocols.SearchResultEntry)
+  isExtensionMethod: true
+  parent: SharpHoundCommonLib.Extensions
+  langs:
+  - csharp
+  - vb
+  name: GetLabel(SearchResultEntry)
+  nameWithType: Extensions.GetLabel(SearchResultEntry)
+  fullName: SharpHoundCommonLib.Extensions.GetLabel(System.DirectoryServices.Protocols.SearchResultEntry)
+  type: Method
+  source:
+    remote:
+      path: src/CommonLib/Extensions.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: GetLabel
+    path: ../src/CommonLib/Extensions.cs
+    startLine: 351
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  summary: "\nExtension method to determine the BloodHound type of a SearchResultEntry using LDAP properties\nRequires ldap properties objectsid, samaccounttype, objectclass\n"
+  example: []
+  syntax:
+    content: public static Label GetLabel(this SearchResultEntry entry)
+    parameters:
+    - id: entry
+      type: System.DirectoryServices.Protocols.SearchResultEntry
+      description: ''
+    return:
+      type: SharpHoundCommonLib.Enums.Label
+      description: ''
+    content.vb: >-
+      <ExtensionAttribute>
+
+      Public Shared Function GetLabel(entry As SearchResultEntry) As Label
+  overload: SharpHoundCommonLib.Extensions.GetLabel*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: SharpHoundCommonLib
+  commentId: N:SharpHoundCommonLib
+  name: SharpHoundCommonLib
+  nameWithType: SharpHoundCommonLib
+  fullName: SharpHoundCommonLib
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SharpHoundCommonLib.Extensions.PrintEntry*
+  commentId: Overload:SharpHoundCommonLib.Extensions.PrintEntry
+  name: PrintEntry
+  nameWithType: Extensions.PrintEntry
+  fullName: SharpHoundCommonLib.Extensions.PrintEntry
+- uid: System.DirectoryServices.Protocols.SearchResultEntry
+  commentId: T:System.DirectoryServices.Protocols.SearchResultEntry
+  parent: System.DirectoryServices.Protocols
+  isExternal: true
+  name: SearchResultEntry
+  nameWithType: SearchResultEntry
+  fullName: System.DirectoryServices.Protocols.SearchResultEntry
+- uid: System.DirectoryServices.Protocols
+  commentId: N:System.DirectoryServices.Protocols
+  isExternal: true
+  name: System.DirectoryServices.Protocols
+  nameWithType: System.DirectoryServices.Protocols
+  fullName: System.DirectoryServices.Protocols
+- uid: SharpHoundCommonLib.Extensions.LdapValue*
+  commentId: Overload:SharpHoundCommonLib.Extensions.LdapValue
+  name: LdapValue
+  nameWithType: Extensions.LdapValue
+  fullName: SharpHoundCommonLib.Extensions.LdapValue
+- uid: System.Security.Principal.SecurityIdentifier
+  commentId: T:System.Security.Principal.SecurityIdentifier
+  parent: System.Security.Principal
+  isExternal: true
+  name: SecurityIdentifier
+  nameWithType: SecurityIdentifier
+  fullName: System.Security.Principal.SecurityIdentifier
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Security.Principal
+  commentId: N:System.Security.Principal
+  isExternal: true
+  name: System.Security.Principal
+  nameWithType: System.Security.Principal
+  fullName: System.Security.Principal
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: SharpHoundCommonLib.Extensions.GetSid*
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetSid
+  name: GetSid
+  nameWithType: Extensions.GetSid
+  fullName: SharpHoundCommonLib.Extensions.GetSid
+- uid: System.DirectoryServices.DirectoryEntry
+  commentId: T:System.DirectoryServices.DirectoryEntry
+  parent: System.DirectoryServices
+  isExternal: true
+  name: DirectoryEntry
+  nameWithType: DirectoryEntry
+  fullName: System.DirectoryServices.DirectoryEntry
+- uid: System.DirectoryServices
+  commentId: N:System.DirectoryServices
+  isExternal: true
+  name: System.DirectoryServices
+  nameWithType: System.DirectoryServices
+  fullName: System.DirectoryServices
+- uid: SharpHoundCommonLib.Extensions.ResolveBHProps*
+  commentId: Overload:SharpHoundCommonLib.Extensions.ResolveBHProps
+  name: ResolveBHProps
+  nameWithType: Extensions.ResolveBHProps
+  fullName: SharpHoundCommonLib.Extensions.ResolveBHProps
+- uid: System.Threading.Tasks.Task{SharpHoundCommonLib.ResolvedSearchResult}
+  commentId: T:System.Threading.Tasks.Task{SharpHoundCommonLib.ResolvedSearchResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  name: Task<ResolvedSearchResult>
+  nameWithType: Task<ResolvedSearchResult>
+  fullName: System.Threading.Tasks.Task<SharpHoundCommonLib.ResolvedSearchResult>
+  nameWithType.vb: Task(Of ResolvedSearchResult)
+  fullName.vb: System.Threading.Tasks.Task(Of SharpHoundCommonLib.ResolvedSearchResult)
+  name.vb: Task(Of ResolvedSearchResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    nameWithType: Task
+    fullName: System.Threading.Tasks.Task
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: SharpHoundCommonLib.ResolvedSearchResult
+    name: ResolvedSearchResult
+    nameWithType: ResolvedSearchResult
+    fullName: SharpHoundCommonLib.ResolvedSearchResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    nameWithType: Task
+    fullName: System.Threading.Tasks.Task
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: SharpHoundCommonLib.ResolvedSearchResult
+    name: ResolvedSearchResult
+    nameWithType: ResolvedSearchResult
+    fullName: SharpHoundCommonLib.ResolvedSearchResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    nameWithType: Task
+    fullName: System.Threading.Tasks.Task
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    nameWithType: Task
+    fullName: System.Threading.Tasks.Task
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+- uid: SharpHoundCommonLib.Extensions.GetProperty*
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetProperty
+  name: GetProperty
+  nameWithType: Extensions.GetProperty
+  fullName: SharpHoundCommonLib.Extensions.GetProperty
+- uid: SharpHoundCommonLib.Extensions.GetGuid*
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetGuid
+  name: GetGuid
+  nameWithType: Extensions.GetGuid
+  fullName: SharpHoundCommonLib.Extensions.GetGuid
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsArray*
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetPropertyAsArray
+  name: GetPropertyAsArray
+  nameWithType: Extensions.GetPropertyAsArray
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsArray
+- uid: System.String[]
+  isExternal: true
+  name: String[]
+  nameWithType: String[]
+  fullName: System.String[]
+  nameWithType.vb: String()
+  fullName.vb: System.String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes*
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes
+  name: GetPropertyAsArrayOfBytes
+  nameWithType: Extensions.GetPropertyAsArrayOfBytes
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes
+- uid: System.Byte[][]
+  isExternal: true
+  name: Byte[][]
+  nameWithType: Byte[][]
+  fullName: System.Byte[][]
+  nameWithType.vb: Byte()()
+  fullName.vb: System.Byte()()
+  name.vb: Byte()()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsBytes*
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetPropertyAsBytes
+  name: GetPropertyAsBytes
+  nameWithType: Extensions.GetPropertyAsBytes
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsBytes
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: SharpHoundCommonLib.Extensions.GetObjectIdentifier*
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetObjectIdentifier
+  name: GetObjectIdentifier
+  nameWithType: Extensions.GetObjectIdentifier
+  fullName: SharpHoundCommonLib.Extensions.GetObjectIdentifier
+- uid: SharpHoundCommonLib.Extensions.IsDeleted*
+  commentId: Overload:SharpHoundCommonLib.Extensions.IsDeleted
+  name: IsDeleted
+  nameWithType: Extensions.IsDeleted
+  fullName: SharpHoundCommonLib.Extensions.IsDeleted
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: SharpHoundCommonLib.Extensions.GetLabel*
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetLabel
+  name: GetLabel
+  nameWithType: Extensions.GetLabel
+  fullName: SharpHoundCommonLib.Extensions.GetLabel
+- uid: SharpHoundCommonLib.Enums.Label
+  commentId: T:SharpHoundCommonLib.Enums.Label
+  parent: SharpHoundCommonLib.Enums
+  name: Label
+  nameWithType: Label
+  fullName: SharpHoundCommonLib.Enums.Label
+- uid: SharpHoundCommonLib.Enums
+  commentId: N:SharpHoundCommonLib.Enums
+  name: SharpHoundCommonLib.Enums
+  nameWithType: SharpHoundCommonLib.Enums
+  fullName: SharpHoundCommonLib.Enums
