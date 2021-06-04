@@ -1,0 +1,574 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.NativeMethods.NERR
+  commentId: T:SharpHoundCommonLib.NativeMethods.NERR
+  id: NativeMethods.NERR
+  parent: SharpHoundCommonLib
+  children:
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_ACCESS_DENIED
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_BAD_NETPATH
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_EXTENDED_ERROR
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_HANDLE_STATE
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_LEVEL
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_PARAMETER
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_MORE_DATA
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_NETWORK_BUSY
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_NO_BROWSER_SERVERS_FOUND
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_NO_NETWORK
+  - SharpHoundCommonLib.NativeMethods.NERR.ERROR_NOT_ENOUGH_MEMORY
+  - SharpHoundCommonLib.NativeMethods.NERR.NERR_BASE
+  - SharpHoundCommonLib.NativeMethods.NERR.NERR_BufTooSmall
+  - SharpHoundCommonLib.NativeMethods.NERR.NERR_DuplicateShare
+  - SharpHoundCommonLib.NativeMethods.NERR.NERR_Success
+  - SharpHoundCommonLib.NativeMethods.NERR.NERR_UnknownDevDir
+  langs:
+  - csharp
+  - vb
+  name: NativeMethods.NERR
+  nameWithType: NativeMethods.NERR
+  fullName: SharpHoundCommonLib.NativeMethods.NERR
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: NERR
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 92
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: public enum NERR
+    content.vb: Public Enum NERR
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SharpHoundCommonLib.NativeMethods.NERR.NERR_Success
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.NERR_Success
+  id: NERR_Success
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: NERR_Success
+  nameWithType: NativeMethods.NERR.NERR_Success
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.NERR_Success
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: NERR_Success
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 94
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: NERR_Success = 0
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_MORE_DATA
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_MORE_DATA
+  id: ERROR_MORE_DATA
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_MORE_DATA
+  nameWithType: NativeMethods.NERR.ERROR_MORE_DATA
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_MORE_DATA
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_MORE_DATA
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 95
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_MORE_DATA = 234
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_NO_BROWSER_SERVERS_FOUND
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_NO_BROWSER_SERVERS_FOUND
+  id: ERROR_NO_BROWSER_SERVERS_FOUND
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_NO_BROWSER_SERVERS_FOUND
+  nameWithType: NativeMethods.NERR.ERROR_NO_BROWSER_SERVERS_FOUND
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_NO_BROWSER_SERVERS_FOUND
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_NO_BROWSER_SERVERS_FOUND
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 96
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_NO_BROWSER_SERVERS_FOUND = 6118
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_LEVEL
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_LEVEL
+  id: ERROR_INVALID_LEVEL
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_INVALID_LEVEL
+  nameWithType: NativeMethods.NERR.ERROR_INVALID_LEVEL
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_LEVEL
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_INVALID_LEVEL
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 97
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_INVALID_LEVEL = 124
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_ACCESS_DENIED
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_ACCESS_DENIED
+  id: ERROR_ACCESS_DENIED
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_ACCESS_DENIED
+  nameWithType: NativeMethods.NERR.ERROR_ACCESS_DENIED
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_ACCESS_DENIED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_ACCESS_DENIED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 98
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_ACCESS_DENIED = 5
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_PARAMETER
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_PARAMETER
+  id: ERROR_INVALID_PARAMETER
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_INVALID_PARAMETER
+  nameWithType: NativeMethods.NERR.ERROR_INVALID_PARAMETER
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_PARAMETER
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_INVALID_PARAMETER
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 99
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_INVALID_PARAMETER = 87
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_NOT_ENOUGH_MEMORY
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_NOT_ENOUGH_MEMORY
+  id: ERROR_NOT_ENOUGH_MEMORY
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_NOT_ENOUGH_MEMORY
+  nameWithType: NativeMethods.NERR.ERROR_NOT_ENOUGH_MEMORY
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_NOT_ENOUGH_MEMORY
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_NOT_ENOUGH_MEMORY
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 100
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_NOT_ENOUGH_MEMORY = 8
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_NETWORK_BUSY
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_NETWORK_BUSY
+  id: ERROR_NETWORK_BUSY
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_NETWORK_BUSY
+  nameWithType: NativeMethods.NERR.ERROR_NETWORK_BUSY
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_NETWORK_BUSY
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_NETWORK_BUSY
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 101
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_NETWORK_BUSY = 54
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_BAD_NETPATH
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_BAD_NETPATH
+  id: ERROR_BAD_NETPATH
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_BAD_NETPATH
+  nameWithType: NativeMethods.NERR.ERROR_BAD_NETPATH
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_BAD_NETPATH
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_BAD_NETPATH
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 102
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_BAD_NETPATH = 53
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_NO_NETWORK
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_NO_NETWORK
+  id: ERROR_NO_NETWORK
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_NO_NETWORK
+  nameWithType: NativeMethods.NERR.ERROR_NO_NETWORK
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_NO_NETWORK
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_NO_NETWORK
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 103
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_NO_NETWORK = 1222
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_HANDLE_STATE
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_HANDLE_STATE
+  id: ERROR_INVALID_HANDLE_STATE
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_INVALID_HANDLE_STATE
+  nameWithType: NativeMethods.NERR.ERROR_INVALID_HANDLE_STATE
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_INVALID_HANDLE_STATE
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_INVALID_HANDLE_STATE
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 104
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_INVALID_HANDLE_STATE = 1609
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.ERROR_EXTENDED_ERROR
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.ERROR_EXTENDED_ERROR
+  id: ERROR_EXTENDED_ERROR
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: ERROR_EXTENDED_ERROR
+  nameWithType: NativeMethods.NERR.ERROR_EXTENDED_ERROR
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.ERROR_EXTENDED_ERROR
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ERROR_EXTENDED_ERROR
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 105
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: ERROR_EXTENDED_ERROR = 1208
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.NERR_BASE
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.NERR_BASE
+  id: NERR_BASE
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: NERR_BASE
+  nameWithType: NativeMethods.NERR.NERR_BASE
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.NERR_BASE
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: NERR_BASE
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 106
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: NERR_BASE = 2100
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.NERR_UnknownDevDir
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.NERR_UnknownDevDir
+  id: NERR_UnknownDevDir
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: NERR_UnknownDevDir
+  nameWithType: NativeMethods.NERR.NERR_UnknownDevDir
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.NERR_UnknownDevDir
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: NERR_UnknownDevDir
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 107
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: NERR_UnknownDevDir = 2116
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.NERR_DuplicateShare
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.NERR_DuplicateShare
+  id: NERR_DuplicateShare
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: NERR_DuplicateShare
+  nameWithType: NativeMethods.NERR.NERR_DuplicateShare
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.NERR_DuplicateShare
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: NERR_DuplicateShare
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 108
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: NERR_DuplicateShare = 2118
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.NERR.NERR_BufTooSmall
+  commentId: F:SharpHoundCommonLib.NativeMethods.NERR.NERR_BufTooSmall
+  id: NERR_BufTooSmall
+  parent: SharpHoundCommonLib.NativeMethods.NERR
+  langs:
+  - csharp
+  - vb
+  name: NERR_BufTooSmall
+  nameWithType: NativeMethods.NERR.NERR_BufTooSmall
+  fullName: SharpHoundCommonLib.NativeMethods.NERR.NERR_BufTooSmall
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: NERR_BufTooSmall
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 109
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: NERR_BufTooSmall = 2123
+    return:
+      type: SharpHoundCommonLib.NativeMethods.NERR
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SharpHoundCommonLib
+  commentId: N:SharpHoundCommonLib
+  name: SharpHoundCommonLib
+  nameWithType: SharpHoundCommonLib
+  fullName: SharpHoundCommonLib
+- uid: SharpHoundCommonLib.NativeMethods.NERR
+  commentId: T:SharpHoundCommonLib.NativeMethods.NERR
+  parent: SharpHoundCommonLib
+  name: NativeMethods.NERR
+  nameWithType: NativeMethods.NERR
+  fullName: SharpHoundCommonLib.NativeMethods.NERR

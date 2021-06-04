@@ -1,0 +1,634 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  commentId: T:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  id: NativeMethods.DSGETDCNAME_FLAGS
+  parent: SharpHoundCommonLib
+  children:
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  - SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  langs:
+  - csharp
+  - vb
+  name: NativeMethods.DSGETDCNAME_FLAGS
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  type: Enum
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DSGETDCNAME_FLAGS
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 177
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum DSGETDCNAME_FLAGS : uint
+    content.vb: >-
+      <Flags>
+
+      Public Enum DSGETDCNAME_FLAGS As UInteger
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  id: DS_FORCE_REDISCOVERY
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_FORCE_REDISCOVERY
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_FORCE_REDISCOVERY
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 180
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_FORCE_REDISCOVERY = 1U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_FORCE_REDISCOVERY = 1UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  id: DS_DIRECTORY_SERVICE_REQUIRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_DIRECTORY_SERVICE_REQUIRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_DIRECTORY_SERVICE_REQUIRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 181
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_DIRECTORY_SERVICE_REQUIRED = 16U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_DIRECTORY_SERVICE_REQUIRED = 16UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  id: DS_DIRECTORY_SERVICE_PREFERRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_DIRECTORY_SERVICE_PREFERRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_DIRECTORY_SERVICE_PREFERRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 182
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_DIRECTORY_SERVICE_PREFERRED = 32U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_DIRECTORY_SERVICE_PREFERRED = 32UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  id: DS_GC_SERVER_REQUIRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_GC_SERVER_REQUIRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_GC_SERVER_REQUIRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 183
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_GC_SERVER_REQUIRED = 64U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_GC_SERVER_REQUIRED = 64UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  id: DS_PDC_REQUIRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_PDC_REQUIRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_PDC_REQUIRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 184
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_PDC_REQUIRED = 128U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_PDC_REQUIRED = 128UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  id: DS_BACKGROUND_ONLY
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_BACKGROUND_ONLY
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_BACKGROUND_ONLY
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 185
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_BACKGROUND_ONLY = 256U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_BACKGROUND_ONLY = 256UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  id: DS_IP_REQUIRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_IP_REQUIRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_IP_REQUIRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 186
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_IP_REQUIRED = 512U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_IP_REQUIRED = 512UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  id: DS_KDC_REQUIRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_KDC_REQUIRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_KDC_REQUIRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 187
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_KDC_REQUIRED = 1024U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_KDC_REQUIRED = 1024UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  id: DS_TIMESERV_REQUIRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_TIMESERV_REQUIRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_TIMESERV_REQUIRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 188
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_TIMESERV_REQUIRED = 2048U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_TIMESERV_REQUIRED = 2048UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  id: DS_WRITABLE_REQUIRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_WRITABLE_REQUIRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_WRITABLE_REQUIRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 189
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_WRITABLE_REQUIRED = 4096U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_WRITABLE_REQUIRED = 4096UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  id: DS_GOOD_TIMESERV_PREFERRED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_GOOD_TIMESERV_PREFERRED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_GOOD_TIMESERV_PREFERRED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 190
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_GOOD_TIMESERV_PREFERRED = 8192U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_GOOD_TIMESERV_PREFERRED = 8192UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  id: DS_AVOID_SELF
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_AVOID_SELF
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_AVOID_SELF
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_AVOID_SELF
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 191
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_AVOID_SELF = 16384U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_AVOID_SELF = 16384UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  id: DS_ONLY_LDAP_NEEDED
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_ONLY_LDAP_NEEDED
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_ONLY_LDAP_NEEDED
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 192
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_ONLY_LDAP_NEEDED = 32768U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_ONLY_LDAP_NEEDED = 32768UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  id: DS_IS_FLAT_NAME
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_IS_FLAT_NAME
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_IS_FLAT_NAME
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 193
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_IS_FLAT_NAME = 65536U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_IS_FLAT_NAME = 65536UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  id: DS_IS_DNS_NAME
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_IS_DNS_NAME
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_IS_DNS_NAME
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 194
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_IS_DNS_NAME = 131072U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_IS_DNS_NAME = 131072UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  id: DS_RETURN_DNS_NAME
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_RETURN_DNS_NAME
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_RETURN_DNS_NAME
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 195
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_RETURN_DNS_NAME = 1073741824U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_RETURN_DNS_NAME = 1073741824UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  commentId: F:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  id: DS_RETURN_FLAT_NAME
+  parent: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  langs:
+  - csharp
+  - vb
+  name: DS_RETURN_FLAT_NAME
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
+  type: Field
+  source:
+    remote:
+      path: src/CommonLib/NativeMethods.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: DS_RETURN_FLAT_NAME
+    path: ../src/CommonLib/NativeMethods.cs
+    startLine: 196
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib
+  syntax:
+    content: DS_RETURN_FLAT_NAME = 2147483648U
+    return:
+      type: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+    content.vb: DS_RETURN_FLAT_NAME = 2147483648UI
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: SharpHoundCommonLib
+  commentId: N:SharpHoundCommonLib
+  name: SharpHoundCommonLib
+  nameWithType: SharpHoundCommonLib
+  fullName: SharpHoundCommonLib
+- uid: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  commentId: T:SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS
+  parent: SharpHoundCommonLib
+  name: NativeMethods.DSGETDCNAME_FLAGS
+  nameWithType: NativeMethods.DSGETDCNAME_FLAGS
+  fullName: SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS

@@ -1,0 +1,485 @@
+### YamlMime:ManagedReference
+items:
+- uid: SharpHoundCommonLib.OutputTypes.SPNTarget
+  commentId: T:SharpHoundCommonLib.OutputTypes.SPNTarget
+  id: SPNTarget
+  parent: SharpHoundCommonLib.OutputTypes
+  children:
+  - SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
+  - SharpHoundCommonLib.OutputTypes.SPNTarget.Port
+  - SharpHoundCommonLib.OutputTypes.SPNTarget.Service
+  langs:
+  - csharp
+  - vb
+  name: SPNTarget
+  nameWithType: SPNTarget
+  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget
+  type: Class
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/SPNTarget.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: SPNTarget
+    path: ../src/CommonLib/OutputTypes/SPNTarget.cs
+    startLine: 5
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public class SPNTarget
+    content.vb: Public Class SPNTarget
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
+  commentId: P:SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
+  id: ComputerSID
+  parent: SharpHoundCommonLib.OutputTypes.SPNTarget
+  langs:
+  - csharp
+  - vb
+  name: ComputerSID
+  nameWithType: SPNTarget.ComputerSID
+  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/SPNTarget.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: ComputerSID
+    path: ../src/CommonLib/OutputTypes/SPNTarget.cs
+    startLine: 7
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public string ComputerSID { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ComputerSID As String
+  overload: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.Port
+  commentId: P:SharpHoundCommonLib.OutputTypes.SPNTarget.Port
+  id: Port
+  parent: SharpHoundCommonLib.OutputTypes.SPNTarget
+  langs:
+  - csharp
+  - vb
+  name: Port
+  nameWithType: SPNTarget.Port
+  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.Port
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/SPNTarget.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Port
+    path: ../src/CommonLib/OutputTypes/SPNTarget.cs
+    startLine: 8
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public int Port { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Port As Integer
+  overload: SharpHoundCommonLib.OutputTypes.SPNTarget.Port*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.Service
+  commentId: P:SharpHoundCommonLib.OutputTypes.SPNTarget.Service
+  id: Service
+  parent: SharpHoundCommonLib.OutputTypes.SPNTarget
+  langs:
+  - csharp
+  - vb
+  name: Service
+  nameWithType: SPNTarget.Service
+  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.Service
+  type: Property
+  source:
+    remote:
+      path: src/CommonLib/OutputTypes/SPNTarget.cs
+      branch: master
+      repo: https://github.com/BloodHoundAD/SharpHoundCommon.git
+    id: Service
+    path: ../src/CommonLib/OutputTypes/SPNTarget.cs
+    startLine: 9
+  assemblies:
+  - SharpHoundCommonLib
+  namespace: SharpHoundCommonLib.OutputTypes
+  syntax:
+    content: public SPNService Service { get; set; }
+    parameters: []
+    return:
+      type: SharpHoundCommonLib.OutputTypes.SPNService
+    content.vb: Public Property Service As SPNService
+  overload: SharpHoundCommonLib.OutputTypes.SPNTarget.Service*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: SharpHoundCommonLib.OutputTypes
+  commentId: N:SharpHoundCommonLib.OutputTypes
+  name: SharpHoundCommonLib.OutputTypes
+  nameWithType: SharpHoundCommonLib.OutputTypes
+  fullName: SharpHoundCommonLib.OutputTypes
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
+  name: ComputerSID
+  nameWithType: SPNTarget.ComputerSID
+  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.Port*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNTarget.Port
+  name: Port
+  nameWithType: SPNTarget.Port
+  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.Port
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.Service*
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNTarget.Service
+  name: Service
+  nameWithType: SPNTarget.Service
+  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.Service
+- uid: SharpHoundCommonLib.OutputTypes.SPNService
+  commentId: T:SharpHoundCommonLib.OutputTypes.SPNService
+  parent: SharpHoundCommonLib.OutputTypes
+  name: SPNService
+  nameWithType: SPNService
+  fullName: SharpHoundCommonLib.OutputTypes.SPNService
