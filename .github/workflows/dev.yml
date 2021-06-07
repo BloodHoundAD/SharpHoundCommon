@@ -40,7 +40,7 @@ jobs:
       - name: install Report Generator
         run: "& dotnet tool install -g dotnet-reportgenerator-globaltool"
       - name: install nuget command line
-        run: "& choco install nuget.commandline --version=5.4.0 -y"
+        run: "& choco install nuget.commandline -y"
       # Run a build
       - name: Build docs
         run: "& ./tools/scripts/doc-build.ps1"
