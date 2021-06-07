@@ -37,7 +37,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         internal static void BuildGUIDCache()
         {
-            var forest = LDAPUtils.GetForest();
+            var forest = LDAPUtils.Instance.GetForest();
             if (forest == null)
             {
                 Logging.Log(LogLevel.Error, "Unable to resolve forest for GUID cache");
@@ -46,7 +46,7 @@ namespace SharpHoundCommonLib.Processors
                 
 
             var schema = forest.Schema.Name;
-            foreach (var entry in LDAPUtils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
+            foreach (var entry in LDAPUtils.Instance.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
                 new[] {"schemaidguid", "name"}, adsPath: schema))
             {
                 var name = entry.GetProperty("name")?.ToLower();
@@ -87,6 +87,8 @@ namespace SharpHoundCommonLib.Processors
                 yield break;
             }
 
+            var utils = LDAPUtils.Instance;
+
             var descriptor = new ActiveDirectorySecurity();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
 
@@ -94,7 +96,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (ownerSid != null)
             {
-                var resolvedOwner = LDAPUtils.ResolveIDAndType(ownerSid, objectDomain);
+                var resolvedOwner = LDAPUtils.Instance.ResolveIDAndType(ownerSid, objectDomain);
                 if (resolvedOwner != null)
                     yield return new ACE
                     {
@@ -139,7 +141,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                var resolvedPrincipal = LDAPUtils.ResolveIDAndType(principalSid, objectDomain);
+                var resolvedPrincipal = utils.ResolveIDAndType(principalSid, objectDomain);
 
                 var aceRights = ace.ActiveDirectoryRights;
                 //Lowercase this just in case. As far as I know it should always come back that way anyways, but better safe than sorry
@@ -329,7 +331,7 @@ namespace SharpHoundCommonLib.Processors
                 if (principalSid == null)
                     continue;
                 
-                var resolvedPrincipal = LDAPUtils.ResolveIDAndType(principalSid, objectDomain);
+                var resolvedPrincipal = LDAPUtils.Instance.ResolveIDAndType(principalSid, objectDomain);
                 
                 yield return new ACE
                 {

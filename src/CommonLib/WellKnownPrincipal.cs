@@ -235,7 +235,7 @@ namespace SharpHoundCommonLib
             {
                 if (sid == "S-1-5-9")
                 {
-                    var forest = LDAPUtils.GetForest(domain)?.Name;
+                    var forest = LDAPUtils.Instance.GetForest(domain)?.Name;
                     if (forest == null)
                     {
                         Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");

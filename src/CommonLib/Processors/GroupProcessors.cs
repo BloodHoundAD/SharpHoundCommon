@@ -18,12 +18,13 @@ namespace SharpHoundCommonLib.Processors
             // If our returned array has a length of 0, one of two things is happening
             // The first possibility we'll look at is we need to use ranged retrieval, because AD will not return
             // more than a certain number of items. If we get nothing back from this, then the group is empty
+            var utils = LDAPUtils.Instance;
             if (members.Length == 0)
             {
                 Logging.Trace($"Member property for {distinguishedName} is empty, trying range retrieval");
-                foreach (var member in LDAPUtils.DoRangedRetrieval(distinguishedName, "member"))
+                foreach (var member in utils.DoRangedRetrieval(distinguishedName, "member"))
                 {
-                    var res = LDAPUtils.ResolveDistinguishedName(member);
+                    var res = utils.ResolveDistinguishedName(member);
 
                     if (res == null)
                         yield return new TypedPrincipal
@@ -40,7 +41,7 @@ namespace SharpHoundCommonLib.Processors
                 //If we're here, we just read the data directly and life is good
                 foreach (var member in members)
                 {
-                    var res = LDAPUtils.ResolveDistinguishedName(member);
+                    var res = utils.ResolveDistinguishedName(member);
 
                     if (res == null)
                         yield return new TypedPrincipal

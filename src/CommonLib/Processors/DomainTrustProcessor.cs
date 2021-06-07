@@ -17,7 +17,7 @@ namespace SharpHoundCommonLib.Processors
         public static IEnumerable<DomainTrust> EnumerateDomainTrusts(string domain)
         {
             var query = CommonFilters.TrustedDomains;
-            foreach (var result in LDAPUtils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps, domain))
+            foreach (var result in LDAPUtils.Instance.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps, domain))
             {
                 var trust = new DomainTrust();
                 var targetSidBytes = result.GetPropertyAsBytes("securityIdentifier");

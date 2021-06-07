@@ -14,7 +14,7 @@ namespace SharpHoundCommonLib.Processors
         private readonly string _computerSAN;
         private readonly string _computerSID;
         private readonly string _computerName;
-        
+
         private IntPtr _serverHandle;
         private IntPtr _domainHandle;
         private readonly NativeMethods.OBJECT_ATTRIBUTES _obj;
@@ -97,6 +97,8 @@ namespace SharpHoundCommonLib.Processors
             Logging.Trace($"SamGetMembersInAlias returned {status} for RID {groupRid} on {_computerName}");
             SamCloseHandle(aliasHandle);
 
+            var utils = LDAPUtils.Instance;
+
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
                 SamFreeMemory(members);
@@ -146,7 +148,7 @@ namespace SharpHoundCommonLib.Processors
                     return null;
                 }
 
-                var res = LDAPUtils.ResolveIDAndType(x, LDAPUtils.GetDomainNameFromSid(x));
+                var res = utils.ResolveIDAndType(x, utils.GetDomainNameFromSid(x));
 
                 return res;
             }).Where(x => x != null);
