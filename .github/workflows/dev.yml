@@ -1,36 +1,76 @@
-# This is a basic workflow to help you get started with Actions
+name: .NET
 
-name: CI
-
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    runs-on: windows-latest
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Pack
+      run: dotnet pack --no-restore -c Release --output .
+    - name: Publish NuGet
+      uses: rohith/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: src/CommonLib/SharpHoundCommonLib.csproj
+        PACKAGE_NAME: SharpHoundCommon
+        NUGET_KEY: ${{secrets.NUGET_TOKEN}}
+  docs:
+    name: docs
+    runs-on: windows-latest
+    steps:
+      # Check out the branch that triggered this workflow to the 'source' subdirectory
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          ref: dev
+          path: source
+      - name: install DocFX
+        run: "& choco install docfx -y"
+      - name: install Report Generator
+        run: "& dotnet tool install -g dotnet-reportgenerator-globaltool"
+      - name: install nuget command line
+        run: "& choco install nuget.commandline --version=5.4.0 -y"
+      # Run a build
+      - name: Build docs
+        run: "& ./tools/scripts/doc-build.ps1"
+        working-directory: ./source
+      # Check out gh-pages branch to the 'docs' subdirectory
+      - name: Checkout docs
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: docs
+      # Sync the site
+      - name: Clear docs repo
+        run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
+        working-directory: ./docs
+      - name: Sync new content
+        run: Copy-Item -Recurse -Verbose -Force "$env:GITHUB_WORKSPACE/source/_site/*" "$env:GITHUB_WORKSPACE/docs"
+        working-directory: ./docs
+        # update docs
+      - name: Commit to gh-pages and push
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          $ErrorActionPreference = "Continue"
+          git add -A
+          git diff HEAD --exit-code
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "No changes to commit!"
+          } else {
+            git config --global user.name "github-actions-docfx[bot]"
+            git config --global user.email "weihanli@outlook.com"
+            git commit -m "Updated docs from commit $env:GITHUB_SHA on $env:GITHUB_REF"
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+            git push origin gh-pages
+          }
+        working-directory: ./docs
