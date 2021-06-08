@@ -43,7 +43,7 @@ jobs:
         run: "& choco install nuget.commandline -y"
       # Run a build
       - name: Build docs
-        run: pwsh -command "source/tools/scripts/doc-build.ps1"
+        run: "$env:GITHUB_WORKSPACE/source/tools/scripts/doc-build.ps1"
       # Sync the site
       - name: Clear docs repo
         run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
