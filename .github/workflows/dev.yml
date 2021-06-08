@@ -32,6 +32,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Install DocFX
         run: "& choco install docfx -y"
+      - name: Clear ./docs
+        working-directory: ./docs
+        run: DEL /S /Q *.TMP
       - name: Run DocFX
         run: docfx docfx.json
         # update docs
