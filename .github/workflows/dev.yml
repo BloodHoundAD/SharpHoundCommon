@@ -36,7 +36,7 @@ jobs:
         working-directory: ./docs
         run: Get-ChildItem -Path C:\Temp -Include *.* -File -Recurse | foreach { $_.Delete()}
       - name: Run DocFX
-        run: docfx docfx_project\docfx.json
+        run: docfx build docfx.json
         # update docs
       - name: Commit to master and push
         run: |
