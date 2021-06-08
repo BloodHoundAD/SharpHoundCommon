@@ -4,6 +4,42 @@
   "xrefmap": "xrefmap.yml",
   "files": [
     {
+      "type": "Conceptual",
+      "source_relative_path": "CHANGELOG.md",
+      "output": {
+        ".html": {
+          "relative_path": "CHANGELOG.html",
+          "hash": "pPhhVmYf8iVnQMDF/c6zGB8hFspUP81F/A4NPAgFjrY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "QUICKSTART.md",
+      "output": {
+        ".html": {
+          "relative_path": "QUICKSTART.html",
+          "hash": "Z8yN2TV+XUzeHHNcRrOMfD/MMxfvRsLhnFytCHnLRz4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html",
+          "hash": "w7f1xvLJeC9b2ks30Y5OlxOyrjv+VzZlp23CfG9P424="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "ManagedReference",
       "source_relative_path": "build/api/CommonLib.Cache.yml",
       "output": {
@@ -626,81 +662,6 @@
       },
       "is_incremental": false,
       "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "docfx_project/articles/CHANGELOG.md",
-      "output": {
-        ".html": {
-          "relative_path": "docfx_project/articles/CHANGELOG.html",
-          "hash": "Z2hQ8R5nq0DGXTa5KVBtbwJcj+XY73iB7LHwC8Ql4QI="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "docfx_project/articles/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "docfx_project/articles/README.html",
-          "hash": "MslTntl4wey5YHPw7nGXxd+GUp1bVJm1MTK0/tP5OHE="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "docfx_project/articles/TESTING.md",
-      "output": {
-        ".html": {
-          "relative_path": "docfx_project/articles/TESTING.html",
-          "hash": "jo3ILY/KevRl9fx+W8XLb6fS8qo2ffqE6wfER1QN5zg="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "docfx_project/articles/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "docfx_project/articles/toc.html",
-          "hash": "dlRC6tFvKRI9lXcghwt5w/Sza4sbXqEQIp+ZrSSumHY="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "docfx_project/index.md",
-      "output": {
-        ".html": {
-          "relative_path": "docfx_project/index.html",
-          "hash": "sA/QObCpRmHBt+4dFBhYg9t3EtxVlYtd1uIcamoqC5M="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
-      "type": "Toc",
-      "source_relative_path": "docfx_project/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "docfx_project/toc.html",
-          "hash": "5Becn9Q8V3OZowYYrrxu3JFbFUArc47WF80OLiIwsG0="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
     }
   ],
   "incremental_info": [
@@ -717,7 +678,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 4,
+          "total_file_count": 3,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
