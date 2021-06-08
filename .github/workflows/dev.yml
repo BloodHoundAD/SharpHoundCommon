@@ -36,13 +36,6 @@ jobs:
         run: "& choco install docfx -y"
       - name: Run DocFX
         run: docfx docfx.json
-      # Sync the site
-      - name: Clear docs repo
-        run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
-        working-directory: ./docs
-      - name: Sync new content
-        run: Copy-Item -Recurse -Verbose -Force "$env:GITHUB_WORKSPACE/source/docs/*" "$env:GITHUB_WORKSPACE/docs"
-        working-directory: ./docs
         # update docs
       - name: Commit to master and push
         run: |
@@ -53,7 +46,7 @@ jobs:
             Write-Host "No changes to commit!"
           } else {
             git config --global user.name "github-actions-docfx[bot]"
-            git config --global user.email "weihanli@outlook.com"
+            git config --global user.email "ari@thirteendelta.com"
             git commit -m "Updated docs from commit $env:GITHUB_SHA on $env:GITHUB_REF"
             git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
             git push origin master
