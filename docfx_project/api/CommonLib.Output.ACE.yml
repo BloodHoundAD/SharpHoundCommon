@@ -22,7 +22,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ACE
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 6
@@ -62,7 +62,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: PrincipalSID
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 8
@@ -97,7 +97,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: PrincipalType
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 9
@@ -132,7 +132,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: RightName
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 10
@@ -167,7 +167,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AceType
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 11
@@ -202,7 +202,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: IsInherited
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 12
@@ -237,7 +237,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ToString
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 14

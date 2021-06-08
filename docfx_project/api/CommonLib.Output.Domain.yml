@@ -19,7 +19,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Domain.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Domain
     path: ../src/CommonLib/OutputTypes/Domain.cs
     startLine: 2
@@ -67,7 +67,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Domain.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ChildObjects
     path: ../src/CommonLib/OutputTypes/Domain.cs
     startLine: 4
@@ -102,7 +102,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Domain.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Trusts
     path: ../src/CommonLib/OutputTypes/Domain.cs
     startLine: 5
@@ -137,7 +137,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Domain.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GPLinks
     path: ../src/CommonLib/OutputTypes/Domain.cs
     startLine: 6

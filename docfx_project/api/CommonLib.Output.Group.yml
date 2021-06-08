@@ -17,7 +17,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Group.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Group
     path: ../src/CommonLib/OutputTypes/Group.cs
     startLine: 2
@@ -65,7 +65,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Group.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Members
     path: ../src/CommonLib/OutputTypes/Group.cs
     startLine: 4

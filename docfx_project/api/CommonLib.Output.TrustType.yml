@@ -21,7 +21,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: TrustType
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 20
@@ -52,7 +52,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ParentChild
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 22
@@ -84,7 +84,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: CrossLink
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 23
@@ -116,7 +116,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Forest
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 24
@@ -148,7 +148,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: External
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 25
@@ -180,7 +180,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Unknown
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 26

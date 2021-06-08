@@ -25,7 +25,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Computer
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 7
@@ -75,7 +75,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: PrimaryGroupSID
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 9
@@ -110,7 +110,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AllowedToDelegate
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 10
@@ -145,7 +145,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AllowedToAct
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 11
@@ -180,7 +180,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Sessions
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 12
@@ -215,7 +215,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Admins
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 13
@@ -250,7 +250,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: RemoteDesktopUsers
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 14
@@ -285,7 +285,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DcomUsers
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 15
@@ -320,7 +320,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: PSRemoteUsers
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 16
@@ -355,7 +355,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Status
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 17

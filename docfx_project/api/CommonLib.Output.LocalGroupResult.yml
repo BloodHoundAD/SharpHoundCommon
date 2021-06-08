@@ -16,7 +16,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LocalGroupResult
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 26

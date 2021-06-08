@@ -27,7 +27,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LDAPUtils
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 18
@@ -68,7 +68,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: UpdateLDAPConfig
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 47
@@ -103,7 +103,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Instance
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 52
@@ -140,7 +140,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ResolveIDAndType
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 64
@@ -179,7 +179,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LookupSidType
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 85
@@ -218,7 +218,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LookupGuidType
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 103
@@ -257,7 +257,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GetDomainNameFromSid
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 121
@@ -294,7 +294,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DoRangedRetrieval
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 189
@@ -338,7 +338,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ResolveHostToSid
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 269
@@ -382,7 +382,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ResolveAccountName
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 506
@@ -426,7 +426,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ResolveDistinguishedName
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 549
@@ -467,7 +467,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: QueryLDAP
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 603

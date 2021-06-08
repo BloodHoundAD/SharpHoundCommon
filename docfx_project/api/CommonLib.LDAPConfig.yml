@@ -23,7 +23,7 @@ items:
     remote:
       path: src/CommonLib/LDAPConfig.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LDAPConfig
     path: ../src/CommonLib/LDAPConfig.cs
     startLine: 2
@@ -64,7 +64,7 @@ items:
     remote:
       path: src/CommonLib/LDAPConfig.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Username
     path: ../src/CommonLib/LDAPConfig.cs
     startLine: 4
@@ -99,7 +99,7 @@ items:
     remote:
       path: src/CommonLib/LDAPConfig.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Password
     path: ../src/CommonLib/LDAPConfig.cs
     startLine: 5
@@ -134,7 +134,7 @@ items:
     remote:
       path: src/CommonLib/LDAPConfig.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Server
     path: ../src/CommonLib/LDAPConfig.cs
     startLine: 6
@@ -169,7 +169,7 @@ items:
     remote:
       path: src/CommonLib/LDAPConfig.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Port
     path: ../src/CommonLib/LDAPConfig.cs
     startLine: 7
@@ -204,7 +204,7 @@ items:
     remote:
       path: src/CommonLib/LDAPConfig.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SSL
     path: ../src/CommonLib/LDAPConfig.cs
     startLine: 8
@@ -239,7 +239,7 @@ items:
     remote:
       path: src/CommonLib/LDAPConfig.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DisableSigning
     path: ../src/CommonLib/LDAPConfig.cs
     startLine: 9
@@ -274,7 +274,7 @@ items:
     remote:
       path: src/CommonLib/LDAPConfig.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GetPort
     path: ../src/CommonLib/LDAPConfig.cs
     startLine: 11

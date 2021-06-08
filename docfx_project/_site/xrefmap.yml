@@ -3,58 +3,58 @@ sorted: true
 references:
 - uid: CommonLib
   name: CommonLib
-  href: api/CommonLib.yml
+  href: api/CommonLib.html
   commentId: N:CommonLib
   fullName: CommonLib
   nameWithType: CommonLib
 - uid: CommonLib.Cache
   name: Cache
-  href: api/CommonLib.Cache.yml
+  href: api/CommonLib.Cache.html
   commentId: T:CommonLib.Cache
   fullName: CommonLib.Cache
   nameWithType: Cache
 - uid: CommonLib.Cache.CreateNewCache
   name: CreateNewCache()
-  href: api/CommonLib.Cache.yml
+  href: api/CommonLib.Cache.html#CommonLib_Cache_CreateNewCache
   commentId: M:CommonLib.Cache.CreateNewCache
   fullName: CommonLib.Cache.CreateNewCache()
   nameWithType: Cache.CreateNewCache()
 - uid: CommonLib.Cache.CreateNewCache*
   name: CreateNewCache
-  href: api/CommonLib.Cache.yml
+  href: api/CommonLib.Cache.html#CommonLib_Cache_CreateNewCache_
   commentId: Overload:CommonLib.Cache.CreateNewCache
   isSpec: "True"
   fullName: CommonLib.Cache.CreateNewCache
   nameWithType: Cache.CreateNewCache
 - uid: CommonLib.Cache.LoadExistingCache(System.String)
   name: LoadExistingCache(String)
-  href: api/CommonLib.Cache.yml
+  href: api/CommonLib.Cache.html#CommonLib_Cache_LoadExistingCache_System_String_
   commentId: M:CommonLib.Cache.LoadExistingCache(System.String)
   fullName: CommonLib.Cache.LoadExistingCache(System.String)
   nameWithType: Cache.LoadExistingCache(String)
 - uid: CommonLib.Cache.LoadExistingCache*
   name: LoadExistingCache
-  href: api/CommonLib.Cache.yml
+  href: api/CommonLib.Cache.html#CommonLib_Cache_LoadExistingCache_
   commentId: Overload:CommonLib.Cache.LoadExistingCache
   isSpec: "True"
   fullName: CommonLib.Cache.LoadExistingCache
   nameWithType: Cache.LoadExistingCache
 - uid: CommonLib.Cache.SaveCache(System.String)
   name: SaveCache(String)
-  href: api/CommonLib.Cache.yml
+  href: api/CommonLib.Cache.html#CommonLib_Cache_SaveCache_System_String_
   commentId: M:CommonLib.Cache.SaveCache(System.String)
   fullName: CommonLib.Cache.SaveCache(System.String)
   nameWithType: Cache.SaveCache(String)
 - uid: CommonLib.Cache.SaveCache*
   name: SaveCache
-  href: api/CommonLib.Cache.yml
+  href: api/CommonLib.Cache.html#CommonLib_Cache_SaveCache_
   commentId: Overload:CommonLib.Cache.SaveCache
   isSpec: "True"
   fullName: CommonLib.Cache.SaveCache
   nameWithType: Cache.SaveCache
 - uid: CommonLib.CliBaseClient`1
   name: CliBaseClient<CollectionMethodResolved>
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html
   commentId: T:CommonLib.CliBaseClient`1
   name.vb: CliBaseClient(Of CollectionMethodResolved)
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>
@@ -63,7 +63,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved)
 - uid: CommonLib.CliBaseClient`1.#ctor(CommonLib.ICliConsoleFacade)
   name: CliBaseClient(ICliConsoleFacade)
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1__ctor_CommonLib_ICliConsoleFacade_
   commentId: M:CommonLib.CliBaseClient`1.#ctor(CommonLib.ICliConsoleFacade)
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.CliBaseClient(CommonLib.ICliConsoleFacade)
   fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).CliBaseClient(CommonLib.ICliConsoleFacade)
@@ -71,7 +71,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).CliBaseClient(ICliConsoleFacade)
 - uid: CommonLib.CliBaseClient`1.#ctor*
   name: CliBaseClient
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1__ctor_
   commentId: Overload:CommonLib.CliBaseClient`1.#ctor
   isSpec: "True"
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.CliBaseClient
@@ -80,7 +80,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).CliBaseClient
 - uid: CommonLib.CliBaseClient`1.CheckCancellation
   name: CheckCancellation()
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_CheckCancellation
   commentId: M:CommonLib.CliBaseClient`1.CheckCancellation
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.CheckCancellation()
   fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).CheckCancellation()
@@ -88,7 +88,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).CheckCancellation()
 - uid: CommonLib.CliBaseClient`1.CheckCancellation*
   name: CheckCancellation
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_CheckCancellation_
   commentId: Overload:CommonLib.CliBaseClient`1.CheckCancellation
   isSpec: "True"
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.CheckCancellation
@@ -97,7 +97,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).CheckCancellation
 - uid: CommonLib.CliBaseClient`1.Init(CommonLib.Options{`0})
   name: Init(Options<CollectionMethodResolved>)
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_Init_CommonLib_Options__0__
   commentId: M:CommonLib.CliBaseClient`1.Init(CommonLib.Options{`0})
   name.vb: Init(Options(Of CollectionMethodResolved))
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.Init(CommonLib.Options<CollectionMethodResolved>)
@@ -106,7 +106,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).Init(Options(Of CollectionMethodResolved))
 - uid: CommonLib.CliBaseClient`1.Init*
   name: Init
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_Init_
   commentId: Overload:CommonLib.CliBaseClient`1.Init
   isSpec: "True"
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.Init
@@ -115,7 +115,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).Init
 - uid: CommonLib.CliBaseClient`1.LDAPConnectionTest
   name: LDAPConnectionTest()
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_LDAPConnectionTest
   commentId: M:CommonLib.CliBaseClient`1.LDAPConnectionTest
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.LDAPConnectionTest()
   fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).LDAPConnectionTest()
@@ -123,7 +123,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).LDAPConnectionTest()
 - uid: CommonLib.CliBaseClient`1.LDAPConnectionTest*
   name: LDAPConnectionTest
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_LDAPConnectionTest_
   commentId: Overload:CommonLib.CliBaseClient`1.LDAPConnectionTest
   isSpec: "True"
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.LDAPConnectionTest
@@ -132,7 +132,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).LDAPConnectionTest
 - uid: CommonLib.CliBaseClient`1.MainLoop
   name: MainLoop()
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_MainLoop
   commentId: M:CommonLib.CliBaseClient`1.MainLoop
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.MainLoop()
   fullName.vb: CommonLib.CliBaseClient(Of CollectionMethodResolved).MainLoop()
@@ -140,7 +140,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).MainLoop()
 - uid: CommonLib.CliBaseClient`1.MainLoop*
   name: MainLoop
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_MainLoop_
   commentId: Overload:CommonLib.CliBaseClient`1.MainLoop
   isSpec: "True"
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.MainLoop
@@ -149,7 +149,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).MainLoop
 - uid: CommonLib.CliBaseClient`1.Start*
   name: Start
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_Start_
   commentId: Overload:CommonLib.CliBaseClient`1.Start
   isSpec: "True"
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.Start
@@ -158,7 +158,7 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).Start
 - uid: CommonLib.CliBaseClient`1.Start``1(CommonLib.Options{``0})
   name: Start<T>(Options<T>)
-  href: api/CommonLib.CliBaseClient-1.yml
+  href: api/CommonLib.CliBaseClient-1.html#CommonLib_CliBaseClient_1_Start__1_CommonLib_Options___0__
   commentId: M:CommonLib.CliBaseClient`1.Start``1(CommonLib.Options{``0})
   name.vb: Start(Of T)(Options(Of T))
   fullName: CommonLib.CliBaseClient<CollectionMethodResolved>.Start<T>(CommonLib.Options<T>)
@@ -167,466 +167,466 @@ references:
   nameWithType.vb: CliBaseClient(Of CollectionMethodResolved).Start(Of T)(Options(Of T))
 - uid: CommonLib.CommonLib
   name: CommonLib
-  href: api/CommonLib.CommonLib.yml
+  href: api/CommonLib.CommonLib.html
   commentId: T:CommonLib.CommonLib
   fullName: CommonLib.CommonLib
   nameWithType: CommonLib
-- uid: CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,Microsoft.Extensions.Logging.ILogger,System.String)
+- uid: CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,ILogger,System.String)
   name: InitializeCommonLib(LDAPConfig, ILogger, String)
-  href: api/CommonLib.CommonLib.yml
-  commentId: M:CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,Microsoft.Extensions.Logging.ILogger,System.String)
-  fullName: CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig, Microsoft.Extensions.Logging.ILogger, System.String)
+  href: api/CommonLib.CommonLib.html#CommonLib_CommonLib_InitializeCommonLib_CommonLib_LDAPConfig_ILogger_System_String_
+  commentId: M:CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,ILogger,System.String)
+  fullName: CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig, ILogger, System.String)
   nameWithType: CommonLib.InitializeCommonLib(LDAPConfig, ILogger, String)
 - uid: CommonLib.CommonLib.InitializeCommonLib*
   name: InitializeCommonLib
-  href: api/CommonLib.CommonLib.yml
+  href: api/CommonLib.CommonLib.html#CommonLib_CommonLib_InitializeCommonLib_
   commentId: Overload:CommonLib.CommonLib.InitializeCommonLib
   isSpec: "True"
   fullName: CommonLib.CommonLib.InitializeCommonLib
   nameWithType: CommonLib.InitializeCommonLib
 - uid: CommonLib.Enums
   name: CommonLib.Enums
-  href: api/CommonLib.Enums.yml
+  href: api/CommonLib.Enums.html
   commentId: N:CommonLib.Enums
   fullName: CommonLib.Enums
   nameWithType: CommonLib.Enums
 - uid: CommonLib.Enums.Label
   name: Label
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html
   commentId: T:CommonLib.Enums.Label
   fullName: CommonLib.Enums.Label
   nameWithType: Label
 - uid: CommonLib.Enums.Label.Computer
   name: Computer
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html#CommonLib_Enums_Label_Computer
   commentId: F:CommonLib.Enums.Label.Computer
   fullName: CommonLib.Enums.Label.Computer
   nameWithType: Label.Computer
 - uid: CommonLib.Enums.Label.Container
   name: Container
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html#CommonLib_Enums_Label_Container
   commentId: F:CommonLib.Enums.Label.Container
   fullName: CommonLib.Enums.Label.Container
   nameWithType: Label.Container
 - uid: CommonLib.Enums.Label.Domain
   name: Domain
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html#CommonLib_Enums_Label_Domain
   commentId: F:CommonLib.Enums.Label.Domain
   fullName: CommonLib.Enums.Label.Domain
   nameWithType: Label.Domain
 - uid: CommonLib.Enums.Label.GPO
   name: GPO
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html#CommonLib_Enums_Label_GPO
   commentId: F:CommonLib.Enums.Label.GPO
   fullName: CommonLib.Enums.Label.GPO
   nameWithType: Label.GPO
 - uid: CommonLib.Enums.Label.Group
   name: Group
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html#CommonLib_Enums_Label_Group
   commentId: F:CommonLib.Enums.Label.Group
   fullName: CommonLib.Enums.Label.Group
   nameWithType: Label.Group
 - uid: CommonLib.Enums.Label.OU
   name: OU
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html#CommonLib_Enums_Label_OU
   commentId: F:CommonLib.Enums.Label.OU
   fullName: CommonLib.Enums.Label.OU
   nameWithType: Label.OU
 - uid: CommonLib.Enums.Label.Unknown
   name: Unknown
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html#CommonLib_Enums_Label_Unknown
   commentId: F:CommonLib.Enums.Label.Unknown
   fullName: CommonLib.Enums.Label.Unknown
   nameWithType: Label.Unknown
 - uid: CommonLib.Enums.Label.User
   name: User
-  href: api/CommonLib.Enums.Label.yml
+  href: api/CommonLib.Enums.Label.html#CommonLib_Enums_Label_User
   commentId: F:CommonLib.Enums.Label.User
   fullName: CommonLib.Enums.Label.User
   nameWithType: Label.User
 - uid: CommonLib.Enums.UAC
   name: UAC
-  href: api/CommonLib.Enums.UAC.yml
+  href: api/CommonLib.Enums.UAC.html
   commentId: T:CommonLib.Enums.UAC
   fullName: CommonLib.Enums.UAC
   nameWithType: UAC
 - uid: CommonLib.Enums.UAC.UacFlags
   name: UAC.UacFlags
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html
   commentId: T:CommonLib.Enums.UAC.UacFlags
   fullName: CommonLib.Enums.UAC.UacFlags
   nameWithType: UAC.UacFlags
 - uid: CommonLib.Enums.UAC.UacFlags.AccountDisable
   name: AccountDisable
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_AccountDisable
   commentId: F:CommonLib.Enums.UAC.UacFlags.AccountDisable
   fullName: CommonLib.Enums.UAC.UacFlags.AccountDisable
   nameWithType: UAC.UacFlags.AccountDisable
 - uid: CommonLib.Enums.UAC.UacFlags.DontExpirePassword
   name: DontExpirePassword
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_DontExpirePassword
   commentId: F:CommonLib.Enums.UAC.UacFlags.DontExpirePassword
   fullName: CommonLib.Enums.UAC.UacFlags.DontExpirePassword
   nameWithType: UAC.UacFlags.DontExpirePassword
 - uid: CommonLib.Enums.UAC.UacFlags.DontReqPreauth
   name: DontReqPreauth
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_DontReqPreauth
   commentId: F:CommonLib.Enums.UAC.UacFlags.DontReqPreauth
   fullName: CommonLib.Enums.UAC.UacFlags.DontReqPreauth
   nameWithType: UAC.UacFlags.DontReqPreauth
 - uid: CommonLib.Enums.UAC.UacFlags.EncryptedTextPwdAllowed
   name: EncryptedTextPwdAllowed
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_EncryptedTextPwdAllowed
   commentId: F:CommonLib.Enums.UAC.UacFlags.EncryptedTextPwdAllowed
   fullName: CommonLib.Enums.UAC.UacFlags.EncryptedTextPwdAllowed
   nameWithType: UAC.UacFlags.EncryptedTextPwdAllowed
 - uid: CommonLib.Enums.UAC.UacFlags.HomeDirRequired
   name: HomeDirRequired
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_HomeDirRequired
   commentId: F:CommonLib.Enums.UAC.UacFlags.HomeDirRequired
   fullName: CommonLib.Enums.UAC.UacFlags.HomeDirRequired
   nameWithType: UAC.UacFlags.HomeDirRequired
 - uid: CommonLib.Enums.UAC.UacFlags.InterdomainTrustAccount
   name: InterdomainTrustAccount
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_InterdomainTrustAccount
   commentId: F:CommonLib.Enums.UAC.UacFlags.InterdomainTrustAccount
   fullName: CommonLib.Enums.UAC.UacFlags.InterdomainTrustAccount
   nameWithType: UAC.UacFlags.InterdomainTrustAccount
 - uid: CommonLib.Enums.UAC.UacFlags.Lockout
   name: Lockout
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_Lockout
   commentId: F:CommonLib.Enums.UAC.UacFlags.Lockout
   fullName: CommonLib.Enums.UAC.UacFlags.Lockout
   nameWithType: UAC.UacFlags.Lockout
 - uid: CommonLib.Enums.UAC.UacFlags.MnsLogonAccount
   name: MnsLogonAccount
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_MnsLogonAccount
   commentId: F:CommonLib.Enums.UAC.UacFlags.MnsLogonAccount
   fullName: CommonLib.Enums.UAC.UacFlags.MnsLogonAccount
   nameWithType: UAC.UacFlags.MnsLogonAccount
 - uid: CommonLib.Enums.UAC.UacFlags.NormalAccount
   name: NormalAccount
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_NormalAccount
   commentId: F:CommonLib.Enums.UAC.UacFlags.NormalAccount
   fullName: CommonLib.Enums.UAC.UacFlags.NormalAccount
   nameWithType: UAC.UacFlags.NormalAccount
 - uid: CommonLib.Enums.UAC.UacFlags.NotDelegated
   name: NotDelegated
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_NotDelegated
   commentId: F:CommonLib.Enums.UAC.UacFlags.NotDelegated
   fullName: CommonLib.Enums.UAC.UacFlags.NotDelegated
   nameWithType: UAC.UacFlags.NotDelegated
 - uid: CommonLib.Enums.UAC.UacFlags.PartialSecretsAccount
   name: PartialSecretsAccount
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_PartialSecretsAccount
   commentId: F:CommonLib.Enums.UAC.UacFlags.PartialSecretsAccount
   fullName: CommonLib.Enums.UAC.UacFlags.PartialSecretsAccount
   nameWithType: UAC.UacFlags.PartialSecretsAccount
 - uid: CommonLib.Enums.UAC.UacFlags.PasswordCantChange
   name: PasswordCantChange
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_PasswordCantChange
   commentId: F:CommonLib.Enums.UAC.UacFlags.PasswordCantChange
   fullName: CommonLib.Enums.UAC.UacFlags.PasswordCantChange
   nameWithType: UAC.UacFlags.PasswordCantChange
 - uid: CommonLib.Enums.UAC.UacFlags.PasswordExpired
   name: PasswordExpired
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_PasswordExpired
   commentId: F:CommonLib.Enums.UAC.UacFlags.PasswordExpired
   fullName: CommonLib.Enums.UAC.UacFlags.PasswordExpired
   nameWithType: UAC.UacFlags.PasswordExpired
 - uid: CommonLib.Enums.UAC.UacFlags.PasswordNotRequired
   name: PasswordNotRequired
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_PasswordNotRequired
   commentId: F:CommonLib.Enums.UAC.UacFlags.PasswordNotRequired
   fullName: CommonLib.Enums.UAC.UacFlags.PasswordNotRequired
   nameWithType: UAC.UacFlags.PasswordNotRequired
 - uid: CommonLib.Enums.UAC.UacFlags.Script
   name: Script
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_Script
   commentId: F:CommonLib.Enums.UAC.UacFlags.Script
   fullName: CommonLib.Enums.UAC.UacFlags.Script
   nameWithType: UAC.UacFlags.Script
 - uid: CommonLib.Enums.UAC.UacFlags.ServerTrustAccount
   name: ServerTrustAccount
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_ServerTrustAccount
   commentId: F:CommonLib.Enums.UAC.UacFlags.ServerTrustAccount
   fullName: CommonLib.Enums.UAC.UacFlags.ServerTrustAccount
   nameWithType: UAC.UacFlags.ServerTrustAccount
 - uid: CommonLib.Enums.UAC.UacFlags.SmartcardRequired
   name: SmartcardRequired
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_SmartcardRequired
   commentId: F:CommonLib.Enums.UAC.UacFlags.SmartcardRequired
   fullName: CommonLib.Enums.UAC.UacFlags.SmartcardRequired
   nameWithType: UAC.UacFlags.SmartcardRequired
 - uid: CommonLib.Enums.UAC.UacFlags.TempDuplicateAccount
   name: TempDuplicateAccount
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_TempDuplicateAccount
   commentId: F:CommonLib.Enums.UAC.UacFlags.TempDuplicateAccount
   fullName: CommonLib.Enums.UAC.UacFlags.TempDuplicateAccount
   nameWithType: UAC.UacFlags.TempDuplicateAccount
 - uid: CommonLib.Enums.UAC.UacFlags.TrustedForDelegation
   name: TrustedForDelegation
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_TrustedForDelegation
   commentId: F:CommonLib.Enums.UAC.UacFlags.TrustedForDelegation
   fullName: CommonLib.Enums.UAC.UacFlags.TrustedForDelegation
   nameWithType: UAC.UacFlags.TrustedForDelegation
 - uid: CommonLib.Enums.UAC.UacFlags.TrustedToAuthForDelegation
   name: TrustedToAuthForDelegation
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_TrustedToAuthForDelegation
   commentId: F:CommonLib.Enums.UAC.UacFlags.TrustedToAuthForDelegation
   fullName: CommonLib.Enums.UAC.UacFlags.TrustedToAuthForDelegation
   nameWithType: UAC.UacFlags.TrustedToAuthForDelegation
 - uid: CommonLib.Enums.UAC.UacFlags.UseDesKeyOnly
   name: UseDesKeyOnly
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_UseDesKeyOnly
   commentId: F:CommonLib.Enums.UAC.UacFlags.UseDesKeyOnly
   fullName: CommonLib.Enums.UAC.UacFlags.UseDesKeyOnly
   nameWithType: UAC.UacFlags.UseDesKeyOnly
 - uid: CommonLib.Enums.UAC.UacFlags.WorkstationTrustAccount
   name: WorkstationTrustAccount
-  href: api/CommonLib.Enums.UAC.UacFlags.yml
+  href: api/CommonLib.Enums.UAC.UacFlags.html#CommonLib_Enums_UAC_UacFlags_WorkstationTrustAccount
   commentId: F:CommonLib.Enums.UAC.UacFlags.WorkstationTrustAccount
   fullName: CommonLib.Enums.UAC.UacFlags.WorkstationTrustAccount
   nameWithType: UAC.UacFlags.WorkstationTrustAccount
 - uid: CommonLib.Helpers
   name: Helpers
-  href: api/CommonLib.Helpers.yml
+  href: api/CommonLib.Helpers.html
   commentId: T:CommonLib.Helpers
   fullName: CommonLib.Helpers
   nameWithType: Helpers
 - uid: CommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
   name: ConvertFileTimeToUnixEpoch(String)
-  href: api/CommonLib.Helpers.yml
+  href: api/CommonLib.Helpers.html#CommonLib_Helpers_ConvertFileTimeToUnixEpoch_System_String_
   commentId: M:CommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
   fullName: CommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
   nameWithType: Helpers.ConvertFileTimeToUnixEpoch(String)
 - uid: CommonLib.Helpers.ConvertFileTimeToUnixEpoch*
   name: ConvertFileTimeToUnixEpoch
-  href: api/CommonLib.Helpers.yml
+  href: api/CommonLib.Helpers.html#CommonLib_Helpers_ConvertFileTimeToUnixEpoch_
   commentId: Overload:CommonLib.Helpers.ConvertFileTimeToUnixEpoch
   isSpec: "True"
   fullName: CommonLib.Helpers.ConvertFileTimeToUnixEpoch
   nameWithType: Helpers.ConvertFileTimeToUnixEpoch
 - uid: CommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
   name: ConvertTimestampToUnixEpoch(String)
-  href: api/CommonLib.Helpers.yml
+  href: api/CommonLib.Helpers.html#CommonLib_Helpers_ConvertTimestampToUnixEpoch_System_String_
   commentId: M:CommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
   fullName: CommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
   nameWithType: Helpers.ConvertTimestampToUnixEpoch(String)
 - uid: CommonLib.Helpers.ConvertTimestampToUnixEpoch*
   name: ConvertTimestampToUnixEpoch
-  href: api/CommonLib.Helpers.yml
+  href: api/CommonLib.Helpers.html#CommonLib_Helpers_ConvertTimestampToUnixEpoch_
   commentId: Overload:CommonLib.Helpers.ConvertTimestampToUnixEpoch
   isSpec: "True"
   fullName: CommonLib.Helpers.ConvertTimestampToUnixEpoch
   nameWithType: Helpers.ConvertTimestampToUnixEpoch
 - uid: CommonLib.ICliConsoleFacade
   name: ICliConsoleFacade
-  href: api/CommonLib.ICliConsoleFacade.yml
+  href: api/CommonLib.ICliConsoleFacade.html
   commentId: T:CommonLib.ICliConsoleFacade
   fullName: CommonLib.ICliConsoleFacade
   nameWithType: ICliConsoleFacade
 - uid: CommonLib.ICliConsoleFacade.WriteLine(System.String)
   name: WriteLine(String)
-  href: api/CommonLib.ICliConsoleFacade.yml
+  href: api/CommonLib.ICliConsoleFacade.html#CommonLib_ICliConsoleFacade_WriteLine_System_String_
   commentId: M:CommonLib.ICliConsoleFacade.WriteLine(System.String)
   fullName: CommonLib.ICliConsoleFacade.WriteLine(System.String)
   nameWithType: ICliConsoleFacade.WriteLine(String)
 - uid: CommonLib.ICliConsoleFacade.WriteLine*
   name: WriteLine
-  href: api/CommonLib.ICliConsoleFacade.yml
+  href: api/CommonLib.ICliConsoleFacade.html#CommonLib_ICliConsoleFacade_WriteLine_
   commentId: Overload:CommonLib.ICliConsoleFacade.WriteLine
   isSpec: "True"
   fullName: CommonLib.ICliConsoleFacade.WriteLine
   nameWithType: ICliConsoleFacade.WriteLine
 - uid: CommonLib.LDAPConfig
   name: LDAPConfig
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html
   commentId: T:CommonLib.LDAPConfig
   fullName: CommonLib.LDAPConfig
   nameWithType: LDAPConfig
 - uid: CommonLib.LDAPConfig.DisableSigning
   name: DisableSigning
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_DisableSigning
   commentId: P:CommonLib.LDAPConfig.DisableSigning
   fullName: CommonLib.LDAPConfig.DisableSigning
   nameWithType: LDAPConfig.DisableSigning
 - uid: CommonLib.LDAPConfig.DisableSigning*
   name: DisableSigning
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_DisableSigning_
   commentId: Overload:CommonLib.LDAPConfig.DisableSigning
   isSpec: "True"
   fullName: CommonLib.LDAPConfig.DisableSigning
   nameWithType: LDAPConfig.DisableSigning
 - uid: CommonLib.LDAPConfig.GetPort
   name: GetPort()
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_GetPort
   commentId: M:CommonLib.LDAPConfig.GetPort
   fullName: CommonLib.LDAPConfig.GetPort()
   nameWithType: LDAPConfig.GetPort()
 - uid: CommonLib.LDAPConfig.GetPort*
   name: GetPort
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_GetPort_
   commentId: Overload:CommonLib.LDAPConfig.GetPort
   isSpec: "True"
   fullName: CommonLib.LDAPConfig.GetPort
   nameWithType: LDAPConfig.GetPort
 - uid: CommonLib.LDAPConfig.Password
   name: Password
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_Password
   commentId: P:CommonLib.LDAPConfig.Password
   fullName: CommonLib.LDAPConfig.Password
   nameWithType: LDAPConfig.Password
 - uid: CommonLib.LDAPConfig.Password*
   name: Password
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_Password_
   commentId: Overload:CommonLib.LDAPConfig.Password
   isSpec: "True"
   fullName: CommonLib.LDAPConfig.Password
   nameWithType: LDAPConfig.Password
 - uid: CommonLib.LDAPConfig.Port
   name: Port
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_Port
   commentId: P:CommonLib.LDAPConfig.Port
   fullName: CommonLib.LDAPConfig.Port
   nameWithType: LDAPConfig.Port
 - uid: CommonLib.LDAPConfig.Port*
   name: Port
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_Port_
   commentId: Overload:CommonLib.LDAPConfig.Port
   isSpec: "True"
   fullName: CommonLib.LDAPConfig.Port
   nameWithType: LDAPConfig.Port
 - uid: CommonLib.LDAPConfig.Server
   name: Server
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_Server
   commentId: P:CommonLib.LDAPConfig.Server
   fullName: CommonLib.LDAPConfig.Server
   nameWithType: LDAPConfig.Server
 - uid: CommonLib.LDAPConfig.Server*
   name: Server
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_Server_
   commentId: Overload:CommonLib.LDAPConfig.Server
   isSpec: "True"
   fullName: CommonLib.LDAPConfig.Server
   nameWithType: LDAPConfig.Server
 - uid: CommonLib.LDAPConfig.SSL
   name: SSL
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_SSL
   commentId: P:CommonLib.LDAPConfig.SSL
   fullName: CommonLib.LDAPConfig.SSL
   nameWithType: LDAPConfig.SSL
 - uid: CommonLib.LDAPConfig.SSL*
   name: SSL
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_SSL_
   commentId: Overload:CommonLib.LDAPConfig.SSL
   isSpec: "True"
   fullName: CommonLib.LDAPConfig.SSL
   nameWithType: LDAPConfig.SSL
 - uid: CommonLib.LDAPConfig.Username
   name: Username
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_Username
   commentId: P:CommonLib.LDAPConfig.Username
   fullName: CommonLib.LDAPConfig.Username
   nameWithType: LDAPConfig.Username
 - uid: CommonLib.LDAPConfig.Username*
   name: Username
-  href: api/CommonLib.LDAPConfig.yml
+  href: api/CommonLib.LDAPConfig.html#CommonLib_LDAPConfig_Username_
   commentId: Overload:CommonLib.LDAPConfig.Username
   isSpec: "True"
   fullName: CommonLib.LDAPConfig.Username
   nameWithType: LDAPConfig.Username
 - uid: CommonLib.LDAPQuery
   name: CommonLib.LDAPQuery
-  href: api/CommonLib.LDAPQuery.yml
+  href: api/CommonLib.LDAPQuery.html
   commentId: N:CommonLib.LDAPQuery
   fullName: CommonLib.LDAPQuery
   nameWithType: CommonLib.LDAPQuery
 - uid: CommonLib.LDAPQuery.CommonFilters
   name: CommonFilters
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html
   commentId: T:CommonLib.LDAPQuery.CommonFilters
   fullName: CommonLib.LDAPQuery.CommonFilters
   nameWithType: CommonFilters
 - uid: CommonLib.LDAPQuery.CommonFilters.EnabledOnly
   name: EnabledOnly
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html#CommonLib_LDAPQuery_CommonFilters_EnabledOnly
   commentId: P:CommonLib.LDAPQuery.CommonFilters.EnabledOnly
   fullName: CommonLib.LDAPQuery.CommonFilters.EnabledOnly
   nameWithType: CommonFilters.EnabledOnly
 - uid: CommonLib.LDAPQuery.CommonFilters.EnabledOnly*
   name: EnabledOnly
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html#CommonLib_LDAPQuery_CommonFilters_EnabledOnly_
   commentId: Overload:CommonLib.LDAPQuery.CommonFilters.EnabledOnly
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.CommonFilters.EnabledOnly
   nameWithType: CommonFilters.EnabledOnly
 - uid: CommonLib.LDAPQuery.CommonFilters.NeedsGPCFilePath
   name: NeedsGPCFilePath
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html#CommonLib_LDAPQuery_CommonFilters_NeedsGPCFilePath
   commentId: P:CommonLib.LDAPQuery.CommonFilters.NeedsGPCFilePath
   fullName: CommonLib.LDAPQuery.CommonFilters.NeedsGPCFilePath
   nameWithType: CommonFilters.NeedsGPCFilePath
 - uid: CommonLib.LDAPQuery.CommonFilters.NeedsGPCFilePath*
   name: NeedsGPCFilePath
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html#CommonLib_LDAPQuery_CommonFilters_NeedsGPCFilePath_
   commentId: Overload:CommonLib.LDAPQuery.CommonFilters.NeedsGPCFilePath
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.CommonFilters.NeedsGPCFilePath
   nameWithType: CommonFilters.NeedsGPCFilePath
 - uid: CommonLib.LDAPQuery.CommonFilters.NeedsSPN
   name: NeedsSPN
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html#CommonLib_LDAPQuery_CommonFilters_NeedsSPN
   commentId: P:CommonLib.LDAPQuery.CommonFilters.NeedsSPN
   fullName: CommonLib.LDAPQuery.CommonFilters.NeedsSPN
   nameWithType: CommonFilters.NeedsSPN
 - uid: CommonLib.LDAPQuery.CommonFilters.NeedsSPN*
   name: NeedsSPN
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html#CommonLib_LDAPQuery_CommonFilters_NeedsSPN_
   commentId: Overload:CommonLib.LDAPQuery.CommonFilters.NeedsSPN
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.CommonFilters.NeedsSPN
   nameWithType: CommonFilters.NeedsSPN
 - uid: CommonLib.LDAPQuery.CommonFilters.SpecificSID(System.String)
   name: SpecificSID(String)
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html#CommonLib_LDAPQuery_CommonFilters_SpecificSID_System_String_
   commentId: M:CommonLib.LDAPQuery.CommonFilters.SpecificSID(System.String)
   fullName: CommonLib.LDAPQuery.CommonFilters.SpecificSID(System.String)
   nameWithType: CommonFilters.SpecificSID(String)
 - uid: CommonLib.LDAPQuery.CommonFilters.SpecificSID*
   name: SpecificSID
-  href: api/CommonLib.LDAPQuery.CommonFilters.yml
+  href: api/CommonLib.LDAPQuery.CommonFilters.html#CommonLib_LDAPQuery_CommonFilters_SpecificSID_
   commentId: Overload:CommonLib.LDAPQuery.CommonFilters.SpecificSID
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.CommonFilters.SpecificSID
   nameWithType: CommonFilters.SpecificSID
 - uid: CommonLib.LDAPQuery.CommonProperties
   name: CommonProperties
-  href: api/CommonLib.LDAPQuery.CommonProperties.yml
+  href: api/CommonLib.LDAPQuery.CommonProperties.html
   commentId: T:CommonLib.LDAPQuery.CommonProperties
   fullName: CommonLib.LDAPQuery.CommonProperties
   nameWithType: CommonProperties
 - uid: CommonLib.LDAPQuery.CommonProperties.ObjectID
   name: ObjectID
-  href: api/CommonLib.LDAPQuery.CommonProperties.yml
+  href: api/CommonLib.LDAPQuery.CommonProperties.html#CommonLib_LDAPQuery_CommonProperties_ObjectID
   commentId: F:CommonLib.LDAPQuery.CommonProperties.ObjectID
   fullName: CommonLib.LDAPQuery.CommonProperties.ObjectID
   nameWithType: CommonProperties.ObjectID
 - uid: CommonLib.LDAPQuery.CommonProperties.ResolutionProps
   name: ResolutionProps
-  href: api/CommonLib.LDAPQuery.CommonProperties.yml
+  href: api/CommonLib.LDAPQuery.CommonProperties.html#CommonLib_LDAPQuery_CommonProperties_ResolutionProps
   commentId: F:CommonLib.LDAPQuery.CommonProperties.ResolutionProps
   fullName: CommonLib.LDAPQuery.CommonProperties.ResolutionProps
   nameWithType: CommonProperties.ResolutionProps
 - uid: CommonLib.LDAPQuery.LDAPFilter
   name: LDAPFilter
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html
   commentId: T:CommonLib.LDAPQuery.LDAPFilter
   fullName: CommonLib.LDAPQuery.LDAPFilter
   nameWithType: LDAPFilter
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddAllObjects(System.String[])
   name: AddAllObjects(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddAllObjects_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddAllObjects(System.String[])
   name.vb: AddAllObjects(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddAllObjects(System.String[])
@@ -635,14 +635,14 @@ references:
   nameWithType.vb: LDAPFilter.AddAllObjects(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddAllObjects*
   name: AddAllObjects
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddAllObjects_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddAllObjects
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddAllObjects
   nameWithType: LDAPFilter.AddAllObjects
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddComputers(System.String[])
   name: AddComputers(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddComputers_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddComputers(System.String[])
   name.vb: AddComputers(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddComputers(System.String[])
@@ -651,14 +651,14 @@ references:
   nameWithType.vb: LDAPFilter.AddComputers(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddComputers*
   name: AddComputers
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddComputers_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddComputers
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddComputers
   nameWithType: LDAPFilter.AddComputers
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddContainers(System.String[])
   name: AddContainers(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddContainers_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddContainers(System.String[])
   name.vb: AddContainers(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddContainers(System.String[])
@@ -667,14 +667,14 @@ references:
   nameWithType.vb: LDAPFilter.AddContainers(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddContainers*
   name: AddContainers
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddContainers_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddContainers
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddContainers
   nameWithType: LDAPFilter.AddContainers
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddDomains(System.String[])
   name: AddDomains(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddDomains_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddDomains(System.String[])
   name.vb: AddDomains(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddDomains(System.String[])
@@ -683,27 +683,27 @@ references:
   nameWithType.vb: LDAPFilter.AddDomains(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddDomains*
   name: AddDomains
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddDomains_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddDomains
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddDomains
   nameWithType: LDAPFilter.AddDomains
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddFilter(System.String)
   name: AddFilter(String)
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddFilter_System_String_
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddFilter(System.String)
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddFilter(System.String)
   nameWithType: LDAPFilter.AddFilter(String)
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddFilter*
   name: AddFilter
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddFilter_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddFilter
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddFilter
   nameWithType: LDAPFilter.AddFilter
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddGPOs(System.String[])
   name: AddGPOs(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddGPOs_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddGPOs(System.String[])
   name.vb: AddGPOs(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddGPOs(System.String[])
@@ -712,14 +712,14 @@ references:
   nameWithType.vb: LDAPFilter.AddGPOs(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddGPOs*
   name: AddGPOs
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddGPOs_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddGPOs
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddGPOs
   nameWithType: LDAPFilter.AddGPOs
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddGroups(System.String[])
   name: AddGroups(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddGroups_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddGroups(System.String[])
   name.vb: AddGroups(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddGroups(System.String[])
@@ -728,14 +728,14 @@ references:
   nameWithType.vb: LDAPFilter.AddGroups(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddGroups*
   name: AddGroups
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddGroups_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddGroups
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddGroups
   nameWithType: LDAPFilter.AddGroups
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddOUs(System.String[])
   name: AddOUs(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddOUs_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddOUs(System.String[])
   name.vb: AddOUs(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddOUs(System.String[])
@@ -744,14 +744,14 @@ references:
   nameWithType.vb: LDAPFilter.AddOUs(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddOUs*
   name: AddOUs
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddOUs_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddOUs
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddOUs
   nameWithType: LDAPFilter.AddOUs
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddSchemaID(System.String[])
   name: AddSchemaID(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddSchemaID_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddSchemaID(System.String[])
   name.vb: AddSchemaID(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddSchemaID(System.String[])
@@ -760,14 +760,14 @@ references:
   nameWithType.vb: LDAPFilter.AddSchemaID(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddSchemaID*
   name: AddSchemaID
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddSchemaID_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddSchemaID
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddSchemaID
   nameWithType: LDAPFilter.AddSchemaID
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddUsers(System.String[])
   name: AddUsers(String[])
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddUsers_System_String___
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.AddUsers(System.String[])
   name.vb: AddUsers(String())
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddUsers(System.String[])
@@ -776,218 +776,218 @@ references:
   nameWithType.vb: LDAPFilter.AddUsers(String())
 - uid: CommonLib.LDAPQuery.LDAPFilter.AddUsers*
   name: AddUsers
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_AddUsers_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.AddUsers
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.AddUsers
   nameWithType: LDAPFilter.AddUsers
 - uid: CommonLib.LDAPQuery.LDAPFilter.GetFilter
   name: GetFilter()
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_GetFilter
   commentId: M:CommonLib.LDAPQuery.LDAPFilter.GetFilter
   fullName: CommonLib.LDAPQuery.LDAPFilter.GetFilter()
   nameWithType: LDAPFilter.GetFilter()
 - uid: CommonLib.LDAPQuery.LDAPFilter.GetFilter*
   name: GetFilter
-  href: api/CommonLib.LDAPQuery.LDAPFilter.yml
+  href: api/CommonLib.LDAPQuery.LDAPFilter.html#CommonLib_LDAPQuery_LDAPFilter_GetFilter_
   commentId: Overload:CommonLib.LDAPQuery.LDAPFilter.GetFilter
   isSpec: "True"
   fullName: CommonLib.LDAPQuery.LDAPFilter.GetFilter
   nameWithType: LDAPFilter.GetFilter
 - uid: CommonLib.LDAPUtils
   name: LDAPUtils
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html
   commentId: T:CommonLib.LDAPUtils
   fullName: CommonLib.LDAPUtils
   nameWithType: LDAPUtils
 - uid: CommonLib.LDAPUtils.DoRangedRetrieval(System.String,System.String)
   name: DoRangedRetrieval(String, String)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_DoRangedRetrieval_System_String_System_String_
   commentId: M:CommonLib.LDAPUtils.DoRangedRetrieval(System.String,System.String)
   fullName: CommonLib.LDAPUtils.DoRangedRetrieval(System.String, System.String)
   nameWithType: LDAPUtils.DoRangedRetrieval(String, String)
 - uid: CommonLib.LDAPUtils.DoRangedRetrieval*
   name: DoRangedRetrieval
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_DoRangedRetrieval_
   commentId: Overload:CommonLib.LDAPUtils.DoRangedRetrieval
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.DoRangedRetrieval
   nameWithType: LDAPUtils.DoRangedRetrieval
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
   name: LDAPUtils.DSGETDCNAME_FLAGS
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html
   commentId: T:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
   name: DS_AVOID_SELF
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_AVOID_SELF
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_AVOID_SELF
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
   name: DS_BACKGROUND_ONLY
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_BACKGROUND_ONLY
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_BACKGROUND_ONLY
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
   name: DS_DIRECTORY_SERVICE_PREFERRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_DIRECTORY_SERVICE_PREFERRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_PREFERRED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
   name: DS_DIRECTORY_SERVICE_REQUIRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_DIRECTORY_SERVICE_REQUIRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
   name: DS_FORCE_REDISCOVERY
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_FORCE_REDISCOVERY
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
   name: DS_GC_SERVER_REQUIRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_GC_SERVER_REQUIRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_GC_SERVER_REQUIRED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
   name: DS_GOOD_TIMESERV_PREFERRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_GOOD_TIMESERV_PREFERRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_GOOD_TIMESERV_PREFERRED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
   name: DS_IP_REQUIRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_IP_REQUIRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_IP_REQUIRED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
   name: DS_IS_DNS_NAME
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_IS_DNS_NAME
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_DNS_NAME
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
   name: DS_IS_FLAT_NAME
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_IS_FLAT_NAME
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
   name: DS_KDC_REQUIRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_KDC_REQUIRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_KDC_REQUIRED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
   name: DS_ONLY_LDAP_NEEDED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_ONLY_LDAP_NEEDED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_ONLY_LDAP_NEEDED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
   name: DS_PDC_REQUIRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_PDC_REQUIRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_PDC_REQUIRED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
   name: DS_RETURN_DNS_NAME
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_RETURN_DNS_NAME
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
   name: DS_RETURN_FLAT_NAME
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_RETURN_FLAT_NAME
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_RETURN_FLAT_NAME
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
   name: DS_TIMESERV_REQUIRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_TIMESERV_REQUIRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_TIMESERV_REQUIRED
 - uid: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
   name: DS_WRITABLE_REQUIRED
-  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml
+  href: api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html#CommonLib_LDAPUtils_DSGETDCNAME_FLAGS_DS_WRITABLE_REQUIRED
   commentId: F:CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
   fullName: CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
   nameWithType: LDAPUtils.DSGETDCNAME_FLAGS.DS_WRITABLE_REQUIRED
 - uid: CommonLib.LDAPUtils.GetDomainNameFromSid(System.String)
   name: GetDomainNameFromSid(String)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_GetDomainNameFromSid_System_String_
   commentId: M:CommonLib.LDAPUtils.GetDomainNameFromSid(System.String)
   fullName: CommonLib.LDAPUtils.GetDomainNameFromSid(System.String)
   nameWithType: LDAPUtils.GetDomainNameFromSid(String)
 - uid: CommonLib.LDAPUtils.GetDomainNameFromSid*
   name: GetDomainNameFromSid
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_GetDomainNameFromSid_
   commentId: Overload:CommonLib.LDAPUtils.GetDomainNameFromSid
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.GetDomainNameFromSid
   nameWithType: LDAPUtils.GetDomainNameFromSid
 - uid: CommonLib.LDAPUtils.GuidClass
   name: LDAPUtils.GuidClass
-  href: api/CommonLib.LDAPUtils.GuidClass.yml
+  href: api/CommonLib.LDAPUtils.GuidClass.html
   commentId: T:CommonLib.LDAPUtils.GuidClass
   fullName: CommonLib.LDAPUtils.GuidClass
   nameWithType: LDAPUtils.GuidClass
 - uid: CommonLib.LDAPUtils.GuidClass.TheGuid
   name: TheGuid
-  href: api/CommonLib.LDAPUtils.GuidClass.yml
+  href: api/CommonLib.LDAPUtils.GuidClass.html#CommonLib_LDAPUtils_GuidClass_TheGuid
   commentId: F:CommonLib.LDAPUtils.GuidClass.TheGuid
   fullName: CommonLib.LDAPUtils.GuidClass.TheGuid
   nameWithType: LDAPUtils.GuidClass.TheGuid
 - uid: CommonLib.LDAPUtils.Instance
   name: Instance
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_Instance
   commentId: P:CommonLib.LDAPUtils.Instance
   fullName: CommonLib.LDAPUtils.Instance
   nameWithType: LDAPUtils.Instance
 - uid: CommonLib.LDAPUtils.Instance*
   name: Instance
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_Instance_
   commentId: Overload:CommonLib.LDAPUtils.Instance
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.Instance
   nameWithType: LDAPUtils.Instance
 - uid: CommonLib.LDAPUtils.LookupGuidType(System.String,System.String)
   name: LookupGuidType(String, String)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_LookupGuidType_System_String_System_String_
   commentId: M:CommonLib.LDAPUtils.LookupGuidType(System.String,System.String)
   fullName: CommonLib.LDAPUtils.LookupGuidType(System.String, System.String)
   nameWithType: LDAPUtils.LookupGuidType(String, String)
 - uid: CommonLib.LDAPUtils.LookupGuidType*
   name: LookupGuidType
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_LookupGuidType_
   commentId: Overload:CommonLib.LDAPUtils.LookupGuidType
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.LookupGuidType
   nameWithType: LDAPUtils.LookupGuidType
 - uid: CommonLib.LDAPUtils.LookupSidType(System.String,System.String)
   name: LookupSidType(String, String)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_LookupSidType_System_String_System_String_
   commentId: M:CommonLib.LDAPUtils.LookupSidType(System.String,System.String)
   fullName: CommonLib.LDAPUtils.LookupSidType(System.String, System.String)
   nameWithType: LDAPUtils.LookupSidType(String, String)
 - uid: CommonLib.LDAPUtils.LookupSidType*
   name: LookupSidType
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_LookupSidType_
   commentId: Overload:CommonLib.LDAPUtils.LookupSidType
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.LookupSidType
   nameWithType: LDAPUtils.LookupSidType
 - uid: CommonLib.LDAPUtils.QueryLDAP(System.String,System.DirectoryServices.Protocols.SearchScope,System.String[],System.String,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean)
   name: QueryLDAP(String, SearchScope, String[], String, Boolean, Boolean, String, Boolean, Boolean)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_QueryLDAP_System_String_System_DirectoryServices_Protocols_SearchScope_System_String___System_String_System_Boolean_System_Boolean_System_String_System_Boolean_System_Boolean_
   commentId: M:CommonLib.LDAPUtils.QueryLDAP(System.String,System.DirectoryServices.Protocols.SearchScope,System.String[],System.String,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean)
   name.vb: QueryLDAP(String, SearchScope, String(), String, Boolean, Boolean, String, Boolean, Boolean)
   fullName: CommonLib.LDAPUtils.QueryLDAP(System.String, System.DirectoryServices.Protocols.SearchScope, System.String[], System.String, System.Boolean, System.Boolean, System.String, System.Boolean, System.Boolean)
@@ -996,85 +996,85 @@ references:
   nameWithType.vb: LDAPUtils.QueryLDAP(String, SearchScope, String(), String, Boolean, Boolean, String, Boolean, Boolean)
 - uid: CommonLib.LDAPUtils.QueryLDAP*
   name: QueryLDAP
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_QueryLDAP_
   commentId: Overload:CommonLib.LDAPUtils.QueryLDAP
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.QueryLDAP
   nameWithType: LDAPUtils.QueryLDAP
 - uid: CommonLib.LDAPUtils.ResolveAccountName(System.String,System.String)
   name: ResolveAccountName(String, String)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_ResolveAccountName_System_String_System_String_
   commentId: M:CommonLib.LDAPUtils.ResolveAccountName(System.String,System.String)
   fullName: CommonLib.LDAPUtils.ResolveAccountName(System.String, System.String)
   nameWithType: LDAPUtils.ResolveAccountName(String, String)
 - uid: CommonLib.LDAPUtils.ResolveAccountName*
   name: ResolveAccountName
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_ResolveAccountName_
   commentId: Overload:CommonLib.LDAPUtils.ResolveAccountName
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.ResolveAccountName
   nameWithType: LDAPUtils.ResolveAccountName
 - uid: CommonLib.LDAPUtils.ResolveDistinguishedName(System.String)
   name: ResolveDistinguishedName(String)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_ResolveDistinguishedName_System_String_
   commentId: M:CommonLib.LDAPUtils.ResolveDistinguishedName(System.String)
   fullName: CommonLib.LDAPUtils.ResolveDistinguishedName(System.String)
   nameWithType: LDAPUtils.ResolveDistinguishedName(String)
 - uid: CommonLib.LDAPUtils.ResolveDistinguishedName*
   name: ResolveDistinguishedName
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_ResolveDistinguishedName_
   commentId: Overload:CommonLib.LDAPUtils.ResolveDistinguishedName
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.ResolveDistinguishedName
   nameWithType: LDAPUtils.ResolveDistinguishedName
 - uid: CommonLib.LDAPUtils.ResolveHostToSid(System.String,System.String)
   name: ResolveHostToSid(String, String)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_ResolveHostToSid_System_String_System_String_
   commentId: M:CommonLib.LDAPUtils.ResolveHostToSid(System.String,System.String)
   fullName: CommonLib.LDAPUtils.ResolveHostToSid(System.String, System.String)
   nameWithType: LDAPUtils.ResolveHostToSid(String, String)
 - uid: CommonLib.LDAPUtils.ResolveHostToSid*
   name: ResolveHostToSid
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_ResolveHostToSid_
   commentId: Overload:CommonLib.LDAPUtils.ResolveHostToSid
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.ResolveHostToSid
   nameWithType: LDAPUtils.ResolveHostToSid
 - uid: CommonLib.LDAPUtils.ResolveIDAndType(System.String,System.String)
   name: ResolveIDAndType(String, String)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_ResolveIDAndType_System_String_System_String_
   commentId: M:CommonLib.LDAPUtils.ResolveIDAndType(System.String,System.String)
   fullName: CommonLib.LDAPUtils.ResolveIDAndType(System.String, System.String)
   nameWithType: LDAPUtils.ResolveIDAndType(String, String)
 - uid: CommonLib.LDAPUtils.ResolveIDAndType*
   name: ResolveIDAndType
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_ResolveIDAndType_
   commentId: Overload:CommonLib.LDAPUtils.ResolveIDAndType
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.ResolveIDAndType
   nameWithType: LDAPUtils.ResolveIDAndType
 - uid: CommonLib.LDAPUtils.UpdateLDAPConfig(CommonLib.LDAPConfig)
   name: UpdateLDAPConfig(LDAPConfig)
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_UpdateLDAPConfig_CommonLib_LDAPConfig_
   commentId: M:CommonLib.LDAPUtils.UpdateLDAPConfig(CommonLib.LDAPConfig)
   fullName: CommonLib.LDAPUtils.UpdateLDAPConfig(CommonLib.LDAPConfig)
   nameWithType: LDAPUtils.UpdateLDAPConfig(LDAPConfig)
 - uid: CommonLib.LDAPUtils.UpdateLDAPConfig*
   name: UpdateLDAPConfig
-  href: api/CommonLib.LDAPUtils.yml
+  href: api/CommonLib.LDAPUtils.html#CommonLib_LDAPUtils_UpdateLDAPConfig_
   commentId: Overload:CommonLib.LDAPUtils.UpdateLDAPConfig
   isSpec: "True"
   fullName: CommonLib.LDAPUtils.UpdateLDAPConfig
   nameWithType: LDAPUtils.UpdateLDAPConfig
 - uid: CommonLib.NativeMethods
   name: NativeMethods
-  href: api/CommonLib.NativeMethods.yml
+  href: api/CommonLib.NativeMethods.html
   commentId: T:CommonLib.NativeMethods
   fullName: CommonLib.NativeMethods
   nameWithType: NativeMethods
 - uid: CommonLib.Options`1
   name: Options<CollectionMethodResolved>
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html
   commentId: T:CommonLib.Options`1
   name.vb: Options(Of CollectionMethodResolved)
   fullName: CommonLib.Options<CollectionMethodResolved>
@@ -1083,7 +1083,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved)
 - uid: CommonLib.Options`1.CacheFilename
   name: CacheFilename
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_CacheFilename
   commentId: P:CommonLib.Options`1.CacheFilename
   fullName: CommonLib.Options<CollectionMethodResolved>.CacheFilename
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CacheFilename
@@ -1091,7 +1091,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).CacheFilename
 - uid: CommonLib.Options`1.CacheFilename*
   name: CacheFilename
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_CacheFilename_
   commentId: Overload:CommonLib.Options`1.CacheFilename
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.CacheFilename
@@ -1100,7 +1100,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).CacheFilename
 - uid: CommonLib.Options`1.CollectAllProperties
   name: CollectAllProperties
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_CollectAllProperties
   commentId: P:CommonLib.Options`1.CollectAllProperties
   fullName: CommonLib.Options<CollectionMethodResolved>.CollectAllProperties
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CollectAllProperties
@@ -1108,7 +1108,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).CollectAllProperties
 - uid: CommonLib.Options`1.CollectAllProperties*
   name: CollectAllProperties
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_CollectAllProperties_
   commentId: Overload:CommonLib.Options`1.CollectAllProperties
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.CollectAllProperties
@@ -1117,7 +1117,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).CollectAllProperties
 - uid: CommonLib.Options`1.CollectionMethods
   name: CollectionMethods
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_CollectionMethods
   commentId: P:CommonLib.Options`1.CollectionMethods
   fullName: CommonLib.Options<CollectionMethodResolved>.CollectionMethods
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).CollectionMethods
@@ -1125,7 +1125,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).CollectionMethods
 - uid: CommonLib.Options`1.CollectionMethods*
   name: CollectionMethods
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_CollectionMethods_
   commentId: Overload:CommonLib.Options`1.CollectionMethods
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.CollectionMethods
@@ -1134,7 +1134,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).CollectionMethods
 - uid: CommonLib.Options`1.ComputerFile
   name: ComputerFile
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_ComputerFile
   commentId: P:CommonLib.Options`1.ComputerFile
   fullName: CommonLib.Options<CollectionMethodResolved>.ComputerFile
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ComputerFile
@@ -1142,7 +1142,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).ComputerFile
 - uid: CommonLib.Options`1.ComputerFile*
   name: ComputerFile
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_ComputerFile_
   commentId: Overload:CommonLib.Options`1.ComputerFile
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.ComputerFile
@@ -1151,7 +1151,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).ComputerFile
 - uid: CommonLib.Options`1.DisableKerberosSigning
   name: DisableKerberosSigning
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_DisableKerberosSigning
   commentId: P:CommonLib.Options`1.DisableKerberosSigning
   fullName: CommonLib.Options<CollectionMethodResolved>.DisableKerberosSigning
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DisableKerberosSigning
@@ -1159,7 +1159,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).DisableKerberosSigning
 - uid: CommonLib.Options`1.DisableKerberosSigning*
   name: DisableKerberosSigning
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_DisableKerberosSigning_
   commentId: Overload:CommonLib.Options`1.DisableKerberosSigning
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.DisableKerberosSigning
@@ -1168,7 +1168,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).DisableKerberosSigning
 - uid: CommonLib.Options`1.Domain
   name: Domain
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Domain
   commentId: P:CommonLib.Options`1.Domain
   fullName: CommonLib.Options<CollectionMethodResolved>.Domain
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Domain
@@ -1176,7 +1176,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Domain
 - uid: CommonLib.Options`1.Domain*
   name: Domain
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Domain_
   commentId: Overload:CommonLib.Options`1.Domain
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.Domain
@@ -1185,7 +1185,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Domain
 - uid: CommonLib.Options`1.DomainController
   name: DomainController
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_DomainController
   commentId: P:CommonLib.Options`1.DomainController
   fullName: CommonLib.Options<CollectionMethodResolved>.DomainController
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DomainController
@@ -1193,7 +1193,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).DomainController
 - uid: CommonLib.Options`1.DomainController*
   name: DomainController
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_DomainController_
   commentId: Overload:CommonLib.Options`1.DomainController
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.DomainController
@@ -1202,7 +1202,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).DomainController
 - uid: CommonLib.Options`1.DumpComputerStatus
   name: DumpComputerStatus
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_DumpComputerStatus
   commentId: P:CommonLib.Options`1.DumpComputerStatus
   fullName: CommonLib.Options<CollectionMethodResolved>.DumpComputerStatus
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).DumpComputerStatus
@@ -1210,7 +1210,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).DumpComputerStatus
 - uid: CommonLib.Options`1.DumpComputerStatus*
   name: DumpComputerStatus
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_DumpComputerStatus_
   commentId: Overload:CommonLib.Options`1.DumpComputerStatus
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.DumpComputerStatus
@@ -1219,7 +1219,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).DumpComputerStatus
 - uid: CommonLib.Options`1.EncryptZip
   name: EncryptZip
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_EncryptZip
   commentId: P:CommonLib.Options`1.EncryptZip
   fullName: CommonLib.Options<CollectionMethodResolved>.EncryptZip
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).EncryptZip
@@ -1227,7 +1227,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).EncryptZip
 - uid: CommonLib.Options`1.EncryptZip*
   name: EncryptZip
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_EncryptZip_
   commentId: Overload:CommonLib.Options`1.EncryptZip
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.EncryptZip
@@ -1236,7 +1236,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).EncryptZip
 - uid: CommonLib.Options`1.ExcludeDomainControllers
   name: ExcludeDomainControllers
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_ExcludeDomainControllers
   commentId: P:CommonLib.Options`1.ExcludeDomainControllers
   fullName: CommonLib.Options<CollectionMethodResolved>.ExcludeDomainControllers
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ExcludeDomainControllers
@@ -1244,7 +1244,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).ExcludeDomainControllers
 - uid: CommonLib.Options`1.ExcludeDomainControllers*
   name: ExcludeDomainControllers
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_ExcludeDomainControllers_
   commentId: Overload:CommonLib.Options`1.ExcludeDomainControllers
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.ExcludeDomainControllers
@@ -1253,7 +1253,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).ExcludeDomainControllers
 - uid: CommonLib.Options`1.Instance
   name: Instance
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Instance
   commentId: P:CommonLib.Options`1.Instance
   fullName: CommonLib.Options<CollectionMethodResolved>.Instance
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Instance
@@ -1261,7 +1261,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Instance
 - uid: CommonLib.Options`1.Instance*
   name: Instance
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Instance_
   commentId: Overload:CommonLib.Options`1.Instance
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.Instance
@@ -1270,7 +1270,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Instance
 - uid: CommonLib.Options`1.InvalidateCache
   name: InvalidateCache
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_InvalidateCache
   commentId: P:CommonLib.Options`1.InvalidateCache
   fullName: CommonLib.Options<CollectionMethodResolved>.InvalidateCache
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).InvalidateCache
@@ -1278,7 +1278,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).InvalidateCache
 - uid: CommonLib.Options`1.InvalidateCache*
   name: InvalidateCache
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_InvalidateCache_
   commentId: Overload:CommonLib.Options`1.InvalidateCache
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.InvalidateCache
@@ -1287,7 +1287,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).InvalidateCache
 - uid: CommonLib.Options`1.Jitter
   name: Jitter
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Jitter
   commentId: P:CommonLib.Options`1.Jitter
   fullName: CommonLib.Options<CollectionMethodResolved>.Jitter
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Jitter
@@ -1295,7 +1295,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Jitter
 - uid: CommonLib.Options`1.Jitter*
   name: Jitter
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Jitter_
   commentId: Overload:CommonLib.Options`1.Jitter
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.Jitter
@@ -1304,7 +1304,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Jitter
 - uid: CommonLib.Options`1.LdapFilter
   name: LdapFilter
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LdapFilter
   commentId: P:CommonLib.Options`1.LdapFilter
   fullName: CommonLib.Options<CollectionMethodResolved>.LdapFilter
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapFilter
@@ -1312,7 +1312,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LdapFilter
 - uid: CommonLib.Options`1.LdapFilter*
   name: LdapFilter
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LdapFilter_
   commentId: Overload:CommonLib.Options`1.LdapFilter
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.LdapFilter
@@ -1321,7 +1321,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LdapFilter
 - uid: CommonLib.Options`1.LdapPassword
   name: LdapPassword
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LdapPassword
   commentId: P:CommonLib.Options`1.LdapPassword
   fullName: CommonLib.Options<CollectionMethodResolved>.LdapPassword
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapPassword
@@ -1329,7 +1329,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LdapPassword
 - uid: CommonLib.Options`1.LdapPassword*
   name: LdapPassword
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LdapPassword_
   commentId: Overload:CommonLib.Options`1.LdapPassword
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.LdapPassword
@@ -1338,7 +1338,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LdapPassword
 - uid: CommonLib.Options`1.LdapPort
   name: LdapPort
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LdapPort
   commentId: P:CommonLib.Options`1.LdapPort
   fullName: CommonLib.Options<CollectionMethodResolved>.LdapPort
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapPort
@@ -1346,7 +1346,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LdapPort
 - uid: CommonLib.Options`1.LdapPort*
   name: LdapPort
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LdapPort_
   commentId: Overload:CommonLib.Options`1.LdapPort
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.LdapPort
@@ -1355,7 +1355,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LdapPort
 - uid: CommonLib.Options`1.LdapUsername
   name: LdapUsername
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LdapUsername
   commentId: P:CommonLib.Options`1.LdapUsername
   fullName: CommonLib.Options<CollectionMethodResolved>.LdapUsername
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LdapUsername
@@ -1363,7 +1363,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LdapUsername
 - uid: CommonLib.Options`1.LdapUsername*
   name: LdapUsername
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LdapUsername_
   commentId: Overload:CommonLib.Options`1.LdapUsername
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.LdapUsername
@@ -1372,7 +1372,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LdapUsername
 - uid: CommonLib.Options`1.Loop
   name: Loop
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Loop
   commentId: P:CommonLib.Options`1.Loop
   fullName: CommonLib.Options<CollectionMethodResolved>.Loop
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Loop
@@ -1380,7 +1380,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Loop
 - uid: CommonLib.Options`1.Loop*
   name: Loop
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Loop_
   commentId: Overload:CommonLib.Options`1.Loop
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.Loop
@@ -1389,7 +1389,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Loop
 - uid: CommonLib.Options`1.LoopDuration
   name: LoopDuration
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LoopDuration
   commentId: P:CommonLib.Options`1.LoopDuration
   fullName: CommonLib.Options<CollectionMethodResolved>.LoopDuration
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LoopDuration
@@ -1397,7 +1397,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LoopDuration
 - uid: CommonLib.Options`1.LoopDuration*
   name: LoopDuration
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LoopDuration_
   commentId: Overload:CommonLib.Options`1.LoopDuration
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.LoopDuration
@@ -1406,7 +1406,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LoopDuration
 - uid: CommonLib.Options`1.LoopInterval
   name: LoopInterval
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LoopInterval
   commentId: P:CommonLib.Options`1.LoopInterval
   fullName: CommonLib.Options<CollectionMethodResolved>.LoopInterval
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).LoopInterval
@@ -1414,7 +1414,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LoopInterval
 - uid: CommonLib.Options`1.LoopInterval*
   name: LoopInterval
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_LoopInterval_
   commentId: Overload:CommonLib.Options`1.LoopInterval
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.LoopInterval
@@ -1423,7 +1423,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).LoopInterval
 - uid: CommonLib.Options`1.NoOutput
   name: NoOutput
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_NoOutput
   commentId: P:CommonLib.Options`1.NoOutput
   fullName: CommonLib.Options<CollectionMethodResolved>.NoOutput
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoOutput
@@ -1431,7 +1431,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).NoOutput
 - uid: CommonLib.Options`1.NoOutput*
   name: NoOutput
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_NoOutput_
   commentId: Overload:CommonLib.Options`1.NoOutput
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.NoOutput
@@ -1440,7 +1440,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).NoOutput
 - uid: CommonLib.Options`1.NoRegistryLoggedOn
   name: NoRegistryLoggedOn
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_NoRegistryLoggedOn
   commentId: P:CommonLib.Options`1.NoRegistryLoggedOn
   fullName: CommonLib.Options<CollectionMethodResolved>.NoRegistryLoggedOn
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoRegistryLoggedOn
@@ -1448,7 +1448,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).NoRegistryLoggedOn
 - uid: CommonLib.Options`1.NoRegistryLoggedOn*
   name: NoRegistryLoggedOn
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_NoRegistryLoggedOn_
   commentId: Overload:CommonLib.Options`1.NoRegistryLoggedOn
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.NoRegistryLoggedOn
@@ -1457,7 +1457,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).NoRegistryLoggedOn
 - uid: CommonLib.Options`1.NoSaveCache
   name: NoSaveCache
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_NoSaveCache
   commentId: P:CommonLib.Options`1.NoSaveCache
   fullName: CommonLib.Options<CollectionMethodResolved>.NoSaveCache
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoSaveCache
@@ -1465,7 +1465,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).NoSaveCache
 - uid: CommonLib.Options`1.NoSaveCache*
   name: NoSaveCache
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_NoSaveCache_
   commentId: Overload:CommonLib.Options`1.NoSaveCache
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.NoSaveCache
@@ -1474,7 +1474,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).NoSaveCache
 - uid: CommonLib.Options`1.NoZip
   name: NoZip
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_NoZip
   commentId: P:CommonLib.Options`1.NoZip
   fullName: CommonLib.Options<CollectionMethodResolved>.NoZip
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).NoZip
@@ -1482,7 +1482,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).NoZip
 - uid: CommonLib.Options`1.NoZip*
   name: NoZip
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_NoZip_
   commentId: Overload:CommonLib.Options`1.NoZip
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.NoZip
@@ -1491,7 +1491,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).NoZip
 - uid: CommonLib.Options`1.OutputDirectory
   name: OutputDirectory
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_OutputDirectory
   commentId: P:CommonLib.Options`1.OutputDirectory
   fullName: CommonLib.Options<CollectionMethodResolved>.OutputDirectory
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OutputDirectory
@@ -1499,7 +1499,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).OutputDirectory
 - uid: CommonLib.Options`1.OutputDirectory*
   name: OutputDirectory
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_OutputDirectory_
   commentId: Overload:CommonLib.Options`1.OutputDirectory
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.OutputDirectory
@@ -1508,7 +1508,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).OutputDirectory
 - uid: CommonLib.Options`1.OutputPrefix
   name: OutputPrefix
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_OutputPrefix
   commentId: P:CommonLib.Options`1.OutputPrefix
   fullName: CommonLib.Options<CollectionMethodResolved>.OutputPrefix
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OutputPrefix
@@ -1516,7 +1516,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).OutputPrefix
 - uid: CommonLib.Options`1.OutputPrefix*
   name: OutputPrefix
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_OutputPrefix_
   commentId: Overload:CommonLib.Options`1.OutputPrefix
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.OutputPrefix
@@ -1525,7 +1525,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).OutputPrefix
 - uid: CommonLib.Options`1.OverrideUserName
   name: OverrideUserName
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_OverrideUserName
   commentId: P:CommonLib.Options`1.OverrideUserName
   fullName: CommonLib.Options<CollectionMethodResolved>.OverrideUserName
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).OverrideUserName
@@ -1533,7 +1533,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).OverrideUserName
 - uid: CommonLib.Options`1.OverrideUserName*
   name: OverrideUserName
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_OverrideUserName_
   commentId: Overload:CommonLib.Options`1.OverrideUserName
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.OverrideUserName
@@ -1542,7 +1542,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).OverrideUserName
 - uid: CommonLib.Options`1.PortScanTimeout
   name: PortScanTimeout
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_PortScanTimeout
   commentId: P:CommonLib.Options`1.PortScanTimeout
   fullName: CommonLib.Options<CollectionMethodResolved>.PortScanTimeout
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).PortScanTimeout
@@ -1550,7 +1550,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).PortScanTimeout
 - uid: CommonLib.Options`1.PortScanTimeout*
   name: PortScanTimeout
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_PortScanTimeout_
   commentId: Overload:CommonLib.Options`1.PortScanTimeout
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.PortScanTimeout
@@ -1559,7 +1559,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).PortScanTimeout
 - uid: CommonLib.Options`1.PrettyJson
   name: PrettyJson
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_PrettyJson
   commentId: P:CommonLib.Options`1.PrettyJson
   fullName: CommonLib.Options<CollectionMethodResolved>.PrettyJson
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).PrettyJson
@@ -1567,7 +1567,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).PrettyJson
 - uid: CommonLib.Options`1.PrettyJson*
   name: PrettyJson
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_PrettyJson_
   commentId: Overload:CommonLib.Options`1.PrettyJson
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.PrettyJson
@@ -1576,7 +1576,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).PrettyJson
 - uid: CommonLib.Options`1.RandomizeFilenames
   name: RandomizeFilenames
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_RandomizeFilenames
   commentId: P:CommonLib.Options`1.RandomizeFilenames
   fullName: CommonLib.Options<CollectionMethodResolved>.RandomizeFilenames
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).RandomizeFilenames
@@ -1584,7 +1584,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).RandomizeFilenames
 - uid: CommonLib.Options`1.RandomizeFilenames*
   name: RandomizeFilenames
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_RandomizeFilenames_
   commentId: Overload:CommonLib.Options`1.RandomizeFilenames
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.RandomizeFilenames
@@ -1593,7 +1593,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).RandomizeFilenames
 - uid: CommonLib.Options`1.RealDNSName
   name: RealDNSName
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_RealDNSName
   commentId: P:CommonLib.Options`1.RealDNSName
   fullName: CommonLib.Options<CollectionMethodResolved>.RealDNSName
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).RealDNSName
@@ -1601,7 +1601,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).RealDNSName
 - uid: CommonLib.Options`1.RealDNSName*
   name: RealDNSName
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_RealDNSName_
   commentId: Overload:CommonLib.Options`1.RealDNSName
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.RealDNSName
@@ -1610,7 +1610,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).RealDNSName
 - uid: CommonLib.Options`1.SearchBase
   name: SearchBase
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_SearchBase
   commentId: P:CommonLib.Options`1.SearchBase
   fullName: CommonLib.Options<CollectionMethodResolved>.SearchBase
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SearchBase
@@ -1618,7 +1618,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).SearchBase
 - uid: CommonLib.Options`1.SearchBase*
   name: SearchBase
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_SearchBase_
   commentId: Overload:CommonLib.Options`1.SearchBase
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.SearchBase
@@ -1627,7 +1627,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).SearchBase
 - uid: CommonLib.Options`1.SecureLDAP
   name: SecureLDAP
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_SecureLDAP
   commentId: P:CommonLib.Options`1.SecureLDAP
   fullName: CommonLib.Options<CollectionMethodResolved>.SecureLDAP
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SecureLDAP
@@ -1635,7 +1635,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).SecureLDAP
 - uid: CommonLib.Options`1.SecureLDAP*
   name: SecureLDAP
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_SecureLDAP_
   commentId: Overload:CommonLib.Options`1.SecureLDAP
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.SecureLDAP
@@ -1644,7 +1644,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).SecureLDAP
 - uid: CommonLib.Options`1.SkipPortScan
   name: SkipPortScan
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_SkipPortScan
   commentId: P:CommonLib.Options`1.SkipPortScan
   fullName: CommonLib.Options<CollectionMethodResolved>.SkipPortScan
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).SkipPortScan
@@ -1652,7 +1652,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).SkipPortScan
 - uid: CommonLib.Options`1.SkipPortScan*
   name: SkipPortScan
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_SkipPortScan_
   commentId: Overload:CommonLib.Options`1.SkipPortScan
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.SkipPortScan
@@ -1661,7 +1661,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).SkipPortScan
 - uid: CommonLib.Options`1.StatusInterval
   name: StatusInterval
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_StatusInterval
   commentId: P:CommonLib.Options`1.StatusInterval
   fullName: CommonLib.Options<CollectionMethodResolved>.StatusInterval
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).StatusInterval
@@ -1669,7 +1669,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).StatusInterval
 - uid: CommonLib.Options`1.StatusInterval*
   name: StatusInterval
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_StatusInterval_
   commentId: Overload:CommonLib.Options`1.StatusInterval
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.StatusInterval
@@ -1678,7 +1678,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).StatusInterval
 - uid: CommonLib.Options`1.Stealth
   name: Stealth
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Stealth
   commentId: P:CommonLib.Options`1.Stealth
   fullName: CommonLib.Options<CollectionMethodResolved>.Stealth
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Stealth
@@ -1686,7 +1686,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Stealth
 - uid: CommonLib.Options`1.Stealth*
   name: Stealth
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Stealth_
   commentId: Overload:CommonLib.Options`1.Stealth
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.Stealth
@@ -1695,7 +1695,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Stealth
 - uid: CommonLib.Options`1.Throttle
   name: Throttle
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Throttle
   commentId: P:CommonLib.Options`1.Throttle
   fullName: CommonLib.Options<CollectionMethodResolved>.Throttle
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Throttle
@@ -1703,7 +1703,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Throttle
 - uid: CommonLib.Options`1.Throttle*
   name: Throttle
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Throttle_
   commentId: Overload:CommonLib.Options`1.Throttle
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.Throttle
@@ -1712,7 +1712,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Throttle
 - uid: CommonLib.Options`1.Verbose
   name: Verbose
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Verbose
   commentId: P:CommonLib.Options`1.Verbose
   fullName: CommonLib.Options<CollectionMethodResolved>.Verbose
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).Verbose
@@ -1720,7 +1720,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Verbose
 - uid: CommonLib.Options`1.Verbose*
   name: Verbose
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_Verbose_
   commentId: Overload:CommonLib.Options`1.Verbose
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.Verbose
@@ -1729,7 +1729,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).Verbose
 - uid: CommonLib.Options`1.WindowsOnly
   name: WindowsOnly
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_WindowsOnly
   commentId: P:CommonLib.Options`1.WindowsOnly
   fullName: CommonLib.Options<CollectionMethodResolved>.WindowsOnly
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).WindowsOnly
@@ -1737,7 +1737,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).WindowsOnly
 - uid: CommonLib.Options`1.WindowsOnly*
   name: WindowsOnly
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_WindowsOnly_
   commentId: Overload:CommonLib.Options`1.WindowsOnly
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.WindowsOnly
@@ -1746,7 +1746,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).WindowsOnly
 - uid: CommonLib.Options`1.ZipFilename
   name: ZipFilename
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_ZipFilename
   commentId: P:CommonLib.Options`1.ZipFilename
   fullName: CommonLib.Options<CollectionMethodResolved>.ZipFilename
   fullName.vb: CommonLib.Options(Of CollectionMethodResolved).ZipFilename
@@ -1754,7 +1754,7 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).ZipFilename
 - uid: CommonLib.Options`1.ZipFilename*
   name: ZipFilename
-  href: api/CommonLib.Options-1.yml
+  href: api/CommonLib.Options-1.html#CommonLib_Options_1_ZipFilename_
   commentId: Overload:CommonLib.Options`1.ZipFilename
   isSpec: "True"
   fullName: CommonLib.Options<CollectionMethodResolved>.ZipFilename
@@ -1763,1227 +1763,1227 @@ references:
   nameWithType.vb: Options(Of CollectionMethodResolved).ZipFilename
 - uid: CommonLib.Output
   name: CommonLib.Output
-  href: api/CommonLib.Output.yml
+  href: api/CommonLib.Output.html
   commentId: N:CommonLib.Output
   fullName: CommonLib.Output
   nameWithType: CommonLib.Output
 - uid: CommonLib.Output.ACE
   name: ACE
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html
   commentId: T:CommonLib.Output.ACE
   fullName: CommonLib.Output.ACE
   nameWithType: ACE
 - uid: CommonLib.Output.ACE.AceType
   name: AceType
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_AceType
   commentId: P:CommonLib.Output.ACE.AceType
   fullName: CommonLib.Output.ACE.AceType
   nameWithType: ACE.AceType
 - uid: CommonLib.Output.ACE.AceType*
   name: AceType
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_AceType_
   commentId: Overload:CommonLib.Output.ACE.AceType
   isSpec: "True"
   fullName: CommonLib.Output.ACE.AceType
   nameWithType: ACE.AceType
 - uid: CommonLib.Output.ACE.IsInherited
   name: IsInherited
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_IsInherited
   commentId: P:CommonLib.Output.ACE.IsInherited
   fullName: CommonLib.Output.ACE.IsInherited
   nameWithType: ACE.IsInherited
 - uid: CommonLib.Output.ACE.IsInherited*
   name: IsInherited
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_IsInherited_
   commentId: Overload:CommonLib.Output.ACE.IsInherited
   isSpec: "True"
   fullName: CommonLib.Output.ACE.IsInherited
   nameWithType: ACE.IsInherited
 - uid: CommonLib.Output.ACE.PrincipalSID
   name: PrincipalSID
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_PrincipalSID
   commentId: P:CommonLib.Output.ACE.PrincipalSID
   fullName: CommonLib.Output.ACE.PrincipalSID
   nameWithType: ACE.PrincipalSID
 - uid: CommonLib.Output.ACE.PrincipalSID*
   name: PrincipalSID
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_PrincipalSID_
   commentId: Overload:CommonLib.Output.ACE.PrincipalSID
   isSpec: "True"
   fullName: CommonLib.Output.ACE.PrincipalSID
   nameWithType: ACE.PrincipalSID
 - uid: CommonLib.Output.ACE.PrincipalType
   name: PrincipalType
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_PrincipalType
   commentId: P:CommonLib.Output.ACE.PrincipalType
   fullName: CommonLib.Output.ACE.PrincipalType
   nameWithType: ACE.PrincipalType
 - uid: CommonLib.Output.ACE.PrincipalType*
   name: PrincipalType
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_PrincipalType_
   commentId: Overload:CommonLib.Output.ACE.PrincipalType
   isSpec: "True"
   fullName: CommonLib.Output.ACE.PrincipalType
   nameWithType: ACE.PrincipalType
 - uid: CommonLib.Output.ACE.RightName
   name: RightName
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_RightName
   commentId: P:CommonLib.Output.ACE.RightName
   fullName: CommonLib.Output.ACE.RightName
   nameWithType: ACE.RightName
 - uid: CommonLib.Output.ACE.RightName*
   name: RightName
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_RightName_
   commentId: Overload:CommonLib.Output.ACE.RightName
   isSpec: "True"
   fullName: CommonLib.Output.ACE.RightName
   nameWithType: ACE.RightName
 - uid: CommonLib.Output.ACE.ToString
   name: ToString()
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_ToString
   commentId: M:CommonLib.Output.ACE.ToString
   fullName: CommonLib.Output.ACE.ToString()
   nameWithType: ACE.ToString()
 - uid: CommonLib.Output.ACE.ToString*
   name: ToString
-  href: api/CommonLib.Output.ACE.yml
+  href: api/CommonLib.Output.ACE.html#CommonLib_Output_ACE_ToString_
   commentId: Overload:CommonLib.Output.ACE.ToString
   isSpec: "True"
   fullName: CommonLib.Output.ACE.ToString
   nameWithType: ACE.ToString
 - uid: CommonLib.Output.ACERightNames
   name: ACERightNames
-  href: api/CommonLib.Output.ACERightNames.yml
+  href: api/CommonLib.Output.ACERightNames.html
   commentId: T:CommonLib.Output.ACERightNames
   fullName: CommonLib.Output.ACERightNames
   nameWithType: ACERightNames
 - uid: CommonLib.Output.ACERightNames.GenericAll
   name: GenericAll
-  href: api/CommonLib.Output.ACERightNames.yml
+  href: api/CommonLib.Output.ACERightNames.html#CommonLib_Output_ACERightNames_GenericAll
   commentId: F:CommonLib.Output.ACERightNames.GenericAll
   fullName: CommonLib.Output.ACERightNames.GenericAll
   nameWithType: ACERightNames.GenericAll
 - uid: CommonLib.Output.ACERightNames.GenericWrite
   name: GenericWrite
-  href: api/CommonLib.Output.ACERightNames.yml
+  href: api/CommonLib.Output.ACERightNames.html#CommonLib_Output_ACERightNames_GenericWrite
   commentId: F:CommonLib.Output.ACERightNames.GenericWrite
   fullName: CommonLib.Output.ACERightNames.GenericWrite
   nameWithType: ACERightNames.GenericWrite
 - uid: CommonLib.Output.ACERightNames.Owns
   name: Owns
-  href: api/CommonLib.Output.ACERightNames.yml
+  href: api/CommonLib.Output.ACERightNames.html#CommonLib_Output_ACERightNames_Owns
   commentId: F:CommonLib.Output.ACERightNames.Owns
   fullName: CommonLib.Output.ACERightNames.Owns
   nameWithType: ACERightNames.Owns
 - uid: CommonLib.Output.ACERightNames.ReadGMSAPassword
   name: ReadGMSAPassword
-  href: api/CommonLib.Output.ACERightNames.yml
+  href: api/CommonLib.Output.ACERightNames.html#CommonLib_Output_ACERightNames_ReadGMSAPassword
   commentId: F:CommonLib.Output.ACERightNames.ReadGMSAPassword
   fullName: CommonLib.Output.ACERightNames.ReadGMSAPassword
   nameWithType: ACERightNames.ReadGMSAPassword
 - uid: CommonLib.Output.ACERightNames.ReadLAPSPassword
   name: ReadLAPSPassword
-  href: api/CommonLib.Output.ACERightNames.yml
+  href: api/CommonLib.Output.ACERightNames.html#CommonLib_Output_ACERightNames_ReadLAPSPassword
   commentId: F:CommonLib.Output.ACERightNames.ReadLAPSPassword
   fullName: CommonLib.Output.ACERightNames.ReadLAPSPassword
   nameWithType: ACERightNames.ReadLAPSPassword
 - uid: CommonLib.Output.ACERightNames.WriteDacl
   name: WriteDacl
-  href: api/CommonLib.Output.ACERightNames.yml
+  href: api/CommonLib.Output.ACERightNames.html#CommonLib_Output_ACERightNames_WriteDacl
   commentId: F:CommonLib.Output.ACERightNames.WriteDacl
   fullName: CommonLib.Output.ACERightNames.WriteDacl
   nameWithType: ACERightNames.WriteDacl
 - uid: CommonLib.Output.ACERightNames.WriteOwner
   name: WriteOwner
-  href: api/CommonLib.Output.ACERightNames.yml
+  href: api/CommonLib.Output.ACERightNames.html#CommonLib_Output_ACERightNames_WriteOwner
   commentId: F:CommonLib.Output.ACERightNames.WriteOwner
   fullName: CommonLib.Output.ACERightNames.WriteOwner
   nameWithType: ACERightNames.WriteOwner
 - uid: CommonLib.Output.ACETypeNames
   name: ACETypeNames
-  href: api/CommonLib.Output.ACETypeNames.yml
+  href: api/CommonLib.Output.ACETypeNames.html
   commentId: T:CommonLib.Output.ACETypeNames
   fullName: CommonLib.Output.ACETypeNames
   nameWithType: ACETypeNames
 - uid: CommonLib.Output.ACETypeNames.AddAllowedToAct
   name: AddAllowedToAct
-  href: api/CommonLib.Output.ACETypeNames.yml
+  href: api/CommonLib.Output.ACETypeNames.html#CommonLib_Output_ACETypeNames_AddAllowedToAct
   commentId: F:CommonLib.Output.ACETypeNames.AddAllowedToAct
   fullName: CommonLib.Output.ACETypeNames.AddAllowedToAct
   nameWithType: ACETypeNames.AddAllowedToAct
 - uid: CommonLib.Output.ACETypeNames.AddMember
   name: AddMember
-  href: api/CommonLib.Output.ACETypeNames.yml
+  href: api/CommonLib.Output.ACETypeNames.html#CommonLib_Output_ACETypeNames_AddMember
   commentId: F:CommonLib.Output.ACETypeNames.AddMember
   fullName: CommonLib.Output.ACETypeNames.AddMember
   nameWithType: ACETypeNames.AddMember
 - uid: CommonLib.Output.ACETypeNames.AllExtendedRights
   name: AllExtendedRights
-  href: api/CommonLib.Output.ACETypeNames.yml
+  href: api/CommonLib.Output.ACETypeNames.html#CommonLib_Output_ACETypeNames_AllExtendedRights
   commentId: F:CommonLib.Output.ACETypeNames.AllExtendedRights
   fullName: CommonLib.Output.ACETypeNames.AllExtendedRights
   nameWithType: ACETypeNames.AllExtendedRights
 - uid: CommonLib.Output.ACETypeNames.ForceChangePassword
   name: ForceChangePassword
-  href: api/CommonLib.Output.ACETypeNames.yml
+  href: api/CommonLib.Output.ACETypeNames.html#CommonLib_Output_ACETypeNames_ForceChangePassword
   commentId: F:CommonLib.Output.ACETypeNames.ForceChangePassword
   fullName: CommonLib.Output.ACETypeNames.ForceChangePassword
   nameWithType: ACETypeNames.ForceChangePassword
 - uid: CommonLib.Output.ACETypeNames.GetChanges
   name: GetChanges
-  href: api/CommonLib.Output.ACETypeNames.yml
+  href: api/CommonLib.Output.ACETypeNames.html#CommonLib_Output_ACETypeNames_GetChanges
   commentId: F:CommonLib.Output.ACETypeNames.GetChanges
   fullName: CommonLib.Output.ACETypeNames.GetChanges
   nameWithType: ACETypeNames.GetChanges
 - uid: CommonLib.Output.ACETypeNames.GetChangesAll
   name: GetChangesAll
-  href: api/CommonLib.Output.ACETypeNames.yml
+  href: api/CommonLib.Output.ACETypeNames.html#CommonLib_Output_ACETypeNames_GetChangesAll
   commentId: F:CommonLib.Output.ACETypeNames.GetChangesAll
   fullName: CommonLib.Output.ACETypeNames.GetChangesAll
   nameWithType: ACETypeNames.GetChangesAll
 - uid: CommonLib.Output.Computer
   name: Computer
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html
   commentId: T:CommonLib.Output.Computer
   fullName: CommonLib.Output.Computer
   nameWithType: Computer
 - uid: CommonLib.Output.Computer.Admins
   name: Admins
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_Admins
   commentId: P:CommonLib.Output.Computer.Admins
   fullName: CommonLib.Output.Computer.Admins
   nameWithType: Computer.Admins
 - uid: CommonLib.Output.Computer.Admins*
   name: Admins
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_Admins_
   commentId: Overload:CommonLib.Output.Computer.Admins
   isSpec: "True"
   fullName: CommonLib.Output.Computer.Admins
   nameWithType: Computer.Admins
 - uid: CommonLib.Output.Computer.AllowedToAct
   name: AllowedToAct
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_AllowedToAct
   commentId: P:CommonLib.Output.Computer.AllowedToAct
   fullName: CommonLib.Output.Computer.AllowedToAct
   nameWithType: Computer.AllowedToAct
 - uid: CommonLib.Output.Computer.AllowedToAct*
   name: AllowedToAct
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_AllowedToAct_
   commentId: Overload:CommonLib.Output.Computer.AllowedToAct
   isSpec: "True"
   fullName: CommonLib.Output.Computer.AllowedToAct
   nameWithType: Computer.AllowedToAct
 - uid: CommonLib.Output.Computer.AllowedToDelegate
   name: AllowedToDelegate
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_AllowedToDelegate
   commentId: P:CommonLib.Output.Computer.AllowedToDelegate
   fullName: CommonLib.Output.Computer.AllowedToDelegate
   nameWithType: Computer.AllowedToDelegate
 - uid: CommonLib.Output.Computer.AllowedToDelegate*
   name: AllowedToDelegate
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_AllowedToDelegate_
   commentId: Overload:CommonLib.Output.Computer.AllowedToDelegate
   isSpec: "True"
   fullName: CommonLib.Output.Computer.AllowedToDelegate
   nameWithType: Computer.AllowedToDelegate
 - uid: CommonLib.Output.Computer.DcomUsers
   name: DcomUsers
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_DcomUsers
   commentId: P:CommonLib.Output.Computer.DcomUsers
   fullName: CommonLib.Output.Computer.DcomUsers
   nameWithType: Computer.DcomUsers
 - uid: CommonLib.Output.Computer.DcomUsers*
   name: DcomUsers
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_DcomUsers_
   commentId: Overload:CommonLib.Output.Computer.DcomUsers
   isSpec: "True"
   fullName: CommonLib.Output.Computer.DcomUsers
   nameWithType: Computer.DcomUsers
 - uid: CommonLib.Output.Computer.PrimaryGroupSID
   name: PrimaryGroupSID
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_PrimaryGroupSID
   commentId: P:CommonLib.Output.Computer.PrimaryGroupSID
   fullName: CommonLib.Output.Computer.PrimaryGroupSID
   nameWithType: Computer.PrimaryGroupSID
 - uid: CommonLib.Output.Computer.PrimaryGroupSID*
   name: PrimaryGroupSID
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_PrimaryGroupSID_
   commentId: Overload:CommonLib.Output.Computer.PrimaryGroupSID
   isSpec: "True"
   fullName: CommonLib.Output.Computer.PrimaryGroupSID
   nameWithType: Computer.PrimaryGroupSID
 - uid: CommonLib.Output.Computer.PSRemoteUsers
   name: PSRemoteUsers
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_PSRemoteUsers
   commentId: P:CommonLib.Output.Computer.PSRemoteUsers
   fullName: CommonLib.Output.Computer.PSRemoteUsers
   nameWithType: Computer.PSRemoteUsers
 - uid: CommonLib.Output.Computer.PSRemoteUsers*
   name: PSRemoteUsers
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_PSRemoteUsers_
   commentId: Overload:CommonLib.Output.Computer.PSRemoteUsers
   isSpec: "True"
   fullName: CommonLib.Output.Computer.PSRemoteUsers
   nameWithType: Computer.PSRemoteUsers
 - uid: CommonLib.Output.Computer.RemoteDesktopUsers
   name: RemoteDesktopUsers
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_RemoteDesktopUsers
   commentId: P:CommonLib.Output.Computer.RemoteDesktopUsers
   fullName: CommonLib.Output.Computer.RemoteDesktopUsers
   nameWithType: Computer.RemoteDesktopUsers
 - uid: CommonLib.Output.Computer.RemoteDesktopUsers*
   name: RemoteDesktopUsers
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_RemoteDesktopUsers_
   commentId: Overload:CommonLib.Output.Computer.RemoteDesktopUsers
   isSpec: "True"
   fullName: CommonLib.Output.Computer.RemoteDesktopUsers
   nameWithType: Computer.RemoteDesktopUsers
 - uid: CommonLib.Output.Computer.Sessions
   name: Sessions
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_Sessions
   commentId: P:CommonLib.Output.Computer.Sessions
   fullName: CommonLib.Output.Computer.Sessions
   nameWithType: Computer.Sessions
 - uid: CommonLib.Output.Computer.Sessions*
   name: Sessions
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_Sessions_
   commentId: Overload:CommonLib.Output.Computer.Sessions
   isSpec: "True"
   fullName: CommonLib.Output.Computer.Sessions
   nameWithType: Computer.Sessions
 - uid: CommonLib.Output.Computer.Status
   name: Status
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_Status
   commentId: P:CommonLib.Output.Computer.Status
   fullName: CommonLib.Output.Computer.Status
   nameWithType: Computer.Status
 - uid: CommonLib.Output.Computer.Status*
   name: Status
-  href: api/CommonLib.Output.Computer.yml
+  href: api/CommonLib.Output.Computer.html#CommonLib_Output_Computer_Status_
   commentId: Overload:CommonLib.Output.Computer.Status
   isSpec: "True"
   fullName: CommonLib.Output.Computer.Status
   nameWithType: Computer.Status
 - uid: CommonLib.Output.ComputerStatus
   name: ComputerStatus
-  href: api/CommonLib.Output.ComputerStatus.yml
+  href: api/CommonLib.Output.ComputerStatus.html
   commentId: T:CommonLib.Output.ComputerStatus
   fullName: CommonLib.Output.ComputerStatus
   nameWithType: ComputerStatus
 - uid: CommonLib.Output.ComputerStatus.Connectable
   name: Connectable
-  href: api/CommonLib.Output.ComputerStatus.yml
+  href: api/CommonLib.Output.ComputerStatus.html#CommonLib_Output_ComputerStatus_Connectable
   commentId: P:CommonLib.Output.ComputerStatus.Connectable
   fullName: CommonLib.Output.ComputerStatus.Connectable
   nameWithType: ComputerStatus.Connectable
 - uid: CommonLib.Output.ComputerStatus.Connectable*
   name: Connectable
-  href: api/CommonLib.Output.ComputerStatus.yml
+  href: api/CommonLib.Output.ComputerStatus.html#CommonLib_Output_ComputerStatus_Connectable_
   commentId: Overload:CommonLib.Output.ComputerStatus.Connectable
   isSpec: "True"
   fullName: CommonLib.Output.ComputerStatus.Connectable
   nameWithType: ComputerStatus.Connectable
 - uid: CommonLib.Output.ComputerStatus.Error
   name: Error
-  href: api/CommonLib.Output.ComputerStatus.yml
+  href: api/CommonLib.Output.ComputerStatus.html#CommonLib_Output_ComputerStatus_Error
   commentId: P:CommonLib.Output.ComputerStatus.Error
   fullName: CommonLib.Output.ComputerStatus.Error
   nameWithType: ComputerStatus.Error
 - uid: CommonLib.Output.ComputerStatus.Error*
   name: Error
-  href: api/CommonLib.Output.ComputerStatus.yml
+  href: api/CommonLib.Output.ComputerStatus.html#CommonLib_Output_ComputerStatus_Error_
   commentId: Overload:CommonLib.Output.ComputerStatus.Error
   isSpec: "True"
   fullName: CommonLib.Output.ComputerStatus.Error
   nameWithType: ComputerStatus.Error
 - uid: CommonLib.Output.Container
   name: Container
-  href: api/CommonLib.Output.Container.yml
+  href: api/CommonLib.Output.Container.html
   commentId: T:CommonLib.Output.Container
   fullName: CommonLib.Output.Container
   nameWithType: Container
 - uid: CommonLib.Output.Container.ChildObjects
   name: ChildObjects
-  href: api/CommonLib.Output.Container.yml
+  href: api/CommonLib.Output.Container.html#CommonLib_Output_Container_ChildObjects
   commentId: P:CommonLib.Output.Container.ChildObjects
   fullName: CommonLib.Output.Container.ChildObjects
   nameWithType: Container.ChildObjects
 - uid: CommonLib.Output.Container.ChildObjects*
   name: ChildObjects
-  href: api/CommonLib.Output.Container.yml
+  href: api/CommonLib.Output.Container.html#CommonLib_Output_Container_ChildObjects_
   commentId: Overload:CommonLib.Output.Container.ChildObjects
   isSpec: "True"
   fullName: CommonLib.Output.Container.ChildObjects
   nameWithType: Container.ChildObjects
 - uid: CommonLib.Output.ContainerProcessors
   name: ContainerProcessors
-  href: api/CommonLib.Output.ContainerProcessors.yml
+  href: api/CommonLib.Output.ContainerProcessors.html
   commentId: T:CommonLib.Output.ContainerProcessors
   fullName: CommonLib.Output.ContainerProcessors
   nameWithType: ContainerProcessors
 - uid: CommonLib.Output.ContainerProcessors.GetContainerChildObjects(System.DirectoryServices.Protocols.SearchResultEntry)
   name: GetContainerChildObjects(SearchResultEntry)
-  href: api/CommonLib.Output.ContainerProcessors.yml
+  href: api/CommonLib.Output.ContainerProcessors.html#CommonLib_Output_ContainerProcessors_GetContainerChildObjects_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Output.ContainerProcessors.GetContainerChildObjects(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Output.ContainerProcessors.GetContainerChildObjects(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: ContainerProcessors.GetContainerChildObjects(SearchResultEntry)
 - uid: CommonLib.Output.ContainerProcessors.GetContainerChildObjects*
   name: GetContainerChildObjects
-  href: api/CommonLib.Output.ContainerProcessors.yml
+  href: api/CommonLib.Output.ContainerProcessors.html#CommonLib_Output_ContainerProcessors_GetContainerChildObjects_
   commentId: Overload:CommonLib.Output.ContainerProcessors.GetContainerChildObjects
   isSpec: "True"
   fullName: CommonLib.Output.ContainerProcessors.GetContainerChildObjects
   nameWithType: ContainerProcessors.GetContainerChildObjects
 - uid: CommonLib.Output.ContainerProcessors.ReadBlocksInheritance(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadBlocksInheritance(SearchResultEntry)
-  href: api/CommonLib.Output.ContainerProcessors.yml
+  href: api/CommonLib.Output.ContainerProcessors.html#CommonLib_Output_ContainerProcessors_ReadBlocksInheritance_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Output.ContainerProcessors.ReadBlocksInheritance(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Output.ContainerProcessors.ReadBlocksInheritance(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: ContainerProcessors.ReadBlocksInheritance(SearchResultEntry)
 - uid: CommonLib.Output.ContainerProcessors.ReadBlocksInheritance*
   name: ReadBlocksInheritance
-  href: api/CommonLib.Output.ContainerProcessors.yml
+  href: api/CommonLib.Output.ContainerProcessors.html#CommonLib_Output_ContainerProcessors_ReadBlocksInheritance_
   commentId: Overload:CommonLib.Output.ContainerProcessors.ReadBlocksInheritance
   isSpec: "True"
   fullName: CommonLib.Output.ContainerProcessors.ReadBlocksInheritance
   nameWithType: ContainerProcessors.ReadBlocksInheritance
 - uid: CommonLib.Output.ContainerProcessors.ReadContainerGPLinks(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadContainerGPLinks(SearchResultEntry)
-  href: api/CommonLib.Output.ContainerProcessors.yml
+  href: api/CommonLib.Output.ContainerProcessors.html#CommonLib_Output_ContainerProcessors_ReadContainerGPLinks_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Output.ContainerProcessors.ReadContainerGPLinks(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Output.ContainerProcessors.ReadContainerGPLinks(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: ContainerProcessors.ReadContainerGPLinks(SearchResultEntry)
 - uid: CommonLib.Output.ContainerProcessors.ReadContainerGPLinks*
   name: ReadContainerGPLinks
-  href: api/CommonLib.Output.ContainerProcessors.yml
+  href: api/CommonLib.Output.ContainerProcessors.html#CommonLib_Output_ContainerProcessors_ReadContainerGPLinks_
   commentId: Overload:CommonLib.Output.ContainerProcessors.ReadContainerGPLinks
   isSpec: "True"
   fullName: CommonLib.Output.ContainerProcessors.ReadContainerGPLinks
   nameWithType: ContainerProcessors.ReadContainerGPLinks
 - uid: CommonLib.Output.Domain
   name: Domain
-  href: api/CommonLib.Output.Domain.yml
+  href: api/CommonLib.Output.Domain.html
   commentId: T:CommonLib.Output.Domain
   fullName: CommonLib.Output.Domain
   nameWithType: Domain
 - uid: CommonLib.Output.Domain.ChildObjects
   name: ChildObjects
-  href: api/CommonLib.Output.Domain.yml
+  href: api/CommonLib.Output.Domain.html#CommonLib_Output_Domain_ChildObjects
   commentId: P:CommonLib.Output.Domain.ChildObjects
   fullName: CommonLib.Output.Domain.ChildObjects
   nameWithType: Domain.ChildObjects
 - uid: CommonLib.Output.Domain.ChildObjects*
   name: ChildObjects
-  href: api/CommonLib.Output.Domain.yml
+  href: api/CommonLib.Output.Domain.html#CommonLib_Output_Domain_ChildObjects_
   commentId: Overload:CommonLib.Output.Domain.ChildObjects
   isSpec: "True"
   fullName: CommonLib.Output.Domain.ChildObjects
   nameWithType: Domain.ChildObjects
 - uid: CommonLib.Output.Domain.GPLinks
   name: GPLinks
-  href: api/CommonLib.Output.Domain.yml
+  href: api/CommonLib.Output.Domain.html#CommonLib_Output_Domain_GPLinks
   commentId: P:CommonLib.Output.Domain.GPLinks
   fullName: CommonLib.Output.Domain.GPLinks
   nameWithType: Domain.GPLinks
 - uid: CommonLib.Output.Domain.GPLinks*
   name: GPLinks
-  href: api/CommonLib.Output.Domain.yml
+  href: api/CommonLib.Output.Domain.html#CommonLib_Output_Domain_GPLinks_
   commentId: Overload:CommonLib.Output.Domain.GPLinks
   isSpec: "True"
   fullName: CommonLib.Output.Domain.GPLinks
   nameWithType: Domain.GPLinks
 - uid: CommonLib.Output.Domain.Trusts
   name: Trusts
-  href: api/CommonLib.Output.Domain.yml
+  href: api/CommonLib.Output.Domain.html#CommonLib_Output_Domain_Trusts
   commentId: P:CommonLib.Output.Domain.Trusts
   fullName: CommonLib.Output.Domain.Trusts
   nameWithType: Domain.Trusts
 - uid: CommonLib.Output.Domain.Trusts*
   name: Trusts
-  href: api/CommonLib.Output.Domain.yml
+  href: api/CommonLib.Output.Domain.html#CommonLib_Output_Domain_Trusts_
   commentId: Overload:CommonLib.Output.Domain.Trusts
   isSpec: "True"
   fullName: CommonLib.Output.Domain.Trusts
   nameWithType: Domain.Trusts
 - uid: CommonLib.Output.DomainTrust
   name: DomainTrust
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html
   commentId: T:CommonLib.Output.DomainTrust
   fullName: CommonLib.Output.DomainTrust
   nameWithType: DomainTrust
 - uid: CommonLib.Output.DomainTrust.IsTransitive
   name: IsTransitive
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_IsTransitive
   commentId: P:CommonLib.Output.DomainTrust.IsTransitive
   fullName: CommonLib.Output.DomainTrust.IsTransitive
   nameWithType: DomainTrust.IsTransitive
 - uid: CommonLib.Output.DomainTrust.IsTransitive*
   name: IsTransitive
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_IsTransitive_
   commentId: Overload:CommonLib.Output.DomainTrust.IsTransitive
   isSpec: "True"
   fullName: CommonLib.Output.DomainTrust.IsTransitive
   nameWithType: DomainTrust.IsTransitive
 - uid: CommonLib.Output.DomainTrust.SidFilteringEnabled
   name: SidFilteringEnabled
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_SidFilteringEnabled
   commentId: P:CommonLib.Output.DomainTrust.SidFilteringEnabled
   fullName: CommonLib.Output.DomainTrust.SidFilteringEnabled
   nameWithType: DomainTrust.SidFilteringEnabled
 - uid: CommonLib.Output.DomainTrust.SidFilteringEnabled*
   name: SidFilteringEnabled
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_SidFilteringEnabled_
   commentId: Overload:CommonLib.Output.DomainTrust.SidFilteringEnabled
   isSpec: "True"
   fullName: CommonLib.Output.DomainTrust.SidFilteringEnabled
   nameWithType: DomainTrust.SidFilteringEnabled
 - uid: CommonLib.Output.DomainTrust.TargetDomainName
   name: TargetDomainName
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_TargetDomainName
   commentId: P:CommonLib.Output.DomainTrust.TargetDomainName
   fullName: CommonLib.Output.DomainTrust.TargetDomainName
   nameWithType: DomainTrust.TargetDomainName
 - uid: CommonLib.Output.DomainTrust.TargetDomainName*
   name: TargetDomainName
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_TargetDomainName_
   commentId: Overload:CommonLib.Output.DomainTrust.TargetDomainName
   isSpec: "True"
   fullName: CommonLib.Output.DomainTrust.TargetDomainName
   nameWithType: DomainTrust.TargetDomainName
 - uid: CommonLib.Output.DomainTrust.TargetDomainSid
   name: TargetDomainSid
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_TargetDomainSid
   commentId: P:CommonLib.Output.DomainTrust.TargetDomainSid
   fullName: CommonLib.Output.DomainTrust.TargetDomainSid
   nameWithType: DomainTrust.TargetDomainSid
 - uid: CommonLib.Output.DomainTrust.TargetDomainSid*
   name: TargetDomainSid
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_TargetDomainSid_
   commentId: Overload:CommonLib.Output.DomainTrust.TargetDomainSid
   isSpec: "True"
   fullName: CommonLib.Output.DomainTrust.TargetDomainSid
   nameWithType: DomainTrust.TargetDomainSid
 - uid: CommonLib.Output.DomainTrust.TrustDirection
   name: TrustDirection
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_TrustDirection
   commentId: P:CommonLib.Output.DomainTrust.TrustDirection
   fullName: CommonLib.Output.DomainTrust.TrustDirection
   nameWithType: DomainTrust.TrustDirection
 - uid: CommonLib.Output.DomainTrust.TrustDirection*
   name: TrustDirection
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_TrustDirection_
   commentId: Overload:CommonLib.Output.DomainTrust.TrustDirection
   isSpec: "True"
   fullName: CommonLib.Output.DomainTrust.TrustDirection
   nameWithType: DomainTrust.TrustDirection
 - uid: CommonLib.Output.DomainTrust.TrustType
   name: TrustType
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_TrustType
   commentId: P:CommonLib.Output.DomainTrust.TrustType
   fullName: CommonLib.Output.DomainTrust.TrustType
   nameWithType: DomainTrust.TrustType
 - uid: CommonLib.Output.DomainTrust.TrustType*
   name: TrustType
-  href: api/CommonLib.Output.DomainTrust.yml
+  href: api/CommonLib.Output.DomainTrust.html#CommonLib_Output_DomainTrust_TrustType_
   commentId: Overload:CommonLib.Output.DomainTrust.TrustType
   isSpec: "True"
   fullName: CommonLib.Output.DomainTrust.TrustType
   nameWithType: DomainTrust.TrustType
 - uid: CommonLib.Output.GPLink
   name: GPLink
-  href: api/CommonLib.Output.GPLink.yml
+  href: api/CommonLib.Output.GPLink.html
   commentId: T:CommonLib.Output.GPLink
   fullName: CommonLib.Output.GPLink
   nameWithType: GPLink
 - uid: CommonLib.Output.GPLink.GUID
   name: GUID
-  href: api/CommonLib.Output.GPLink.yml
+  href: api/CommonLib.Output.GPLink.html#CommonLib_Output_GPLink_GUID
   commentId: P:CommonLib.Output.GPLink.GUID
   fullName: CommonLib.Output.GPLink.GUID
   nameWithType: GPLink.GUID
 - uid: CommonLib.Output.GPLink.GUID*
   name: GUID
-  href: api/CommonLib.Output.GPLink.yml
+  href: api/CommonLib.Output.GPLink.html#CommonLib_Output_GPLink_GUID_
   commentId: Overload:CommonLib.Output.GPLink.GUID
   isSpec: "True"
   fullName: CommonLib.Output.GPLink.GUID
   nameWithType: GPLink.GUID
 - uid: CommonLib.Output.GPLink.IsEnforced
   name: IsEnforced
-  href: api/CommonLib.Output.GPLink.yml
+  href: api/CommonLib.Output.GPLink.html#CommonLib_Output_GPLink_IsEnforced
   commentId: P:CommonLib.Output.GPLink.IsEnforced
   fullName: CommonLib.Output.GPLink.IsEnforced
   nameWithType: GPLink.IsEnforced
 - uid: CommonLib.Output.GPLink.IsEnforced*
   name: IsEnforced
-  href: api/CommonLib.Output.GPLink.yml
+  href: api/CommonLib.Output.GPLink.html#CommonLib_Output_GPLink_IsEnforced_
   commentId: Overload:CommonLib.Output.GPLink.IsEnforced
   isSpec: "True"
   fullName: CommonLib.Output.GPLink.IsEnforced
   nameWithType: GPLink.IsEnforced
 - uid: CommonLib.Output.GPO
   name: GPO
-  href: api/CommonLib.Output.GPO.yml
+  href: api/CommonLib.Output.GPO.html
   commentId: T:CommonLib.Output.GPO
   fullName: CommonLib.Output.GPO
   nameWithType: GPO
 - uid: CommonLib.Output.Group
   name: Group
-  href: api/CommonLib.Output.Group.yml
+  href: api/CommonLib.Output.Group.html
   commentId: T:CommonLib.Output.Group
   fullName: CommonLib.Output.Group
   nameWithType: Group
 - uid: CommonLib.Output.Group.Members
   name: Members
-  href: api/CommonLib.Output.Group.yml
+  href: api/CommonLib.Output.Group.html#CommonLib_Output_Group_Members
   commentId: P:CommonLib.Output.Group.Members
   fullName: CommonLib.Output.Group.Members
   nameWithType: Group.Members
 - uid: CommonLib.Output.Group.Members*
   name: Members
-  href: api/CommonLib.Output.Group.yml
+  href: api/CommonLib.Output.Group.html#CommonLib_Output_Group_Members_
   commentId: Overload:CommonLib.Output.Group.Members
   isSpec: "True"
   fullName: CommonLib.Output.Group.Members
   nameWithType: Group.Members
 - uid: CommonLib.Output.LocalGroupResult
   name: LocalGroupResult
-  href: api/CommonLib.Output.LocalGroupResult.yml
+  href: api/CommonLib.Output.LocalGroupResult.html
   commentId: T:CommonLib.Output.LocalGroupResult
   fullName: CommonLib.Output.LocalGroupResult
   nameWithType: LocalGroupResult
 - uid: CommonLib.Output.OU
   name: OU
-  href: api/CommonLib.Output.OU.yml
+  href: api/CommonLib.Output.OU.html
   commentId: T:CommonLib.Output.OU
   fullName: CommonLib.Output.OU
   nameWithType: OU
 - uid: CommonLib.Output.OU.ChildObjects
   name: ChildObjects
-  href: api/CommonLib.Output.OU.yml
+  href: api/CommonLib.Output.OU.html#CommonLib_Output_OU_ChildObjects
   commentId: P:CommonLib.Output.OU.ChildObjects
   fullName: CommonLib.Output.OU.ChildObjects
   nameWithType: OU.ChildObjects
 - uid: CommonLib.Output.OU.ChildObjects*
   name: ChildObjects
-  href: api/CommonLib.Output.OU.yml
+  href: api/CommonLib.Output.OU.html#CommonLib_Output_OU_ChildObjects_
   commentId: Overload:CommonLib.Output.OU.ChildObjects
   isSpec: "True"
   fullName: CommonLib.Output.OU.ChildObjects
   nameWithType: OU.ChildObjects
 - uid: CommonLib.Output.OU.Links
   name: Links
-  href: api/CommonLib.Output.OU.yml
+  href: api/CommonLib.Output.OU.html#CommonLib_Output_OU_Links
   commentId: P:CommonLib.Output.OU.Links
   fullName: CommonLib.Output.OU.Links
   nameWithType: OU.Links
 - uid: CommonLib.Output.OU.Links*
   name: Links
-  href: api/CommonLib.Output.OU.yml
+  href: api/CommonLib.Output.OU.html#CommonLib_Output_OU_Links_
   commentId: Overload:CommonLib.Output.OU.Links
   isSpec: "True"
   fullName: CommonLib.Output.OU.Links
   nameWithType: OU.Links
 - uid: CommonLib.Output.OutputBase
   name: OutputBase
-  href: api/CommonLib.Output.OutputBase.yml
+  href: api/CommonLib.Output.OutputBase.html
   commentId: T:CommonLib.Output.OutputBase
   fullName: CommonLib.Output.OutputBase
   nameWithType: OutputBase
 - uid: CommonLib.Output.OutputBase.Aces
   name: Aces
-  href: api/CommonLib.Output.OutputBase.yml
+  href: api/CommonLib.Output.OutputBase.html#CommonLib_Output_OutputBase_Aces
   commentId: P:CommonLib.Output.OutputBase.Aces
   fullName: CommonLib.Output.OutputBase.Aces
   nameWithType: OutputBase.Aces
 - uid: CommonLib.Output.OutputBase.Aces*
   name: Aces
-  href: api/CommonLib.Output.OutputBase.yml
+  href: api/CommonLib.Output.OutputBase.html#CommonLib_Output_OutputBase_Aces_
   commentId: Overload:CommonLib.Output.OutputBase.Aces
   isSpec: "True"
   fullName: CommonLib.Output.OutputBase.Aces
   nameWithType: OutputBase.Aces
 - uid: CommonLib.Output.OutputBase.IsDeleted
   name: IsDeleted
-  href: api/CommonLib.Output.OutputBase.yml
+  href: api/CommonLib.Output.OutputBase.html#CommonLib_Output_OutputBase_IsDeleted
   commentId: P:CommonLib.Output.OutputBase.IsDeleted
   fullName: CommonLib.Output.OutputBase.IsDeleted
   nameWithType: OutputBase.IsDeleted
 - uid: CommonLib.Output.OutputBase.IsDeleted*
   name: IsDeleted
-  href: api/CommonLib.Output.OutputBase.yml
+  href: api/CommonLib.Output.OutputBase.html#CommonLib_Output_OutputBase_IsDeleted_
   commentId: Overload:CommonLib.Output.OutputBase.IsDeleted
   isSpec: "True"
   fullName: CommonLib.Output.OutputBase.IsDeleted
   nameWithType: OutputBase.IsDeleted
 - uid: CommonLib.Output.OutputBase.ObjectIdentifier
   name: ObjectIdentifier
-  href: api/CommonLib.Output.OutputBase.yml
+  href: api/CommonLib.Output.OutputBase.html#CommonLib_Output_OutputBase_ObjectIdentifier
   commentId: P:CommonLib.Output.OutputBase.ObjectIdentifier
   fullName: CommonLib.Output.OutputBase.ObjectIdentifier
   nameWithType: OutputBase.ObjectIdentifier
 - uid: CommonLib.Output.OutputBase.ObjectIdentifier*
   name: ObjectIdentifier
-  href: api/CommonLib.Output.OutputBase.yml
+  href: api/CommonLib.Output.OutputBase.html#CommonLib_Output_OutputBase_ObjectIdentifier_
   commentId: Overload:CommonLib.Output.OutputBase.ObjectIdentifier
   isSpec: "True"
   fullName: CommonLib.Output.OutputBase.ObjectIdentifier
   nameWithType: OutputBase.ObjectIdentifier
 - uid: CommonLib.Output.OutputBase.Properties
   name: Properties
-  href: api/CommonLib.Output.OutputBase.yml
+  href: api/CommonLib.Output.OutputBase.html#CommonLib_Output_OutputBase_Properties
   commentId: F:CommonLib.Output.OutputBase.Properties
   fullName: CommonLib.Output.OutputBase.Properties
   nameWithType: OutputBase.Properties
 - uid: CommonLib.Output.Session
   name: Session
-  href: api/CommonLib.Output.Session.yml
+  href: api/CommonLib.Output.Session.html
   commentId: T:CommonLib.Output.Session
   fullName: CommonLib.Output.Session
   nameWithType: Session
 - uid: CommonLib.Output.Session.Computer
   name: Computer
-  href: api/CommonLib.Output.Session.yml
+  href: api/CommonLib.Output.Session.html#CommonLib_Output_Session_Computer
   commentId: P:CommonLib.Output.Session.Computer
   fullName: CommonLib.Output.Session.Computer
   nameWithType: Session.Computer
 - uid: CommonLib.Output.Session.Computer*
   name: Computer
-  href: api/CommonLib.Output.Session.yml
+  href: api/CommonLib.Output.Session.html#CommonLib_Output_Session_Computer_
   commentId: Overload:CommonLib.Output.Session.Computer
   isSpec: "True"
   fullName: CommonLib.Output.Session.Computer
   nameWithType: Session.Computer
 - uid: CommonLib.Output.Session.User
   name: User
-  href: api/CommonLib.Output.Session.yml
+  href: api/CommonLib.Output.Session.html#CommonLib_Output_Session_User
   commentId: P:CommonLib.Output.Session.User
   fullName: CommonLib.Output.Session.User
   nameWithType: Session.User
 - uid: CommonLib.Output.Session.User*
   name: User
-  href: api/CommonLib.Output.Session.yml
+  href: api/CommonLib.Output.Session.html#CommonLib_Output_Session_User_
   commentId: Overload:CommonLib.Output.Session.User
   isSpec: "True"
   fullName: CommonLib.Output.Session.User
   nameWithType: Session.User
 - uid: CommonLib.Output.SPNService
   name: SPNService
-  href: api/CommonLib.Output.SPNService.yml
+  href: api/CommonLib.Output.SPNService.html
   commentId: T:CommonLib.Output.SPNService
   fullName: CommonLib.Output.SPNService
   nameWithType: SPNService
 - uid: CommonLib.Output.SPNService.MSSQl
   name: MSSQl
-  href: api/CommonLib.Output.SPNService.yml
+  href: api/CommonLib.Output.SPNService.html#CommonLib_Output_SPNService_MSSQl
   commentId: F:CommonLib.Output.SPNService.MSSQl
   fullName: CommonLib.Output.SPNService.MSSQl
   nameWithType: SPNService.MSSQl
 - uid: CommonLib.Output.SPNTarget
   name: SPNTarget
-  href: api/CommonLib.Output.SPNTarget.yml
+  href: api/CommonLib.Output.SPNTarget.html
   commentId: T:CommonLib.Output.SPNTarget
   fullName: CommonLib.Output.SPNTarget
   nameWithType: SPNTarget
 - uid: CommonLib.Output.SPNTarget.ComputerSID
   name: ComputerSID
-  href: api/CommonLib.Output.SPNTarget.yml
+  href: api/CommonLib.Output.SPNTarget.html#CommonLib_Output_SPNTarget_ComputerSID
   commentId: P:CommonLib.Output.SPNTarget.ComputerSID
   fullName: CommonLib.Output.SPNTarget.ComputerSID
   nameWithType: SPNTarget.ComputerSID
 - uid: CommonLib.Output.SPNTarget.ComputerSID*
   name: ComputerSID
-  href: api/CommonLib.Output.SPNTarget.yml
+  href: api/CommonLib.Output.SPNTarget.html#CommonLib_Output_SPNTarget_ComputerSID_
   commentId: Overload:CommonLib.Output.SPNTarget.ComputerSID
   isSpec: "True"
   fullName: CommonLib.Output.SPNTarget.ComputerSID
   nameWithType: SPNTarget.ComputerSID
 - uid: CommonLib.Output.SPNTarget.Port
   name: Port
-  href: api/CommonLib.Output.SPNTarget.yml
+  href: api/CommonLib.Output.SPNTarget.html#CommonLib_Output_SPNTarget_Port
   commentId: P:CommonLib.Output.SPNTarget.Port
   fullName: CommonLib.Output.SPNTarget.Port
   nameWithType: SPNTarget.Port
 - uid: CommonLib.Output.SPNTarget.Port*
   name: Port
-  href: api/CommonLib.Output.SPNTarget.yml
+  href: api/CommonLib.Output.SPNTarget.html#CommonLib_Output_SPNTarget_Port_
   commentId: Overload:CommonLib.Output.SPNTarget.Port
   isSpec: "True"
   fullName: CommonLib.Output.SPNTarget.Port
   nameWithType: SPNTarget.Port
 - uid: CommonLib.Output.SPNTarget.Service
   name: Service
-  href: api/CommonLib.Output.SPNTarget.yml
+  href: api/CommonLib.Output.SPNTarget.html#CommonLib_Output_SPNTarget_Service
   commentId: P:CommonLib.Output.SPNTarget.Service
   fullName: CommonLib.Output.SPNTarget.Service
   nameWithType: SPNTarget.Service
 - uid: CommonLib.Output.SPNTarget.Service*
   name: Service
-  href: api/CommonLib.Output.SPNTarget.yml
+  href: api/CommonLib.Output.SPNTarget.html#CommonLib_Output_SPNTarget_Service_
   commentId: Overload:CommonLib.Output.SPNTarget.Service
   isSpec: "True"
   fullName: CommonLib.Output.SPNTarget.Service
   nameWithType: SPNTarget.Service
 - uid: CommonLib.Output.TrustDirection
   name: TrustDirection
-  href: api/CommonLib.Output.TrustDirection.yml
+  href: api/CommonLib.Output.TrustDirection.html
   commentId: T:CommonLib.Output.TrustDirection
   fullName: CommonLib.Output.TrustDirection
   nameWithType: TrustDirection
 - uid: CommonLib.Output.TrustDirection.Bidirectional
   name: Bidirectional
-  href: api/CommonLib.Output.TrustDirection.yml
+  href: api/CommonLib.Output.TrustDirection.html#CommonLib_Output_TrustDirection_Bidirectional
   commentId: F:CommonLib.Output.TrustDirection.Bidirectional
   fullName: CommonLib.Output.TrustDirection.Bidirectional
   nameWithType: TrustDirection.Bidirectional
 - uid: CommonLib.Output.TrustDirection.Disabled
   name: Disabled
-  href: api/CommonLib.Output.TrustDirection.yml
+  href: api/CommonLib.Output.TrustDirection.html#CommonLib_Output_TrustDirection_Disabled
   commentId: F:CommonLib.Output.TrustDirection.Disabled
   fullName: CommonLib.Output.TrustDirection.Disabled
   nameWithType: TrustDirection.Disabled
 - uid: CommonLib.Output.TrustDirection.Inbound
   name: Inbound
-  href: api/CommonLib.Output.TrustDirection.yml
+  href: api/CommonLib.Output.TrustDirection.html#CommonLib_Output_TrustDirection_Inbound
   commentId: F:CommonLib.Output.TrustDirection.Inbound
   fullName: CommonLib.Output.TrustDirection.Inbound
   nameWithType: TrustDirection.Inbound
 - uid: CommonLib.Output.TrustDirection.Outbound
   name: Outbound
-  href: api/CommonLib.Output.TrustDirection.yml
+  href: api/CommonLib.Output.TrustDirection.html#CommonLib_Output_TrustDirection_Outbound
   commentId: F:CommonLib.Output.TrustDirection.Outbound
   fullName: CommonLib.Output.TrustDirection.Outbound
   nameWithType: TrustDirection.Outbound
 - uid: CommonLib.Output.TrustType
   name: TrustType
-  href: api/CommonLib.Output.TrustType.yml
+  href: api/CommonLib.Output.TrustType.html
   commentId: T:CommonLib.Output.TrustType
   fullName: CommonLib.Output.TrustType
   nameWithType: TrustType
 - uid: CommonLib.Output.TrustType.CrossLink
   name: CrossLink
-  href: api/CommonLib.Output.TrustType.yml
+  href: api/CommonLib.Output.TrustType.html#CommonLib_Output_TrustType_CrossLink
   commentId: F:CommonLib.Output.TrustType.CrossLink
   fullName: CommonLib.Output.TrustType.CrossLink
   nameWithType: TrustType.CrossLink
 - uid: CommonLib.Output.TrustType.External
   name: External
-  href: api/CommonLib.Output.TrustType.yml
+  href: api/CommonLib.Output.TrustType.html#CommonLib_Output_TrustType_External
   commentId: F:CommonLib.Output.TrustType.External
   fullName: CommonLib.Output.TrustType.External
   nameWithType: TrustType.External
 - uid: CommonLib.Output.TrustType.Forest
   name: Forest
-  href: api/CommonLib.Output.TrustType.yml
+  href: api/CommonLib.Output.TrustType.html#CommonLib_Output_TrustType_Forest
   commentId: F:CommonLib.Output.TrustType.Forest
   fullName: CommonLib.Output.TrustType.Forest
   nameWithType: TrustType.Forest
 - uid: CommonLib.Output.TrustType.ParentChild
   name: ParentChild
-  href: api/CommonLib.Output.TrustType.yml
+  href: api/CommonLib.Output.TrustType.html#CommonLib_Output_TrustType_ParentChild
   commentId: F:CommonLib.Output.TrustType.ParentChild
   fullName: CommonLib.Output.TrustType.ParentChild
   nameWithType: TrustType.ParentChild
 - uid: CommonLib.Output.TrustType.Unknown
   name: Unknown
-  href: api/CommonLib.Output.TrustType.yml
+  href: api/CommonLib.Output.TrustType.html#CommonLib_Output_TrustType_Unknown
   commentId: F:CommonLib.Output.TrustType.Unknown
   fullName: CommonLib.Output.TrustType.Unknown
   nameWithType: TrustType.Unknown
 - uid: CommonLib.Output.TypedPrincipal
   name: TypedPrincipal
-  href: api/CommonLib.Output.TypedPrincipal.yml
+  href: api/CommonLib.Output.TypedPrincipal.html
   commentId: T:CommonLib.Output.TypedPrincipal
   fullName: CommonLib.Output.TypedPrincipal
   nameWithType: TypedPrincipal
 - uid: CommonLib.Output.TypedPrincipal.#ctor
   name: TypedPrincipal()
-  href: api/CommonLib.Output.TypedPrincipal.yml
+  href: api/CommonLib.Output.TypedPrincipal.html#CommonLib_Output_TypedPrincipal__ctor
   commentId: M:CommonLib.Output.TypedPrincipal.#ctor
   fullName: CommonLib.Output.TypedPrincipal.TypedPrincipal()
   nameWithType: TypedPrincipal.TypedPrincipal()
 - uid: CommonLib.Output.TypedPrincipal.#ctor(System.String,CommonLib.Enums.Label)
   name: TypedPrincipal(String, Label)
-  href: api/CommonLib.Output.TypedPrincipal.yml
+  href: api/CommonLib.Output.TypedPrincipal.html#CommonLib_Output_TypedPrincipal__ctor_System_String_CommonLib_Enums_Label_
   commentId: M:CommonLib.Output.TypedPrincipal.#ctor(System.String,CommonLib.Enums.Label)
   fullName: CommonLib.Output.TypedPrincipal.TypedPrincipal(System.String, CommonLib.Enums.Label)
   nameWithType: TypedPrincipal.TypedPrincipal(String, Label)
 - uid: CommonLib.Output.TypedPrincipal.#ctor*
   name: TypedPrincipal
-  href: api/CommonLib.Output.TypedPrincipal.yml
+  href: api/CommonLib.Output.TypedPrincipal.html#CommonLib_Output_TypedPrincipal__ctor_
   commentId: Overload:CommonLib.Output.TypedPrincipal.#ctor
   isSpec: "True"
   fullName: CommonLib.Output.TypedPrincipal.TypedPrincipal
   nameWithType: TypedPrincipal.TypedPrincipal
 - uid: CommonLib.Output.TypedPrincipal.ObjectIdentifier
   name: ObjectIdentifier
-  href: api/CommonLib.Output.TypedPrincipal.yml
+  href: api/CommonLib.Output.TypedPrincipal.html#CommonLib_Output_TypedPrincipal_ObjectIdentifier
   commentId: P:CommonLib.Output.TypedPrincipal.ObjectIdentifier
   fullName: CommonLib.Output.TypedPrincipal.ObjectIdentifier
   nameWithType: TypedPrincipal.ObjectIdentifier
 - uid: CommonLib.Output.TypedPrincipal.ObjectIdentifier*
   name: ObjectIdentifier
-  href: api/CommonLib.Output.TypedPrincipal.yml
+  href: api/CommonLib.Output.TypedPrincipal.html#CommonLib_Output_TypedPrincipal_ObjectIdentifier_
   commentId: Overload:CommonLib.Output.TypedPrincipal.ObjectIdentifier
   isSpec: "True"
   fullName: CommonLib.Output.TypedPrincipal.ObjectIdentifier
   nameWithType: TypedPrincipal.ObjectIdentifier
 - uid: CommonLib.Output.TypedPrincipal.ObjectType
   name: ObjectType
-  href: api/CommonLib.Output.TypedPrincipal.yml
+  href: api/CommonLib.Output.TypedPrincipal.html#CommonLib_Output_TypedPrincipal_ObjectType
   commentId: P:CommonLib.Output.TypedPrincipal.ObjectType
   fullName: CommonLib.Output.TypedPrincipal.ObjectType
   nameWithType: TypedPrincipal.ObjectType
 - uid: CommonLib.Output.TypedPrincipal.ObjectType*
   name: ObjectType
-  href: api/CommonLib.Output.TypedPrincipal.yml
+  href: api/CommonLib.Output.TypedPrincipal.html#CommonLib_Output_TypedPrincipal_ObjectType_
   commentId: Overload:CommonLib.Output.TypedPrincipal.ObjectType
   isSpec: "True"
   fullName: CommonLib.Output.TypedPrincipal.ObjectType
   nameWithType: TypedPrincipal.ObjectType
 - uid: CommonLib.Output.User
   name: User
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html
   commentId: T:CommonLib.Output.User
   fullName: CommonLib.Output.User
   nameWithType: User
 - uid: CommonLib.Output.User.AllowedToDelegate
   name: AllowedToDelegate
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html#CommonLib_Output_User_AllowedToDelegate
   commentId: P:CommonLib.Output.User.AllowedToDelegate
   fullName: CommonLib.Output.User.AllowedToDelegate
   nameWithType: User.AllowedToDelegate
 - uid: CommonLib.Output.User.AllowedToDelegate*
   name: AllowedToDelegate
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html#CommonLib_Output_User_AllowedToDelegate_
   commentId: Overload:CommonLib.Output.User.AllowedToDelegate
   isSpec: "True"
   fullName: CommonLib.Output.User.AllowedToDelegate
   nameWithType: User.AllowedToDelegate
 - uid: CommonLib.Output.User.HasSIDHistory
   name: HasSIDHistory
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html#CommonLib_Output_User_HasSIDHistory
   commentId: P:CommonLib.Output.User.HasSIDHistory
   fullName: CommonLib.Output.User.HasSIDHistory
   nameWithType: User.HasSIDHistory
 - uid: CommonLib.Output.User.HasSIDHistory*
   name: HasSIDHistory
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html#CommonLib_Output_User_HasSIDHistory_
   commentId: Overload:CommonLib.Output.User.HasSIDHistory
   isSpec: "True"
   fullName: CommonLib.Output.User.HasSIDHistory
   nameWithType: User.HasSIDHistory
 - uid: CommonLib.Output.User.PrimaryGroupSID
   name: PrimaryGroupSID
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html#CommonLib_Output_User_PrimaryGroupSID
   commentId: P:CommonLib.Output.User.PrimaryGroupSID
   fullName: CommonLib.Output.User.PrimaryGroupSID
   nameWithType: User.PrimaryGroupSID
 - uid: CommonLib.Output.User.PrimaryGroupSID*
   name: PrimaryGroupSID
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html#CommonLib_Output_User_PrimaryGroupSID_
   commentId: Overload:CommonLib.Output.User.PrimaryGroupSID
   isSpec: "True"
   fullName: CommonLib.Output.User.PrimaryGroupSID
   nameWithType: User.PrimaryGroupSID
 - uid: CommonLib.Output.User.SpnTargets
   name: SpnTargets
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html#CommonLib_Output_User_SpnTargets
   commentId: P:CommonLib.Output.User.SpnTargets
   fullName: CommonLib.Output.User.SpnTargets
   nameWithType: User.SpnTargets
 - uid: CommonLib.Output.User.SpnTargets*
   name: SpnTargets
-  href: api/CommonLib.Output.User.yml
+  href: api/CommonLib.Output.User.html#CommonLib_Output_User_SpnTargets_
   commentId: Overload:CommonLib.Output.User.SpnTargets
   isSpec: "True"
   fullName: CommonLib.Output.User.SpnTargets
   nameWithType: User.SpnTargets
 - uid: CommonLib.Processors
   name: CommonLib.Processors
-  href: api/CommonLib.Processors.yml
+  href: api/CommonLib.Processors.html
   commentId: N:CommonLib.Processors
   fullName: CommonLib.Processors
   nameWithType: CommonLib.Processors
 - uid: CommonLib.Processors.ACLProcessor
   name: ACLProcessor
-  href: api/CommonLib.Processors.ACLProcessor.yml
+  href: api/CommonLib.Processors.ACLProcessor.html
   commentId: T:CommonLib.Processors.ACLProcessor
   fullName: CommonLib.Processors.ACLProcessor
   nameWithType: ACLProcessor
 - uid: CommonLib.Processors.ACLProcessor.ProcessACL(System.DirectoryServices.Protocols.SearchResultEntry,System.String,CommonLib.Enums.Label)
   name: ProcessACL(SearchResultEntry, String, Label)
-  href: api/CommonLib.Processors.ACLProcessor.yml
+  href: api/CommonLib.Processors.ACLProcessor.html#CommonLib_Processors_ACLProcessor_ProcessACL_System_DirectoryServices_Protocols_SearchResultEntry_System_String_CommonLib_Enums_Label_
   commentId: M:CommonLib.Processors.ACLProcessor.ProcessACL(System.DirectoryServices.Protocols.SearchResultEntry,System.String,CommonLib.Enums.Label)
   fullName: CommonLib.Processors.ACLProcessor.ProcessACL(System.DirectoryServices.Protocols.SearchResultEntry, System.String, CommonLib.Enums.Label)
   nameWithType: ACLProcessor.ProcessACL(SearchResultEntry, String, Label)
 - uid: CommonLib.Processors.ACLProcessor.ProcessACL*
   name: ProcessACL
-  href: api/CommonLib.Processors.ACLProcessor.yml
+  href: api/CommonLib.Processors.ACLProcessor.html#CommonLib_Processors_ACLProcessor_ProcessACL_
   commentId: Overload:CommonLib.Processors.ACLProcessor.ProcessACL
   isSpec: "True"
   fullName: CommonLib.Processors.ACLProcessor.ProcessACL
   nameWithType: ACLProcessor.ProcessACL
 - uid: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
   name: ProcessGMSAReaders(SearchResultEntry, String)
-  href: api/CommonLib.Processors.ACLProcessor.yml
+  href: api/CommonLib.Processors.ACLProcessor.html#CommonLib_Processors_ACLProcessor_ProcessGMSAReaders_System_DirectoryServices_Protocols_SearchResultEntry_System_String_
   commentId: M:CommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
   fullName: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.DirectoryServices.Protocols.SearchResultEntry, System.String)
   nameWithType: ACLProcessor.ProcessGMSAReaders(SearchResultEntry, String)
 - uid: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders*
   name: ProcessGMSAReaders
-  href: api/CommonLib.Processors.ACLProcessor.yml
+  href: api/CommonLib.Processors.ACLProcessor.html#CommonLib_Processors_ACLProcessor_ProcessGMSAReaders_
   commentId: Overload:CommonLib.Processors.ACLProcessor.ProcessGMSAReaders
   isSpec: "True"
   fullName: CommonLib.Processors.ACLProcessor.ProcessGMSAReaders
   nameWithType: ACLProcessor.ProcessGMSAReaders
 - uid: CommonLib.Processors.ComputerProperties
   name: ComputerProperties
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html
   commentId: T:CommonLib.Processors.ComputerProperties
   fullName: CommonLib.Processors.ComputerProperties
   nameWithType: ComputerProperties
 - uid: CommonLib.Processors.ComputerProperties.AllowedToAct
   name: AllowedToAct
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html#CommonLib_Processors_ComputerProperties_AllowedToAct
   commentId: P:CommonLib.Processors.ComputerProperties.AllowedToAct
   fullName: CommonLib.Processors.ComputerProperties.AllowedToAct
   nameWithType: ComputerProperties.AllowedToAct
 - uid: CommonLib.Processors.ComputerProperties.AllowedToAct*
   name: AllowedToAct
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html#CommonLib_Processors_ComputerProperties_AllowedToAct_
   commentId: Overload:CommonLib.Processors.ComputerProperties.AllowedToAct
   isSpec: "True"
   fullName: CommonLib.Processors.ComputerProperties.AllowedToAct
   nameWithType: ComputerProperties.AllowedToAct
 - uid: CommonLib.Processors.ComputerProperties.AllowedToDelegate
   name: AllowedToDelegate
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html#CommonLib_Processors_ComputerProperties_AllowedToDelegate
   commentId: P:CommonLib.Processors.ComputerProperties.AllowedToDelegate
   fullName: CommonLib.Processors.ComputerProperties.AllowedToDelegate
   nameWithType: ComputerProperties.AllowedToDelegate
 - uid: CommonLib.Processors.ComputerProperties.AllowedToDelegate*
   name: AllowedToDelegate
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html#CommonLib_Processors_ComputerProperties_AllowedToDelegate_
   commentId: Overload:CommonLib.Processors.ComputerProperties.AllowedToDelegate
   isSpec: "True"
   fullName: CommonLib.Processors.ComputerProperties.AllowedToDelegate
   nameWithType: ComputerProperties.AllowedToDelegate
 - uid: CommonLib.Processors.ComputerProperties.Props
   name: Props
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html#CommonLib_Processors_ComputerProperties_Props
   commentId: P:CommonLib.Processors.ComputerProperties.Props
   fullName: CommonLib.Processors.ComputerProperties.Props
   nameWithType: ComputerProperties.Props
 - uid: CommonLib.Processors.ComputerProperties.Props*
   name: Props
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html#CommonLib_Processors_ComputerProperties_Props_
   commentId: Overload:CommonLib.Processors.ComputerProperties.Props
   isSpec: "True"
   fullName: CommonLib.Processors.ComputerProperties.Props
   nameWithType: ComputerProperties.Props
 - uid: CommonLib.Processors.ComputerProperties.SidHistory
   name: SidHistory
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html#CommonLib_Processors_ComputerProperties_SidHistory
   commentId: P:CommonLib.Processors.ComputerProperties.SidHistory
   fullName: CommonLib.Processors.ComputerProperties.SidHistory
   nameWithType: ComputerProperties.SidHistory
 - uid: CommonLib.Processors.ComputerProperties.SidHistory*
   name: SidHistory
-  href: api/CommonLib.Processors.ComputerProperties.yml
+  href: api/CommonLib.Processors.ComputerProperties.html#CommonLib_Processors_ComputerProperties_SidHistory_
   commentId: Overload:CommonLib.Processors.ComputerProperties.SidHistory
   isSpec: "True"
   fullName: CommonLib.Processors.ComputerProperties.SidHistory
   nameWithType: ComputerProperties.SidHistory
 - uid: CommonLib.Processors.GroupProcessors
   name: GroupProcessors
-  href: api/CommonLib.Processors.GroupProcessors.yml
+  href: api/CommonLib.Processors.GroupProcessors.html
   commentId: T:CommonLib.Processors.GroupProcessors
   fullName: CommonLib.Processors.GroupProcessors
   nameWithType: GroupProcessors
 - uid: CommonLib.Processors.GroupProcessors.GetPrimaryGroupInfo(System.DirectoryServices.Protocols.SearchResultEntry)
   name: GetPrimaryGroupInfo(SearchResultEntry)
-  href: api/CommonLib.Processors.GroupProcessors.yml
+  href: api/CommonLib.Processors.GroupProcessors.html#CommonLib_Processors_GroupProcessors_GetPrimaryGroupInfo_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Processors.GroupProcessors.GetPrimaryGroupInfo(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Processors.GroupProcessors.GetPrimaryGroupInfo(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: GroupProcessors.GetPrimaryGroupInfo(SearchResultEntry)
 - uid: CommonLib.Processors.GroupProcessors.GetPrimaryGroupInfo*
   name: GetPrimaryGroupInfo
-  href: api/CommonLib.Processors.GroupProcessors.yml
+  href: api/CommonLib.Processors.GroupProcessors.html#CommonLib_Processors_GroupProcessors_GetPrimaryGroupInfo_
   commentId: Overload:CommonLib.Processors.GroupProcessors.GetPrimaryGroupInfo
   isSpec: "True"
   fullName: CommonLib.Processors.GroupProcessors.GetPrimaryGroupInfo
   nameWithType: GroupProcessors.GetPrimaryGroupInfo
 - uid: CommonLib.Processors.GroupProcessors.ReadGroupMembers(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadGroupMembers(SearchResultEntry)
-  href: api/CommonLib.Processors.GroupProcessors.yml
+  href: api/CommonLib.Processors.GroupProcessors.html#CommonLib_Processors_GroupProcessors_ReadGroupMembers_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Processors.GroupProcessors.ReadGroupMembers(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Processors.GroupProcessors.ReadGroupMembers(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: GroupProcessors.ReadGroupMembers(SearchResultEntry)
 - uid: CommonLib.Processors.GroupProcessors.ReadGroupMembers*
   name: ReadGroupMembers
-  href: api/CommonLib.Processors.GroupProcessors.yml
+  href: api/CommonLib.Processors.GroupProcessors.html#CommonLib_Processors_GroupProcessors_ReadGroupMembers_
   commentId: Overload:CommonLib.Processors.GroupProcessors.ReadGroupMembers
   isSpec: "True"
   fullName: CommonLib.Processors.GroupProcessors.ReadGroupMembers
   nameWithType: GroupProcessors.ReadGroupMembers
 - uid: CommonLib.Processors.LDAPPropertyProcessor
   name: LDAPPropertyProcessor
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html
   commentId: T:CommonLib.Processors.LDAPPropertyProcessor
   fullName: CommonLib.Processors.LDAPPropertyProcessor
   nameWithType: LDAPPropertyProcessor
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadComputerProperties(SearchResultEntry)
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadComputerProperties_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: LDAPPropertyProcessor.ReadComputerProperties(SearchResultEntry)
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties*
   name: ReadComputerProperties
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadComputerProperties_
   commentId: Overload:CommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties
   isSpec: "True"
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties
   nameWithType: LDAPPropertyProcessor.ReadComputerProperties
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadDomainProperties(SearchResultEntry)
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadDomainProperties_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: LDAPPropertyProcessor.ReadDomainProperties(SearchResultEntry)
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties*
   name: ReadDomainProperties
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadDomainProperties_
   commentId: Overload:CommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties
   isSpec: "True"
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties
   nameWithType: LDAPPropertyProcessor.ReadDomainProperties
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadGPOProperties(SearchResultEntry)
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadGPOProperties_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: LDAPPropertyProcessor.ReadGPOProperties(SearchResultEntry)
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties*
   name: ReadGPOProperties
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadGPOProperties_
   commentId: Overload:CommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties
   isSpec: "True"
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties
   nameWithType: LDAPPropertyProcessor.ReadGPOProperties
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadGroupProperties(SearchResultEntry)
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadGroupProperties_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: LDAPPropertyProcessor.ReadGroupProperties(SearchResultEntry)
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties*
   name: ReadGroupProperties
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadGroupProperties_
   commentId: Overload:CommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties
   isSpec: "True"
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties
   nameWithType: LDAPPropertyProcessor.ReadGroupProperties
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadOUProperties(SearchResultEntry)
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadOUProperties_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: LDAPPropertyProcessor.ReadOUProperties(SearchResultEntry)
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties*
   name: ReadOUProperties
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadOUProperties_
   commentId: Overload:CommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties
   isSpec: "True"
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties
   nameWithType: LDAPPropertyProcessor.ReadOUProperties
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   name: ReadUserProperties(SearchResultEntry)
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadUserProperties_System_DirectoryServices_Protocols_SearchResultEntry_
   commentId: M:CommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(System.DirectoryServices.Protocols.SearchResultEntry)
   nameWithType: LDAPPropertyProcessor.ReadUserProperties(SearchResultEntry)
 - uid: CommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties*
   name: ReadUserProperties
-  href: api/CommonLib.Processors.LDAPPropertyProcessor.yml
+  href: api/CommonLib.Processors.LDAPPropertyProcessor.html#CommonLib_Processors_LDAPPropertyProcessor_ReadUserProperties_
   commentId: Overload:CommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties
   isSpec: "True"
   fullName: CommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties
   nameWithType: LDAPPropertyProcessor.ReadUserProperties
 - uid: CommonLib.Processors.UserProperties
   name: UserProperties
-  href: api/CommonLib.Processors.UserProperties.yml
+  href: api/CommonLib.Processors.UserProperties.html
   commentId: T:CommonLib.Processors.UserProperties
   fullName: CommonLib.Processors.UserProperties
   nameWithType: UserProperties
 - uid: CommonLib.Processors.UserProperties.AllowedToDelegate
   name: AllowedToDelegate
-  href: api/CommonLib.Processors.UserProperties.yml
+  href: api/CommonLib.Processors.UserProperties.html#CommonLib_Processors_UserProperties_AllowedToDelegate
   commentId: P:CommonLib.Processors.UserProperties.AllowedToDelegate
   fullName: CommonLib.Processors.UserProperties.AllowedToDelegate
   nameWithType: UserProperties.AllowedToDelegate
 - uid: CommonLib.Processors.UserProperties.AllowedToDelegate*
   name: AllowedToDelegate
-  href: api/CommonLib.Processors.UserProperties.yml
+  href: api/CommonLib.Processors.UserProperties.html#CommonLib_Processors_UserProperties_AllowedToDelegate_
   commentId: Overload:CommonLib.Processors.UserProperties.AllowedToDelegate
   isSpec: "True"
   fullName: CommonLib.Processors.UserProperties.AllowedToDelegate
   nameWithType: UserProperties.AllowedToDelegate
 - uid: CommonLib.Processors.UserProperties.Props
   name: Props
-  href: api/CommonLib.Processors.UserProperties.yml
+  href: api/CommonLib.Processors.UserProperties.html#CommonLib_Processors_UserProperties_Props
   commentId: P:CommonLib.Processors.UserProperties.Props
   fullName: CommonLib.Processors.UserProperties.Props
   nameWithType: UserProperties.Props
 - uid: CommonLib.Processors.UserProperties.Props*
   name: Props
-  href: api/CommonLib.Processors.UserProperties.yml
+  href: api/CommonLib.Processors.UserProperties.html#CommonLib_Processors_UserProperties_Props_
   commentId: Overload:CommonLib.Processors.UserProperties.Props
   isSpec: "True"
   fullName: CommonLib.Processors.UserProperties.Props
   nameWithType: UserProperties.Props
 - uid: CommonLib.Processors.UserProperties.SidHistory
   name: SidHistory
-  href: api/CommonLib.Processors.UserProperties.yml
+  href: api/CommonLib.Processors.UserProperties.html#CommonLib_Processors_UserProperties_SidHistory
   commentId: P:CommonLib.Processors.UserProperties.SidHistory
   fullName: CommonLib.Processors.UserProperties.SidHistory
   nameWithType: UserProperties.SidHistory
 - uid: CommonLib.Processors.UserProperties.SidHistory*
   name: SidHistory
-  href: api/CommonLib.Processors.UserProperties.yml
+  href: api/CommonLib.Processors.UserProperties.html#CommonLib_Processors_UserProperties_SidHistory_
   commentId: Overload:CommonLib.Processors.UserProperties.SidHistory
   isSpec: "True"
   fullName: CommonLib.Processors.UserProperties.SidHistory
   nameWithType: UserProperties.SidHistory
 - uid: CommonLib.RPCServer
   name: RPCServer
-  href: api/CommonLib.RPCServer.yml
+  href: api/CommonLib.RPCServer.html
   commentId: T:CommonLib.RPCServer
   fullName: CommonLib.RPCServer
   nameWithType: RPCServer
 - uid: CommonLib.RPCServer.Dispose
   name: Dispose()
-  href: api/CommonLib.RPCServer.yml
+  href: api/CommonLib.RPCServer.html#CommonLib_RPCServer_Dispose
   commentId: M:CommonLib.RPCServer.Dispose
   fullName: CommonLib.RPCServer.Dispose()
   nameWithType: RPCServer.Dispose()
 - uid: CommonLib.RPCServer.Dispose*
   name: Dispose
-  href: api/CommonLib.RPCServer.yml
+  href: api/CommonLib.RPCServer.html#CommonLib_RPCServer_Dispose_
   commentId: Overload:CommonLib.RPCServer.Dispose
   isSpec: "True"
   fullName: CommonLib.RPCServer.Dispose
   nameWithType: RPCServer.Dispose
 - uid: CommonLib.WellKnownPrincipal
   name: WellKnownPrincipal
-  href: api/CommonLib.WellKnownPrincipal.yml
+  href: api/CommonLib.WellKnownPrincipal.html
   commentId: T:CommonLib.WellKnownPrincipal
   fullName: CommonLib.WellKnownPrincipal
   nameWithType: WellKnownPrincipal
 - uid: CommonLib.WellKnownPrincipal.GetWellKnownPrincipal(System.String,CommonLib.Output.TypedPrincipal@)
   name: GetWellKnownPrincipal(String, out TypedPrincipal)
-  href: api/CommonLib.WellKnownPrincipal.yml
+  href: api/CommonLib.WellKnownPrincipal.html#CommonLib_WellKnownPrincipal_GetWellKnownPrincipal_System_String_CommonLib_Output_TypedPrincipal__
   commentId: M:CommonLib.WellKnownPrincipal.GetWellKnownPrincipal(System.String,CommonLib.Output.TypedPrincipal@)
   name.vb: GetWellKnownPrincipal(String, ByRef TypedPrincipal)
   fullName: CommonLib.WellKnownPrincipal.GetWellKnownPrincipal(System.String, out CommonLib.Output.TypedPrincipal)
@@ -2992,7 +2992,7 @@ references:
   nameWithType.vb: WellKnownPrincipal.GetWellKnownPrincipal(String, ByRef TypedPrincipal)
 - uid: CommonLib.WellKnownPrincipal.GetWellKnownPrincipal(System.String,System.String,CommonLib.Output.TypedPrincipal@)
   name: GetWellKnownPrincipal(String, String, out TypedPrincipal)
-  href: api/CommonLib.WellKnownPrincipal.yml
+  href: api/CommonLib.WellKnownPrincipal.html#CommonLib_WellKnownPrincipal_GetWellKnownPrincipal_System_String_System_String_CommonLib_Output_TypedPrincipal__
   commentId: M:CommonLib.WellKnownPrincipal.GetWellKnownPrincipal(System.String,System.String,CommonLib.Output.TypedPrincipal@)
   name.vb: GetWellKnownPrincipal(String, String, ByRef TypedPrincipal)
   fullName: CommonLib.WellKnownPrincipal.GetWellKnownPrincipal(System.String, System.String, out CommonLib.Output.TypedPrincipal)
@@ -3001,7 +3001,7 @@ references:
   nameWithType.vb: WellKnownPrincipal.GetWellKnownPrincipal(String, String, ByRef TypedPrincipal)
 - uid: CommonLib.WellKnownPrincipal.GetWellKnownPrincipal*
   name: GetWellKnownPrincipal
-  href: api/CommonLib.WellKnownPrincipal.yml
+  href: api/CommonLib.WellKnownPrincipal.html#CommonLib_WellKnownPrincipal_GetWellKnownPrincipal_
   commentId: Overload:CommonLib.WellKnownPrincipal.GetWellKnownPrincipal
   isSpec: "True"
   fullName: CommonLib.WellKnownPrincipal.GetWellKnownPrincipal

@@ -23,7 +23,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ACERightNames
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 20
@@ -31,20 +31,8 @@ items:
   - CommonLib
   namespace: CommonLib.Output
   syntax:
-    content: >-
-      [JsonConverter(typeof(StringEnumConverter))]
-
-      public enum ACERightNames
-    content.vb: >-
-      <JsonConverter(GetType(StringEnumConverter))>
-
-      Public Enum ACERightNames
-  attributes:
-  - type: Newtonsoft.Json.JsonConverterAttribute
-    ctor: Newtonsoft.Json.JsonConverterAttribute.#ctor(System.Type)
-    arguments:
-    - type: System.Type
-      value: Newtonsoft.Json.Converters.StringEnumConverter
+    content: public enum ACERightNames
+    content.vb: Public Enum ACERightNames
   modifiers.csharp:
   - public
   - enum
@@ -66,7 +54,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GenericAll
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 23
@@ -98,7 +86,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: WriteDacl
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 24
@@ -130,7 +118,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: WriteOwner
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 25
@@ -162,7 +150,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GenericWrite
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 26
@@ -194,7 +182,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Owns
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 27
@@ -226,7 +214,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ReadLAPSPassword
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 28
@@ -258,7 +246,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ReadGMSAPassword
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 29

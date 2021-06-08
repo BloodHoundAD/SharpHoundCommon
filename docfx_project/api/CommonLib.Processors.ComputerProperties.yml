@@ -20,7 +20,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ComputerProperties
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 443
@@ -61,7 +61,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Props
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 445
@@ -96,7 +96,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AllowedToDelegate
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 446
@@ -131,7 +131,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AllowedToAct
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 447
@@ -166,7 +166,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SidHistory
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 448

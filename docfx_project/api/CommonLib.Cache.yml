@@ -19,7 +19,7 @@ items:
     remote:
       path: src/CommonLib/Cache.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Cache
     path: ../src/CommonLib/Cache.cs
     startLine: 9
@@ -60,7 +60,7 @@ items:
     remote:
       path: src/CommonLib/Cache.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: CreateNewCache
     path: ../src/CommonLib/Cache.cs
     startLine: 109
@@ -92,7 +92,7 @@ items:
     remote:
       path: src/CommonLib/Cache.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LoadExistingCache
     path: ../src/CommonLib/Cache.cs
     startLine: 114
@@ -127,7 +127,7 @@ items:
     remote:
       path: src/CommonLib/Cache.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SaveCache
     path: ../src/CommonLib/Cache.cs
     startLine: 138

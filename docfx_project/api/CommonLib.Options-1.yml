@@ -56,7 +56,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Options
     path: ../src/CommonLib/Options.cs
     startLine: 9
@@ -104,7 +104,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Instance
     path: ../src/CommonLib/Options.cs
     startLine: 13
@@ -143,7 +143,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: CollectionMethods
     path: ../src/CommonLib/Options.cs
     startLine: 20
@@ -182,7 +182,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Stealth
     path: ../src/CommonLib/Options.cs
     startLine: 25
@@ -221,7 +221,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Domain
     path: ../src/CommonLib/Options.cs
     startLine: 30
@@ -260,7 +260,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: WindowsOnly
     path: ../src/CommonLib/Options.cs
     startLine: 35
@@ -299,7 +299,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ComputerFile
     path: ../src/CommonLib/Options.cs
     startLine: 40
@@ -338,7 +338,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: NoOutput
     path: ../src/CommonLib/Options.cs
     startLine: 49
@@ -377,7 +377,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: OutputDirectory
     path: ../src/CommonLib/Options.cs
     startLine: 54
@@ -416,7 +416,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: OutputPrefix
     path: ../src/CommonLib/Options.cs
     startLine: 59
@@ -455,7 +455,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: PrettyJson
     path: ../src/CommonLib/Options.cs
     startLine: 64
@@ -494,7 +494,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: CacheFilename
     path: ../src/CommonLib/Options.cs
     startLine: 70
@@ -533,7 +533,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: RandomizeFilenames
     path: ../src/CommonLib/Options.cs
     startLine: 75
@@ -572,7 +572,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ZipFilename
     path: ../src/CommonLib/Options.cs
     startLine: 80
@@ -611,7 +611,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: NoSaveCache
     path: ../src/CommonLib/Options.cs
     startLine: 85
@@ -650,7 +650,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: EncryptZip
     path: ../src/CommonLib/Options.cs
     startLine: 90
@@ -689,7 +689,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: NoZip
     path: ../src/CommonLib/Options.cs
     startLine: 95
@@ -728,7 +728,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: InvalidateCache
     path: ../src/CommonLib/Options.cs
     startLine: 100
@@ -767,7 +767,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LdapFilter
     path: ../src/CommonLib/Options.cs
     startLine: 109
@@ -806,7 +806,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DomainController
     path: ../src/CommonLib/Options.cs
     startLine: 114
@@ -845,7 +845,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LdapPort
     path: ../src/CommonLib/Options.cs
     startLine: 119
@@ -884,7 +884,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SecureLDAP
     path: ../src/CommonLib/Options.cs
     startLine: 124
@@ -923,7 +923,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DisableKerberosSigning
     path: ../src/CommonLib/Options.cs
     startLine: 129
@@ -962,7 +962,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LdapUsername
     path: ../src/CommonLib/Options.cs
     startLine: 134
@@ -1001,7 +1001,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LdapPassword
     path: ../src/CommonLib/Options.cs
     startLine: 139
@@ -1040,7 +1040,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SearchBase
     path: ../src/CommonLib/Options.cs
     startLine: 148
@@ -1079,7 +1079,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SkipPortScan
     path: ../src/CommonLib/Options.cs
     startLine: 153
@@ -1118,7 +1118,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: PortScanTimeout
     path: ../src/CommonLib/Options.cs
     startLine: 158
@@ -1157,7 +1157,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ExcludeDomainControllers
     path: ../src/CommonLib/Options.cs
     startLine: 163
@@ -1196,7 +1196,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Throttle
     path: ../src/CommonLib/Options.cs
     startLine: 168
@@ -1235,7 +1235,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Jitter
     path: ../src/CommonLib/Options.cs
     startLine: 173
@@ -1274,7 +1274,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: OverrideUserName
     path: ../src/CommonLib/Options.cs
     startLine: 178
@@ -1313,7 +1313,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: NoRegistryLoggedOn
     path: ../src/CommonLib/Options.cs
     startLine: 183
@@ -1352,7 +1352,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DumpComputerStatus
     path: ../src/CommonLib/Options.cs
     startLine: 188
@@ -1391,7 +1391,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: RealDNSName
     path: ../src/CommonLib/Options.cs
     startLine: 193
@@ -1430,7 +1430,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: CollectAllProperties
     path: ../src/CommonLib/Options.cs
     startLine: 198
@@ -1469,7 +1469,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: StatusInterval
     path: ../src/CommonLib/Options.cs
     startLine: 207
@@ -1508,7 +1508,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Verbose
     path: ../src/CommonLib/Options.cs
     startLine: 212
@@ -1547,7 +1547,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Loop
     path: ../src/CommonLib/Options.cs
     startLine: 221
@@ -1586,7 +1586,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LoopDuration
     path: ../src/CommonLib/Options.cs
     startLine: 226
@@ -1625,7 +1625,7 @@ items:
     remote:
       path: src/CommonLib/Options.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LoopInterval
     path: ../src/CommonLib/Options.cs
     startLine: 231

@@ -18,7 +18,7 @@ items:
     remote:
       path: src/CommonLib/WellKnownPrincipal.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: WellKnownPrincipal
     path: ../src/CommonLib/WellKnownPrincipal.cs
     startLine: 5
@@ -59,7 +59,7 @@ items:
     remote:
       path: src/CommonLib/WellKnownPrincipal.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GetWellKnownPrincipal
     path: ../src/CommonLib/WellKnownPrincipal.cs
     startLine: 19
@@ -103,7 +103,7 @@ items:
     remote:
       path: src/CommonLib/WellKnownPrincipal.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GetWellKnownPrincipal
     path: ../src/CommonLib/WellKnownPrincipal.cs
     startLine: 33

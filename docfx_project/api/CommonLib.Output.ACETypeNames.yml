@@ -22,7 +22,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ACETypeNames
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 32
@@ -30,20 +30,8 @@ items:
   - CommonLib
   namespace: CommonLib.Output
   syntax:
-    content: >-
-      [JsonConverter(typeof(StringEnumConverter))]
-
-      public enum ACETypeNames
-    content.vb: >-
-      <JsonConverter(GetType(StringEnumConverter))>
-
-      Public Enum ACETypeNames
-  attributes:
-  - type: Newtonsoft.Json.JsonConverterAttribute
-    ctor: Newtonsoft.Json.JsonConverterAttribute.#ctor(System.Type)
-    arguments:
-    - type: System.Type
-      value: Newtonsoft.Json.Converters.StringEnumConverter
+    content: public enum ACETypeNames
+    content.vb: Public Enum ACETypeNames
   modifiers.csharp:
   - public
   - enum
@@ -65,7 +53,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AllExtendedRights
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 35
@@ -97,7 +85,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ForceChangePassword
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 36
@@ -129,7 +117,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddMember
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 37
@@ -161,7 +149,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddAllowedToAct
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 38
@@ -193,7 +181,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GetChanges
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 39
@@ -225,7 +213,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/ACE.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GetChangesAll
     path: ../src/CommonLib/OutputTypes/ACE.cs
     startLine: 40

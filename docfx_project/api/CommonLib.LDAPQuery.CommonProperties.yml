@@ -18,7 +18,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/CommonProperties.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: CommonProperties
     path: ../src/CommonLib/LDAPQueries/CommonProperties.cs
     startLine: 2
@@ -59,7 +59,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/CommonProperties.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ResolutionProps
     path: ../src/CommonLib/LDAPQueries/CommonProperties.cs
     startLine: 4
@@ -94,7 +94,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/CommonProperties.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ObjectID
     path: ../src/CommonLib/LDAPQueries/CommonProperties.cs
     startLine: 5

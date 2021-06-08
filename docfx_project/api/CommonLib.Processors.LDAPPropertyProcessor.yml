@@ -22,7 +22,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LDAPPropertyProcessor
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 14
@@ -64,7 +64,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ReadDomainProperties
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 29
@@ -101,7 +101,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ReadGPOProperties
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 56
@@ -138,7 +138,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ReadOUProperties
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 66
@@ -175,7 +175,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ReadGroupProperties
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 75
@@ -212,7 +212,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ReadUserProperties
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 95
@@ -249,7 +249,7 @@ items:
     remote:
       path: src/CommonLib/Processors/LDAPPropertyProcessor.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ReadComputerProperties
     path: ../src/CommonLib/Processors/LDAPPropertyProcessor.cs
     startLine: 212

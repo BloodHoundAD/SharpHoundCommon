@@ -18,7 +18,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ComputerStatus
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 20
@@ -59,7 +59,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Connectable
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 22
@@ -94,7 +94,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Computer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Error
     path: ../src/CommonLib/OutputTypes/Computer.cs
     startLine: 23

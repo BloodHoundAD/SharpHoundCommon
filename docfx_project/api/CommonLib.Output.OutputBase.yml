@@ -20,7 +20,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/OutputBase.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: OutputBase
     path: ../src/CommonLib/OutputTypes/OutputBase.cs
     startLine: 7
@@ -71,7 +71,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/OutputBase.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Aces
     path: ../src/CommonLib/OutputTypes/OutputBase.cs
     startLine: 9
@@ -106,7 +106,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/OutputBase.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ObjectIdentifier
     path: ../src/CommonLib/OutputTypes/OutputBase.cs
     startLine: 10
@@ -141,7 +141,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/OutputBase.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Properties
     path: ../src/CommonLib/OutputTypes/OutputBase.cs
     startLine: 11
@@ -172,7 +172,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/OutputBase.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: IsDeleted
     path: ../src/CommonLib/OutputTypes/OutputBase.cs
     startLine: 12

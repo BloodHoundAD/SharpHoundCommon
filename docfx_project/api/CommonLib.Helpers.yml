@@ -18,7 +18,7 @@ items:
     remote:
       path: src/CommonLib/Helpers.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Helpers
     path: ../src/CommonLib/Helpers.cs
     startLine: 12
@@ -60,7 +60,7 @@ items:
     remote:
       path: src/CommonLib/Helpers.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ConvertFileTimeToUnixEpoch
     path: ../src/CommonLib/Helpers.cs
     startLine: 122
@@ -101,7 +101,7 @@ items:
     remote:
       path: src/CommonLib/Helpers.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ConvertTimestampToUnixEpoch
     path: ../src/CommonLib/Helpers.cs
     startLine: 150

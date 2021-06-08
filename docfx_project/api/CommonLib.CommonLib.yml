@@ -5,7 +5,7 @@ items:
   id: CommonLib
   parent: CommonLib
   children:
-  - CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,Microsoft.Extensions.Logging.ILogger,System.String)
+  - CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,ILogger,System.String)
   langs:
   - csharp
   - vb
@@ -17,7 +17,7 @@ items:
     remote:
       path: src/CommonLib/CommonLib.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: CommonLib
     path: ../src/CommonLib/CommonLib.cs
     startLine: 5
@@ -43,22 +43,22 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,Microsoft.Extensions.Logging.ILogger,System.String)
-  commentId: M:CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,Microsoft.Extensions.Logging.ILogger,System.String)
-  id: InitializeCommonLib(CommonLib.LDAPConfig,Microsoft.Extensions.Logging.ILogger,System.String)
+- uid: CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,ILogger,System.String)
+  commentId: M:CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,ILogger,System.String)
+  id: InitializeCommonLib(CommonLib.LDAPConfig,ILogger,System.String)
   parent: CommonLib.CommonLib
   langs:
   - csharp
   - vb
   name: InitializeCommonLib(LDAPConfig, ILogger, String)
   nameWithType: CommonLib.InitializeCommonLib(LDAPConfig, ILogger, String)
-  fullName: CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig, Microsoft.Extensions.Logging.ILogger, System.String)
+  fullName: CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig, ILogger, System.String)
   type: Method
   source:
     remote:
       path: src/CommonLib/CommonLib.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: InitializeCommonLib
     path: ../src/CommonLib/CommonLib.cs
     startLine: 7
@@ -71,7 +71,7 @@ items:
     - id: config
       type: CommonLib.LDAPConfig
     - id: log
-      type: Microsoft.Extensions.Logging.ILogger
+      type: ILogger
     - id: cachePath
       type: System.String
     content.vb: Public Shared Sub InitializeCommonLib(config As LDAPConfig, log As ILogger = Nothing, cachePath As String = Nothing)
@@ -391,13 +391,12 @@ references:
   name: LDAPConfig
   nameWithType: LDAPConfig
   fullName: CommonLib.LDAPConfig
-- uid: Microsoft.Extensions.Logging.ILogger
-  commentId: T:Microsoft.Extensions.Logging.ILogger
-  parent: Microsoft.Extensions.Logging
+- uid: ILogger
+  commentId: '!:ILogger'
   isExternal: true
   name: ILogger
   nameWithType: ILogger
-  fullName: Microsoft.Extensions.Logging.ILogger
+  fullName: ILogger
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -405,9 +404,3 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
-- uid: Microsoft.Extensions.Logging
-  commentId: N:Microsoft.Extensions.Logging
-  isExternal: true
-  name: Microsoft.Extensions.Logging
-  nameWithType: Microsoft.Extensions.Logging
-  fullName: Microsoft.Extensions.Logging

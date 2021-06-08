@@ -20,7 +20,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: TrustDirection
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 12
@@ -51,7 +51,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Disabled
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 14
@@ -83,7 +83,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Inbound
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 15
@@ -115,7 +115,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Outbound
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 16
@@ -147,7 +147,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Bidirectional
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 17

@@ -20,7 +20,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/User.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: User
     path: ../src/CommonLib/OutputTypes/User.cs
     startLine: 2
@@ -68,7 +68,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/User.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AllowedToDelegate
     path: ../src/CommonLib/OutputTypes/User.cs
     startLine: 4
@@ -103,7 +103,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/User.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: PrimaryGroupSID
     path: ../src/CommonLib/OutputTypes/User.cs
     startLine: 5
@@ -138,7 +138,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/User.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: HasSIDHistory
     path: ../src/CommonLib/OutputTypes/User.cs
     startLine: 6
@@ -173,7 +173,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/User.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SpnTargets
     path: ../src/CommonLib/OutputTypes/User.cs
     startLine: 7

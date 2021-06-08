@@ -12,7 +12,7 @@
   "CommonLib.CliBaseClient`1.MainLoop": "CommonLib.CliBaseClient-1.yml",
   "CommonLib.CliBaseClient`1.Start``1(CommonLib.Options{``0})": "CommonLib.CliBaseClient-1.yml",
   "CommonLib.CommonLib": "CommonLib.CommonLib.yml",
-  "CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,Microsoft.Extensions.Logging.ILogger,System.String)": "CommonLib.CommonLib.yml",
+  "CommonLib.CommonLib.InitializeCommonLib(CommonLib.LDAPConfig,ILogger,System.String)": "CommonLib.CommonLib.yml",
   "CommonLib.Enums": "CommonLib.Enums.yml",
   "CommonLib.Enums.Label": "CommonLib.Enums.Label.yml",
   "CommonLib.Enums.Label.Computer": "CommonLib.Enums.Label.yml",

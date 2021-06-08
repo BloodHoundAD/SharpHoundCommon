@@ -17,7 +17,7 @@ items:
     remote:
       path: src/CommonLib/RPCServer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: RPCServer
     path: ../src/CommonLib/RPCServer.cs
     startLine: 10
@@ -62,7 +62,7 @@ items:
     remote:
       path: src/CommonLib/RPCServer.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Dispose
     path: ../src/CommonLib/RPCServer.cs
     startLine: 239

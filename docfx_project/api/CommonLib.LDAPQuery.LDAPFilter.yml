@@ -27,7 +27,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: LDAPFilter
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 5
@@ -68,7 +68,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddAllObjects
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 37
@@ -106,7 +106,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddUsers
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 44
@@ -144,7 +144,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddGroups
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 51
@@ -182,7 +182,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddGPOs
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 58
@@ -220,7 +220,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddOUs
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 65
@@ -258,7 +258,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddDomains
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 72
@@ -296,7 +296,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddContainers
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 79
@@ -334,7 +334,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddComputers
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 86
@@ -372,7 +372,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddSchemaID
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 92
@@ -410,7 +410,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: AddFilter
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 98
@@ -445,7 +445,7 @@ items:
     remote:
       path: src/CommonLib/LDAPQueries/LDAPFilter.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GetFilter
     path: ../src/CommonLib/LDAPQueries/LDAPFilter.cs
     startLine: 105

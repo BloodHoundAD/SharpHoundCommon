@@ -17,7 +17,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: GuidClass
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 987
@@ -58,7 +58,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: TheGuid
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 990

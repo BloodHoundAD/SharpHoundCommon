@@ -17,7 +17,7 @@ items:
     remote:
       path: src/CommonLib/CliBaseClient.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ICliConsoleFacade
     path: ../src/CommonLib/CliBaseClient.cs
     startLine: 15
@@ -50,7 +50,7 @@ items:
     remote:
       path: src/CommonLib/CliBaseClient.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: WriteLine
     path: ../src/CommonLib/CliBaseClient.cs
     startLine: 17

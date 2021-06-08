@@ -17,7 +17,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Container.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Container
     path: ../src/CommonLib/OutputTypes/Container.cs
     startLine: 2
@@ -65,7 +65,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/Container.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ChildObjects
     path: ../src/CommonLib/OutputTypes/Container.cs
     startLine: 4

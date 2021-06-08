@@ -19,7 +19,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/SPNTarget.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SPNTarget
     path: ../src/CommonLib/OutputTypes/SPNTarget.cs
     startLine: 5
@@ -60,7 +60,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/SPNTarget.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ComputerSID
     path: ../src/CommonLib/OutputTypes/SPNTarget.cs
     startLine: 7
@@ -95,7 +95,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/SPNTarget.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Port
     path: ../src/CommonLib/OutputTypes/SPNTarget.cs
     startLine: 8
@@ -130,7 +130,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/SPNTarget.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: Service
     path: ../src/CommonLib/OutputTypes/SPNTarget.cs
     startLine: 9

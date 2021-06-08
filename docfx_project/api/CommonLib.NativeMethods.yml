@@ -16,7 +16,7 @@ items:
     remote:
       path: src/CommonLib/NativeMethods.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: NativeMethods
     path: ../src/CommonLib/NativeMethods.cs
     startLine: 5

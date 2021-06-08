@@ -22,7 +22,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DomainTrust
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 2
@@ -63,7 +63,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: TargetDomainSid
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 4
@@ -98,7 +98,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: TargetDomainName
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 5
@@ -133,7 +133,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: IsTransitive
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 6
@@ -168,7 +168,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SidFilteringEnabled
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 7
@@ -203,7 +203,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: TrustDirection
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 8
@@ -238,7 +238,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/DomainTrust.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: TrustType
     path: ../src/CommonLib/OutputTypes/DomainTrust.cs
     startLine: 9

@@ -16,7 +16,7 @@ items:
     remote:
       path: src/CommonLib/Enums/UAC.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: UAC
     path: ../src/CommonLib/Enums/UAC.cs
     startLine: 4

@@ -20,7 +20,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/TypedPrincipal.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: TypedPrincipal
     path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
     startLine: 4
@@ -61,7 +61,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/TypedPrincipal.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: .ctor
     path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
     startLine: 6
@@ -91,7 +91,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/TypedPrincipal.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: .ctor
     path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
     startLine: 11
@@ -126,7 +126,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/TypedPrincipal.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ObjectIdentifier
     path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
     startLine: 17
@@ -161,7 +161,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/TypedPrincipal.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: ObjectType
     path: ../src/CommonLib/OutputTypes/TypedPrincipal.cs
     startLine: 18

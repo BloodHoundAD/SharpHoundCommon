@@ -33,7 +33,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DSGETDCNAME_FLAGS
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 993
@@ -74,7 +74,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_FORCE_REDISCOVERY
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 996
@@ -107,7 +107,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_DIRECTORY_SERVICE_REQUIRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 997
@@ -140,7 +140,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_DIRECTORY_SERVICE_PREFERRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 998
@@ -173,7 +173,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_GC_SERVER_REQUIRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 999
@@ -206,7 +206,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_PDC_REQUIRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1000
@@ -239,7 +239,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_BACKGROUND_ONLY
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1001
@@ -272,7 +272,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_IP_REQUIRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1002
@@ -305,7 +305,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_KDC_REQUIRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1003
@@ -338,7 +338,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_TIMESERV_REQUIRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1004
@@ -371,7 +371,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_WRITABLE_REQUIRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1005
@@ -404,7 +404,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_GOOD_TIMESERV_PREFERRED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1006
@@ -437,7 +437,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_AVOID_SELF
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1007
@@ -470,7 +470,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_ONLY_LDAP_NEEDED
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1008
@@ -503,7 +503,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_IS_FLAT_NAME
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1009
@@ -536,7 +536,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_IS_DNS_NAME
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1010
@@ -569,7 +569,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_RETURN_DNS_NAME
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1011
@@ -602,7 +602,7 @@ items:
     remote:
       path: src/CommonLib/LDAPUtils.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: DS_RETURN_FLAT_NAME
     path: ../src/CommonLib/LDAPUtils.cs
     startLine: 1012

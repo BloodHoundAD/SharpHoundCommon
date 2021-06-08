@@ -17,7 +17,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/SPNTarget.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: SPNService
     path: ../src/CommonLib/OutputTypes/SPNTarget.cs
     startLine: 12
@@ -25,20 +25,8 @@ items:
   - CommonLib
   namespace: CommonLib.Output
   syntax:
-    content: >-
-      [JsonConverter(typeof(StringEnumConverter))]
-
-      public enum SPNService
-    content.vb: >-
-      <JsonConverter(GetType(StringEnumConverter))>
-
-      Public Enum SPNService
-  attributes:
-  - type: Newtonsoft.Json.JsonConverterAttribute
-    ctor: Newtonsoft.Json.JsonConverterAttribute.#ctor(System.Type)
-    arguments:
-    - type: System.Type
-      value: Newtonsoft.Json.Converters.StringEnumConverter
+    content: public enum SPNService
+    content.vb: Public Enum SPNService
   modifiers.csharp:
   - public
   - enum
@@ -60,7 +48,7 @@ items:
     remote:
       path: src/CommonLib/OutputTypes/SPNTarget.cs
       branch: master
-      repo: https://github.com/0x13d-git/SharpHoundCommon.git
+      repo: https://github.com/0x13d-git/SharpHoundCommon
     id: MSSQl
     path: ../src/CommonLib/OutputTypes/SPNTarget.cs
     startLine: 15
