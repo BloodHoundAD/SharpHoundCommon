@@ -23,11 +23,11 @@
       },
       {
         "files": [
-          "README.md",
-          "articles/**.md",
-          "articles/**/toc.yml",
-          "toc.yml",
-          "*.md"
+          "docfx_project/README.md",
+          "docfx_project/articles/**.md",
+          "docfx_project/articles/**/toc.yml",
+          "docfx_project/toc.yml",
+          "docfx_project/*.md"
         ]
       }
     ],
