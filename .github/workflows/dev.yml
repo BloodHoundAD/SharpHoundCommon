@@ -34,7 +34,7 @@ jobs:
         run: "& choco install docfx -y"
       - name: Clear ./docs
         working-directory: ./docs
-        run: DEL /S /Q *.TMP
+        run: Get-ChildItem -Path C:\Temp -Include *.* -File -Recurse | foreach { $_.Delete()}
       - name: Run DocFX
         run: docfx docfx.json
         # update docs
