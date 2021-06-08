@@ -46,12 +46,6 @@ jobs:
         run: "& ./tools/scripts/doc-build.ps1"
         shell: powershell
         working-directory: ./source
-      # Check out gh-pages branch to the 'docs' subdirectory
-      - name: Checkout docs
-        uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-          path: docs
       # Sync the site
       - name: Clear docs repo
         run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
@@ -60,7 +54,7 @@ jobs:
         run: Copy-Item -Recurse -Verbose -Force "$env:GITHUB_WORKSPACE/source/_site/*" "$env:GITHUB_WORKSPACE/docs"
         working-directory: ./docs
         # update docs
-      - name: Commit to gh-pages and push
+      - name: Commit to master and push
         run: |
           $ErrorActionPreference = "Continue"
           git add -A
@@ -72,6 +66,6 @@ jobs:
             git config --global user.email "weihanli@outlook.com"
             git commit -m "Updated docs from commit $env:GITHUB_SHA on $env:GITHUB_REF"
             git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-            git push origin gh-pages
+            git push origin master
           }
         working-directory: ./docs
