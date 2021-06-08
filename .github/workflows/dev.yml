@@ -37,7 +37,8 @@ jobs:
           path: source
       # Run a build
       - name: Build docs
-        run: "& ./doc-build.ps1"
+        shell: pwsh
+        run: .\doc-build.ps1
       # Sync the site
       - name: Clear docs repo
         run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
