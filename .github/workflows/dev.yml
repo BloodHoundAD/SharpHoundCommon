@@ -38,8 +38,8 @@ jobs:
       - name: Install DocFX
         run: "& choco install docfx -y"
       - name: Run DocFX
-        run: docfx build source/docfx/docfx.json
-        working-directory: ./docs
+        run: docfx docfx.json
+        working-directory: ./source
       # Sync the site
       - name: Clear docs repo
         run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
