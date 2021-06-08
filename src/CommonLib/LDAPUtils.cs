@@ -19,7 +19,7 @@ using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace SharpHoundCommonLib
 {
-    public sealed class LDAPUtils
+    public class LDAPUtils : ILDAPUtils
     {
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
         private readonly ConcurrentDictionary<string, LdapConnection> _ldapConnections = new();
@@ -49,9 +49,9 @@ namespace SharpHoundCommonLib
             Instance.SetLDAPConfig(config);
         }
 
-        public static LDAPUtils Instance { get; } = new();
+        public static ILDAPUtils Instance => lazy.Value;
 
-        private static readonly Lazy<LDAPUtils> lazy = new(() => new LDAPUtils());
+        private static Lazy<ILDAPUtils> lazy = new(() => new LDAPUtils());
 
         private LDAPUtils()
         {
@@ -314,7 +314,7 @@ namespace SharpHoundCommonLib
         {
             var strippedHost = Helpers.StripServicePrincipalName(hostname).ToUpper().TrimEnd('$');
 
-            if (Instance._hostResolutionMap.TryGetValue(strippedHost, out var sid))
+            if (_hostResolutionMap.TryGetValue(strippedHost, out var sid))
             {
                 return sid;
             }
@@ -347,7 +347,7 @@ namespace SharpHoundCommonLib
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
-                    Instance._hostResolutionMap.TryAdd(strippedHost, sid);
+                    _hostResolutionMap.TryAdd(strippedHost, sid);
                     return sid;
                 }
             }
@@ -371,7 +371,7 @@ namespace SharpHoundCommonLib
                     var principal = await ResolveAccountName(tempName, tempDomain);
                     if (principal != null)
                     {
-                        Instance._hostResolutionMap.TryAdd(strippedHost, sid);
+                        _hostResolutionMap.TryAdd(strippedHost, sid);
                         return sid;
                     }
                 }
@@ -388,7 +388,7 @@ namespace SharpHoundCommonLib
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
-                    Instance._hostResolutionMap.TryAdd(strippedHost, sid);
+                    _hostResolutionMap.TryAdd(strippedHost, sid);
                     return sid;
                 }
             }
@@ -414,7 +414,7 @@ namespace SharpHoundCommonLib
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
-                    Instance._hostResolutionMap.TryAdd(strippedHost, sid);
+                    _hostResolutionMap.TryAdd(strippedHost, sid);
                     return sid;
                 }
             }
@@ -425,12 +425,12 @@ namespace SharpHoundCommonLib
 
             if (tempName.Contains("."))
             {
-                Instance._hostResolutionMap.TryAdd(strippedHost, tempName);
+                _hostResolutionMap.TryAdd(strippedHost, tempName);
                 return tempName;
             }
             
             tempName = $"{tempName}.{tempDomain}";
-            Instance._hostResolutionMap.TryAdd(strippedHost, tempName);
+            _hostResolutionMap.TryAdd(strippedHost, tempName);
             return tempName;
         }
         
@@ -841,7 +841,7 @@ namespace SharpHoundCommonLib
         /// <param name="adsPath">ADS path to limit the query too</param>
         /// <param name="showDeleted">Include deleted objects in results</param>
         /// <returns>A built SearchRequest</returns>
-        private static SearchRequest CreateSearchRequest(string filter, SearchScope scope, string[] attributes,
+        private SearchRequest CreateSearchRequest(string filter, SearchScope scope, string[] attributes,
             string domainName = null, string adsPath = null, bool showDeleted = false)
         {
             var domain = GetDomain(domainName);
@@ -864,7 +864,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domainName">Domain to connect too</param>
         /// <returns>A connected LdapConnection or null</returns>
-        private static async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null)
+        private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null)
         {
             var domain = GetDomain(domainName);
             if (domain == null)
@@ -874,24 +874,24 @@ namespace SharpHoundCommonLib
             }
             
             string targetServer;
-            if (Instance._ldapConfig.Server != null) targetServer = Instance._ldapConfig.Server;
+            if (_ldapConfig.Server != null) targetServer = _ldapConfig.Server;
             else
             {
-                if (!Instance._domainControllerCache.TryGetValue(domain.Name, out targetServer))
+                if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
             
             if (targetServer == null)
                 return null;
 
-            if (Instance._globalCatalogConnections.TryGetValue(targetServer, out var connection))
+            if (_globalCatalogConnections.TryGetValue(targetServer, out var connection))
                 return connection;
 
             connection = new LdapConnection(new LdapDirectoryIdentifier(targetServer, 3268));
             
             connection.SessionOptions.ProtocolVersion = 3;
 
-            if (Instance._ldapConfig.DisableSigning)
+            if (_ldapConfig.DisableSigning)
             {
                 connection.SessionOptions.Sealing = false;
                 connection.SessionOptions.Signing = false;
@@ -900,7 +900,7 @@ namespace SharpHoundCommonLib
             //Force kerberos auth
             connection.AuthType = AuthType.Kerberos;
 
-            Instance._globalCatalogConnections.TryAdd(targetServer, connection);
+            _globalCatalogConnections.TryAdd(targetServer, connection);
             return connection;
         }
 
@@ -910,7 +910,7 @@ namespace SharpHoundCommonLib
         /// <param name="domainName">The domain to connect too</param>
         /// <param name="skipCache">Skip the connection cache</param>
         /// <returns>A connected LDAP connection or null</returns>
-        private static async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false)
+        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false)
         {
             var domain = GetDomain(domainName);
             if (domain == null)
@@ -920,10 +920,10 @@ namespace SharpHoundCommonLib
             }
 
             string targetServer;
-            if (Instance._ldapConfig.Server != null) targetServer = Instance._ldapConfig.Server;
+            if (_ldapConfig.Server != null) targetServer = _ldapConfig.Server;
             else
             {
-                if (!Instance._domainControllerCache.TryGetValue(domain.Name, out targetServer))
+                if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
             
@@ -931,15 +931,15 @@ namespace SharpHoundCommonLib
                 return null;
             
             if (!skipCache)
-                if (Instance._ldapConnections.TryGetValue(targetServer, out var conn))
+                if (_ldapConnections.TryGetValue(targetServer, out var conn))
                     return conn;
 
-            var port = Instance._ldapConfig.GetPort();
+            var port = _ldapConfig.GetPort();
             var ident = new LdapDirectoryIdentifier(targetServer, port, false, false);
             var connection = new LdapConnection(ident) {Timeout = new TimeSpan(0, 0, 5, 0)};
-            if (Instance._ldapConfig.Username != null)
+            if (_ldapConfig.Username != null)
             {
-                var cred = new NetworkCredential(Instance._ldapConfig.Username, Instance._ldapConfig.Password, domain.Name);
+                var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password, domain.Name);
                 connection.Credential = cred;
             }
 
@@ -947,29 +947,29 @@ namespace SharpHoundCommonLib
             connection.SessionOptions.ProtocolVersion = 3;
             connection.SessionOptions.ReferralChasing = ReferralChasingOptions.None;
 
-            if (Instance._ldapConfig.DisableSigning)
+            if (_ldapConfig.DisableSigning)
             {
                 connection.SessionOptions.Sealing = false;
                 connection.SessionOptions.Signing = false;
             }
 
-            if (Instance._ldapConfig.SSL)
+            if (_ldapConfig.SSL)
                 connection.SessionOptions.SecureSocketLayer = true;
 
             //Force kerberos auth
             connection.AuthType = AuthType.Kerberos;
 
             if (!skipCache)
-                Instance._ldapConnections.TryAdd(targetServer, connection);
+                _ldapConnections.TryAdd(targetServer, connection);
 
             return connection;
         }
 
-        public Forest GetForest(string domainName = null)
+        public virtual Forest GetForest(string domainName = null)
         {
             try
             {
-                if (domainName == null && Instance._ldapConfig.Username == null)
+                if (domainName == null && _ldapConfig.Username == null)
                     return Forest.GetCurrentForest();
 
                 var domain = GetDomain(domainName);
@@ -982,10 +982,10 @@ namespace SharpHoundCommonLib
             
         }
 
-        internal static Domain GetDomain(string domainName = null)
+        internal Domain GetDomain(string domainName = null)
         {
             var cacheKey = domainName ?? NullCacheKey;
-            if (Instance._domainCache.TryGetValue(cacheKey, out var domain))
+            if (_domainCache.TryGetValue(cacheKey, out var domain))
             {
                 return domain;
             }
@@ -993,13 +993,13 @@ namespace SharpHoundCommonLib
             try
             {
                 DirectoryContext context;
-                if (Instance._ldapConfig.Username != null)
+                if (_ldapConfig.Username != null)
                 {
                     context = domainName != null
-                        ? new DirectoryContext(DirectoryContextType.Domain, domainName, Instance._ldapConfig.Username,
-                            Instance._ldapConfig.Password)
-                        : new DirectoryContext(DirectoryContextType.Domain, Instance._ldapConfig.Username,
-                            Instance._ldapConfig.Password);
+                        ? new DirectoryContext(DirectoryContextType.Domain, domainName, _ldapConfig.Username,
+                            _ldapConfig.Password)
+                        : new DirectoryContext(DirectoryContextType.Domain, _ldapConfig.Username,
+                            _ldapConfig.Password);
                 }
                 else
                 {
@@ -1015,17 +1015,17 @@ namespace SharpHoundCommonLib
                 domain = null;
             }
 
-            Instance._domainCache.TryAdd(cacheKey, domain);
+            _domainCache.TryAdd(cacheKey, domain);
             return domain;
         }
         
-        private static async Task<string> GetUsableDomainController(Domain domain, bool gc = false)
+        private async Task<string> GetUsableDomainController(Domain domain, bool gc = false)
         {
-            var port = gc ? 3268 : Instance._ldapConfig.GetPort();
+            var port = gc ? 3268 : _ldapConfig.GetPort();
             var pdc = domain.PdcRoleOwner.Name;
             if (await Helpers.CheckPort(pdc, port))
             {
-                Instance._domainControllerCache.TryAdd(domain.Name, pdc);
+                _domainControllerCache.TryAdd(domain.Name, pdc);
                 Logging.Debug($"Found usable Domain Controller for {domain.Name} : {pdc}");
                 return pdc;
             }
@@ -1036,12 +1036,12 @@ namespace SharpHoundCommonLib
                 var name = domainController.Name;
                 if (!await Helpers.CheckPort(name, port)) continue;
                 Logging.Debug($"Found usable Domain Controller for {domain.Name} : {name}");
-                Instance._domainControllerCache.TryAdd(domain.Name, name);
+                _domainControllerCache.TryAdd(domain.Name, name);
                 return name;
             }
 
             //If we get here, somehow we didn't get any usable DCs. Save it off as null
-            Instance._domainControllerCache.TryAdd(domain.Name, null);
+            _domainControllerCache.TryAdd(domain.Name, null);
             Logging.Debug($"Unable to find usable domain controller for {domain.Name}");
             return null;
         }
@@ -1051,7 +1051,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domain"></param>
         /// <returns></returns>
-        internal static async Task<string> NormalizeDomainName(string domain)
+        internal async Task<string> NormalizeDomainName(string domain)
         {
             var resolved = domain;
 
@@ -1068,17 +1068,17 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
-        internal static async Task<string> ResolveDomainNetbiosToDns(string domainName)
+        internal async Task<string> ResolveDomainNetbiosToDns(string domainName)
         {
             var key = domainName.ToUpper();
-            if (Instance._netbiosCache.TryGetValue(key, out var flatName))
+            if (_netbiosCache.TryGetValue(key, out var flatName))
                 return flatName;
 
             var domain = GetDomain(domainName);
             if (domain == null)
                 return domainName.ToUpper();
             
-            var computerName = Instance._ldapConfig.Server ?? await GetUsableDomainController(domain);
+            var computerName = _ldapConfig.Server ?? await GetUsableDomainController(domain);
 
             var result = NativeMethods.DsGetDcName(computerName, domainName, null, null,
                 (uint)(NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME),
@@ -1098,7 +1098,7 @@ namespace SharpHoundCommonLib
                     NativeMethods.NetApiBufferFree(pDomainControllerInfo);
             }
 
-            Instance._netbiosCache.TryAdd(key, flatName);
+            _netbiosCache.TryAdd(key, flatName);
             return flatName;
         }
     }
