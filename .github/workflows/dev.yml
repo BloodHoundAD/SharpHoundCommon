@@ -35,11 +35,11 @@ jobs:
         with:
           ref: master
           path: source
-      # Run a build
-      - uses: nikeee/docfx-action@v1.0.0
-        name: Build Documentation
-        with:
-          args: docfx/docfx.json
+      - name: Install DocFX
+        run: "& choco install docfx -y"
+      - name: Run DocFX
+        run: docfx build source/docfx/docfx.json
+        working-directory: ./docs
       # Sync the site
       - name: Clear docs repo
         run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
