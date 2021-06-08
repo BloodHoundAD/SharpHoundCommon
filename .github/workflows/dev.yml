@@ -44,7 +44,7 @@ jobs:
       # Run a build
       - name: Build docs
         shell: pwsh
-        run: docfx build docfx\docfx.json
+        run: docfx build .\docfx\docfx.json
         working-directory: source
       # Sync the site
       - name: Clear docs repo
