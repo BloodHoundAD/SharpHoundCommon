@@ -331,3 +331,6 @@ ASALocalRun/
 
 # Sharphound Build Files
 build/
+
+# DocFX Build Files
+_site

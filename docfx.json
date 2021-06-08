@@ -4,28 +4,24 @@
       "src": [
         {
           "files": ["**/*.sln", "src/CommonLib/*.csproj"],
-          "exclude": [ "**/bin/**", "**/obj/**" ],
-          "src": "src"
+          "exclude": [ "**/bin/**", "**/obj/**" ]
         }
       ],
-      "dest": "build/api",
-      "disableGitFeatures": false,
-      "disableDefaultFilter": false
+      "dest": "obj/api"
     }
   ],
   "build": {
     "content": [
       {
-        "files": [
-          "build/api/**.yml",
-          "build/api/index.md"
-        ]
+        "files": ["**/*.yml"],
+        "src": "obj/api",
+        "dest": "api"
       },
       {
         "files": [
           "README.md",
           "articles/**.md",
-          "articles/**/toc.yml",
+          "articles/toc.yml",
           "toc.yml",
           "*.md"
         ]
@@ -38,18 +34,11 @@
         ]
       }
     ],
-    "overwrite": [
-      {
-        "files": [
-          "apidoc/**.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
-        ]
-      }
-    ],
-    "dest": "./docs",
+    "dest": "_site",
+    "globalMetadata": {
+      "_appTitle": "Sharphound",
+      "_enableSearch": true
+    },
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": ["default", "templates/discordfx"],
