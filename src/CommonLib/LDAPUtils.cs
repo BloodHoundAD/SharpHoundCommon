@@ -610,10 +610,15 @@ namespace SharpHoundCommonLib
                 Logging.Debug($"No result found for {dn}");
                 return null;
             }
-
-            type = result.GetLabel();
             id = result.GetObjectIdentifier();
 
+            if (WellKnownPrincipal.GetWellKnownPrincipal(id, domain, out var principal))
+            {
+                return principal;
+            }
+            
+            type = result.GetLabel();
+            
             if (id == null)
             {
                 Logging.Debug($"No resolved ID for {dn}");
