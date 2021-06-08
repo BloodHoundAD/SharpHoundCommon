@@ -34,7 +34,7 @@
         ]
       }
     ],
-    "dest": "_site",
+    "dest": "docs",
     "globalMetadata": {
       "_appTitle": "Sharphound",
       "_enableSearch": true
