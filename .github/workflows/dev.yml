@@ -37,7 +37,7 @@ jobs:
           path: source
       # Run a build
       - name: Build docs
-        run: pwsh -command "tools\scripts\doc-build.ps1"
+        run: pwsh -command "tools\tools\scripts\doc-build.ps1"
         working-directory: source
       # Sync the site
       - name: Clear docs repo
