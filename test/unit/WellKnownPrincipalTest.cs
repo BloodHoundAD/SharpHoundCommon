@@ -1,23 +1,27 @@
 ﻿using System;
-using System.DirectoryServices.ActiveDirectory;
+using System.Reflection;
+using CommonLibTest.Facades;
 using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CommonLibTest
 {
     public class WellKnownPrincipalTest : IDisposable
     {
         #region Private Members
-
+        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly string _testDomainName;
         #endregion
 
         #region Constructor(s)
 
-        public WellKnownPrincipalTest()
+        public WellKnownPrincipalTest(ITestOutputHelper testOutputHelper)
         {
-
+            _testOutputHelper = testOutputHelper;
+            _testDomainName = "TESTLAB.LOCAL";
         }
 
         #endregion
@@ -39,15 +43,37 @@ namespace CommonLibTest
         [Fact]
         public void GetWellKnownPrincipal_EnterpriseDomainControllers_ReturnsCorrectedSID()
         {
-            var mock = new Mock<Forest>();
-            mock.Setup(x => x.Name).Returns("PARENT.LOCAL");
-            var mock2 = new Mock<LDAPUtils>();
-            mock2.Setup(x => x.GetForest(null)).Returns(mock.Object);
+            var forest = MockableForest.Construct();
+            var ldapUtilsMock = new Mock<ILDAPUtils>();
+            ldapUtilsMock.Setup(x => x.GetForest(null)).Returns(forest);
+            var lazyMock = new Lazy<ILDAPUtils>(() => ldapUtilsMock.Object);
+            //Call this to ensure that static construction occurs
+            var _ = LDAPUtils.Instance;
+            var instance = typeof(LDAPUtils).GetField("lazy", BindingFlags.Static | BindingFlags.NonPublic);
+            instance.SetValue(null, lazyMock);
 
             var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-9", null, out var typedPrincipal);
             Assert.True(result);
             Assert.Equal("PARENT.LOCAL-S-1-5-9", typedPrincipal.ObjectIdentifier);
             Assert.Equal(Label.Group, typedPrincipal.ObjectType);
+        }
+
+        [Fact]
+        public void GetWellKnownPrincipal_NonWellKnown_ReturnsNull()
+        {
+            var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-21-123456-78910", _testDomainName, out var typedPrincipal);
+            Assert.False(result);
+            Assert.Null(typedPrincipal);
+        }
+
+        [Fact]
+        public void GetWellKnownPrincipal_WithDomain_ConvertsSID()
+        {
+            var result =
+                WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-32-544", _testDomainName, out var typedPrincipal);
+            Assert.True(result);
+            Assert.Equal(Label.Group, typedPrincipal.ObjectType);
+            Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", typedPrincipal.ObjectIdentifier);
         }
 
         #endregion
