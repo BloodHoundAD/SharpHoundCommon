@@ -32,34 +32,12 @@ jobs:
       # Check out the branch that triggered this workflow to the 'source' subdirectory
       - name: Checkout Code
         uses: actions/checkout@v2
-        with:
-          ref: dev
-          path: source
-      - name: install DocFX
+      - name: Install DocFX
         run: "& choco install docfx -y"
-      - name: install Report Generator
-        run: "& dotnet tool install -g dotnet-reportgenerator-globaltool"
-      - name: install nuget command line
-        run: "& choco install nuget.commandline --version=5.4.0 -y"
-      # Run a build
-      - name: Build docs
-        run: "& ./tools/scripts/doc-build.ps1"
-        working-directory: ./source
-      # Check out gh-pages branch to the 'docs' subdirectory
-      - name: Checkout docs
-        uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-          path: docs
-      # Sync the site
-      - name: Clear docs repo
-        run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
-        working-directory: ./docs
-      - name: Sync new content
-        run: Copy-Item -Recurse -Verbose -Force "$env:GITHUB_WORKSPACE/source/_site/*" "$env:GITHUB_WORKSPACE/docs"
-        working-directory: ./docs
+      - name: Run DocFX
+        run: docfx docfx.json
         # update docs
-      - name: Commit to gh-pages and push
+      - name: Commit to master and push
         run: |
           $ErrorActionPreference = "Continue"
           git add -A
@@ -68,9 +46,9 @@ jobs:
             Write-Host "No changes to commit!"
           } else {
             git config --global user.name "github-actions-docfx[bot]"
-            git config --global user.email "weihanli@outlook.com"
+            git config --global user.email "ari@thirteendelta.com"
             git commit -m "Updated docs from commit $env:GITHUB_SHA on $env:GITHUB_REF"
             git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-            git push origin gh-pages
+            git push origin master
           }
         working-directory: ./docs
