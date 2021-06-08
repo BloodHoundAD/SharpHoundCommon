@@ -43,7 +43,7 @@ jobs:
         run: "& choco install nuget.commandline -y"
       # Run a build
       - name: Build docs
-        run: "& & $env:GITHUB_ACTION_PATH/tools/scripts/doc-build.ps1"
+        run: "& $env:GITHUB_ACTION_PATH/tools/scripts/doc-build.ps1"
         shell: pwsh
         working-directory: ./source
       # Sync the site
