@@ -1,28 +1,691 @@
 {
   "homepages": [],
-  "source_base_path": "C:/projects/SharpHoundCommon/docfx_project",
+  "source_base_path": "D:/a/SharpHoundCommon/SharpHoundCommon",
   "xrefmap": "xrefmap.yml",
-  "files": [],
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "CHANGELOG.md",
+      "output": {
+        ".html": {
+          "relative_path": "CHANGELOG.html",
+          "hash": "pPhhVmYf8iVnQMDF/c6zGB8hFspUP81F/A4NPAgFjrY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "QUICKSTART.md",
+      "output": {
+        ".html": {
+          "relative_path": "QUICKSTART.html",
+          "hash": "Z8yN2TV+XUzeHHNcRrOMfD/MMxfvRsLhnFytCHnLRz4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html",
+          "hash": "w7f1xvLJeC9b2ks30Y5OlxOyrjv+VzZlp23CfG9P424="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Cache.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Cache.html",
+          "hash": "TCFYy65tTtrQgdzGhNmvM5EOOyKS3tJc+3RjvC2300A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.CliBaseClient-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.CliBaseClient-1.html",
+          "hash": "jUrqlIh9Hr17mdB1TkejRsuothiV8HHTWbtcxROEUqQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.CommonLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.CommonLib.html",
+          "hash": "lbkeYZ25CKpX8fOJpDAthMkgmdcZBIIvqM6JV7UkmPg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Enums.Label.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Enums.Label.html",
+          "hash": "/F4wP2eRWk2QfOSbSB/QTmXsBRZNepuQPrStmarEj/Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Enums.UAC.UacFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Enums.UAC.UacFlags.html",
+          "hash": "MNgKHJdzLWytUqLvzJYHOPDcHwhhZNk5SX9MSNBfqio="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Enums.UAC.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Enums.UAC.html",
+          "hash": "uoFrpv+x+8souUBQiMFct0TzD7ibKiDxJoMiOkEileE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Enums.html",
+          "hash": "S4DPQWb6E/VRIYV8vxJJ6BNkDIwV5+d+0k9DspZ4KsE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Helpers.html",
+          "hash": "q/aIUYDjuaYd4LqI1sfYj6Ke7z5R5+FOHeXcE/WMLAM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.ICliConsoleFacade.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.ICliConsoleFacade.html",
+          "hash": "6Ot0PSVn57ytIBbA/eNgN8dy+TUzuRi2e0F8kfKd20Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.LDAPConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.LDAPConfig.html",
+          "hash": "L6t7+MO2gVdrrXe4pWEQ2QsApmEGkLAznrd95s/VImc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.LDAPQuery.CommonFilters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.LDAPQuery.CommonFilters.html",
+          "hash": "mu5lvfLWq5kHFrRSxSIE2E+jwIIcz1Ht1ebIIwx8R1M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.LDAPQuery.CommonProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.LDAPQuery.CommonProperties.html",
+          "hash": "2rjCXo9dX9m+yS8A5f248Hmc/QjOAG0XeH/MeoPKtTE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.LDAPQuery.LDAPFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.LDAPQuery.LDAPFilter.html",
+          "hash": "r52hvTx1WyAhqLcNjadxy6e0rq+Cq1hAJXAQj76M21U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.LDAPQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.LDAPQuery.html",
+          "hash": "ut6mD36gqCc/0GNFOKe7k1I0lcvszJzzwbpHZHXNkS0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.LDAPUtils.DSGETDCNAME_FLAGS.html",
+          "hash": "XGlCHmHPvuxd6sZ1pngM0aZaN2+nDpin/AF5JCbOzyM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.LDAPUtils.GuidClass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.LDAPUtils.GuidClass.html",
+          "hash": "D7HFtgKNrrpfp6SY/lkXNqtWoNZxy0www4Xwu5T9y2s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.LDAPUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.LDAPUtils.html",
+          "hash": "nReby67q49k0VklyekqdfzCssxs46zXWjVBPDayIZMo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.NativeMethods.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.NativeMethods.html",
+          "hash": "ayXVB0iZd1W2kJi6mvQ2aINIip+MIUmP6vfr9cSncNE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Options-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Options-1.html",
+          "hash": "N+7ydHB/A1wmmHHkgfjZkwvebrzaGZ6WZ5LztjbmMvI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.ACE.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.ACE.html",
+          "hash": "TbbxxNvRJ/YCO8kdf34TbdLDrFky/a8IuKCPuQjHwTo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.ACERightNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.ACERightNames.html",
+          "hash": "zoBQ0D05/kL9K0+c2ku4HTEX5HDyTUmVoKE5ZfnKIpk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.ACETypeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.ACETypeNames.html",
+          "hash": "8i2oXIGTJYCQOARJBxnSh+4AGayGEGQ4pPLGFOHkl28="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.Computer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.Computer.html",
+          "hash": "WGPr3VjvKfIY1hHgk7c3P3pGckWgdotkNa1uGCZpu4M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.ComputerStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.ComputerStatus.html",
+          "hash": "Owdux19xDq1gviVcBRrjrcYM/6zgKGyq7m0rb2cXTQA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.Container.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.Container.html",
+          "hash": "cycasRNdW79OdOe5jPkw5A76NUjylUSVRk8rdcMMlQY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.ContainerProcessors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.ContainerProcessors.html",
+          "hash": "XblxInfBvNugWhc2wfjjcJFANDWkLON9+u/dCnwNwqU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.Domain.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.Domain.html",
+          "hash": "rjvrmAoUuWJSOq0Mbzb25n2ADmET85l1l94fhySqPgY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.DomainTrust.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.DomainTrust.html",
+          "hash": "rzAN4afD1fIigkWKsZeEZjWfk3Q3ftVdKQBzBg1dZKA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.GPLink.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.GPLink.html",
+          "hash": "ONuyDFrTxN+wrBL+klHKEQQpA9wiM9dhoX9LepBkNmE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.GPO.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.GPO.html",
+          "hash": "hesV+d5B5+WTpolyH6marQd8Iyh00EdrWpU86X3eyiI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.Group.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.Group.html",
+          "hash": "xMC6snncneMJs5+T7f8HbQMTMmrqa2BJ4rPdzQZ/yWw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.LocalGroupResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.LocalGroupResult.html",
+          "hash": "hYSpD/E5S0TaynzezcgDulbpD1sdu6V7i2VpMf0nQ0o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.OU.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.OU.html",
+          "hash": "oXeiq8phbDnBuxq3F96RHIeqcVqd4DjCVNWtDoGgO9Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.OutputBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.OutputBase.html",
+          "hash": "ZLvEGaH+bNLkG0kuxaQwrlEbhzsPGo0piqKrb0e0tnw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.SPNService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.SPNService.html",
+          "hash": "X5cXPl6S3St5ryDoi3bchdoqKOACpEMTXg2+5aUWqBI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.SPNTarget.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.SPNTarget.html",
+          "hash": "RTwP2su85KEsk8UVtwsiWMDbiEGEg+hKTsq3HtOkd7I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.Session.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.Session.html",
+          "hash": "bRfap6czHMvTfjfM+vx5N5oZs1dtq9/0jj7LCnOHGP8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.TrustDirection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.TrustDirection.html",
+          "hash": "18KhN6a8P4oNqzQ6FAuX4TK3zaEZNg0zF4LHEwuaZ3g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.TrustType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.TrustType.html",
+          "hash": "Yj/ayrvbX0bp2Rm6E8FGzuIPj43GlxR1cLL2KE6w7LY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.TypedPrincipal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.TypedPrincipal.html",
+          "hash": "kXJjmIqvepYS8/H1cuxl6pnEcLVc3oRjJh4w/IomTi0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.User.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.User.html",
+          "hash": "ApSrL3U5RuY5puOxADZr9hp7z4EgorANoYfJaXr7pe4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Output.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Output.html",
+          "hash": "PR7tX1ZqNX5e8pRaSOuqfXeR2XQrjUB0OhgICUcsooo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Processors.ACLProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Processors.ACLProcessor.html",
+          "hash": "xRfFgS3Eb8CCWCbfbJakS+JOvHCsElaIIHHlHWRBMYk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Processors.ComputerProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Processors.ComputerProperties.html",
+          "hash": "uBrif9I++0nGzvNqlgN6f6JtIo0sQxtjOeK0OYmGQuA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Processors.GroupProcessors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Processors.GroupProcessors.html",
+          "hash": "e1cPkq8AKRquyjEYs659dqFKtc98roRlDMn75pILbNc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Processors.LDAPPropertyProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Processors.LDAPPropertyProcessor.html",
+          "hash": "q0e39X8tXO0eWnACUbNx3ADfG4wYP22uUB22pfYwH4M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Processors.UserProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Processors.UserProperties.html",
+          "hash": "IHAXfCLDC5tYFkAV54MEYwUlynehQHsGQM6pZL6gAhE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.Processors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.Processors.html",
+          "hash": "0xNbK/cCtOxar2tc1qE9N86QQgd3YuL0Nroin6Z3aQU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.RPCServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.RPCServer.html",
+          "hash": "V4SHFIBPOeDX260515zMmRO336W5bhcePaJcHLAPcYc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.WellKnownPrincipal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.WellKnownPrincipal.html",
+          "hash": "9KwttqAWmVtMLceyK7HUbRa9QJTVIR4qLFrcRM40A1A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "build/api/CommonLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/CommonLib.html",
+          "hash": "UIVJCgPRvNEXwwgqXuXI1MxAYyk+npKPZEqJp9sA12U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "build/api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "build/api/toc.html",
+          "hash": "HtgrJG8GNzvJiXAtVcrQk6Tp27ejj7qxyjtJ9HaFLgg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 4,
-          "skipped_file_count": 4
+          "total_file_count": 3,
+          "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 51,
-          "skipped_file_count": 51
+          "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
@@ -35,8 +698,8 @@
     },
     {
       "status": {
-        "can_incremental": true,
-        "details": "Can support incremental post processing.",
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
         "incrementalPhase": "postProcessing",
         "total_file_count": 0,
         "skipped_file_count": 0
