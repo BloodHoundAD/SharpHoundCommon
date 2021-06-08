@@ -31,15 +31,11 @@ jobs:
     steps:
       # Check out the branch that triggered this workflow to the 'source' subdirectory
       - name: Checkout Code
-        uses: actions/checkout@v1
-        with:
-          ref: master
-          path: source
+        uses: actions/checkout@v2
       - name: Install DocFX
         run: "& choco install docfx -y"
       - name: Run DocFX
         run: docfx docfx.json
-        working-directory: ./docfx
       # Sync the site
       - name: Clear docs repo
         run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
