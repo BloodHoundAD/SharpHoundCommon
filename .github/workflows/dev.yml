@@ -43,15 +43,13 @@ jobs:
         run: "& choco install nuget.commandline -y"
       # Run a build
       - name: Build docs
-        run: "& $env:GITHUB_ACTION_PATH/source/tools/scripts/doc-build.ps1"
-        shell: pwsh
-        working-directory: ./source
+        run: pwsh -command "$env:$GITHUB_WORKSPACE/source/tools/scripts/doc-build.ps1"
       # Sync the site
       - name: Clear docs repo
         run: Get-ChildItem -Force -Exclude .git | ForEach-Object { Remove-Item -Recurse -Verbose -Force $_ }
         working-directory: ./docs
       - name: Sync new content
-        run: Copy-Item -Recurse -Verbose -Force "$env:GITHUB_WORKSPACE/source/_site/*" "$env:GITHUB_WORKSPACE/docs"
+        run: Copy-Item -Recurse -Verbose -Force "$env:GITHUB_WORKSPACE/source/docs/*" "$env:GITHUB_WORKSPACE/docs"
         working-directory: ./docs
         # update docs
       - name: Commit to master and push
