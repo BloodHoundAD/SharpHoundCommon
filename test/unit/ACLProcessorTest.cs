@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using SharpHoundCommonLib;
+using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using Xunit;
 using Xunit.Abstractions;
@@ -64,11 +68,92 @@ namespace CommonLibTest
         {
             Helpers.SwapMockUtils();
             var bytes = Helpers.B64ToBytes(GMSAProperty);
-            var result = ACLProcessor.ProcessGMSAReaders(bytes, _testDomainName);
+            var result = ACLProcessor.ProcessGMSAReaders(bytes, _testDomainName).ToArray();
             Assert.Single(result);
             var test = result.First();
             _testOutputHelper.WriteLine(test.ToString());
             Assert.Equal("ReadGMSAPassword", test.RightName);
+            Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446-500", test.PrincipalSID);
+            Assert.Equal(Label.User, test.PrincipalType);
+        }
+
+        [Fact]
+        public void ACLProcess_ProcessACL_ProcessTestUser_YieldsCorrectAce()
+        {
+            Helpers.SwapMockUtils();
+            var log = new TestLogger(_testOutputHelper, LogLevel.Information);
+            CommonLib.ReconfigureLogging(log);
+            var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+            var expected = new ACE[]
+            {
+                new()
+                {
+                    IsInherited = false,
+                    PrincipalType = Label.Group,
+                    PrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512",
+                    RightName = EdgeNames.Owns
+                },
+                new()
+                {
+                    IsInherited = false,
+                    PrincipalType = Label.Group,
+                    PrincipalSID = "TESTLAB.LOCAL-S-1-5-32-548",
+                    RightName = EdgeNames.GenericAll
+                },
+                new()
+                {
+                    IsInherited = false,
+                    PrincipalType = Label.Group,
+                    PrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512",
+                    RightName = EdgeNames.GenericAll
+                },
+                new()
+                {
+                    IsInherited = true,
+                    PrincipalType = Label.Group,
+                    PrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-519",
+                    RightName = EdgeNames.GenericAll
+                },
+                new()
+                {
+                    IsInherited = true,
+                    PrincipalType = Label.Group,
+                    PrincipalSID = "TESTLAB.LOCAL-S-1-5-32-544",
+                    RightName = EdgeNames.WriteDacl
+                },
+                new()
+                {
+                    IsInherited = true,
+                    PrincipalType = Label.Group,
+                    PrincipalSID = "TESTLAB.LOCAL-S-1-5-32-544",
+                    RightName = EdgeNames.WriteOwner
+                },
+                new()
+                {
+                    IsInherited = true,
+                    PrincipalType = Label.Group,
+                    PrincipalSID = "TESTLAB.LOCAL-S-1-5-32-544",
+                    RightName = EdgeNames.AllExtendedRights
+                },
+                new()
+                {
+                    IsInherited = true,
+                    PrincipalType = Label.Group,
+                    PrincipalSID = "TESTLAB.LOCAL-S-1-5-32-544",
+                    RightName = EdgeNames.GenericWrite
+                }
+            };
+            
+            var result = ACLProcessor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+
+            for (var i = 0; i < result.Length; i++)
+            {
+                _testOutputHelper.WriteLine(expected[i].ToString());
+                _testOutputHelper.WriteLine(result[i].ToString());
+            }
+            Assert.Equal(8, result.Length);
+            Assert.Equal(expected, result);
+            CommonLib.ReconfigureLogging(null);
         }
 
         public void Dispose()

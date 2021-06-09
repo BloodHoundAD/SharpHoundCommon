@@ -30,7 +30,12 @@ namespace CommonLibTest.Facades
 
         public TypedPrincipal ResolveIDAndType(string id, string domain)
         {
-            var principal = id switch
+            if (WellKnownPrincipal.GetWellKnownPrincipal(id, domain, out var principal))
+            {
+                return principal;
+            }
+
+            principal = id switch
             {
                 "S-1-5-21-3130019616-2776909439-2417379446-512" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group),
