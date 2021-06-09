@@ -1,10 +1,10 @@
 # Changelog
 
-## 0.0.1m (2021JUN04)
+## 0.0.1 (2021JUN04)
 
 ### Summary
 
-
+New project structure, addition of documentation and testing tool integration
 
 ### Added
 
@@ -13,15 +13,17 @@
 * QUICKSTART.md
 * tools/
 * tools/scripts
-* tools/scripts/build.ps1
-* tools/scripts/publish.ps1
-* tools/scripts/serve-docs.ps1
+* tools/scripts/app-build.ps1
+* tools/scripts/app-test.ps1
+* tools/scripts/app-publish.ps1
+* tools/scripts/doc-build.ps1
+* tools/scripts/doc-serve.ps1
+* tools/scripts/doc-publish.ps1
 * src/
 * test/
-* test/integration
-* test/performance
 * test/unit
-* docfx_project
+* docfx/
+* docs/
 
 ### Changed
 

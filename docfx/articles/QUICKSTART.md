@@ -10,7 +10,7 @@
 
 ### First Run
 
-```bash
+```powershell
 cd ./tools/scripts
 ./app-build.ps1  # build SRC
 ./doc-serve.ps1 # build and serve documentation
