@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using CommonLibTest.Facades;
-using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using Xunit;
@@ -14,6 +11,7 @@ namespace CommonLibTest
         #region Private Members
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly string _testDomainName;
+        private readonly string _testForestName;
         #endregion
 
         #region Constructor(s)
@@ -22,6 +20,7 @@ namespace CommonLibTest
         {
             _testOutputHelper = testOutputHelper;
             _testDomainName = "TESTLAB.LOCAL";
+            _testForestName = "FOREST.LOCAL";
         }
 
         #endregion
@@ -43,18 +42,10 @@ namespace CommonLibTest
         [Fact]
         public void GetWellKnownPrincipal_EnterpriseDomainControllers_ReturnsCorrectedSID()
         {
-            var forest = MockableForest.Construct();
-            var ldapUtilsMock = new Mock<ILDAPUtils>();
-            ldapUtilsMock.Setup(x => x.GetForest(null)).Returns(forest);
-            var lazyMock = new Lazy<ILDAPUtils>(() => ldapUtilsMock.Object);
-            //Call this to ensure that static construction occurs
-            var _ = LDAPUtils.Instance;
-            var instance = typeof(LDAPUtils).GetField("lazy", BindingFlags.Static | BindingFlags.NonPublic);
-            instance.SetValue(null, lazyMock);
-
+            Helpers.SwapMockUtils();
             var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-9", null, out var typedPrincipal);
             Assert.True(result);
-            Assert.Equal("PARENT.LOCAL-S-1-5-9", typedPrincipal.ObjectIdentifier);
+            Assert.Equal($"{_testForestName}-S-1-5-9", typedPrincipal.ObjectIdentifier);
             Assert.Equal(Label.Group, typedPrincipal.ObjectType);
         }
 
@@ -73,7 +64,7 @@ namespace CommonLibTest
                 WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-32-544", _testDomainName, out var typedPrincipal);
             Assert.True(result);
             Assert.Equal(Label.Group, typedPrincipal.ObjectType);
-            Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", typedPrincipal.ObjectIdentifier);
+            Assert.Equal($"{_testDomainName}-S-1-5-32-544", typedPrincipal.ObjectIdentifier);
         }
 
         #endregion
@@ -82,6 +73,7 @@ namespace CommonLibTest
         public void Dispose()
         {
             // Tear down (called once per test)
+            Helpers.RestoreMockUtils();
         }
         #endregion
     }

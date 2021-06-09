@@ -49,13 +49,22 @@ namespace SharpHoundCommonLib
             Instance.SetLDAPConfig(config);
         }
 
-        public static ILDAPUtils Instance => lazy.Value;
+        /// <summary>
+        /// This has a setter for testing purposes.
+        /// TODO: Explore dependency injection or something else so this isn't here anymore. This is gross.
+        /// </summary>
+        public static ILDAPUtils Instance { get; set; }
 
         private static Lazy<ILDAPUtils> lazy = new(() => new LDAPUtils());
 
-        private LDAPUtils()
+        public LDAPUtils()
         {
             _ldapConfig = new LDAPConfig();
+        }
+
+        static LDAPUtils()
+        {
+            Instance = lazy.Value;
         }
 
         public void SetLDAPConfig(LDAPConfig config)

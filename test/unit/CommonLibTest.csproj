@@ -15,6 +15,7 @@
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="Moq" Version="4.16.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.DirectoryServices" Version="5.0.0" />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="5.0.0" />
     <PackageReference Include="Xbehave" Version="2.4.1" />
@@ -33,5 +34,16 @@
   <!-- Tools -->
   <ItemGroup>
     <DotNetCliToolReference Include="dotnet-reportgenerator-cli" Version="4.6.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="LDAPDumps" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="LDAPDumps\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DeploymentContent>true</DeploymentContent>
+      <Link>LDAPDumps\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+    </Content>
   </ItemGroup>
 </Project>
