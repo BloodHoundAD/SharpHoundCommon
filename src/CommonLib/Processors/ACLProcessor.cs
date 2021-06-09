@@ -122,8 +122,7 @@ namespace SharpHoundCommonLib.Processors
                     Logging.Trace("Skipping deny ACE");
                     continue;
                 }
-
-
+                
                 if (!IsAceInherited(ace, BaseGuids[objectType]))
                 {
                     Logging.Trace("Skipping ACE with unmatched GUID/inheritance");
@@ -147,20 +146,18 @@ namespace SharpHoundCommonLib.Processors
 
                 GuidMap.TryGetValue(aceType, out var mappedGuid);
 
-                var bAce = new ACE
-                {
-                    PrincipalType = resolvedPrincipal.ObjectType,
-                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                    IsInherited = inherited,
-                };
-
                 //GenericAll applies to every object
                 if (aceRights.HasFlag(ActiveDirectoryRights.GenericAll))
                 {
                     if (aceType is ACEGuids.AllGuid or "")
                     {
-                        bAce.RightName = EdgeNames.GenericAll;
-                        yield return bAce;
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.GenericAll
+                        };
                     }
                     //This is a special case. If we don't continue here, every other ACE will match because GenericAll includes all other permissions
                     continue;
@@ -169,14 +166,24 @@ namespace SharpHoundCommonLib.Processors
                 //WriteDACL and WriteOwner are always useful no matter what the object type is as well because they enable all other attacks
                 if (aceRights.HasFlag(ActiveDirectoryRights.WriteDacl))
                 {
-                    bAce.RightName = EdgeNames.WriteDacl;
-                    yield return bAce;
+                    yield return new ACE
+                    {
+                        PrincipalType = resolvedPrincipal.ObjectType,
+                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        IsInherited = inherited,
+                        RightName = EdgeNames.WriteDacl
+                    };
                 }
                 
                 if (aceRights.HasFlag(ActiveDirectoryRights.WriteOwner))
                 {
-                    bAce.RightName = EdgeNames.WriteOwner;
-                    yield return bAce;
+                    yield return new ACE
+                    {
+                        PrincipalType = resolvedPrincipal.ObjectType,
+                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        IsInherited = inherited,
+                        RightName = EdgeNames.WriteOwner
+                    };
                 }
                 
                 //Cool ACE courtesy of @rookuu. Allows a principal to add itself to a group and no one else
@@ -186,8 +193,13 @@ namespace SharpHoundCommonLib.Processors
                     {
                         if (aceType == ACEGuids.AddSelfToGroup)
                         {
-                            bAce.RightName = EdgeNames.AddSelf;
-                            yield return bAce;
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.AddSelf
+                            };
                         }
                     }
                 }
@@ -199,35 +211,70 @@ namespace SharpHoundCommonLib.Processors
                     {
                         if (aceType == ACEGuids.DSReplicationGetChanges)
                         {
-                            bAce.RightName = EdgeNames.GetChanges;
-                            yield return bAce;
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.GetChanges
+                            };
                         }else if (aceType == ACEGuids.DSReplicationGetChangesAll){
-                            bAce.RightName = EdgeNames.GetChangesAll;
-                            yield return bAce;
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.GetChangesAll
+                            };
                         }else if (aceType is ACEGuids.AllGuid or "")
                         {
-                            bAce.RightName = EdgeNames.AllExtendedRights;
-                            yield return bAce;
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.AllExtendedRights
+                            };
                         }
                     }else if (objectType == Label.User){
                         if (aceType == ACEGuids.UserForceChangePassword){
-                            bAce.RightName = EdgeNames.ForceChangePassword;
-                            yield return bAce;
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.ForceChangePassword
+                            };
                         }else if (aceType is ACEGuids.AllGuid or ""){
-                            bAce.RightName = EdgeNames.AllExtendedRights;
-                            yield return bAce;
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.AllExtendedRights
+                            };
                         }
                     }else if (objectType == Label.Computer){
                         //ReadLAPSPassword is only applicable if the computer actually has LAPS. Check the world readable property ms-mcs-admpwdexpirationtime
                         if (hasLaps)
                         {
                             if (aceType is ACEGuids.AllGuid or ""){
-                                bAce.RightName = EdgeNames.AllExtendedRights;
-                                yield return bAce;
+                                yield return new ACE
+                                {
+                                    PrincipalType = resolvedPrincipal.ObjectType,
+                                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                    IsInherited = inherited,
+                                    RightName = EdgeNames.AllExtendedRights
+                                };
                             }else if (mappedGuid is "ms-mcs-admpwd")
                             {
-                                bAce.RightName = EdgeNames.ReadLAPSPassword;
-                                yield return bAce;
+                                yield return new ACE
+                                {
+                                    PrincipalType = resolvedPrincipal.ObjectType,
+                                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                    IsInherited = inherited,
+                                    RightName = EdgeNames.ReadLAPSPassword
+                                };
                             }
                         }
                     }
@@ -241,19 +288,34 @@ namespace SharpHoundCommonLib.Processors
                     {
                         if (aceType is ACEGuids.AllGuid or "")
                         {
-                            bAce.RightName = EdgeNames.GenericWrite;
-                            yield return bAce;
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.GenericWrite
+                            };
                         }
                     }
 
                     if (objectType == Label.User && aceType == ACEGuids.WriteMember)
                     {
-                        bAce.RightName = EdgeNames.AddMember;
-                        yield return bAce;
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.AddMember
+                        };
                     }else if (objectType == Label.Computer && aceType == ACEGuids.WriteAllowedToAct)
                     {
-                        bAce.RightName = EdgeNames.AddAllowedToAct;
-                        yield return bAce;
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.AddAllowedToAct
+                        };
                     }
                 }
             }
