@@ -15,7 +15,8 @@ namespace SharpHoundCommonLib.Processors
         public static IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName)
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
-            foreach (var childEntry in LDAPUtils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
+            var utils = LDAPUtils.Instance;
+            foreach (var childEntry in utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
                 CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName), adsPath: distinguishedName))
             {
                 var dn = childEntry.DistinguishedName.ToUpper();
@@ -27,7 +28,7 @@ namespace SharpHoundCommonLib.Processors
                 if (id == null)
                     continue;
 
-                var res = LDAPUtils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(childEntry.DistinguishedName));
+                var res = utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(childEntry.DistinguishedName));
                 if (res == null)
                     continue;
                 yield return res;
@@ -48,7 +49,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 var enforced = link.Status.Equals("2");
 
-                var res = LDAPUtils.ResolveDistinguishedName(link.DistinguishedName);
+                var res = LDAPUtils.Instance.ResolveDistinguishedName(link.DistinguishedName);
                     
                 if (res == null)
                     continue;

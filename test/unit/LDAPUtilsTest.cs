@@ -1,25 +1,25 @@
 using System;
-using Xunit;
-using FluentAssertions;
-using Xbehave;
-using System.Security.Cryptography;
 using SharpHoundCommonLib;
-using System.DirectoryServices.Protocols;
+using SharpHoundCommonLib.Enums;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace CommonLibTest
 {
     public class LDAPUtilsTest : IDisposable
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+
         #region Private Members
 
         #endregion
 
         #region Constructor(s)
 
-        public LDAPUtilsTest()
+        public LDAPUtilsTest(ITestOutputHelper testOutputHelper)
         {
+            _testOutputHelper = testOutputHelper;
             // This runs once per test.
-
         }
 
         #endregion
@@ -35,7 +35,6 @@ namespace CommonLibTest
         public void SanityCheck()
         {
             Assert.True(true);
-
         }
 
         #region Creation
@@ -45,10 +44,26 @@ namespace CommonLibTest
         /// </summary>
         [Fact]
         public void GetUserGlobalCatalogMatches_Garbage_ReturnsNull() {
-            var _test = LDAPUtils.GetUserGlobalCatalogMatches("foo");
-            Console.WriteLine(_test);
-            Assert.NotNull(_test);
+            var test = LDAPUtils.Instance.GetUserGlobalCatalogMatches("foo");
+            _testOutputHelper.WriteLine(test.ToString());
+            Assert.NotNull(test);
+            Assert.Empty(test);
+        }
 
+        [Fact]
+        public void ResolveIDAndType_DuplicateSid_ReturnsNull()
+        {
+            var test = LDAPUtils.Instance.ResolveIDAndType("ABC0ACNF", null);
+            Assert.Null(test);
+        }
+
+        [Fact]
+        public void ResolveIDAndType_WellKnownAdministrators_ReturnsConvertedSID()
+        {
+            var test = LDAPUtils.Instance.ResolveIDAndType("S-1-5-32-544", "TESTLAB.LOCAL");
+            Assert.NotNull(test);
+            Assert.Equal(Label.Group, test.ObjectType);
+            Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", test.ObjectIdentifier);
         }
 
         #endregion

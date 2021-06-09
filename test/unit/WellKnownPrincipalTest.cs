@@ -1,33 +1,26 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
-using System.DirectoryServices.Protocols;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using Xunit;
-using Domain = System.DirectoryServices.ActiveDirectory.Domain;
+using Xunit.Abstractions;
 
 namespace CommonLibTest
 {
     public class WellKnownPrincipalTest : IDisposable
     {
         #region Private Members
-
+        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly string _testDomainName;
+        private readonly string _testForestName;
         #endregion
 
         #region Constructor(s)
 
-        public WellKnownPrincipalTest()
+        public WellKnownPrincipalTest(ITestOutputHelper testOutputHelper)
         {
-
+            _testOutputHelper = testOutputHelper;
+            _testDomainName = "TESTLAB.LOCAL";
+            _testForestName = "FOREST.LOCAL";
         }
 
         #endregion
@@ -40,12 +33,38 @@ namespace CommonLibTest
         [Fact]
         public void GetWellKnownPrincipal_PassingTestSid__ReturnsValidTypedPrincipal()
         {
-            // TypedPrincipal typedPrincipal;
+            var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-0-0", out var typedPrincipal);
 
-            // bool result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-0-0", out typedPrincipal);
+            Assert.True(result);
+            Assert.Equal(Label.User, typedPrincipal.ObjectType);
+        }
 
-            // Assert.True(result);
-            // Assert.Equal(Label.User, typedPrincipal.ObjectType);
+        [Fact]
+        public void GetWellKnownPrincipal_EnterpriseDomainControllers_ReturnsCorrectedSID()
+        {
+            Helpers.SwapMockUtils();
+            var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-9", null, out var typedPrincipal);
+            Assert.True(result);
+            Assert.Equal($"{_testForestName}-S-1-5-9", typedPrincipal.ObjectIdentifier);
+            Assert.Equal(Label.Group, typedPrincipal.ObjectType);
+        }
+
+        [Fact]
+        public void GetWellKnownPrincipal_NonWellKnown_ReturnsNull()
+        {
+            var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-21-123456-78910", _testDomainName, out var typedPrincipal);
+            Assert.False(result);
+            Assert.Null(typedPrincipal);
+        }
+
+        [Fact]
+        public void GetWellKnownPrincipal_WithDomain_ConvertsSID()
+        {
+            var result =
+                WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-32-544", _testDomainName, out var typedPrincipal);
+            Assert.True(result);
+            Assert.Equal(Label.Group, typedPrincipal.ObjectType);
+            Assert.Equal($"{_testDomainName}-S-1-5-32-544", typedPrincipal.ObjectIdentifier);
         }
 
         #endregion
@@ -54,6 +73,7 @@ namespace CommonLibTest
         public void Dispose()
         {
             // Tear down (called once per test)
+            Helpers.RestoreMockUtils();
         }
         #endregion
     }

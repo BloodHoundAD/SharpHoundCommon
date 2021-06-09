@@ -73,6 +73,7 @@ namespace SharpHoundCommonLib
         public static async Task<ResolvedSearchResult> ResolveBHProps(this SearchResultEntry entry)
         {
             var res = new ResolvedSearchResult();
+            var utils = LDAPUtils.Instance;
 
             var itemID = entry.GetObjectIdentifier();
             if (itemID == null)
@@ -93,7 +94,7 @@ namespace SharpHoundCommonLib
             {
                 if (itemID.StartsWith("S-1-"))
                 {
-                    itemDomain = LDAPUtils.GetDomainNameFromSid(itemID);    
+                    itemDomain = utils.GetDomainNameFromSid(itemID);    
                 }
                 else
                 {
@@ -110,7 +111,7 @@ namespace SharpHoundCommonLib
             
             if (WellKnownPrincipal.GetWellKnownPrincipal(itemID, out var wkPrincipal))
             {
-                res.DomainSid = await LDAPUtils.GetSidFromDomainName(itemDomain); 
+                res.DomainSid = await utils.GetSidFromDomainName(itemDomain); 
                 res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
                 res.ObjectType = wkPrincipal.ObjectType;
                 res.ObjectId = WellKnownPrincipal.TryConvert(itemID, itemDomain);
@@ -124,7 +125,7 @@ namespace SharpHoundCommonLib
             }
             else
             {
-                res.DomainSid = await LDAPUtils.GetSidFromDomainName(itemDomain);
+                res.DomainSid = await utils.GetSidFromDomainName(itemDomain);
             }
             
 

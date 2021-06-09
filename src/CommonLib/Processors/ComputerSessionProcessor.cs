@@ -46,6 +46,7 @@ namespace SharpHoundCommonLib.Processors
 
                 var results = new List<Session>();
                 var iter = ptr;
+                var utils = LDAPUtils.Instance;
                 Logging.Trace($"NetSessionEnum for {computerName} returned {entriesRead} entries");
                 for (var i = 0; i < entriesRead; i++)
                 {
@@ -78,21 +79,21 @@ namespace SharpHoundCommonLib.Processors
                     else
                     {
                         //Attempt to resolve the host name to a SID
-                        resolvedComputerSID = await LDAPUtils.ResolveHostToSid(computerSessionName, computerDomain);
+                        resolvedComputerSID = await utils.ResolveHostToSid(computerSessionName, computerDomain);
                     }
                     
                     //Throw out this data if we couldn't resolve it successfully. 
                     if (resolvedComputerSID == null || !resolvedComputerSID.StartsWith("S-1"))
                         continue;
 
-                    var matches = LDAPUtils.GetUserGlobalCatalogMatches(username);
+                    var matches = utils.GetUserGlobalCatalogMatches(username);
                     if (matches.Length > 0)
                     {
                         results.AddRange(matches.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
                     }
                     else
                     {
-                        var res = await LDAPUtils.ResolveAccountName(username, computerDomain);
+                        var res = await utils.ResolveAccountName(username, computerDomain);
                         if (res != null)
                             results.Add(new Session
                             {
@@ -169,7 +170,7 @@ namespace SharpHoundCommonLib.Processors
                     if (domain.Contains(" "))
                         continue;
                     
-                    var res = await LDAPUtils.ResolveAccountName(username, computerDomain);
+                    var res = await LDAPUtils.Instance.ResolveAccountName(username, computerDomain);
                     if (res == null)
                         continue;
                     

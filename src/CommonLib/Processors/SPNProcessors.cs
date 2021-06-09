@@ -29,7 +29,7 @@ namespace SharpHoundCommonLib.Processors
                             port = 1433;
                         }
                     }
-                    var host = await LDAPUtils.ResolveHostToSid(spn, domain);
+                    var host = await LDAPUtils.Instance.ResolveHostToSid(spn, domain);
                     if (host.StartsWith("S-1-"))
                     {
                         yield return new SPNTarget
