@@ -5,10 +5,10 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
-    public class GroupProcessors
+    public class GroupProcessor
     {
         private readonly ILDAPUtils _utils;
-        public GroupProcessors(ILDAPUtils utils)
+        public GroupProcessor(ILDAPUtils utils)
         {
             _utils = utils;
         }
@@ -67,6 +67,9 @@ namespace SharpHoundCommonLib.Processors
         public static string GetPrimaryGroupInfo(string primaryGroupId, string objectId)
         {
             if (primaryGroupId == null)
+                return null;
+
+            if (objectId == null)
                 return null;
 
             try

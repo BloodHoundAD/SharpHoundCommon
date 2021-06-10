@@ -17,5 +17,31 @@ namespace SharpHoundCommonLib.OutputTypes
         
         public string ObjectIdentifier { get; set; }
         public Label ObjectType { get; set; }
+
+        public override string ToString()
+        {
+            return $"{ObjectIdentifier} - {ObjectType}";
+        }
+
+        protected bool Equals(TypedPrincipal other)
+        {
+            return ObjectIdentifier == other.ObjectIdentifier && ObjectType == other.ObjectType;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TypedPrincipal) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((ObjectIdentifier != null ? ObjectIdentifier.GetHashCode() : 0) * 397) ^ (int) ObjectType;
+            }
+        }
     }
 }
