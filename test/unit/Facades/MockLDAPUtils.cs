@@ -30,6 +30,7 @@ namespace CommonLibTest.Facades
 
         public TypedPrincipal ResolveIDAndType(string id, string domain)
         {
+            id = id?.ToUpper();
             if (GetWellKnownPrincipal(id, domain, out var principal))
             {
                 return principal;
@@ -412,6 +413,234 @@ namespace CommonLibTest.Facades
                     "S-1-5-21-3130019616-2776909439-2417379446-2105", Label.Computer),
                 "S-1-5-21-3130019616-2776909439-2417379446-2120" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-2120", Label.Computer),
+                "CN=REPLICATOR,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-552",
+                    Label.Group),
+                "CN=PRINT OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-550",
+                    Label.Group),
+                "CN=ADMINISTRATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-544",
+                    Label.Group),
+                "CN=EVENT LOG READERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-573", Label.Group),
+                "CN=RDS MANAGEMENT SERVERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-577", Label.Group),
+                "CN=ACCESS CONTROL ASSISTANCE OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-579", Label.Group),
+                "CN=REMOTE MANAGEMENT USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-580", Label.Group),
+                "CN=CERT PUBLISHERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-517", Label.Group),
+                "CN=BACKUP OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-551",
+                    Label.Group),
+                "CN=REMOTE DESKTOP USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-555", Label.Group),
+                "CN=NETWORK CONFIGURATION OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-556", Label.Group),
+                "CN=WINRMREMOTEWMIUSERS__,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1000", Label.Group),
+                "CN=PERFORMANCE LOG USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-559", Label.Group),
+                "CN=RAS AND IAS SERVERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-553", Label.Group),
+                "CN=SERVER OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-549",
+                    Label.Group),
+                "CN=DNSADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1102", Label.Group),
+                "CN=DENIED RODC PASSWORD REPLICATION GROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-572", Label.Group),
+                "CN=INCOMING FOREST TRUST BUILDERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-557", Label.Group),
+                "CN=WINDOWS AUTHORIZATION ACCESS GROUP,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-560", Label.Group),
+                "CN=USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-545",
+                    Label.Group),
+                "CN=CRYPTOGRAPHIC OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-569", Label.Group),
+                "CN=DOMAIN CONTROLLERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-516", Label.Group),
+                "CN=DOMAIN COMPUTERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-515", Label.Group),
+                "CN=GETCHANGESALLGROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2111", Label.Group),
+                "CN=ENTERPRISE READ-ONLY DOMAIN CONTROLLERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-498", Label.Group),
+                "CN=SCHEMA ADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-518", Label.Group),
+                "CN=TERMINAL SERVER LICENSE SERVERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-561", Label.Group),
+                "CN=ALLOWED RODC PASSWORD REPLICATION GROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-571", Label.Group),
+                "CN=IIS_IUSRS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-568",
+                    Label.Group),
+                "CN=ACCOUNT OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-548", Label.Group),
+                "CN=DOMAIN ADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group),
+                "CN=ENTERPRISE ADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-519", Label.Group),
+                "CN=MACHINE,CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("77D4EE66-A52A-4A2B-A63E-310AE7405780", Label.Container),
+                "CN=MACHINE,CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("3E0CF950-841E-41A5-806C-C8F7BC969759", Label.Container),
+                "CN=MACHINE,CN={1C27055D-E589-49B2-9113-CCEE9767F086},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("D5CD4A98-6858-424F-AB3C-9152031F5382", Label.Container),
+                "CN=USER,CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("3AB5AA03-E8EA-42CD-8E2F-62060B509F88", Label.Container),
+                "CN=USER,CN={6AC1786C-016F-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("A0033396-AA37-4A14-99B2-3F2E7273D77E", Label.Container),
+                "CN=MACHINE,CN={6AC1786C-016F-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("54B2CF93-86A8-4DED-B20B-BDFAAE0D6020", Label.Container),
+                "CN=USER,CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("41504172-85F5-4C5A-9A7F-8AFD7AF9D502", Label.Container),
+                "CN=USER,CN={1C27055D-E589-49B2-9113-CCEE9767F086},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("00421F2D-9369-44B5-AFD4-683E15287F58", Label.Container),
+                "CN=USER,CN={94DD0260-38B5-497E-8876-10E7A96E80D0},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("2043A562-9736-4D37-ACBF-66DF111A3AF5", Label.Container),
+                "CN=MACHINE,CN={94DD0260-38B5-497E-8876-10E7A96E80D0},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("17752E77-3D50-472E-B37A-074CDC6EDD71", Label.Container),
+                "CN=USER,CN={1E860A30-603A-45C7-A768-26EE74BE6D5D},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("869A84DF-489B-4549-BBF9-F13346DA069A", Label.Container),
+                "CN=SOM,CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "D09245F3-7CFB-4F62-9EA1-14CFE88FDA05", Label.Container),
+                "CN=WMIGPO,CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "FF0D453E-352C-492B-94FE-3C39D8D1757E", Label.Container),
+                "CN=COMPARTITIONSETS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "80C5D5D6-B1F3-47BC-BE3A-AA5CE922CA9B", Label.Container),
+                "CN=PROGRAM DATA,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("EA359D65-E573-48DF-8BF0-1B1031751729",
+                    Label.Container),
+                "CN=ADMINSDHOLDER,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "1663A808-69CC-4653-BA67-62635BDCC504", Label.Container),
+                "CN=MICROSOFT,CN=PROGRAM DATA,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "351420A9-A4DA-451E-A439-FCC83B7289DD", Label.Container),
+                "CN=COMPARTITIONS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "C8F2C713-3DB8-4DE3-B6CD-F07C2F712A0D", Label.Container),
+                "CN=USER,CN={3DDB26AF-AB07-4D04-AC4A-5870101026FD},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("AC38AF0A-476A-491C-A99C-46BD7E6B1ED9", Label.Container),
+                "CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("45781029-28B5-4B9B-BAA6-308741A6F8C4",
+                    Label.Container),
+                "CN=PSPS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("B3EC44D7-7FED-4D9C-AAEF-48C9FE98DB16",
+                    Label.Container),
+                "CN=RAS AND IAS SERVERS ACCESS CHECK,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "53921E98-3004-4285-858D-C901F2D1C242", Label.Container),
+                "CN=MACHINE,CN={3DDB26AF-AB07-4D04-AC4A-5870101026FD},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("AF7C249C-524B-479B-BFED-EA3527FAA43B", Label.Container),
+                "CN=MEETINGS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "6BC79CB0-E66B-4752-ABF5-6727C336AD27", Label.Container),
+                "CN=FOREIGNSECURITYPRINCIPALS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "629289D5-75F1-4122-B30E-3D823AD0E83C", Label.Container),
+                "CN=RPCSERVICES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "696C77F5-24AF-4D4F-AE48-CE323905E84C", Label.Container),
+                "CN=IP SECURITY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "E986A16E-91DD-4964-8C23-17CC5C33071D", Label.Container),
+                "CN=MACHINE,CN={1E860A30-603A-45C7-A768-26EE74BE6D5D},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("91781CFB-7806-4B3D-924E-2D76CA5E8CD9", Label.Container),
+                "CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "87594131-09D5-4F8F-87D4-E350F04AEC3E", Label.Container),
+                "CN=POLICYTEMPLATE,CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "C011E11D-13DC-4C49-9D99-55A8B26465E1", Label.Container),
+                "CN=WRITEDACL TEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2117", Label.User),
+                "CN=WRITEOWNER TEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2115", Label.User),
+                "CN=WIN10,OU=TESTOU,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1104", Label.Computer),
+                "CN=TESTMSA,CN=MANAGED SERVICE ACCOUNTS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2105", Label.Computer),
+                "CN=UCCOMP,CN=COMPUTERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2120", Label.Computer),
+                "CN=PRIMARY,OU=DOMAIN CONTROLLERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1001", Label.Computer),
+                "CN=DFM,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1105", Label.User),
+                "CN=ADDALLOWEDTOACTTEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2121", Label.User),
+                "CN=MICROSOFTDNS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "B075DB24-5B1D-4187-BB42-00057CB2EDFD", Label.Container),
+                "CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("ECAD920E-8EB1-4E31-A80E-DD36367F81F4",
+                    Label.Container),
+                "CN=POLICYTYPE,CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "3509C504-9CD1-497E-A0F7-F1A4D63BDF39", Label.Container),
+                "CN=WINSOCKSERVICES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "31621345-B09B-4045-9FEF-4C87F5FBE492", Label.Container),
+                "CN=MANAGED SERVICE ACCOUNTS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "9AC9B1D2-469D-4C28-A397-1FD3C7ED2B23", Label.Container),
+                "CN=COMPUTERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("AB616901-D423-4B9A-B68F-D24CEE1E36EF",
+                    Label.Container),
+                "CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "EF0393C4-339D-4652-A2F3-59135EC87BB5", Label.Container),
+                "DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446", Label.Domain),
+                "CN=GETCHANGESGROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2110", Label.Group),
+                "CN=DCSYNCDIRECTTEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2122", Label.User),
+                "OU=DOMAIN CONTROLLERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "0DE400CD-2FF3-46E0-8A26-2C917B403C65", Label.OU),
+                "OU=TESTOU,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("2A374493-816A-4193-BEFD-D2F4132C6DCA", Label.OU),
+                "CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("ACDD64D3-67B3-401F-A6CC-804B3F7B1533", Label.GPO),
+                "CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("BE91688F-1333-45DF-93E4-4D2E8A36DE2B", Label.GPO),
+                "CN={1C27055D-E589-49B2-9113-CCEE9767F086},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("57DB0AB2-001D-4434-97A9-6AAF34754376", Label.GPO),
+                "CN={6AC1786C-016F-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("F5BDDA03-0183-4F41-93A2-DCA253BE6450", Label.GPO),
+                "CN={1E860A30-603A-45C7-A768-26EE74BE6D5D},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("C45E9585-4932-4C03-91A8-1856869D49AF", Label.GPO),
+                "CN={3DDB26AF-AB07-4D04-AC4A-5870101026FD},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("DF4B5337-3DF7-4504-B1B2-B5674186EE67", Label.GPO),
+                "CN={94DD0260-38B5-497E-8876-10E7A96E80D0},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("B39818AF-6349-401A-AE0A-E4972F5BF6D9", Label.GPO),
+                "CN=CERTIFICATE SERVICE DCOM ACCESS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-574", Label.Group),
+                "CN=HYPER-V ADMINISTRATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-578", Label.Group),
+                "CN=PRE-WINDOWS 2000 COMPATIBLE ACCESS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-554", Label.Group),
+                "CN=RDS ENDPOINT SERVERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-576", Label.Group),
+                "CN=DISTRIBUTED COM USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-562", Label.Group),
+                "CN=RDS REMOTE ACCESS SERVERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-575", Label.Group),
+                "CN=GUESTS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-546",
+                    Label.Group),
+                "CN=PERFORMANCE MONITOR USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-558", Label.Group),
+                "CN=DOMAIN USERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-513", Label.Group),
+                "CN=DOMAIN GUESTS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-514", Label.Group),
+                "CN=GROUP POLICY CREATOR OWNERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-520", Label.Group),
+                "CN=READ-ONLY DOMAIN CONTROLLERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-521", Label.Group),
+                "CN=CLONEABLE DOMAIN CONTROLLERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-522", Label.Group),
+                "CN=PROTECTED USERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-525", Label.Group),
+                "CN=DNSUPDATEPROXY,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1103", Label.Group),
+                "CN=SYSADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2118", Label.Group),
+                "CN=ADMINISTRATOR,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-500", Label.User),
+                "CN=ADDMEMBERTEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2119", Label.User),
+                "CN=GUEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-501", Label.User),
+                "CN=TESTGMSA,CN=MANAGED SERVICE ACCOUNTS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2103", Label.User),
+                "CN=ADMIN,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2116", Label.User),
+                "CN=GWRITE TEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2114", Label.User),
+                "CN=DCSYNC DELEGATED,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2112", Label.User),
+                "CN=ESID2,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2107", Label.User),
+                "CN=ESID,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2106", Label.User),
+                "CN=KRBTGT,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-502", Label.User),
                 _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
             };
 
@@ -474,7 +703,238 @@ namespace CommonLibTest.Facades
 
         public TypedPrincipal ResolveDistinguishedName(string dn)
         {
-            throw new System.NotImplementedException();
+            return dn.ToUpper() switch
+            {
+                "CN=REPLICATOR,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-552",
+                    Label.Group),
+                "CN=PRINT OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-550",
+                    Label.Group),
+                "CN=ADMINISTRATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-544",
+                    Label.Group),
+                "CN=EVENT LOG READERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-573", Label.Group),
+                "CN=RDS MANAGEMENT SERVERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-577", Label.Group),
+                "CN=ACCESS CONTROL ASSISTANCE OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-579", Label.Group),
+                "CN=REMOTE MANAGEMENT USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-580", Label.Group),
+                "CN=CERT PUBLISHERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-517", Label.Group),
+                "CN=BACKUP OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-551",
+                    Label.Group),
+                "CN=REMOTE DESKTOP USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-555", Label.Group),
+                "CN=NETWORK CONFIGURATION OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-556", Label.Group),
+                "CN=WINRMREMOTEWMIUSERS__,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1000", Label.Group),
+                "CN=PERFORMANCE LOG USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-559", Label.Group),
+                "CN=RAS AND IAS SERVERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-553", Label.Group),
+                "CN=SERVER OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-549",
+                    Label.Group),
+                "CN=DNSADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1102", Label.Group),
+                "CN=DENIED RODC PASSWORD REPLICATION GROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-572", Label.Group),
+                "CN=INCOMING FOREST TRUST BUILDERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-557", Label.Group),
+                "CN=WINDOWS AUTHORIZATION ACCESS GROUP,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-560", Label.Group),
+                "CN=USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-545",
+                    Label.Group),
+                "CN=CRYPTOGRAPHIC OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-569", Label.Group),
+                "CN=DOMAIN CONTROLLERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-516", Label.Group),
+                "CN=DOMAIN COMPUTERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-515", Label.Group),
+                "CN=GETCHANGESALLGROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2111", Label.Group),
+                "CN=ENTERPRISE READ-ONLY DOMAIN CONTROLLERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-498", Label.Group),
+                "CN=SCHEMA ADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-518", Label.Group),
+                "CN=TERMINAL SERVER LICENSE SERVERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-561", Label.Group),
+                "CN=ALLOWED RODC PASSWORD REPLICATION GROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-571", Label.Group),
+                "CN=IIS_IUSRS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-568",
+                    Label.Group),
+                "CN=ACCOUNT OPERATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-548", Label.Group),
+                "CN=DOMAIN ADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group),
+                "CN=ENTERPRISE ADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-519", Label.Group),
+                "CN=MACHINE,CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("77D4EE66-A52A-4A2B-A63E-310AE7405780", Label.Container),
+                "CN=MACHINE,CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("3E0CF950-841E-41A5-806C-C8F7BC969759", Label.Container),
+                "CN=MACHINE,CN={1C27055D-E589-49B2-9113-CCEE9767F086},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("D5CD4A98-6858-424F-AB3C-9152031F5382", Label.Container),
+                "CN=USER,CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("3AB5AA03-E8EA-42CD-8E2F-62060B509F88", Label.Container),
+                "CN=USER,CN={6AC1786C-016F-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("A0033396-AA37-4A14-99B2-3F2E7273D77E", Label.Container),
+                "CN=MACHINE,CN={6AC1786C-016F-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("54B2CF93-86A8-4DED-B20B-BDFAAE0D6020", Label.Container),
+                "CN=USER,CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("41504172-85F5-4C5A-9A7F-8AFD7AF9D502", Label.Container),
+                "CN=USER,CN={1C27055D-E589-49B2-9113-CCEE9767F086},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("00421F2D-9369-44B5-AFD4-683E15287F58", Label.Container),
+                "CN=USER,CN={94DD0260-38B5-497E-8876-10E7A96E80D0},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("2043A562-9736-4D37-ACBF-66DF111A3AF5", Label.Container),
+                "CN=MACHINE,CN={94DD0260-38B5-497E-8876-10E7A96E80D0},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("17752E77-3D50-472E-B37A-074CDC6EDD71", Label.Container),
+                "CN=USER,CN={1E860A30-603A-45C7-A768-26EE74BE6D5D},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("869A84DF-489B-4549-BBF9-F13346DA069A", Label.Container),
+                "CN=SOM,CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "D09245F3-7CFB-4F62-9EA1-14CFE88FDA05", Label.Container),
+                "CN=WMIGPO,CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "FF0D453E-352C-492B-94FE-3C39D8D1757E", Label.Container),
+                "CN=COMPARTITIONSETS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "80C5D5D6-B1F3-47BC-BE3A-AA5CE922CA9B", Label.Container),
+                "CN=PROGRAM DATA,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("EA359D65-E573-48DF-8BF0-1B1031751729",
+                    Label.Container),
+                "CN=ADMINSDHOLDER,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "1663A808-69CC-4653-BA67-62635BDCC504", Label.Container),
+                "CN=MICROSOFT,CN=PROGRAM DATA,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "351420A9-A4DA-451E-A439-FCC83B7289DD", Label.Container),
+                "CN=COMPARTITIONS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "C8F2C713-3DB8-4DE3-B6CD-F07C2F712A0D", Label.Container),
+                "CN=USER,CN={3DDB26AF-AB07-4D04-AC4A-5870101026FD},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("AC38AF0A-476A-491C-A99C-46BD7E6B1ED9", Label.Container),
+                "CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("45781029-28B5-4B9B-BAA6-308741A6F8C4",
+                    Label.Container),
+                "CN=PSPS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("B3EC44D7-7FED-4D9C-AAEF-48C9FE98DB16",
+                    Label.Container),
+                "CN=RAS AND IAS SERVERS ACCESS CHECK,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "53921E98-3004-4285-858D-C901F2D1C242", Label.Container),
+                "CN=MACHINE,CN={3DDB26AF-AB07-4D04-AC4A-5870101026FD},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("AF7C249C-524B-479B-BFED-EA3527FAA43B", Label.Container),
+                "CN=MEETINGS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "6BC79CB0-E66B-4752-ABF5-6727C336AD27", Label.Container),
+                "CN=FOREIGNSECURITYPRINCIPALS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "629289D5-75F1-4122-B30E-3D823AD0E83C", Label.Container),
+                "CN=RPCSERVICES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "696C77F5-24AF-4D4F-AE48-CE323905E84C", Label.Container),
+                "CN=IP SECURITY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "E986A16E-91DD-4964-8C23-17CC5C33071D", Label.Container),
+                "CN=MACHINE,CN={1E860A30-603A-45C7-A768-26EE74BE6D5D},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("91781CFB-7806-4B3D-924E-2D76CA5E8CD9", Label.Container),
+                "CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "87594131-09D5-4F8F-87D4-E350F04AEC3E", Label.Container),
+                "CN=POLICYTEMPLATE,CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "C011E11D-13DC-4C49-9D99-55A8B26465E1", Label.Container),
+                "CN=WRITEDACL TEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2117", Label.User),
+                "CN=WRITEOWNER TEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2115", Label.User),
+                "CN=WIN10,OU=TESTOU,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1104", Label.Computer),
+                "CN=TESTMSA,CN=MANAGED SERVICE ACCOUNTS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2105", Label.Computer),
+                "CN=UCCOMP,CN=COMPUTERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2120", Label.Computer),
+                "CN=PRIMARY,OU=DOMAIN CONTROLLERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1001", Label.Computer),
+                "CN=DFM,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1105", Label.User),
+                "CN=ADDALLOWEDTOACTTEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2121", Label.User),
+                "CN=MICROSOFTDNS,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "B075DB24-5B1D-4187-BB42-00057CB2EDFD", Label.Container),
+                "CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("ECAD920E-8EB1-4E31-A80E-DD36367F81F4",
+                    Label.Container),
+                "CN=POLICYTYPE,CN=WMIPOLICY,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "3509C504-9CD1-497E-A0F7-F1A4D63BDF39", Label.Container),
+                "CN=WINSOCKSERVICES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "31621345-B09B-4045-9FEF-4C87F5FBE492", Label.Container),
+                "CN=MANAGED SERVICE ACCOUNTS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "9AC9B1D2-469D-4C28-A397-1FD3C7ED2B23", Label.Container),
+                "CN=COMPUTERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("AB616901-D423-4B9A-B68F-D24CEE1E36EF",
+                    Label.Container),
+                "CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "EF0393C4-339D-4652-A2F3-59135EC87BB5", Label.Container),
+                "DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446", Label.Domain),
+                "CN=GETCHANGESGROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2110", Label.Group),
+                "CN=DCSYNCDIRECTTEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2122", Label.User),
+                "OU=DOMAIN CONTROLLERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "0DE400CD-2FF3-46E0-8A26-2C917B403C65", Label.OU),
+                "OU=TESTOU,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("2A374493-816A-4193-BEFD-D2F4132C6DCA", Label.OU),
+                "CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("ACDD64D3-67B3-401F-A6CC-804B3F7B1533", Label.GPO),
+                "CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("BE91688F-1333-45DF-93E4-4D2E8A36DE2B", Label.GPO),
+                "CN={1C27055D-E589-49B2-9113-CCEE9767F086},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("57DB0AB2-001D-4434-97A9-6AAF34754376", Label.GPO),
+                "CN={6AC1786C-016F-11D2-945F-00C04FB984F9},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("F5BDDA03-0183-4F41-93A2-DCA253BE6450", Label.GPO),
+                "CN={1E860A30-603A-45C7-A768-26EE74BE6D5D},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("C45E9585-4932-4C03-91A8-1856869D49AF", Label.GPO),
+                "CN={3DDB26AF-AB07-4D04-AC4A-5870101026FD},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("DF4B5337-3DF7-4504-B1B2-B5674186EE67", Label.GPO),
+                "CN={94DD0260-38B5-497E-8876-10E7A96E80D0},CN=POLICIES,CN=SYSTEM,DC=TESTLAB,DC=LOCAL" =>
+                    new TypedPrincipal("B39818AF-6349-401A-AE0A-E4972F5BF6D9", Label.GPO),
+                "CN=CERTIFICATE SERVICE DCOM ACCESS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-574", Label.Group),
+                "CN=HYPER-V ADMINISTRATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-578", Label.Group),
+                "CN=PRE-WINDOWS 2000 COMPATIBLE ACCESS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-554", Label.Group),
+                "CN=RDS ENDPOINT SERVERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-576", Label.Group),
+                "CN=DISTRIBUTED COM USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-562", Label.Group),
+                "CN=RDS REMOTE ACCESS SERVERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-575", Label.Group),
+                "CN=GUESTS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-546",
+                    Label.Group),
+                "CN=PERFORMANCE MONITOR USERS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "TESTLAB.LOCAL-S-1-5-32-558", Label.Group),
+                "CN=DOMAIN USERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-513", Label.Group),
+                "CN=DOMAIN GUESTS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-514", Label.Group),
+                "CN=GROUP POLICY CREATOR OWNERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-520", Label.Group),
+                "CN=READ-ONLY DOMAIN CONTROLLERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-521", Label.Group),
+                "CN=CLONEABLE DOMAIN CONTROLLERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-522", Label.Group),
+                "CN=PROTECTED USERS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-525", Label.Group),
+                "CN=DNSUPDATEPROXY,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1103", Label.Group),
+                "CN=SYSADMINS,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2118", Label.Group),
+                "CN=ADMINISTRATOR,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-500", Label.User),
+                "CN=ADDMEMBERTEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2119", Label.User),
+                "CN=GUEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-501", Label.User),
+                "CN=TESTGMSA,CN=MANAGED SERVICE ACCOUNTS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2103", Label.User),
+                "CN=ADMIN,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2116", Label.User),
+                "CN=GWRITE TEST,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2114", Label.User),
+                "CN=DCSYNC DELEGATED,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2112", Label.User),
+                "CN=ESID2,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2107", Label.User),
+                "CN=ESID,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2106", Label.User),
+                "CN=KRBTGT,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-502", Label.User),
+                _ => null
+            };
         }
 
         public IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken,

@@ -33,10 +33,11 @@ namespace SharpHoundCommonLib.Processors
             };
         }
         
-        public ACLProcessor(ILDAPUtils utils)
+        public ACLProcessor(ILDAPUtils utils, bool noGuidCache = false)
         {
             _utils = utils;
-            BuildGUIDCache();
+            if (!noGuidCache)
+                BuildGUIDCache();
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace SharpHoundCommonLib.Processors
             }
             
             var schema = forest.Schema?.Name;
-            if (schema == null)
+            if (string.IsNullOrEmpty(schema))
                 return;
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
                 new[] {"schemaidguid", "name"}, adsPath: schema))

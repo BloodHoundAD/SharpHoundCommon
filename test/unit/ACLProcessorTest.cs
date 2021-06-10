@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using CommonLibTest.Facades;
-using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
@@ -69,7 +68,7 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcess_ProcessGMSAReaders_YieldsCorrectAce()
         {
-            var processor = new ACLProcessor(new MockLDAPUtils());
+            var processor = new ACLProcessor(new MockLDAPUtils(), true);
             var bytes = Helpers.B64ToBytes(GMSAProperty);
             var result = processor.ProcessGMSAReaders(bytes, _testDomainName).ToArray();
             Assert.Single(result);
@@ -83,9 +82,7 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcess_ProcessACL_ProcessTestUser_YieldsCorrectAce()
         {
-            var processor = new ACLProcessor(new MockLDAPUtils());
-            var log = new TestLogger(_testOutputHelper, LogLevel.Information);
-            CommonLib.ReconfigureLogging(log);
+            var processor = new ACLProcessor(new MockLDAPUtils(), true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
             var expected = new ACE[]
             {
@@ -156,7 +153,6 @@ namespace CommonLibTest
             }
             Assert.Equal(8, result.Length);
             Assert.Equal(expected, result);
-            CommonLib.ReconfigureLogging(null);
         }
 
         public void Dispose()
