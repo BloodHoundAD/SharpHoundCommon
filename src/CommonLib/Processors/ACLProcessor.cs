@@ -46,8 +46,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (isCacheBuilt)
                 return;
-
-            isCacheBuilt = true;
+            
             var forest = _utils.GetForest();
             if (forest == null)
             {
@@ -65,6 +64,8 @@ namespace SharpHoundCommonLib.Processors
                 var guid = new Guid(entry.GetPropertyAsBytes("schemaidguid")).ToString();
                 GuidMap.TryAdd(guid, name);
             }
+            
+            isCacheBuilt = true;
         }
 
         /// <summary>
