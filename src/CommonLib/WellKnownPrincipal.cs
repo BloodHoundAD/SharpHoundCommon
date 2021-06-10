@@ -5,13 +5,6 @@ namespace SharpHoundCommonLib
 {
     public static class WellKnownPrincipal
     {
-        public static bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
-        {
-            if (!GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
-            commonPrincipal.ObjectIdentifier = TryConvert(sid, domain);
-            return true;
-        }
-
         /// <summary>
         /// Gets the principal associated with a well known SID
         /// </summary>
@@ -90,27 +83,6 @@ namespace SharpHoundCommonLib
             };
 
             return commonPrincipal != null;
-        }
-        
-        /// <summary>
-        /// Converts the provided SID to the BloodHound well known sid format if it matches a well known SID
-        /// </summary>
-        /// <param name="sid">Security Identifier</param>
-        /// <param name="domain">Domain to append if common SID is matched</param>
-        /// <returns>Sid with the domain appended if common SID is provided, else with no change</returns>
-        internal static string TryConvert(string sid, string domain)
-        {
-            if (!GetWellKnownPrincipal(sid, out _)) return sid;
-            
-            if (sid != "S-1-5-9") return $"{domain}-{sid}".ToUpper();
-            
-            var forest = LDAPUtils.Instance.GetForest(domain)?.Name;
-            if (forest == null)
-            {
-                Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
-            }
-            return $"{forest}-{sid}".ToUpper();
-
         }
     }
 }

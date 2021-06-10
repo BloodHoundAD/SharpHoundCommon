@@ -17,6 +17,8 @@ namespace SharpHoundCommonLib
         Label LookupGuidType(string guid, string domain);
         string GetDomainNameFromSid(string sid);
         Task<string> GetSidFromDomainName(string domainName);
+        string ConvertWellKnownPrincipal(string sid, string domain);
+        bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
 
         /// <summary>
         /// Performs Attribute Ranged Retrieval

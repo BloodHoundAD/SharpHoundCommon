@@ -5,7 +5,12 @@ namespace SharpHoundCommonLib.Processors
 {
     public class SPNProcessors
     {
-        public static async IAsyncEnumerable<SPNTarget> ReadSPNTargets(string[] servicePrincipalNames, string distinguishedName)
+        private readonly ILDAPUtils _utils;
+        public SPNProcessors(ILDAPUtils utils)
+        {
+            _utils = utils;
+        }
+        public async IAsyncEnumerable<SPNTarget> ReadSPNTargets(string[] servicePrincipalNames, string distinguishedName)
         {
             if (servicePrincipalNames.Length == 0)
                 yield break;
@@ -29,7 +34,7 @@ namespace SharpHoundCommonLib.Processors
                             port = 1433;
                         }
                     }
-                    var host = await LDAPUtils.Instance.ResolveHostToSid(spn, domain);
+                    var host = await _utils.ResolveHostToSid(spn, domain);
                     if (host.StartsWith("S-1-"))
                     {
                         yield return new SPNTarget

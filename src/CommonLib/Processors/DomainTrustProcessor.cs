@@ -9,15 +9,20 @@ namespace SharpHoundCommonLib.Processors
 {
     public class DomainTrustProcessor
     {
+        private readonly ILDAPUtils _utils;
+        public DomainTrustProcessor(ILDAPUtils utils)
+        {
+            _utils = utils;
+        }
         /// <summary>
         /// Processes domain trusts for a domain object
         /// </summary>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public static IEnumerable<DomainTrust> EnumerateDomainTrusts(string domain)
+        public IEnumerable<DomainTrust> EnumerateDomainTrusts(string domain)
         {
             var query = CommonFilters.TrustedDomains;
-            foreach (var result in LDAPUtils.Instance.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps, domain))
+            foreach (var result in _utils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps, domain))
             {
                 var trust = new DomainTrust();
                 var targetSidBytes = result.GetPropertyAsBytes("securityIdentifier");

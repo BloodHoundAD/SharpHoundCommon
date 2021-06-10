@@ -8,7 +8,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
-using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib
 {
@@ -40,24 +39,6 @@ namespace SharpHoundCommonLib
                     Status = status,
                     DistinguishedName = dn
                 };
-            }
-        }
-        
-        public static string GetMachineSid(string computerSid, string computerName, string computerSamAccountName)
-        {
-            if (Cache.GetMachineSid(computerSid, out var sid))
-            {
-                return sid;
-            }
-
-            try
-            {
-                using var server = new SAMRPCServer(computerName, computerSamAccountName, computerSid);
-                return server.GetMachineSid();
-            }
-            catch
-            {
-                return null;
             }
         }
         
