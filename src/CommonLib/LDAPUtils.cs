@@ -42,29 +42,11 @@ namespace SharpHoundCommonLib
         };
         
         private const string NullCacheKey = "UNIQUENULL";
-        private LDAPConfig _ldapConfig;
+        private LDAPConfig _ldapConfig = new();
 
-        public static void UpdateLDAPConfig(LDAPConfig config)
+        public void UpdateLDAPConfig(LDAPConfig config)
         {
-            Instance.SetLDAPConfig(config);
-        }
-
-        /// <summary>
-        /// This has a setter for testing purposes.
-        /// TODO: Explore dependency injection or something else so this isn't here anymore. This is gross.
-        /// </summary>
-        public static ILDAPUtils Instance { get; set; }
-
-        private static Lazy<ILDAPUtils> lazy = new(() => new LDAPUtils());
-
-        public LDAPUtils()
-        {
-            _ldapConfig = new LDAPConfig();
-        }
-
-        static LDAPUtils()
-        {
-            Instance = lazy.Value;
+            _ldapConfig = config;
         }
 
         public void SetLDAPConfig(LDAPConfig config)
@@ -75,6 +57,27 @@ namespace SharpHoundCommonLib
         private void TestLDAPConfig()
         {
             
+        }
+        
+        public bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
+        {
+            if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
+            commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
+            return true;
+        }
+
+        public string ConvertWellKnownPrincipal(string sid, string domain)
+        {
+            if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out _)) return sid;
+            
+            if (sid != "S-1-5-9") return $"{domain}-{sid}".ToUpper();
+            
+            var forest = GetForest(domain)?.Name;
+            if (forest == null)
+            {
+                Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
+            }
+            return $"{forest}-{sid}".ToUpper();
         }
 
         public string[] GetUserGlobalCatalogMatches(string name)
@@ -95,7 +98,7 @@ namespace SharpHoundCommonLib
             if (id.Contains("0ACNF"))
                 return null;
             
-            if (WellKnownPrincipal.GetWellKnownPrincipal(id, domain, out var principal))
+            if (GetWellKnownPrincipal(id, domain, out var principal))
                 return principal;
 
             var type = id.StartsWith("S-") ? LookupSidType(id, domain) : LookupGuidType(id, domain);
@@ -585,7 +588,7 @@ namespace SharpHoundCommonLib
             Cache.AddPrefixedValue(name, domain, id);
             Cache.AddType(id, type);
 
-            id = WellKnownPrincipal.TryConvert(id, domain);
+            id = ConvertWellKnownPrincipal(id, domain);
             
             return new TypedPrincipal
             {
@@ -621,7 +624,7 @@ namespace SharpHoundCommonLib
             }
             id = result.GetObjectIdentifier();
 
-            if (WellKnownPrincipal.GetWellKnownPrincipal(id, domain, out var principal))
+            if (GetWellKnownPrincipal(id, domain, out var principal))
             {
                 return principal;
             }
@@ -636,7 +639,7 @@ namespace SharpHoundCommonLib
             Cache.AddConvertedValue(dn, id);
             Cache.AddType(id, type);
 
-            id = WellKnownPrincipal.TryConvert(id, domain);
+            id = ConvertWellKnownPrincipal(id, domain);
             
             return new TypedPrincipal
             {

@@ -30,7 +30,7 @@ namespace CommonLibTest.Facades
 
         public TypedPrincipal ResolveIDAndType(string id, string domain)
         {
-            if (WellKnownPrincipal.GetWellKnownPrincipal(id, domain, out var principal))
+            if (GetWellKnownPrincipal(id, domain, out var principal))
             {
                 return principal;
             }
@@ -438,6 +438,23 @@ namespace CommonLibTest.Facades
         public Task<string> GetSidFromDomainName(string domainName)
         {
             throw new System.NotImplementedException();
+        }
+
+        public string ConvertWellKnownPrincipal(string sid, string domain)
+        {
+            if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out _)) return sid;
+            
+            if (sid != "S-1-5-9") return $"{domain}-{sid}".ToUpper();
+            
+            var forest = GetForest(domain)?.Name;
+            return $"{forest}-{sid}".ToUpper();
+        }
+
+        public bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
+        {
+            if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
+            commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
+            return true;
         }
 
         public IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)

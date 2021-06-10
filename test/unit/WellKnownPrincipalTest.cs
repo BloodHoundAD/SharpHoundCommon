@@ -40,40 +40,19 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void GetWellKnownPrincipal_EnterpriseDomainControllers_ReturnsCorrectedSID()
-        {
-            Helpers.SwapMockUtils();
-            var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-9", null, out var typedPrincipal);
-            Assert.True(result);
-            Assert.Equal($"{_testForestName}-S-1-5-9", typedPrincipal.ObjectIdentifier);
-            Assert.Equal(Label.Group, typedPrincipal.ObjectType);
-        }
-
-        [Fact]
         public void GetWellKnownPrincipal_NonWellKnown_ReturnsNull()
         {
-            var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-21-123456-78910", _testDomainName, out var typedPrincipal);
+            var result = WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-21-123456-78910", out var typedPrincipal);
             Assert.False(result);
             Assert.Null(typedPrincipal);
         }
-
-        [Fact]
-        public void GetWellKnownPrincipal_WithDomain_ConvertsSID()
-        {
-            var result =
-                WellKnownPrincipal.GetWellKnownPrincipal("S-1-5-32-544", _testDomainName, out var typedPrincipal);
-            Assert.True(result);
-            Assert.Equal(Label.Group, typedPrincipal.ObjectType);
-            Assert.Equal($"{_testDomainName}-S-1-5-32-544", typedPrincipal.ObjectIdentifier);
-        }
-
         #endregion
 
         #region IDispose Implementation
         public void Dispose()
         {
             // Tear down (called once per test)
-            Helpers.RestoreMockUtils();
+            
         }
         #endregion
     }

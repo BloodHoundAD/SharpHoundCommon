@@ -11,6 +11,12 @@ namespace SharpHoundCommonLib.Processors
     {
         private const int NetWkstaUserEnumQueryLevel = 1;
         private const int NetSessionEnumLevel = 10;
+        private readonly ILDAPUtils _utils;
+
+        public ComputerSessionProcessor(ILDAPUtils utils)
+        {
+            _utils = utils;
+        }
 
         /// <summary>
         /// Uses the NetSessionEnum Win32 API call to get network sessions from a remote computer.
@@ -21,7 +27,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerDomain"></param>
         /// <param name="currentUserName"></param>
         /// <returns></returns>
-        public static async Task<SessionAPIResult> ReadUserSessions(string computerName, string computerSid, string computerDomain, string currentUserName)
+        public async Task<SessionAPIResult> ReadUserSessions(string computerName, string computerSid, string computerDomain, string currentUserName)
         {
             var ptr = IntPtr.Zero;
             var ret = new SessionAPIResult();
@@ -46,7 +52,6 @@ namespace SharpHoundCommonLib.Processors
 
                 var results = new List<Session>();
                 var iter = ptr;
-                var utils = LDAPUtils.Instance;
                 Logging.Trace($"NetSessionEnum for {computerName} returned {entriesRead} entries");
                 for (var i = 0; i < entriesRead; i++)
                 {
@@ -79,21 +84,21 @@ namespace SharpHoundCommonLib.Processors
                     else
                     {
                         //Attempt to resolve the host name to a SID
-                        resolvedComputerSID = await utils.ResolveHostToSid(computerSessionName, computerDomain);
+                        resolvedComputerSID = await _utils.ResolveHostToSid(computerSessionName, computerDomain);
                     }
                     
                     //Throw out this data if we couldn't resolve it successfully. 
                     if (resolvedComputerSID == null || !resolvedComputerSID.StartsWith("S-1"))
                         continue;
 
-                    var matches = utils.GetUserGlobalCatalogMatches(username);
+                    var matches = _utils.GetUserGlobalCatalogMatches(username);
                     if (matches.Length > 0)
                     {
                         results.AddRange(matches.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
                     }
                     else
                     {
-                        var res = await utils.ResolveAccountName(username, computerDomain);
+                        var res = await _utils.ResolveAccountName(username, computerDomain);
                         if (res != null)
                             results.Add(new Session
                             {
@@ -122,7 +127,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerDomain"></param>
         /// <returns></returns>
-        public static async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerDomain, string computerSid)
+        public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerDomain, string computerSid)
         {
             var ptr = IntPtr.Zero;
             try
@@ -142,8 +147,19 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 ret.Collected = true;
-                
-                var machineSid = Helpers.GetMachineSid(computerSid, computerName, computerSamAccountName);
+
+                if (!Cache.GetMachineSid(computerSid, out var machineSid))
+                {
+                    try
+                    {
+                        using var server = new SAMRPCServer(computerName, computerSamAccountName, computerSid, _utils);
+                        machineSid = server.GetMachineSid();
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
 
                 var results = new List<TypedPrincipal>();
                 Logging.Trace($"NetWkstaUserEnum returned {entriesRead} entries for {computerName}");
@@ -170,7 +186,7 @@ namespace SharpHoundCommonLib.Processors
                     if (domain.Contains(" "))
                         continue;
                     
-                    var res = await LDAPUtils.Instance.ResolveAccountName(username, computerDomain);
+                    var res = await _utils.ResolveAccountName(username, computerDomain);
                     if (res == null)
                         continue;
                     

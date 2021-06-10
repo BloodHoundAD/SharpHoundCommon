@@ -11,11 +11,13 @@ using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 
 namespace SharpHoundCommonLib.Processors
 {
-    public static class ACLProcessor
+    public class ACLProcessor
     {
         private static readonly Dictionary<Label, string> BaseGuids;
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
-        
+        private static bool isCacheBuilt = false;
+        private readonly ILDAPUtils _utils;
+
         static ACLProcessor()
         {
             //Create a dictionary with the base GUIDs of each object type
@@ -30,27 +32,40 @@ namespace SharpHoundCommonLib.Processors
                 {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"}
             };
         }
+        
+        public ACLProcessor(ILDAPUtils utils)
+        {
+            _utils = utils;
+            BuildGUIDCache();
+        }
 
         /// <summary>
         /// Builds a mapping of GUID -> Name for LDAP rights. Used for rights that are created using an extended schema such as LAPS
         /// </summary>
-        internal static void BuildGUIDCache()
+        private void BuildGUIDCache()
         {
-            var forest = LDAPUtils.Instance.GetForest();
+            if (isCacheBuilt)
+                return;
+            
+            var forest = _utils.GetForest();
             if (forest == null)
             {
                 Logging.Log(LogLevel.Error, "Unable to resolve forest for GUID cache");
                 return;
             }
             
-            var schema = forest.Schema.Name;
-            foreach (var entry in LDAPUtils.Instance.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
+            var schema = forest.Schema?.Name;
+            if (schema == null)
+                return;
+            foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
                 new[] {"schemaidguid", "name"}, adsPath: schema))
             {
                 var name = entry.GetProperty("name")?.ToLower();
                 var guid = new Guid(entry.GetPropertyAsBytes("schemaidguid")).ToString();
                 GuidMap.TryAdd(guid, name);
             }
+            
+            isCacheBuilt = true;
         }
 
         /// <summary>
@@ -58,7 +73,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>
         /// <returns></returns>
-        public static bool IsACLProtected(byte[] ntSecurityDescriptor)
+        public bool IsACLProtected(byte[] ntSecurityDescriptor)
         {
             if (ntSecurityDescriptor == null)
                 return false;
@@ -77,15 +92,13 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectType"></param>
         /// <param name="hasLaps"></param>
         /// <returns></returns>
-        public static IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType, bool hasLaps)
+        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType, bool hasLaps)
         {
             if (ntSecurityDescriptor == null)
             {
                 Logging.Log(LogLevel.Debug, "ProcessACL received null ntSecurityDescriptor");
                 yield break;
             }
-
-            var utils = LDAPUtils.Instance;
 
             var descriptor = new ActiveDirectorySecurity();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
@@ -94,7 +107,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (ownerSid != null)
             {
-                var resolvedOwner = LDAPUtils.Instance.ResolveIDAndType(ownerSid, objectDomain);
+                var resolvedOwner = _utils.ResolveIDAndType(ownerSid, objectDomain);
                 if (resolvedOwner != null)
                     yield return new ACE
                     {
@@ -137,7 +150,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                var resolvedPrincipal = utils.ResolveIDAndType(principalSid, objectDomain);
+                var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
 
                 var aceRights = ace.ActiveDirectoryRights;
                 //Lowercase this just in case. As far as I know it should always come back that way anyways, but better safe than sorry
@@ -354,7 +367,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="entry"></param>
         /// <param name="objectDomain"></param>
         /// <returns></returns>
-        public static IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectDomain)
+        public IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectDomain)
         {
             if (groupMSAMembership == null)
                 yield break;
@@ -375,7 +388,7 @@ namespace SharpHoundCommonLib.Processors
                 if (principalSid == null)
                     continue;
                 
-                var resolvedPrincipal = LDAPUtils.Instance.ResolveIDAndType(principalSid, objectDomain);
+                var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
                 
                 yield return new ACE
                 {

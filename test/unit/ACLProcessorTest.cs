@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CommonLibTest.Facades;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
@@ -13,6 +14,7 @@ namespace CommonLibTest
     public class ACLProcessorTest : IDisposable
     {
         private readonly ITestOutputHelper _testOutputHelper;
+        private ACLProcessor _baseProcessor;
         private readonly string _testDomainName;
         private const string ProtectedUserNTSecurityDescriptor =
             "AQAEnIgEAAAAAAAAAAAAABQAAAAEAHQEGAAAAAUAPAAQAAAAAwAAAABCFkzAINARp2gAqgBuBSkUzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAABCFkzAINARp2gAqgBuBSm6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAABAgIF+ledARkCAAwE/C1M8UzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAABAgIF+ledARkCAAwE/C1M+6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAEDCCrypedARkCAAwE/C1M8UzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAEDCCrypedARkCAAwE/C1M+6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAEIvulmiedARkCAAwE/C088UzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAEIvulmiedARkCAAwE/C08+6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAPiIcAPhCtIRtCIAoMlo+TkUzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAPiIcAPhCtIRtCIAoMlo+Tm6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAOAAwAAAAAQAAAH96lr/mDdARooUAqgAwSeIBBQAAAAAABRUAAAAgT5C6f0aEpXZIFpAFAgAABQAsABAAAAABAAAAHbGpRq5gWkC36P+KWNRW0gECAAAAAAAFIAAAADACAAAFACwAMAAAAAEAAAAcmrZtIpTREa69AAD4A2fBAQIAAAAAAAUgAAAAMQIAAAUALAAwAAAAAQAAAGK8BVjJvShEpeKFag9MGF4BAgAAAAAABSAAAAAxAgAABQAsAJQAAgACAAAAFMwoSDcUvEWbB61vAV5fKAECAAAAAAAFIAAAACoCAAAFACwAlAACAAIAAAC6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAAAQAAAAAFACgAAAEAAAEAAABTGnKrLx7QEZgZAKoAQFKbAQEAAAAAAAUKAAAABQIoADABAAABAAAA3kfmkW/ZcEuVV9Y/9PPM2AEBAAAAAAAFCgAAAAAAJAC/AQ4AAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQAAIAAAAAJAC/AQ4AAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQBwIAAAAAGAC/AQ8AAQIAAAAAAAUgAAAAIAIAAAAAFACUAAIAAQEAAAAAAAULAAAAAAAUAP8BDwABAQAAAAAABRIAAAABBQAAAAAABRUAAAAgT5C6f0aEpXZIFpAAAgAA";
@@ -25,6 +27,7 @@ namespace CommonLibTest
         {
             _testOutputHelper = testOutputHelper;
             _testDomainName = "TESTLAB.LOCAL";
+            _baseProcessor = new ACLProcessor(new LDAPUtils());
         }
         
         [Fact]
@@ -36,7 +39,7 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_IsACLProtected_NullNTSD_ReturnsFalse()
         {
-            var result = ACLProcessor.IsACLProtected(null);
+            var result = _baseProcessor.IsACLProtected(null);
             Assert.False(result);
         }
 
@@ -44,7 +47,7 @@ namespace CommonLibTest
         public void ACLProcessor_IsACLProtected_ReturnsTrue()
         {
             var bytes = Helpers.B64ToBytes(ProtectedUserNTSecurityDescriptor);
-            var result = ACLProcessor.IsACLProtected(bytes);
+            var result = _baseProcessor.IsACLProtected(bytes);
             Assert.True(result);
         }
 
@@ -52,23 +55,23 @@ namespace CommonLibTest
         public void ACLProcessor_IsACLProtected_ReturnsFalse()
         {
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = ACLProcessor.IsACLProtected(bytes);
+            var result = _baseProcessor.IsACLProtected(bytes);
             Assert.False(result);
         }
 
         [Fact]
         public void ACLProcessor_ProcessGMSAReaders_NullNTSD_ReturnsNothing()
         {
-            var test = ACLProcessor.ProcessGMSAReaders(null, null);
+            var test = _baseProcessor.ProcessGMSAReaders(null, null);
             Assert.Empty(test);
         }
 
         [Fact]
         public void ACLProcess_ProcessGMSAReaders_YieldsCorrectAce()
         {
-            Helpers.SwapMockUtils();
+            var processor = new ACLProcessor(new MockLDAPUtils());
             var bytes = Helpers.B64ToBytes(GMSAProperty);
-            var result = ACLProcessor.ProcessGMSAReaders(bytes, _testDomainName).ToArray();
+            var result = processor.ProcessGMSAReaders(bytes, _testDomainName).ToArray();
             Assert.Single(result);
             var test = result.First();
             _testOutputHelper.WriteLine(test.ToString());
@@ -80,7 +83,7 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcess_ProcessACL_ProcessTestUser_YieldsCorrectAce()
         {
-            Helpers.SwapMockUtils();
+            var processor = new ACLProcessor(new MockLDAPUtils());
             var log = new TestLogger(_testOutputHelper, LogLevel.Information);
             CommonLib.ReconfigureLogging(log);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
@@ -144,7 +147,7 @@ namespace CommonLibTest
                 }
             };
             
-            var result = ACLProcessor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
 
             for (var i = 0; i < result.Length; i++)
             {
@@ -158,7 +161,6 @@ namespace CommonLibTest
 
         public void Dispose()
         {
-            Helpers.RestoreMockUtils();
         }
     }
 }

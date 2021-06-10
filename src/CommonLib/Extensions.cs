@@ -70,10 +70,9 @@ namespace SharpHoundCommonLib
 
         #region SearchResultEntry
 
-        public static async Task<ResolvedSearchResult> ResolveBHProps(this SearchResultEntry entry)
+        public static async Task<ResolvedSearchResult> ResolveBHProps(this SearchResultEntry entry, ILDAPUtils utils)
         {
             var res = new ResolvedSearchResult();
-            var utils = LDAPUtils.Instance;
 
             var itemID = entry.GetObjectIdentifier();
             if (itemID == null)
@@ -114,7 +113,7 @@ namespace SharpHoundCommonLib
                 res.DomainSid = await utils.GetSidFromDomainName(itemDomain); 
                 res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
                 res.ObjectType = wkPrincipal.ObjectType;
-                res.ObjectId = WellKnownPrincipal.TryConvert(itemID, itemDomain);
+                res.ObjectId = utils.ConvertWellKnownPrincipal(itemID, itemDomain);
 
                 return res;
             }

@@ -7,16 +7,21 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ContainerProcessor
     {
+        private ILDAPUtils _utils;
+        public ContainerProcessor(ILDAPUtils utils)
+        {
+            _utils = utils;
+        }
+        
         /// <summary>
         /// Finds all immediate child objects of a container. 
         /// </summary>
         /// <param name="distinguishedName"></param>
         /// <returns></returns>
-        public static IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName)
+        public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName)
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
-            var utils = LDAPUtils.Instance;
-            foreach (var childEntry in utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
+            foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
                 CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName), adsPath: distinguishedName))
             {
                 var dn = childEntry.DistinguishedName.ToUpper();
@@ -28,7 +33,7 @@ namespace SharpHoundCommonLib.Processors
                 if (id == null)
                     continue;
 
-                var res = utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(childEntry.DistinguishedName));
+                var res = _utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(childEntry.DistinguishedName));
                 if (res == null)
                     continue;
                 yield return res;
@@ -40,7 +45,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="gpLink"></param>
         /// <returns></returns>
-        public static IEnumerable<GPLink> ReadContainerGPLinks(string gpLink)
+        public IEnumerable<GPLink> ReadContainerGPLinks(string gpLink)
         {
             if (gpLink == null)
                 yield break;
@@ -49,7 +54,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 var enforced = link.Status.Equals("2");
 
-                var res = LDAPUtils.Instance.ResolveDistinguishedName(link.DistinguishedName);
+                var res = _utils.ResolveDistinguishedName(link.DistinguishedName);
                     
                 if (res == null)
                     continue;

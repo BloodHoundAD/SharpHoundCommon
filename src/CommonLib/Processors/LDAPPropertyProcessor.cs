@@ -13,8 +13,14 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
-    public static class LDAPPropertyProcessor
+    public class LDAPPropertyProcessor
     {
+        private readonly ILDAPUtils _utils;
+        public LDAPPropertyProcessor(ILDAPUtils utils)
+        {
+            _utils = utils;
+        }
+        
         private static readonly string[] ReservedAttributes =
         {
             "pwdlastset", "lastlogon", "lastlogontimestamp", "objectsid",
@@ -118,9 +124,8 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static async Task<UserProperties> ReadUserProperties(SearchResultEntry entry)
+        public async Task<UserProperties> ReadUserProperties(SearchResultEntry entry)
         {
-            var utils = LDAPUtils.Instance;
             var userProps = new UserProperties();
             var props = new Dictionary<string, object>
             {
@@ -169,7 +174,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     var hname = d.Contains("/") ? d.Split('/')[1] : d;
                     hname = hname.Split(':')[0];
-                    var resolvedHost = await utils.ResolveHostToSid(hname, domain);
+                    var resolvedHost = await _utils.ResolveHostToSid(hname, domain);
                     if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
                     {
                         comps.Add(new TypedPrincipal
@@ -223,7 +228,7 @@ namespace SharpHoundCommonLib.Processors
                 
                 sidHistoryList.Add(sSid);
 
-                var res = utils.ResolveIDAndType(sSid, domain);
+                var res = _utils.ResolveIDAndType(sSid, domain);
 
                 sidHistoryPrincipals.Add(res);
             }
@@ -242,9 +247,8 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static async Task<ComputerProperties> ReadComputerProperties(SearchResultEntry entry)
+        public async Task<ComputerProperties> ReadComputerProperties(SearchResultEntry entry)
         {
-            var utils = LDAPUtils.Instance;
             var compProps = new ComputerProperties();
             var props = new Dictionary<string, object>();
             
@@ -276,7 +280,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     var hname = d.Contains("/") ? d.Split('/')[1] : d;
                     hname = hname.Split(':')[0];
-                    var resolvedHost = await utils.ResolveHostToSid(hname, domain);
+                    var resolvedHost = await _utils.ResolveHostToSid(hname, domain);
                     if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
                     {
                         comps.Add(new TypedPrincipal
@@ -298,7 +302,7 @@ namespace SharpHoundCommonLib.Processors
                 sd.SetSecurityDescriptorBinaryForm(rawAllowedToAct, AccessControlSections.Access);
                 foreach (ActiveDirectoryAccessRule rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
                 {
-                    var res = utils.ResolveIDAndType(rule.IdentityReference.Value, domain);
+                    var res = _utils.ResolveIDAndType(rule.IdentityReference.Value, domain);
                     allowedToActPrincipals.Add(res);
                 }
             }
@@ -339,7 +343,7 @@ namespace SharpHoundCommonLib.Processors
                 
                 sidHistoryList.Add(sSid);
 
-                var res = utils.ResolveIDAndType(sSid, domain);
+                var res = _utils.ResolveIDAndType(sSid, domain);
 
                 sidHistoryPrincipals.Add(res);
             }

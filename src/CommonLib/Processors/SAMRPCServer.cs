@@ -18,6 +18,7 @@ namespace SharpHoundCommonLib.Processors
         private IntPtr _serverHandle;
         private IntPtr _domainHandle;
         private readonly NativeMethods.OBJECT_ATTRIBUTES _obj;
+        private readonly ILDAPUtils _utils;
 
         private readonly string[] _filteredSids = {
             "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
@@ -39,12 +40,13 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="samAccountName">The samaccountname of the computer</param>
         /// <param name="computerSid">The security identifier for the computer</param>
         /// <exception cref="APIException">An exception if the an API fails to connect initially. Generally indicates the server is unavailable or permissions aren't available.</exception>
-        public SAMRPCServer(string computerName, string samAccountName, string computerSid)
+        public SAMRPCServer(string computerName, string samAccountName, string computerSid, ILDAPUtils utils)
         {
             Logging.Trace($"Opening SAM Server for {computerName}");
             _computerSAN = samAccountName;
             _computerSID = computerSid;
             _computerName = computerName;
+            _utils = utils;
             
             var us = new NativeMethods.UNICODE_STRING(computerName);
             //Every API call we make relies on both SamConnect and SamOpenDomain
@@ -97,8 +99,6 @@ namespace SharpHoundCommonLib.Processors
             Logging.Trace($"SamGetMembersInAlias returned {status} for RID {groupRid} on {_computerName}");
             SamCloseHandle(aliasHandle);
 
-            var utils = LDAPUtils.Instance;
-
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
                 SamFreeMemory(members);
@@ -148,7 +148,7 @@ namespace SharpHoundCommonLib.Processors
                     return null;
                 }
 
-                var res = utils.ResolveIDAndType(x, utils.GetDomainNameFromSid(x));
+                var res = _utils.ResolveIDAndType(x, _utils.GetDomainNameFromSid(x));
 
                 return res;
             }).Where(x => x != null);
