@@ -38,7 +38,7 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_IsACLProtected_NullNTSD_ReturnsFalse()
         {
-            var result = _baseProcessor.IsACLProtected(null);
+            var result = ACLProcessor.IsACLProtected(null);
             Assert.False(result);
         }
 
@@ -46,7 +46,7 @@ namespace CommonLibTest
         public void ACLProcessor_IsACLProtected_ReturnsTrue()
         {
             var bytes = Helpers.B64ToBytes(ProtectedUserNTSecurityDescriptor);
-            var result = _baseProcessor.IsACLProtected(bytes);
+            var result = ACLProcessor.IsACLProtected(bytes);
             Assert.True(result);
         }
 
@@ -54,7 +54,7 @@ namespace CommonLibTest
         public void ACLProcessor_IsACLProtected_ReturnsFalse()
         {
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = _baseProcessor.IsACLProtected(bytes);
+            var result = ACLProcessor.IsACLProtected(bytes);
             Assert.False(result);
         }
 

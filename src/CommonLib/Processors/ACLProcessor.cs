@@ -74,7 +74,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>
         /// <returns></returns>
-        public bool IsACLProtected(byte[] ntSecurityDescriptor)
+        public static bool IsACLProtected(byte[] ntSecurityDescriptor)
         {
             if (ntSecurityDescriptor == null)
                 return false;
