@@ -1,10 +1,74 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace SharpHoundCommonLib
 {
-    public static class NativeMethods
+    public class NativeMethods
     {
+        internal virtual int CallNetWkstaGetInfo(string serverName, uint level, out IntPtr bufPtr)
+        {
+            return NetWkstaGetInfo(serverName, level, out bufPtr);
+        }
+
+        internal virtual NERR CallNetSessionEnum(string serverName, string uncClientName, string userName, int level,
+            out IntPtr bufptr, int prefmaxlen, out int entriesread, out int totalentries, ref IntPtr resumeHandle)
+        {
+            return NetSessionEnum(serverName, uncClientName, userName, level, out bufptr, prefmaxlen, out entriesread,
+                out totalentries, ref resumeHandle);
+        }
+
+        internal virtual NERR CallNetWkstaUserEnum(string servername,int level,out IntPtr bufptr,int prefmaxlen,out int entriesread,out int totalentries,ref int resume_handle)
+        {
+            return NetWkstaUserEnum(servername, level, out bufptr, prefmaxlen, out entriesread, out totalentries,
+                ref resume_handle);
+        }
+
+        internal virtual int CallDsGetDcName(string computerName, string domainName, GuidClass domainGuid,
+            string siteName, uint flags, out IntPtr pDOMAIN_CONTROLLER_INFO)
+        {
+            return DsGetDcName(computerName, domainName, domainGuid, siteName, flags, out pDOMAIN_CONTROLLER_INFO);
+        }
+
+        internal virtual NtStatus CallSamConnect(ref UNICODE_STRING serverName, out IntPtr serverHandle,
+            SamAccessMasks desiredAccess, ref OBJECT_ATTRIBUTES objectAttributes)
+        {
+            return SamConnect(ref serverName, out serverHandle, desiredAccess, ref objectAttributes);
+        }
+
+        internal virtual NtStatus CallSamOpenDomain(IntPtr serverHandle, DomainAccessMask desiredAccess,
+            byte[] domainSid, out IntPtr domainHandle)
+        {
+            return SamOpenDomain(serverHandle, desiredAccess, domainSid, out domainHandle);
+        }
+
+        internal virtual NtStatus CallSamOpenAlias(IntPtr domainHandle, AliasOpenFlags desiredAccess, int aliasId,
+            out IntPtr aliasHandle)
+        {
+            return SamOpenAlias(domainHandle, desiredAccess, aliasId, out aliasHandle);
+        }
+
+        internal virtual NtStatus CallSamGetMembersInAlias(IntPtr aliasHandle, out IntPtr members, out int count)
+        {
+            return SamGetMembersInAlias(aliasHandle, out members, out count);
+        }
+
+        internal virtual NtStatus CallSamLookupDomainInSamServer(IntPtr serverHandle, ref UNICODE_STRING name,
+            out IntPtr sid)
+        {
+            return SamLookupDomainInSamServer(serverHandle, ref name, out sid);
+        }
+
+        internal virtual NtStatus CallSamFreeMemory(IntPtr handle)
+        {
+            return SamFreeMemory(handle);
+        }
+
+        internal virtual NtStatus CallSamCloseHandle(IntPtr handle)
+        {
+            return SamCloseHandle(handle);
+        }
+
         internal struct OBJECT_ATTRIBUTES : IDisposable
         {
             public void Dispose()
@@ -23,20 +87,20 @@ namespace SharpHoundCommonLib
             private IntPtr objectName;
             public UNICODE_STRING ObjectName;
         }
-        
+
         internal enum NtStatus
         {
             StatusSuccess = 0x0,
             StatusMoreEntries = 0x105,
             StatusSomeMapped = 0x107,
-            StatusInvalidHandle = unchecked((int)0xC0000008),
-            StatusInvalidParameter = unchecked((int)0xC000000D),
-            StatusAccessDenied = unchecked((int)0xC0000022),
-            StatusObjectTypeMismatch = unchecked((int)0xC0000024),
-            StatusNoSuchDomain = unchecked((int)0xC00000DF),
-            StatusRpcServerUnavailable = unchecked((int)0xC0020017)
+            StatusInvalidHandle = unchecked((int) 0xC0000008),
+            StatusInvalidParameter = unchecked((int) 0xC000000D),
+            StatusAccessDenied = unchecked((int) 0xC0000022),
+            StatusObjectTypeMismatch = unchecked((int) 0xC0000024),
+            StatusNoSuchDomain = unchecked((int) 0xC00000DF),
+            StatusRpcServerUnavailable = unchecked((int) 0xC0020017)
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct UNICODE_STRING : IDisposable
         {
@@ -48,8 +112,8 @@ namespace SharpHoundCommonLib
                 : this()
             {
                 if (s == null) return;
-                Length = (ushort)(s.Length * 2);
-                MaximumLength = (ushort)(Length + 2);
+                Length = (ushort) (s.Length * 2);
+                MaximumLength = (ushort) (Length + 2);
                 Buffer = Marshal.StringToHGlobalUni(s);
             }
 
@@ -62,11 +126,149 @@ namespace SharpHoundCommonLib
 
             public override string ToString()
             {
-                return (Buffer != IntPtr.Zero ? Marshal.PtrToStringUni(Buffer) : null) ?? throw new InvalidOperationException();
+                return (Buffer != IntPtr.Zero ? Marshal.PtrToStringUni(Buffer) : null) ??
+                       throw new InvalidOperationException();
             }
         }
         
+        #region SAMR Imports
+
+        [DllImport("samlib.dll")]
+        private static extern NtStatus SamCloseHandle(
+            IntPtr handle
+        );
+
+        [DllImport("samlib.dll")]
+        private static extern NtStatus SamFreeMemory(
+            IntPtr handle
+        );
+
+        [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
+        private static extern NtStatus SamLookupDomainInSamServer(
+            IntPtr serverHandle,
+            ref UNICODE_STRING name,
+            out IntPtr sid);
+
+        [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
+        private static extern NtStatus SamGetMembersInAlias(
+            IntPtr aliasHandle,
+            out IntPtr members,
+            out int count);
+
+        [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
+        private static extern NtStatus SamOpenAlias(
+            IntPtr domainHandle,
+            AliasOpenFlags desiredAccess,
+            int aliasId,
+            out IntPtr aliasHandle
+        );
+
+
+        [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
+        private static extern NtStatus SamConnect(
+            ref UNICODE_STRING serverName,
+            out IntPtr serverHandle,
+            SamAccessMasks desiredAccess,
+            ref OBJECT_ATTRIBUTES objectAttributes
+            );
+
+        [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
+        private static extern NtStatus SamOpenDomain(
+            IntPtr serverHandle,
+            DomainAccessMask desiredAccess,
+            [MarshalAs(UnmanagedType.LPArray)]byte[] domainSid,
+            out IntPtr domainHandle
+        );
+
+        [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        internal enum AliasOpenFlags
+        {
+            AddMember = 0x1,
+            RemoveMember = 0x2,
+            ListMembers = 0x4,
+            ReadInfo = 0x8,
+            WriteAccount = 0x10,
+            AllAccess = 0xf001f,
+            Read = 0x20004,
+            Write = 0x20013,
+            Execute = 0x20008
+        }
+
+        [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        internal enum LsaOpenMask
+        {
+            ViewLocalInfo = 0x1,
+            ViewAuditInfo = 0x2,
+            GetPrivateInfo = 0x4,
+            TrustAdmin = 0x8,
+            CreateAccount = 0x10,
+            CreateSecret = 0x20,
+            CreatePrivilege = 0x40,
+            SetDefaultQuotaLimits = 0x80,
+            SetAuditRequirements = 0x100,
+            AuditLogAdmin = 0x200,
+            ServerAdmin = 0x400,
+            LookupNames = 0x800,
+            Notification = 0x1000
+        }
+
+        [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        internal enum DomainAccessMask
+        {
+            ReadPasswordParameters = 0x1,
+            WritePasswordParameters = 0x2,
+            ReadOtherParameters = 0x4,
+            WriteOtherParameters = 0x8,
+            CreateUser = 0x10,
+            CreateGroup = 0x20,
+            CreateAlias = 0x40,
+            GetAliasMembership = 0x80,
+            ListAccounts = 0x100,
+            Lookup = 0x200,
+            AdministerServer = 0x400,
+            AllAccess = 0xf07ff,
+            Read = 0x20084,
+            Write = 0x2047A,
+            Execute = 0x20301
+        }
+
+        [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        internal enum SamAliasFlags
+        {
+            AddMembers = 0x1,
+            RemoveMembers = 0x2,
+            ListMembers = 0x4,
+            ReadInfo = 0x8,
+            WriteAccount = 0x10,
+            AllAccess = 0xf001f,
+            Read = 0x20004,
+            Write = 0x20013,
+            Execute = 0x20008
+        }
+
+        [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        internal enum SamAccessMasks
+        {
+            SamServerConnect = 0x1,
+            SamServerShutdown = 0x2,
+            SamServerInitialize = 0x4,
+            SamServerCreateDomains = 0x8,
+            SamServerEnumerateDomains = 0x10,
+            SamServerLookupDomain = 0x20,
+            SamServerAllAccess = 0xf003f,
+            SamServerRead = 0x20010,
+            SamServerWrite = 0x2000e,
+            SamServerExecute = 0x20021
+        }
+        #endregion
+
         #region Session Enum Imports
+
         [DllImport("NetAPI32.dll", SetLastError = true)]
         internal static extern NERR NetSessionEnum(
             [MarshalAs(UnmanagedType.LPWStr)] string ServerName,
@@ -82,10 +284,8 @@ namespace SharpHoundCommonLib
         [StructLayout(LayoutKind.Sequential)]
         public struct SESSION_INFO_10
         {
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string sesi10_cname;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string sesi10_username;
+            [MarshalAs(UnmanagedType.LPWStr)] public string sesi10_cname;
+            [MarshalAs(UnmanagedType.LPWStr)] public string sesi10_username;
             public uint sesi10_time;
             public uint sesi10_idle_time;
         }
@@ -132,9 +332,11 @@ namespace SharpHoundCommonLib
         [DllImport("netapi32.dll")]
         internal static extern int NetApiBufferFree(
             IntPtr Buff);
+
         #endregion
-        
+
         #region NetAPI PInvoke Calls
+
         [DllImport("netapi32.dll", SetLastError = true)]
         internal static extern int NetWkstaGetInfo(
             [MarshalAs(UnmanagedType.LPWStr)] string serverName,
@@ -143,28 +345,24 @@ namespace SharpHoundCommonLib
 
         internal struct WorkstationInfo100
         {
-
             public int platform_id;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string computer_name;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string lan_group;
+            [MarshalAs(UnmanagedType.LPWStr)] public string computer_name;
+            [MarshalAs(UnmanagedType.LPWStr)] public string lan_group;
             public int ver_major;
             public int ver_minor;
         }
+
         #endregion
-        
+
         #region DSGetDcName Imports
+
         [DllImport("Netapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         internal static extern int DsGetDcName
         (
-            [MarshalAs(UnmanagedType.LPTStr)]
-            string ComputerName,
-            [MarshalAs(UnmanagedType.LPTStr)]
-            string DomainName,
+            [MarshalAs(UnmanagedType.LPTStr)] string ComputerName,
+            [MarshalAs(UnmanagedType.LPTStr)] string DomainName,
             [In] GuidClass DomainGuid,
-            [MarshalAs(UnmanagedType.LPTStr)]
-            string SiteName,
+            [MarshalAs(UnmanagedType.LPTStr)] string SiteName,
             uint Flags,
             out IntPtr pDOMAIN_CONTROLLER_INFO
         );
@@ -213,5 +411,4 @@ namespace SharpHoundCommonLib
 
         #endregion
     }
-    
 }
