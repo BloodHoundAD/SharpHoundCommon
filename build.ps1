@@ -21,7 +21,7 @@ nuget restore src\CommonLib\SharpHoundCommonLib.csproj
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=json /p:CoverletOutput=build\coverage.json test\unit\CommonLibTest.csproj
 
 # generate test report from coverage.json. place directly in the docs folder to prevent copying a full static site needlessly
-reportgenerator "-reports:test\unit\build\coverage.json" "-targetdir:docs\articles\coverage" -reporttypes:HTML
+reportgenerator "-reports:test\unit\build\coverage.json" "-targetdir:docs\coverage" -reporttypes:HTML
 
 # performance tests are not implemented but this command will run the basic DotnetBenchmark example
 # dotnet run --project test\performance\CommonLibPerformance.csproj -c Release
@@ -30,7 +30,7 @@ reportgenerator "-reports:test\unit\build\coverage.json" "-targetdir:docs\articl
 # docfx ./docfx/docfx.json -o ./ -s
 
 # serve docs: to test documentation locally combines a build and local web server step into one call
-ddocfx ./docfx/docfx.json -o ./ -s
+docfx ./docfx/docfx.json -o ./ -s
 
 # use act: requires docker
 # act -s GITHUB_TOKEN=[insert token or leave blank for secure input]
