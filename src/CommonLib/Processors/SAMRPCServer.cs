@@ -40,7 +40,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="samAccountName">The samaccountname of the computer</param>
         /// <param name="computerSid">The security identifier for the computer</param>
         /// <exception cref="APIException">An exception if the an API fails to connect initially. Generally indicates the server is unavailable or permissions aren't available.</exception>
-        public SAMRPCServer(string computerName, string samAccountName, string computerSid, ILDAPUtils utils, NativeMethods methods = null)
+        public SAMRPCServer(string computerName, string samAccountName, string computerSid, ILDAPUtils utils = null, NativeMethods methods = null)
         {
             Logging.Trace($"Opening SAM Server for {computerName}");
             _computerSAN = samAccountName;
@@ -48,6 +48,7 @@ namespace SharpHoundCommonLib.Processors
             _computerName = computerName;
             _utils = utils;
             _nativeMethods = methods ?? new NativeMethods();
+            _utils = utils ?? new LDAPUtils();
 
             var us = new NativeMethods.UNICODE_STRING(computerName);
             //Every API call we make relies on both SamConnect and SamOpenDomain

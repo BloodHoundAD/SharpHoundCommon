@@ -1,27 +1,120 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib
 {
     public class NativeMethods
     {
-        internal virtual int CallNetWkstaGetInfo(string serverName, uint level, out IntPtr bufPtr)
+        private const string NetWkstaUserEnumQueryName = "NetWkstaUserEnum";
+        private const string NetSessionEnumQueryName = "NetSessionEnum";
+        private const string NetWkstaGetInfoQueryName = "NetWkstaGetInfo";
+        
+        private const int NetWkstaUserEnumQueryLevel = 1;
+        private const int NetSessionEnumLevel = 10;
+        private const int NetWkstaGetInfoQueryLevel = 100;
+        
+        internal virtual WorkstationInfo100 CallNetWkstaGetInfo(string serverName)
         {
-            return NetWkstaGetInfo(serverName, level, out bufPtr);
+            var ptr = IntPtr.Zero;
+
+            try
+            {
+                var result = NetWkstaGetInfo(serverName, NetWkstaGetInfoQueryLevel, out ptr);
+                if (result != NERR.NERR_Success)
+                {
+                    throw new APIException
+                    {
+                        Status = result.ToString(),
+                        APICall = NetWkstaGetInfoQueryName
+                    };
+                }
+
+                var wkstaInfo = Marshal.PtrToStructure<WorkstationInfo100>(ptr);
+                return wkstaInfo;
+            }
+            finally
+            {
+                if (ptr != IntPtr.Zero)
+                    NetApiBufferFree(ptr);
+            }
         }
 
-        internal virtual NERR CallNetSessionEnum(string serverName, string uncClientName, string userName, int level,
-            out IntPtr bufptr, int prefmaxlen, out int entriesread, out int totalentries, ref IntPtr resumeHandle)
+        internal virtual IEnumerable<SESSION_INFO_10> CallNetSessionEnum(string serverName)
         {
-            return NetSessionEnum(serverName, uncClientName, userName, level, out bufptr, prefmaxlen, out entriesread,
-                out totalentries, ref resumeHandle);
+            var ptr = IntPtr.Zero;
+
+            Logging.Trace($"Beginning NetSessionEnum for {serverName}");
+            try
+            {
+                var resumeHandle = 0;
+                var result = NetSessionEnum(serverName, null, null, NetSessionEnumLevel, out ptr, -1,
+                    out var entriesread,
+                    out _, ref resumeHandle);
+
+                Logging.Trace($"Result of NetSessionEnum for {serverName} is {result}");
+
+                if (result != NERR.NERR_Success)
+                {
+                    throw new APIException
+                    {
+                        APICall = NetSessionEnumQueryName,
+                        Status = result.ToString()
+                    };
+                }
+
+                var iter = ptr;
+                for (var i = 0; i < entriesread; i++)
+                {
+                    var data = Marshal.PtrToStructure<SESSION_INFO_10>(iter);
+                    iter = (IntPtr) (iter.ToInt64() + Marshal.SizeOf(typeof(SESSION_INFO_10)));
+
+                    yield return data;
+                }
+            }
+            finally
+            {
+                if (ptr != IntPtr.Zero)
+                    NetApiBufferFree(ptr);
+            } 
         }
 
-        internal virtual NERR CallNetWkstaUserEnum(string servername,int level,out IntPtr bufptr,int prefmaxlen,out int entriesread,out int totalentries,ref int resume_handle)
+        internal virtual IEnumerable<WKSTA_USER_INFO_1> CallNetWkstaUserEnum(string servername)
         {
-            return NetWkstaUserEnum(servername, level, out bufptr, prefmaxlen, out entriesread, out totalentries,
-                ref resume_handle);
+            var ptr = IntPtr.Zero;
+            try
+            {
+                var resumeHandle = 0;
+                Logging.Trace($"Beginning NetWkstaUserEnum for {servername}");
+                var result = NetWkstaUserEnum(servername, NetWkstaUserEnumQueryLevel, out ptr, -1, out var entriesread, out _,
+                    ref resumeHandle);
+
+                Logging.Trace($"Result of NetWkstaUserEnum for computer {servername} is {result}");
+
+                if (result != NERR.NERR_Success && result != NERR.ERROR_MORE_DATA)
+                {
+                    throw new APIException
+                    {
+                        APICall = NetWkstaUserEnumQueryName,
+                        Status = result.ToString()
+                    };
+                }
+
+                var iter = ptr;
+                for (var i = 0; i < entriesread; i++)
+                {
+                    var data = Marshal.PtrToStructure<WKSTA_USER_INFO_1>(iter);
+                    iter = (IntPtr) (iter.ToInt64() + Marshal.SizeOf(typeof(WKSTA_USER_INFO_1)));
+                    yield return data;
+                }
+            }
+            finally
+            {
+                if (ptr != IntPtr.Zero)
+                    NetApiBufferFree(ptr);
+            }
         }
 
         internal virtual int CallDsGetDcName(string computerName, string domainName, GuidClass domainGuid,
@@ -279,7 +372,7 @@ namespace SharpHoundCommonLib
             int prefmaxlen,
             out int entriesread,
             out int totalentries,
-            ref IntPtr resume_handle);
+            ref int resume_handle);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct SESSION_INFO_10
@@ -338,7 +431,7 @@ namespace SharpHoundCommonLib
         #region NetAPI PInvoke Calls
 
         [DllImport("netapi32.dll", SetLastError = true)]
-        internal static extern int NetWkstaGetInfo(
+        internal static extern NERR NetWkstaGetInfo(
             [MarshalAs(UnmanagedType.LPWStr)] string serverName,
             uint level,
             out IntPtr bufPtr);
