@@ -2,6 +2,6 @@
   href: TESTING.md
 - name: ChangeLog
   href: CHANGELOG.md
-- name: Read Me
-  href: README.md
-  homepage: README.md
+  homepage: index.md
+- name: Coverage
+  href: coverage/index.md

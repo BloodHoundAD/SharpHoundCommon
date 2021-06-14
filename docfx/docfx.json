@@ -5,7 +5,7 @@
         {
           "files": ["**/*.csproj"],
           "exclude": [ "**/bin/**", "**/obj/**" ],
-          "src": "./src"
+          "src": "../src"
         }
       ],
       "dest": "build/api",
@@ -17,17 +17,21 @@
     "content": [
       {
         "files": [
-          "build/api/**.yml",
-          "build/api/index.md"
+          "api/**.yml",
+          "api/index.md"
         ]
       },
       {
         "files": [
-          "README.md",
-          "articles/**.md",
-          "articles/**/toc.yml",
+          "**.md",
+          "**/toc.yml",
           "toc.yml",
           "*.md"
+        ]
+      },
+      {
+        "files": [
+          "articles/index.md"
         ]
       }
     ],
