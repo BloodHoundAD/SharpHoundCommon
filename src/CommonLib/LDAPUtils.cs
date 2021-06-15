@@ -6,7 +6,6 @@ using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -44,6 +43,11 @@ namespace SharpHoundCommonLib
         
         private const string NullCacheKey = "UNIQUENULL";
         private LDAPConfig _ldapConfig = new();
+
+        public LDAPUtils()
+        {
+            _nativeMethods = new NativeMethods();
+        }
 
         public LDAPUtils(NativeMethods nativeMethods = null)
         {
@@ -1091,31 +1095,23 @@ namespace SharpHoundCommonLib
                 return flatName;
 
             var domain = GetDomain(domainName);
-            if (domain == null)
-                return domainName.ToUpper();
+            if (domain != null)
+            {
+                _netbiosCache.TryAdd(key, domain.Name);
+                return domain.Name;
+            }
             
-            var computerName = _ldapConfig.Server ?? await GetUsableDomainController(domain);
+            var computerName = _ldapConfig.Server;
 
-            var result = NativeMethods.DsGetDcName(computerName, domainName, null, null,
-                (uint)(NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME),
-                out var pDomainControllerInfo);
-
-            try
+            var dci = _nativeMethods.CallDsGetDcName(computerName, domainName);
+            if (dci.HasValue)
             {
-                if (result == 0)
-                {
-                    var info = Marshal.PtrToStructure<NativeMethods.DOMAIN_CONTROLLER_INFO>(pDomainControllerInfo);
-                    flatName = info.DomainName;
-                }
-            }
-            finally
-            {
-                if (pDomainControllerInfo != IntPtr.Zero)
-                    NativeMethods.NetApiBufferFree(pDomainControllerInfo);
+                flatName = dci.Value.DomainName;
+                _netbiosCache.TryAdd(key, flatName);
+                return flatName;
             }
 
-            _netbiosCache.TryAdd(key, flatName);
-            return flatName;
+            return domainName.ToUpper();
         }
     }
 }
