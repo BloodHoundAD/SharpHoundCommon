@@ -111,6 +111,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerName"></param>
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerDomain"></param>
+        /// <param name="computerSid"></param>
         /// <returns></returns>
         public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerDomain, string computerSid)
         {
@@ -130,19 +131,6 @@ namespace SharpHoundCommonLib.Processors
             }
             
             ret.Collected = true;
-
-            if (!Cache.GetMachineSid(computerSid, out var machineSid))
-            {
-                try
-                {
-                    using var server = new SAMRPCServer(computerName, computerSamAccountName, computerSid, _utils);
-                    machineSid = server.GetMachineSid();
-                }
-                catch
-                {
-                    return null;
-                }
-            }
 
             var results = new List<TypedPrincipal>();
             foreach (var wkstaUserInfo in apiResult)
@@ -166,9 +154,6 @@ namespace SharpHoundCommonLib.Processors
                 
                 var res = await _utils.ResolveAccountName(username, computerDomain);
                 if (res == null)
-                    continue;
-                
-                if (res.ObjectIdentifier.StartsWith(machineSid, StringComparison.OrdinalIgnoreCase))
                     continue;
             
                 results.Add(res);
