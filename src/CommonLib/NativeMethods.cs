@@ -16,7 +16,7 @@ namespace SharpHoundCommonLib
         private const int NetSessionEnumLevel = 10;
         private const int NetWkstaGetInfoQueryLevel = 100;
         
-        internal virtual WorkstationInfo100 CallNetWkstaGetInfo(string serverName)
+        public virtual WorkstationInfo100 CallNetWkstaGetInfo(string serverName)
         {
             var ptr = IntPtr.Zero;
 
@@ -42,7 +42,7 @@ namespace SharpHoundCommonLib
             }
         }
 
-        internal virtual IEnumerable<SESSION_INFO_10> CallNetSessionEnum(string serverName)
+        public virtual IEnumerable<SESSION_INFO_10> CallNetSessionEnum(string serverName)
         {
             var ptr = IntPtr.Zero;
 
@@ -81,7 +81,7 @@ namespace SharpHoundCommonLib
             } 
         }
 
-        internal virtual IEnumerable<WKSTA_USER_INFO_1> CallNetWkstaUserEnum(string servername)
+        public virtual IEnumerable<WKSTA_USER_INFO_1> CallNetWkstaUserEnum(string servername)
         {
             var ptr = IntPtr.Zero;
             try
@@ -117,10 +117,23 @@ namespace SharpHoundCommonLib
             }
         }
 
-        internal virtual int CallDsGetDcName(string computerName, string domainName, GuidClass domainGuid,
-            string siteName, uint flags, out IntPtr pDOMAIN_CONTROLLER_INFO)
+        public virtual DOMAIN_CONTROLLER_INFO? CallDsGetDcName(string computerName, string domainName)
         {
-            return DsGetDcName(computerName, domainName, domainGuid, siteName, flags, out pDOMAIN_CONTROLLER_INFO);
+            var ptr = IntPtr.Zero;
+            try
+            {
+                var result = DsGetDcName(computerName, domainName, null, null,
+                    (uint) (DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME), out ptr);
+
+                if (result != 0) return null;
+                var info = Marshal.PtrToStructure<DOMAIN_CONTROLLER_INFO>(ptr);
+                return info;
+            }
+            finally
+            {
+                if (ptr != IntPtr.Zero)
+                    NetApiBufferFree(ptr);
+            }
         }
 
         internal virtual NtStatus CallSamConnect(ref UNICODE_STRING serverName, out IntPtr serverHandle,
@@ -363,7 +376,7 @@ namespace SharpHoundCommonLib
         #region Session Enum Imports
 
         [DllImport("NetAPI32.dll", SetLastError = true)]
-        internal static extern NERR NetSessionEnum(
+        private static extern NERR NetSessionEnum(
             [MarshalAs(UnmanagedType.LPWStr)] string ServerName,
             [MarshalAs(UnmanagedType.LPWStr)] string UncClientName,
             [MarshalAs(UnmanagedType.LPWStr)] string UserName,
@@ -413,7 +426,7 @@ namespace SharpHoundCommonLib
         }
 
         [DllImport("netapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        internal static extern NERR NetWkstaUserEnum(
+        private static extern NERR NetWkstaUserEnum(
             string servername,
             int level,
             out IntPtr bufptr,
@@ -423,7 +436,7 @@ namespace SharpHoundCommonLib
             ref int resume_handle);
 
         [DllImport("netapi32.dll")]
-        internal static extern int NetApiBufferFree(
+        private static extern int NetApiBufferFree(
             IntPtr Buff);
 
         #endregion
@@ -431,12 +444,12 @@ namespace SharpHoundCommonLib
         #region NetAPI PInvoke Calls
 
         [DllImport("netapi32.dll", SetLastError = true)]
-        internal static extern NERR NetWkstaGetInfo(
+        private static extern NERR NetWkstaGetInfo(
             [MarshalAs(UnmanagedType.LPWStr)] string serverName,
             uint level,
             out IntPtr bufPtr);
 
-        internal struct WorkstationInfo100
+        public struct WorkstationInfo100
         {
             public int platform_id;
             [MarshalAs(UnmanagedType.LPWStr)] public string computer_name;
@@ -489,7 +502,7 @@ namespace SharpHoundCommonLib
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        internal struct DOMAIN_CONTROLLER_INFO
+        public struct DOMAIN_CONTROLLER_INFO
         {
             [MarshalAs(UnmanagedType.LPTStr)] public string DomainControllerName;
             [MarshalAs(UnmanagedType.LPTStr)] public string DomainControllerAddress;
