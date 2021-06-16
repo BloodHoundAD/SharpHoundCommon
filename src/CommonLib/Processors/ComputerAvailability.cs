@@ -36,7 +36,7 @@ namespace SharpHoundCommonLib.Processors
                 return new ComputerStatus
                 {
                     Connectable = false,
-                    Error = "NonWindowsOS"
+                    Error = ComputerStatus.NonWindowsOS
                 };
             }
 
@@ -49,7 +49,7 @@ namespace SharpHoundCommonLib.Processors
                 return new ComputerStatus
                 {
                     Connectable = false,
-                    Error = "PwdLastSetOutOfRange"
+                    Error = ComputerStatus.OldPwd
                 };
             }
 
@@ -60,7 +60,7 @@ namespace SharpHoundCommonLib.Processors
                 return new ComputerStatus
                 {
                     Connectable = false,
-                    Error = "PortNotOpen"
+                    Error = ComputerStatus.PortNotOpen
                 }; 
             }
                 

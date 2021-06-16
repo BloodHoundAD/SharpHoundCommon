@@ -21,5 +21,9 @@
     {
         public bool Connectable { get; set; }
         public string Error { get; set; }
+
+        public static string NonWindowsOS => "NonWindowsOS";
+        public static string OldPwd => "PwdLastSetOutOfRange";
+        public static string PortNotOpen => "PortNotOpen";
     }
 }

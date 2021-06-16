@@ -13,14 +13,12 @@ namespace CommonLibTest
     public class ComputerSessionProcessorTest : IDisposable
     {
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly ILDAPUtils _utils;
         private readonly string _computerDomain;
         private readonly string _computerSid;
 
         public ComputerSessionProcessorTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _utils = new LDAPUtils();
             _computerDomain = "TESTLAB.LOCAL";
             _computerSid = "S-1-5-21-3130019616-2776909439-2417379446-1104";
         }
