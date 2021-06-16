@@ -6,7 +6,6 @@ using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -27,6 +26,7 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, string> _domainControllerCache = new();
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
+        private readonly NativeMethods _nativeMethods;
 
         // The following byte stream contains the necessary message to request a NetBios name from a machine
         // http://web.archive.org/web/20100409111218/http://msdn.microsoft.com/en-us/library/system.net.sockets.socket.aspx
@@ -43,6 +43,16 @@ namespace SharpHoundCommonLib
         
         private const string NullCacheKey = "UNIQUENULL";
         private LDAPConfig _ldapConfig = new();
+
+        public LDAPUtils()
+        {
+            _nativeMethods = new NativeMethods();
+        }
+
+        public LDAPUtils(NativeMethods nativeMethods = null)
+        {
+            _nativeMethods = nativeMethods ?? new NativeMethods();
+        }
 
         public void UpdateLDAPConfig(LDAPConfig config)
         {
@@ -536,20 +546,13 @@ namespace SharpHoundCommonLib
             if (!await Helpers.CheckPort(hostname))
                 return null;
 
-            var wkstaData = IntPtr.Zero;
             try
             {
-                var result = NativeMethods.NetWkstaGetInfo(hostname, 100, out wkstaData);
-                if (result != 0)
-                    return null;
-
-                var wkstaInfo = Marshal.PtrToStructure<NativeMethods.WorkstationInfo100>(wkstaData);
-                return wkstaInfo;
+                return _nativeMethods.CallNetWkstaGetInfo(hostname);
             }
-            finally
+            catch
             {
-                if (wkstaData != IntPtr.Zero)
-                    NativeMethods.NetApiBufferFree(wkstaData);
+                return null;
             }
         }
         
@@ -1092,31 +1095,23 @@ namespace SharpHoundCommonLib
                 return flatName;
 
             var domain = GetDomain(domainName);
-            if (domain == null)
-                return domainName.ToUpper();
+            if (domain != null)
+            {
+                _netbiosCache.TryAdd(key, domain.Name);
+                return domain.Name;
+            }
             
-            var computerName = _ldapConfig.Server ?? await GetUsableDomainController(domain);
+            var computerName = _ldapConfig.Server;
 
-            var result = NativeMethods.DsGetDcName(computerName, domainName, null, null,
-                (uint)(NativeMethods.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | NativeMethods.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME),
-                out var pDomainControllerInfo);
-
-            try
+            var dci = _nativeMethods.CallDsGetDcName(computerName, domainName);
+            if (dci.HasValue)
             {
-                if (result == 0)
-                {
-                    var info = Marshal.PtrToStructure<NativeMethods.DOMAIN_CONTROLLER_INFO>(pDomainControllerInfo);
-                    flatName = info.DomainName;
-                }
-            }
-            finally
-            {
-                if (pDomainControllerInfo != IntPtr.Zero)
-                    NativeMethods.NetApiBufferFree(pDomainControllerInfo);
+                flatName = dci.Value.DomainName;
+                _netbiosCache.TryAdd(key, flatName);
+                return flatName;
             }
 
-            _netbiosCache.TryAdd(key, flatName);
-            return flatName;
+            return domainName.ToUpper();
         }
     }
 }

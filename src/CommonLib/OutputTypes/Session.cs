@@ -2,6 +2,27 @@
 {
     public class Session
     {
+        protected bool Equals(Session other)
+        {
+            return _computerSID == other._computerSID && _userSID == other._userSID;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Session) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_computerSID != null ? _computerSID.GetHashCode() : 0) * 397) ^ (_userSID != null ? _userSID.GetHashCode() : 0);
+            }
+        }
+
         private string _computerSID;
         private string _userSID;
 
