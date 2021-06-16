@@ -41,6 +41,7 @@ jobs:
 
   ghpages:
     name: ghpages
+    needs: nuget
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
