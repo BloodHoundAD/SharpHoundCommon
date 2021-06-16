@@ -35,7 +35,7 @@ namespace CommonLibTest
             Assert.True(true);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public void ACLProcessor_IsACLProtected_NullNTSD_ReturnsFalse()
         {
             var result = ACLProcessor.IsACLProtected(null);
@@ -58,7 +58,7 @@ namespace CommonLibTest
             Assert.False(result);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public void ACLProcessor_ProcessGMSAReaders_NullNTSD_ReturnsNothing()
         {
             var test = _baseProcessor.ProcessGMSAReaders(null, null);
