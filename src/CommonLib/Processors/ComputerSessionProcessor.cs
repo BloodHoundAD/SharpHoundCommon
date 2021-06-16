@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.OutputTypes;
 
@@ -8,15 +9,15 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
-        private const int NetWkstaUserEnumQueryLevel = 1;
-        private const int NetSessionEnumLevel = 10;
         private readonly ILDAPUtils _utils;
         private readonly NativeMethods _nativeMethods;
+        private readonly string _currentUserName;
 
-        public ComputerSessionProcessor(ILDAPUtils utils, NativeMethods nativeMethods = null)
+        public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null, NativeMethods nativeMethods = null)
         {
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();
+            _currentUserName = currentUserName ?? WindowsIdentity.GetCurrent().Name.Split('\\')[1];;
         }
 
         /// <summary>
@@ -26,9 +27,8 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerName"></param>
         /// <param name="computerSid"></param>
         /// <param name="computerDomain"></param>
-        /// <param name="currentUserName"></param>
         /// <returns></returns>
-        public async Task<SessionAPIResult> ReadUserSessions(string computerName, string computerSid, string computerDomain, string currentUserName)
+        public async Task<SessionAPIResult> ReadUserSessions(string computerName, string computerSid, string computerDomain)
         {
             var ret = new SessionAPIResult();
             NativeMethods.SESSION_INFO_10[] apiResult;
@@ -60,7 +60,7 @@ namespace SharpHoundCommonLib.Processors
 
                 //Filter out blank usernames, computer accounts, the user we're doing enumeration with, and anonymous logons
                 if (username.EndsWith("$") ||
-                    username.Equals(currentUserName, StringComparison.CurrentCultureIgnoreCase) ||
+                    username.Equals(_currentUserName, StringComparison.CurrentCultureIgnoreCase) ||
                     username.Equals("anonymous logon", StringComparison.CurrentCultureIgnoreCase))
                     continue;
                 

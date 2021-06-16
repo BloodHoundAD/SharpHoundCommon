@@ -25,7 +25,14 @@ namespace CommonLibTest.Facades
 
         public string[] GetUserGlobalCatalogMatches(string name)
         {
-            throw new System.NotImplementedException();
+            name = name.ToLower();
+            return name switch
+            {
+                "dfm" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-1105"},
+                "administrator" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-500", "S-1-5-21-3084884204-958224920-2707782874-500"},
+                "admin" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-2116"},
+                _ => Array.Empty<string>()
+            };
         }
 
         public TypedPrincipal ResolveIDAndType(string id, string domain)
@@ -691,9 +698,13 @@ namespace CommonLibTest.Facades
             throw new System.NotImplementedException();
         }
 
-        public Task<string> ResolveHostToSid(string hostname, string domain)
+        public async Task<string> ResolveHostToSid(string hostname, string domain)
         {
-            throw new System.NotImplementedException();
+            return hostname.ToUpper() switch
+            {
+                "192.168.1.1" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
+                _ => null
+            };
         }
 
         public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
@@ -704,6 +715,7 @@ namespace CommonLibTest.Facades
                     "S-1-5-21-3130019616-2776909439-2417379446-500", Label.User),
                 "DFM" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-1105", Label.User),
+                "TEST" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-1106", Label.User)
             };
         }
 
