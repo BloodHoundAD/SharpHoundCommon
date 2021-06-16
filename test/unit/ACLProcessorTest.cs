@@ -35,14 +35,14 @@ namespace CommonLibTest
             Assert.True(true);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void ACLProcessor_IsACLProtected_NullNTSD_ReturnsFalse()
         {
             var result = ACLProcessor.IsACLProtected(null);
             Assert.False(result);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void ACLProcessor_IsACLProtected_ReturnsTrue()
         {
             var bytes = Helpers.B64ToBytes(ProtectedUserNTSecurityDescriptor);
@@ -50,7 +50,7 @@ namespace CommonLibTest
             Assert.True(result);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void ACLProcessor_IsACLProtected_ReturnsFalse()
         {
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
@@ -58,14 +58,14 @@ namespace CommonLibTest
             Assert.False(result);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void ACLProcessor_ProcessGMSAReaders_NullNTSD_ReturnsNothing()
         {
             var test = _baseProcessor.ProcessGMSAReaders(null, null);
             Assert.Empty(test);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void ACLProcess_ProcessGMSAReaders_YieldsCorrectAce()
         {
             var processor = new ACLProcessor(new MockLDAPUtils(), true);
@@ -79,7 +79,7 @@ namespace CommonLibTest
             Assert.Equal(Label.User, test.PrincipalType);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void ACLProcess_ProcessACL_ProcessTestUser_YieldsCorrectAce()
         {
             var processor = new ACLProcessor(new MockLDAPUtils(), true);
