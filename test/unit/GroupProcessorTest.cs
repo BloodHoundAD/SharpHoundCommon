@@ -35,7 +35,7 @@ namespace CommonLibTest
             Assert.Null(result);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void GroupProcessor_GetPrimaryGroupInfo_ReturnsCorrectSID()
         {
             var result = GroupProcessor.GetPrimaryGroupInfo("513", "S-1-5-21-3130019616-2776909439-2417379446-1105");
@@ -49,7 +49,7 @@ namespace CommonLibTest
             Assert.Null(result);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void GroupProcessor_GetGroupInformation_ReturnsCorrectMembers()
         {
             var utils = new MockLDAPUtils();

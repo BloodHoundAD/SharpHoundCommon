@@ -22,7 +22,7 @@ namespace CommonLibTest
             _computerDomain = "TESTLAB.LOCAL";
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public async Task ComputerSessionProcessor_ReadUserSessionsPrivileged_FilteringWorks()
         {
             var mockNativeMethods = new Mock<NativeMethods>();

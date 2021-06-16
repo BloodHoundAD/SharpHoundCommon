@@ -1,0 +1,45 @@
+name: Publish
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  publish:
+    name: publish
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Generate Coverage Report
+        run: dotnet test # coverage happens by default
+
+      - name: Pack
+        run: dotnet pack --no-restore -c Release --output .
+
+      - name: Build Documentation
+        uses: nikeee/docfx-action@v1.0.0
+        with:
+          args: docfx/docfx.json
+
+      - name: Deploy GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: docs
+
+      - name: Publish NuGet
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/CommonLib/SharpHoundCommonLib.csproj
+          PACKAGE_NAME: SharpHoundCommon
+          NUGET_KEY: ${{secrets.NUGET_TOKEN}}

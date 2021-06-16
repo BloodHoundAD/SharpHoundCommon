@@ -74,7 +74,7 @@ namespace CommonLibTest
             Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", test.ObjectIdentifier);
         }
         
-        [Fact]
+        [WindowsOnlyFact]
         public void GetWellKnownPrincipal_EnterpriseDomainControllers_ReturnsCorrectedSID()
         {
             var mock = new Mock<LDAPUtils>();

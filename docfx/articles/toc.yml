@@ -1,7 +1,0 @@
-- name: Testing
-  href: TESTING.md
-- name: ChangeLog
-  href: CHANGELOG.md
-  homepage: index.md
-- name: Coverage
-  href: coverage/index.md

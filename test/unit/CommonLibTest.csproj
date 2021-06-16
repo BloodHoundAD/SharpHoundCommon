@@ -3,8 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutput>..\..\docfx\coverage\</CoverletOutput>
+    <CoverletOutputFormat>OpenCover</CoverletOutputFormat>
   </PropertyGroup>
-  
+
   <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\..\src\CommonLib\SharpHoundCommonLib.csproj" />
@@ -30,16 +33,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="ReportGenerator" Version="4.8.9" />
   </ItemGroup>
 
   <!-- Tools -->
   <ItemGroup>
-    <DotNetCliToolReference Include="dotnet-reportgenerator-cli" Version="4.6.7" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="LDAPDumps" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="LDAPDumps\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -47,4 +47,17 @@
       <Link>LDAPDumps\%(RecursiveDir)\%(Filename)%(Extension)</Link>
     </Content>
   </ItemGroup>
+
+  <!-- Coverage -->
+  <ItemGroup>
+    <CoverageFiles Include="../../docfx/coverage/coverage.opencover.xml" />
+  </ItemGroup>
+  <Target Name="Report" AfterTargets="VSTest" DependsOnTargets="GenerateCoverageResult">
+    <ReportGenerator
+      VerbosityLevel="Error"
+      ProjectDirectory="$(MSBuildProjectDirectory)"
+      ReportFiles="@(CoverageFiles)" 
+      ReportTypes="Html;Badges"
+      TargetDirectory="$(CoverletOutput)report\"/>
+  </Target>
 </Project>
