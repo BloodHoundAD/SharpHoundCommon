@@ -1,0 +1,1923 @@
+{
+  "homepages": [],
+  "source_base_path": "/github/workspace/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "CONTRIBUTING.md",
+      "output": {
+        ".html": {
+          "relative_path": "CONTRIBUTING.html",
+          "hash": "rx/oEHY8vTxG7dLynpUNwA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Cache.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Cache.html",
+          "hash": "Sdi4JI+NFTFh1ppqo5vodQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.CommonLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.CommonLib.html",
+          "hash": "zWZ8SAuLfbuRgB6B0tSGYQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.EdgeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.EdgeNames.html",
+          "hash": "FxouNJQqdzhOd7OqSoBHbA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Enums.Label.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Enums.Label.html",
+          "hash": "V4960OZ+ILSFIaE7QZr4Kg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html",
+          "hash": "zgQjKHuTG+Esez+cLw+AEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Enums.TrustAttributes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Enums.TrustAttributes.html",
+          "hash": "9V9TS3JQJviOpfWcB4U8tQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Enums.TrustDirection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Enums.TrustDirection.html",
+          "hash": "Tka2KCT4Blq4aQxKA0gEuw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Enums.TrustType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Enums.TrustType.html",
+          "hash": "1BLcf/927BQ9l1U9poOtNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Enums.UacFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Enums.UacFlags.html",
+          "hash": "1I067XYWkrF8kcE/KVPk8Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Enums.html",
+          "hash": "lEufCRRPvvr4cGHRCasu+w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Extensions.html",
+          "hash": "msHNpEDpW5PngmOeBc0JVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Helpers.html",
+          "hash": "nkjR2DauBCwpIZaz/NhXgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.ILDAPUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.ILDAPUtils.html",
+          "hash": "QFcmos1jmCzuaa37f19bWA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.LDAPConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.LDAPConfig.html",
+          "hash": "CVPwK+ptFXKay+ta3X68Tg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.LDAPQueries.CommonFilters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html",
+          "hash": "aZ6Gzg4CCTttbo3ZdI3IcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.LDAPQueries.CommonProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.LDAPQueries.CommonProperties.html",
+          "hash": "fRPg5rU/UGwrhsaXI2g11A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html",
+          "hash": "YSyI3KAM6+A67KqwMDJBpg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.LDAPQueries.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.LDAPQueries.html",
+          "hash": "7naKhEKqtLXX6pDumgBDbw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.LDAPUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.LDAPUtils.html",
+          "hash": "3vEwLiE4/mlfW1PIOMMr0g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.DOMAIN_CONTROLLER_INFO.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.DOMAIN_CONTROLLER_INFO.html",
+          "hash": "tb+FydRSEHDW3VKhL/425w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.DSGETDCNAME_FLAGS.html",
+          "hash": "ewoUfasdm7CT1QkU3qZT6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.GuidClass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.GuidClass.html",
+          "hash": "VLbe+tHKiUFwbcRzfW4stg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.NERR.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.NERR.html",
+          "hash": "c184Hb+Ot7QaYhs+BvGszw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.SESSION_INFO_10.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.SESSION_INFO_10.html",
+          "hash": "Z5uzBkNKnq45pBzCePEy2g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.WKSTA_USER_INFO_1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.WKSTA_USER_INFO_1.html",
+          "hash": "ig2fvVBD2On4W+Wd1rXzjg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.WorkstationInfo100.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.WorkstationInfo100.html",
+          "hash": "EsqarpoFAbikZeWVvGpk5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.html",
+          "hash": "acTwGNnHdTFVNgCbIKlvdg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.ACE.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.ACE.html",
+          "hash": "TvC2mcBHkeryTEWN5udvxA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.APIResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.APIResult.html",
+          "hash": "LCmSGz445dQpBKtHZ6hShA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.Computer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.Computer.html",
+          "hash": "h9gGePCjxBGECBdNwMYf5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.ComputerStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html",
+          "hash": "I+D6yOvmnAUKDXQU3KjOYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.Container.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.Container.html",
+          "hash": "Ox8s4E9G1mlEpdhGW1L3uA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.Domain.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.Domain.html",
+          "hash": "6lOnyEHMBs2WQpAtnybxiw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.DomainTrust.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.DomainTrust.html",
+          "hash": "W8+V2WxWqfsPjgQRbvKgnA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.GPLink.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.GPLink.html",
+          "hash": "jDw3FCbZZAQu4+oxich2XQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.GPO.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.GPO.html",
+          "hash": "Wp21YKofm/tqYTO0WToVlw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.Group.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.Group.html",
+          "hash": "6FTxfSNTXAwqx6lmHUkGig=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.LocalGroupAPIResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.LocalGroupAPIResult.html",
+          "hash": "xHT+nTf7GlZ+tKrWYQ7UcQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.MetaTag.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.MetaTag.html",
+          "hash": "QdBS9Acrr2M8wKDJdIWy9w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.OU.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.OU.html",
+          "hash": "fqyKErvosHzLftCU8tClOA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.OutputBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.OutputBase.html",
+          "hash": "X0GetGLdLtSWeVPIbIgVUg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.OutputWrapper-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.OutputWrapper-1.html",
+          "hash": "cd7OFjC99HwijT8m8Hch1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.SPNService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.SPNService.html",
+          "hash": "xyfVhdobfm35m5s3LTvnPg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.SPNTarget.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.SPNTarget.html",
+          "hash": "idA5NJAHr1QoZVzcIYzWkg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.Session.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.Session.html",
+          "hash": "4RCSYGFD9LBTCT2ZaVaajw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.SessionAPIResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.SessionAPIResult.html",
+          "hash": "RLdDTiIp014ojkPgGfrYHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.TypedPrincipal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.TypedPrincipal.html",
+          "hash": "zbkXftTJVYE+5GwNdDoOcw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.User.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.User.html",
+          "hash": "dpif6L4Yn+CuaiYaBPnL5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.OutputTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.OutputTypes.html",
+          "hash": "f5evf4rCVHEkvK7qBs6CZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.ParsedGPLink.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.ParsedGPLink.html",
+          "hash": "CUre3qJvygc2aDRNjAEv4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.ACEGuids.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.ACEGuids.html",
+          "hash": "zeyXMN36yWmUuQ+oVT4zRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.ACLProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.ACLProcessor.html",
+          "hash": "7n73rq1dTTCz21075dNUzQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.ComputerAvailability.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.ComputerAvailability.html",
+          "hash": "n6MtsIAzDOPvmQSo+8mgng=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.ComputerProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.ComputerProperties.html",
+          "hash": "ebdFD4V/OSVxp4zcu+TpPQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html",
+          "hash": "0AYlSh0oioizuue5JWBYPA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.ContainerProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.ContainerProcessor.html",
+          "hash": "bSGeXygprtAELYXSsvByAg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.DomainTrustProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.DomainTrustProcessor.html",
+          "hash": "naXkWoXsqq5ajx9RsbXNlA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GroupResults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GroupResults.html",
+          "hash": "4UGlu+rWPq/xBdvqESo3HA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html",
+          "hash": "2CB8WF1gMdnwS0X9kvmmjg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.GroupProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.GroupProcessor.html",
+          "hash": "XkMsH11SVa+l9F4jUd397Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html",
+          "hash": "aCeP6W0gqiRqol3NurCavA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.ResultingGPOChanges.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html",
+          "hash": "b8BSFLHRe8Ur7bIY8aeCBg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.SAMRPCServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.SAMRPCServer.html",
+          "hash": "7CvzxcO79ToZeEKJUG+aAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.SPNProcessors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.SPNProcessors.html",
+          "hash": "1mKUj/HrOHeymtDeW69QMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.UserProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.UserProperties.html",
+          "hash": "yax+SCZk3fMYPwxRCh9Sfw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.html",
+          "hash": "KXI4Jr82GFdmr0iEMVU+SQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.ResolvedSearchResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.ResolvedSearchResult.html",
+          "hash": "0QSDLsdh3nukaAwKG4HPIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.WellKnownPrincipal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.WellKnownPrincipal.html",
+          "hash": "GVjfVd+tc0Ub2GIXii1uQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.html",
+          "hash": "lVYCQg/EBCvjU5sqeyPAWg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "uS/g0Ub6kiuz8nFVfJ8RZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "7+k+3WEZkS8TszlL0YT6Tw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "coverage/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "coverage/index.html",
+          "hash": "yxJt5DP+B1l6U+x71otF7w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ACE.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ACE.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ACLProcessor.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ACLProcessor.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_APIException.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_APIException.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_APIResult.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_APIResult.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Cache.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Cache.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_CommonFilters.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_CommonFilters.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_CommonLib.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_CommonLib.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_CommonProperties.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_CommonProperties.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Computer.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Computer.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ComputerAvailability.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ComputerAvailability.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ComputerProperties.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ComputerProperties.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ComputerSessionProcessor.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ComputerSessionProcessor.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ComputerStatus.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ComputerStatus.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Container.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Container.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ContainerProcessor.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ContainerProcessor.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Domain.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Domain.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_DomainTrust.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_DomainTrust.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_DomainTrustProcessor.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_DomainTrustProcessor.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_EdgeNames.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_EdgeNames.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Extensions.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Extensions.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_GPLink.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_GPLink.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_GPOLocalGroupProcessor.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_GPOLocalGroupProcessor.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Group.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Group.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_GroupProcessor.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_GroupProcessor.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Helpers.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Helpers.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_LDAPConfig.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_LDAPConfig.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_LDAPFilter.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_LDAPFilter.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_LDAPPropertyProcessor.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_LDAPPropertyProcessor.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_LDAPUtils.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_LDAPUtils.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_LocalGroupAPIResult.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_LocalGroupAPIResult.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Logging.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Logging.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_MetaTag.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_MetaTag.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_NativeMethods.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_NativeMethods.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_OU.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_OU.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_OutputBase.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_OutputBase.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_OutputWrapper_1.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_OutputWrapper_1.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ParsedGPLink.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ParsedGPLink.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ResolvedSearchResult.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ResolvedSearchResult.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_ResultingGPOChanges.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_ResultingGPOChanges.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_SAMRPCServer.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_SAMRPCServer.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_SPNProcessors.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_SPNProcessors.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_SPNTarget.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_SPNTarget.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_Session.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_Session.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_SessionAPIResult.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_SessionAPIResult.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_TypedPrincipal.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_TypedPrincipal.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_User.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_User.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_UserProperties.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_UserProperties.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_WellKnownPrincipal.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_WellKnownPrincipal.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_branchcoverage.png",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_branchcoverage.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_branchcoverage.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_branchcoverage.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_combined.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_combined.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_linecoverage.png",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_linecoverage.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_linecoverage.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_linecoverage.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_branchcoverage_blue.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_branchcoverage_blue.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_branchcoverage_brightgreen.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_branchcoverage_brightgreen.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_branchcoverage_green.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_branchcoverage_green.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_branchcoverage_lightgrey.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_branchcoverage_lightgrey.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_branchcoverage_orange.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_branchcoverage_orange.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_branchcoverage_red.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_branchcoverage_red.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_branchcoverage_yellow.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_branchcoverage_yellow.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_branchcoverage_yellowgreen.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_branchcoverage_yellowgreen.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_linecoverage_blue.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_linecoverage_blue.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_linecoverage_brightgreen.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_linecoverage_brightgreen.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_linecoverage_green.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_linecoverage_green.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_linecoverage_lightgrey.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_linecoverage_lightgrey.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_linecoverage_orange.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_linecoverage_orange.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_linecoverage_red.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_linecoverage_red.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_linecoverage_yellow.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_linecoverage_yellow.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/badge_shieldsio_linecoverage_yellowgreen.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/badge_shieldsio_linecoverage_yellowgreen.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/class.js",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/class.js"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_cube.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_cube.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_down-dir_active.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_down-dir_active.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_fork.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_fork.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_info-circled.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_info-circled.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_minus.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_minus.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_plus.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_plus.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_search-minus.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_search-minus.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_search-plus.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_search-plus.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_sponsor.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_sponsor.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_star.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_star.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_up-dir.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_up-dir.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_up-dir_active.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_up-dir_active.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/icon_wrench.svg",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/icon_wrench.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/index.htm",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/index.htm"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/index.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/index.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/main.js",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/main.js"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/report.css",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/report.css"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "HxyeLbDZtp2m4bhx5kg8hw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "ZTG7Dgymxsw1pj0bTa6NEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 4,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 69,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
