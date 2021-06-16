@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundCommonLib.Processors;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace SharpHoundCommonLib
@@ -27,6 +28,7 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
         private readonly NativeMethods _nativeMethods;
+        private readonly PortScanner _portScanner;
 
         // The following byte stream contains the necessary message to request a NetBios name from a machine
         // http://web.archive.org/web/20100409111218/http://msdn.microsoft.com/en-us/library/system.net.sockets.socket.aspx
@@ -47,11 +49,13 @@ namespace SharpHoundCommonLib
         public LDAPUtils()
         {
             _nativeMethods = new NativeMethods();
+            _portScanner = new PortScanner();
         }
 
-        public LDAPUtils(NativeMethods nativeMethods = null)
+        public LDAPUtils(NativeMethods nativeMethods = null, PortScanner scanner = null)
         {
             _nativeMethods = nativeMethods ?? new NativeMethods();
+            _portScanner = scanner ?? new PortScanner();
         }
 
         public void UpdateLDAPConfig(LDAPConfig config)
@@ -543,7 +547,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         private async Task<NativeMethods.WorkstationInfo100?> CallNetWkstaGetInfo(string hostname)
         {
-            if (!await Helpers.CheckPort(hostname))
+            if (!await _portScanner.CheckPort(hostname))
                 return null;
 
             try
@@ -1043,7 +1047,7 @@ namespace SharpHoundCommonLib
         {
             var port = gc ? 3268 : _ldapConfig.GetPort();
             var pdc = domain.PdcRoleOwner.Name;
-            if (await Helpers.CheckPort(pdc, port))
+            if (await _portScanner.CheckPort(pdc, port))
             {
                 _domainControllerCache.TryAdd(domain.Name, pdc);
                 Logging.Debug($"Found usable Domain Controller for {domain.Name} : {pdc}");
@@ -1054,7 +1058,7 @@ namespace SharpHoundCommonLib
             foreach (DomainController domainController in domain.DomainControllers)
             {
                 var name = domainController.Name;
-                if (!await Helpers.CheckPort(name, port)) continue;
+                if (!await _portScanner.CheckPort(name, port)) continue;
                 Logging.Debug($"Found usable Domain Controller for {domain.Name} : {name}");
                 _domainControllerCache.TryAdd(domain.Name, name);
                 return name;

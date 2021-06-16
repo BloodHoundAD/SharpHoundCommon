@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Sockets;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
@@ -124,31 +122,6 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Checks if a specified port is open on a host. Defaults to 445 (SMB)
-        /// </summary>
-        /// <param name="hostname"></param>
-        /// <param name="port"></param>
-        /// <param name="timeout">Timeout in milliseconds</param>
-        /// <returns>True if port is open, otherwise false</returns>
-        internal static async Task<bool> CheckPort(string hostname, int port = 445, int timeout = 500)
-        {
-            try
-            {
-                using var client = new TcpClient();
-                var ca = client.ConnectAsync(hostname, port);
-                await Task.WhenAny(ca, Task.Delay(timeout));
-                client.Close();
-                if (!ca.IsFaulted && ca.IsCompleted) return true;
-                Logging.Debug($"{hostname} did not respond to ping");
-                return false;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        
-        /// <summary>
         /// Converts a windows file time to unix epoch time
         /// </summary>
         /// <param name="ldapTime"></param>
@@ -185,6 +158,20 @@ namespace SharpHoundCommonLib
         {
             var dt = DateTime.ParseExact(ldapTime, "yyyyMMddHHmmss.0K", CultureInfo.CurrentCulture);
             return (long) dt.Subtract(EpochDiff).TotalSeconds;
+        }
+        
+        /// <summary>
+        /// Converts an LDAP time string into a long
+        /// </summary>
+        /// <param name="ldapTime"></param>
+        /// <returns></returns>
+        public static long ConvertLdapTimeToLong(string ldapTime)
+        {
+            if (ldapTime == null)
+                return -1;
+
+            var time = long.Parse(ldapTime);
+            return time;
         }
     }
 

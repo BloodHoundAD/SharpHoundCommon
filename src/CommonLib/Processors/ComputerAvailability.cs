@@ -6,6 +6,18 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerAvailability
     {
+        private PortScanner _scanner;
+
+        public ComputerAvailability()
+        {
+            _scanner = new PortScanner();
+        }
+
+        public ComputerAvailability(PortScanner scanner)
+        {
+            _scanner = scanner;
+        }
+        
         /// <summary>
         /// Checks if a computer is available for SharpHound enumeration using the following criteria:
         /// The "operatingsystem" LDAP attribute must contain the string "Windows"
@@ -16,7 +28,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="operatingSystem">The LDAP operatingsystem attribute value</param>
         /// <param name="pwdLastSet">The LDAP pwdlastset attribute value</param>
         /// <returns>A <cref>ComputerStatus</cref> object that represents the availability of the computer</returns>
-        public static async Task<ComputerStatus> IsComputerAvailable(string computerName, string operatingSystem, string pwdLastSet)
+        public async Task<ComputerStatus> IsComputerAvailable(string computerName, string operatingSystem, string pwdLastSet)
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
@@ -28,7 +40,7 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
-            var passwordLastSet = ConvertLdapTime(pwdLastSet);
+            var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
             var threshold = DateTime.Now.AddDays(-60).ToFileTimeUtc();
 
             if (passwordLastSet < threshold)
@@ -42,7 +54,7 @@ namespace SharpHoundCommonLib.Processors
             }
 
 
-            if (!await Helpers.CheckPort(computerName))
+            if (!await _scanner.CheckPort(computerName))
             {
                 Logging.Trace($"{computerName} is not available because port 445 is unavailable");
                 return new ComputerStatus
@@ -58,20 +70,6 @@ namespace SharpHoundCommonLib.Processors
                 Connectable = true,
                 Error = null
             };
-        }
-        
-        /// <summary>
-        /// Converts an LDAP time string into a long
-        /// </summary>
-        /// <param name="ldapTime"></param>
-        /// <returns></returns>
-        private static long ConvertLdapTime(string ldapTime)
-        {
-            if (ldapTime == null)
-                return -1;
-
-            var time = long.Parse(ldapTime);
-            return time;
         }
     }
 }

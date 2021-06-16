@@ -53,11 +53,6 @@
     <CoverageFiles Include="../../docfx/coverage/coverage.opencover.xml" />
   </ItemGroup>
   <Target Name="Report" AfterTargets="VSTest" DependsOnTargets="GenerateCoverageResult">
-    <ReportGenerator
-      VerbosityLevel="Error"
-      ProjectDirectory="$(MSBuildProjectDirectory)"
-      ReportFiles="@(CoverageFiles)" 
-      ReportTypes="Html;Badges"
-      TargetDirectory="$(CoverletOutput)report\"/>
+    <ReportGenerator VerbosityLevel="Error" ProjectDirectory="$(MSBuildProjectDirectory)" ReportFiles="@(CoverageFiles)" ReportTypes="Html;Badges" TargetDirectory="$(CoverletOutput)report\" />
   </Target>
 </Project>
