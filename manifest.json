@@ -156,7 +156,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Helpers.html",
-          "hash": "nkjR2DauBCwpIZaz/NhXgw=="
+          "hash": "ai/AfLBWy5tWICQQcfO0yA=="
         }
       },
       "is_incremental": false,
@@ -240,7 +240,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPUtils.html",
-          "hash": "3vEwLiE4/mlfW1PIOMMr0g=="
+          "hash": "bY34ADxi3TadNeKbENfmOA=="
         }
       },
       "is_incremental": false,
@@ -612,7 +612,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ParsedGPLink.html",
-          "hash": "CUre3qJvygc2aDRNjAEv4g=="
+          "hash": "SUmJ0Z3628dnrfLrFvHUCw=="
         }
       },
       "is_incremental": false,
@@ -648,7 +648,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ComputerAvailability.html",
-          "hash": "n6MtsIAzDOPvmQSo+8mgng=="
+          "hash": "JRoQH+PrtQQUIW59rGfWXA=="
         }
       },
       "is_incremental": false,
@@ -752,6 +752,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Processors.PortScanner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Processors.PortScanner.html",
+          "hash": "r8pXRqFFcHIsw8KMGinu4A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/SharpHoundCommonLib.Processors.ResultingGPOChanges.yml",
       "output": {
         ".html": {
@@ -804,7 +816,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.html",
-          "hash": "KXI4Jr82GFdmr0iEMVU+SQ=="
+          "hash": "qRbLmFZR8VvpKwKGmzmSfQ=="
         }
       },
       "is_incremental": false,
@@ -864,7 +876,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "7+k+3WEZkS8TszlL0YT6Tw=="
+          "hash": "5pXDo/b8mYK5MMIIXW5HxQ=="
         }
       },
       "is_incremental": false,
@@ -1284,6 +1296,17 @@
       "output": {
         "resource": {
           "relative_path": "coverage/report/SharpHoundCommonLib_ParsedGPLink.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_PortScanner.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_PortScanner.html"
         }
       },
       "is_incremental": false,
@@ -1884,7 +1907,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 69,
+          "total_file_count": 70,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

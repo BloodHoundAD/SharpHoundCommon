@@ -915,6 +915,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch
   nameWithType: Helpers.ConvertFileTimeToUnixEpoch
+- uid: SharpHoundCommonLib.Helpers.ConvertLdapTimeToLong(System.String)
+  name: ConvertLdapTimeToLong(String)
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertLdapTimeToLong_System_String_
+  commentId: M:SharpHoundCommonLib.Helpers.ConvertLdapTimeToLong(System.String)
+  fullName: SharpHoundCommonLib.Helpers.ConvertLdapTimeToLong(System.String)
+  nameWithType: Helpers.ConvertLdapTimeToLong(String)
+- uid: SharpHoundCommonLib.Helpers.ConvertLdapTimeToLong*
+  name: ConvertLdapTimeToLong
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertLdapTimeToLong_
+  commentId: Overload:SharpHoundCommonLib.Helpers.ConvertLdapTimeToLong
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Helpers.ConvertLdapTimeToLong
+  nameWithType: Helpers.ConvertLdapTimeToLong
 - uid: SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
   name: ConvertTimestampToUnixEpoch(String)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertTimestampToUnixEpoch_System_String_
@@ -1639,12 +1652,12 @@ references:
   commentId: M:SharpHoundCommonLib.LDAPUtils.#ctor
   fullName: SharpHoundCommonLib.LDAPUtils.LDAPUtils()
   nameWithType: LDAPUtils.LDAPUtils()
-- uid: SharpHoundCommonLib.LDAPUtils.#ctor(SharpHoundCommonLib.NativeMethods)
-  name: LDAPUtils(NativeMethods)
-  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils__ctor_SharpHoundCommonLib_NativeMethods_
-  commentId: M:SharpHoundCommonLib.LDAPUtils.#ctor(SharpHoundCommonLib.NativeMethods)
-  fullName: SharpHoundCommonLib.LDAPUtils.LDAPUtils(SharpHoundCommonLib.NativeMethods)
-  nameWithType: LDAPUtils.LDAPUtils(NativeMethods)
+- uid: SharpHoundCommonLib.LDAPUtils.#ctor(SharpHoundCommonLib.NativeMethods,SharpHoundCommonLib.Processors.PortScanner)
+  name: LDAPUtils(NativeMethods, PortScanner)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils__ctor_SharpHoundCommonLib_NativeMethods_SharpHoundCommonLib_Processors_PortScanner_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.#ctor(SharpHoundCommonLib.NativeMethods,SharpHoundCommonLib.Processors.PortScanner)
+  fullName: SharpHoundCommonLib.LDAPUtils.LDAPUtils(SharpHoundCommonLib.NativeMethods, SharpHoundCommonLib.Processors.PortScanner)
+  nameWithType: LDAPUtils.LDAPUtils(NativeMethods, PortScanner)
 - uid: SharpHoundCommonLib.LDAPUtils.#ctor*
   name: LDAPUtils
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils__ctor_
@@ -3447,6 +3460,25 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ComputerAvailability
   fullName: SharpHoundCommonLib.Processors.ComputerAvailability
   nameWithType: ComputerAvailability
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor
+  name: ComputerAvailability()
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability()
+  nameWithType: ComputerAvailability.ComputerAvailability()
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner)
+  name: ComputerAvailability(PortScanner)
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_SharpHoundCommonLib_Processors_PortScanner_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(SharpHoundCommonLib.Processors.PortScanner)
+  nameWithType: ComputerAvailability.ComputerAvailability(PortScanner)
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor*
+  name: ComputerAvailability
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_
+  commentId: Overload:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability
+  nameWithType: ComputerAvailability.ComputerAvailability
 - uid: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(System.String,System.String,System.String)
   name: IsComputerAvailable(String, String, String)
   href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability_IsComputerAvailable_System_String_System_String_System_String_
@@ -3854,6 +3886,25 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties
   nameWithType: LDAPPropertyProcessor.ReadUserProperties
+- uid: SharpHoundCommonLib.Processors.PortScanner
+  name: PortScanner
+  href: api/SharpHoundCommonLib.Processors.PortScanner.html
+  commentId: T:SharpHoundCommonLib.Processors.PortScanner
+  fullName: SharpHoundCommonLib.Processors.PortScanner
+  nameWithType: PortScanner
+- uid: SharpHoundCommonLib.Processors.PortScanner.CheckPort(System.String,System.Int32,System.Int32)
+  name: CheckPort(String, Int32, Int32)
+  href: api/SharpHoundCommonLib.Processors.PortScanner.html#SharpHoundCommonLib_Processors_PortScanner_CheckPort_System_String_System_Int32_System_Int32_
+  commentId: M:SharpHoundCommonLib.Processors.PortScanner.CheckPort(System.String,System.Int32,System.Int32)
+  fullName: SharpHoundCommonLib.Processors.PortScanner.CheckPort(System.String, System.Int32, System.Int32)
+  nameWithType: PortScanner.CheckPort(String, Int32, Int32)
+- uid: SharpHoundCommonLib.Processors.PortScanner.CheckPort*
+  name: CheckPort
+  href: api/SharpHoundCommonLib.Processors.PortScanner.html#SharpHoundCommonLib_Processors_PortScanner_CheckPort_
+  commentId: Overload:SharpHoundCommonLib.Processors.PortScanner.CheckPort
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.PortScanner.CheckPort
+  nameWithType: PortScanner.CheckPort
 - uid: SharpHoundCommonLib.Processors.ResultingGPOChanges
   name: ResultingGPOChanges
   href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html
