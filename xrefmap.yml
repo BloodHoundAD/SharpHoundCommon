@@ -3524,12 +3524,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ComputerSessionProcessor
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor
   nameWithType: ComputerSessionProcessor
-- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,SharpHoundCommonLib.NativeMethods)
-  name: ComputerSessionProcessor(ILDAPUtils, NativeMethods)
-  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_SharpHoundCommonLib_NativeMethods_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,SharpHoundCommonLib.NativeMethods)
-  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor(SharpHoundCommonLib.ILDAPUtils, SharpHoundCommonLib.NativeMethods)
-  nameWithType: ComputerSessionProcessor.ComputerSessionProcessor(ILDAPUtils, NativeMethods)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods)
+  name: ComputerSessionProcessor(ILDAPUtils, String, NativeMethods)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_String_SharpHoundCommonLib_NativeMethods_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor(SharpHoundCommonLib.ILDAPUtils, System.String, SharpHoundCommonLib.NativeMethods)
+  nameWithType: ComputerSessionProcessor.ComputerSessionProcessor(ILDAPUtils, String, NativeMethods)
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor*
   name: ComputerSessionProcessor
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_
@@ -3537,12 +3537,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor
   nameWithType: ComputerSessionProcessor.ComputerSessionProcessor
-- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String,System.String,System.String,System.String)
-  name: ReadUserSessions(String, String, String, String)
-  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessions_System_String_System_String_System_String_System_String_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String,System.String,System.String,System.String)
-  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String, System.String, System.String, System.String)
-  nameWithType: ComputerSessionProcessor.ReadUserSessions(String, String, String, String)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String,System.String,System.String)
+  name: ReadUserSessions(String, String, String)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessions_System_String_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String,System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String, System.String, System.String)
+  nameWithType: ComputerSessionProcessor.ReadUserSessions(String, String, String)
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions*
   name: ReadUserSessions
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessions_
