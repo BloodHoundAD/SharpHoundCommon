@@ -2633,6 +2633,45 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.Error
   nameWithType: ComputerStatus.Error
+- uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.NonWindowsOS
+  name: NonWindowsOS
+  href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_NonWindowsOS
+  commentId: P:SharpHoundCommonLib.OutputTypes.ComputerStatus.NonWindowsOS
+  fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.NonWindowsOS
+  nameWithType: ComputerStatus.NonWindowsOS
+- uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.NonWindowsOS*
+  name: NonWindowsOS
+  href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_NonWindowsOS_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ComputerStatus.NonWindowsOS
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.NonWindowsOS
+  nameWithType: ComputerStatus.NonWindowsOS
+- uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.OldPwd
+  name: OldPwd
+  href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_OldPwd
+  commentId: P:SharpHoundCommonLib.OutputTypes.ComputerStatus.OldPwd
+  fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.OldPwd
+  nameWithType: ComputerStatus.OldPwd
+- uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.OldPwd*
+  name: OldPwd
+  href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_OldPwd_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ComputerStatus.OldPwd
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.OldPwd
+  nameWithType: ComputerStatus.OldPwd
+- uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.PortNotOpen
+  name: PortNotOpen
+  href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_PortNotOpen
+  commentId: P:SharpHoundCommonLib.OutputTypes.ComputerStatus.PortNotOpen
+  fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.PortNotOpen
+  nameWithType: ComputerStatus.PortNotOpen
+- uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.PortNotOpen*
+  name: PortNotOpen
+  href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_PortNotOpen_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ComputerStatus.PortNotOpen
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.PortNotOpen
+  nameWithType: ComputerStatus.PortNotOpen
 - uid: SharpHoundCommonLib.OutputTypes.Container
   name: Container
   href: api/SharpHoundCommonLib.OutputTypes.Container.html

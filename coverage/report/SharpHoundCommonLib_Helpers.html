@@ -17,14 +17,14 @@
 <tr><th>Class:</th><td>SharpHoundCommonLib.Helpers</td></tr>
 <tr><th>Assembly:</th><td>SharpHoundCommonLib</td></tr>
 <tr><th>File(s):</th><td><a href="#DaSharpHoundCommonSharpHoundCommonsrcCommonLibHelperscs" class="navigatetohash">D:\a\SharpHoundCommon\SharpHoundCommon\src\CommonLib\Helpers.cs</a></td></tr>
-<tr><th>Covered lines:</th><td>0</td></tr>
-<tr><th>Uncovered lines:</th><td>82</td></tr>
+<tr><th>Covered lines:</th><td>5</td></tr>
+<tr><th>Uncovered lines:</th><td>77</td></tr>
 <tr><th>Coverable lines:</th><td>82</td></tr>
 <tr><th>Total lines:</th><td>183</td></tr>
-<tr><th>Line coverage:</th><td>0% (0 of 82)</td></tr>
-<tr><th>Covered branches:</th><td>0</td></tr>
+<tr><th>Line coverage:</th><td>6% (5 of 82)</td></tr>
+<tr><th>Covered branches:</th><td>1</td></tr>
 <tr><th>Total branches:</th><td>22</td></tr>
-<tr><th>Branch coverage:</th><td>0% (0 of 22)</td></tr>
+<tr><th>Branch coverage:</th><td>4.5% (1 of 22)</td></tr>
 </tbody>
 </table>
 <h1>Metrics</h1>
@@ -41,7 +41,7 @@
 <tr><td title="System.String SharpHoundCommonLib.Helpers::Base64(System.String)"><a href="#file0_line119" class="navigatetohash">Base64(...)</a></td><td>100%</td><td>1</td><td>0</td><td>0%</td></tr>
 <tr><td title="System.Int64 SharpHoundCommonLib.Helpers::ConvertFileTimeToUnixEpoch(System.String)"><a href="#file0_line130" class="navigatetohash">ConvertFileTimeToUnixEpoch(...)</a></td><td>0%</td><td>4</td><td>0</td><td>0%</td></tr>
 <tr><td title="System.Int64 SharpHoundCommonLib.Helpers::ConvertTimestampToUnixEpoch(System.String)"><a href="#file0_line158" class="navigatetohash">ConvertTimestampToUnixEpoch(...)</a></td><td>100%</td><td>1</td><td>0</td><td>0%</td></tr>
-<tr><td title="System.Int64 SharpHoundCommonLib.Helpers::ConvertLdapTimeToLong(System.String)"><a href="#file0_line169" class="navigatetohash">ConvertLdapTimeToLong(...)</a></td><td>0%</td><td>2</td><td>0</td><td>0%</td></tr>
+<tr><td title="System.Int64 SharpHoundCommonLib.Helpers::ConvertLdapTimeToLong(System.String)"><a href="#file0_line169" class="navigatetohash">ConvertLdapTimeToLong(...)</a></td><td>50%</td><td>2</td><td>0</td><td>83.33%</td></tr>
 </tbody>
 </table>
 <h1>File(s)</h1>
@@ -217,13 +217,13 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line166"></a><code>166</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;param&nbsp;name=&quot;ldapTime&quot;&gt;&lt;/param&gt;</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line167"></a><code>167</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;returns&gt;&lt;/returns&gt;</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line168"></a><code>168</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;long&nbsp;ConvertLdapTimeToLong(string&nbsp;ldapTime)</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line169"></a><code>169</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits, 0 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line170"></a><code>170</code></td><td class="percentagebar percentagebar0"><i class="icon-fork"></i></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(ldapTime&nbsp;==&nbsp;null)</code></td></tr>
+<tr class="coverableline" title="Covered (3 visits)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line169"></a><code>169</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Partially covered (3 visits, 1 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'orange'}}"><td class="orange">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line170"></a><code>170</code></td><td class="percentagebar percentagebar50"><i class="icon-fork"></i></td><td class="lightorange"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(ldapTime&nbsp;==&nbsp;null)</code></td></tr>
 <tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line171"></a><code>171</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;-1;</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line172"></a><code>172</code></td><td></td><td class="lightgray"><code></code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line173"></a><code>173</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;time&nbsp;=&nbsp;long.Parse(ldapTime);</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line174"></a><code>174</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;time;</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line175"></a><code>175</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Covered (3 visits)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line173"></a><code>173</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;time&nbsp;=&nbsp;long.Parse(ldapTime);</code></td></tr>
+<tr class="coverableline" title="Covered (3 visits)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line174"></a><code>174</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;time;</code></td></tr>
+<tr class="coverableline" title="Covered (3 visits)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line175"></a><code>175</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line176"></a><code>176</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line177"></a><code>177</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line178"></a><code>178</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;ParsedGPLink</code></td></tr>
@@ -234,7 +234,7 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line183"></a><code>183</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />6/16/2021 - 6:56:39 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />6/16/2021 - 7:54:08 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
@@ -248,7 +248,7 @@
 <a href="#file0_line119" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - Base64(System.String)"><i class="icon-cube"></i>Base64(System.String)</a><br />
 <a href="#file0_line130" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - ConvertFileTimeToUnixEpoch(System.String)"><i class="icon-cube"></i>ConvertFileTimeToUnixEpoch(System.String)</a><br />
 <a href="#file0_line158" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - ConvertTimestampToUnixEpoch(System.String)"><i class="icon-cube"></i>ConvertTimestampToUnixEpoch(System.String)</a><br />
-<a href="#file0_line169" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - ConvertLdapTimeToLong(System.String)"><i class="icon-cube"></i>ConvertLdapTimeToLong(System.String)</a><br />
+<a href="#file0_line169" class="navigatetohash percentagebar percentagebar80" title="Line coverage: 83.3% - ConvertLdapTimeToLong(System.String)"><i class="icon-cube"></i>ConvertLdapTimeToLong(System.String)</a><br />
 <br/></div>
 </div></div>
 <script type="text/javascript">
