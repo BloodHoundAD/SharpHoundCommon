@@ -25,7 +25,7 @@ namespace SharpHoundCommonLib.Processors
             foreach (var result in _utils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps, domain))
             {
                 var trust = new DomainTrust();
-                var targetSidBytes = result.GetPropertyAsBytes("securityIdentifier");
+                var targetSidBytes = result.GetByteProperty("securityIdentifier");
                 if (targetSidBytes == null || targetSidBytes.Length == 0)
                     continue;
                 string sid;

@@ -67,7 +67,7 @@ namespace SharpHoundCommonLib
         /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
         /// <param name="skipCache">Skip the connection cache and force a new connection. You must dispose of this connection yourself.</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
-        IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+        IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false);
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace SharpHoundCommonLib
         /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
         /// <param name="skipCache">Skip the connection cache and force a new connection. You must dispose of this connection yourself.</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
-        IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+        IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false);
 
         Forest GetForest(string domainName = null);

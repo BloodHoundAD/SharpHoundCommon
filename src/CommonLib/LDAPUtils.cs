@@ -669,7 +669,7 @@ namespace SharpHoundCommonLib
         /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
         /// <param name="skipCache">Skip the connection cache and force a new connection. You must dispose of this connection yourself.</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
-        public IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
             Logging.Log(LogLevel.Trace,"Creating ldap connection");
@@ -748,7 +748,8 @@ namespace SharpHoundCommonLib
                 {
                     if (cancellationToken.IsCancellationRequested)
                         yield break;
-                    yield return entry;
+                    
+                    yield return new SearchResultEntryWrapper(entry);
                 }
                 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 || cancellationToken.IsCancellationRequested)
@@ -771,7 +772,7 @@ namespace SharpHoundCommonLib
         /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
         /// <param name="skipCache">Skip the connection cache and force a new connection. You must dispose of this connection yourself.</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
-        public IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
             Logging.Log(LogLevel.Trace, "Creating ldap connection");
@@ -846,7 +847,7 @@ namespace SharpHoundCommonLib
                 }
 
                 foreach (SearchResultEntry entry in response.Entries)
-                    yield return entry;
+                    yield return new SearchResultEntryWrapper(entry);
 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0)
                     yield break;

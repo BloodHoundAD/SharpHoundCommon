@@ -62,7 +62,7 @@ namespace SharpHoundCommonLib.Processors
                 new[] {"schemaidguid", "name"}, adsPath: schema))
             {
                 var name = entry.GetProperty("name")?.ToLower();
-                var guid = new Guid(entry.GetPropertyAsBytes("schemaidguid")).ToString();
+                var guid = new Guid(entry.GetByteProperty("schemaidguid")).ToString();
                 GuidMap.TryAdd(guid, name);
             }
             

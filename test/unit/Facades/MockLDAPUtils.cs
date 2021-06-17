@@ -955,14 +955,14 @@ namespace CommonLibTest.Facades
             };
         }
 
-        public IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken,
+        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken,
             string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null,
             bool globalCatalog = false, bool skipCache = false)
         {
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<SearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, string domainName = null,
+        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, string domainName = null,
             bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false,
             bool skipCache = false)
         {
