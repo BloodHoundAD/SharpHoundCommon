@@ -1,16 +1,16 @@
 ﻿using System;
 using System.DirectoryServices.Protocols;
+using System.Linq;
+using System.Security.Principal;
+using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
 {
     public interface ISearchResultEntry : IDisposable
     {
-        string DistinguishedName
-        {
-            get;
-        }
-        
+        string DistinguishedName { get; }
+        Task<ResolvedSearchResult> ResolveBloodHoundInfo();
         string GetProperty(string propertyName);
         byte[] GetByteProperty(string propertyName);
         string[] GetArrayProperty(string propertyName);
@@ -21,22 +21,139 @@ namespace SharpHoundCommonLib
         string GetSid();
         string GetGuid();
     }
-    
+
     public class SearchResultEntryWrapper : ISearchResultEntry
     {
         private readonly SearchResultEntry _entry;
+        private readonly ILDAPUtils _utils;
 
-        public SearchResultEntryWrapper(SearchResultEntry entry)
+        public SearchResultEntryWrapper(SearchResultEntry entry, ILDAPUtils utils = null)
         {
             _entry = entry;
+            _utils = utils ?? new LDAPUtils();
         }
-        
+
         public string DistinguishedName => _entry.DistinguishedName;
 
         public void Dispose()
         {
         }
-        
+
+        public async Task<ResolvedSearchResult> ResolveBloodHoundInfo()
+        {
+            var res = new ResolvedSearchResult();
+
+            var itemID = GetObjectIdentifier();
+            if (itemID == null)
+                return null;
+
+            res.ObjectId = itemID;
+            if (IsDeleted())
+            {
+                res.Deleted = IsDeleted();
+                return res;
+            }
+
+            //Try to resolve the domain
+            var distinguishedName = DistinguishedName;
+            string itemDomain;
+            if (distinguishedName == null)
+            {
+                if (itemID.StartsWith("S-1-"))
+                {
+                    itemDomain = _utils.GetDomainNameFromSid(itemID);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                itemDomain = Helpers.DistinguishedNameToDomain(distinguishedName);
+            }
+
+
+            res.Domain = itemDomain;
+
+            if (WellKnownPrincipal.GetWellKnownPrincipal(itemID, out var wkPrincipal))
+            {
+                res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+                res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
+                res.ObjectType = wkPrincipal.ObjectType;
+                res.ObjectId = _utils.ConvertWellKnownPrincipal(itemID, itemDomain);
+
+                return res;
+            }
+
+            if (itemID.StartsWith("S-1-"))
+            {
+                res.DomainSid = new SecurityIdentifier(itemID).AccountDomainSid.Value;
+            }
+            else
+            {
+                res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+            }
+
+
+            var samAccountName = GetProperty("samaccountname");
+
+            var itemType = GetLabel();
+            res.ObjectType = itemType;
+
+            switch (itemType)
+            {
+                case Label.User:
+                case Label.Group:
+                    res.DisplayName = $"{samAccountName}@{itemDomain}";
+                    break;
+                case Label.Computer:
+                    var shortName = samAccountName?.TrimEnd('$');
+                    var dns = GetProperty("dnshostname");
+                    var cn = GetProperty("cn");
+
+                    //If we have this object class, override the object type
+                    if (GetArrayProperty("objectclass").Contains("msds-groupmanagedserviceaccount",
+                        StringComparer.InvariantCultureIgnoreCase))
+                    {
+                        res.ObjectType = Label.User;
+                    }
+
+                    if (dns != null)
+                    {
+                        res.DisplayName = dns;
+                    }
+                    else
+                    {
+                        if (shortName == null && cn == null)
+                            res.DisplayName = $"UNKNOWN.{itemDomain}";
+                        else if (shortName != null)
+                            res.DisplayName = $"{shortName}.{itemDomain}";
+                        else
+                            res.DisplayName = $"{cn}.{itemDomain}";
+                    }
+
+                    break;
+                case Label.GPO:
+                    res.DisplayName = $"{GetProperty("displayname")}@{itemDomain}";
+                    break;
+                case Label.Domain:
+                    res.DisplayName = itemDomain;
+                    break;
+                case Label.OU:
+                case Label.Container:
+                    res.DisplayName = $"{GetProperty("name")}@{itemDomain}";
+                    break;
+                case Label.Base:
+                    res.DisplayName = $"{samAccountName}@{itemDomain}";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            return res;
+        }
+
         public string GetProperty(string propertyName)
         {
             return _entry.GetProperty(propertyName);
