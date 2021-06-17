@@ -12,6 +12,22 @@ namespace SharpHoundCommonLib.Processors
         {
             _utils = utils;
         }
+
+        private static bool IsDNFiltered(string distinguishedName)
+        {
+            var dn = distinguishedName.ToUpper();
+            if (dn.Contains("CN=PROGRAM DATA,DC="))
+            {
+                return true;
+            }
+
+            if (dn.Contains("CN=SYSTEM,DC="))
+            {
+                return true;
+            }
+
+            return false;
+        }
         
         /// <summary>
         /// Finds all immediate child objects of a container. 
@@ -24,19 +40,15 @@ namespace SharpHoundCommonLib.Processors
             foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
                 CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName), adsPath: distinguishedName))
             {
-                var dn = childEntry.DistinguishedName.ToUpper();
-                
-                if (dn.Contains("CN=SYSTEM,DC="))
-                {
-                    if (dn.Contains("CN=DOMAINUPDATES") || dn.Contains("CN=POLICIES") || dn.Contains("CN=PROGRAMDATA"))
-                        continue;
-                }
+                var dn = childEntry.DistinguishedName;
+                if (IsDNFiltered(dn))
+                    continue;
 
                 var id = childEntry.GetObjectIdentifier();
                 if (id == null)
                     continue;
 
-                var res = _utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(childEntry.DistinguishedName));
+                var res = _utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(dn));
                 if (res == null)
                     continue;
                 yield return res;
