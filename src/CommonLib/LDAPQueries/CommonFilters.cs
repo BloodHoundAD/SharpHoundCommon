@@ -1,6 +1,6 @@
 ﻿namespace SharpHoundCommonLib.LDAPQueries
 {
-    public class CommonFilters
+    public static class CommonFilters
     {
         public static string EnabledOnly => "(!(UserAccountControl:1.2.840.113556.1.4.803:=2))";
         
