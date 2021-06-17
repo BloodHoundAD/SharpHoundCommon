@@ -648,7 +648,7 @@ namespace CommonLibTest.Facades
                     "S-1-5-21-3130019616-2776909439-2417379446-2106", Label.User),
                 "CN=KRBTGT,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-502", Label.User),
-                _ => throw new ArgumentOutOfRangeException(nameof(id), id, null)
+                _ => null
             };
 
             return principal;
@@ -955,14 +955,14 @@ namespace CommonLibTest.Facades
             };
         }
 
-        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken,
+        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken,
             string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null,
             bool globalCatalog = false, bool skipCache = false)
         {
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, string domainName = null,
+        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, string domainName = null,
             bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false,
             bool skipCache = false)
         {

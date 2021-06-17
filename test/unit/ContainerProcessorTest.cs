@@ -1,6 +1,9 @@
 ﻿using System;
+using System.DirectoryServices.Protocols;
 using System.Linq;
 using CommonLibTest.Facades;
+using Moq;
+using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using Xunit;
@@ -65,6 +68,60 @@ namespace CommonLibTest
             
             Assert.Equal(3, test.Length);
             Assert.Equal(expected, test);
+        }
+
+        [Fact]
+        public void ContainerProcessor_GetContainerChildObjects_FiltersUnnecessaryObjects()
+        {
+            var mock = new Mock<MockLDAPUtils>();
+
+            var searchResults = new MockSearchResultEntry[]
+            {
+                new(
+                    "CN=7868d4c8-ac41-4e05-b401-776280e8e9f1,CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local"
+                    , null, null, Label.Base),
+                new("CN=Microsoft,CN=Program Data,DC=testlab,DC=local", null, null, Label.Base),
+                new("CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local", null, null, Label.Base),
+                new("CN=User,CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=Policies,CN=System,DC=testlab,DC=local", null,
+                    null, Label.Base),
+                //This is a real object in our mock
+                new("CN=Users,DC=testlab,DC=local", null, "ECAD920E-8EB1-4E31-A80E-DD36367F81F4", Label.Container),
+                //This object does not exist in our mock
+                new("CN=Users,DC=testlab,DC=local", null, "ECAD920E-8EB1-4E31-A80E-DD36367F81FD", Label.Container),
+                //Test null objectid
+                new("CN=Users,DC=testlab,DC=local", null, null, Label.Container),
+            };
+            
+            mock.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
+                It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
+                It.IsAny<bool>())).Returns(searchResults);
+
+            var processor = new ContainerProcessor(mock.Object);
+            var test = processor.GetContainerChildObjects(_testGpLinkString).ToArray();
+
+            var expected = new TypedPrincipal[]
+            {
+                new()
+                {
+                    ObjectIdentifier = "ECAD920E-8EB1-4E31-A80E-DD36367F81F4",
+                    ObjectType = Label.Container
+                }
+            };
+            
+            Assert.Single(test);
+            Assert.Equal(expected, test);
+        }
+
+        [Fact]
+        public void ContainerProcessor_ReadBlocksInheritance_ReturnsCorrectValues()
+        {
+            var test = ContainerProcessor.ReadBlocksInheritance(null);
+            var test2 = ContainerProcessor.ReadBlocksInheritance("3");
+            var test3 = ContainerProcessor.ReadBlocksInheritance("1");
+            
+            Assert.False(test);
+            Assert.False(test2);
+            Assert.True(test3);
         }
         
         public void Dispose()
