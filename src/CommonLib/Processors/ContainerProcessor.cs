@@ -7,7 +7,7 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ContainerProcessor
     {
-        private ILDAPUtils _utils;
+        private readonly ILDAPUtils _utils;
         public ContainerProcessor(ILDAPUtils utils)
         {
             _utils = utils;
@@ -26,8 +26,11 @@ namespace SharpHoundCommonLib.Processors
             {
                 var dn = childEntry.DistinguishedName.ToUpper();
                 
-                if (dn.Contains("CN=SYSTEM") || dn.Contains("CN=POLICIES") || dn.Contains("CN=PROGRAM DATA"))
-                    continue;
+                if (dn.Contains("CN=SYSTEM,DC="))
+                {
+                    if (dn.Contains("CN=DOMAINUPDATES") || dn.Contains("CN=POLICIES") || dn.Contains("CN=PROGRAMDATA"))
+                        continue;
+                }
 
                 var id = childEntry.GetObjectIdentifier();
                 if (id == null)

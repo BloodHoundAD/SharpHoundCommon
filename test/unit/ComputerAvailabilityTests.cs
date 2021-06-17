@@ -41,7 +41,7 @@ namespace CommonLibTest
         {
             var processor = new ComputerAvailability();
 
-            //Create a date 91 days ago 
+            //Create a date 91 days ago. Our threshold for pwdlastset is 90 days
             var n = DateTime.Now.AddDays(-91) - new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc);
             
             var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString());
@@ -55,7 +55,7 @@ namespace CommonLibTest
         {
             var processor = new ComputerAvailability(_falsePortScanner);
 
-            //Create a date 91 days ago 
+            //Create a date 5 days ago
             var n = DateTime.Now.AddDays(-5) - new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc);
             
             var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString());
@@ -69,7 +69,7 @@ namespace CommonLibTest
         {
             var processor = new ComputerAvailability(_truePortScanner);
 
-            //Create a date 91 days ago 
+            //Create a date 5 days ago 
             var n = DateTime.Now.AddDays(-5) - new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc);
             
             var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString());
