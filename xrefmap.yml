@@ -883,19 +883,6 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Extensions.PrintEntry
   nameWithType: Extensions.PrintEntry
-- uid: SharpHoundCommonLib.Extensions.ResolveBHProps(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILDAPUtils)
-  name: ResolveBHProps(SearchResultEntry, ILDAPUtils)
-  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_ResolveBHProps_System_DirectoryServices_Protocols_SearchResultEntry_SharpHoundCommonLib_ILDAPUtils_
-  commentId: M:SharpHoundCommonLib.Extensions.ResolveBHProps(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILDAPUtils)
-  fullName: SharpHoundCommonLib.Extensions.ResolveBHProps(System.DirectoryServices.Protocols.SearchResultEntry, SharpHoundCommonLib.ILDAPUtils)
-  nameWithType: Extensions.ResolveBHProps(SearchResultEntry, ILDAPUtils)
-- uid: SharpHoundCommonLib.Extensions.ResolveBHProps*
-  name: ResolveBHProps
-  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_ResolveBHProps_
-  commentId: Overload:SharpHoundCommonLib.Extensions.ResolveBHProps
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.Extensions.ResolveBHProps
-  nameWithType: Extensions.ResolveBHProps
 - uid: SharpHoundCommonLib.Helpers
   name: Helpers
   href: api/SharpHoundCommonLib.Helpers.html
@@ -1319,6 +1306,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ISearchResultEntry.IsDeleted
   nameWithType: ISearchResultEntry.IsDeleted
+- uid: SharpHoundCommonLib.ISearchResultEntry.ResolveBloodHoundInfo
+  name: ResolveBloodHoundInfo()
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_ResolveBloodHoundInfo
+  commentId: M:SharpHoundCommonLib.ISearchResultEntry.ResolveBloodHoundInfo
+  fullName: SharpHoundCommonLib.ISearchResultEntry.ResolveBloodHoundInfo()
+  nameWithType: ISearchResultEntry.ResolveBloodHoundInfo()
+- uid: SharpHoundCommonLib.ISearchResultEntry.ResolveBloodHoundInfo*
+  name: ResolveBloodHoundInfo
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_ResolveBloodHoundInfo_
+  commentId: Overload:SharpHoundCommonLib.ISearchResultEntry.ResolveBloodHoundInfo
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ISearchResultEntry.ResolveBloodHoundInfo
+  nameWithType: ISearchResultEntry.ResolveBloodHoundInfo
 - uid: SharpHoundCommonLib.LDAPConfig
   name: LDAPConfig
   href: api/SharpHoundCommonLib.LDAPConfig.html
@@ -4372,12 +4372,12 @@ references:
   commentId: T:SharpHoundCommonLib.SearchResultEntryWrapper
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper
   nameWithType: SearchResultEntryWrapper
-- uid: SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry)
-  name: SearchResultEntryWrapper(SearchResultEntry)
-  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper__ctor_System_DirectoryServices_Protocols_SearchResultEntry_
-  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry)
-  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.SearchResultEntryWrapper(System.DirectoryServices.Protocols.SearchResultEntry)
-  nameWithType: SearchResultEntryWrapper.SearchResultEntryWrapper(SearchResultEntry)
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILDAPUtils)
+  name: SearchResultEntryWrapper(SearchResultEntry, ILDAPUtils)
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper__ctor_System_DirectoryServices_Protocols_SearchResultEntry_SharpHoundCommonLib_ILDAPUtils_
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILDAPUtils)
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.SearchResultEntryWrapper(System.DirectoryServices.Protocols.SearchResultEntry, SharpHoundCommonLib.ILDAPUtils)
+  nameWithType: SearchResultEntryWrapper.SearchResultEntryWrapper(SearchResultEntry, ILDAPUtils)
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.#ctor*
   name: SearchResultEntryWrapper
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper__ctor_
@@ -4541,6 +4541,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.IsDeleted
   nameWithType: SearchResultEntryWrapper.IsDeleted
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo
+  name: ResolveBloodHoundInfo()
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_ResolveBloodHoundInfo
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo()
+  nameWithType: SearchResultEntryWrapper.ResolveBloodHoundInfo()
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo*
+  name: ResolveBloodHoundInfo
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_ResolveBloodHoundInfo_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo
+  nameWithType: SearchResultEntryWrapper.ResolveBloodHoundInfo
 - uid: SharpHoundCommonLib.WellKnownPrincipal
   name: WellKnownPrincipal
   href: api/SharpHoundCommonLib.WellKnownPrincipal.html
