@@ -11,7 +11,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         private readonly List<string> _filterParts = new();
 
         /// <summary>
-        /// Pre-filters conditions passed into filters.
+        /// Pre-filters conditions passed into filters. Will fix filters that are missing parentheses naively
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
@@ -19,12 +19,17 @@ namespace SharpHoundCommonLib.LDAPQueries
         {
             return conditions.Select(x =>
             {
-                if (x.StartsWith("(") && x.EndsWith(")"))
+                if (!x.StartsWith("("))
                 {
-                    return x;
+                    x = $"({x}";
                 }
 
-                return $"({x})";
+                if (!x.EndsWith(")"))
+                {
+                    x = $"{x})";
+                }
+
+                return x;
             }).ToArray();
         }
 
