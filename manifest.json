@@ -168,7 +168,19 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ILDAPUtils.html",
-          "hash": "QFcmos1jmCzuaa37f19bWA=="
+          "hash": "S2RbGiJesj7JkAXvvJ+WvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.ISearchResultEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.ISearchResultEntry.html",
+          "hash": "jEx3K1BjoCjOalR0rUEyVA=="
         }
       },
       "is_incremental": false,
@@ -192,7 +204,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html",
-          "hash": "aZ6Gzg4CCTttbo3ZdI3IcA=="
+          "hash": "TREVNl2kNQUHojLcA51tUQ=="
         }
       },
       "is_incremental": false,
@@ -216,7 +228,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html",
-          "hash": "YSyI3KAM6+A67KqwMDJBpg=="
+          "hash": "wsSui6KK1WDLTeViJ54UYQ=="
         }
       },
       "is_incremental": false,
@@ -240,7 +252,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPUtils.html",
-          "hash": "bY34ADxi3TadNeKbENfmOA=="
+          "hash": "NKgYOAOHKXNxN4bMok9hcw=="
         }
       },
       "is_incremental": false,
@@ -432,7 +444,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.GPLink.html",
-          "hash": "jDw3FCbZZAQu4+oxich2XQ=="
+          "hash": "Hx1Jkdht+YzT7CsS/3YF4A=="
         }
       },
       "is_incremental": false,
@@ -684,7 +696,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ContainerProcessor.html",
-          "hash": "bSGeXygprtAELYXSsvByAg=="
+          "hash": "TjNiCTIRxO+cy9DXvmfh3A=="
         }
       },
       "is_incremental": false,
@@ -836,6 +848,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.SearchResultEntryWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.SearchResultEntryWrapper.html",
+          "hash": "/kNSGKz9lO04WMMd41+oIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/SharpHoundCommonLib.WellKnownPrincipal.yml",
       "output": {
         ".html": {
@@ -852,7 +876,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.html",
-          "hash": "lVYCQg/EBCvjU5sqeyPAWg=="
+          "hash": "BUZbnctOaVwr7sFSRSTUMg=="
         }
       },
       "is_incremental": false,
@@ -876,7 +900,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "5pXDo/b8mYK5MMIIXW5HxQ=="
+          "hash": "LVYCw1ch4ToIuUO02D5O/g=="
         }
       },
       "is_incremental": false,
@@ -1362,6 +1386,17 @@
       "output": {
         "resource": {
           "relative_path": "coverage/report/SharpHoundCommonLib_SPNTarget.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_SearchResultEntryWrapper.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_SearchResultEntryWrapper.html"
         }
       },
       "is_incremental": false,
@@ -1907,7 +1942,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 70,
+          "total_file_count": 72,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
