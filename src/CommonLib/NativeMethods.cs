@@ -136,7 +136,7 @@ namespace SharpHoundCommonLib
             }
         }
 
-        internal virtual NtStatus CallSamConnect(ref UNICODE_STRING serverName, out IntPtr serverHandle,
+        public virtual NtStatus CallSamConnect(ref UNICODE_STRING serverName, out IntPtr serverHandle,
             SamAccessMasks desiredAccess, ref OBJECT_ATTRIBUTES objectAttributes)
         {
             return SamConnect(ref serverName, out serverHandle, desiredAccess, ref objectAttributes);
@@ -175,7 +175,7 @@ namespace SharpHoundCommonLib
             return SamCloseHandle(handle);
         }
 
-        internal struct OBJECT_ATTRIBUTES : IDisposable
+        public struct OBJECT_ATTRIBUTES : IDisposable
         {
             public void Dispose()
             {
@@ -194,7 +194,7 @@ namespace SharpHoundCommonLib
             public UNICODE_STRING ObjectName;
         }
 
-        internal enum NtStatus
+        public enum NtStatus
         {
             StatusSuccess = 0x0,
             StatusMoreEntries = 0x105,
@@ -208,7 +208,7 @@ namespace SharpHoundCommonLib
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct UNICODE_STRING : IDisposable
+        public struct UNICODE_STRING : IDisposable
         {
             private ushort Length;
             private ushort MaximumLength;
@@ -358,7 +358,7 @@ namespace SharpHoundCommonLib
 
         [Flags]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
-        internal enum SamAccessMasks
+        public enum SamAccessMasks
         {
             SamServerConnect = 0x1,
             SamServerShutdown = 0x2,

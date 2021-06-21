@@ -285,8 +285,8 @@ namespace SharpHoundCommonLib.Processors
     
     public class APIException : Exception
     {
-        internal string Status { get; set; }
-        internal string APICall { get; set; }
+        public string Status { get; set; }
+        public string APICall { get; set; }
             
         public override string ToString()
         {

@@ -715,7 +715,8 @@ namespace CommonLibTest.Facades
                     "S-1-5-21-3130019616-2776909439-2417379446-500", Label.User),
                 "DFM" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-1105", Label.User),
-                "TEST" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-1106", Label.User)
+                "TEST" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-1106", Label.User),
+                _ => null
             };
         }
 

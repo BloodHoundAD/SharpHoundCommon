@@ -175,6 +175,38 @@ namespace CommonLibTest
         }
 
         [WindowsOnlyFact]
+        public async Task ComputerSessionProcessor_ReadUserSessions_ComputerAccessDenied_ExceptionCaught()
+        {
+            var mockNativeMethods = new Mock<NativeMethods>();
+            //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
+            var ex = new APIException
+            {
+                Status = NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString()
+            };
+            mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Throws(ex);
+            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var test = await processor.ReadUserSessions("test", "test", "test");
+            Assert.False(test.Collected);
+            Assert.Equal(NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString(), test.FailureReason);
+        }
+        
+        [WindowsOnlyFact]
+        public async Task ComputerSessionProcessor_ReadUserSessionsPrivileged_ComputerAccessDenied_ExceptionCaught()
+        {
+            var mockNativeMethods = new Mock<NativeMethods>();
+            //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
+            var ex = new APIException
+            {
+                Status = NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString()
+            };
+            mockNativeMethods.Setup(x => x.CallNetWkstaUserEnum(It.IsAny<string>())).Throws(ex);
+            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var test = await processor.ReadUserSessionsPrivileged("test", "test", "test", "test");
+            Assert.False(test.Collected);
+            Assert.Equal(NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString(), test.FailureReason);
+        }
+
+        [WindowsOnlyFact]
         public async Task ComputerSessionProcessor_ReadUserSessionsPrivileged_FilteringWorks()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
@@ -224,6 +256,27 @@ namespace CommonLibTest
                     wkui1_logon_server = "",
                     wkui1_oth_domains = "",
                     wkui1_username = "WIN10$"
+                },
+                new()
+                {
+                    wkui1_logon_domain = "WIN10",
+                    wkui1_logon_server = "",
+                    wkui1_oth_domains = "",
+                    wkui1_username = "JOHN"
+                },
+                new()
+                {
+                    wkui1_logon_domain = "NT AUTHORITY",
+                    wkui1_logon_server = "",
+                    wkui1_oth_domains = "",
+                    wkui1_username = "SYSTEM"
+                },
+                new()
+                {
+                    wkui1_logon_domain = "TESTLAB",
+                    wkui1_logon_server = "",
+                    wkui1_oth_domains = "",
+                    wkui1_username = "ABC"
                 }
             };
             mockNativeMethods.Setup(x => x.CallNetWkstaUserEnum(It.IsAny<string>())).Returns(apiResults);
