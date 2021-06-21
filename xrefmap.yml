@@ -1371,6 +1371,32 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ISearchResultEntry.IsDeleted
   nameWithType: ISearchResultEntry.IsDeleted
+- uid: SharpHoundCommonLib.ISearchResultEntry.PropCount(System.String)
+  name: PropCount(String)
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_PropCount_System_String_
+  commentId: M:SharpHoundCommonLib.ISearchResultEntry.PropCount(System.String)
+  fullName: SharpHoundCommonLib.ISearchResultEntry.PropCount(System.String)
+  nameWithType: ISearchResultEntry.PropCount(String)
+- uid: SharpHoundCommonLib.ISearchResultEntry.PropCount*
+  name: PropCount
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_PropCount_
+  commentId: Overload:SharpHoundCommonLib.ISearchResultEntry.PropCount
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ISearchResultEntry.PropCount
+  nameWithType: ISearchResultEntry.PropCount
+- uid: SharpHoundCommonLib.ISearchResultEntry.PropertyNames
+  name: PropertyNames()
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_PropertyNames
+  commentId: M:SharpHoundCommonLib.ISearchResultEntry.PropertyNames
+  fullName: SharpHoundCommonLib.ISearchResultEntry.PropertyNames()
+  nameWithType: ISearchResultEntry.PropertyNames()
+- uid: SharpHoundCommonLib.ISearchResultEntry.PropertyNames*
+  name: PropertyNames
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_PropertyNames_
+  commentId: Overload:SharpHoundCommonLib.ISearchResultEntry.PropertyNames
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ISearchResultEntry.PropertyNames
+  nameWithType: ISearchResultEntry.PropertyNames
 - uid: SharpHoundCommonLib.ISearchResultEntry.ResolveBloodHoundInfo
   name: ResolveBloodHoundInfo()
   href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_ResolveBloodHoundInfo
@@ -4322,12 +4348,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.LDAPPropertyProcessor
   nameWithType: LDAPPropertyProcessor.LDAPPropertyProcessor
-- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  name: ReadComputerProperties(SearchResultEntry)
-  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadComputerProperties_System_DirectoryServices_Protocols_SearchResultEntry_
-  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  nameWithType: LDAPPropertyProcessor.ReadComputerProperties(SearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadComputerProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadComputerProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadComputerProperties(ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties*
   name: ReadComputerProperties
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadComputerProperties_
@@ -4335,12 +4361,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties
   nameWithType: LDAPPropertyProcessor.ReadComputerProperties
-- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  name: ReadDomainProperties(SearchResultEntry)
-  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadDomainProperties_System_DirectoryServices_Protocols_SearchResultEntry_
-  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  nameWithType: LDAPPropertyProcessor.ReadDomainProperties(SearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadDomainProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadDomainProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadDomainProperties(ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties*
   name: ReadDomainProperties
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadDomainProperties_
@@ -4348,12 +4374,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties
   nameWithType: LDAPPropertyProcessor.ReadDomainProperties
-- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  name: ReadGPOProperties(SearchResultEntry)
-  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadGPOProperties_System_DirectoryServices_Protocols_SearchResultEntry_
-  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  nameWithType: LDAPPropertyProcessor.ReadGPOProperties(SearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadGPOProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadGPOProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadGPOProperties(ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties*
   name: ReadGPOProperties
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadGPOProperties_
@@ -4361,12 +4387,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties
   nameWithType: LDAPPropertyProcessor.ReadGPOProperties
-- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  name: ReadGroupProperties(SearchResultEntry)
-  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadGroupProperties_System_DirectoryServices_Protocols_SearchResultEntry_
-  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  nameWithType: LDAPPropertyProcessor.ReadGroupProperties(SearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadGroupProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadGroupProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadGroupProperties(ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties*
   name: ReadGroupProperties
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadGroupProperties_
@@ -4374,12 +4400,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties
   nameWithType: LDAPPropertyProcessor.ReadGroupProperties
-- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  name: ReadOUProperties(SearchResultEntry)
-  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadOUProperties_System_DirectoryServices_Protocols_SearchResultEntry_
-  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  nameWithType: LDAPPropertyProcessor.ReadOUProperties(SearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadOUProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadOUProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadOUProperties(ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties*
   name: ReadOUProperties
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadOUProperties_
@@ -4387,12 +4413,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties
   nameWithType: LDAPPropertyProcessor.ReadOUProperties
-- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  name: ReadUserProperties(SearchResultEntry)
-  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadUserProperties_System_DirectoryServices_Protocols_SearchResultEntry_
-  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(System.DirectoryServices.Protocols.SearchResultEntry)
-  nameWithType: LDAPPropertyProcessor.ReadUserProperties(SearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadUserProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadUserProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadUserProperties(ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties*
   name: ReadUserProperties
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadUserProperties_
@@ -4692,19 +4718,6 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.SearchResultEntryWrapper
   nameWithType: SearchResultEntryWrapper.SearchResultEntryWrapper
-- uid: SharpHoundCommonLib.SearchResultEntryWrapper.Dispose
-  name: Dispose()
-  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_Dispose
-  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.Dispose
-  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.Dispose()
-  nameWithType: SearchResultEntryWrapper.Dispose()
-- uid: SharpHoundCommonLib.SearchResultEntryWrapper.Dispose*
-  name: Dispose
-  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_Dispose_
-  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.Dispose
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.Dispose
-  nameWithType: SearchResultEntryWrapper.Dispose
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.DistinguishedName
   name: DistinguishedName
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_DistinguishedName
@@ -4848,6 +4861,32 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.IsDeleted
   nameWithType: SearchResultEntryWrapper.IsDeleted
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.PropCount(System.String)
+  name: PropCount(String)
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_PropCount_System_String_
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.PropCount(System.String)
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.PropCount(System.String)
+  nameWithType: SearchResultEntryWrapper.PropCount(String)
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.PropCount*
+  name: PropCount
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_PropCount_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.PropCount
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.PropCount
+  nameWithType: SearchResultEntryWrapper.PropCount
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames
+  name: PropertyNames()
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_PropertyNames
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames()
+  nameWithType: SearchResultEntryWrapper.PropertyNames()
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames*
+  name: PropertyNames
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_PropertyNames_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames
+  nameWithType: SearchResultEntryWrapper.PropertyNames
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo
   name: ResolveBloodHoundInfo()
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_ResolveBloodHoundInfo
