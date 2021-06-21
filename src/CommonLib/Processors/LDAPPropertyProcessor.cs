@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices;
-using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -38,7 +37,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadDomainProperties(SearchResultEntry entry)
+        public static Dictionary<string, object> ReadDomainProperties(ISearchResultEntry entry)
         {
             var props = new Dictionary<string, object> {{"description", entry.GetProperty("description")}};
 
@@ -70,7 +69,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadGPOProperties(SearchResultEntry entry)
+        public static Dictionary<string, object> ReadGPOProperties(ISearchResultEntry entry)
         {
             var props = new Dictionary<string, object>
             {
@@ -85,7 +84,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadOUProperties(SearchResultEntry entry)
+        public static Dictionary<string, object> ReadOUProperties(ISearchResultEntry entry)
         {
             var props = new Dictionary<string, object>
             {
@@ -99,7 +98,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadGroupProperties(SearchResultEntry entry)
+        public static Dictionary<string, object> ReadGroupProperties(ISearchResultEntry entry)
         {
             var props = new Dictionary<string, object>
             {
@@ -124,7 +123,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public async Task<UserProperties> ReadUserProperties(SearchResultEntry entry)
+        public async Task<UserProperties> ReadUserProperties(ISearchResultEntry entry)
         {
             var userProps = new UserProperties();
             var props = new Dictionary<string, object>
@@ -167,7 +166,7 @@ namespace SharpHoundCommonLib.Processors
             var comps = new List<TypedPrincipal>();
             if (trustedToAuth)
             {
-                var delegates = entry.GetPropertyAsArray("msds-allowedToDelegateTo");
+                var delegates = entry.GetArrayProperty("msds-allowedToDelegateTo");
                 props.Add("allowedtodelegate", delegates);
 
                 foreach (var d in delegates)
@@ -191,7 +190,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogon")));
             props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
             props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("pwdlastset")));
-            var spn = entry.GetPropertyAsArray("serviceprincipalname");
+            var spn = entry.GetArrayProperty("serviceprincipalname");
             props.Add("serviceprincipalnames", spn);
             props.Add("hasspn", spn.Length > 0);
             props.Add("displayname", entry.GetProperty("displayname"));
@@ -211,7 +210,7 @@ namespace SharpHoundCommonLib.Processors
                 props.Add("admincount", false);
             }
             
-            var sh = entry.GetPropertyAsArrayOfBytes("sidhistory");
+            var sh = entry.GetByteArrayProperty("sidhistory");
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();
             foreach (var sid in sh)
@@ -247,7 +246,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public async Task<ComputerProperties> ReadComputerProperties(SearchResultEntry entry)
+        public async Task<ComputerProperties> ReadComputerProperties(ISearchResultEntry entry)
         {
             var compProps = new ComputerProperties();
             var props = new Dictionary<string, object>();
@@ -273,7 +272,7 @@ namespace SharpHoundCommonLib.Processors
             var comps = new List<TypedPrincipal>();
             if (trustedToAuth)
             {
-                var delegates = entry.GetPropertyAsArray("msds-allowedToDelegateTo");
+                var delegates = entry.GetArrayProperty("msds-allowedToDelegateTo");
                 props.Add("allowedtodelegate", delegates);
 
                 foreach (var d in delegates)
@@ -295,7 +294,7 @@ namespace SharpHoundCommonLib.Processors
             compProps.AllowedToDelegate = comps.ToArray();
 
             var allowedToActPrincipals = new List<TypedPrincipal>();
-            var rawAllowedToAct = entry.GetPropertyAsBytes("msDS-AllowedToActOnBehalfOfOtherIdentity");
+            var rawAllowedToAct = entry.GetByteProperty("msDS-AllowedToActOnBehalfOfOtherIdentity");
             if (rawAllowedToAct != null)
             {
                 var sd = new ActiveDirectorySecurity();
@@ -314,7 +313,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogon")));
             props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
             props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("pwdlastset")));
-            props.Add("serviceprincipalnames", entry.GetPropertyAsArray("serviceprincipalname"));
+            props.Add("serviceprincipalnames", entry.GetArrayProperty("serviceprincipalname"));
             var os = entry.GetProperty("operatingsystem");
             var sp = entry.GetProperty("operatingsystemservicepack");
 
@@ -326,7 +325,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add("operatingsystem", os);
             props.Add("description", entry.GetProperty("description"));
             
-            var sh = entry.GetPropertyAsArrayOfBytes("sidhistory");
+            var sh = entry.GetByteArrayProperty("sidhistory");
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();
             foreach (var sid in sh)
@@ -361,52 +360,50 @@ namespace SharpHoundCommonLib.Processors
         /// Attempts to parse all LDAP attributes outside of the ones already collected and converts them to a human readable format using a best guess
         /// </summary>
         /// <param name="entry"></param>
-        private static Dictionary<string, object> ParseAllProperties(SearchResultEntry entry)
+        private static Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
         {
             var flag = IsTextUnicodeFlags.IS_TEXT_UNICODE_STATISTICS;
             var props = new Dictionary<string, object>();
 
-            foreach (var property in entry.Attributes.AttributeNames)
+            foreach (var property in entry.PropertyNames())
             {
-                var propName = property.ToString().ToLower();
-                if (ReservedAttributes.Contains(propName))
+                if (ReservedAttributes.Contains(property))
                     continue;
 
-                var collection = entry.Attributes[propName];
-                if (collection.Count == 0)
+                var collCount = entry.PropCount(property);
+                if (collCount == 0)
                     continue;
                 
-                if (collection.Count == 1)
+                if (collCount == 1)
                 {
-                    var testBytes = entry.GetPropertyAsBytes(propName);
+                    var testBytes = entry.GetByteProperty(property);
                     
                     if (testBytes == null || testBytes.Length == 0 || !IsTextUnicode(testBytes, testBytes.Length, ref flag))
                     {
                         continue;
                     }
 
-                    var testString = entry.GetProperty(propName);
+                    var testString = entry.GetProperty(property);
 
                     if (!string.IsNullOrEmpty(testString))
-                        if (propName == "badpasswordtime")
+                        if (property == "badpasswordtime")
                         {
-                            props.Add(propName, Helpers.ConvertFileTimeToUnixEpoch(testString));
+                            props.Add(property, Helpers.ConvertFileTimeToUnixEpoch(testString));
                         }
                         else
                         {
-                            props.Add(propName, BestGuessConvert(testString));
+                            props.Add(property, BestGuessConvert(testString));
                         }
                         
-                }else
-                {
-                    var arrBytes = entry.GetPropertyAsArrayOfBytes(propName);
+                }else{
+                    var arrBytes = entry.GetByteArrayProperty(property);
                     if (arrBytes.Length == 0 || !IsTextUnicode(arrBytes[0], arrBytes[0].Length, ref flag))
                         continue;
 
-                    var arr = entry.GetPropertyAsArray(propName);
+                    var arr = entry.GetArrayProperty(property);
                     if (arr.Length > 0)
                     {
-                        props.Add(propName, arr.Select(BestGuessConvert).ToArray());
+                        props.Add(property, arr.Select(BestGuessConvert).ToArray());
                     }
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Security.Principal;
@@ -7,7 +8,7 @@ using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
 {
-    public interface ISearchResultEntry : IDisposable
+    public interface ISearchResultEntry
     {
         string DistinguishedName { get; }
         Task<ResolvedSearchResult> ResolveBloodHoundInfo();
@@ -20,6 +21,8 @@ namespace SharpHoundCommonLib
         Label GetLabel();
         string GetSid();
         string GetGuid();
+        int PropCount(string prop);
+        IEnumerable<string> PropertyNames();
     }
 
     public class SearchResultEntryWrapper : ISearchResultEntry
@@ -34,10 +37,6 @@ namespace SharpHoundCommonLib
         }
 
         public string DistinguishedName => _entry.DistinguishedName;
-
-        public void Dispose()
-        {
-        }
 
         public async Task<ResolvedSearchResult> ResolveBloodHoundInfo()
         {
@@ -197,6 +196,20 @@ namespace SharpHoundCommonLib
         public string GetGuid()
         {
             return _entry.GetGuid();
+        }
+
+        public int PropCount(string prop)
+        {
+            var coll = _entry.Attributes[prop];
+            return coll.Count;
+        }
+
+        public IEnumerable<string> PropertyNames()
+        {
+            foreach (var property in _entry.Attributes.AttributeNames)
+            {
+                yield return property.ToString().ToLower();
+            }
         }
 
         public SearchResultEntry GetEntry()

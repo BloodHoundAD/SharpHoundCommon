@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
@@ -10,11 +11,6 @@ namespace CommonLibTest.Facades
         private readonly IDictionary _properties;
         private readonly string _objectId;
         private readonly Label _objectType;
-        
-        public void Dispose()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public MockSearchResultEntry(string distinguishedName, IDictionary properties, string objectId, Label objectType)
         {
@@ -74,6 +70,16 @@ namespace CommonLibTest.Facades
         public string GetGuid()
         {
             return _objectId;
+        }
+
+        public int PropCount(string prop)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<string> PropertyNames()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
