@@ -889,6 +889,19 @@ references:
   commentId: T:SharpHoundCommonLib.Helpers
   fullName: SharpHoundCommonLib.Helpers
   nameWithType: Helpers
+- uid: SharpHoundCommonLib.Helpers.Base64(System.String)
+  name: Base64(String)
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_Base64_System_String_
+  commentId: M:SharpHoundCommonLib.Helpers.Base64(System.String)
+  fullName: SharpHoundCommonLib.Helpers.Base64(System.String)
+  nameWithType: Helpers.Base64(String)
+- uid: SharpHoundCommonLib.Helpers.Base64*
+  name: Base64
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_Base64_
+  commentId: Overload:SharpHoundCommonLib.Helpers.Base64
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Helpers.Base64
+  nameWithType: Helpers.Base64
 - uid: SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(System.String)
   name: ConvertFileTimeToUnixEpoch(String)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertFileTimeToUnixEpoch_System_String_
@@ -902,6 +915,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch
   nameWithType: Helpers.ConvertFileTimeToUnixEpoch
+- uid: SharpHoundCommonLib.Helpers.ConvertGuidToHexGuid(System.String)
+  name: ConvertGuidToHexGuid(String)
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertGuidToHexGuid_System_String_
+  commentId: M:SharpHoundCommonLib.Helpers.ConvertGuidToHexGuid(System.String)
+  fullName: SharpHoundCommonLib.Helpers.ConvertGuidToHexGuid(System.String)
+  nameWithType: Helpers.ConvertGuidToHexGuid(String)
+- uid: SharpHoundCommonLib.Helpers.ConvertGuidToHexGuid*
+  name: ConvertGuidToHexGuid
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertGuidToHexGuid_
+  commentId: Overload:SharpHoundCommonLib.Helpers.ConvertGuidToHexGuid
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Helpers.ConvertGuidToHexGuid
+  nameWithType: Helpers.ConvertGuidToHexGuid
 - uid: SharpHoundCommonLib.Helpers.ConvertLdapTimeToLong(System.String)
   name: ConvertLdapTimeToLong(String)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertLdapTimeToLong_System_String_
@@ -915,6 +941,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Helpers.ConvertLdapTimeToLong
   nameWithType: Helpers.ConvertLdapTimeToLong
+- uid: SharpHoundCommonLib.Helpers.ConvertSidToHexSid(System.String)
+  name: ConvertSidToHexSid(String)
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertSidToHexSid_System_String_
+  commentId: M:SharpHoundCommonLib.Helpers.ConvertSidToHexSid(System.String)
+  fullName: SharpHoundCommonLib.Helpers.ConvertSidToHexSid(System.String)
+  nameWithType: Helpers.ConvertSidToHexSid(String)
+- uid: SharpHoundCommonLib.Helpers.ConvertSidToHexSid*
+  name: ConvertSidToHexSid
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertSidToHexSid_
+  commentId: Overload:SharpHoundCommonLib.Helpers.ConvertSidToHexSid
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Helpers.ConvertSidToHexSid
+  nameWithType: Helpers.ConvertSidToHexSid
 - uid: SharpHoundCommonLib.Helpers.ConvertTimestampToUnixEpoch(System.String)
   name: ConvertTimestampToUnixEpoch(String)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_ConvertTimestampToUnixEpoch_System_String_
@@ -941,6 +980,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Helpers.DistinguishedNameToDomain
   nameWithType: Helpers.DistinguishedNameToDomain
+- uid: SharpHoundCommonLib.Helpers.SamAccountTypeToType(System.String)
+  name: SamAccountTypeToType(String)
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_SamAccountTypeToType_System_String_
+  commentId: M:SharpHoundCommonLib.Helpers.SamAccountTypeToType(System.String)
+  fullName: SharpHoundCommonLib.Helpers.SamAccountTypeToType(System.String)
+  nameWithType: Helpers.SamAccountTypeToType(String)
+- uid: SharpHoundCommonLib.Helpers.SamAccountTypeToType*
+  name: SamAccountTypeToType
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_SamAccountTypeToType_
+  commentId: Overload:SharpHoundCommonLib.Helpers.SamAccountTypeToType
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Helpers.SamAccountTypeToType
+  nameWithType: Helpers.SamAccountTypeToType
 - uid: SharpHoundCommonLib.Helpers.SplitGPLinkProperty(System.String,System.Boolean)
   name: SplitGPLinkProperty(String, Boolean)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_SplitGPLinkProperty_System_String_System_Boolean_
@@ -954,6 +1006,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Helpers.SplitGPLinkProperty
   nameWithType: Helpers.SplitGPLinkProperty
+- uid: SharpHoundCommonLib.Helpers.StripServicePrincipalName(System.String)
+  name: StripServicePrincipalName(String)
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_StripServicePrincipalName_System_String_
+  commentId: M:SharpHoundCommonLib.Helpers.StripServicePrincipalName(System.String)
+  fullName: SharpHoundCommonLib.Helpers.StripServicePrincipalName(System.String)
+  nameWithType: Helpers.StripServicePrincipalName(String)
+- uid: SharpHoundCommonLib.Helpers.StripServicePrincipalName*
+  name: StripServicePrincipalName
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_StripServicePrincipalName_
+  commentId: Overload:SharpHoundCommonLib.Helpers.StripServicePrincipalName
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Helpers.StripServicePrincipalName
+  nameWithType: Helpers.StripServicePrincipalName
 - uid: SharpHoundCommonLib.ILDAPUtils
   name: ILDAPUtils
   href: api/SharpHoundCommonLib.ILDAPUtils.html
