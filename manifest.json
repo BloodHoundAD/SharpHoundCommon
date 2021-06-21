@@ -308,11 +308,59 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.NtStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.NtStatus.html",
+          "hash": "s/OlmedIzO1mpeLiTuHQHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.OBJECT_ATTRIBUTES.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.OBJECT_ATTRIBUTES.html",
+          "hash": "3YDyLVfU3TATcPFYLKHfdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.SESSION_INFO_10.yml",
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.SESSION_INFO_10.html",
           "hash": "Z5uzBkNKnq45pBzCePEy2g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.SamAccessMasks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.SamAccessMasks.html",
+          "hash": "qcLwys4mNYawTSwLQ5kQrg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.NativeMethods.UNICODE_STRING.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.NativeMethods.UNICODE_STRING.html",
+          "hash": "6TpVXrYGW/78ksbiFTdJwQ=="
         }
       },
       "is_incremental": false,
@@ -348,7 +396,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.html",
-          "hash": "acTwGNnHdTFVNgCbIKlvdg=="
+          "hash": "0xyd53T1BDaB4HBFd+QChw=="
         }
       },
       "is_incremental": false,
@@ -876,7 +924,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.html",
-          "hash": "BUZbnctOaVwr7sFSRSTUMg=="
+          "hash": "xCbRR4E7xi4h5AlXUh2ZXg=="
         }
       },
       "is_incremental": false,
@@ -900,7 +948,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "LVYCw1ch4ToIuUO02D5O/g=="
+          "hash": "6aNWFXoCHlkjE1FwIug7AQ=="
         }
       },
       "is_incremental": false,
@@ -1942,7 +1990,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 72,
+          "total_file_count": 76,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
