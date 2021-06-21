@@ -71,12 +71,13 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void ContainerProcessor_GetContainerChildObjects_FiltersUnnecessaryObjects()
+        public void ContainerProcessor_GetContainerChildObjects_ReturnsCorrectData()
         {
             var mock = new Mock<MockLDAPUtils>();
 
             var searchResults = new MockSearchResultEntry[]
             {
+                //These first 4 should be filtered by our DN filters
                 new(
                     "CN=7868d4c8-ac41-4e05-b401-776280e8e9f1,CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local"
                     , null, null, Label.Base),
