@@ -4348,6 +4348,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.LDAPPropertyProcessor
   nameWithType: LDAPPropertyProcessor.LDAPPropertyProcessor
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.FunctionalLevelToString(System.Int32)
+  name: FunctionalLevelToString(Int32)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_FunctionalLevelToString_System_Int32_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.FunctionalLevelToString(System.Int32)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.FunctionalLevelToString(System.Int32)
+  nameWithType: LDAPPropertyProcessor.FunctionalLevelToString(Int32)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.FunctionalLevelToString*
+  name: FunctionalLevelToString
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_FunctionalLevelToString_
+  commentId: Overload:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.FunctionalLevelToString
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.FunctionalLevelToString
+  nameWithType: LDAPPropertyProcessor.FunctionalLevelToString
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(SharpHoundCommonLib.ISearchResultEntry)
   name: ReadComputerProperties(ISearchResultEntry)
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadComputerProperties_SharpHoundCommonLib_ISearchResultEntry_
