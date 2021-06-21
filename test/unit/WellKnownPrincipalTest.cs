@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using Xunit;
@@ -83,11 +82,10 @@ namespace CommonLibTest
         /// List of known principals for testing. The number and composition should not differ between this list and the runtime literals in the common lib. Change the code without updating the tests is a fail condition.
         /// </summary>
         /// <returns>True if SID matches a well known principal, false otherwise</returns>
-        public static (string sid, string name, Label label)[] GetWellKnownPrincipals()
+        private static (string sid, string name, Label label)[] GetWellKnownPrincipals()
         {
-            return new (string sid, string name, Label label)[64]
+            return new (string sid, string name, Label label)[]
             {
-
                 ("S-1-0","Null Authority", Label.User),
                 ("S-1-0-0","Nobody", Label.User),
                 ("S-1-1","World Authority", Label.User),
