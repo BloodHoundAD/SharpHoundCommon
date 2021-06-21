@@ -1,14 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net.Sockets;
-using System.Security.Principal;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
-using SharpHoundCommonLib;
 using Xunit;
 
 namespace CommonLibTest
@@ -23,7 +15,7 @@ namespace CommonLibTest
             //TODO: Ari, proper test string?
             var testGPLinkProperty = "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123; SIP:foouser@example.co.uk; smtp:foouser@sub1.example.co.uk; smtp:foouser@sub2.example.co.uk; SMTP:foouser@example.co.uk][]";
 
-            IEnumerable<ParsedGPLink> res = SharpHoundCommonLib.Helpers.SplitGPLinkProperty(testGPLinkProperty, isPropFilterEnabled);
+            var res = SharpHoundCommonLib.Helpers.SplitGPLinkProperty(testGPLinkProperty, isPropFilterEnabled);
 
             foreach(var parsedGPLink in res) 
             {
@@ -39,7 +31,7 @@ namespace CommonLibTest
             //TODO: Ari, proper test string?
             var testGPLinkProperty = "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123; SIP:foouser@example.co.uk; smtp:foouser@sub1.example.co.uk; smtp:foouser@sub2.example.co.uk; SMTP:foouser@example.co.uk][]";
 
-            IEnumerable<ParsedGPLink> res = SharpHoundCommonLib.Helpers.SplitGPLinkProperty(testGPLinkProperty, isPropFilterEnabled);
+            var res = SharpHoundCommonLib.Helpers.SplitGPLinkProperty(testGPLinkProperty, isPropFilterEnabled);
 
             foreach(var parsedGPLink in res) 
             {
@@ -56,7 +48,7 @@ namespace CommonLibTest
             //TODO: Ari, proper test string?
             var testGPLinkProperty = "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123; DC=somedomainName; SIP:foouser@example.co.uk; smtp:foouser@sub1.example.co.uk; smtp:foouser@sub2.example.co.uk; SMTP:foouser@example.co.uk][]";
 
-            IEnumerable<ParsedGPLink> res = SharpHoundCommonLib.Helpers.SplitGPLinkProperty(testGPLinkProperty, isPropFilterEnabled);
+            var res = SharpHoundCommonLib.Helpers.SplitGPLinkProperty(testGPLinkProperty, isPropFilterEnabled);
 
             foreach(var parsedGPLink in res) 
             {
@@ -70,7 +62,7 @@ namespace CommonLibTest
             var isPropFilterEnabled = false;
             //TODO: Ari, proper test string?
             var testGPLinkProperty = "/*obviously wrong data*/";
-            IEnumerable<ParsedGPLink> res = SharpHoundCommonLib.Helpers.SplitGPLinkProperty(testGPLinkProperty, isPropFilterEnabled);
+            var res = SharpHoundCommonLib.Helpers.SplitGPLinkProperty(testGPLinkProperty, isPropFilterEnabled);
             Assert.Empty(res);
         }
         
@@ -95,7 +87,7 @@ namespace CommonLibTest
         public void SamAccountTypeToType_InValidString_CorrectLabel()
         {
             var result = SharpHoundCommonLib.Helpers.SamAccountTypeToType("nonsense_^&^^&(*^*^*&(&^&(^*AAAA");
-            Assert.Equal(result, Label.Base);
+            Assert.Equal(Label.Base, result);
         }
 
         // [Fact]
@@ -171,15 +163,16 @@ namespace CommonLibTest
         [Fact]
         public void ConvertFileTimeToUnixEpoch_ValidFileTime_ValidUnixEpoch()
         {
-            string testFileTime = "132260149842749745";
-            long result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(testFileTime);
-
+            var testFileTime = "132260149842749745";
+            var result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(testFileTime);
+            var expected = 1581541384;
+            Assert.Equal(expected, result);
         }
 
         [Fact]
         public void ConvertFileTimeToUnixEpoch_Null_NegativeOne()
         {
-            long result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(null);
+            var result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(null);
             Assert.Equal(-1, result);
         }
 
@@ -193,17 +186,17 @@ namespace CommonLibTest
         [Fact]
         public void ConvertFileTimeToUnixEpoch_BadInput_CastExceptionReturnsNegativeOne()
         {
-            long result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch("-3242432");
+            var result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch("-3242432");
             Assert.Equal(-1, result);
         }
 
         [Fact]
         public void ConvertTimestampToUnixEpoch_ValidTimestamp_ValidUnixEpoch()
         {
-            DateTime d = DateTime.Parse("2021-06-21T00:00:00");
-            long result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(d.ToFileTimeUtc().ToString()); // get the epoch
-            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(result); // create an offset from the epoch
-            DateTime testDate = dateTimeOffset.UtcDateTime;
+            var d = DateTime.Parse("2021-06-21T00:00:00");
+            var result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch(d.ToFileTimeUtc().ToString()); // get the epoch
+            var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(result); // create an offset from the epoch
+            var testDate = dateTimeOffset.UtcDateTime;
 
             Assert.Equal(d.ToUniversalTime().Date, testDate);
         }   
