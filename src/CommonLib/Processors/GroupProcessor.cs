@@ -62,7 +62,8 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Reads the primary group info from a user or computer object and massages it into the proper format.
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="primaryGroupId"></param>
+        /// <param name="objectId"></param>
         /// <returns></returns>
         public static string GetPrimaryGroupInfo(string primaryGroupId, string objectId)
         {

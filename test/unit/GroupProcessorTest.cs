@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CommonLibTest.Facades;
+using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
@@ -18,7 +20,8 @@ namespace CommonLibTest
         private readonly string[] _testMembership = {
             "CN=Domain Admins,CN=Users,DC=testlab,DC=local",
             "CN=Enterprise Admins,CN=Users,DC=testlab,DC=local",
-            "CN=Administrator,CN=Users,DC=testlab,DC=local"
+            "CN=Administrator,CN=Users,DC=testlab,DC=local",
+            "CN=NonExistent,CN=Users,DC=testlab,DC=local"
         };
         
         public GroupProcessorTest(ITestOutputHelper testOutputHelper)
@@ -48,9 +51,48 @@ namespace CommonLibTest
             var result = GroupProcessor.GetPrimaryGroupInfo("513", "ABC123");
             Assert.Null(result);
         }
+        
+        [Fact]
+        public void GroupProcessor_ReadGroupMembers_EmptyMembers_DoesRangedRetrieval()
+        {
+            var mockUtils = new Mock<MockLDAPUtils>();
+            var expected = new TypedPrincipal[]
+            {
+                new()
+                {
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-512",
+                    ObjectType = Label.Group
+                },
+                new()
+                {
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-519",
+                    ObjectType = Label.Group
+                },
+                new()
+                {
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-500",
+                    ObjectType = Label.User
+                },
+                new()
+                {
+                    ObjectIdentifier = "CN=NonExistent,CN=Users,DC=testlab,DC=local",
+                    ObjectType = Label.Base
+                }
+            };
+            mockUtils.Setup(x => x.DoRangedRetrieval(It.IsAny<string>(), It.IsAny<string>())).Returns(_testMembership);
+            var processor = new GroupProcessor(mockUtils.Object);
+            
+            var results = processor.ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", Array.Empty<string>()).ToArray();
+            foreach (var t in results)
+            {
+                _testOutputHelper.WriteLine(t.ToString());
+            }
+            Assert.Equal(4, results.Length);
+            Assert.Equal(expected, results);
+        }
 
         [WindowsOnlyFact]
-        public void GroupProcessor_GetGroupInformation_ReturnsCorrectMembers()
+        public void GroupProcessor_ReadGroupMembers_ReturnsCorrectMembers()
         {
             var utils = new MockLDAPUtils();
             var processor = new GroupProcessor(utils);
@@ -70,6 +112,11 @@ namespace CommonLibTest
                 {
                     ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-500",
                     ObjectType = Label.User
+                },
+                new()
+                {
+                    ObjectIdentifier = "CN=NonExistent,CN=Users,DC=testlab,DC=local",
+                    ObjectType = Label.Base
                 }
             };
             
@@ -78,7 +125,7 @@ namespace CommonLibTest
             {
                 _testOutputHelper.WriteLine(t.ToString());
             }
-            Assert.Equal(3, results.Length);
+            Assert.Equal(4, results.Length);
             Assert.Equal(expected, results);
         }
     }

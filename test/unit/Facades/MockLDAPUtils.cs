@@ -693,7 +693,7 @@ namespace CommonLibTest.Facades
             return true;
         }
 
-        public IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
+        public virtual IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
         {
             throw new System.NotImplementedException();
         }
