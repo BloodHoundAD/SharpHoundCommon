@@ -45,7 +45,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="samAccountType"></param>
         /// <returns><c>Label</c> value representing type</returns>
-        internal static Label SamAccountTypeToType(string samAccountType)
+        public static Label SamAccountTypeToType(string samAccountType)
         {
             if (Groups.Contains(samAccountType))
                 return Label.Group;
@@ -64,7 +64,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="sid">String security identifier to convert</param>
         /// <returns>String representation to use in LDAP filters</returns>
-        internal static string ConvertSidToHexSid(string sid)
+        public static string ConvertSidToHexSid(string sid)
         {
             var securityIdentifier = new SecurityIdentifier(sid);
             var sidBytes = new byte[securityIdentifier.BinaryLength];
@@ -79,7 +79,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        internal static string ConvertGuidToHexGuid(string guid)
+        public static string ConvertGuidToHexGuid(string guid)
         {
             var guidObj = new Guid(guid);
             var guidBytes = guidObj.ToByteArray();
@@ -105,7 +105,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="target">Raw service principal name</param>
         /// <returns>Stripped service principal name with (hopefully) just the hostname</returns>
-        internal static string StripServicePrincipalName(string target)
+        public static string StripServicePrincipalName(string target)
         {
             return SPNRegex.IsMatch(target) ? target.Split('/')[1].Split(':')[0] : target;
         }
@@ -115,7 +115,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        internal static string Base64(string input)
+        public static string Base64(string input)
         {
             var plainBytes = Encoding.UTF8.GetBytes(input);
             return Convert.ToBase64String(plainBytes);
