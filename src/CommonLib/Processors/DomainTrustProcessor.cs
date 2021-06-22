@@ -28,6 +28,7 @@ namespace SharpHoundCommonLib.Processors
                 var targetSidBytes = result.GetByteProperty("securityIdentifier");
                 if (targetSidBytes == null || targetSidBytes.Length == 0)
                     continue;
+                
                 string sid;
                 try
                 {
@@ -66,31 +67,35 @@ namespace SharpHoundCommonLib.Processors
                     trust.TargetDomainName = name;
 
                 trust.SidFilteringEnabled = (attributes & TrustAttributes.FilterSids) != 0;
-
-                TrustType trustType;
-                
-                if ((attributes & TrustAttributes.WithinForest) != 0)
-                {
-                    trustType = TrustType.ParentChild;
-                }
-                else if ((attributes & TrustAttributes.ForestTransitive) != 0)
-                {
-                    trustType = TrustType.Forest;
-                }
-                else if ((attributes & TrustAttributes.TreatAsExternal) != 0 ||
-                         (attributes & TrustAttributes.CrossOrganization) != 0)
-                {
-                    trustType = TrustType.External;
-                }
-                else
-                {
-                    trustType = TrustType.Unknown;
-                }
-
-                trust.TrustType = trustType;
+                trust.TrustType = TrustAttributesToType(attributes);
 
                 yield return trust;
             }
+        }
+
+        public static TrustType TrustAttributesToType(TrustAttributes attributes)
+        {
+            TrustType trustType;
+                
+            if ((attributes & TrustAttributes.WithinForest) != 0)
+            {
+                trustType = TrustType.ParentChild;
+            }
+            else if ((attributes & TrustAttributes.ForestTransitive) != 0)
+            {
+                trustType = TrustType.Forest;
+            }
+            else if ((attributes & TrustAttributes.TreatAsExternal) != 0 ||
+                     (attributes & TrustAttributes.CrossOrganization) != 0)
+            {
+                trustType = TrustType.External;
+            }
+            else
+            {
+                trustType = TrustType.Unknown;
+            }
+
+            return trustType;
         }
     }
 }
