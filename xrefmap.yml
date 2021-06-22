@@ -4225,6 +4225,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.DomainTrustProcessor.EnumerateDomainTrusts
   nameWithType: DomainTrustProcessor.EnumerateDomainTrusts
+- uid: SharpHoundCommonLib.Processors.DomainTrustProcessor.TrustAttributesToType(SharpHoundCommonLib.Enums.TrustAttributes)
+  name: TrustAttributesToType(TrustAttributes)
+  href: api/SharpHoundCommonLib.Processors.DomainTrustProcessor.html#SharpHoundCommonLib_Processors_DomainTrustProcessor_TrustAttributesToType_SharpHoundCommonLib_Enums_TrustAttributes_
+  commentId: M:SharpHoundCommonLib.Processors.DomainTrustProcessor.TrustAttributesToType(SharpHoundCommonLib.Enums.TrustAttributes)
+  fullName: SharpHoundCommonLib.Processors.DomainTrustProcessor.TrustAttributesToType(SharpHoundCommonLib.Enums.TrustAttributes)
+  nameWithType: DomainTrustProcessor.TrustAttributesToType(TrustAttributes)
+- uid: SharpHoundCommonLib.Processors.DomainTrustProcessor.TrustAttributesToType*
+  name: TrustAttributesToType
+  href: api/SharpHoundCommonLib.Processors.DomainTrustProcessor.html#SharpHoundCommonLib_Processors_DomainTrustProcessor_TrustAttributesToType_
+  commentId: Overload:SharpHoundCommonLib.Processors.DomainTrustProcessor.TrustAttributesToType
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.DomainTrustProcessor.TrustAttributesToType
+  nameWithType: DomainTrustProcessor.TrustAttributesToType
 - uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor
   name: GPOLocalGroupProcessor
   href: api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html
