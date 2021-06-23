@@ -6,6 +6,7 @@ using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib
 {
+    [ExcludeFromCodeCoverage]
     public class NativeMethods
     {
         private const string NetWkstaUserEnumQueryName = "NetWkstaUserEnum";

@@ -1,20 +1,20 @@
 ﻿namespace SharpHoundCommonLib
 {
-    public class EdgeNames
+    public static class EdgeNames
     {
-        public static string ReadGMSAPassword => "ReadGMSAPassword";
-        public static string GenericWrite => "GenericWrite";
-        public static string Owns => "Owns";
-        public static string GenericAll => "GenericAll";
-        public static string WriteDacl => "WriteDacl";
-        public static string WriteOwner => "WriteOwner";
-        public static string AddSelf => "AddSelf";
-        public static string GetChanges => "GetChanges";
-        public static string GetChangesAll => "GetChangesAll";
-        public static string AllExtendedRights => "AllExtendedRights";
-        public static string ForceChangePassword => "ForceChangePassword";
-        public static string AddAllowedToAct => "AddAllowedToAct";
-        public static string ReadLAPSPassword => "ReadLAPSPassword";
-        public static string AddMember => "AddMember";
+        public const string ReadGMSAPassword = "ReadGMSAPassword";
+        public const string GenericWrite = "GenericWrite";
+        public const string Owns = "Owns";
+        public const string GenericAll = "GenericAll";
+        public const string WriteDacl = "WriteDacl";
+        public const string WriteOwner = "WriteOwner";
+        public const string AddSelf = "AddSelf";
+        public const string GetChanges = "GetChanges";
+        public const string GetChangesAll = "GetChangesAll";
+        public const string AllExtendedRights = "AllExtendedRights";
+        public const string ForceChangePassword = "ForceChangePassword";
+        public const string AddAllowedToAct = "AddAllowedToAct";
+        public const string ReadLAPSPassword = "ReadLAPSPassword";
+        public const string AddMember = "AddMember";
     }
 }
