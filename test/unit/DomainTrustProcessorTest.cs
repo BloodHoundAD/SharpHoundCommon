@@ -19,7 +19,7 @@ namespace CommonLibTest
             _testOutputHelper = testOutputHelper;
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void DomainTrustProcessor_EnumerateDomainTrusts_HappyPath()
         {
             var mockUtils = new Mock<MockLDAPUtils>();

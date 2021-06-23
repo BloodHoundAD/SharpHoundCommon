@@ -238,7 +238,7 @@ namespace CommonLibTest
             Assert.False((bool)props["admincount"]);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public async Task LDAPPropertyProcessor_ReadUserProperties_HappyPath()
         {
             var mock = new MockSearchResultEntry("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
@@ -361,7 +361,7 @@ namespace CommonLibTest
             Assert.True((bool)props["enabled"]);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public async Task LDAPPropertyProcessor_ReadComputerProperties_HappyPath()
         {
             //TODO: Add coverage for allowedtoact

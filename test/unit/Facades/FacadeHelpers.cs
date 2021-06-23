@@ -16,7 +16,10 @@ namespace CommonLibTest.Facades
         internal static void SetProperty<T1, T2>(T1 obj, string propertyName, T2 propertyValue)
         {
             var set = typeof(T1).GetField(propertyName, nonPublicInstance);
-            set.SetValue(obj, propertyValue);
+            if (set != null)
+            {
+                set.SetValue(obj, propertyValue);
+            }
         }
     }
 }
