@@ -1,7 +1,7 @@
 # SharpHoundCommon
 Common library used by SharpHound. 
 
-![Build](https://img.shields.io/github/workflow/status/BloodHoundAD/SharpHoundCommon/.NET)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/BloodHoundAD/SharpHoundCommon/Build)
 [![Version](https://img.shields.io/nuget/v/SharpHoundCommon?label=version&logo=nuget)](https://www.nuget.org/packages/SharpHoundCommon)
 ![Downloads](https://img.shields.io/nuget/dt/SharpHoundCommon)
 [![Coverage](https://bloodhoundad.github.io/SharpHoundCommon/coverage/report/badge_combined.svg)](https://bloodhoundad.github.io/SharpHoundCommon/coverage/report/index.html)
