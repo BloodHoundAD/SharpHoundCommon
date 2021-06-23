@@ -74,15 +74,15 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>
         /// <returns></returns>
-        public static bool IsACLProtected(byte[] ntSecurityDescriptor)
+        public bool IsACLProtected(byte[] ntSecurityDescriptor)
         {
             if (ntSecurityDescriptor == null)
                 return false;
             
-            var descriptor = new ActiveDirectorySecurity();
+            var descriptor = _utils.MakeSecurityDescriptor();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
 
-            return descriptor.AreAccessRulesProtected;
+            return descriptor.AreAccessRulesProtected();
         }
 
         /// <summary>
@@ -101,10 +101,10 @@ namespace SharpHoundCommonLib.Processors
                 yield break;
             }
 
-            var descriptor = new ActiveDirectorySecurity();
+            var descriptor = _utils.MakeSecurityDescriptor();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
 
-            var ownerSid = PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)).Value);
+            var ownerSid = PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
 
             if (ownerSid != null)
             {
@@ -123,7 +123,7 @@ namespace SharpHoundCommonLib.Processors
                 Logging.Log(LogLevel.Debug, "Owner on ACE is null");
             }
 
-            foreach (ActiveDirectoryAccessRule ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+            foreach (ActiveDirectoryRuleDescriptor ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
                 if (ace == null)
                 {
@@ -131,19 +131,19 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                if (ace.AccessControlType == AccessControlType.Deny)
+                if (ace.AccessControlType() == AccessControlType.Deny)
                 {
                     Logging.Trace("Skipping deny ACE");
                     continue;
                 }
                 
-                if (!IsAceInherited(ace, BaseGuids[objectType]))
+                if (!ace.IsAceInheritedFrom(BaseGuids[objectType]))
                 {
                     Logging.Trace("Skipping ACE with unmatched GUID/inheritance");
                     continue;
                 }
 
-                var principalSid = PreProcessSID(ace.IdentityReference.Value);
+                var principalSid = PreProcessSID(ace.IdentityReference());
 
                 if (principalSid == null)
                 {
@@ -153,10 +153,10 @@ namespace SharpHoundCommonLib.Processors
 
                 var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
 
-                var aceRights = ace.ActiveDirectoryRights;
+                var aceRights = ace.ActiveDirectoryRights();
                 //Lowercase this just in case. As far as I know it should always come back that way anyways, but better safe than sorry
-                var aceType = ace.ObjectType.ToString().ToLower();
-                var inherited = ace.IsInherited;
+                var aceType = ace.ObjectType().ToString().ToLower();
+                var inherited = ace.IsInherited();
 
                 GuidMap.TryGetValue(aceType, out var mappedGuid);
 
@@ -336,33 +336,6 @@ namespace SharpHoundCommonLib.Processors
         }
         
         /// <summary>
-        /// Helper function to determine if an ACE actually applies to the object through inheritance
-        /// </summary>
-        /// <param name="ace"></param>
-        /// <param name="guid"></param>
-        /// <returns></returns>
-        private static bool IsAceInherited(ObjectAccessRule ace, string guid)
-        {
-            //Check if the ace is inherited
-            var isInherited = ace.IsInherited;
-
-            //The inheritedobjecttype needs to match the guid of the object type being enumerated or the guid for All
-            var inheritedType = ace.InheritedObjectType.ToString();
-            isInherited = isInherited && (inheritedType == ACEGuids.AllGuid || inheritedType == guid);
-
-            //Special case for Exchange
-            //If the ACE is not Inherited and is not an inherit-only ace, then it's set by exchange for reasons
-            if (!isInherited && (ace.PropagationFlags & PropagationFlags.InheritOnly) != PropagationFlags.InheritOnly &&
-                !ace.IsInherited)
-            {
-                isInherited = true;
-            }
-
-            //Return our isInherited value
-            return isInherited;
-        }
-
-        /// <summary>
         /// Processes the msds-groupmsamembership property and returns ACEs representing principals that can read the GMSA password from an object
         /// </summary>
         /// <param name="entry"></param>
@@ -373,31 +346,34 @@ namespace SharpHoundCommonLib.Processors
             if (groupMSAMembership == null)
                 yield break;
 
-            var descriptor = new ActiveDirectorySecurity();
+            var descriptor = _utils.MakeSecurityDescriptor();
             descriptor.SetSecurityDescriptorBinaryForm(groupMSAMembership);
 
-            foreach (ActiveDirectoryAccessRule ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+            foreach (ActiveDirectoryRuleDescriptor ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
                 if (ace == null)
                     continue;
                 
-                if (ace.AccessControlType == AccessControlType.Deny)
+                if (ace.AccessControlType() == AccessControlType.Deny)
                     continue;
 
-                var principalSid = PreProcessSID(ace.IdentityReference.Value);
+                var principalSid = PreProcessSID(ace.IdentityReference());
                 
                 if (principalSid == null)
                     continue;
                 
                 var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
                 
-                yield return new ACE
+                if (resolvedPrincipal != null)
                 {
-                    RightName = EdgeNames.ReadGMSAPassword,
-                    PrincipalType = resolvedPrincipal.ObjectType,
-                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                    IsInherited = ace.IsInherited
-                };
+                yield return new ACE
+                    {
+                        RightName = EdgeNames.ReadGMSAPassword,
+                        PrincipalType = resolvedPrincipal.ObjectType,
+                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        IsInherited = ace.IsInherited()
+                    };
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
 using System.Threading;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using Moq;
 
 namespace CommonLibTest.Facades
 {
@@ -973,6 +975,12 @@ namespace CommonLibTest.Facades
         public Forest GetForest(string domainName = null)
         {
             return _forest;
+        }
+
+        public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
+        {
+            var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>();
+            return mockSecurityDescriptor.Object;
         }
     }
 }

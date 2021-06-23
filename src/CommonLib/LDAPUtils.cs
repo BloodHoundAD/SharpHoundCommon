@@ -6,6 +6,7 @@ using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -15,6 +16,7 @@ using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
+using ActiveDirectorySecurity = System.DirectoryServices.ActiveDirectorySecurity;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace SharpHoundCommonLib
@@ -1118,5 +1120,11 @@ namespace SharpHoundCommonLib
 
             return domainName.ToUpper();
         }
+
+        public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
+        {
+            return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
+        }   
     }
+
 }
