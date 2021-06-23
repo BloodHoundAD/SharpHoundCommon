@@ -7,6 +7,186 @@ references:
   commentId: N:SharpHoundCommonLib
   fullName: SharpHoundCommonLib
   nameWithType: SharpHoundCommonLib
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor
+  name: ActiveDirectoryRuleDescriptor
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html
+  commentId: T:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor
+  nameWithType: ActiveDirectoryRuleDescriptor
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.#ctor(System.DirectoryServices.ActiveDirectoryAccessRule)
+  name: ActiveDirectoryRuleDescriptor(ActiveDirectoryAccessRule)
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor__ctor_System_DirectoryServices_ActiveDirectoryAccessRule_
+  commentId: M:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.#ctor(System.DirectoryServices.ActiveDirectoryAccessRule)
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ActiveDirectoryRuleDescriptor(System.DirectoryServices.ActiveDirectoryAccessRule)
+  nameWithType: ActiveDirectoryRuleDescriptor.ActiveDirectoryRuleDescriptor(ActiveDirectoryAccessRule)
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.#ctor*
+  name: ActiveDirectoryRuleDescriptor
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor__ctor_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ActiveDirectoryRuleDescriptor
+  nameWithType: ActiveDirectoryRuleDescriptor.ActiveDirectoryRuleDescriptor
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.AccessControlType
+  name: AccessControlType()
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_AccessControlType
+  commentId: M:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.AccessControlType
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.AccessControlType()
+  nameWithType: ActiveDirectoryRuleDescriptor.AccessControlType()
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.AccessControlType*
+  name: AccessControlType
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_AccessControlType_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.AccessControlType
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.AccessControlType
+  nameWithType: ActiveDirectoryRuleDescriptor.AccessControlType
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ActiveDirectoryRights
+  name: ActiveDirectoryRights()
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_ActiveDirectoryRights
+  commentId: M:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ActiveDirectoryRights
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ActiveDirectoryRights()
+  nameWithType: ActiveDirectoryRuleDescriptor.ActiveDirectoryRights()
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ActiveDirectoryRights*
+  name: ActiveDirectoryRights
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_ActiveDirectoryRights_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ActiveDirectoryRights
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ActiveDirectoryRights
+  nameWithType: ActiveDirectoryRuleDescriptor.ActiveDirectoryRights
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IdentityReference
+  name: IdentityReference()
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_IdentityReference
+  commentId: M:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IdentityReference
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IdentityReference()
+  nameWithType: ActiveDirectoryRuleDescriptor.IdentityReference()
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IdentityReference*
+  name: IdentityReference
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_IdentityReference_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IdentityReference
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IdentityReference
+  nameWithType: ActiveDirectoryRuleDescriptor.IdentityReference
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsAceInheritedFrom(System.String)
+  name: IsAceInheritedFrom(String)
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_IsAceInheritedFrom_System_String_
+  commentId: M:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsAceInheritedFrom(System.String)
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsAceInheritedFrom(System.String)
+  nameWithType: ActiveDirectoryRuleDescriptor.IsAceInheritedFrom(String)
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsAceInheritedFrom*
+  name: IsAceInheritedFrom
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_IsAceInheritedFrom_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsAceInheritedFrom
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsAceInheritedFrom
+  nameWithType: ActiveDirectoryRuleDescriptor.IsAceInheritedFrom
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsInherited
+  name: IsInherited()
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_IsInherited
+  commentId: M:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsInherited
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsInherited()
+  nameWithType: ActiveDirectoryRuleDescriptor.IsInherited()
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsInherited*
+  name: IsInherited
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_IsInherited_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsInherited
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.IsInherited
+  nameWithType: ActiveDirectoryRuleDescriptor.IsInherited
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ObjectType
+  name: ObjectType()
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_ObjectType
+  commentId: M:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ObjectType
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ObjectType()
+  nameWithType: ActiveDirectoryRuleDescriptor.ObjectType()
+- uid: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ObjectType*
+  name: ObjectType
+  href: api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html#SharpHoundCommonLib_ActiveDirectoryRuleDescriptor_ObjectType_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ObjectType
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.ObjectType
+  nameWithType: ActiveDirectoryRuleDescriptor.ObjectType
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor
+  name: ActiveDirectorySecurityDescriptor
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html
+  commentId: T:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor
+  nameWithType: ActiveDirectorySecurityDescriptor
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.#ctor(System.DirectoryServices.ActiveDirectorySecurity)
+  name: ActiveDirectorySecurityDescriptor(ActiveDirectorySecurity)
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor__ctor_System_DirectoryServices_ActiveDirectorySecurity_
+  commentId: M:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.#ctor(System.DirectoryServices.ActiveDirectorySecurity)
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.ActiveDirectorySecurityDescriptor(System.DirectoryServices.ActiveDirectorySecurity)
+  nameWithType: ActiveDirectorySecurityDescriptor.ActiveDirectorySecurityDescriptor(ActiveDirectorySecurity)
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.#ctor*
+  name: ActiveDirectorySecurityDescriptor
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor__ctor_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.ActiveDirectorySecurityDescriptor
+  nameWithType: ActiveDirectorySecurityDescriptor.ActiveDirectorySecurityDescriptor
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.AreAccessRulesProtected
+  name: AreAccessRulesProtected()
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_AreAccessRulesProtected
+  commentId: M:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.AreAccessRulesProtected
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.AreAccessRulesProtected()
+  nameWithType: ActiveDirectorySecurityDescriptor.AreAccessRulesProtected()
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.AreAccessRulesProtected*
+  name: AreAccessRulesProtected
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_AreAccessRulesProtected_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.AreAccessRulesProtected
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.AreAccessRulesProtected
+  nameWithType: ActiveDirectorySecurityDescriptor.AreAccessRulesProtected
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetAccessRules(System.Boolean,System.Boolean,System.Type)
+  name: GetAccessRules(Boolean, Boolean, Type)
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_GetAccessRules_System_Boolean_System_Boolean_System_Type_
+  commentId: M:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetAccessRules(System.Boolean,System.Boolean,System.Type)
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetAccessRules(System.Boolean, System.Boolean, System.Type)
+  nameWithType: ActiveDirectorySecurityDescriptor.GetAccessRules(Boolean, Boolean, Type)
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetAccessRules*
+  name: GetAccessRules
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_GetAccessRules_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetAccessRules
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetAccessRules
+  nameWithType: ActiveDirectorySecurityDescriptor.GetAccessRules
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetOwner(System.Type)
+  name: GetOwner(Type)
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_GetOwner_System_Type_
+  commentId: M:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetOwner(System.Type)
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetOwner(System.Type)
+  nameWithType: ActiveDirectorySecurityDescriptor.GetOwner(Type)
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetOwner*
+  name: GetOwner
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_GetOwner_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetOwner
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.GetOwner
+  nameWithType: ActiveDirectorySecurityDescriptor.GetOwner
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(System.Byte[])
+  name: SetSecurityDescriptorBinaryForm(Byte[])
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_SetSecurityDescriptorBinaryForm_System_Byte___
+  commentId: M:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(System.Byte[])
+  name.vb: SetSecurityDescriptorBinaryForm(Byte())
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(System.Byte[])
+  fullName.vb: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(System.Byte())
+  nameWithType: ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(Byte[])
+  nameWithType.vb: ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(Byte())
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(System.Byte[],System.Security.AccessControl.AccessControlSections)
+  name: SetSecurityDescriptorBinaryForm(Byte[], AccessControlSections)
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_SetSecurityDescriptorBinaryForm_System_Byte___System_Security_AccessControl_AccessControlSections_
+  commentId: M:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(System.Byte[],System.Security.AccessControl.AccessControlSections)
+  name.vb: SetSecurityDescriptorBinaryForm(Byte(), AccessControlSections)
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(System.Byte[], System.Security.AccessControl.AccessControlSections)
+  fullName.vb: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(System.Byte(), System.Security.AccessControl.AccessControlSections)
+  nameWithType: ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(Byte[], AccessControlSections)
+  nameWithType.vb: ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm(Byte(), AccessControlSections)
+- uid: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm*
+  name: SetSecurityDescriptorBinaryForm
+  href: api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html#SharpHoundCommonLib_ActiveDirectorySecurityDescriptor_SetSecurityDescriptorBinaryForm_
+  commentId: Overload:SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm
+  nameWithType: ActiveDirectorySecurityDescriptor.SetSecurityDescriptorBinaryForm
 - uid: SharpHoundCommonLib.Cache
   name: Cache
   href: api/SharpHoundCommonLib.Cache.html
@@ -1145,6 +1325,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.LookupSidType
   nameWithType: ILDAPUtils.LookupSidType
+- uid: SharpHoundCommonLib.ILDAPUtils.MakeSecurityDescriptor
+  name: MakeSecurityDescriptor()
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_MakeSecurityDescriptor
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.MakeSecurityDescriptor
+  fullName: SharpHoundCommonLib.ILDAPUtils.MakeSecurityDescriptor()
+  nameWithType: ILDAPUtils.MakeSecurityDescriptor()
+- uid: SharpHoundCommonLib.ILDAPUtils.MakeSecurityDescriptor*
+  name: MakeSecurityDescriptor
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_MakeSecurityDescriptor_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.MakeSecurityDescriptor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.MakeSecurityDescriptor
+  nameWithType: ILDAPUtils.MakeSecurityDescriptor
 - uid: SharpHoundCommonLib.ILDAPUtils.QueryLDAP(System.String,System.DirectoryServices.Protocols.SearchScope,System.String[],System.String,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean)
   name: QueryLDAP(String, SearchScope, String[], String, Boolean, Boolean, String, Boolean, Boolean)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_QueryLDAP_System_String_System_DirectoryServices_Protocols_SearchScope_System_String___System_String_System_Boolean_System_Boolean_System_String_System_Boolean_System_Boolean_
@@ -2012,6 +2205,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.LookupSidType
   nameWithType: LDAPUtils.LookupSidType
+- uid: SharpHoundCommonLib.LDAPUtils.MakeSecurityDescriptor
+  name: MakeSecurityDescriptor()
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_MakeSecurityDescriptor
+  commentId: M:SharpHoundCommonLib.LDAPUtils.MakeSecurityDescriptor
+  fullName: SharpHoundCommonLib.LDAPUtils.MakeSecurityDescriptor()
+  nameWithType: LDAPUtils.MakeSecurityDescriptor()
+- uid: SharpHoundCommonLib.LDAPUtils.MakeSecurityDescriptor*
+  name: MakeSecurityDescriptor
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_MakeSecurityDescriptor_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.MakeSecurityDescriptor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.MakeSecurityDescriptor
+  nameWithType: LDAPUtils.MakeSecurityDescriptor
 - uid: SharpHoundCommonLib.LDAPUtils.QueryLDAP(System.String,System.DirectoryServices.Protocols.SearchScope,System.String[],System.String,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean)
   name: QueryLDAP(String, SearchScope, String[], String, Boolean, Boolean, String, Boolean, Boolean)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_QueryLDAP_System_String_System_DirectoryServices_Protocols_SearchScope_System_String___System_String_System_Boolean_System_Boolean_System_String_System_Boolean_System_Boolean_
