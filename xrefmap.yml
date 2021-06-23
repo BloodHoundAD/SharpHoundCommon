@@ -273,183 +273,85 @@ references:
 - uid: SharpHoundCommonLib.EdgeNames.AddAllowedToAct
   name: AddAllowedToAct
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AddAllowedToAct
-  commentId: P:SharpHoundCommonLib.EdgeNames.AddAllowedToAct
-  fullName: SharpHoundCommonLib.EdgeNames.AddAllowedToAct
-  nameWithType: EdgeNames.AddAllowedToAct
-- uid: SharpHoundCommonLib.EdgeNames.AddAllowedToAct*
-  name: AddAllowedToAct
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AddAllowedToAct_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.AddAllowedToAct
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.AddAllowedToAct
   fullName: SharpHoundCommonLib.EdgeNames.AddAllowedToAct
   nameWithType: EdgeNames.AddAllowedToAct
 - uid: SharpHoundCommonLib.EdgeNames.AddMember
   name: AddMember
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AddMember
-  commentId: P:SharpHoundCommonLib.EdgeNames.AddMember
-  fullName: SharpHoundCommonLib.EdgeNames.AddMember
-  nameWithType: EdgeNames.AddMember
-- uid: SharpHoundCommonLib.EdgeNames.AddMember*
-  name: AddMember
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AddMember_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.AddMember
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.AddMember
   fullName: SharpHoundCommonLib.EdgeNames.AddMember
   nameWithType: EdgeNames.AddMember
 - uid: SharpHoundCommonLib.EdgeNames.AddSelf
   name: AddSelf
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AddSelf
-  commentId: P:SharpHoundCommonLib.EdgeNames.AddSelf
-  fullName: SharpHoundCommonLib.EdgeNames.AddSelf
-  nameWithType: EdgeNames.AddSelf
-- uid: SharpHoundCommonLib.EdgeNames.AddSelf*
-  name: AddSelf
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AddSelf_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.AddSelf
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.AddSelf
   fullName: SharpHoundCommonLib.EdgeNames.AddSelf
   nameWithType: EdgeNames.AddSelf
 - uid: SharpHoundCommonLib.EdgeNames.AllExtendedRights
   name: AllExtendedRights
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AllExtendedRights
-  commentId: P:SharpHoundCommonLib.EdgeNames.AllExtendedRights
-  fullName: SharpHoundCommonLib.EdgeNames.AllExtendedRights
-  nameWithType: EdgeNames.AllExtendedRights
-- uid: SharpHoundCommonLib.EdgeNames.AllExtendedRights*
-  name: AllExtendedRights
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AllExtendedRights_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.AllExtendedRights
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.AllExtendedRights
   fullName: SharpHoundCommonLib.EdgeNames.AllExtendedRights
   nameWithType: EdgeNames.AllExtendedRights
 - uid: SharpHoundCommonLib.EdgeNames.ForceChangePassword
   name: ForceChangePassword
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ForceChangePassword
-  commentId: P:SharpHoundCommonLib.EdgeNames.ForceChangePassword
-  fullName: SharpHoundCommonLib.EdgeNames.ForceChangePassword
-  nameWithType: EdgeNames.ForceChangePassword
-- uid: SharpHoundCommonLib.EdgeNames.ForceChangePassword*
-  name: ForceChangePassword
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ForceChangePassword_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.ForceChangePassword
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.ForceChangePassword
   fullName: SharpHoundCommonLib.EdgeNames.ForceChangePassword
   nameWithType: EdgeNames.ForceChangePassword
 - uid: SharpHoundCommonLib.EdgeNames.GenericAll
   name: GenericAll
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_GenericAll
-  commentId: P:SharpHoundCommonLib.EdgeNames.GenericAll
-  fullName: SharpHoundCommonLib.EdgeNames.GenericAll
-  nameWithType: EdgeNames.GenericAll
-- uid: SharpHoundCommonLib.EdgeNames.GenericAll*
-  name: GenericAll
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_GenericAll_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.GenericAll
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.GenericAll
   fullName: SharpHoundCommonLib.EdgeNames.GenericAll
   nameWithType: EdgeNames.GenericAll
 - uid: SharpHoundCommonLib.EdgeNames.GenericWrite
   name: GenericWrite
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_GenericWrite
-  commentId: P:SharpHoundCommonLib.EdgeNames.GenericWrite
-  fullName: SharpHoundCommonLib.EdgeNames.GenericWrite
-  nameWithType: EdgeNames.GenericWrite
-- uid: SharpHoundCommonLib.EdgeNames.GenericWrite*
-  name: GenericWrite
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_GenericWrite_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.GenericWrite
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.GenericWrite
   fullName: SharpHoundCommonLib.EdgeNames.GenericWrite
   nameWithType: EdgeNames.GenericWrite
 - uid: SharpHoundCommonLib.EdgeNames.GetChanges
   name: GetChanges
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_GetChanges
-  commentId: P:SharpHoundCommonLib.EdgeNames.GetChanges
-  fullName: SharpHoundCommonLib.EdgeNames.GetChanges
-  nameWithType: EdgeNames.GetChanges
-- uid: SharpHoundCommonLib.EdgeNames.GetChanges*
-  name: GetChanges
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_GetChanges_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.GetChanges
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.GetChanges
   fullName: SharpHoundCommonLib.EdgeNames.GetChanges
   nameWithType: EdgeNames.GetChanges
 - uid: SharpHoundCommonLib.EdgeNames.GetChangesAll
   name: GetChangesAll
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_GetChangesAll
-  commentId: P:SharpHoundCommonLib.EdgeNames.GetChangesAll
-  fullName: SharpHoundCommonLib.EdgeNames.GetChangesAll
-  nameWithType: EdgeNames.GetChangesAll
-- uid: SharpHoundCommonLib.EdgeNames.GetChangesAll*
-  name: GetChangesAll
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_GetChangesAll_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.GetChangesAll
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.GetChangesAll
   fullName: SharpHoundCommonLib.EdgeNames.GetChangesAll
   nameWithType: EdgeNames.GetChangesAll
 - uid: SharpHoundCommonLib.EdgeNames.Owns
   name: Owns
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_Owns
-  commentId: P:SharpHoundCommonLib.EdgeNames.Owns
-  fullName: SharpHoundCommonLib.EdgeNames.Owns
-  nameWithType: EdgeNames.Owns
-- uid: SharpHoundCommonLib.EdgeNames.Owns*
-  name: Owns
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_Owns_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.Owns
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.Owns
   fullName: SharpHoundCommonLib.EdgeNames.Owns
   nameWithType: EdgeNames.Owns
 - uid: SharpHoundCommonLib.EdgeNames.ReadGMSAPassword
   name: ReadGMSAPassword
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ReadGMSAPassword
-  commentId: P:SharpHoundCommonLib.EdgeNames.ReadGMSAPassword
-  fullName: SharpHoundCommonLib.EdgeNames.ReadGMSAPassword
-  nameWithType: EdgeNames.ReadGMSAPassword
-- uid: SharpHoundCommonLib.EdgeNames.ReadGMSAPassword*
-  name: ReadGMSAPassword
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ReadGMSAPassword_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.ReadGMSAPassword
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.ReadGMSAPassword
   fullName: SharpHoundCommonLib.EdgeNames.ReadGMSAPassword
   nameWithType: EdgeNames.ReadGMSAPassword
 - uid: SharpHoundCommonLib.EdgeNames.ReadLAPSPassword
   name: ReadLAPSPassword
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ReadLAPSPassword
-  commentId: P:SharpHoundCommonLib.EdgeNames.ReadLAPSPassword
-  fullName: SharpHoundCommonLib.EdgeNames.ReadLAPSPassword
-  nameWithType: EdgeNames.ReadLAPSPassword
-- uid: SharpHoundCommonLib.EdgeNames.ReadLAPSPassword*
-  name: ReadLAPSPassword
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ReadLAPSPassword_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.ReadLAPSPassword
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.ReadLAPSPassword
   fullName: SharpHoundCommonLib.EdgeNames.ReadLAPSPassword
   nameWithType: EdgeNames.ReadLAPSPassword
 - uid: SharpHoundCommonLib.EdgeNames.WriteDacl
   name: WriteDacl
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WriteDacl
-  commentId: P:SharpHoundCommonLib.EdgeNames.WriteDacl
-  fullName: SharpHoundCommonLib.EdgeNames.WriteDacl
-  nameWithType: EdgeNames.WriteDacl
-- uid: SharpHoundCommonLib.EdgeNames.WriteDacl*
-  name: WriteDacl
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WriteDacl_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.WriteDacl
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.WriteDacl
   fullName: SharpHoundCommonLib.EdgeNames.WriteDacl
   nameWithType: EdgeNames.WriteDacl
 - uid: SharpHoundCommonLib.EdgeNames.WriteOwner
   name: WriteOwner
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WriteOwner
-  commentId: P:SharpHoundCommonLib.EdgeNames.WriteOwner
-  fullName: SharpHoundCommonLib.EdgeNames.WriteOwner
-  nameWithType: EdgeNames.WriteOwner
-- uid: SharpHoundCommonLib.EdgeNames.WriteOwner*
-  name: WriteOwner
-  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WriteOwner_
-  commentId: Overload:SharpHoundCommonLib.EdgeNames.WriteOwner
-  isSpec: "True"
+  commentId: F:SharpHoundCommonLib.EdgeNames.WriteOwner
   fullName: SharpHoundCommonLib.EdgeNames.WriteOwner
   nameWithType: EdgeNames.WriteOwner
 - uid: SharpHoundCommonLib.Enums

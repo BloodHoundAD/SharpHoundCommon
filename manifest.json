@@ -72,7 +72,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.EdgeNames.html",
-          "hash": "FxouNJQqdzhOd7OqSoBHbA=="
+          "hash": "SVSbaTwhqVZGrtDf5yS7wg=="
         }
       },
       "is_incremental": false,
@@ -288,7 +288,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.DOMAIN_CONTROLLER_INFO.html",
-          "hash": "tb+FydRSEHDW3VKhL/425w=="
+          "hash": "ONFuJLcPSf9XuQ3bjHNSVw=="
         }
       },
       "is_incremental": false,
@@ -312,7 +312,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.GuidClass.html",
-          "hash": "VLbe+tHKiUFwbcRzfW4stg=="
+          "hash": "8qxhmr+sVS5Eczp8haoqxw=="
         }
       },
       "is_incremental": false,
@@ -348,7 +348,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.OBJECT_ATTRIBUTES.html",
-          "hash": "3YDyLVfU3TATcPFYLKHfdA=="
+          "hash": "j2Q6/2DZg6oZJTAWgFQ5wA=="
         }
       },
       "is_incremental": false,
@@ -360,7 +360,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.SESSION_INFO_10.html",
-          "hash": "Z5uzBkNKnq45pBzCePEy2g=="
+          "hash": "pUytdUUgQe81BA5eRnTsXg=="
         }
       },
       "is_incremental": false,
@@ -384,7 +384,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.UNICODE_STRING.html",
-          "hash": "6TpVXrYGW/78ksbiFTdJwQ=="
+          "hash": "yp2CLWDz+ubX4tzfkkKAuA=="
         }
       },
       "is_incremental": false,
@@ -396,7 +396,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.WKSTA_USER_INFO_1.html",
-          "hash": "ig2fvVBD2On4W+Wd1rXzjg=="
+          "hash": "uEOt7UzIccR9s96/1droTg=="
         }
       },
       "is_incremental": false,
@@ -408,7 +408,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.WorkstationInfo100.html",
-          "hash": "EsqarpoFAbikZeWVvGpk5Q=="
+          "hash": "hnzaVE6D8eg+pqXSQ085Ow=="
         }
       },
       "is_incremental": false,
@@ -420,7 +420,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.html",
-          "hash": "0xyd53T1BDaB4HBFd+QChw=="
+          "hash": "1mlguFeSky8wnqFDlssrYg=="
         }
       },
       "is_incremental": false,
@@ -1212,17 +1212,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "coverage/report/SharpHoundCommonLib_EdgeNames.html",
-      "output": {
-        "resource": {
-          "relative_path": "coverage/report/SharpHoundCommonLib_EdgeNames.html"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "coverage/report/SharpHoundCommonLib_Extensions.html",
       "output": {
         "resource": {
@@ -1359,17 +1348,6 @@
       "output": {
         "resource": {
           "relative_path": "coverage/report/SharpHoundCommonLib_MetaTag.html"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "coverage/report/SharpHoundCommonLib_NativeMethods.html",
-      "output": {
-        "resource": {
-          "relative_path": "coverage/report/SharpHoundCommonLib_NativeMethods.html"
         }
       },
       "is_incremental": false,
