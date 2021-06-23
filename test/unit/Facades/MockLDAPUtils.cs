@@ -702,9 +702,14 @@ namespace CommonLibTest.Facades
 
         public async Task<string> ResolveHostToSid(string hostname, string domain)
         {
-            return hostname.ToUpper() switch
+            var h = SharpHoundCommonLib.Helpers.StripServicePrincipalName(hostname);
+            return h.ToUpper() switch
             {
                 "192.168.1.1" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
+                "PRIMARY" => "S-1-5-21-3130019616-2776909439-2417379446-1001",
+                "PRIMARY.TESTLAB.LOCAL" => "S-1-5-21-3130019616-2776909439-2417379446-1001",
+                "WIN10" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
+                "WIN10.TESTLAB.LOCAL" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
                 _ => null
             };
         }

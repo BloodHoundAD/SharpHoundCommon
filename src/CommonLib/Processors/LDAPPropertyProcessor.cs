@@ -45,8 +45,20 @@ namespace SharpHoundCommonLib.Processors
             {
                 level = -1;
             }
+            
+            props.Add("functionallevel", FunctionalLevelToString(level));
 
-            var func = level switch
+            return props;
+        }
+
+        /// <summary>
+        /// Converts a numeric representation of a functional level to its appropriate functional level string
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public static string FunctionalLevelToString(int level)
+        {
+            var functionalLevel = level switch
             {
                 0 => "2000 Mixed/Native",
                 1 => "2003 Interim",
@@ -59,9 +71,7 @@ namespace SharpHoundCommonLib.Processors
                 _ => "Unknown"
             };
 
-            props.Add("functionallevel", func);
-
-            return props;
+            return functionalLevel;
         }
 
         /// <summary>
@@ -74,7 +84,7 @@ namespace SharpHoundCommonLib.Processors
             var props = new Dictionary<string, object>
             {
                 {"description", entry.GetProperty("description")},
-                {"gpcpath", entry.GetProperty("gpcfilesyspath")}
+                {"gpcpath", entry.GetProperty("gpcfilesyspath")?.ToUpper()}
             };
             return props;
         }
@@ -161,6 +171,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add("unconstraineddelegation", unconstrained);
             props.Add("pwdneverexpires", pwdNeverExpires);
             props.Add("enabled", enabled);
+            props.Add("trustedtoauth", trustedToAuth);
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
             
             var comps = new List<TypedPrincipal>();
@@ -185,7 +196,7 @@ namespace SharpHoundCommonLib.Processors
                 }
             }
 
-            userProps.AllowedToDelegate = comps.ToArray();
+            userProps.AllowedToDelegate = comps.Distinct().ToArray();
 
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogon")));
             props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
@@ -202,8 +213,14 @@ namespace SharpHoundCommonLib.Processors
             var ac = entry.GetProperty("admincount");
             if (ac != null)
             {
-                var a = int.Parse(ac);
-                props.Add("admincount", a != 0);
+                if (int.TryParse(ac, out var parsed))
+                {
+                    props.Add("admincount", parsed != 0);    
+                }
+                else
+                {
+                    props.Add("admincount", false);
+                }
             }
             else
             {
@@ -232,7 +249,7 @@ namespace SharpHoundCommonLib.Processors
                 sidHistoryPrincipals.Add(res);
             }
             
-            userProps.SidHistory =sidHistoryPrincipals.ToArray(); 
+            userProps.SidHistory = sidHistoryPrincipals.Distinct().ToArray(); 
             
             props.Add("sidhistory", sidHistoryList.ToArray());
 
@@ -291,7 +308,7 @@ namespace SharpHoundCommonLib.Processors
                 }
             }
 
-            compProps.AllowedToDelegate = comps.ToArray();
+            compProps.AllowedToDelegate = comps.Distinct().ToArray();
 
             var allowedToActPrincipals = new List<TypedPrincipal>();
             var rawAllowedToAct = entry.GetByteProperty("msDS-AllowedToActOnBehalfOfOtherIdentity");
@@ -310,6 +327,7 @@ namespace SharpHoundCommonLib.Processors
 
             props.Add("enabled", enabled);
             props.Add("unconstraineddelegation", unconstrained);
+            props.Add("trustedtoauth", trustedToAuth);
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogon")));
             props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
             props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("pwdlastset")));

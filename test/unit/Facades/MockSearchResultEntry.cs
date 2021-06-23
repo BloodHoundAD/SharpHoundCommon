@@ -29,22 +29,22 @@ namespace CommonLibTest.Facades
 
         public string GetProperty(string propertyName)
         {
-            throw new System.NotImplementedException();
+            return _properties[propertyName] as string;
         }
 
         public byte[] GetByteProperty(string propertyName)
         {
-            throw new System.NotImplementedException();
+            return _properties[propertyName] as byte[];
         }
 
         public string[] GetArrayProperty(string propertyName)
         {
-            throw new System.NotImplementedException();
+            return _properties[propertyName] as string[];
         }
 
         public byte[][] GetByteArrayProperty(string propertyName)
         {
-            throw new System.NotImplementedException();
+            return _properties[propertyName] as byte[][];
         }
 
         public string GetObjectIdentifier()
