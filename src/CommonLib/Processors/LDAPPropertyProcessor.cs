@@ -314,11 +314,11 @@ namespace SharpHoundCommonLib.Processors
             var rawAllowedToAct = entry.GetByteProperty("msDS-AllowedToActOnBehalfOfOtherIdentity");
             if (rawAllowedToAct != null)
             {
-                var sd = new ActiveDirectorySecurity();
+                var sd = _utils.MakeSecurityDescriptor();
                 sd.SetSecurityDescriptorBinaryForm(rawAllowedToAct, AccessControlSections.Access);
-                foreach (ActiveDirectoryAccessRule rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+                foreach (ActiveDirectoryRuleDescriptor rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
                 {
-                    var res = _utils.ResolveIDAndType(rule.IdentityReference.Value, domain);
+                    var res = _utils.ResolveIDAndType(rule.IdentityReference(), domain);
                     allowedToActPrincipals.Add(res);
                 }
             }

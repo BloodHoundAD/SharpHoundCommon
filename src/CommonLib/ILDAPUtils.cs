@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.AccessControl;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
 using System.Threading;
@@ -87,5 +88,9 @@ namespace SharpHoundCommonLib
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false);
 
         Forest GetForest(string domainName = null);
+
+        ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
     }
+
+
 }
