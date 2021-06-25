@@ -1,6 +1,7 @@
 using System.Data.Common;
 using System.Runtime.InteropServices;
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -10,6 +11,7 @@ using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.Processors;
 using SharpHoundCommonLib.LDAPQueries;
+using SharpHoundCommonLib.OutputTypes;
 using Xunit;
 using Xunit.Abstractions;
 using System.DirectoryServices.Protocols;
@@ -38,11 +40,63 @@ namespace CommonLibTest
                     </Members>
                 </Properties>
             </Group>
-        </Groups>";
+            <Group clsid=""{AD4A79E4-529C-4481-ABD0-F5BD7EA93BA7}"" uid=""{49951410-3929-4041-AB49-75404B3BBB8A}"" changed=""2019-10-30 00:07:18"" image=""2"" name=""Foo"">
+                <Properties groupName=""Foo"" groupSid="""" removeAccounts=""0"" deleteAllGroups=""0"" deleteAllUsers=""0"" description="""" newName="""" action=""Z"">
+                    <Members>
+                        <Member name=""TESTLAB\Domain Users"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-513""/>
+                        <Member name=""TESTLAB\Domain Computers"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-515""/>
+                    </Members>
+                </Properties>
+            </Group>
+            <Group clsid=""{6D4A79E4-529C-4481-ABD0-F5BD7EA93BA7}"" uid=""{49951410-3929-4041-AB49-75404B3BBB8A}"" changed=""2019-10-30 00:07:18"" image=""2"" name=""Administrators"">
+                <Properties groupName=""Administrators"" groupSid=""S-1-5-32-544"" removeAccounts=""0"" deleteAllGroups=""1"" deleteAllUsers=""1"" description="""" newName="""" action=""U"">
+                    <Members>
+                        <Member name=""TESTLAB\Domain Users"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-513""/>
+                        <Member name=""TESTLAB\Domain Computers"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-515""/>
+                    </Members>
+                </Properties>
+            </Group>
+            <Group clsid=""{6D4A79E4-529C-4481-ABD0-F5BD7EA93BA7}"" uid=""{49951410-3929-4041-AB49-75404B3BBB8A}"" changed=""2019-10-30 00:07:18"" image=""2"" name=""Administrators"">
+                <Properties groupName=""Administrators"" groupSid=""S-1-5-32-544"" removeAccounts=""0"" deleteAllGroups=""0"" deleteAllUsers=""0"" description="""" newName="""" action=""U"">
+                    <Members>
+                        <Member name=""TESTLAB\Domain Users"" action=""ADD"" sid=""""/>
+                        <Member name=""GEORGE"" action=""ADD"" sid=""""/>
+                        <Member name=""TESTLAB\Domain Computers"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-515""/>
+                    </Members>
+                </Properties>
+            </Group>
+            <Group clsid=""{6D4A79E4-529C-4481-ABD0-F5BD7EA93BA7}"" uid=""{49951410-3929-4041-AB49-75404B3BBB8A}"" changed=""2019-10-30 00:07:18"" image=""2"" name=""Administrators"">
+                <Properties groupName=""POKEMON"" groupSid="""" removeAccounts=""0"" deleteAllGroups=""0"" deleteAllUsers=""0"" description="""" newName="""" action=""U"">
+                    <Members>
+                        <Member name=""TESTLAB\Domain Users"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-513""/>
+                        <Member name=""TESTLAB\Domain Computers"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-515""/>
+                    </Members>
+                </Properties>
+            </Group>
+        </Groups>
+        ";
+
+        string GroupXmlContentDisabled = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+        <Groups clsid=""{3125E937-EB16-4b4c-9934-544FC6D24D26}"" disabled=""1"">
+        </Groups>
+        ";
 
         string GroupXmlContent2 = @"<?xml version=""1.0"" encoding=""UTF-8""?>
         <Groups clsid=""{3125E937-EB16-4b4c-9934-544FC6D24D26}"">
             <Group clsid=""{6D4A79E4-529C-4481-ABD0-F5BD7EA93BA7}"" uid=""{D8BF17B2-92AA-4CFC-825C-707E15A10C89}"" changed=""2019-10-30 00:04:02"" image=""2"" name=""Administrators"">
+                <Properties groupName=""Administrators"" groupSid="""" removeAccounts=""0"" deleteAllGroups=""0"" deleteAllUsers=""0"" description="""" newName="""" action=""U"">
+                    <Members>
+                        <Member name=""TESTLAB\Domain Admins"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-512""/>
+                        <Member name=""TESTLAB\dfm"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-1105""/>
+                        <Member name=""TESTLAB\Domain Computers"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-515""/>
+                    </Members>
+                </Properties>
+            </Group>
+        </Groups>
+        ";
+        string GroupXmlContent3 = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+        <Groups clsid=""{3125E937-EB16-4b4c-9934-544FC6D24D26}"">
+            <Group uid=""{D8BF17B2-92AA-4CFC-825C-707E15A10C89}"" changed=""2019-10-30 00:04:02"" image=""2"" name=""Administrators"">
                 <Properties groupName=""Administrators"" groupSid="""" removeAccounts=""0"" deleteAllGroups=""0"" deleteAllUsers=""0"" description="""" newName="""" action=""U"">
                     <Members>
                         <Member name=""TESTLAB\Domain Admins"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-512""/>
@@ -161,6 +215,52 @@ namespace CommonLibTest
             // var actual = result.AffectedComputers.First();
             // Assert.Equal(Label.Computer, actual.ObjectType);
             // Assert.Equal("teapot", actual.ObjectIdentifier);
+        }
+
+        [Fact]
+        public async Task GPOLocalGroupProcess_ProcessGPOXMLFile_NoFile()
+        {
+            var mockLDAPUtils = new Mock<ILDAPUtils>();
+            var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
+            var gpcFileSysPath = Path.Join(Path.GetTempPath(), "made", "up", "path");
+
+            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+        [Fact]
+        public async Task GPOLocalGroupProcess_ProcessGPOXMLFile_Disabled()
+        {
+            var mockLDAPUtils = new Mock<ILDAPUtils>();
+            var gpcFileSysPath = Path.GetTempPath();
+            var groupsXmlPath = Path.Join(gpcFileSysPath, "MACHINE", "Preferences", "Groups", "Groups.xml");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(groupsXmlPath));
+            File.WriteAllText(groupsXmlPath, GroupXmlContentDisabled);
+
+            var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
+
+            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public async Task GPOLocalGroupProcessor_ProcessGPOXMLFile()
+        {
+            var mockLDAPUtils = new Mock<ILDAPUtils>();
+            mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
+            var gpcFileSysPath = Path.GetTempPath();
+            var groupsXmlPath = Path.Join(gpcFileSysPath, "MACHINE", "Preferences", "Groups", "Groups.xml");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(groupsXmlPath));
+            File.WriteAllText(groupsXmlPath, GroupXmlContent);
+
+            var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
+            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+
+            Assert.NotNull(actual);
+            Assert.NotEmpty(actual);
         }
     }
 }

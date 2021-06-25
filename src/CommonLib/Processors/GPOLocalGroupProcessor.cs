@@ -394,7 +394,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns>A list of GPO "Actions"</returns>
-        private async IAsyncEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
+        internal async IAsyncEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
         {
             var xmlPath = Path.Combine(new string[]{basePath, "MACHINE", "Preferences", "Groups", "Groups.xml"});
 
@@ -547,7 +547,7 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Represents an action from a GPO
         /// </summary>
-        private class GroupAction
+        internal class GroupAction
         {
             internal GroupActionOperation Action { get; set; }
             internal GroupActionTarget Target { get; set; }
@@ -580,7 +580,7 @@ namespace SharpHoundCommonLib.Processors
             public List<TypedPrincipal> LocalGroups = new();
         }
 
-        private enum GroupActionOperation
+        internal enum GroupActionOperation
         {
             Add,
             Delete,
@@ -588,7 +588,7 @@ namespace SharpHoundCommonLib.Processors
             DeleteGroups
         }
 
-        private enum GroupActionTarget
+        internal enum GroupActionTarget
         {
             RestrictedMemberOf,
             RestrictedMember,
