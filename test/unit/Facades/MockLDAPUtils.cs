@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using System.Security.AccessControl;
 using System.DirectoryServices.ActiveDirectory;
@@ -700,6 +701,7 @@ namespace CommonLibTest.Facades
             throw new System.NotImplementedException();
         }
 
+        #pragma warning disable CS1998 
         public async Task<string> ResolveHostToSid(string hostname, string domain)
         {
             var h = SharpHoundCommonLib.Helpers.StripServicePrincipalName(hostname);
@@ -713,7 +715,9 @@ namespace CommonLibTest.Facades
                 _ => null
             };
         }
+        #pragma warning restore CS1998
 
+        #pragma warning disable CS1998
         public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
         {
             return name.ToUpper() switch
@@ -726,6 +730,7 @@ namespace CommonLibTest.Facades
                 _ => null
             };
         }
+        #pragma warning restore CS1998
 
         public TypedPrincipal ResolveDistinguishedName(string dn)
         {
@@ -961,6 +966,11 @@ namespace CommonLibTest.Facades
                     "S-1-5-21-3130019616-2776909439-2417379446-502", Label.User),
                 _ => null
             };
+        }
+
+        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options)
+        {
+            throw new System.NotImplementedException();
         }
 
         public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken,

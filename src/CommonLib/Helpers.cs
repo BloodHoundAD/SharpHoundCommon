@@ -34,8 +34,8 @@ namespace SharpHoundCommonLib
 
                 yield return new ParsedGPLink
                 {
-                    Status = status,
-                    DistinguishedName = dn
+                    Status = status.TrimStart().TrimEnd(),
+                    DistinguishedName = dn.TrimStart().TrimEnd()
                 };
             }
         }

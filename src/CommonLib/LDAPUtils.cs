@@ -6,7 +6,6 @@ using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -188,9 +187,10 @@ namespace SharpHoundCommonLib
             }
         }
 
+        #pragma warning disable CS1998  // TODO: deprecate API
         public async Task<string> GetSidFromDomainName(string domainName)
         {
-            var tempDomainName = await NormalizeDomainName(domainName);
+            var tempDomainName = NormalizeDomainName(domainName);
             if (Cache.GetDomainSidMapping(tempDomainName, out var sid))
             {
                 return sid;
@@ -215,6 +215,7 @@ namespace SharpHoundCommonLib
 
             return sid;
         }
+        #pragma warning restore CS1998 
         
         private string GetDomainNameFromSidLdap(string sid)
         {
@@ -347,7 +348,7 @@ namespace SharpHoundCommonLib
                 return sid;
             }
 
-            var normalDomain = await NormalizeDomainName(domain);
+            var normalDomain = NormalizeDomainName(domain);
 
             string tempName;
             string tempDomain = null;
@@ -568,6 +569,7 @@ namespace SharpHoundCommonLib
         /// <param name="name"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
+        #pragma warning disable CS1998 // TODO: deprecate API
         public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
         {
             if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetIDType(id, out var type))
@@ -579,7 +581,7 @@ namespace SharpHoundCommonLib
                 };
             }
 
-            var d = await NormalizeDomainName(domain);
+            var d = NormalizeDomainName(domain);
             var result = QueryLDAP($"(samaccountname={name})", SearchScope.Subtree, CommonProperties.TypeResolutionProps,
                 d).DefaultIfEmpty(null).FirstOrDefault();
 
@@ -605,6 +607,7 @@ namespace SharpHoundCommonLib
                 ObjectType = type
             };
         }
+        #pragma warning restore CS1998
 
         /// <summary>
         /// Attempts to convert a distinguishedname to its corresponding ID and object type.
@@ -655,6 +658,39 @@ namespace SharpHoundCommonLib
                 ObjectIdentifier = id,
                 ObjectType = type
             };
+        }
+
+        public IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options)
+        {
+            if (options.cancellationToken != null)
+            {
+                return QueryLDAP(
+                    options.filter,
+                    options.scope,
+                    options.properties,
+                    options.cancellationToken,
+                    options.domainName,
+                    options.includeAcl,
+                    options.showDeleted,
+                    options.adsPath,
+                    options.globalCatalog,
+                    options.skipCache
+                );
+            }
+            else
+            {
+                return QueryLDAP(
+                    options.filter,
+                    options.scope,
+                    options.properties,
+                    options.domainName,
+                    options.includeAcl,
+                    options.showDeleted,
+                    options.adsPath,
+                    options.globalCatalog,
+                    options.skipCache
+                );
+            }
         }
         
         /// <summary>
@@ -1078,14 +1114,14 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domain"></param>
         /// <returns></returns>
-        internal async Task<string> NormalizeDomainName(string domain)
+        internal string NormalizeDomainName(string domain)
         {
             var resolved = domain;
 
             if (resolved.Contains("."))
                 return domain.ToUpper();
 
-            resolved = await ResolveDomainNetbiosToDns(domain) ?? domain;
+            resolved = ResolveDomainNetbiosToDns(domain) ?? domain;
 
             return resolved.ToUpper();
         }
@@ -1095,7 +1131,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
-        internal async Task<string> ResolveDomainNetbiosToDns(string domainName)
+        internal string ResolveDomainNetbiosToDns(string domainName)
         {
             var key = domainName.ToUpper();
             if (_netbiosCache.TryGetValue(key, out var flatName))

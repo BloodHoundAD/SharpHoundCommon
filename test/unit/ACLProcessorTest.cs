@@ -224,8 +224,6 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_ProcessACL_Null_SID()
         {
-            var expectedPrincipalType = Label.Group;
-
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
             var collection = new List<ActiveDirectoryRuleDescriptor>();
@@ -245,8 +243,6 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_ProcessACL_Null_ACE()
         {
-            var expectedPrincipalType = Label.Group;
-
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
             var collection = new List<ActiveDirectoryRuleDescriptor>();
@@ -267,8 +263,6 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_ProcessACL_Deny_ACE()
         {
-            var expectedPrincipalType = Label.Group;
-
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
             var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
@@ -291,8 +285,6 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_ProcessACL_Unmatched_Inheritance_ACE()
         {
-            var expectedPrincipalType = Label.Group;
-
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
             var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
@@ -316,8 +308,6 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_ProcessACL_Null_SID_ACE()
         {
-            var expectedPrincipalType = Label.Group;
-
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
             var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
