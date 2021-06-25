@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Data.Common;
 using System.Runtime.InteropServices;
 using System;
@@ -20,7 +21,6 @@ using System.Collections.Generic;
 namespace CommonLibTest
 {
 
-
     public class GPOLocalGroupProcessorTest
     {
         private ITestOutputHelper _testOutputHelper;
@@ -28,7 +28,6 @@ namespace CommonLibTest
         {
             _testOutputHelper = testOutputHelper;
         }
-
 
         string GroupXmlContent = @"<?xml version=""1.0"" encoding=""UTF-8""?>
         <Groups clsid=""{3125E937-EB16-4b4c-9934-544FC6D24D26}"">
@@ -81,34 +80,7 @@ namespace CommonLibTest
         </Groups>
         ";
 
-        string GroupXmlContent2 = @"<?xml version=""1.0"" encoding=""UTF-8""?>
-        <Groups clsid=""{3125E937-EB16-4b4c-9934-544FC6D24D26}"">
-            <Group clsid=""{6D4A79E4-529C-4481-ABD0-F5BD7EA93BA7}"" uid=""{D8BF17B2-92AA-4CFC-825C-707E15A10C89}"" changed=""2019-10-30 00:04:02"" image=""2"" name=""Administrators"">
-                <Properties groupName=""Administrators"" groupSid="""" removeAccounts=""0"" deleteAllGroups=""0"" deleteAllUsers=""0"" description="""" newName="""" action=""U"">
-                    <Members>
-                        <Member name=""TESTLAB\Domain Admins"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-512""/>
-                        <Member name=""TESTLAB\dfm"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-1105""/>
-                        <Member name=""TESTLAB\Domain Computers"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-515""/>
-                    </Members>
-                </Properties>
-            </Group>
-        </Groups>
-        ";
-        string GroupXmlContent3 = @"<?xml version=""1.0"" encoding=""UTF-8""?>
-        <Groups clsid=""{3125E937-EB16-4b4c-9934-544FC6D24D26}"">
-            <Group uid=""{D8BF17B2-92AA-4CFC-825C-707E15A10C89}"" changed=""2019-10-30 00:04:02"" image=""2"" name=""Administrators"">
-                <Properties groupName=""Administrators"" groupSid="""" removeAccounts=""0"" deleteAllGroups=""0"" deleteAllUsers=""0"" description="""" newName="""" action=""U"">
-                    <Members>
-                        <Member name=""TESTLAB\Domain Admins"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-512""/>
-                        <Member name=""TESTLAB\dfm"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-1105""/>
-                        <Member name=""TESTLAB\Domain Computers"" action=""ADD"" sid=""S-1-5-21-3130019616-2776909439-2417379446-515""/>
-                    </Members>
-                </Properties>
-            </Group>
-        </Groups>
-        ";
-
-        string gpttmplInfContent = @"[Unicode]
+        string GpttmplInfContent = @"[Unicode]
         Unicode=yes
         [Version]
         signature=""$CHICAGO$""
@@ -116,6 +88,14 @@ namespace CommonLibTest
         [Group Membership]
         *S-1-5-21-3130019616-2776909439-2417379446-514__Memberof = *S-1-5-32-544
         *S-1-5-21-3130019616-2776909439-2417379446-514__Members =
+        *S-1-5-32-544__Members = 
+        ";
+
+        string GpttmplInfContentNoMatch = @"[Unicode]
+        Unicode=yes
+        [Version]
+        signature=""$CHICAGO$""
+        Revision=1
         ";
 
         [Fact(Skip = "")]
@@ -211,10 +191,10 @@ namespace CommonLibTest
 
             mockLDAPUtils.VerifyAll();
             Assert.NotNull(result);
-            // Assert.Single(result.AffectedComputers);
-            // var actual = result.AffectedComputers.First();
-            // Assert.Equal(Label.Computer, actual.ObjectType);
-            // Assert.Equal("teapot", actual.ObjectIdentifier);
+            Assert.Single(result.AffectedComputers);
+            var actual = result.AffectedComputers.First();
+            Assert.Equal(Label.Computer, actual.ObjectType);
+            Assert.Equal("teapot", actual.ObjectIdentifier);
         }
 
         [Fact]
@@ -228,6 +208,7 @@ namespace CommonLibTest
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
+
         [Fact]
         public async Task GPOLocalGroupProcess_ProcessGPOXMLFile_Disabled()
         {
@@ -261,6 +242,84 @@ namespace CommonLibTest
 
             Assert.NotNull(actual);
             Assert.NotEmpty(actual);
+        }
+
+        [Fact]
+        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NoFile()
+        {
+            var mockLDAPUtils = new Mock<ILDAPUtils>();
+            var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
+            var gpcFileSysPath = Path.Join(Path.GetTempPath(), "made", "up", "path");
+
+            var actual = await processor.ProcessGPOTemplateFile(gpcFileSysPath, "somedomain").ToListAsync();
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NoMatch()
+        {
+            var mockLDAPUtils = new Mock<ILDAPUtils>();
+            var gpcFileSysPath = Path.GetTempPath();
+            var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(gptTmplPath));
+            File.WriteAllText(gptTmplPath, GpttmplInfContentNoMatch);
+
+            var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
+
+            var actual = await processor.ProcessGPOTemplateFile(gpcFileSysPath, "somedomain").ToListAsync();
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NullSID()
+        {
+            var mockLDAPUtils = new Mock<ILDAPUtils>();
+            var gpcFileSysPath = Path.GetTempPath();
+            var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(gptTmplPath));
+            File.WriteAllText(gptTmplPath, GpttmplInfContent);
+
+            var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
+
+            var actual = await processor.ProcessGPOTemplateFile(gpcFileSysPath, "somedomain").ToListAsync();
+            Assert.NotNull(actual);
+            Assert.NotEmpty(actual);
+        }
+
+        [Fact]
+        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile()
+        {
+            var mockLDAPUtils = new Mock<ILDAPUtils>();
+            mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
+            var gpcFileSysPath = Path.GetTempPath();
+            var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(gptTmplPath));
+            File.WriteAllText(gptTmplPath, GpttmplInfContent);
+
+            var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
+
+            var actual = await processor.ProcessGPOTemplateFile(gpcFileSysPath, "somedomain").ToListAsync();
+            Assert.NotNull(actual);
+            // Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void GPOLocalGroupProcess_GroupAction()
+        {
+
+            var ga = new GPOLocalGroupProcessor.GroupAction();
+            var tp = ga.ToTypedPrincipal();
+            var str = ga.ToString();
+
+            Assert.NotNull(tp);
+            Assert.Equal(new TypedPrincipal(), tp);
+            Assert.NotNull(str);
+            Assert.Equal("Action: Add, Target: RestrictedMemberOf, TargetSid: , TargetType: User, TargetRid: None", str);
         }
     }
 }

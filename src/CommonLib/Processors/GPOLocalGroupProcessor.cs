@@ -244,9 +244,9 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns></returns>
-        private async IAsyncEnumerable<GroupAction> ProcessGPOTemplateFile(string basePath, string gpoDomain)
+        internal async IAsyncEnumerable<GroupAction> ProcessGPOTemplateFile(string basePath, string gpoDomain)
         {
-            var templatePath = $"{basePath}\\MACHINE\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf";
+            var templatePath = Path.Combine(new string[]{basePath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf"});
 
             if (!File.Exists(templatePath))
                 yield break;
