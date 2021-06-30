@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.DirectoryServices;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -29,8 +28,21 @@ namespace SharpHoundCommonLib.Processors
             "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedtodelegateto",
             "msDS-allowedtoactonbehalfofotheridentity", "displayname",
             "sidhistory", "samaccountname","samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership",
-            "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector", "member"
+            "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector", "member", "whenCreated"
         };
+
+        private static Dictionary<string, object> GetCommonProps(ISearchResultEntry entry)
+        {
+            return new Dictionary<string, object>
+            {
+                {
+                    "description", entry.GetProperty("description")
+                },
+                {
+                    "whencreated", Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty("whenCreated"))
+                }
+            };
+        }
 
         /// <summary>
         /// Reads specific LDAP properties related to Domains
@@ -39,7 +51,7 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         public static Dictionary<string, object> ReadDomainProperties(ISearchResultEntry entry)
         {
-            var props = new Dictionary<string, object> {{"description", entry.GetProperty("description")}};
+            var props = GetCommonProps(entry);
 
             if (!int.TryParse(entry.GetProperty("msds-behavior-version"), out var level))
             {
@@ -81,11 +93,8 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         public static Dictionary<string, object> ReadGPOProperties(ISearchResultEntry entry)
         {
-            var props = new Dictionary<string, object>
-            {
-                {"description", entry.GetProperty("description")},
-                {"gpcpath", entry.GetProperty("gpcfilesyspath")?.ToUpper()}
-            };
+            var props = GetCommonProps(entry);
+            props.Add("gpcpath", entry.GetProperty("gpcfilesyspath")?.ToUpper());
             return props;
         }
 
@@ -96,10 +105,7 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         public static Dictionary<string, object> ReadOUProperties(ISearchResultEntry entry)
         {
-            var props = new Dictionary<string, object>
-            {
-                {"description", entry.GetProperty("description")}
-            };
+            var props = GetCommonProps(entry);
             return props;
         }
         
@@ -110,10 +116,7 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         public static Dictionary<string, object> ReadGroupProperties(ISearchResultEntry entry)
         {
-            var props = new Dictionary<string, object>
-            {
-                {"description", entry.GetProperty("description")}
-            };
+            var props = GetCommonProps(entry);
             
             var ac = entry.GetProperty("admincount");
             if (ac != null)
@@ -136,10 +139,7 @@ namespace SharpHoundCommonLib.Processors
         public async Task<UserProperties> ReadUserProperties(ISearchResultEntry entry)
         {
             var userProps = new UserProperties();
-            var props = new Dictionary<string, object>
-            {
-                {"description", entry.GetProperty("description")}
-            };
+            var props = GetCommonProps(entry);
 
             var uac = entry.GetProperty("useraccountcontrol");
             bool enabled, trustedToAuth, sensitive, dontReqPreAuth, passwdNotReq, unconstrained, pwdNeverExpires;
@@ -266,7 +266,7 @@ namespace SharpHoundCommonLib.Processors
         public async Task<ComputerProperties> ReadComputerProperties(ISearchResultEntry entry)
         {
             var compProps = new ComputerProperties();
-            var props = new Dictionary<string, object>();
+            var props = GetCommonProps(entry);
             
             var uac = entry.GetProperty("useraccountcontrol");
             bool enabled, unconstrained, trustedToAuth;
@@ -341,8 +341,7 @@ namespace SharpHoundCommonLib.Processors
             }
 
             props.Add("operatingsystem", os);
-            props.Add("description", entry.GetProperty("description"));
-            
+
             var sh = entry.GetByteArrayProperty("sidhistory");
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();

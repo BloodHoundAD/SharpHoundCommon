@@ -71,8 +71,7 @@ namespace SharpHoundCommonLib
             {
                 itemDomain = Helpers.DistinguishedNameToDomain(distinguishedName);
             }
-
-
+            
             res.Domain = itemDomain;
 
             if (WellKnownPrincipal.GetWellKnownPrincipal(itemID, out var wkPrincipal))
