@@ -192,7 +192,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ILDAPUtils.html",
-          "hash": "iZjjx8B/VfimTWhBR/FPJQ=="
+          "hash": "DkMI1zmRmXEAVSKTr670Cg=="
         }
       },
       "is_incremental": false,
@@ -272,11 +272,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.LDAPQueryOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.LDAPQueryOptions.html",
+          "hash": "dhxhGkLphzD6FCZ4fZ2jnQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/SharpHoundCommonLib.LDAPUtils.yml",
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPUtils.html",
-          "hash": "Xz1szSJ8msXRME6lU4nABQ=="
+          "hash": "zlgI9X8bMjKZESATgO/fEw=="
         }
       },
       "is_incremental": false,
@@ -792,7 +804,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GroupResults.html",
-          "hash": "4UGlu+rWPq/xBdvqESo3HA=="
+          "hash": "4ID2bs1tc7tnfhESidN+xg=="
         }
       },
       "is_incremental": false,
@@ -804,7 +816,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html",
-          "hash": "2CB8WF1gMdnwS0X9kvmmjg=="
+          "hash": "dGgW9R6uqEp2ZrwF/iUl1w=="
         }
       },
       "is_incremental": false,
@@ -852,7 +864,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html",
-          "hash": "b8BSFLHRe8Ur7bIY8aeCBg=="
+          "hash": "YCzCuzJYHC97w4uK6cgEqA=="
         }
       },
       "is_incremental": false,
@@ -948,7 +960,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.html",
-          "hash": "mBHLQn8jWzsHcKFR+2Iwig=="
+          "hash": "xdztd9vAwLlwpc07AfN+rQ=="
         }
       },
       "is_incremental": false,
@@ -972,7 +984,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "X2YkUTbIQcXpzOf4mkEE0g=="
+          "hash": "WdlCRIsS6LeZ2wICPjvGyA=="
         }
       },
       "is_incremental": false,
@@ -2014,7 +2026,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 78,
+          "total_file_count": 79,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

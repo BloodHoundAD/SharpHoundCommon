@@ -1240,6 +1240,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.MakeSecurityDescriptor
   nameWithType: ILDAPUtils.MakeSecurityDescriptor
+- uid: SharpHoundCommonLib.ILDAPUtils.QueryLDAP(SharpHoundCommonLib.LDAPQueryOptions)
+  name: QueryLDAP(LDAPQueryOptions)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_QueryLDAP_SharpHoundCommonLib_LDAPQueryOptions_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.QueryLDAP(SharpHoundCommonLib.LDAPQueryOptions)
+  fullName: SharpHoundCommonLib.ILDAPUtils.QueryLDAP(SharpHoundCommonLib.LDAPQueryOptions)
+  nameWithType: ILDAPUtils.QueryLDAP(LDAPQueryOptions)
 - uid: SharpHoundCommonLib.ILDAPUtils.QueryLDAP(System.String,System.DirectoryServices.Protocols.SearchScope,System.String[],System.String,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean)
   name: QueryLDAP(String, SearchScope, String[], String, Boolean, Boolean, String, Boolean, Boolean)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_QueryLDAP_System_String_System_DirectoryServices_Protocols_SearchScope_System_String___System_String_System_Boolean_System_Boolean_System_String_System_Boolean_System_Boolean_
@@ -1962,6 +1968,72 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.GetFilter
   nameWithType: LDAPFilter.GetFilter
+- uid: SharpHoundCommonLib.LDAPQueryOptions
+  name: LDAPQueryOptions
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html
+  commentId: T:SharpHoundCommonLib.LDAPQueryOptions
+  fullName: SharpHoundCommonLib.LDAPQueryOptions
+  nameWithType: LDAPQueryOptions
+- uid: SharpHoundCommonLib.LDAPQueryOptions.adsPath
+  name: adsPath
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_adsPath
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.adsPath
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.adsPath
+  nameWithType: LDAPQueryOptions.adsPath
+- uid: SharpHoundCommonLib.LDAPQueryOptions.cancellationToken
+  name: cancellationToken
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_cancellationToken
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.cancellationToken
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.cancellationToken
+  nameWithType: LDAPQueryOptions.cancellationToken
+- uid: SharpHoundCommonLib.LDAPQueryOptions.domainName
+  name: domainName
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_domainName
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.domainName
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.domainName
+  nameWithType: LDAPQueryOptions.domainName
+- uid: SharpHoundCommonLib.LDAPQueryOptions.filter
+  name: filter
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_filter
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.filter
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.filter
+  nameWithType: LDAPQueryOptions.filter
+- uid: SharpHoundCommonLib.LDAPQueryOptions.globalCatalog
+  name: globalCatalog
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_globalCatalog
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.globalCatalog
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.globalCatalog
+  nameWithType: LDAPQueryOptions.globalCatalog
+- uid: SharpHoundCommonLib.LDAPQueryOptions.includeAcl
+  name: includeAcl
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_includeAcl
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.includeAcl
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.includeAcl
+  nameWithType: LDAPQueryOptions.includeAcl
+- uid: SharpHoundCommonLib.LDAPQueryOptions.properties
+  name: properties
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_properties
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.properties
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.properties
+  nameWithType: LDAPQueryOptions.properties
+- uid: SharpHoundCommonLib.LDAPQueryOptions.scope
+  name: scope
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_scope
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.scope
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.scope
+  nameWithType: LDAPQueryOptions.scope
+- uid: SharpHoundCommonLib.LDAPQueryOptions.showDeleted
+  name: showDeleted
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_showDeleted
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.showDeleted
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.showDeleted
+  nameWithType: LDAPQueryOptions.showDeleted
+- uid: SharpHoundCommonLib.LDAPQueryOptions.skipCache
+  name: skipCache
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_skipCache
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.skipCache
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.skipCache
+  nameWithType: LDAPQueryOptions.skipCache
 - uid: SharpHoundCommonLib.LDAPUtils
   name: LDAPUtils
   href: api/SharpHoundCommonLib.LDAPUtils.html
@@ -2120,6 +2192,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.MakeSecurityDescriptor
   nameWithType: LDAPUtils.MakeSecurityDescriptor
+- uid: SharpHoundCommonLib.LDAPUtils.QueryLDAP(SharpHoundCommonLib.LDAPQueryOptions)
+  name: QueryLDAP(LDAPQueryOptions)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_QueryLDAP_SharpHoundCommonLib_LDAPQueryOptions_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.QueryLDAP(SharpHoundCommonLib.LDAPQueryOptions)
+  fullName: SharpHoundCommonLib.LDAPUtils.QueryLDAP(SharpHoundCommonLib.LDAPQueryOptions)
+  nameWithType: LDAPUtils.QueryLDAP(LDAPQueryOptions)
 - uid: SharpHoundCommonLib.LDAPUtils.QueryLDAP(System.String,System.DirectoryServices.Protocols.SearchScope,System.String[],System.String,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean)
   name: QueryLDAP(String, SearchScope, String[], String, Boolean, Boolean, String, Boolean, Boolean)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_QueryLDAP_System_String_System_DirectoryServices_Protocols_SearchScope_System_String___System_String_System_Boolean_System_Boolean_System_String_System_Boolean_System_Boolean_
