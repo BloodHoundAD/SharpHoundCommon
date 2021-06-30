@@ -116,7 +116,6 @@ namespace SharpHoundCommonLib.Processors
         public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerDomain, string computerSid)
         {
             var ret = new SessionAPIResult();
-            var resumeHandle = 0;
             NativeMethods.WKSTA_USER_INFO_1[] apiResult;
 
             try

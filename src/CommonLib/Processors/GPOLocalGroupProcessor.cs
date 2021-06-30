@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
@@ -53,9 +54,14 @@ namespace SharpHoundCommonLib.Processors
 
             // First lets check if this OU actually has computers that it contains. If not, then we'll ignore it.
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
-            var query = new LDAPFilter().AddComputers().GetFilter();
-            var affectedComputers = _utils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.ObjectSID,
-                    adsPath: distinguishedName)
+            var options = new LDAPQueryOptions{
+                filter = new LDAPFilter().AddComputers().GetFilter(),
+                scope = SearchScope.Subtree,
+                properties = CommonProperties.ObjectSID,
+                adsPath = distinguishedName
+            };
+
+            var affectedComputers = _utils.QueryLDAP(options)
                 .Select(x => x.GetSid())
                 .Where(x => x != null)
                 .Select(x => new TypedPrincipal
@@ -105,9 +111,15 @@ namespace SharpHoundCommonLib.Processors
 
                     var gpoDomain = Helpers.DistinguishedNameToDomain(linkDn);
 
-                    var filePath = _utils.QueryLDAP(new LDAPFilter().AddAllObjects().GetFilter(), SearchScope.Base,
-                            CommonProperties.GPCFileSysPath, adsPath: linkDn).DefaultIfEmpty(null).FirstOrDefault()
-                        ?.GetProperty("gpcfilesyspath");
+                    var opts = new LDAPQueryOptions
+                    {
+                        filter = new LDAPFilter().AddAllObjects().GetFilter(),
+                        scope = SearchScope.Base,
+                        properties = CommonProperties.GPCFileSysPath,
+                        adsPath = linkDn
+                    };
+                    var filePath = _utils.QueryLDAP(opts).FirstOrDefault()?
+                        .GetProperty("gpcfilesyspath");
 
                     if (filePath == null)
                     {
@@ -232,9 +244,9 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns></returns>
-        private async IAsyncEnumerable<GroupAction> ProcessGPOTemplateFile(string basePath, string gpoDomain)
+        internal async IAsyncEnumerable<GroupAction> ProcessGPOTemplateFile(string basePath, string gpoDomain)
         {
-            var templatePath = $"{basePath}\\MACHINE\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf";
+            var templatePath = Path.Combine(new string[]{basePath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf"});
 
             if (!File.Exists(templatePath))
                 yield break;
@@ -382,9 +394,9 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns>A list of GPO "Actions"</returns>
-        private async IAsyncEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
+        internal async IAsyncEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
         {
-            var xmlPath = $"{basePath}\\MACHINE\\Preferences\\Groups\\Groups.xml";
+            var xmlPath = Path.Combine(new string[]{basePath, "MACHINE", "Preferences", "Groups", "Groups.xml"});
 
             //If the file doesn't exist, then just return
             if (!File.Exists(xmlPath))
@@ -535,7 +547,7 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         /// Represents an action from a GPO
         /// </summary>
-        private class GroupAction
+        internal class GroupAction
         {
             internal GroupActionOperation Action { get; set; }
             internal GroupActionTarget Target { get; set; }
@@ -568,7 +580,7 @@ namespace SharpHoundCommonLib.Processors
             public List<TypedPrincipal> LocalGroups = new();
         }
 
-        private enum GroupActionOperation
+        internal enum GroupActionOperation
         {
             Add,
             Delete,
@@ -576,7 +588,7 @@ namespace SharpHoundCommonLib.Processors
             DeleteGroups
         }
 
-        private enum GroupActionTarget
+        internal enum GroupActionTarget
         {
             RestrictedMemberOf,
             RestrictedMember,

@@ -9,6 +9,39 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib
 {
+    public struct LDAPQueryOptions
+    {
+        /// <param name="filter">LDAP filter</param>
+        public string filter;
+        
+        /// <param name="scope">SearchScope to query</param>
+        public SearchScope scope;
+        
+        /// <param name="properties">LDAP properties to fetch for each object</param>
+        public string[] properties; 
+
+        /// <param name="cancellationToken">Cancellation Token</param>
+        public CancellationToken cancellationToken; 
+
+        /// <param name="domainName">Domain to query</param>
+        public string domainName;
+
+        /// <param name="includeAcl">Include the DACL and Owner values in the NTSecurityDescriptor</param>
+        public bool includeAcl;
+
+        /// <param name="showDeleted">Include deleted objects</param>
+        public bool showDeleted;
+
+        /// <param name="adsPath">ADS path to limit the query too</param>
+        public string adsPath;
+
+        /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
+        public bool globalCatalog;
+
+        /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
+        public bool skipCache;
+    }
+
     public interface ILDAPUtils
     {
         void SetLDAPConfig(LDAPConfig config);
@@ -53,6 +86,13 @@ namespace SharpHoundCommonLib
         /// <param name="dn">DistinguishedName</param>
         /// <returns>A <c>TypedPrincipal</c> object with the SID and Label</returns>
         TypedPrincipal ResolveDistinguishedName(string dn);
+
+        /// <summary>
+        /// Performs an LDAP query using the parameters specified by the user.
+        /// </summary>
+        /// <param name="options">LDAP query options</param>
+        /// <returns>All LDAP search results matching the specified parameters</returns>
+        IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options);
 
         /// <summary>
         /// Performs an LDAP query using the parameters specified by the user.
