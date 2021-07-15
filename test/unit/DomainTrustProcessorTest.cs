@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 using CommonLibTest.Facades;
@@ -13,7 +14,7 @@ namespace CommonLibTest
     public class DomainTrustProcessorTest
     {
         private ITestOutputHelper _testOutputHelper;
-        
+
         public DomainTrustProcessorTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
@@ -26,7 +27,7 @@ namespace CommonLibTest
             var searchResults = new[]
             {
                 new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
-                    new Dictionary<string, object>()
+                    new Dictionary<string, object>
                     {
                         {"trustdirection", "3"},
                         {"trusttype", "2"},
@@ -35,7 +36,7 @@ namespace CommonLibTest
                         {"securityIdentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "", Label.Domain)
             };
-            
+
             mockUtils.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
                 It.IsAny<bool>())).Returns(searchResults);
@@ -58,16 +59,16 @@ namespace CommonLibTest
             var searchResults = new[]
             {
                 new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
-                    new Dictionary<string, object>()
+                    new Dictionary<string, object>
                     {
                         {"trustdirection", "3"},
                         {"trusttype", "2"},
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
-                        {"securityIdentifier", System.Array.Empty<byte>()}
+                        {"securityIdentifier", Array.Empty<byte>()}
                     }, "", Label.Domain),
                 new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
-                    new Dictionary<string, object>()
+                    new Dictionary<string, object>
                     {
                         {"trustdirection", "3"},
                         {"trusttype", "2"},
@@ -76,7 +77,7 @@ namespace CommonLibTest
                         {"securityIdentifier", Helpers.B64ToBytes("QQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "", Label.Domain),
                 new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
-                    new Dictionary<string, object>()
+                    new Dictionary<string, object>
                     {
                         {"trusttype", "2"},
                         {"trustattributes", 0x24.ToString()},
@@ -84,16 +85,15 @@ namespace CommonLibTest
                         {"securityIdentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "", Label.Domain),
                 new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
-                    new Dictionary<string, object>()
+                    new Dictionary<string, object>
                     {
                         {"trustdirection", "3"},
                         {"trusttype", "2"},
                         {"cn", "external.local"},
                         {"securityIdentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "", Label.Domain)
-                
             };
-            
+
             mockUtils.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
                 It.IsAny<bool>())).Returns(searchResults);
@@ -112,15 +112,15 @@ namespace CommonLibTest
             attrib = TrustAttributes.ForestTransitive;
             test = DomainTrustProcessor.TrustAttributesToType(attrib);
             Assert.Equal(TrustType.Forest, test);
-            
+
             attrib = TrustAttributes.TreatAsExternal;
             test = DomainTrustProcessor.TrustAttributesToType(attrib);
             Assert.Equal(TrustType.External, test);
-            
+
             attrib = TrustAttributes.CrossOrganization;
             test = DomainTrustProcessor.TrustAttributesToType(attrib);
             Assert.Equal(TrustType.External, test);
-            
+
             attrib = TrustAttributes.FilterSids;
             test = DomainTrustProcessor.TrustAttributesToType(attrib);
             Assert.Equal(TrustType.Unknown, test);

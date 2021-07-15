@@ -8,6 +8,7 @@ namespace SharpHoundCommonLib.Processors
     public class ContainerProcessor
     {
         private readonly ILDAPUtils _utils;
+
         public ContainerProcessor(ILDAPUtils utils)
         {
             _utils = utils;
@@ -16,21 +17,15 @@ namespace SharpHoundCommonLib.Processors
         private static bool IsDNFiltered(string distinguishedName)
         {
             var dn = distinguishedName.ToUpper();
-            if (dn.Contains("CN=PROGRAM DATA,DC="))
-            {
-                return true;
-            }
+            if (dn.Contains("CN=PROGRAM DATA,DC=")) return true;
 
-            if (dn.Contains("CN=SYSTEM,DC="))
-            {
-                return true;
-            }
+            if (dn.Contains("CN=SYSTEM,DC=")) return true;
 
             return false;
         }
-        
+
         /// <summary>
-        /// Finds all immediate child objects of a container. 
+        ///     Finds all immediate child objects of a container.
         /// </summary>
         /// <param name="distinguishedName"></param>
         /// <returns></returns>
@@ -38,7 +33,8 @@ namespace SharpHoundCommonLib.Processors
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
             foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
-                CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName), adsPath: distinguishedName))
+                CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName),
+                adsPath: distinguishedName))
             {
                 var dn = childEntry.DistinguishedName;
                 if (IsDNFiltered(dn))
@@ -56,7 +52,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads the "gplink" property from a SearchResult and converts the links into the acceptable SharpHound format
+        ///     Reads the "gplink" property from a SearchResult and converts the links into the acceptable SharpHound format
         /// </summary>
         /// <param name="gpLink"></param>
         /// <returns></returns>
@@ -70,7 +66,7 @@ namespace SharpHoundCommonLib.Processors
                 var enforced = link.Status.Equals("2");
 
                 var res = _utils.ResolveDistinguishedName(link.DistinguishedName);
-                    
+
                 if (res == null)
                     continue;
 
@@ -81,9 +77,9 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
         }
-        
+
         /// <summary>
-        /// Checks if a container blocks privilege inheritance
+        ///     Checks if a container blocks privilege inheritance
         /// </summary>
         /// <param name="gpOptions"></param>
         /// <returns></returns>

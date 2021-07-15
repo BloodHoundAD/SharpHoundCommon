@@ -9,26 +9,29 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
-        private readonly ILDAPUtils _utils;
-        private readonly NativeMethods _nativeMethods;
         private readonly string _currentUserName;
+        private readonly NativeMethods _nativeMethods;
+        private readonly ILDAPUtils _utils;
 
-        public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null, NativeMethods nativeMethods = null)
+        public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null,
+            NativeMethods nativeMethods = null)
         {
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();
-            _currentUserName = currentUserName ?? WindowsIdentity.GetCurrent().Name.Split('\\')[1];;
+            _currentUserName = currentUserName ?? WindowsIdentity.GetCurrent().Name.Split('\\')[1];
+            ;
         }
 
         /// <summary>
-        /// Uses the NetSessionEnum Win32 API call to get network sessions from a remote computer.
-        /// These are usually from SMB share accesses or other network sessions of the sort
+        ///     Uses the NetSessionEnum Win32 API call to get network sessions from a remote computer.
+        ///     These are usually from SMB share accesses or other network sessions of the sort
         /// </summary>
         /// <param name="computerName"></param>
         /// <param name="computerSid"></param>
         /// <param name="computerDomain"></param>
         /// <returns></returns>
-        public async Task<SessionAPIResult> ReadUserSessions(string computerName, string computerSid, string computerDomain)
+        public async Task<SessionAPIResult> ReadUserSessions(string computerName, string computerSid,
+            string computerDomain)
         {
             var ret = new SessionAPIResult();
             NativeMethods.SESSION_INFO_10[] apiResult;
@@ -51,9 +54,9 @@ namespace SharpHoundCommonLib.Processors
             {
                 var username = sesInfo.sesi10_username;
                 var computerSessionName = sesInfo.sesi10_cname;
-                
+
                 Logging.Trace($"NetSessionEnum Entry: {username}@{computerSessionName}");
-                
+
                 //Filter out blank/null cnames/usernames
                 if (string.IsNullOrWhiteSpace(computerSessionName) || string.IsNullOrWhiteSpace(username))
                     continue;
@@ -63,21 +66,19 @@ namespace SharpHoundCommonLib.Processors
                     username.Equals(_currentUserName, StringComparison.CurrentCultureIgnoreCase) ||
                     username.Equals("anonymous logon", StringComparison.CurrentCultureIgnoreCase))
                     continue;
-                
+
                 // Remove leading slashes for unc paths
                 computerSessionName = computerSessionName.TrimStart('\\');
 
                 string resolvedComputerSID = null;
-                
+
                 //Resolve "localhost" equivalents to the computer sid
                 if (computerSessionName is "[::1]" or "127.0.0.1")
                     resolvedComputerSID = computerSid;
                 else
-                {
                     //Attempt to resolve the host name to a SID
                     resolvedComputerSID = await _utils.ResolveHostToSid(computerSessionName, computerDomain);
-                }
-                
+
                 //Throw out this data if we couldn't resolve it successfully. 
                 if (resolvedComputerSID == null || !resolvedComputerSID.StartsWith("S-1"))
                     continue;
@@ -103,17 +104,18 @@ namespace SharpHoundCommonLib.Processors
 
             return ret;
         }
-        
+
         /// <summary>
-        /// Uses the privileged win32 API, NetWkstaUserEnum, to return the logged on users on a remote computer.
-        /// Requires administrator rights on the target system
+        ///     Uses the privileged win32 API, NetWkstaUserEnum, to return the logged on users on a remote computer.
+        ///     Requires administrator rights on the target system
         /// </summary>
         /// <param name="computerName"></param>
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerDomain"></param>
         /// <param name="computerSid"></param>
         /// <returns></returns>
-        public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerDomain, string computerSid)
+        public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName,
+            string computerSamAccountName, string computerDomain, string computerSid)
         {
             var ret = new SessionAPIResult();
             NativeMethods.WKSTA_USER_INFO_1[] apiResult;
@@ -128,7 +130,7 @@ namespace SharpHoundCommonLib.Processors
                 ret.FailureReason = e.Status;
                 return ret;
             }
-            
+
             ret.Collected = true;
 
             var results = new List<TypedPrincipal>();
@@ -136,13 +138,13 @@ namespace SharpHoundCommonLib.Processors
             {
                 var domain = wkstaUserInfo.wkui1_logon_domain;
                 var username = wkstaUserInfo.wkui1_username;
-                
+
                 Logging.Trace($"NetWkstaUserEnum entry: {username}@{domain}");
 
                 //These are local computer accounts.
                 if (domain.Equals(computerSamAccountName, StringComparison.CurrentCultureIgnoreCase))
                     continue;
-                
+
                 //Filter out empty usernames and computer sessions
                 if (username.Trim() == "" || username.EndsWith("$", StringComparison.Ordinal))
                     continue;
@@ -150,11 +152,11 @@ namespace SharpHoundCommonLib.Processors
                 //Any domain with a space is unusable. It'll be things like NT Authority or Font Driver
                 if (domain.Contains(" "))
                     continue;
-                
+
                 var res = await _utils.ResolveAccountName(username, computerDomain);
                 if (res == null)
                     continue;
-            
+
                 results.Add(res);
             }
 

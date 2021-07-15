@@ -3,13 +3,13 @@
 namespace SharpHoundCommonLib.OutputTypes
 {
     /// <summary>
-    /// Represents a base JSON object which other objects will inherit from.
+    ///     Represents a base JSON object which other objects will inherit from.
     /// </summary>
     public class OutputBase
     {
+        public Dictionary<string, object> Properties = new();
         public ACE[] Aces { get; set; } = new ACE[0];
         public string ObjectIdentifier { get; set; }
-        public Dictionary<string, object> Properties = new Dictionary<string, object>();
         public bool IsDeleted { get; set; }
         public bool IsACLProtected { get; set; }
     }

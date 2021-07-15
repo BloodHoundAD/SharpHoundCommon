@@ -22,9 +22,9 @@ namespace SharpHoundCommonLib
                 results.Add(item);
             return results;
         }
-        
+
         /// <summary>
-        /// Helper function to print attributes of a SearchResultEntry
+        ///     Helper function to print attributes of a SearchResultEntry
         /// </summary>
         /// <param name="searchResultEntry"></param>
         public static void PrintEntry(this SearchResultEntry searchResultEntry)
@@ -35,6 +35,7 @@ namespace SharpHoundCommonLib
                 var property = propertyName.ToString();
                 sb.Append(property).Append("\t").Append(searchResultEntry.GetProperty(property)).Append("\n");
             }
+
             Logging.Trace(sb.ToString());
         }
 
@@ -42,7 +43,7 @@ namespace SharpHoundCommonLib
         {
             var bytes = new byte[s.BinaryLength];
             s.GetBinaryForm(bytes, 0);
-            
+
             var output = $"\\{BitConverter.ToString(bytes).Replace('-', '\\')}";
             return output;
         }
@@ -71,7 +72,7 @@ namespace SharpHoundCommonLib
         #region SearchResultEntry
 
         /// <summary>
-        /// Gets the specified property as a string from the SearchResultEntry
+        ///     Gets the specified property as a string from the SearchResultEntry
         /// </summary>
         /// <param name="entry"></param>
         /// <param name="property">The LDAP name of the property you want to get</param>
@@ -94,7 +95,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Get's the string representation of the "objectguid" property from the SearchResultEntry
+        ///     Get's the string representation of the "objectguid" property from the SearchResultEntry
         /// </summary>
         /// <param name="entry"></param>
         /// <returns>The string representation of the object's GUID if possible, otherwise null</returns>
@@ -111,7 +112,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets the "objectsid" property as a string from the SearchResultEntry
+        ///     Gets the "objectsid" property as a string from the SearchResultEntry
         /// </summary>
         /// <param name="entry"></param>
         /// <returns>The string representation of the object's SID if possible, otherwise null</returns>
@@ -147,7 +148,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets the specified property as a string array from the SearchResultEntry
+        ///     Gets the specified property as a string array from the SearchResultEntry
         /// </summary>
         /// <param name="entry"></param>
         /// <param name="property">The LDAP name of the property you want to get</param>
@@ -164,8 +165,8 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets the specified property as an array of byte arrays from the SearchResultEntry
-        /// Used for SIDHistory
+        ///     Gets the specified property as an array of byte arrays from the SearchResultEntry
+        ///     Used for SIDHistory
         /// </summary>
         /// <param name="entry"></param>
         /// <param name="property">The LDAP name of the property you want to get</param>
@@ -185,7 +186,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets the specified property as a byte array
+        ///     Gets the specified property as a byte array
         /// </summary>
         /// <param name="searchResultEntry"></param>
         /// <param name="property">The LDAP name of the property you want to get</param>
@@ -197,7 +198,7 @@ namespace SharpHoundCommonLib
 
             var collection = searchResultEntry.Attributes[property];
             var lookups = collection.GetValues(typeof(byte[]));
-            
+
             if (lookups.Length == 0)
                 return null;
 
@@ -208,7 +209,8 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Attempts to get the unique object identifier as used by BloodHound for the Search Result Entry. Tries to get objectsid first, and then objectguid next.
+        ///     Attempts to get the unique object identifier as used by BloodHound for the Search Result Entry. Tries to get
+        ///     objectsid first, and then objectguid next.
         /// </summary>
         /// <param name="entry"></param>
         /// <returns>String representation of the entry's object identifier or null</returns>
@@ -218,7 +220,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Checks the isDeleted LDAP property to determine if an entry has been deleted from the directory
+        ///     Checks the isDeleted LDAP property to determine if an entry has been deleted from the directory
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -229,8 +231,8 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Extension method to determine the BloodHound type of a SearchResultEntry using LDAP properties
-        /// Requires ldap properties objectsid, samaccounttype, objectclass
+        ///     Extension method to determine the BloodHound type of a SearchResultEntry using LDAP properties
+        ///     Requires ldap properties objectsid, samaccounttype, objectclass
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -241,8 +243,9 @@ namespace SharpHoundCommonLib
                 return Label.User;
 
             var objectId = entry.GetObjectIdentifier();
-            
-            if (objectId.StartsWith("S-1") && WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
+
+            if (objectId.StartsWith("S-1") &&
+                WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
                 return commonPrincipal.ObjectType;
 
             var objectType = Label.Base;
@@ -261,9 +264,9 @@ namespace SharpHoundCommonLib
                     objectType = Label.GPO;
                 else if (objectClasses.Contains("organizationalUnit"))
                     objectType = Label.OU;
-                else if (objectClasses.Contains("domain")) 
+                else if (objectClasses.Contains("domain"))
                     objectType = Label.Domain;
-                else if (objectClasses.Contains("container")) 
+                else if (objectClasses.Contains("container"))
                     objectType = Label.Container;
             }
 
@@ -271,6 +274,7 @@ namespace SharpHoundCommonLib
             Cache.AddType(objectId, objectType);
             return objectType;
         }
+
         #endregion
     }
 }

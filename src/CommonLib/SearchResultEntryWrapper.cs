@@ -59,19 +59,15 @@ namespace SharpHoundCommonLib
             if (distinguishedName == null)
             {
                 if (itemID.StartsWith("S-1-"))
-                {
                     itemDomain = _utils.GetDomainNameFromSid(itemID);
-                }
                 else
-                {
                     return null;
-                }
             }
             else
             {
                 itemDomain = Helpers.DistinguishedNameToDomain(distinguishedName);
             }
-            
+
             res.Domain = itemDomain;
 
             if (WellKnownPrincipal.GetWellKnownPrincipal(itemID, out var wkPrincipal))
@@ -85,13 +81,9 @@ namespace SharpHoundCommonLib
             }
 
             if (itemID.StartsWith("S-1-"))
-            {
                 res.DomainSid = new SecurityIdentifier(itemID).AccountDomainSid.Value;
-            }
             else
-            {
                 res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
-            }
 
 
             var samAccountName = GetProperty("samaccountname");
@@ -113,9 +105,7 @@ namespace SharpHoundCommonLib
                     //If we have this object class, override the object type
                     if (GetArrayProperty("objectclass").Contains("msds-groupmanagedserviceaccount",
                         StringComparer.InvariantCultureIgnoreCase))
-                    {
                         res.ObjectType = Label.User;
-                    }
 
                     if (dns != null)
                     {
@@ -148,7 +138,7 @@ namespace SharpHoundCommonLib
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             return res;
         }
 
@@ -205,10 +195,7 @@ namespace SharpHoundCommonLib
 
         public IEnumerable<string> PropertyNames()
         {
-            foreach (var property in _entry.Attributes.AttributeNames)
-            {
-                yield return property.ToString().ToLower();
-            }
+            foreach (var property in _entry.Attributes.AttributeNames) yield return property.ToString().ToLower();
         }
 
         public SearchResultEntry GetEntry()

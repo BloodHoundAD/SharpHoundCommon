@@ -8,12 +8,14 @@ namespace SharpHoundCommonLib.Processors
     public class GroupProcessor
     {
         private readonly ILDAPUtils _utils;
+
         public GroupProcessor(ILDAPUtils utils)
         {
             _utils = utils;
         }
+
         /// <summary>
-        /// Processes the "member" property of groups and converts the resulting list of distinguishednames to TypedPrincipals
+        ///     Processes the "member" property of groups and converts the resulting list of distinguishednames to TypedPrincipals
         /// </summary>
         /// <param name="distinguishedName"></param>
         /// <param name="members"></param>
@@ -60,7 +62,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads the primary group info from a user or computer object and massages it into the proper format.
+        ///     Reads the primary group info from a user or computer object and massages it into the proper format.
         /// </summary>
         /// <param name="primaryGroupId"></param>
         /// <param name="objectId"></param>

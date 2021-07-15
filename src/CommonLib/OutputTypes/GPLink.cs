@@ -3,9 +3,14 @@
     public class GPLink
     {
         private string _guid;
-        
+
         public bool IsEnforced { get; set; }
-        public string GUID { get => _guid; set => _guid = value?.ToUpper(); }
+
+        public string GUID
+        {
+            get => _guid;
+            set => _guid = value?.ToUpper();
+        }
 
         protected bool Equals(GPLink other)
         {
@@ -16,7 +21,7 @@
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((GPLink) obj);
         }
 

@@ -9,14 +9,27 @@ namespace SharpHoundCommonLib
     [ExcludeFromCodeCoverage]
     public class NativeMethods
     {
+        public enum NtStatus
+        {
+            StatusSuccess = 0x0,
+            StatusMoreEntries = 0x105,
+            StatusSomeMapped = 0x107,
+            StatusInvalidHandle = unchecked((int) 0xC0000008),
+            StatusInvalidParameter = unchecked((int) 0xC000000D),
+            StatusAccessDenied = unchecked((int) 0xC0000022),
+            StatusObjectTypeMismatch = unchecked((int) 0xC0000024),
+            StatusNoSuchDomain = unchecked((int) 0xC00000DF),
+            StatusRpcServerUnavailable = unchecked((int) 0xC0020017)
+        }
+
         private const string NetWkstaUserEnumQueryName = "NetWkstaUserEnum";
         private const string NetSessionEnumQueryName = "NetSessionEnum";
         private const string NetWkstaGetInfoQueryName = "NetWkstaGetInfo";
-        
+
         private const int NetWkstaUserEnumQueryLevel = 1;
         private const int NetSessionEnumLevel = 10;
         private const int NetWkstaGetInfoQueryLevel = 100;
-        
+
         public virtual WorkstationInfo100 CallNetWkstaGetInfo(string serverName)
         {
             var ptr = IntPtr.Zero;
@@ -25,13 +38,11 @@ namespace SharpHoundCommonLib
             {
                 var result = NetWkstaGetInfo(serverName, NetWkstaGetInfoQueryLevel, out ptr);
                 if (result != NERR.NERR_Success)
-                {
                     throw new APIException
                     {
                         Status = result.ToString(),
                         APICall = NetWkstaGetInfoQueryName
                     };
-                }
 
                 var wkstaInfo = Marshal.PtrToStructure<WorkstationInfo100>(ptr);
                 return wkstaInfo;
@@ -58,13 +69,11 @@ namespace SharpHoundCommonLib
                 Logging.Trace($"Result of NetSessionEnum for {serverName} is {result}");
 
                 if (result != NERR.NERR_Success)
-                {
                     throw new APIException
                     {
                         APICall = NetSessionEnumQueryName,
                         Status = result.ToString()
                     };
-                }
 
                 var iter = ptr;
                 for (var i = 0; i < entriesread; i++)
@@ -79,7 +88,7 @@ namespace SharpHoundCommonLib
             {
                 if (ptr != IntPtr.Zero)
                     NetApiBufferFree(ptr);
-            } 
+            }
         }
 
         public virtual IEnumerable<WKSTA_USER_INFO_1> CallNetWkstaUserEnum(string servername)
@@ -89,19 +98,18 @@ namespace SharpHoundCommonLib
             {
                 var resumeHandle = 0;
                 Logging.Trace($"Beginning NetWkstaUserEnum for {servername}");
-                var result = NetWkstaUserEnum(servername, NetWkstaUserEnumQueryLevel, out ptr, -1, out var entriesread, out _,
+                var result = NetWkstaUserEnum(servername, NetWkstaUserEnumQueryLevel, out ptr, -1, out var entriesread,
+                    out _,
                     ref resumeHandle);
 
                 Logging.Trace($"Result of NetWkstaUserEnum for computer {servername} is {result}");
 
                 if (result != NERR.NERR_Success && result != NERR.ERROR_MORE_DATA)
-                {
                     throw new APIException
                     {
                         APICall = NetWkstaUserEnumQueryName,
                         Status = result.ToString()
                     };
-                }
 
                 var iter = ptr;
                 for (var i = 0; i < entriesread; i++)
@@ -195,24 +203,11 @@ namespace SharpHoundCommonLib
             public UNICODE_STRING ObjectName;
         }
 
-        public enum NtStatus
-        {
-            StatusSuccess = 0x0,
-            StatusMoreEntries = 0x105,
-            StatusSomeMapped = 0x107,
-            StatusInvalidHandle = unchecked((int) 0xC0000008),
-            StatusInvalidParameter = unchecked((int) 0xC000000D),
-            StatusAccessDenied = unchecked((int) 0xC0000022),
-            StatusObjectTypeMismatch = unchecked((int) 0xC0000024),
-            StatusNoSuchDomain = unchecked((int) 0xC00000DF),
-            StatusRpcServerUnavailable = unchecked((int) 0xC0020017)
-        }
-
         [StructLayout(LayoutKind.Sequential)]
         public struct UNICODE_STRING : IDisposable
         {
-            private ushort Length;
-            private ushort MaximumLength;
+            private readonly ushort Length;
+            private readonly ushort MaximumLength;
             private IntPtr Buffer;
 
             public UNICODE_STRING(string s)
@@ -237,7 +232,7 @@ namespace SharpHoundCommonLib
                        throw new InvalidOperationException();
             }
         }
-        
+
         #region SAMR Imports
 
         [DllImport("samlib.dll")]
@@ -277,13 +272,13 @@ namespace SharpHoundCommonLib
             out IntPtr serverHandle,
             SamAccessMasks desiredAccess,
             ref OBJECT_ATTRIBUTES objectAttributes
-            );
+        );
 
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
         private static extern NtStatus SamOpenDomain(
             IntPtr serverHandle,
             DomainAccessMask desiredAccess,
-            [MarshalAs(UnmanagedType.LPArray)]byte[] domainSid,
+            [MarshalAs(UnmanagedType.LPArray)] byte[] domainSid,
             out IntPtr domainHandle
         );
 
@@ -372,6 +367,7 @@ namespace SharpHoundCommonLib
             SamServerWrite = 0x2000e,
             SamServerExecute = 0x20021
         }
+
         #endregion
 
         #region Session Enum Imports
@@ -412,9 +408,9 @@ namespace SharpHoundCommonLib
             ERROR_INVALID_HANDLE_STATE = 1609,
             ERROR_EXTENDED_ERROR = 1208,
             NERR_BASE = 2100,
-            NERR_UnknownDevDir = (NERR_BASE + 16),
-            NERR_DuplicateShare = (NERR_BASE + 18),
-            NERR_BufTooSmall = (NERR_BASE + 23)
+            NERR_UnknownDevDir = NERR_BASE + 16,
+            NERR_DuplicateShare = NERR_BASE + 18,
+            NERR_BufTooSmall = NERR_BASE + 23
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]

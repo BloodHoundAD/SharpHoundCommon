@@ -16,14 +16,15 @@ namespace SharpHoundCommonLib.OutputTypes
 
         protected bool Equals(ACE other)
         {
-            return PrincipalSID == other.PrincipalSID && PrincipalType == other.PrincipalType && RightName == other.RightName && IsInherited == other.IsInherited;
+            return PrincipalSID == other.PrincipalSID && PrincipalType == other.PrincipalType &&
+                   RightName == other.RightName && IsInherited == other.IsInherited;
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((ACE) obj);
         }
 
@@ -31,7 +32,7 @@ namespace SharpHoundCommonLib.OutputTypes
         {
             unchecked
             {
-                var hashCode = (PrincipalSID != null ? PrincipalSID.GetHashCode() : 0);
+                var hashCode = PrincipalSID != null ? PrincipalSID.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (int) PrincipalType;
                 hashCode = (hashCode * 397) ^ (RightName != null ? RightName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IsInherited.GetHashCode();

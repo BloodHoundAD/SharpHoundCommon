@@ -6,7 +6,7 @@ namespace SharpHoundCommonLib.Processors
     public class PortScanner
     {
         /// <summary>
-        /// Checks if a specified port is open on a host. Defaults to 445 (SMB)
+        ///     Checks if a specified port is open on a host. Defaults to 445 (SMB)
         /// </summary>
         /// <param name="hostname"></param>
         /// <param name="port"></param>

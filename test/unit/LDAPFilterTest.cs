@@ -8,11 +8,15 @@ namespace CommonLibTest
     public class LDAPFilterTest : IDisposable
     {
         private readonly ITestOutputHelper _testOutputHelper;
-        
+
         public LDAPFilterTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
             // This runs once per test.
+        }
+
+        public void Dispose()
+        {
         }
 
         #region Creation
@@ -23,8 +27,9 @@ namespace CommonLibTest
             var test = new LDAPFilter();
             Assert.NotNull(test);
         }
+
         #endregion
-        
+
         #region Behavioral
 
         [Fact]
@@ -34,7 +39,9 @@ namespace CommonLibTest
             test.AddGroups();
             var filter = test.GetFilter();
             _testOutputHelper.WriteLine(filter);
-            Assert.Equal("(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))", filter);
+            Assert.Equal(
+                "(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))",
+                filter);
         }
 
         [Fact]
@@ -44,12 +51,11 @@ namespace CommonLibTest
             test.AddGroups("objectclass=*");
             var filter = test.GetFilter();
             _testOutputHelper.WriteLine(filter);
-            Assert.Equal("(&(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))(objectclass=*))", filter);
+            Assert.Equal(
+                "(&(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))(objectclass=*))",
+                filter);
         }
+
         #endregion
-        
-        public void Dispose()
-        {
-        }
     }
 }

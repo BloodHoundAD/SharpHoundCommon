@@ -6,16 +6,17 @@ namespace CommonLibTest
 {
     public class TestLogger : ILogger
     {
-        private ITestOutputHelper _output;
-        private LogLevel _level;
+        private readonly LogLevel _level;
+        private readonly ITestOutputHelper _output;
 
         public TestLogger(ITestOutputHelper output, LogLevel level)
         {
             _output = output;
             _level = level;
         }
-        
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+            Func<TState, Exception, string> formatter)
         {
             if (IsEnabled(logLevel))
                 _output.WriteLine(formatter(state, exception));

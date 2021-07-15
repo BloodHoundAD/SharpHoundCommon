@@ -1,5 +1,4 @@
-﻿
-using SharpHoundCommonLib.Enums;
+﻿using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
 {
@@ -7,12 +6,13 @@ namespace SharpHoundCommonLib
     {
         private string _displayName;
         private string _objectID;
-        
+
         public string DisplayName
         {
             get => _displayName.ToUpper();
             set => _displayName = value;
         }
+
         public Label ObjectType { get; set; }
 
         public string ObjectId
@@ -21,11 +21,7 @@ namespace SharpHoundCommonLib
             set => _objectID = value.ToUpper();
         }
 
-        public bool Deleted
-        {
-            get;
-            set;
-        }
+        public bool Deleted { get; set; }
 
         public string Domain { get; set; }
         public string DomainSid { get; set; }

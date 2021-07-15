@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
@@ -21,25 +20,38 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] DcomUsers { get; set; }
         public TypedPrincipal[] PSRemoteUsers { get; set; }
         public TypedPrincipal[] AffectedComputers { get; set; }
-
     }
+
     public class GPOLocalGroupProcessor
     {
         private static readonly Regex KeyRegex = new(@"(.+?)\s*=(.*)", RegexOptions.Compiled);
-        private static readonly Regex MemberRegex = new(@"\[Group Membership\](.*)(?:\[|$)", RegexOptions.Compiled | RegexOptions.Singleline);
-        private static readonly Regex MemberLeftRegex = new(@"(.*(?:S-1-5-32-544|S-1-5-32-555|S-1-5-32-562|S-1-5-32-580)__Members)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex MemberRightRegex = new(@"(S-1-5-32-544|S-1-5-32-555|S-1-5-32-562|S-1-5-32-580)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex ExtractRid = new(@"S-1-5-32-([0-9]{3})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly ConcurrentDictionary<string, List<GroupAction>> GpoActionCache = new();
-        private readonly ILDAPUtils _utils;
 
-        private static readonly Dictionary<string, LocalGroupRids> ValidGroupNames = new(StringComparer.OrdinalIgnoreCase)
-        {
-            {"Administrators", LocalGroupRids.Administrators},
-            {"Remote Desktop Users", LocalGroupRids.RemoteDesktopUsers},
-            {"Remote Management Users", LocalGroupRids.PSRemote},
-            {"Distributed COM Users", LocalGroupRids.DcomUsers},
-        };
+        private static readonly Regex MemberRegex =
+            new(@"\[Group Membership\](.*)(?:\[|$)", RegexOptions.Compiled | RegexOptions.Singleline);
+
+        private static readonly Regex MemberLeftRegex =
+            new(@"(.*(?:S-1-5-32-544|S-1-5-32-555|S-1-5-32-562|S-1-5-32-580)__Members)", RegexOptions.Compiled |
+                RegexOptions.IgnoreCase);
+
+        private static readonly Regex MemberRightRegex =
+            new(@"(S-1-5-32-544|S-1-5-32-555|S-1-5-32-562|S-1-5-32-580)", RegexOptions.Compiled |
+                                                                          RegexOptions.IgnoreCase);
+
+        private static readonly Regex ExtractRid =
+            new(@"S-1-5-32-([0-9]{3})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly ConcurrentDictionary<string, List<GroupAction>> GpoActionCache = new();
+
+        private static readonly Dictionary<string, LocalGroupRids> ValidGroupNames =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                {"Administrators", LocalGroupRids.Administrators},
+                {"Remote Desktop Users", LocalGroupRids.RemoteDesktopUsers},
+                {"Remote Management Users", LocalGroupRids.PSRemote},
+                {"Distributed COM Users", LocalGroupRids.DcomUsers}
+            };
+
+        private readonly ILDAPUtils _utils;
 
         public GPOLocalGroupProcessor(ILDAPUtils utils)
         {
@@ -54,7 +66,8 @@ namespace SharpHoundCommonLib.Processors
 
             // First lets check if this OU actually has computers that it contains. If not, then we'll ignore it.
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
-            var options = new LDAPQueryOptions{
+            var options = new LDAPQueryOptions
+            {
                 filter = new LDAPFilter().AddComputers().GetFilter(),
                 scope = SearchScope.Subtree,
                 properties = CommonProperties.ObjectSID,
@@ -69,17 +82,16 @@ namespace SharpHoundCommonLib.Processors
                     ObjectIdentifier = x,
                     ObjectType = Label.Computer
                 }).ToArray();
-            
+
             //If there's no computers then we don't care about this OU
             if (affectedComputers.Length == 0)
                 return null;
-            
+
             var enforced = new List<string>();
             var unenforced = new List<string>();
 
             // Split our link property up and remove disabled links
             foreach (var link in Helpers.SplitGPLinkProperty(gpLink))
-            {
                 switch (link.Status)
                 {
                     case "0":
@@ -89,19 +101,15 @@ namespace SharpHoundCommonLib.Processors
                         enforced.Add(link.DistinguishedName);
                         break;
                 }
-            }
-            
+
             //Set up our links in the correct order.
             // Enforced links override unenforced, and also respect the order in which they are placed in the GPLink property
             var orderedLinks = new List<string>();
             orderedLinks.AddRange(unenforced);
             orderedLinks.AddRange(enforced);
-            
+
             var data = new Dictionary<LocalGroupRids, GroupResults>();
-            foreach (var rid in Enum.GetValues(typeof(LocalGroupRids)))
-            {
-                data[(LocalGroupRids)rid] = new GroupResults();
-            }
+            foreach (var rid in Enum.GetValues(typeof(LocalGroupRids))) data[(LocalGroupRids) rid] = new GroupResults();
 
             foreach (var linkDn in orderedLinks)
             {
@@ -126,7 +134,7 @@ namespace SharpHoundCommonLib.Processors
                         GpoActionCache.TryAdd(linkDn, actions);
                         continue;
                     }
-                    
+
                     //Add the actions for each file. The GPO template file actions will override the XML file actions
                     actions.AddRange(await ProcessGPOXmlFile(filePath, gpoDomain).ToListAsync());
                     actions.AddRange(await ProcessGPOTemplateFile(filePath, gpoDomain).ToListAsync());
@@ -134,11 +142,11 @@ namespace SharpHoundCommonLib.Processors
 
                 //Cache the actions for this GPO for later
                 GpoActionCache.TryAdd(linkDn.ToLower(), actions);
-                
+
                 //If there are no actions, then we can move on from this GPO
                 if (actions.Count == 0)
                     continue;
-                
+
                 //First lets process restricted members
                 var restrictedMemberSets = actions.Where(x => x.Target == GroupActionTarget.RestrictedMember)
                     .GroupBy(x => x.TargetRid);
@@ -150,7 +158,7 @@ namespace SharpHoundCommonLib.Processors
                     results.RestrictedMember = members;
                     data[set.Key] = results;
                 }
-                
+
                 //Next add in our restricted MemberOf sets
                 var restrictedMemberOfSets = actions.Where(x => x.Target == GroupActionTarget.RestrictedMemberOf)
                     .GroupBy(x => x.TargetRid);
@@ -162,7 +170,7 @@ namespace SharpHoundCommonLib.Processors
                     results.RestrictedMemberOf = members;
                     data[set.Key] = results;
                 }
-                
+
                 // Now work through the LocalGroup targets
                 var localGroupSets = actions.Where(x => x.Target == GroupActionTarget.LocalGroup)
                     .GroupBy(x => x.TargetRid);
@@ -194,12 +202,12 @@ namespace SharpHoundCommonLib.Processors
                     }
                 }
             }
-            
+
             var rs = new ResultingGPOChanges
             {
                 AffectedComputers = affectedComputers
             };
-                
+
             //At this point, we've resolved individual add/substract methods for each linked GPO.
             //Now we need to actually squish them together into the resulting set of changes
             foreach (var kvp in data)
@@ -211,7 +219,7 @@ namespace SharpHoundCommonLib.Processors
                 var gm = val.LocalGroups;
 
                 var final = new List<TypedPrincipal>();
-                    
+
                 // If we're setting RestrictedMembers, it overrides LocalGroups due to order of operations. Restricted MemberOf always applies.
                 final.AddRange(rmo);
                 final.AddRange(rm.Count > 0 ? rm : gm);
@@ -239,14 +247,14 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Parses a GPO GptTmpl.inf file and pulls group membership changes out
+        ///     Parses a GPO GptTmpl.inf file and pulls group membership changes out
         /// </summary>
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns></returns>
         internal async IAsyncEnumerable<GroupAction> ProcessGPOTemplateFile(string basePath, string gpoDomain)
         {
-            var templatePath = Path.Combine(new string[]{basePath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf"});
+            var templatePath = Path.Combine(basePath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
 
             if (!File.Exists(templatePath))
                 yield break;
@@ -267,7 +275,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (!memberMatch.Success)
                 yield break;
-            
+
             //We've got a match! Lets figure out whats going on
             var memberText = memberMatch.Groups[1].Value.Trim();
             //Split our text into individual lines
@@ -283,18 +291,17 @@ namespace SharpHoundCommonLib.Processors
 
                 var key = keyMatch.Groups[1].Value.Trim();
                 var val = keyMatch.Groups[2].Value.Trim();
-                    
+
                 var leftMatch = MemberLeftRegex.Match(key);
                 var rightMatches = MemberRightRegex.Matches(val);
-                
+
                 //If leftmatch is a success, the members of a group are being explicitly set
                 if (leftMatch.Success)
                 {
                     var extracted = ExtractRid.Match(leftMatch.Value);
                     var rid = int.Parse(extracted.Groups[1].Value);
-                    
+
                     if (Enum.IsDefined(typeof(LocalGroupRids), rid))
-                    {
                         //Loop over the members in the match, and try to convert them to SIDs
                         foreach (var member in val.Split(','))
                         {
@@ -307,12 +314,11 @@ namespace SharpHoundCommonLib.Processors
                                 Action = GroupActionOperation.Add,
                                 TargetSid = res.ObjectIdentifier,
                                 TargetType = res.ObjectType,
-                                TargetRid = (LocalGroupRids)rid
+                                TargetRid = (LocalGroupRids) rid
                             };
                         }
-                    }
                 }
-                
+
                 //If right match is a success, a group has been set as a member of one of our local groups
                 var index = key.IndexOf("MemberOf", StringComparison.CurrentCultureIgnoreCase);
                 if (rightMatches.Count > 0 && index > 0)
@@ -327,8 +333,8 @@ namespace SharpHoundCommonLib.Processors
                     {
                         var rid = int.Parse(ExtractRid.Match(match.ToString()).Groups[1].Value);
                         if (!Enum.IsDefined(typeof(LocalGroupRids), rid)) continue;
-                        
-                        var targetGroup = (LocalGroupRids)rid;
+
+                        var targetGroup = (LocalGroupRids) rid;
                         yield return new GroupAction
                         {
                             Target = GroupActionTarget.RestrictedMemberOf,
@@ -341,9 +347,9 @@ namespace SharpHoundCommonLib.Processors
                 }
             }
         }
-        
+
         /// <summary>
-        /// Resolves a SID to its type
+        ///     Resolves a SID to its type
         /// </summary>
         /// <param name="account"></param>
         /// <param name="domainName"></param>
@@ -374,7 +380,7 @@ namespace SharpHoundCommonLib.Processors
                 var res = await _utils.ResolveAccountName(user, domain);
                 if (res != null)
                     return res;
-                
+
                 res = await _utils.ResolveAccountName($"{user}$", domain);
                 return res;
             }
@@ -389,14 +395,14 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Parses a GPO Groups.xml file and pulls group membership changes out
+        ///     Parses a GPO Groups.xml file and pulls group membership changes out
         /// </summary>
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns>A list of GPO "Actions"</returns>
         internal async IAsyncEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
         {
-            var xmlPath = Path.Combine(new string[]{basePath, "MACHINE", "Preferences", "Groups", "Groups.xml"});
+            var xmlPath = Path.Combine(basePath, "MACHINE", "Preferences", "Groups", "Groups.xml");
 
             //If the file doesn't exist, then just return
             if (!File.Exists(xmlPath))
@@ -424,14 +430,14 @@ namespace SharpHoundCommonLib.Processors
                     {
                         var currentProperties = groupProperties.Current;
                         var action = currentProperties.GetAttribute("action", "");
-                        
+
                         //The only action that works for built in groups is Update.
                         if (!action.Equals("u", StringComparison.OrdinalIgnoreCase))
                             continue;
 
                         var groupSid = currentProperties.GetAttribute("groupSid", "").Trim();
                         var groupName = currentProperties.GetAttribute("groupName", "").Trim();
-                        
+
                         //Next is to determine what group is being updated.
 
                         var targetGroup = LocalGroupRids.None;
@@ -446,38 +452,32 @@ namespace SharpHoundCommonLib.Processors
                                     targetGroup = (LocalGroupRids) rid;
                             }
                         }
-                        
+
                         if (!string.IsNullOrWhiteSpace(groupName) && targetGroup == LocalGroupRids.None)
-                        {
                             ValidGroupNames.TryGetValue(groupName, out targetGroup);
-                        }
-                        
+
                         //If targetGroup is still None, we've failed to resolve a group target. No point in continuing
                         if (targetGroup == LocalGroupRids.None)
                             continue;
-                        
+
                         var deleteUsers = currentProperties.GetAttribute("deleteAllUsers", "") == "1";
                         var deleteGroups = currentProperties.GetAttribute("deleteAllGroups", "") == "1";
-                        
+
                         if (deleteUsers)
-                        {
                             yield return new GroupAction
                             {
                                 Action = GroupActionOperation.DeleteUsers,
                                 Target = GroupActionTarget.LocalGroup,
                                 TargetRid = targetGroup
                             };
-                        }
-                        
+
                         if (deleteGroups)
-                        {
                             yield return new GroupAction
                             {
                                 Action = GroupActionOperation.DeleteGroups,
                                 Target = GroupActionTarget.LocalGroup,
                                 TargetRid = targetGroup
                             };
-                        }
 
                         //Get all the actual members being added
                         var members = currentProperties.Select("Members/Member");
@@ -487,7 +487,7 @@ namespace SharpHoundCommonLib.Processors
                                 .Equals("ADD", StringComparison.OrdinalIgnoreCase)
                                 ? GroupActionOperation.Add
                                 : GroupActionOperation.Delete;
-                            
+
                             var memberName = members.Current.GetAttribute("name", "");
                             var memberSid = members.Current.GetAttribute("sid", "");
 
@@ -497,7 +497,7 @@ namespace SharpHoundCommonLib.Processors
                             };
 
                             Label memberType;
-                            
+
                             //If we have a memberSid, this is the best case scenario
                             if (!string.IsNullOrWhiteSpace(memberSid))
                             {
@@ -510,7 +510,7 @@ namespace SharpHoundCommonLib.Processors
                                 yield return ga;
                                 continue;
                             }
-                            
+
                             //If we have a memberName, we need to resolve it to a SID/Type
                             if (!string.IsNullOrWhiteSpace(memberName))
                             {
@@ -543,9 +543,9 @@ namespace SharpHoundCommonLib.Processors
                 }
             }
         }
-        
+
         /// <summary>
-        /// Represents an action from a GPO
+        ///     Represents an action from a GPO
         /// </summary>
         internal class GroupAction
         {
@@ -566,18 +566,19 @@ namespace SharpHoundCommonLib.Processors
 
             public override string ToString()
             {
-                return $"{nameof(Action)}: {Action}, {nameof(Target)}: {Target}, {nameof(TargetSid)}: {TargetSid}, {nameof(TargetType)}: {TargetType}, {nameof(TargetRid)}: {TargetRid}";
+                return
+                    $"{nameof(Action)}: {Action}, {nameof(Target)}: {Target}, {nameof(TargetSid)}: {TargetSid}, {nameof(TargetType)}: {TargetType}, {nameof(TargetRid)}: {TargetRid}";
             }
         }
-        
+
         /// <summary>
-        /// Storage for each different group type
+        ///     Storage for each different group type
         /// </summary>
         public class GroupResults
         {
-            public List<TypedPrincipal> RestrictedMemberOf = new();
-            public List<TypedPrincipal> RestrictedMember = new();
             public List<TypedPrincipal> LocalGroups = new();
+            public List<TypedPrincipal> RestrictedMember = new();
+            public List<TypedPrincipal> RestrictedMemberOf = new();
         }
 
         internal enum GroupActionOperation
@@ -595,6 +596,4 @@ namespace SharpHoundCommonLib.Processors
             LocalGroup
         }
     }
-    
-    
 }

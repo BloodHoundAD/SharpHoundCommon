@@ -11,17 +11,18 @@ namespace SharpHoundCommonLib
 {
     public static class Helpers
     {
-        private static readonly HashSet<string> Groups = new() { "268435456", "268435457", "536870912", "536870913" };
-        private static readonly HashSet<string> Computers = new() { "805306369" };
-        private static readonly HashSet<string> Users = new() { "805306368" };
-        
-        private static readonly Regex DCReplaceRegex = new Regex("DC=", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex SPNRegex = new Regex(@".*\/.*", RegexOptions.Compiled);
-        private static readonly DateTime EpochDiff = new DateTime(1970,1,1);
+        private static readonly HashSet<string> Groups = new() {"268435456", "268435457", "536870912", "536870913"};
+        private static readonly HashSet<string> Computers = new() {"805306369"};
+        private static readonly HashSet<string> Users = new() {"805306368"};
+
+        private static readonly Regex DCReplaceRegex = new("DC=", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex SPNRegex = new(@".*\/.*", RegexOptions.Compiled);
+        private static readonly DateTime EpochDiff = new(1970, 1, 1);
 
         public static IEnumerable<ParsedGPLink> SplitGPLinkProperty(string linkProp, bool filterDisabled = true)
         {
-            foreach (var link in linkProp.Split(']', '[').Where(x => x.StartsWith("LDAP", StringComparison.OrdinalIgnoreCase)))
+            foreach (var link in linkProp.Split(']', '[')
+                .Where(x => x.StartsWith("LDAP", StringComparison.OrdinalIgnoreCase)))
             {
                 var s = link.Split(';');
                 var dn = s[0].Substring(s[0].IndexOf("CN=", StringComparison.OrdinalIgnoreCase));
@@ -39,9 +40,9 @@ namespace SharpHoundCommonLib
                 };
             }
         }
-        
+
         /// <summary>
-        /// Attempts to convert a SamAccountType value to the appropriate type enum
+        ///     Attempts to convert a SamAccountType value to the appropriate type enum
         /// </summary>
         /// <param name="samAccountType"></param>
         /// <returns><c>Label</c> value representing type</returns>
@@ -58,9 +59,9 @@ namespace SharpHoundCommonLib
 
             return Label.Base;
         }
-        
+
         /// <summary>
-        /// Converts a string SID to its hex representation for LDAP searches
+        ///     Converts a string SID to its hex representation for LDAP searches
         /// </summary>
         /// <param name="sid">String security identifier to convert</param>
         /// <returns>String representation to use in LDAP filters</returns>
@@ -75,7 +76,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Converts a string GUID to its hex representation for LDAP searches
+        ///     Converts a string GUID to its hex representation for LDAP searches
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
@@ -86,9 +87,9 @@ namespace SharpHoundCommonLib
             var output = $"\\{BitConverter.ToString(guidBytes).Replace('-', '\\')}";
             return output;
         }
-        
+
         /// <summary>
-        /// Extracts an active directory domain name from a DistinguishedName 
+        ///     Extracts an active directory domain name from a DistinguishedName
         /// </summary>
         /// <param name="distinguishedName">Distinguished Name to extract domain from</param>
         /// <returns>String representing the domain name of this object</returns>
@@ -99,9 +100,9 @@ namespace SharpHoundCommonLib
             temp = DCReplaceRegex.Replace(temp, "").Replace(",", ".").ToUpper();
             return temp;
         }
-        
+
         /// <summary>
-        /// Strips a "serviceprincipalname" entry down to just its hostname
+        ///     Strips a "serviceprincipalname" entry down to just its hostname
         /// </summary>
         /// <param name="target">Raw service principal name</param>
         /// <returns>Stripped service principal name with (hopefully) just the hostname</returns>
@@ -109,9 +110,9 @@ namespace SharpHoundCommonLib
         {
             return SPNRegex.IsMatch(target) ? target.Split('/')[1].Split(':')[0] : target;
         }
-        
+
         /// <summary>
-        /// Converts a string to its base64 representation
+        ///     Converts a string to its base64 representation
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -122,7 +123,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Converts a windows file time to unix epoch time
+        ///     Converts a windows file time to unix epoch time
         /// </summary>
         /// <param name="ldapTime"></param>
         /// <returns></returns>
@@ -130,7 +131,7 @@ namespace SharpHoundCommonLib
         {
             if (ldapTime == null)
                 return -1;
-            
+
             var time = long.Parse(ldapTime);
             if (time == 0)
                 return 0;
@@ -148,9 +149,9 @@ namespace SharpHoundCommonLib
 
             return toReturn;
         }
-        
+
         /// <summary>
-        /// Converts a windows file time to unix epoch time
+        ///     Converts a windows file time to unix epoch time
         /// </summary>
         /// <param name="ldapTime"></param>
         /// <returns></returns>
@@ -166,9 +167,9 @@ namespace SharpHoundCommonLib
                 return 0;
             }
         }
-        
+
         /// <summary>
-        /// Converts an LDAP time string into a long
+        ///     Converts an LDAP time string into a long
         /// </summary>
         /// <param name="ldapTime"></param>
         /// <returns></returns>

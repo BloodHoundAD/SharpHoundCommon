@@ -10,14 +10,10 @@ namespace CommonLibTest
 {
     public class LDAPUtilsTest : IDisposable
     {
+        private readonly string _testDomainName;
+        private readonly string _testForestName;
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly ILDAPUtils _utils;
-        private readonly string _testForestName;
-        private readonly string _testDomainName;
-
-        #region Private Members
-
-        #endregion
 
         #region Constructor(s)
 
@@ -33,10 +29,12 @@ namespace CommonLibTest
         #endregion
 
         #region IDispose Implementation
+
         public void Dispose()
         {
             // Tear down (called once per test)
         }
+
         #endregion
 
         [Fact]
@@ -45,13 +43,17 @@ namespace CommonLibTest
             Assert.True(true);
         }
 
+        #region Private Members
+
+        #endregion
+
         #region Creation
-            
+
         /// <summary>
-        /// 
         /// </summary>
         [Fact]
-        public void GetUserGlobalCatalogMatches_Garbage_ReturnsNull() {
+        public void GetUserGlobalCatalogMatches_Garbage_ReturnsNull()
+        {
             var test = _utils.GetUserGlobalCatalogMatches("foo");
             _testOutputHelper.WriteLine(test.ToString());
             Assert.NotNull(test);
@@ -73,7 +75,7 @@ namespace CommonLibTest
             Assert.Equal(Label.Group, test.ObjectType);
             Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", test.ObjectIdentifier);
         }
-        
+
         [WindowsOnlyFact]
         public void GetWellKnownPrincipal_EnterpriseDomainControllers_ReturnsCorrectedSID()
         {
@@ -85,7 +87,7 @@ namespace CommonLibTest
             Assert.Equal($"{_testForestName}-S-1-5-9", typedPrincipal.ObjectIdentifier);
             Assert.Equal(Label.Group, typedPrincipal.ObjectType);
         }
-        
+
         [Fact]
         public void GetWellKnownPrincipal_NonWellKnown_ReturnsNull()
         {
@@ -93,7 +95,7 @@ namespace CommonLibTest
             Assert.False(result);
             Assert.Null(typedPrincipal);
         }
-        
+
         [Fact]
         public void GetWellKnownPrincipal_WithDomain_ConvertsSID()
         {
@@ -114,6 +116,5 @@ namespace CommonLibTest
         #region Behavioral
 
         #endregion
-
     }
 }

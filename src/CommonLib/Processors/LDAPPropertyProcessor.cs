@@ -13,12 +13,6 @@ namespace SharpHoundCommonLib.Processors
 {
     public class LDAPPropertyProcessor
     {
-        private readonly ILDAPUtils _utils;
-        public LDAPPropertyProcessor(ILDAPUtils utils)
-        {
-            _utils = utils;
-        }
-        
         private static readonly string[] ReservedAttributes =
         {
             "pwdlastset", "lastlogon", "lastlogontimestamp", "objectsid",
@@ -27,13 +21,22 @@ namespace SharpHoundCommonLib.Processors
             "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
             "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedtodelegateto",
             "msDS-allowedtoactonbehalfofotheridentity", "displayname",
-            "sidhistory", "samaccountname","samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership",
-            "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector", "member", "whenCreated"
+            "sidhistory", "samaccountname", "samaccounttype", "objectsid", "objectguid", "objectclass",
+            "samaccountname", "msds-groupmsamembership",
+            "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector",
+            "member", "whenCreated"
         };
+
+        private readonly ILDAPUtils _utils;
+
+        public LDAPPropertyProcessor(ILDAPUtils utils)
+        {
+            _utils = utils;
+        }
 
         private static Dictionary<string, object> GetCommonProps(ISearchResultEntry entry)
         {
-            return new Dictionary<string, object>
+            return new()
             {
                 {
                     "description", entry.GetProperty("description")
@@ -45,7 +48,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads specific LDAP properties related to Domains
+        ///     Reads specific LDAP properties related to Domains
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -53,18 +56,15 @@ namespace SharpHoundCommonLib.Processors
         {
             var props = GetCommonProps(entry);
 
-            if (!int.TryParse(entry.GetProperty("msds-behavior-version"), out var level))
-            {
-                level = -1;
-            }
-            
+            if (!int.TryParse(entry.GetProperty("msds-behavior-version"), out var level)) level = -1;
+
             props.Add("functionallevel", FunctionalLevelToString(level));
 
             return props;
         }
 
         /// <summary>
-        /// Converts a numeric representation of a functional level to its appropriate functional level string
+        ///     Converts a numeric representation of a functional level to its appropriate functional level string
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
@@ -87,7 +87,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads specific LDAP properties related to GPOs
+        ///     Reads specific LDAP properties related to GPOs
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -99,7 +99,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads specific LDAP properties related to OUs
+        ///     Reads specific LDAP properties related to OUs
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -108,16 +108,16 @@ namespace SharpHoundCommonLib.Processors
             var props = GetCommonProps(entry);
             return props;
         }
-        
+
         /// <summary>
-        /// Reads specific LDAP properties related to Groups
+        ///     Reads specific LDAP properties related to Groups
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
         public static Dictionary<string, object> ReadGroupProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            
+
             var ac = entry.GetProperty("admincount");
             if (ac != null)
             {
@@ -128,11 +128,12 @@ namespace SharpHoundCommonLib.Processors
             {
                 props.Add("admincount", false);
             }
+
             return props;
         }
 
         /// <summary>
-        /// Reads specific LDAP properties related to Users
+        ///     Reads specific LDAP properties related to Users
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -145,7 +146,7 @@ namespace SharpHoundCommonLib.Processors
             bool enabled, trustedToAuth, sensitive, dontReqPreAuth, passwdNotReq, unconstrained, pwdNeverExpires;
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UacFlags)flag;
+                var flags = (UacFlags) flag;
                 enabled = (flags & UacFlags.AccountDisable) == 0;
                 trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
                 sensitive = (flags & UacFlags.NotDelegated) != 0;
@@ -173,7 +174,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add("enabled", enabled);
             props.Add("trustedtoauth", trustedToAuth);
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
-            
+
             var comps = new List<TypedPrincipal>();
             if (trustedToAuth)
             {
@@ -186,20 +187,19 @@ namespace SharpHoundCommonLib.Processors
                     hname = hname.Split(':')[0];
                     var resolvedHost = await _utils.ResolveHostToSid(hname, domain);
                     if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
-                    {
                         comps.Add(new TypedPrincipal
                         {
                             ObjectIdentifier = resolvedHost,
                             ObjectType = Label.Computer
                         });
-                    }
                 }
             }
 
             userProps.AllowedToDelegate = comps.Distinct().ToArray();
 
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogon")));
-            props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
+            props.Add("lastlogontimestamp",
+                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
             props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("pwdlastset")));
             var spn = entry.GetArrayProperty("serviceprincipalname");
             props.Add("serviceprincipalnames", spn);
@@ -214,19 +214,15 @@ namespace SharpHoundCommonLib.Processors
             if (ac != null)
             {
                 if (int.TryParse(ac, out var parsed))
-                {
-                    props.Add("admincount", parsed != 0);    
-                }
+                    props.Add("admincount", parsed != 0);
                 else
-                {
                     props.Add("admincount", false);
-                }
             }
             else
             {
                 props.Add("admincount", false);
             }
-            
+
             var sh = entry.GetByteArrayProperty("sidhistory");
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();
@@ -241,16 +237,16 @@ namespace SharpHoundCommonLib.Processors
                 {
                     continue;
                 }
-                
+
                 sidHistoryList.Add(sSid);
 
                 var res = _utils.ResolveIDAndType(sSid, domain);
 
                 sidHistoryPrincipals.Add(res);
             }
-            
-            userProps.SidHistory = sidHistoryPrincipals.Distinct().ToArray(); 
-            
+
+            userProps.SidHistory = sidHistoryPrincipals.Distinct().ToArray();
+
             props.Add("sidhistory", sidHistoryList.ToArray());
 
             userProps.Props = props;
@@ -259,7 +255,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads specific LDAP properties related to Computers
+        ///     Reads specific LDAP properties related to Computers
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -267,12 +263,12 @@ namespace SharpHoundCommonLib.Processors
         {
             var compProps = new ComputerProperties();
             var props = GetCommonProps(entry);
-            
+
             var uac = entry.GetProperty("useraccountcontrol");
             bool enabled, unconstrained, trustedToAuth;
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UacFlags)flag;
+                var flags = (UacFlags) flag;
                 enabled = (flags & UacFlags.AccountDisable) == 0;
                 unconstrained = (flags & UacFlags.TrustedForDelegation) == UacFlags.TrustedForDelegation;
                 trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
@@ -283,9 +279,9 @@ namespace SharpHoundCommonLib.Processors
                 enabled = true;
                 trustedToAuth = false;
             }
-            
+
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
-            
+
             var comps = new List<TypedPrincipal>();
             if (trustedToAuth)
             {
@@ -298,13 +294,11 @@ namespace SharpHoundCommonLib.Processors
                     hname = hname.Split(':')[0];
                     var resolvedHost = await _utils.ResolveHostToSid(hname, domain);
                     if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
-                    {
                         comps.Add(new TypedPrincipal
                         {
                             ObjectIdentifier = resolvedHost,
                             ObjectType = Label.Computer
                         });
-                    }
                 }
             }
 
@@ -316,7 +310,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 var sd = _utils.MakeSecurityDescriptor();
                 sd.SetSecurityDescriptorBinaryForm(rawAllowedToAct, AccessControlSections.Access);
-                foreach (ActiveDirectoryRuleDescriptor rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+                foreach (var rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
                 {
                     var res = _utils.ResolveIDAndType(rule.IdentityReference(), domain);
                     allowedToActPrincipals.Add(res);
@@ -329,16 +323,14 @@ namespace SharpHoundCommonLib.Processors
             props.Add("unconstraineddelegation", unconstrained);
             props.Add("trustedtoauth", trustedToAuth);
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogon")));
-            props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
+            props.Add("lastlogontimestamp",
+                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
             props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("pwdlastset")));
             props.Add("serviceprincipalnames", entry.GetArrayProperty("serviceprincipalname"));
             var os = entry.GetProperty("operatingsystem");
             var sp = entry.GetProperty("operatingsystemservicepack");
 
-            if (sp != null)
-            {
-                os = $"{os} {sp}";
-            }
+            if (sp != null) os = $"{os} {sp}";
 
             props.Add("operatingsystem", os);
 
@@ -356,7 +348,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     continue;
                 }
-                
+
                 sidHistoryList.Add(sSid);
 
                 var res = _utils.ResolveIDAndType(sSid, domain);
@@ -372,9 +364,10 @@ namespace SharpHoundCommonLib.Processors
 
             return compProps;
         }
-        
+
         /// <summary>
-        /// Attempts to parse all LDAP attributes outside of the ones already collected and converts them to a human readable format using a best guess
+        ///     Attempts to parse all LDAP attributes outside of the ones already collected and converts them to a human readable
+        ///     format using a best guess
         /// </summary>
         /// <param name="entry"></param>
         private static Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
@@ -390,38 +383,30 @@ namespace SharpHoundCommonLib.Processors
                 var collCount = entry.PropCount(property);
                 if (collCount == 0)
                     continue;
-                
+
                 if (collCount == 1)
                 {
                     var testBytes = entry.GetByteProperty(property);
-                    
-                    if (testBytes == null || testBytes.Length == 0 || !IsTextUnicode(testBytes, testBytes.Length, ref flag))
-                    {
-                        continue;
-                    }
+
+                    if (testBytes == null || testBytes.Length == 0 ||
+                        !IsTextUnicode(testBytes, testBytes.Length, ref flag)) continue;
 
                     var testString = entry.GetProperty(property);
 
                     if (!string.IsNullOrEmpty(testString))
                         if (property == "badpasswordtime")
-                        {
                             props.Add(property, Helpers.ConvertFileTimeToUnixEpoch(testString));
-                        }
                         else
-                        {
                             props.Add(property, BestGuessConvert(testString));
-                        }
-                        
-                }else{
+                }
+                else
+                {
                     var arrBytes = entry.GetByteArrayProperty(property);
                     if (arrBytes.Length == 0 || !IsTextUnicode(arrBytes[0], arrBytes[0].Length, ref flag))
                         continue;
 
                     var arr = entry.GetArrayProperty(property);
-                    if (arr.Length > 0)
-                    {
-                        props.Add(property, arr.Select(BestGuessConvert).ToArray());
-                    }
+                    if (arr.Length > 0) props.Add(property, arr.Select(BestGuessConvert).ToArray());
                 }
             }
 
@@ -429,33 +414,24 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Does a best guess conversion of the property to a type useable by the UI
+        ///     Does a best guess conversion of the property to a type useable by the UI
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
         private static object BestGuessConvert(string property)
         {
             //Parse boolean values
-            if (bool.TryParse(property, out var boolResult))
-            {
-                return boolResult;
-            }
+            if (bool.TryParse(property, out var boolResult)) return boolResult;
 
             //A string ending with 0Z is likely a timestamp
-            if (property.EndsWith("0Z"))
-            {
-                return Helpers.ConvertTimestampToUnixEpoch(property);
-            }
+            if (property.EndsWith("0Z")) return Helpers.ConvertTimestampToUnixEpoch(property);
 
             //This string corresponds to the max int, and is usually set in accountexpires
-            if (property == "9223372036854775807")
-            {
-                return -1;
-            }
+            if (property == "9223372036854775807") return -1;
 
             return property;
         }
-        
+
         [DllImport("Advapi32", SetLastError = false)]
         private static extern bool IsTextUnicode(byte[] buf, int len, ref IsTextUnicodeFlags opt);
 
@@ -487,7 +463,7 @@ namespace SharpHoundCommonLib.Processors
             IS_TEXT_UNICODE_NOT_ASCII_MASK = 0xF000
         }
     }
-    
+
 
     public class UserProperties
     {
@@ -503,6 +479,4 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToAct { get; set; }
         public TypedPrincipal[] SidHistory { get; set; }
     }
-    
-    
 }

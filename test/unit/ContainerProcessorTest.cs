@@ -13,14 +13,18 @@ namespace CommonLibTest
 {
     public class ContainerProcessorTest : IDisposable
     {
-        private readonly ITestOutputHelper _testOutputHelper;
         private readonly string _testGpLinkString;
-        
+        private readonly ITestOutputHelper _testOutputHelper;
+
         public ContainerProcessorTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
             _testGpLinkString =
                 "[LDAP://cn={94DD0260-38B5-497E-8876-10E7A96E80D0},cn=policies,cn=system,DC=testlab,DC=local;0][LDAP://cn={C52F168C-CD05-4487-B405-564934DA8EFF},cn=policies,cn=system,DC=testlab,DC=local;0][LDAP://cn={1E860A30-603A-45C7-A768-26EE74BE6D5D},cn=policies,cn=system,DC=testlab,DC=local;0]";
+        }
+
+        public void Dispose()
+        {
         }
 
         [Fact]
@@ -36,7 +40,8 @@ namespace CommonLibTest
         {
             var processor = new ContainerProcessor(new MockLDAPUtils());
             //GPLink that doesn't exist
-            const string s = "[LDAP://cn={94DD0260-38B5-497E-8876-ABCDEFG},cn=policies,cn=system,DC=testlab,DC=local;0]";
+            const string s =
+                "[LDAP://cn={94DD0260-38B5-497E-8876-ABCDEFG},cn=policies,cn=system,DC=testlab,DC=local;0]";
             var test = processor.ReadContainerGPLinks(s);
             Assert.Empty(test);
         }
@@ -65,7 +70,7 @@ namespace CommonLibTest
                     IsEnforced = false
                 }
             };
-            
+
             Assert.Equal(3, test.Length);
             Assert.Equal(expected, test);
         }
@@ -90,9 +95,9 @@ namespace CommonLibTest
                 //This object does not exist in our mock
                 new("CN=Users,DC=testlab,DC=local", null, "ECAD920E-8EB1-4E31-A80E-DD36367F81FD", Label.Container),
                 //Test null objectid
-                new("CN=Users,DC=testlab,DC=local", null, null, Label.Container),
+                new("CN=Users,DC=testlab,DC=local", null, null, Label.Container)
             };
-            
+
             mock.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
                 It.IsAny<bool>())).Returns(searchResults);
@@ -108,7 +113,7 @@ namespace CommonLibTest
                     ObjectType = Label.Container
                 }
             };
-            
+
             Assert.Single(test);
             Assert.Equal(expected, test);
         }
@@ -119,14 +124,10 @@ namespace CommonLibTest
             var test = ContainerProcessor.ReadBlocksInheritance(null);
             var test2 = ContainerProcessor.ReadBlocksInheritance("3");
             var test3 = ContainerProcessor.ReadBlocksInheritance("1");
-            
+
             Assert.False(test);
             Assert.False(test2);
             Assert.True(test3);
-        }
-        
-        public void Dispose()
-        {
         }
     }
 }

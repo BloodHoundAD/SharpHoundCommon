@@ -15,7 +15,7 @@ namespace SharpHoundCommonLib.Processors
     {
         private static readonly Dictionary<Label, string> BaseGuids;
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
-        private static bool isCacheBuilt = false;
+        private static bool isCacheBuilt;
         private readonly ILDAPUtils _utils;
 
         static ACLProcessor()
@@ -32,7 +32,7 @@ namespace SharpHoundCommonLib.Processors
                 {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"}
             };
         }
-        
+
         public ACLProcessor(ILDAPUtils utils, bool noGuidCache = false)
         {
             _utils = utils;
@@ -41,20 +41,21 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Builds a mapping of GUID -> Name for LDAP rights. Used for rights that are created using an extended schema such as LAPS
+        ///     Builds a mapping of GUID -> Name for LDAP rights. Used for rights that are created using an extended schema such as
+        ///     LAPS
         /// </summary>
         private void BuildGUIDCache()
         {
             if (isCacheBuilt)
                 return;
-            
+
             var forest = _utils.GetForest();
             if (forest == null)
             {
                 Logging.Log(LogLevel.Error, "Unable to resolve forest for GUID cache");
                 return;
             }
-            
+
             var schema = forest.Schema?.Name;
             if (string.IsNullOrEmpty(schema))
                 return;
@@ -65,12 +66,12 @@ namespace SharpHoundCommonLib.Processors
                 var guid = new Guid(entry.GetByteProperty("schemaidguid")).ToString();
                 GuidMap.TryAdd(guid, name);
             }
-            
+
             isCacheBuilt = true;
         }
 
         /// <summary>
-        /// Gets the protection state of the access control list
+        ///     Gets the protection state of the access control list
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>
         /// <returns></returns>
@@ -78,7 +79,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (ntSecurityDescriptor == null)
                 return false;
-            
+
             var descriptor = _utils.MakeSecurityDescriptor();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
 
@@ -86,14 +87,16 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that BloodHound is not interested in
+        ///     Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that
+        ///     BloodHound is not interested in
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>
         /// <param name="objectDomain"></param>
         /// <param name="objectType"></param>
         /// <param name="hasLaps"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType, bool hasLaps)
+        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType,
+            bool hasLaps)
         {
             if (ntSecurityDescriptor == null)
             {
@@ -123,7 +126,7 @@ namespace SharpHoundCommonLib.Processors
                 Logging.Log(LogLevel.Debug, "Owner on ACE is null");
             }
 
-            foreach (ActiveDirectoryRuleDescriptor ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+            foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
                 if (ace == null)
                 {
@@ -136,7 +139,7 @@ namespace SharpHoundCommonLib.Processors
                     Logging.Trace("Skipping deny ACE");
                     continue;
                 }
-                
+
                 if (!ace.IsAceInheritedFrom(BaseGuids[objectType]))
                 {
                     Logging.Trace("Skipping ACE with unmatched GUID/inheritance");
@@ -164,7 +167,6 @@ namespace SharpHoundCommonLib.Processors
                 if (aceRights.HasFlag(ActiveDirectoryRights.GenericAll))
                 {
                     if (aceType is ACEGuids.AllGuid or "")
-                    {
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -172,14 +174,12 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.GenericAll
                         };
-                    }
                     //This is a special case. If we don't continue here, every other ACE will match because GenericAll includes all other permissions
                     continue;
                 }
 
                 //WriteDACL and WriteOwner are always useful no matter what the object type is as well because they enable all other attacks
                 if (aceRights.HasFlag(ActiveDirectoryRights.WriteDacl))
-                {
                     yield return new ACE
                     {
                         PrincipalType = resolvedPrincipal.ObjectType,
@@ -187,10 +187,8 @@ namespace SharpHoundCommonLib.Processors
                         IsInherited = inherited,
                         RightName = EdgeNames.WriteDacl
                     };
-                }
-                
+
                 if (aceRights.HasFlag(ActiveDirectoryRights.WriteOwner))
-                {
                     yield return new ACE
                     {
                         PrincipalType = resolvedPrincipal.ObjectType,
@@ -198,15 +196,11 @@ namespace SharpHoundCommonLib.Processors
                         IsInherited = inherited,
                         RightName = EdgeNames.WriteOwner
                     };
-                }
-                
+
                 //Cool ACE courtesy of @rookuu. Allows a principal to add itself to a group and no one else
                 if (aceRights.HasFlag(ActiveDirectoryRights.Self))
-                {
                     if (objectType == Label.Group)
-                    {
                         if (aceType == ACEGuids.AddSelfToGroup)
-                        {
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
@@ -214,17 +208,13 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.AddSelf
                             };
-                        }
-                    }
-                }
-                
+
                 //Process object type specific ACEs. Extended rights apply to users, domains, and computers
                 if (aceRights.HasFlag(ActiveDirectoryRights.ExtendedRight))
                 {
                     if (objectType == Label.Domain)
                     {
                         if (aceType == ACEGuids.DSReplicationGetChanges)
-                        {
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
@@ -232,7 +222,7 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.GetChanges
                             };
-                        }else if (aceType == ACEGuids.DSReplicationGetChangesAll){
+                        else if (aceType == ACEGuids.DSReplicationGetChangesAll)
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
@@ -240,8 +230,7 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.GetChangesAll
                             };
-                        }else if (aceType is ACEGuids.AllGuid or "")
-                        {
+                        else if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
@@ -249,9 +238,10 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.AllExtendedRights
                             };
-                        }
-                    }else if (objectType == Label.User){
-                        if (aceType == ACEGuids.UserForceChangePassword){
+                    }
+                    else if (objectType == Label.User)
+                    {
+                        if (aceType == ACEGuids.UserForceChangePassword)
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
@@ -259,7 +249,7 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.ForceChangePassword
                             };
-                        }else if (aceType is ACEGuids.AllGuid or ""){
+                        else if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
@@ -267,12 +257,13 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.AllExtendedRights
                             };
-                        }
-                    }else if (objectType == Label.Computer){
+                    }
+                    else if (objectType == Label.Computer)
+                    {
                         //ReadLAPSPassword is only applicable if the computer actually has LAPS. Check the world readable property ms-mcs-admpwdexpirationtime
                         if (hasLaps)
                         {
-                            if (aceType is ACEGuids.AllGuid or ""){
+                            if (aceType is ACEGuids.AllGuid or "")
                                 yield return new ACE
                                 {
                                     PrincipalType = resolvedPrincipal.ObjectType,
@@ -280,8 +271,7 @@ namespace SharpHoundCommonLib.Processors
                                     IsInherited = inherited,
                                     RightName = EdgeNames.AllExtendedRights
                                 };
-                            }else if (mappedGuid is "ms-mcs-admpwd")
-                            {
+                            else if (mappedGuid is "ms-mcs-admpwd")
                                 yield return new ACE
                                 {
                                     PrincipalType = resolvedPrincipal.ObjectType,
@@ -289,7 +279,6 @@ namespace SharpHoundCommonLib.Processors
                                     IsInherited = inherited,
                                     RightName = EdgeNames.ReadLAPSPassword
                                 };
-                            }
                         }
                     }
                 }
@@ -299,9 +288,7 @@ namespace SharpHoundCommonLib.Processors
                     aceRights.HasFlag(ActiveDirectoryRights.WriteProperty))
                 {
                     if (objectType is Label.User or Label.Group or Label.Computer or Label.GPO)
-                    {
                         if (aceType is ACEGuids.AllGuid or "")
-                        {
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
@@ -309,11 +296,8 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.GenericWrite
                             };
-                        }
-                    }
 
                     if (objectType == Label.User && aceType == ACEGuids.WriteMember)
-                    {
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -321,8 +305,7 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddMember
                         };
-                    }else if (objectType == Label.Computer && aceType == ACEGuids.WriteAllowedToAct)
-                    {
+                    else if (objectType == Label.Computer && aceType == ACEGuids.WriteAllowedToAct)
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -330,13 +313,13 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddAllowedToAct
                         };
-                    }
                 }
             }
         }
-        
+
         /// <summary>
-        /// Processes the msds-groupmsamembership property and returns ACEs representing principals that can read the GMSA password from an object
+        ///     Processes the msds-groupmsamembership property and returns ACEs representing principals that can read the GMSA
+        ///     password from an object
         /// </summary>
         /// <param name="entry"></param>
         /// <param name="objectDomain"></param>
@@ -349,46 +332,42 @@ namespace SharpHoundCommonLib.Processors
             var descriptor = _utils.MakeSecurityDescriptor();
             descriptor.SetSecurityDescriptorBinaryForm(groupMSAMembership);
 
-            foreach (ActiveDirectoryRuleDescriptor ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+            foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
                 if (ace == null)
                     continue;
-                
+
                 if (ace.AccessControlType() == AccessControlType.Deny)
                     continue;
 
                 var principalSid = PreProcessSID(ace.IdentityReference());
-                
+
                 if (principalSid == null)
                     continue;
-                
+
                 var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
-                
+
                 if (resolvedPrincipal != null)
-                {
-                yield return new ACE
+                    yield return new ACE
                     {
                         RightName = EdgeNames.ReadGMSAPassword,
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         IsInherited = ace.IsInherited()
                     };
-                }
             }
         }
 
         /// <summary>
-        /// Removes some commonly seen SIDs that have no use in the schema
+        ///     Removes some commonly seen SIDs that have no use in the schema
         /// </summary>
         /// <param name="sid"></param>
         /// <returns></returns>
         private static string PreProcessSID(string sid)
         {
             if (sid != null)
-            {
                 //Ignore Local System/Creator Owner/Principal Self
-                return sid is "S-1-5-18" or "S-1-3-0" or "S-1-5-10" ? null : sid.ToUpper();    
-            }
+                return sid is "S-1-5-18" or "S-1-3-0" or "S-1-5-10" ? null : sid.ToUpper();
 
             return null;
         }

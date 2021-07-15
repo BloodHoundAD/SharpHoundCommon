@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SharpHoundCommonLib;
@@ -8,11 +9,12 @@ namespace CommonLibTest.Facades
 {
     public class MockSearchResultEntry : ISearchResultEntry
     {
-        private readonly IDictionary _properties;
         private readonly string _objectId;
         private readonly Label _objectType;
+        private readonly IDictionary _properties;
 
-        public MockSearchResultEntry(string distinguishedName, IDictionary properties, string objectId, Label objectType)
+        public MockSearchResultEntry(string distinguishedName, IDictionary properties, string objectId,
+            Label objectType)
         {
             DistinguishedName = distinguishedName;
             _properties = properties;
@@ -24,7 +26,7 @@ namespace CommonLibTest.Facades
 
         public Task<ResolvedSearchResult> ResolveBloodHoundInfo()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string GetProperty(string propertyName)
@@ -54,7 +56,7 @@ namespace CommonLibTest.Facades
 
         public bool IsDeleted()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Label GetLabel()
@@ -74,12 +76,12 @@ namespace CommonLibTest.Facades
 
         public int PropCount(string prop)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IEnumerable<string> PropertyNames()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

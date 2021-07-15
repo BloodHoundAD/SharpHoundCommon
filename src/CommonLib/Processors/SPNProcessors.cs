@@ -6,11 +6,14 @@ namespace SharpHoundCommonLib.Processors
     public class SPNProcessors
     {
         private readonly ILDAPUtils _utils;
+
         public SPNProcessors(ILDAPUtils utils)
         {
             _utils = utils;
         }
-        public async IAsyncEnumerable<SPNTarget> ReadSPNTargets(string[] servicePrincipalNames, string distinguishedName)
+
+        public async IAsyncEnumerable<SPNTarget> ReadSPNTargets(string[] servicePrincipalNames,
+            string distinguishedName)
         {
             if (servicePrincipalNames.Length == 0)
                 yield break;
@@ -28,22 +31,16 @@ namespace SharpHoundCommonLib.Processors
                     var port = 1433;
 
                     if (spn.Contains(":"))
-                    {
                         if (!int.TryParse(spn.Split(':')[1], out port))
-                        {
                             port = 1433;
-                        }
-                    }
                     var host = await _utils.ResolveHostToSid(spn, domain);
                     if (host.StartsWith("S-1-"))
-                    {
                         yield return new SPNTarget
                         {
                             ComputerSID = host,
                             Port = port,
                             Service = SPNService.MSSQL
                         };
-                    }
                 }
             }
         }

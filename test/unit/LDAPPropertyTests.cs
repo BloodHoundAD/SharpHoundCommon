@@ -22,10 +22,10 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadDomainProperties_TestGoodData()
         {
-            var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>()
+            var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
             {
                 {"description", "TESTLAB Domain"},
-                {"msds-behavior-version", "6" },
+                {"msds-behavior-version", "6"}
             }, "S-1-5-21-3130019616-2776909439-2417379446", Label.Domain);
 
             var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
@@ -34,13 +34,13 @@ namespace CommonLibTest
             Assert.Contains("description", test.Keys);
             Assert.Equal("TESTLAB Domain", test["description"] as string);
         }
-        
+
         [Fact]
         public void LDAPPropertyProcessor_ReadDomainProperties_TestBadFunctionalLevel()
         {
-            var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>()
+            var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
             {
-                {"msds-behavior-version", "a" },
+                {"msds-behavior-version", "a"}
             }, "S-1-5-21-3130019616-2776909439-2417379446", Label.Domain);
 
             var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
@@ -51,7 +51,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_FunctionalLevelToString_TestFunctionalLevels()
         {
-            var expected = new Dictionary<int, string>()
+            var expected = new Dictionary<int, string>
             {
                 {0, "2000 Mixed/Native"},
                 {1, "2003 Interim"},
@@ -65,35 +65,40 @@ namespace CommonLibTest
             };
 
             foreach (var (key, value) in expected)
-            {
                 Assert.Equal(value, LDAPPropertyProcessor.FunctionalLevelToString(key));
-            }
         }
 
         [Fact]
         public void LDAPPropertyProcessor_ReadGPOProperties_TestGoodData()
         {
-            var mock = new MockSearchResultEntry("CN\u003d{94DD0260-38B5-497E-8876-10E7A96E80D0},CN\u003dPolicies,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>()
-            {
-                {"gpcfilesyspath", Helpers.B64ToString("XFx0ZXN0bGFiLmxvY2FsXFN5c1ZvbFx0ZXN0bGFiLmxvY2FsXFBvbGljaWVzXHs5NEREMDI2MC0zOEI1LTQ5N0UtODg3Ni0xMEU3QTk2RTgwRDB9")},
-                {"description", "Test" },
-            }, "S-1-5-21-3130019616-2776909439-2417379446", Label.GPO);
+            var mock = new MockSearchResultEntry(
+                "CN\u003d{94DD0260-38B5-497E-8876-10E7A96E80D0},CN\u003dPolicies,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {
+                        "gpcfilesyspath",
+                        Helpers.B64ToString(
+                            "XFx0ZXN0bGFiLmxvY2FsXFN5c1ZvbFx0ZXN0bGFiLmxvY2FsXFBvbGljaWVzXHs5NEREMDI2MC0zOEI1LTQ5N0UtODg3Ni0xMEU3QTk2RTgwRDB9")
+                    },
+                    {"description", "Test"}
+                }, "S-1-5-21-3130019616-2776909439-2417379446", Label.GPO);
 
             var test = LDAPPropertyProcessor.ReadGPOProperties(mock);
 
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("gpcpath", test.Keys);
-            Assert.Equal(@"\\TESTLAB.LOCAL\SYSVOL\TESTLAB.LOCAL\POLICIES\{94DD0260-38B5-497E-8876-10E7A96E80D0}", test["gpcpath"] as string);
+            Assert.Equal(@"\\TESTLAB.LOCAL\SYSVOL\TESTLAB.LOCAL\POLICIES\{94DD0260-38B5-497E-8876-10E7A96E80D0}",
+                test["gpcpath"] as string);
         }
 
         [Fact]
         public void LDAPPropertyProcessor_ReadOUProperties_TestGoodData()
         {
             var mock = new MockSearchResultEntry("OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
-                new Dictionary<string, object>()
+                new Dictionary<string, object>
                 {
-                    {"description", "Test"},
+                    {"description", "Test"}
                 }, "2A374493-816A-4193-BEFD-D2F4132C6DCA", Label.OU);
 
             var test = LDAPPropertyProcessor.ReadOUProperties(mock);
@@ -105,7 +110,7 @@ namespace CommonLibTest
         public void LDAPPropertyProcessor_ReadGroupProperties_TestGoodData()
         {
             var mock = new MockSearchResultEntry("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
-                new Dictionary<string, object>()
+                new Dictionary<string, object>
                 {
                     {"description", "Test"},
                     {"admincount", "1"}
@@ -115,14 +120,14 @@ namespace CommonLibTest
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
-            Assert.True((bool)test["admincount"]);
+            Assert.True((bool) test["admincount"]);
         }
-        
+
         [Fact]
         public void LDAPPropertyProcessor_ReadGroupProperties_TestGoodData_FalseAdminCount()
         {
             var mock = new MockSearchResultEntry("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
-                new Dictionary<string, object>()
+                new Dictionary<string, object>
                 {
                     {"description", "Test"},
                     {"admincount", "0"}
@@ -132,14 +137,14 @@ namespace CommonLibTest
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
-            Assert.False((bool)test["admincount"]);
+            Assert.False((bool) test["admincount"]);
         }
-        
+
         [Fact]
         public void LDAPPropertyProcessor_ReadGroupProperties_NullAdminCount()
         {
             var mock = new MockSearchResultEntry("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
-                new Dictionary<string, object>()
+                new Dictionary<string, object>
                 {
                     {"description", "Test"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group);
@@ -148,7 +153,7 @@ namespace CommonLibTest
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
-            Assert.False((bool)test["admincount"]);
+            Assert.False((bool) test["admincount"]);
         }
 
         [Fact]
@@ -162,23 +167,29 @@ namespace CommonLibTest
                     {"lastlogon", "132673011142753043"},
                     {"lastlogontimestamp", "132670318095676525"},
                     {"homedirectory", @"\\win10\testdir"},
-                    {"serviceprincipalname", new[]
                     {
-                        "MSSQLSVC\\win10"
-                    }},
+                        "serviceprincipalname", new[]
+                        {
+                            "MSSQLSVC\\win10"
+                        }
+                    },
                     {"admincount", "1"},
-                    {"sidhistory", new[]
                     {
-                        Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
-                    }},
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
                     {"pwdlastset", "132131667346106691"},
-                    {"msds-allowedToDelegateTo", new string[]
                     {
-                        "host/primary",
-                        "rdpman/win10"
-                    }}
+                        "msds-allowedToDelegateTo", new[]
+                        {
+                            "host/primary",
+                            "rdpman/win10"
+                        }
+                    }
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
-            
+
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadUserProperties(mock);
             var props = test.Props;
@@ -219,23 +230,27 @@ namespace CommonLibTest
                     {"lastlogon", "132673011142753043"},
                     {"lastlogontimestamp", "132670318095676525"},
                     {"homedirectory", @"\\win10\testdir"},
-                    {"serviceprincipalname", new[]
                     {
-                        "MSSQLSVC\\win10"
-                    }},
-                    {"sidhistory", new[]
+                        "serviceprincipalname", new[]
+                        {
+                            "MSSQLSVC\\win10"
+                        }
+                    },
                     {
-                        Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
-                    }},
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
                     {"pwdlastset", "132131667346106691"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
-            
+
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadUserProperties(mock);
             var props = test.Props;
             var keys = props.Keys;
             Assert.Contains("admincount", keys);
-            Assert.False((bool)props["admincount"]);
+            Assert.False((bool) props["admincount"]);
         }
 
         [WindowsOnlyFact]
@@ -249,15 +264,19 @@ namespace CommonLibTest
                     {"lastlogon", "132673011142753043"},
                     {"lastlogontimestamp", "132670318095676525"},
                     {"homedirectory", @"\\win10\testdir"},
-                    {"serviceprincipalname", new[]
                     {
-                        "MSSQLSVC/win10"
-                    }},
+                        "serviceprincipalname", new[]
+                        {
+                            "MSSQLSVC/win10"
+                        }
+                    },
                     {"admincount", "1"},
-                    {"sidhistory", new[]
                     {
-                        Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
-                    }},
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
                     {"pwdlastset", "132131667346106691"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
 
@@ -265,41 +284,41 @@ namespace CommonLibTest
             var test = await processor.ReadUserProperties(mock);
             var props = test.Props;
             var keys = props.Keys;
-            
+
             //Random Stuff
             Assert.Contains("description", keys);
             Assert.Equal("Test", props["description"] as string);
             Assert.Contains("admincount", keys);
-            Assert.True((bool)props["admincount"]);
+            Assert.True((bool) props["admincount"]);
             Assert.Contains("lastlogon", keys);
-            Assert.Equal(1622827514, (long)props["lastlogon"]);
+            Assert.Equal(1622827514, (long) props["lastlogon"]);
             Assert.Contains("lastlogontimestamp", keys);
-            Assert.Equal(1622558209, (long)props["lastlogontimestamp"]);
+            Assert.Equal(1622558209, (long) props["lastlogontimestamp"]);
             Assert.Contains("pwdlastset", keys);
-            Assert.Equal(1568693134, (long)props["pwdlastset"]);
+            Assert.Equal(1568693134, (long) props["pwdlastset"]);
             Assert.Contains("homedirectory", keys);
             Assert.Equal(@"\\win10\testdir", props["homedirectory"] as string);
-            
+
             //UAC stuff
             Assert.Contains("sensitive", keys);
-            Assert.False((bool)props["sensitive"]);
+            Assert.False((bool) props["sensitive"]);
             Assert.Contains("dontreqpreauth", keys);
-            Assert.False((bool)props["dontreqpreauth"]);
+            Assert.False((bool) props["dontreqpreauth"]);
             Assert.Contains("passwordnotreqd", keys);
-            Assert.False((bool)props["passwordnotreqd"]);
+            Assert.False((bool) props["passwordnotreqd"]);
             Assert.Contains("unconstraineddelegation", keys);
-            Assert.False((bool)props["unconstraineddelegation"]);
+            Assert.False((bool) props["unconstraineddelegation"]);
             Assert.Contains("enabled", keys);
-            Assert.True((bool)props["enabled"]);
+            Assert.True((bool) props["enabled"]);
             Assert.Contains("trustedtoauth", keys);
-            Assert.False((bool)props["trustedtoauth"]);
-            
+            Assert.False((bool) props["trustedtoauth"]);
+
             //SPN
             Assert.Contains("hasspn", keys);
-            Assert.True((bool)props["hasspn"]);
+            Assert.True((bool) props["hasspn"]);
             Assert.Contains("serviceprincipalnames", keys);
             Assert.Contains("MSSQLSVC/win10", props["serviceprincipalnames"] as string[]);
-            
+
             //SidHistory
             Assert.Contains("sidhistory", keys);
             var sh = props["sidhistory"] as string[];
@@ -312,7 +331,7 @@ namespace CommonLibTest
                 ObjectType = Label.User
             }, test.SidHistory);
         }
-        
+
         [Fact]
         public async Task LDAPPropertyProcessor_ReadUserProperties_TestBadPaths()
         {
@@ -324,15 +343,19 @@ namespace CommonLibTest
                     {"lastlogon", "132673011142753043"},
                     {"lastlogontimestamp", "132670318095676525"},
                     {"homedirectory", @"\\win10\testdir"},
-                    {"serviceprincipalname", new[]
                     {
-                        "MSSQLSVC/win10"
-                    }},
+                        "serviceprincipalname", new[]
+                        {
+                            "MSSQLSVC/win10"
+                        }
+                    },
                     {"admincount", "c"},
-                    {"sidhistory", new[]
                     {
-                        Array.Empty<byte>()
-                    }},
+                        "sidhistory", new[]
+                        {
+                            Array.Empty<byte>()
+                        }
+                    },
                     {"pwdlastset", "132131667346106691"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
 
@@ -344,7 +367,7 @@ namespace CommonLibTest
             Assert.Contains("sidhistory", keys);
             Assert.Empty(props["sidhistory"] as string[]);
             Assert.Contains("admincount", keys);
-            Assert.False((bool)props["admincount"]);
+            Assert.False((bool) props["admincount"]);
             Assert.Contains("sensitive", keys);
             Assert.Contains("dontreqpreauth", keys);
             Assert.Contains("passwordnotreqd", keys);
@@ -352,13 +375,13 @@ namespace CommonLibTest
             Assert.Contains("pwdneverexpires", keys);
             Assert.Contains("enabled", keys);
             Assert.Contains("trustedtoauth", keys);
-            Assert.False((bool)props["trustedtoauth"]);
-            Assert.False((bool)props["sensitive"]);
-            Assert.False((bool)props["dontreqpreauth"]);
-            Assert.False((bool)props["passwordnotreqd"]);
-            Assert.False((bool)props["unconstraineddelegation"]);
-            Assert.False((bool)props["pwdneverexpires"]);
-            Assert.True((bool)props["enabled"]);
+            Assert.False((bool) props["trustedtoauth"]);
+            Assert.False((bool) props["sensitive"]);
+            Assert.False((bool) props["dontreqpreauth"]);
+            Assert.False((bool) props["passwordnotreqd"]);
+            Assert.False((bool) props["unconstraineddelegation"]);
+            Assert.False((bool) props["pwdneverexpires"]);
+            Assert.True((bool) props["enabled"]);
         }
 
         [WindowsOnlyFact]
@@ -375,49 +398,55 @@ namespace CommonLibTest
                     {"operatingsystem", "Windows 10 Enterprise"},
                     {"operatingsystemservicepack", "1607"},
                     {"admincount", "c"},
-                    {"sidhistory", new[]
                     {
-                        Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
-                    }},
-                    {"msds-allowedToDelegateTo", new[]
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
                     {
-                        "ldap/PRIMARY.testlab.local/testlab.local",
-                        "ldap/PRIMARY.testlab.local",
-                        "ldap/PRIMARY",
-                    }},
+                        "msds-allowedToDelegateTo", new[]
+                        {
+                            "ldap/PRIMARY.testlab.local/testlab.local",
+                            "ldap/PRIMARY.testlab.local",
+                            "ldap/PRIMARY"
+                        }
+                    },
                     {"pwdlastset", "132131667346106691"},
-                    {"serviceprincipalname", new[]
                     {
-                        "WSMAN/WIN10",
-                        "WSMAN/WIN10.testlab.local",
-                        "RestrictedKrbHost/WIN10",
-                        "HOST/WIN10",
-                        "RestrictedKrbHost/WIN10.testlab.local",
-                        "HOST/WIN10.testlab.local",
-                    }},
+                        "serviceprincipalname", new[]
+                        {
+                            "WSMAN/WIN10",
+                            "WSMAN/WIN10.testlab.local",
+                            "RestrictedKrbHost/WIN10",
+                            "HOST/WIN10",
+                            "RestrictedKrbHost/WIN10.testlab.local",
+                            "HOST/WIN10.testlab.local"
+                        }
+                    }
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
-            
+
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadComputerProperties(mock);
             var props = test.Props;
             var keys = props.Keys;
-            
+
             //UAC
             Assert.Contains("enabled", keys);
             Assert.Contains("unconstraineddelegation", keys);
             Assert.Contains("lastlogon", keys);
             Assert.Contains("lastlogontimestamp", keys);
             Assert.Contains("pwdlastset", keys);
-            Assert.True((bool)props["enabled"]);
-            Assert.False((bool)props["unconstraineddelegation"]);
-            
+            Assert.True((bool) props["enabled"]);
+            Assert.False((bool) props["unconstraineddelegation"]);
+
             Assert.Contains("lastlogon", keys);
-            Assert.Equal(1622827514, (long)props["lastlogon"]);
+            Assert.Equal(1622827514, (long) props["lastlogon"]);
             Assert.Contains("lastlogontimestamp", keys);
-            Assert.Equal(1622558209, (long)props["lastlogontimestamp"]);
+            Assert.Equal(1622558209, (long) props["lastlogontimestamp"]);
             Assert.Contains("pwdlastset", keys);
-            Assert.Equal(1568693134, (long)props["pwdlastset"]);
-            
+            Assert.Equal(1568693134, (long) props["pwdlastset"]);
+
             //AllowedToDelegate
             Assert.Single(test.AllowedToDelegate);
             Assert.Contains(new TypedPrincipal
@@ -433,7 +462,7 @@ namespace CommonLibTest
             Assert.Equal("Windows 10 Enterprise 1607", props["operatingsystem"] as string);
             Assert.Contains("description", keys);
             Assert.Equal("Test", props["description"] as string);
-            
+
             //SidHistory
             Assert.Contains("sidhistory", keys);
             var sh = props["sidhistory"] as string[];
@@ -446,7 +475,7 @@ namespace CommonLibTest
                 ObjectType = Label.User
             }, test.SidHistory);
         }
-        
+
         [Fact]
         public async Task LDAPPropertyProcessor_ReadComputerProperties_TestBadPaths()
         {
@@ -459,25 +488,32 @@ namespace CommonLibTest
                     {"lastlogontimestamp", "132670318095676525"},
                     {"operatingsystem", "Windows 10 Enterprise"},
                     {"admincount", "c"},
-                    {"sidhistory", new[] {
-                        Array.Empty<byte>()
-                    }},
-                    {"msds-allowedToDelegateTo", new[]
                     {
-                        "ldap/PRIMARY.testlab.local/testlab.local",
-                        "ldap/PRIMARY.testlab.local",
-                        "ldap/PRIMARY",
-                    }},
+                        "sidhistory", new[]
+                        {
+                            Array.Empty<byte>()
+                        }
+                    },
+                    {
+                        "msds-allowedToDelegateTo", new[]
+                        {
+                            "ldap/PRIMARY.testlab.local/testlab.local",
+                            "ldap/PRIMARY.testlab.local",
+                            "ldap/PRIMARY"
+                        }
+                    },
                     {"pwdlastset", "132131667346106691"},
-                    {"serviceprincipalname", new[]
                     {
-                        "WSMAN/WIN10",
-                        "WSMAN/WIN10.testlab.local",
-                        "RestrictedKrbHost/WIN10",
-                        "HOST/WIN10",
-                        "RestrictedKrbHost/WIN10.testlab.local",
-                        "HOST/WIN10.testlab.local",
-                    }},
+                        "serviceprincipalname", new[]
+                        {
+                            "WSMAN/WIN10",
+                            "WSMAN/WIN10.testlab.local",
+                            "RestrictedKrbHost/WIN10",
+                            "HOST/WIN10",
+                            "RestrictedKrbHost/WIN10.testlab.local",
+                            "HOST/WIN10.testlab.local"
+                        }
+                    }
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
@@ -488,13 +524,13 @@ namespace CommonLibTest
             Assert.Contains("unconstraineddelegation", keys);
             Assert.Contains("enabled", keys);
             Assert.Contains("trustedtoauth", keys);
-            Assert.False((bool)props["unconstraineddelegation"]);
-            Assert.True((bool)props["enabled"]);
-            Assert.False((bool)props["trustedtoauth"]);
+            Assert.False((bool) props["unconstraineddelegation"]);
+            Assert.True((bool) props["enabled"]);
+            Assert.False((bool) props["trustedtoauth"]);
             Assert.Contains("sidhistory", keys);
             Assert.Empty(props["sidhistory"] as string[]);
         }
-        
+
         //TODO: Add coverage for ParseAllProperties
     }
 }

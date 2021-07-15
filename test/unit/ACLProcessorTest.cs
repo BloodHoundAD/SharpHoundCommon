@@ -1,39 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
+using System.Security.AccessControl;
 using CommonLibTest.Facades;
 using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
-using System.DirectoryServices;
-using System.DirectoryServices.ActiveDirectory;
-using System.Security.AccessControl;
 using Xunit;
 using Xunit.Abstractions;
-using AuthorizationRuleCollection = System.Security.AccessControl.AuthorizationRuleCollection;
-using SecurityIdentifier = System.Security.Principal.SecurityIdentifier;
 
 namespace CommonLibTest
 {
     public class ACLProcessorTest : IDisposable
     {
-        private readonly ITestOutputHelper _testOutputHelper;
-        private ACLProcessor _baseProcessor;
-        private readonly string _testDomainName;
         private const string ProtectedUserNTSecurityDescriptor =
             "AQAEnIgEAAAAAAAAAAAAABQAAAAEAHQEGAAAAAUAPAAQAAAAAwAAAABCFkzAINARp2gAqgBuBSkUzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAABCFkzAINARp2gAqgBuBSm6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAABAgIF+ledARkCAAwE/C1M8UzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAABAgIF+ledARkCAAwE/C1M+6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAEDCCrypedARkCAAwE/C1M8UzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAEDCCrypedARkCAAwE/C1M+6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAEIvulmiedARkCAAwE/C088UzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAEIvulmiedARkCAAwE/C08+6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAPiIcAPhCtIRtCIAoMlo+TkUzChINxS8RZsHrW8BXl8oAQIAAAAAAAUgAAAAKgIAAAUAPAAQAAAAAwAAAPiIcAPhCtIRtCIAoMlo+Tm6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAOAAwAAAAAQAAAH96lr/mDdARooUAqgAwSeIBBQAAAAAABRUAAAAgT5C6f0aEpXZIFpAFAgAABQAsABAAAAABAAAAHbGpRq5gWkC36P+KWNRW0gECAAAAAAAFIAAAADACAAAFACwAMAAAAAEAAAAcmrZtIpTREa69AAD4A2fBAQIAAAAAAAUgAAAAMQIAAAUALAAwAAAAAQAAAGK8BVjJvShEpeKFag9MGF4BAgAAAAAABSAAAAAxAgAABQAsAJQAAgACAAAAFMwoSDcUvEWbB61vAV5fKAECAAAAAAAFIAAAACoCAAAFACwAlAACAAIAAAC6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUAKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAAAQAAAAAFACgAAAEAAAEAAABTGnKrLx7QEZgZAKoAQFKbAQEAAAAAAAUKAAAABQIoADABAAABAAAA3kfmkW/ZcEuVV9Y/9PPM2AEBAAAAAAAFCgAAAAAAJAC/AQ4AAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQAAIAAAAAJAC/AQ4AAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQBwIAAAAAGAC/AQ8AAQIAAAAAAAUgAAAAIAIAAAAAFACUAAIAAQEAAAAAAAULAAAAAAAUAP8BDwABAQAAAAAABRIAAAABBQAAAAAABRUAAAAgT5C6f0aEpXZIFpAAAgAA";
+
         private const string UnProtectedUserNtSecurityDescriptor =
             "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";
+
         private const string GMSAProperty =
             "AQAEgEAAAAAAAAAAAAAAABQAAAAEACwAAQAAAAAAJAD/AQ8AAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQ9AEAAAECAAAAAAAFIAAAACACAAA\u003d";
+
+        private readonly string _testDomainName;
+        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly ACLProcessor _baseProcessor;
 
         public ACLProcessorTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
             _testDomainName = "TESTLAB.LOCAL";
             _baseProcessor = new ACLProcessor(new LDAPUtils());
+        }
+
+        public void Dispose()
+        {
         }
 
         [Fact]
@@ -53,7 +57,6 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_IsACLProtected_ReturnsTrue()
         {
-
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
             mockSecurityDescriptor.Setup(x => x.AreAccessRulesProtected()).Returns(true);
@@ -105,9 +108,11 @@ namespace CommonLibTest
             var collection = new List<ActiveDirectoryRuleDescriptor>();
             collection.Add(mockRule.Object);
 
-            mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>())).Returns(collection);
+            mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+                .Returns(collection);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-            mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>())).Returns(new TypedPrincipal(expectedSID, expectedPrincipalType));
+            mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new TypedPrincipal(expectedSID, expectedPrincipalType));
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(GMSAProperty);
@@ -130,7 +135,8 @@ namespace CommonLibTest
             var collection = new List<ActiveDirectoryRuleDescriptor>();
             collection.Add(null);
 
-            mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>())).Returns(collection);
+            mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+                .Returns(collection);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -151,7 +157,8 @@ namespace CommonLibTest
             mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Deny);
             collection.Add(mockRule.Object);
 
-            mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>())).Returns(collection);
+            mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+                .Returns(collection);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -170,10 +177,11 @@ namespace CommonLibTest
             var collection = new List<ActiveDirectoryRuleDescriptor>();
 
             mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-            mockRule.Setup(x => x.IdentityReference()).Returns((string)null);
+            mockRule.Setup(x => x.IdentityReference()).Returns((string) null);
             collection.Add(mockRule.Object);
 
-            mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>())).Returns(collection);
+            mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+                .Returns(collection);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -230,7 +238,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -250,7 +258,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -272,7 +280,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -295,7 +303,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -314,12 +322,12 @@ namespace CommonLibTest
             var collection = new List<ActiveDirectoryRuleDescriptor>();
             mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
             mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-            mockRule.Setup(x => x.IdentityReference()).Returns((string)null);
+            mockRule.Setup(x => x.IdentityReference()).Returns((string) null);
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -349,7 +357,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -380,7 +388,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -417,7 +425,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -454,7 +462,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -491,7 +499,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -505,7 +513,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact]
@@ -528,7 +536,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -560,7 +568,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -574,7 +582,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact]
@@ -597,7 +605,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -611,7 +619,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact]
@@ -634,7 +642,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -648,7 +656,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact]
@@ -672,7 +680,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -704,7 +712,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -718,7 +726,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact]
@@ -741,7 +749,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -755,7 +763,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact]
@@ -778,7 +786,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -810,7 +818,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -824,11 +832,13 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact(Skip = "Need to populate cache to reach this case")]
-        public void ACLProcessor_ProcessACL_ExtendedRight_Computer_MappedGuid() { }
+        public void ACLProcessor_ProcessACL_ExtendedRight_Computer_MappedGuid()
+        {
+        }
 
         [Fact]
         public void ACLProcessor_ProcessACL_GenericWrite_Unmatched()
@@ -850,7 +860,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -882,7 +892,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -896,7 +906,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact]
@@ -919,7 +929,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -933,7 +943,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
+            Assert.Equal(actual.RightName, expectedRightName);
         }
 
         [Fact]
@@ -956,7 +966,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -970,13 +980,7 @@ namespace CommonLibTest
             Assert.Equal(actual.PrincipalType, expectedPrincipalType);
             Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
             Assert.Equal(actual.IsInherited, false);
-            Assert.Equal(actual.RightName, expectedRightName.ToString());
-        }
-
-        public void Dispose()
-        {
+            Assert.Equal(actual.RightName, expectedRightName);
         }
     }
-
-
 }

@@ -19,12 +19,11 @@ namespace CommonLibTest
         }
     }
 
-    public sealed class WindowsOnlyFact: FactAttribute
+    public sealed class WindowsOnlyFact : FactAttribute
     {
-        public WindowsOnlyFact() {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-                Skip = "Ignore on non-Windows platforms";
-            }
+        public WindowsOnlyFact()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) Skip = "Ignore on non-Windows platforms";
         }
     }
 }

@@ -5,9 +5,8 @@ namespace SharpHoundCommonLib.OutputTypes
 {
     public class OutputWrapper<T>
     {
-        [JsonProperty(PropertyName = "meta")]
-        internal MetaTag Meta { get; set; }
-        [JsonProperty(PropertyName = "data")]
-        internal List<T> Data { get; set; }
+        [JsonProperty(PropertyName = "meta")] internal MetaTag Meta { get; set; }
+
+        [JsonProperty(PropertyName = "data")] internal List<T> Data { get; set; }
     }
 }

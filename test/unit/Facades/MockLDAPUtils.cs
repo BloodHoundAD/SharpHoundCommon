@@ -1,29 +1,28 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
-using System.Security.AccessControl;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
 using System.Threading;
 using System.Threading.Tasks;
+using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
-using Moq;
 
 namespace CommonLibTest.Facades
 {
     public class MockLDAPUtils : ILDAPUtils
     {
         private readonly Forest _forest;
+
         public MockLDAPUtils()
         {
             _forest = MockableForest.Construct("FOREST.LOCAL");
         }
-        
+
         public void SetLDAPConfig(LDAPConfig config)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string[] GetUserGlobalCatalogMatches(string name)
@@ -32,7 +31,8 @@ namespace CommonLibTest.Facades
             return name switch
             {
                 "dfm" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-1105"},
-                "administrator" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-500", "S-1-5-21-3084884204-958224920-2707782874-500"},
+                "administrator" => new[]
+                    {"S-1-5-21-3130019616-2776909439-2417379446-500", "S-1-5-21-3084884204-958224920-2707782874-500"},
                 "admin" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-2116"},
                 _ => Array.Empty<string>()
             };
@@ -41,10 +41,7 @@ namespace CommonLibTest.Facades
         public TypedPrincipal ResolveIDAndType(string id, string domain)
         {
             id = id?.ToUpper();
-            if (GetWellKnownPrincipal(id, domain, out var principal))
-            {
-                return principal;
-            }
+            if (GetWellKnownPrincipal(id, domain, out var principal)) return principal;
 
             principal = id switch
             {
@@ -671,20 +668,20 @@ namespace CommonLibTest.Facades
 
         public string GetDomainNameFromSid(string sid)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task<string> GetSidFromDomainName(string domainName)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string ConvertWellKnownPrincipal(string sid, string domain)
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out _)) return sid;
-            
+
             if (sid != "S-1-5-9") return $"{domain}-{sid}".ToUpper();
-            
+
             var forest = GetForest(domain)?.Name;
             return $"{forest}-{sid}".ToUpper();
         }
@@ -698,10 +695,10 @@ namespace CommonLibTest.Facades
 
         public virtual IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        #pragma warning disable CS1998 
+#pragma warning disable CS1998
         public async Task<string> ResolveHostToSid(string hostname, string domain)
         {
             var h = SharpHoundCommonLib.Helpers.StripServicePrincipalName(hostname);
@@ -715,9 +712,9 @@ namespace CommonLibTest.Facades
                 _ => null
             };
         }
-        #pragma warning restore CS1998
+#pragma warning restore CS1998
 
-        #pragma warning disable CS1998
+#pragma warning disable CS1998
         public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
         {
             return name.ToUpper() switch
@@ -730,7 +727,7 @@ namespace CommonLibTest.Facades
                 _ => null
             };
         }
-        #pragma warning restore CS1998
+#pragma warning restore CS1998
 
         public TypedPrincipal ResolveDistinguishedName(string dn)
         {
@@ -970,21 +967,23 @@ namespace CommonLibTest.Facades
 
         public virtual IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken,
+        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props,
+            CancellationToken cancellationToken,
             string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null,
             bool globalCatalog = false, bool skipCache = false)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, string domainName = null,
+        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props,
+            string domainName = null,
             bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false,
             bool skipCache = false)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Forest GetForest(string domainName = null)

@@ -6,7 +6,7 @@ namespace SharpHoundCommonLib
     public static class WellKnownPrincipal
     {
         /// <summary>
-        /// Gets the principal associated with a well known SID
+        ///     Gets the principal associated with a well known SID
         /// </summary>
         /// <param name="sid"></param>
         /// <param name="commonPrincipal"></param>

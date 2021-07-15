@@ -13,17 +13,19 @@ namespace CommonLibTest
 {
     public class GroupProcessorTest
     {
-        private readonly ITestOutputHelper _testOutputHelper;
-        private GroupProcessor _baseProcessor;
         private readonly string _testDomainName;
 
-        private readonly string[] _testMembership = {
+        private readonly string[] _testMembership =
+        {
             "CN=Domain Admins,CN=Users,DC=testlab,DC=local",
             "CN=Enterprise Admins,CN=Users,DC=testlab,DC=local",
             "CN=Administrator,CN=Users,DC=testlab,DC=local",
             "CN=NonExistent,CN=Users,DC=testlab,DC=local"
         };
-        
+
+        private readonly ITestOutputHelper _testOutputHelper;
+        private GroupProcessor _baseProcessor;
+
         public GroupProcessorTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
@@ -51,7 +53,7 @@ namespace CommonLibTest
             var result = GroupProcessor.GetPrimaryGroupInfo("513", "ABC123");
             Assert.Null(result);
         }
-        
+
         [Fact]
         public void GroupProcessor_ReadGroupMembers_EmptyMembers_DoesRangedRetrieval()
         {
@@ -81,12 +83,10 @@ namespace CommonLibTest
             };
             mockUtils.Setup(x => x.DoRangedRetrieval(It.IsAny<string>(), It.IsAny<string>())).Returns(_testMembership);
             var processor = new GroupProcessor(mockUtils.Object);
-            
-            var results = processor.ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", Array.Empty<string>()).ToArray();
-            foreach (var t in results)
-            {
-                _testOutputHelper.WriteLine(t.ToString());
-            }
+
+            var results = processor
+                .ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", Array.Empty<string>()).ToArray();
+            foreach (var t in results) _testOutputHelper.WriteLine(t.ToString());
             Assert.Equal(4, results.Length);
             Assert.Equal(expected, results);
         }
@@ -100,8 +100,8 @@ namespace CommonLibTest
             {
                 new()
                 {
-                     ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-512",
-                     ObjectType = Label.Group
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-512",
+                    ObjectType = Label.Group
                 },
                 new()
                 {
@@ -119,12 +119,10 @@ namespace CommonLibTest
                     ObjectType = Label.Base
                 }
             };
-            
-            var results = processor.ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", _testMembership).ToArray();
-            foreach (var t in results)
-            {
-                _testOutputHelper.WriteLine(t.ToString());
-            }
+
+            var results = processor
+                .ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", _testMembership).ToArray();
+            foreach (var t in results) _testOutputHelper.WriteLine(t.ToString());
             Assert.Equal(4, results.Length);
             Assert.Equal(expected, results);
         }

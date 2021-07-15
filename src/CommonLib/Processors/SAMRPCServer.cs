@@ -10,21 +10,6 @@ namespace SharpHoundCommonLib.Processors
 {
     public class SAMRPCServer : IDisposable
     {
-        private readonly string _computerSAN;
-        private readonly string _computerSID;
-        private readonly string _computerName;
-
-        private IntPtr _serverHandle;
-        private IntPtr _domainHandle;
-        private readonly NativeMethods.OBJECT_ATTRIBUTES _obj;
-        private readonly ILDAPUtils _utils;
-        private readonly NativeMethods _nativeMethods;
-
-        private readonly string[] _filteredSids = {
-            "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
-            "S-1-5-19", "S-1-5-20"
-        };
-
         private static readonly Lazy<byte[]> WellKnownSidBytes = new(() =>
         {
             var sid = new SecurityIdentifier("S-1-5-32");
@@ -33,14 +18,35 @@ namespace SharpHoundCommonLib.Processors
             return sidBytes;
         }, LazyThreadSafetyMode.PublicationOnly);
 
+        private readonly string _computerName;
+        private readonly string _computerSAN;
+        private readonly string _computerSID;
+
+        private readonly string[] _filteredSids =
+        {
+            "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
+            "S-1-5-19", "S-1-5-20"
+        };
+
+        private readonly NativeMethods _nativeMethods;
+        private readonly NativeMethods.OBJECT_ATTRIBUTES _obj;
+        private readonly ILDAPUtils _utils;
+        private IntPtr _domainHandle;
+
+        private IntPtr _serverHandle;
+
         /// <summary>
-        /// Creates an instance of an RPCServer which is used for making SharpHound specific SAMRPC API calls for computers
+        ///     Creates an instance of an RPCServer which is used for making SharpHound specific SAMRPC API calls for computers
         /// </summary>
         /// <param name="computerName">The name of the computer to connect too. This should be the network name of the computer</param>
         /// <param name="samAccountName">The samaccountname of the computer</param>
         /// <param name="computerSid">The security identifier for the computer</param>
-        /// <exception cref="APIException">An exception if the an API fails to connect initially. Generally indicates the server is unavailable or permissions aren't available.</exception>
-        public SAMRPCServer(string computerName, string samAccountName, string computerSid, ILDAPUtils utils = null, NativeMethods methods = null)
+        /// <exception cref="APIException">
+        ///     An exception if the an API fails to connect initially. Generally indicates the server is
+        ///     unavailable or permissions aren't available.
+        /// </exception>
+        public SAMRPCServer(string computerName, string samAccountName, string computerSid, ILDAPUtils utils = null,
+            NativeMethods methods = null)
         {
             Logging.Trace($"Opening SAM Server for {computerName}");
             _computerSAN = samAccountName;
@@ -54,7 +60,8 @@ namespace SharpHoundCommonLib.Processors
             //Every API call we make relies on both SamConnect and SamOpenDomain
             //Make these calls immediately and save the handles. If either fails, nothing else is going to work
             var status = _nativeMethods.CallSamConnect(ref us, out _serverHandle,
-                NativeMethods.SamAccessMasks.SamServerLookupDomain | NativeMethods.SamAccessMasks.SamServerConnect, ref _obj);
+                NativeMethods.SamAccessMasks.SamServerLookupDomain | NativeMethods.SamAccessMasks.SamServerConnect,
+                ref _obj);
             Logging.Trace($"SamConnect returned {status} for {computerName}");
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
@@ -65,22 +72,37 @@ namespace SharpHoundCommonLib.Processors
                     APICall = "SamConnect"
                 };
             }
-            
-            status = _nativeMethods.CallSamOpenDomain(_serverHandle, NativeMethods.DomainAccessMask.Lookup, WellKnownSidBytes.Value, out _domainHandle);
+
+            status = _nativeMethods.CallSamOpenDomain(_serverHandle, NativeMethods.DomainAccessMask.Lookup,
+                WellKnownSidBytes.Value, out _domainHandle);
             Logging.Trace($"SamOpenDomain returned {status} for {computerName}");
             if (status != NativeMethods.NtStatus.StatusSuccess)
-            {
                 throw new APIException
                 {
                     Status = status.ToString(),
                     APICall = "SamOpenDomain"
                 };
+        }
+
+        public void Dispose()
+        {
+            if (_domainHandle != IntPtr.Zero)
+            {
+                _nativeMethods.CallSamCloseHandle(_domainHandle);
+                _domainHandle = IntPtr.Zero;
+                ;
+            }
+
+            if (_serverHandle != IntPtr.Zero)
+            {
+                _nativeMethods.CallSamCloseHandle(_serverHandle);
+                _serverHandle = IntPtr.Zero;
             }
         }
 
         /// <summary>
-        /// Reads the members in a specified local group. The group is referenced by its RID (Relative Identifier).
-        /// Groups current used by SharpHound can be found in <cref>LocalGroupRids</cref>
+        ///     Reads the members in a specified local group. The group is referenced by its RID (Relative Identifier).
+        ///     Groups current used by SharpHound can be found in <cref>LocalGroupRids</cref>
         /// </summary>
         /// <param name="groupRid"></param>
         /// <returns></returns>
@@ -88,7 +110,8 @@ namespace SharpHoundCommonLib.Processors
         {
             var result = new LocalGroupAPIResult();
 
-            var status = _nativeMethods.CallSamOpenAlias(_domainHandle, NativeMethods.AliasOpenFlags.ListMembers, groupRid, out var aliasHandle);
+            var status = _nativeMethods.CallSamOpenAlias(_domainHandle, NativeMethods.AliasOpenFlags.ListMembers,
+                groupRid, out var aliasHandle);
             Logging.Trace($"SamOpenAlias returned {status} for RID {groupRid} on {_computerName}");
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
@@ -107,7 +130,7 @@ namespace SharpHoundCommonLib.Processors
                 result.FailureReason = $"SamGetMembersInAlias returned {status.ToString()}";
                 return result;
             }
-            
+
             Logging.Trace($"SamGetMembersInAlias returned {count} items for RID {groupRid} on {_computerName}");
 
             if (count == 0)
@@ -119,7 +142,6 @@ namespace SharpHoundCommonLib.Processors
 
             var sids = new List<string>();
             for (var i = 0; i < count; i++)
-            {
                 try
                 {
                     var raw = Marshal.ReadIntPtr(members, Marshal.SizeOf(typeof(IntPtr)) * i);
@@ -130,25 +152,19 @@ namespace SharpHoundCommonLib.Processors
                 {
                     Logging.Trace($"Exception converting sid: {e}");
                 }
-            }
-            
+
             _nativeMethods.CallSamFreeMemory(members);
-            
+
             var machineSid = GetMachineSid();
             Logging.Trace($"Resolved machine sid for {_computerName} to {machineSid}");
             var converted = sids.Select(x =>
             {
                 Logging.Debug(x);
                 //Filter out machine accounts, service accounts, iis app pool accounts, window manager, font driver
-                if (x.StartsWith(machineSid) || x.StartsWith("S-1-5-80") || x.StartsWith("S-1-5-82") || x.StartsWith("S-1-5-90") || x.StartsWith("S-1-5-96"))
-                {
-                    return null;
-                }
+                if (x.StartsWith(machineSid) || x.StartsWith("S-1-5-80") || x.StartsWith("S-1-5-82") ||
+                    x.StartsWith("S-1-5-90") || x.StartsWith("S-1-5-96")) return null;
 
-                if (_filteredSids.Contains(x))
-                {
-                    return null;
-                }
+                if (_filteredSids.Contains(x)) return null;
 
                 var res = _utils.ResolveIDAndType(x, _utils.GetDomainNameFromSid(x));
 
@@ -162,17 +178,14 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Uses API calls and caching to attempt to get the local SID of a computer.
-        /// The local SID of a computer will not match its domain SID, and is used to denote local machine accounts
+        ///     Uses API calls and caching to attempt to get the local SID of a computer.
+        ///     The local SID of a computer will not match its domain SID, and is used to denote local machine accounts
         /// </summary>
         /// <returns></returns>
         public string GetMachineSid()
         {
-            if (Cache.GetMachineSid(_computerSID, out var machineSid))
-            {
-                return machineSid;
-            }
-            
+            if (Cache.GetMachineSid(_computerSID, out var machineSid)) return machineSid;
+
             NativeMethods.NtStatus status;
             //Try the simplest method first, getting the SID directly using samaccountname
             try
@@ -194,7 +207,7 @@ namespace SharpHoundCommonLib.Processors
             }
 
             machineSid = "DUMMYSTRING";
-            
+
             //As a fallback, try and retrieve the local administrators group and get the first account with a rid of 500
             //If at any time we encounter a failure, just return a dummy sid that wont match anything
 
@@ -223,10 +236,9 @@ namespace SharpHoundCommonLib.Processors
                 _nativeMethods.CallSamFreeMemory(members);
                 return machineSid;
             }
-            
+
             var sids = new List<string>();
             for (var i = 0; i < count; i++)
-            {
                 try
                 {
                     var ptr = Marshal.ReadIntPtr(members, Marshal.SizeOf(typeof(IntPtr)) * i);
@@ -237,23 +249,23 @@ namespace SharpHoundCommonLib.Processors
                 {
                     Logging.Debug($"Exception converting sid: {e}");
                 }
-            }
-            
+
             _nativeMethods.CallSamFreeMemory(members);
-            
+
             var domainSid = new SecurityIdentifier(_computerSID).AccountDomainSid.Value.ToUpper();
 
             machineSid = sids.Select(x =>
-            {
-                try
                 {
-                    return new SecurityIdentifier(x).Value;
-                }
-                catch
-                {
-                    return null;
-                }
-            }).Where(x => x != null).DefaultIfEmpty(null).FirstOrDefault(x => x.EndsWith("-500") && !x.ToUpper().StartsWith(domainSid));
+                    try
+                    {
+                        return new SecurityIdentifier(x).Value;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }).Where(x => x != null).DefaultIfEmpty(null)
+                .FirstOrDefault(x => x.EndsWith("-500") && !x.ToUpper().StartsWith(domainSid));
 
             if (machineSid == null)
             {
@@ -266,28 +278,13 @@ namespace SharpHoundCommonLib.Processors
             Cache.AddMachineSid(_computerSID, machineSid);
             return machineSid;
         }
-        
-        public void Dispose()
-        {
-            if (_domainHandle != IntPtr.Zero)
-            {
-                _nativeMethods.CallSamCloseHandle(_domainHandle);
-                _domainHandle = IntPtr.Zero;;
-            }
-            
-            if (_serverHandle != IntPtr.Zero)
-            {
-                _nativeMethods.CallSamCloseHandle(_serverHandle);
-                _serverHandle = IntPtr.Zero;
-            }
-        }
     }
-    
+
     public class APIException : Exception
     {
         public string Status { get; set; }
         public string APICall { get; set; }
-            
+
         public override string ToString()
         {
             return $"Call to {APICall} returned {Status}";

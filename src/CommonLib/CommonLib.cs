@@ -5,6 +5,7 @@ namespace SharpHoundCommonLib
     public class CommonLib
     {
         private static bool _initialized;
+
         public static void InitializeCommonLib(ILogger log = null, string cachePath = null)
         {
             if (_initialized)
@@ -16,7 +17,7 @@ namespace SharpHoundCommonLib
             _initialized = true;
             if (log != null)
                 Logging.ConfigureLogging(log);
-            
+
             if (cachePath == null)
                 Cache.CreateNewCache();
             else

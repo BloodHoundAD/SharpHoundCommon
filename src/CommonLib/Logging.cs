@@ -7,18 +7,18 @@ namespace SharpHoundCommonLib
     internal static class Logging
     {
         private static ILogger? Logger { get; set; }
-        
+
         /// <summary>
-        /// Configures logging for the common library using an ILogger interface
+        ///     Configures logging for the common library using an ILogger interface
         /// </summary>
         /// <param name="logger">ILogger interface desired for logging</param>
         public static void ConfigureLogging(ILogger logger)
         {
             Logger = logger;
         }
-        
+
         /// <summary>
-        /// Outputs a debug message
+        ///     Outputs a debug message
         /// </summary>
         /// <param name="message"></param>
         /// <param name="args"></param>
@@ -26,13 +26,14 @@ namespace SharpHoundCommonLib
         {
             Logger?.Log(LogLevel.Debug, "[CommonLib]{Message}", message);
         }
-        
+
         /// <summary>
-        /// /// <summary>
-        /// Outputs a regular log message
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="args"></param>
+        ///     ///
+        ///     <summary>
+        ///         Outputs a regular log message
+        ///     </summary>
+        ///     <param name="message"></param>
+        ///     <param name="args"></param>
         /// </summary>
         /// <param name="message"></param>
         /// <param name="args"></param>
@@ -47,7 +48,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Outputs a log message with a configurable level
+        ///     Outputs a log message with a configurable level
         /// </summary>
         /// <param name="level"></param>
         /// <param name="message"></param>
@@ -56,7 +57,7 @@ namespace SharpHoundCommonLib
         {
             Logger?.Log(level, message, args);
         }
-        
+
         private static string FormatLog(LogLevel level, string message)
         {
             var time = DateTime.Now;

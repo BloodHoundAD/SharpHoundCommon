@@ -12,9 +12,9 @@ namespace CommonLibTest
 {
     public class ComputerSessionProcessorTest : IDisposable
     {
-        private readonly ITestOutputHelper _testOutputHelper;
         private readonly string _computerDomain;
         private readonly string _computerSid;
+        private readonly ITestOutputHelper _testOutputHelper;
 
         public ComputerSessionProcessorTest(ITestOutputHelper testOutputHelper)
         {
@@ -22,6 +22,15 @@ namespace CommonLibTest
             _computerDomain = "TESTLAB.LOCAL";
             _computerSid = "S-1-5-21-3130019616-2776909439-2417379446-1104";
         }
+
+        #region IDispose Implementation
+
+        public void Dispose()
+        {
+            // Tear down (called once per test)
+        }
+
+        #endregion
 
         [WindowsOnlyFact]
         public async Task ComputerSessionProcessor_ReadUserSessions_FilteringWorks()
@@ -48,11 +57,11 @@ namespace CommonLibTest
             mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
-            var result = await processor.ReadUserSessions("win10",_computerSid, _computerDomain);
+            var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Empty(result.Results);
         }
-        
+
         [WindowsOnlyFact]
         public async Task ComputerSessionProcessor_ReadUserSessions_ResolvesHost()
         {
@@ -63,7 +72,7 @@ namespace CommonLibTest
                 {
                     sesi10_username = "admin",
                     sesi10_cname = "\\\\192.168.1.1"
-                },
+                }
             };
             mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
@@ -75,13 +84,13 @@ namespace CommonLibTest
                     UserSID = "S-1-5-21-3130019616-2776909439-2417379446-2116"
                 }
             };
-            
+
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
-            var result = await processor.ReadUserSessions("win10",_computerSid, _computerDomain);
+            var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Equal(expected, result.Results);
         }
-        
+
         [WindowsOnlyFact]
         public async Task ComputerSessionProcessor_ReadUserSessions_ResolvesLocalHostEquivalent()
         {
@@ -92,7 +101,7 @@ namespace CommonLibTest
                 {
                     sesi10_username = "admin",
                     sesi10_cname = "\\\\127.0.0.1"
-                },
+                }
             };
             mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
@@ -104,13 +113,13 @@ namespace CommonLibTest
                     UserSID = "S-1-5-21-3130019616-2776909439-2417379446-2116"
                 }
             };
-            
+
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
-            var result = await processor.ReadUserSessions("win10",_computerSid, _computerDomain);
+            var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Equal(expected, result.Results);
         }
-        
+
         [WindowsOnlyFact]
         public async Task ComputerSessionProcessor_ReadUserSessions_MultipleMatches_AddsAll()
         {
@@ -121,7 +130,7 @@ namespace CommonLibTest
                 {
                     sesi10_username = "administrator",
                     sesi10_cname = "\\\\127.0.0.1"
-                },
+                }
             };
             mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
@@ -138,13 +147,13 @@ namespace CommonLibTest
                     UserSID = "S-1-5-21-3084884204-958224920-2707782874-500"
                 }
             };
-            
+
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
-            var result = await processor.ReadUserSessions("win10",_computerSid, _computerDomain);
+            var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Equal(expected, result.Results);
         }
-        
+
         [WindowsOnlyFact]
         public async Task ComputerSessionProcessor_ReadUserSessions_NoGCMatch_TriesResolve()
         {
@@ -155,7 +164,7 @@ namespace CommonLibTest
                 {
                     sesi10_username = "test",
                     sesi10_cname = "\\\\127.0.0.1"
-                },
+                }
             };
             mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
@@ -167,9 +176,9 @@ namespace CommonLibTest
                     UserSID = "S-1-5-21-3130019616-2776909439-2417379446-1106"
                 }
             };
-            
+
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
-            var result = await processor.ReadUserSessions("win10",_computerSid, _computerDomain);
+            var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Equal(expected, result.Results);
         }
@@ -189,7 +198,7 @@ namespace CommonLibTest
             Assert.False(test.Collected);
             Assert.Equal(NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString(), test.FailureReason);
         }
-        
+
         [WindowsOnlyFact]
         public async Task ComputerSessionProcessor_ReadUserSessionsPrivileged_ComputerAccessDenied_ExceptionCaught()
         {
@@ -211,7 +220,7 @@ namespace CommonLibTest
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             const string samAccountName = "WIN10";
-            
+
             //This is a sample response from a computer in a test environment. The duplicates are intentional
             var apiResults = new NativeMethods.WKSTA_USER_INFO_1[]
             {
@@ -286,27 +295,21 @@ namespace CommonLibTest
                 new()
                 {
                     ComputerSID = _computerSid,
-                    UserSID ="S-1-5-21-3130019616-2776909439-2417379446-1105" 
+                    UserSID = "S-1-5-21-3130019616-2776909439-2417379446-1105"
                 },
                 new()
                 {
                     ComputerSID = _computerSid,
-                    UserSID ="S-1-5-21-3130019616-2776909439-2417379446-500" 
+                    UserSID = "S-1-5-21-3130019616-2776909439-2417379446-500"
                 }
             };
-            
+
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), nativeMethods: mockNativeMethods.Object);
-            var test = await processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName, _computerDomain, _computerSid);
+            var test = await processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName,
+                _computerDomain, _computerSid);
             Assert.True(test.Collected);
             Assert.Equal(2, test.Results.Length);
             Assert.Equal(expected, test.Results);
         }
-        
-        #region IDispose Implementation
-        public void Dispose()
-        {
-            // Tear down (called once per test)
-        }
-        #endregion
     }
 }

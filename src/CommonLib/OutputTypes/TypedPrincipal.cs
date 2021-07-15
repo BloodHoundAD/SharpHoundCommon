@@ -6,15 +6,14 @@ namespace SharpHoundCommonLib.OutputTypes
     {
         public TypedPrincipal()
         {
-            
         }
-        
+
         public TypedPrincipal(string objectIdentifier, Label type)
         {
             ObjectIdentifier = objectIdentifier;
             ObjectType = type;
         }
-        
+
         public string ObjectIdentifier { get; set; }
         public Label ObjectType { get; set; }
 
@@ -32,7 +31,7 @@ namespace SharpHoundCommonLib.OutputTypes
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((TypedPrincipal) obj);
         }
 
