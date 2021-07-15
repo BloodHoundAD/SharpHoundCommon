@@ -33,7 +33,7 @@ namespace SharpHoundCommonLib.Processors
                     if (res == null)
                         yield return new TypedPrincipal
                         {
-                            ObjectIdentifier = member,
+                            ObjectIdentifier = member.ToUpper(),
                             ObjectType = Label.Base
                         };
                     else
@@ -50,7 +50,7 @@ namespace SharpHoundCommonLib.Processors
                     if (res == null)
                         yield return new TypedPrincipal
                         {
-                            ObjectIdentifier = member,
+                            ObjectIdentifier = member.ToUpper(),
                             ObjectType = Label.Base
                         };
                     else

@@ -75,7 +75,7 @@ namespace CommonLibTest
                 },
                 new()
                 {
-                    ObjectIdentifier = "CN=NonExistent,CN=Users,DC=testlab,DC=local",
+                    ObjectIdentifier = "CN=NONEXISTENT,CN=USERS,DC=TESTLAB,DC=LOCAL",
                     ObjectType = Label.Base
                 }
             };
@@ -115,7 +115,7 @@ namespace CommonLibTest
                 },
                 new()
                 {
-                    ObjectIdentifier = "CN=NonExistent,CN=Users,DC=testlab,DC=local",
+                    ObjectIdentifier = "CN=NONEXISTENT,CN=USERS,DC=TESTLAB,DC=LOCAL",
                     ObjectType = Label.Base
                 }
             };
