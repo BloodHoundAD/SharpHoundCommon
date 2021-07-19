@@ -3365,19 +3365,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Domain.ChildObjects
   nameWithType: Domain.ChildObjects
-- uid: SharpHoundCommonLib.OutputTypes.Domain.GPLinks
-  name: GPLinks
-  href: api/SharpHoundCommonLib.OutputTypes.Domain.html#SharpHoundCommonLib_OutputTypes_Domain_GPLinks
-  commentId: P:SharpHoundCommonLib.OutputTypes.Domain.GPLinks
-  fullName: SharpHoundCommonLib.OutputTypes.Domain.GPLinks
-  nameWithType: Domain.GPLinks
-- uid: SharpHoundCommonLib.OutputTypes.Domain.GPLinks*
-  name: GPLinks
-  href: api/SharpHoundCommonLib.OutputTypes.Domain.html#SharpHoundCommonLib_OutputTypes_Domain_GPLinks_
-  commentId: Overload:SharpHoundCommonLib.OutputTypes.Domain.GPLinks
+- uid: SharpHoundCommonLib.OutputTypes.Domain.Links
+  name: Links
+  href: api/SharpHoundCommonLib.OutputTypes.Domain.html#SharpHoundCommonLib_OutputTypes_Domain_Links
+  commentId: P:SharpHoundCommonLib.OutputTypes.Domain.Links
+  fullName: SharpHoundCommonLib.OutputTypes.Domain.Links
+  nameWithType: Domain.Links
+- uid: SharpHoundCommonLib.OutputTypes.Domain.Links*
+  name: Links
+  href: api/SharpHoundCommonLib.OutputTypes.Domain.html#SharpHoundCommonLib_OutputTypes_Domain_Links_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.Domain.Links
   isSpec: "True"
-  fullName: SharpHoundCommonLib.OutputTypes.Domain.GPLinks
-  nameWithType: Domain.GPLinks
+  fullName: SharpHoundCommonLib.OutputTypes.Domain.Links
+  nameWithType: Domain.Links
 - uid: SharpHoundCommonLib.OutputTypes.Domain.Trusts
   name: Trusts
   href: api/SharpHoundCommonLib.OutputTypes.Domain.html#SharpHoundCommonLib_OutputTypes_Domain_Trusts
