@@ -107,7 +107,7 @@ namespace SharpHoundCommonLib.Processors
             var descriptor = _utils.MakeSecurityDescriptor();
             descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
 
-            var ownerSid = PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
+            var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
 
             if (ownerSid != null)
             {
@@ -146,7 +146,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                var principalSid = PreProcessSID(ace.IdentityReference());
+                var principalSid = Helpers.PreProcessSID(ace.IdentityReference());
 
                 if (principalSid == null)
                 {
@@ -340,7 +340,7 @@ namespace SharpHoundCommonLib.Processors
                 if (ace.AccessControlType() == AccessControlType.Deny)
                     continue;
 
-                var principalSid = PreProcessSID(ace.IdentityReference());
+                var principalSid = Helpers.PreProcessSID(ace.IdentityReference());
 
                 if (principalSid == null)
                     continue;
@@ -356,20 +356,6 @@ namespace SharpHoundCommonLib.Processors
                         IsInherited = ace.IsInherited()
                     };
             }
-        }
-
-        /// <summary>
-        ///     Removes some commonly seen SIDs that have no use in the schema
-        /// </summary>
-        /// <param name="sid"></param>
-        /// <returns></returns>
-        private static string PreProcessSID(string sid)
-        {
-            if (sid != null)
-                //Ignore Local System/Creator Owner/Principal Self
-                return sid is "S-1-5-18" or "S-1-3-0" or "S-1-5-10" ? null : sid.ToUpper();
-
-            return null;
         }
     }
 }

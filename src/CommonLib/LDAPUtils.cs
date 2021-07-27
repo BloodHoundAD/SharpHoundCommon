@@ -97,16 +97,16 @@ namespace SharpHoundCommonLib
             return results;
         }
 
-        public TypedPrincipal ResolveIDAndType(string id, string domain)
+        public TypedPrincipal ResolveIDAndType(string id, string defaultDomain)
         {
             //This is a duplicated SID object which is weird and makes things unhappy. Throw it out
             if (id.Contains("0ACNF"))
                 return null;
 
-            if (GetWellKnownPrincipal(id, domain, out var principal))
+            if (GetWellKnownPrincipal(id, defaultDomain, out var principal))
                 return principal;
 
-            var type = id.StartsWith("S-") ? LookupSidType(id, domain) : LookupGuidType(id, domain);
+            var type = id.StartsWith("S-") ? LookupSidType(id, GetDomainNameFromSid(id) ?? defaultDomain) : LookupGuidType(id, defaultDomain);
             return new TypedPrincipal(id, type);
         }
 

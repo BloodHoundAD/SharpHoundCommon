@@ -3,11 +3,11 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
-    public class SPNProcessors
+    public class SPNProcessor
     {
         private readonly ILDAPUtils _utils;
 
-        public SPNProcessors(ILDAPUtils utils)
+        public SPNProcessor(ILDAPUtils utils)
         {
             _utils = utils;
         }

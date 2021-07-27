@@ -13,6 +13,8 @@ namespace SharpHoundCommonLib.Enums
         Domain,
         OU,
         Container,
+        CertTemplate,
+        CertAuthority,
         Base
     }
 }

@@ -38,10 +38,10 @@ namespace CommonLibTest.Facades
             };
         }
 
-        public TypedPrincipal ResolveIDAndType(string id, string domain)
+        public TypedPrincipal ResolveIDAndType(string id, string defaultDomain)
         {
             id = id?.ToUpper();
-            if (GetWellKnownPrincipal(id, domain, out var principal)) return principal;
+            if (GetWellKnownPrincipal(id, defaultDomain, out var principal)) return principal;
 
             principal = id switch
             {
