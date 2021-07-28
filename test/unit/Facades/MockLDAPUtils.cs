@@ -703,7 +703,7 @@ namespace CommonLibTest.Facades
             _domainControllers.TryAdd(domainControllerId, new byte());
         }
 
-        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
         {
             foreach (var wkp in _seenWellKnownPrincipals)
             {

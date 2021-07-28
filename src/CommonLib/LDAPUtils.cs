@@ -24,6 +24,12 @@ namespace SharpHoundCommonLib
 {
     public class LDAPUtils : ILDAPUtils
     {
+        private class ResolvedWKP
+        {
+            internal string DomainName { get; set; }
+            internal string WkpId { get; set; }
+        }
+        
         private const string NullCacheKey = "UNIQUENULL";
 
         // The following byte stream contains the necessary message to request a NetBios name from a machine
@@ -44,7 +50,7 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
         private readonly ConcurrentDictionary<string, LdapConnection> _ldapConnections = new();
-        private readonly ConcurrentDictionary<string, string> _seenWellKnownPrincipals = new();
+        private readonly ConcurrentDictionary<string, ResolvedWKP> _seenWellKnownPrincipals = new();
         private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
         private readonly NativeMethods _nativeMethods;
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
@@ -72,7 +78,11 @@ namespace SharpHoundCommonLib
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
             commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
-            _seenWellKnownPrincipals.TryAdd(sid, commonPrincipal.ObjectIdentifier);
+            _seenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, new ResolvedWKP
+            {
+                DomainName = domain,
+                WkpId = sid
+            });
             return true;
         }
 
@@ -81,11 +91,11 @@ namespace SharpHoundCommonLib
             _domainControllers.TryAdd(domainControllerId, new byte());
         }
 
-        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
         {
             foreach (var wkp in _seenWellKnownPrincipals)
             {
-                WellKnownPrincipal.GetWellKnownPrincipal(wkp.Value, out var principal);
+                WellKnownPrincipal.GetWellKnownPrincipal(wkp.Value.WkpId, out var principal);
                 OutputBase output = principal.ObjectType switch
                 {
                     Label.User => new User(),
@@ -99,11 +109,14 @@ namespace SharpHoundCommonLib
                 };
                 
                 output.Properties.Add("name", principal.ObjectIdentifier);
+                var domainSid = await GetSidFromDomainName(wkp.Value.DomainName);
+                output.Properties.Add("domainsid", domainSid);
+                output.Properties.Add("domain", wkp.Value.DomainName.ToUpper());
                 output.ObjectIdentifier = wkp.Key;
                 yield return output;
             }
 
-            var entdc = GetBaseEnterpriseDC();
+            var entdc = await GetBaseEnterpriseDC();
             entdc.Members = _domainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
             yield return entdc;
         }
@@ -119,12 +132,14 @@ namespace SharpHoundCommonLib
             return $"{forest}-{sid}".ToUpper();
         }
 
-        private Group GetBaseEnterpriseDC()
+        private async Task<Group> GetBaseEnterpriseDC()
         {
             var forest = GetForest()?.Name;
             if (forest == null) Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
             var g = new Group {ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper()};
             g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest}".ToUpper());
+            g.Properties.Add("domainsid", await GetSidFromDomainName(forest));
+            g.Properties.Add("domain", forest);
             return g;
         }
 
