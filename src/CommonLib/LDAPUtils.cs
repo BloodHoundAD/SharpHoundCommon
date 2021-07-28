@@ -44,6 +44,8 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
         private readonly ConcurrentDictionary<string, LdapConnection> _ldapConnections = new();
+        private readonly ConcurrentDictionary<string, string> _seenWellKnownPrincipals = new();
+        private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
         private readonly NativeMethods _nativeMethods;
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly PortScanner _portScanner;
@@ -70,7 +72,40 @@ namespace SharpHoundCommonLib
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
             commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
+            _seenWellKnownPrincipals.TryAdd(sid, commonPrincipal.ObjectIdentifier);
             return true;
+        }
+
+        public void AddDomainController(string domainControllerId)
+        {
+            _domainControllers.TryAdd(domainControllerId, new byte());
+        }
+
+        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        {
+            foreach (var wkp in _seenWellKnownPrincipals)
+            {
+                WellKnownPrincipal.GetWellKnownPrincipal(wkp.Value, out var principal);
+                OutputBase output = principal.ObjectType switch
+                {
+                    Label.User => new User(),
+                    Label.Computer => new Computer(),
+                    Label.Group => new Group(),
+                    Label.GPO => new GPO(),
+                    Label.Domain => new OutputTypes.Domain(),
+                    Label.OU => new OU(),
+                    Label.Container => new Container(),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+                
+                output.Properties.Add("name", principal.ObjectIdentifier);
+                output.ObjectIdentifier = wkp.Key;
+                yield return output;
+            }
+
+            var entdc = GetBaseEnterpriseDC();
+            entdc.Members = _domainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
+            yield return entdc;
         }
 
         public string ConvertWellKnownPrincipal(string sid, string domain)
@@ -82,6 +117,15 @@ namespace SharpHoundCommonLib
             var forest = GetForest(domain)?.Name;
             if (forest == null) Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
             return $"{forest}-{sid}".ToUpper();
+        }
+
+        private Group GetBaseEnterpriseDC()
+        {
+            var forest = GetForest()?.Name;
+            if (forest == null) Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
+            var g = new Group {ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper()};
+            g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest}".ToUpper());
+            return g;
         }
 
         public string[] GetUserGlobalCatalogMatches(string name)

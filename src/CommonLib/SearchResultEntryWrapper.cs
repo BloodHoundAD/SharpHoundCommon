@@ -34,6 +34,11 @@ namespace SharpHoundCommonLib
         {
             _entry = entry;
             _utils = utils ?? new LDAPUtils();
+
+            if (entry.DistinguishedName.IndexOf("OU=DOMAIN CONTROLLERS,DC=", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                _utils.AddDomainController(GetObjectIdentifier());
+            }
         }
 
         public string DistinguishedName => _entry.DistinguishedName;

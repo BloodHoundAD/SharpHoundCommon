@@ -52,6 +52,8 @@ namespace SharpHoundCommonLib
         Task<string> GetSidFromDomainName(string domainName);
         string ConvertWellKnownPrincipal(string sid, string domain);
         bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
+        void AddDomainController(string domainControllerId);
+        IEnumerable<OutputBase> GetWellKnownPrincipalOutput();
 
         /// <summary>
         ///     Performs Attribute Ranged Retrieval
