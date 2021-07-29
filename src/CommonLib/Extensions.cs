@@ -161,7 +161,7 @@ namespace SharpHoundCommonLib
             var values = entry.Attributes[property];
             var strings = values.GetValues(typeof(string));
 
-            return strings is not string[] result ? null : result;
+            return strings is not string[] result ? new string[0] : result;
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace SharpHoundCommonLib
             var bytes = values.GetValues(typeof(byte[]));
 
             if (bytes is not byte[][] result)
-                return null;
+                return new byte[0][];
 
             return result;
         }
@@ -200,10 +200,10 @@ namespace SharpHoundCommonLib
             var lookups = collection.GetValues(typeof(byte[]));
 
             if (lookups.Length == 0)
-                return null;
+                return new byte[0];
 
             if (lookups[0] is not byte[] bytes || bytes.Length == 0)
-                return null;
+                return new byte[0];
 
             return bytes;
         }
@@ -243,6 +243,9 @@ namespace SharpHoundCommonLib
                 return Label.User;
 
             var objectId = entry.GetObjectIdentifier();
+
+            if (objectId == null)
+                return Label.Base;
 
             if (objectId.StartsWith("S-1") &&
                 WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
