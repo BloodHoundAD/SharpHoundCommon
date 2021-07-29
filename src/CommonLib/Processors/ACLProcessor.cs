@@ -15,7 +15,7 @@ namespace SharpHoundCommonLib.Processors
     {
         private static readonly Dictionary<Label, string> BaseGuids;
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
-        private static bool isCacheBuilt;
+        private static bool _isCacheBuilt;
         private readonly ILDAPUtils _utils;
 
         static ACLProcessor()
@@ -46,7 +46,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         private void BuildGUIDCache()
         {
-            if (isCacheBuilt)
+            if (_isCacheBuilt)
                 return;
 
             var forest = _utils.GetForest();
@@ -67,7 +67,7 @@ namespace SharpHoundCommonLib.Processors
                 GuidMap.TryAdd(guid, name);
             }
 
-            isCacheBuilt = true;
+            _isCacheBuilt = true;
         }
 
         /// <summary>

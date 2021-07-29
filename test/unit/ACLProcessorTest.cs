@@ -25,9 +25,10 @@ namespace CommonLibTest
         private const string GMSAProperty =
             "AQAEgEAAAAAAAAAAAAAAABQAAAAEACwAAQAAAAAAJAD/AQ8AAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQ9AEAAAECAAAAAAAFIAAAACACAAA\u003d";
 
+        private readonly ACLProcessor _baseProcessor;
+
         private readonly string _testDomainName;
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly ACLProcessor _baseProcessor;
 
         public ACLProcessorTest(ITestOutputHelper testOutputHelper)
         {

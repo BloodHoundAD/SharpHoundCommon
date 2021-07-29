@@ -10,14 +10,15 @@ using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using Domain = SharpHoundCommonLib.OutputTypes.Domain;
 
 namespace CommonLibTest.Facades
 {
     public class MockLDAPUtils : ILDAPUtils
     {
+        private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
         private readonly Forest _forest;
         private readonly ConcurrentDictionary<string, string> _seenWellKnownPrincipals = new();
-        private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
 
         public MockLDAPUtils()
         {
@@ -714,12 +715,12 @@ namespace CommonLibTest.Facades
                     Label.Computer => new Computer(),
                     Label.Group => new Group(),
                     Label.GPO => new GPO(),
-                    Label.Domain => new SharpHoundCommonLib.OutputTypes.Domain(),
+                    Label.Domain => new Domain(),
                     Label.OU => new OU(),
                     Label.Container => new Container(),
                     _ => throw new ArgumentOutOfRangeException()
                 };
-                
+
                 output.Properties.Add("name", principal.ObjectIdentifier);
                 output.ObjectIdentifier = wkp.Key;
                 yield return output;
@@ -728,13 +729,6 @@ namespace CommonLibTest.Facades
             var entdc = GetBaseEnterpriseDC();
             entdc.Members = _domainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
             yield return entdc;
-        }
-        
-        private Group GetBaseEnterpriseDC()
-        {
-            var g = new Group {ObjectIdentifier = $"TESTLAB.LOCAL-S-1-5-9".ToUpper()};
-            g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@TESTLAB.LOCAL".ToUpper());
-            return g;
         }
 
         public virtual IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
@@ -1039,6 +1033,13 @@ namespace CommonLibTest.Facades
         {
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>();
             return mockSecurityDescriptor.Object;
+        }
+
+        private Group GetBaseEnterpriseDC()
+        {
+            var g = new Group {ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper()};
+            g.Properties.Add("name", "ENTERPRISE DOMAIN CONTROLLERS@TESTLAB.LOCAL".ToUpper());
+            return g;
         }
     }
 }

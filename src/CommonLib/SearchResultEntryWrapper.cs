@@ -34,13 +34,6 @@ namespace SharpHoundCommonLib
         {
             _entry = entry;
             _utils = utils ?? new LDAPUtils();
-
-            if (entry.DistinguishedName.IndexOf("OU=DOMAIN CONTROLLERS,DC=", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                var oid = GetObjectIdentifier();
-                if (oid != null)
-                    _utils.AddDomainController(oid);
-            }
         }
 
         public string DistinguishedName => _entry.DistinguishedName;
@@ -52,6 +45,16 @@ namespace SharpHoundCommonLib
             var itemID = GetObjectIdentifier();
             if (itemID == null)
                 return null;
+
+            var uac = _entry.GetProperty("useraccountcontrol");
+            if (int.TryParse(uac, out var flag))
+            {
+                var flags = (UacFlags) flag;
+                if ((flags & UacFlags.ServerTrustAccount) != 0)
+                {
+                    _utils.AddDomainController(itemID);
+                }
+            }
 
             res.ObjectId = itemID;
             if (IsDeleted())

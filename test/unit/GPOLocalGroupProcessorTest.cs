@@ -17,8 +17,6 @@ namespace CommonLibTest
 {
     public class GPOLocalGroupProcessorTest
     {
-        private ITestOutputHelper _testOutputHelper;
-
         private readonly string GpttmplInfContent = @"[Unicode]
         Unicode=yes
         [Version]
@@ -87,6 +85,8 @@ namespace CommonLibTest
         <Groups clsid=""{3125E937-EB16-4b4c-9934-544FC6D24D26}"" disabled=""1"">
         </Groups>
         ";
+
+        private ITestOutputHelper _testOutputHelper;
 
         public GPOLocalGroupProcessorTest(ITestOutputHelper testOutputHelper)
         {
