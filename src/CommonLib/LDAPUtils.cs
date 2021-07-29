@@ -128,16 +128,16 @@ namespace SharpHoundCommonLib
             if (sid != "S-1-5-9") return $"{domain}-{sid}".ToUpper();
 
             var forest = GetForest(domain)?.Name;
-            if (forest == null) Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
+            if (forest == null) Logging.Log(LogLevel.Warning, "Error getting forest, ENTDC sid is likely incorrect");
             return $"{forest}-{sid}".ToUpper();
         }
 
         private async Task<Group> GetBaseEnterpriseDC()
         {
             var forest = GetForest()?.Name;
-            if (forest == null) Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
+            if (forest == null) Logging.Log(LogLevel.Warning, "Error getting forest, ENTDC sid is likely incorrect");
             var g = new Group {ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper()};
-            g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest}".ToUpper());
+            g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest ?? "UNKNOWN"}".ToUpper());
             g.Properties.Add("domainsid", await GetSidFromDomainName(forest));
             g.Properties.Add("domain", forest);
             return g;
