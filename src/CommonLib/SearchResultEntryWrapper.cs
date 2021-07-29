@@ -37,7 +37,9 @@ namespace SharpHoundCommonLib
 
             if (entry.DistinguishedName.IndexOf("OU=DOMAIN CONTROLLERS,DC=", StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                _utils.AddDomainController(GetObjectIdentifier());
+                var oid = GetObjectIdentifier();
+                if (oid != null)
+                    _utils.AddDomainController(oid);
             }
         }
 
