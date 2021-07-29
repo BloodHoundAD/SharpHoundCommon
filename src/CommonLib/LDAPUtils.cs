@@ -544,6 +544,12 @@ namespace SharpHoundCommonLib
             }
 
             id = result.GetObjectIdentifier();
+            if (id == null)
+            {
+                Logging.Debug($"ResolveDistinguishName: could not retrieve objectidentifier from {dn}");
+                return null;
+            }
+                
 
             if (GetWellKnownPrincipal(id, domain, out var principal)) return principal;
 
@@ -789,6 +795,9 @@ namespace SharpHoundCommonLib
                 }
 
                 if (response == null || pageResponse == null) continue;
+                
+                if (response.Entries == null)
+                    yield break;
 
                 foreach (SearchResultEntry entry in response.Entries)
                     yield return new SearchResultEntryWrapper(entry);
