@@ -129,7 +129,7 @@ namespace SharpHoundCommonLib
 
             var forest = GetForest(domain)?.Name;
             if (forest == null) Logging.Log(LogLevel.Warning, "Error getting forest, ENTDC sid is likely incorrect");
-            return $"{forest}-{sid}".ToUpper();
+            return $"{forest ?? "UNKNOWN"}-{sid}".ToUpper();
         }
 
         private async Task<Group> GetBaseEnterpriseDC()
