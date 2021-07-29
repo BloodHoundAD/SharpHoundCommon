@@ -1107,6 +1107,19 @@ references:
   commentId: T:SharpHoundCommonLib.ILDAPUtils
   fullName: SharpHoundCommonLib.ILDAPUtils
   nameWithType: ILDAPUtils
+- uid: SharpHoundCommonLib.ILDAPUtils.AddDomainController(System.String)
+  name: AddDomainController(String)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_AddDomainController_System_String_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.AddDomainController(System.String)
+  fullName: SharpHoundCommonLib.ILDAPUtils.AddDomainController(System.String)
+  nameWithType: ILDAPUtils.AddDomainController(String)
+- uid: SharpHoundCommonLib.ILDAPUtils.AddDomainController*
+  name: AddDomainController
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_AddDomainController_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.AddDomainController
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.AddDomainController
+  nameWithType: ILDAPUtils.AddDomainController
 - uid: SharpHoundCommonLib.ILDAPUtils.ConvertWellKnownPrincipal(System.String,System.String)
   name: ConvertWellKnownPrincipal(String, String)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_ConvertWellKnownPrincipal_System_String_System_String_
@@ -1201,6 +1214,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipal
   nameWithType: ILDAPUtils.GetWellKnownPrincipal
+- uid: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput
+  name: GetWellKnownPrincipalOutput()
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetWellKnownPrincipalOutput
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput
+  fullName: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput()
+  nameWithType: ILDAPUtils.GetWellKnownPrincipalOutput()
+- uid: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput*
+  name: GetWellKnownPrincipalOutput
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetWellKnownPrincipalOutput_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput
+  nameWithType: ILDAPUtils.GetWellKnownPrincipalOutput
 - uid: SharpHoundCommonLib.ILDAPUtils.LookupGuidType(System.String,System.String)
   name: LookupGuidType(String, String)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_LookupGuidType_System_String_System_String_
@@ -2059,6 +2085,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.LDAPUtils
   nameWithType: LDAPUtils.LDAPUtils
+- uid: SharpHoundCommonLib.LDAPUtils.AddDomainController(System.String)
+  name: AddDomainController(String)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_AddDomainController_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.AddDomainController(System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.AddDomainController(System.String)
+  nameWithType: LDAPUtils.AddDomainController(String)
+- uid: SharpHoundCommonLib.LDAPUtils.AddDomainController*
+  name: AddDomainController
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_AddDomainController_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.AddDomainController
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.AddDomainController
+  nameWithType: LDAPUtils.AddDomainController
 - uid: SharpHoundCommonLib.LDAPUtils.ConvertWellKnownPrincipal(System.String,System.String)
   name: ConvertWellKnownPrincipal(String, String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_ConvertWellKnownPrincipal_System_String_System_String_
@@ -2153,6 +2192,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipal
   nameWithType: LDAPUtils.GetWellKnownPrincipal
+- uid: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput
+  name: GetWellKnownPrincipalOutput()
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetWellKnownPrincipalOutput
+  commentId: M:SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput
+  fullName: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput()
+  nameWithType: LDAPUtils.GetWellKnownPrincipalOutput()
+- uid: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput*
+  name: GetWellKnownPrincipalOutput
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetWellKnownPrincipalOutput_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput
+  nameWithType: LDAPUtils.GetWellKnownPrincipalOutput
 - uid: SharpHoundCommonLib.LDAPUtils.LookupGuidType(System.String,System.String)
   name: LookupGuidType(String, String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_LookupGuidType_System_String_System_String_
