@@ -24,6 +24,12 @@ namespace SharpHoundCommonLib
 {
     public class LDAPUtils : ILDAPUtils
     {
+        private class ResolvedWKP
+        {
+            internal string DomainName { get; set; }
+            internal string WkpId { get; set; }
+        }
+        
         private const string NullCacheKey = "UNIQUENULL";
 
         // The following byte stream contains the necessary message to request a NetBios name from a machine
@@ -44,6 +50,8 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
         private readonly ConcurrentDictionary<string, LdapConnection> _ldapConnections = new();
+        private readonly ConcurrentDictionary<string, ResolvedWKP> _seenWellKnownPrincipals = new();
+        private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
         private readonly NativeMethods _nativeMethods;
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly PortScanner _portScanner;
@@ -70,7 +78,47 @@ namespace SharpHoundCommonLib
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
             commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
+            _seenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, new ResolvedWKP
+            {
+                DomainName = domain,
+                WkpId = sid
+            });
             return true;
+        }
+
+        public void AddDomainController(string domainControllerId)
+        {
+            _domainControllers.TryAdd(domainControllerId, new byte());
+        }
+
+        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        {
+            foreach (var wkp in _seenWellKnownPrincipals)
+            {
+                WellKnownPrincipal.GetWellKnownPrincipal(wkp.Value.WkpId, out var principal);
+                OutputBase output = principal.ObjectType switch
+                {
+                    Label.User => new User(),
+                    Label.Computer => new Computer(),
+                    Label.Group => new Group(),
+                    Label.GPO => new GPO(),
+                    Label.Domain => new OutputTypes.Domain(),
+                    Label.OU => new OU(),
+                    Label.Container => new Container(),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+                
+                output.Properties.Add("name", principal.ObjectIdentifier);
+                var domainSid = await GetSidFromDomainName(wkp.Value.DomainName);
+                output.Properties.Add("domainsid", domainSid);
+                output.Properties.Add("domain", wkp.Value.DomainName.ToUpper());
+                output.ObjectIdentifier = wkp.Key;
+                yield return output;
+            }
+
+            var entdc = await GetBaseEnterpriseDC();
+            entdc.Members = _domainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
+            yield return entdc;
         }
 
         public string ConvertWellKnownPrincipal(string sid, string domain)
@@ -80,8 +128,19 @@ namespace SharpHoundCommonLib
             if (sid != "S-1-5-9") return $"{domain}-{sid}".ToUpper();
 
             var forest = GetForest(domain)?.Name;
-            if (forest == null) Logging.Debug("Error getting forest, ENTDC sid is likely incorrect");
-            return $"{forest}-{sid}".ToUpper();
+            if (forest == null) Logging.Log(LogLevel.Warning, "Error getting forest, ENTDC sid is likely incorrect");
+            return $"{forest ?? "UNKNOWN"}-{sid}".ToUpper();
+        }
+
+        private async Task<Group> GetBaseEnterpriseDC()
+        {
+            var forest = GetForest()?.Name;
+            if (forest == null) Logging.Log(LogLevel.Warning, "Error getting forest, ENTDC sid is likely incorrect");
+            var g = new Group {ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper()};
+            g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest ?? "UNKNOWN"}".ToUpper());
+            g.Properties.Add("domainsid", await GetSidFromDomainName(forest));
+            g.Properties.Add("domain", forest);
+            return g;
         }
 
         public string[] GetUserGlobalCatalogMatches(string name)
@@ -485,6 +544,12 @@ namespace SharpHoundCommonLib
             }
 
             id = result.GetObjectIdentifier();
+            if (id == null)
+            {
+                Logging.Debug($"ResolveDistinguishName: could not retrieve objectidentifier from {dn}");
+                return null;
+            }
+                
 
             if (GetWellKnownPrincipal(id, domain, out var principal)) return principal;
 
@@ -730,6 +795,9 @@ namespace SharpHoundCommonLib
                 }
 
                 if (response == null || pageResponse == null) continue;
+                
+                if (response.Entries == null)
+                    yield break;
 
                 foreach (SearchResultEntry entry in response.Entries)
                     yield return new SearchResultEntryWrapper(entry);
