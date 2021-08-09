@@ -73,7 +73,8 @@ namespace SharpHoundCommonLib
         public bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
-            commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
+            var tempDomain = domain ?? GetDomain()?.Name ?? "UNKNOWN";
+            commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, tempDomain);
             SeenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, new ResolvedWKP
             {
                 DomainName = domain,
@@ -141,16 +142,16 @@ namespace SharpHoundCommonLib
             return results;
         }
 
-        public TypedPrincipal ResolveIDAndType(string id, string domain)
+        public TypedPrincipal ResolveIDAndType(string id, string fallbackDomain)
         {
             //This is a duplicated SID object which is weird and makes things unhappy. Throw it out
             if (id.Contains("0ACNF"))
                 return null;
 
-            if (GetWellKnownPrincipal(id, domain, out var principal))
+            if (GetWellKnownPrincipal(id, fallbackDomain, out var principal))
                 return principal;
 
-            var type = id.StartsWith("S-") ? LookupSidType(id, domain) : LookupGuidType(id, domain);
+            var type = id.StartsWith("S-") ? LookupSidType(id, fallbackDomain) : LookupGuidType(id, fallbackDomain);
             return new TypedPrincipal(id, type);
         }
 
@@ -531,20 +532,13 @@ namespace SharpHoundCommonLib
             id = result.GetObjectIdentifier();
             if (id == null)
             {
-                Logging.Debug($"ResolveDistinguishName: could not retrieve objectidentifier from {dn}");
+                Logging.Debug($"ResolveDistinguishedName: could not retrieve objectidentifier from {dn}");
                 return null;
             }
-
-
+            
             if (GetWellKnownPrincipal(id, domain, out var principal)) return principal;
 
             type = result.GetLabel();
-
-            if (id == null)
-            {
-                Logging.Debug($"No resolved ID for {dn}");
-                return null;
-            }
 
             Cache.AddConvertedValue(dn, id);
             Cache.AddType(id, type);
@@ -668,8 +662,8 @@ namespace SharpHoundCommonLib
                 }
                 catch (Exception e)
                 {
-                    Logging.Log(LogLevel.Trace, $"Exception in LDAP loop: {e}");
-                    Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
+                    Logging.Log(LogLevel.Error, $"Exception in LDAP loop: {e}");
+                    Logging.Log(LogLevel.Error, $"Filter: {ldapFilter}, Domain: {domainName}");
                     yield break;
                 }
 
@@ -1167,6 +1161,9 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         internal string NormalizeDomainName(string domain)
         {
+            if (domain == null)
+                return null;
+            
             var resolved = domain;
 
             if (resolved.Contains("."))

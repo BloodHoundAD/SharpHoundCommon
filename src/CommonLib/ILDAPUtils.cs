@@ -45,7 +45,7 @@ namespace SharpHoundCommonLib
     {
         void SetLDAPConfig(LDAPConfig config);
         string[] GetUserGlobalCatalogMatches(string name);
-        TypedPrincipal ResolveIDAndType(string id, string domain);
+        TypedPrincipal ResolveIDAndType(string id, string fallbackDomain);
         Label LookupSidType(string sid, string domain);
         Label LookupGuidType(string guid, string domain);
         string GetDomainNameFromSid(string sid);
