@@ -179,10 +179,7 @@ namespace SharpHoundCommonLib
             var values = entry.Attributes[property];
             var bytes = values.GetValues(typeof(byte[]));
 
-            if (bytes is not byte[][] result)
-                return new byte[0][];
-
-            return result;
+            return bytes is not byte[][] result ? new byte[0][] : result;
         }
 
         /// <summary>

@@ -21,6 +21,7 @@ namespace SharpHoundCommonLib.Processors
         private readonly string _computerName;
         private readonly string _computerSAN;
         private readonly string _computerSID;
+        private readonly string _computerDomain;
 
         private readonly string[] _filteredSids =
         {
@@ -45,13 +46,14 @@ namespace SharpHoundCommonLib.Processors
         ///     An exception if the an API fails to connect initially. Generally indicates the server is
         ///     unavailable or permissions aren't available.
         /// </exception>
-        public SAMRPCServer(string computerName, string samAccountName, string computerSid, ILDAPUtils utils = null,
+        public SAMRPCServer(string computerName, string samAccountName, string computerSid, string computerDomain, ILDAPUtils utils = null,
             NativeMethods methods = null)
         {
             Logging.Trace($"Opening SAM Server for {computerName}");
             _computerSAN = samAccountName;
             _computerSID = computerSid;
             _computerName = computerName;
+            _computerDomain = computerDomain;
             _utils = utils;
             _nativeMethods = methods ?? new NativeMethods();
             _utils = utils ?? new LDAPUtils();
@@ -166,7 +168,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (_filteredSids.Contains(x)) return null;
 
-                var res = _utils.ResolveIDAndType(x, _utils.GetDomainNameFromSid(x));
+                var res = _utils.ResolveIDAndType(x, _computerDomain);
 
                 return res;
             }).Where(x => x != null);
