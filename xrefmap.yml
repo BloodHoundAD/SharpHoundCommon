@@ -4360,12 +4360,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions
   nameWithType: ComputerSessionProcessor.ReadUserSessions
-- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String,System.String,System.String,System.String)
-  name: ReadUserSessionsPrivileged(String, String, String, String)
-  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessionsPrivileged_System_String_System_String_System_String_System_String_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String,System.String,System.String,System.String)
-  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String, System.String, System.String, System.String)
-  nameWithType: ComputerSessionProcessor.ReadUserSessionsPrivileged(String, String, String, String)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String,System.String,System.String)
+  name: ReadUserSessionsPrivileged(String, String, String)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessionsPrivileged_System_String_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String,System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String, System.String, System.String)
+  nameWithType: ComputerSessionProcessor.ReadUserSessionsPrivileged(String, String, String)
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged*
   name: ReadUserSessionsPrivileged
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessionsPrivileged_
