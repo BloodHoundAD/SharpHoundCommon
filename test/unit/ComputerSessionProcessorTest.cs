@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using Moq;
+using Newtonsoft.Json;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
@@ -210,7 +211,7 @@ namespace CommonLibTest
             };
             mockNativeMethods.Setup(x => x.CallNetWkstaUserEnum(It.IsAny<string>())).Throws(ex);
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
-            var test = await processor.ReadUserSessionsPrivileged("test", "test", "test", "test");
+            var test = await processor.ReadUserSessionsPrivileged("test", "test", "test");
             Assert.False(test.Collected);
             Assert.Equal(NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString(), test.FailureReason);
         }
@@ -230,6 +231,13 @@ namespace CommonLibTest
                     wkui1_logon_server = "PRIMARY",
                     wkui1_oth_domains = "",
                     wkui1_username = "dfm"
+                },
+                new()
+                {
+                    wkui1_logon_domain = "PRIMARY",
+                    wkui1_logon_server = "",
+                    wkui1_oth_domains = "",
+                    wkui1_username = "Administrator"
                 },
                 new()
                 {
@@ -305,9 +313,9 @@ namespace CommonLibTest
             };
 
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), nativeMethods: mockNativeMethods.Object);
-            var test = await processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName,
-                _computerDomain, _computerSid);
+            var test = await processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName, _computerSid);
             Assert.True(test.Collected);
+            _testOutputHelper.WriteLine(JsonConvert.SerializeObject(test.Results));
             Assert.Equal(2, test.Results.Length);
             Assert.Equal(expected, test.Results);
         }
