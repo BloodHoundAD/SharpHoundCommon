@@ -16,5 +16,7 @@
         public const string AddAllowedToAct = "AddAllowedToAct";
         public const string ReadLAPSPassword = "ReadLAPSPassword";
         public const string AddMember = "AddMember";
+        public const string WriteSPN = "WriteSPN";
+        public const string AddKeyCredentialLink = "AddKeyCredentialLink";
     }
 }

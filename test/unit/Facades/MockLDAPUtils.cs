@@ -52,6 +52,7 @@ namespace CommonLibTest.Facades
             {
                 "S-1-5-21-3130019616-2776909439-2417379446-512" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group),
+                "S-1-5-21-3130019616-2776909439-2417379446-2606" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-2606", Label.User),
                 "E32A6AC7-083B-4DD7-ACFF-6D9C2B1AFAF5" => new TypedPrincipal("E32A6AC7-083B-4DD7-ACFF-6D9C2B1AFAF5",
                     Label.Container),
                 "S-1-5-21-3130019616-2776909439-2417379446-519" => new TypedPrincipal(
