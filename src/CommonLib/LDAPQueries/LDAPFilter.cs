@@ -9,6 +9,7 @@ namespace SharpHoundCommonLib.LDAPQueries
     public class LDAPFilter
     {
         private readonly List<string> _filterParts = new();
+        private readonly List<string> _mandatory = new();
 
         /// <summary>
         ///     Pre-filters conditions passed into filters. Will fix filters that are missing parentheses naively
@@ -17,14 +18,16 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// <returns></returns>
         private static string[] CheckConditions(IEnumerable<string> conditions)
         {
-            return conditions.Select(x =>
-            {
-                if (!x.StartsWith("(")) x = $"({x}";
+            return conditions.Select(FixFilter).ToArray();
+        }
 
-                if (!x.EndsWith(")")) x = $"{x})";
+        private static string FixFilter(string filter)
+        {
+            if (!filter.StartsWith("(")) filter = $"({filter}";
 
-                return x;
-            }).ToArray();
+            if (!filter.EndsWith(")")) filter = $"{filter})";
+
+            return filter;
         }
 
         /// <summary>
@@ -168,7 +171,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// <returns></returns>
         public LDAPFilter AddFilter(string filter)
         {
-            _filterParts.Add(filter);
+            _mandatory.Add(FixFilter(filter));
 
             return this;
         }
@@ -182,6 +185,9 @@ namespace SharpHoundCommonLib.LDAPQueries
             var temp = string.Join("", _filterParts.ToArray());
             temp = _filterParts.Count == 1 ? _filterParts[0] : $"(|{temp})";
 
+            var mandatory = string.Join("", _mandatory.ToArray());
+            temp = _mandatory.Count > 0 ? $"(&{temp}{mandatory})" : temp;
+            
             return temp;
         }
     }
