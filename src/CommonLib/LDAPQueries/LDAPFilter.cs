@@ -169,10 +169,17 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public LDAPFilter AddFilter(string filter)
+        public LDAPFilter AddFilter(string filter, bool enforce)
         {
-            _mandatory.Add(FixFilter(filter));
-
+            if (enforce)
+            {
+                _mandatory.Add(FixFilter(filter));
+            }
+            else
+            {
+                _filterParts.Add(FixFilter(filter));
+            }
+            
             return this;
         }
 
