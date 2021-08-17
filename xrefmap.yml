@@ -276,6 +276,12 @@ references:
   commentId: F:SharpHoundCommonLib.EdgeNames.AddAllowedToAct
   fullName: SharpHoundCommonLib.EdgeNames.AddAllowedToAct
   nameWithType: EdgeNames.AddAllowedToAct
+- uid: SharpHoundCommonLib.EdgeNames.AddKeyCredentialLink
+  name: AddKeyCredentialLink
+  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AddKeyCredentialLink
+  commentId: F:SharpHoundCommonLib.EdgeNames.AddKeyCredentialLink
+  fullName: SharpHoundCommonLib.EdgeNames.AddKeyCredentialLink
+  nameWithType: EdgeNames.AddKeyCredentialLink
 - uid: SharpHoundCommonLib.EdgeNames.AddMember
   name: AddMember
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_AddMember
@@ -354,6 +360,12 @@ references:
   commentId: F:SharpHoundCommonLib.EdgeNames.WriteOwner
   fullName: SharpHoundCommonLib.EdgeNames.WriteOwner
   nameWithType: EdgeNames.WriteOwner
+- uid: SharpHoundCommonLib.EdgeNames.WriteSPN
+  name: WriteSPN
+  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WriteSPN
+  commentId: F:SharpHoundCommonLib.EdgeNames.WriteSPN
+  fullName: SharpHoundCommonLib.EdgeNames.WriteSPN
+  nameWithType: EdgeNames.WriteSPN
 - uid: SharpHoundCommonLib.Enums
   name: SharpHoundCommonLib.Enums
   href: api/SharpHoundCommonLib.Enums.html
@@ -4123,12 +4135,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ACEGuids
   fullName: SharpHoundCommonLib.Processors.ACEGuids
   nameWithType: ACEGuids
-- uid: SharpHoundCommonLib.Processors.ACEGuids.AddSelfToGroup
-  name: AddSelfToGroup
-  href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_AddSelfToGroup
-  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.AddSelfToGroup
-  fullName: SharpHoundCommonLib.Processors.ACEGuids.AddSelfToGroup
-  nameWithType: ACEGuids.AddSelfToGroup
+- uid: SharpHoundCommonLib.Processors.ACEGuids.AddKeyPrincipal
+  name: AddKeyPrincipal
+  href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_AddKeyPrincipal
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.AddKeyPrincipal
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.AddKeyPrincipal
+  nameWithType: ACEGuids.AddKeyPrincipal
 - uid: SharpHoundCommonLib.Processors.ACEGuids.AllGuid
   name: AllGuid
   href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_AllGuid
@@ -4165,6 +4177,12 @@ references:
   commentId: F:SharpHoundCommonLib.Processors.ACEGuids.WriteMember
   fullName: SharpHoundCommonLib.Processors.ACEGuids.WriteMember
   nameWithType: ACEGuids.WriteMember
+- uid: SharpHoundCommonLib.Processors.ACEGuids.WriteSPN
+  name: WriteSPN
+  href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_WriteSPN
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.WriteSPN
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.WriteSPN
+  nameWithType: ACEGuids.WriteSPN
 - uid: SharpHoundCommonLib.Processors.ACLProcessor
   name: ACLProcessor
   href: api/SharpHoundCommonLib.Processors.ACLProcessor.html
