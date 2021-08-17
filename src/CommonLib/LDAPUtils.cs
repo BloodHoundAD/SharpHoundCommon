@@ -44,7 +44,7 @@ namespace SharpHoundCommonLib
 
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
         private readonly ConcurrentDictionary<string, string> _domainControllerCache = new();
-        
+
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
         private readonly ConcurrentDictionary<string, LdapConnection> _ldapConnections = new();
@@ -535,7 +535,7 @@ namespace SharpHoundCommonLib
                 Logging.Debug($"ResolveDistinguishedName: could not retrieve objectidentifier from {dn}");
                 return null;
             }
-            
+
             if (GetWellKnownPrincipal(id, domain, out var principal)) return principal;
 
             type = result.GetLabel();
@@ -1163,7 +1163,7 @@ namespace SharpHoundCommonLib
         {
             if (domain == null)
                 return null;
-            
+
             var resolved = domain;
 
             if (resolved.Contains("."))

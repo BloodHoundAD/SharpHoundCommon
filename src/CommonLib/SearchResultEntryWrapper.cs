@@ -50,10 +50,7 @@ namespace SharpHoundCommonLib
             if (int.TryParse(uac, out var flag))
             {
                 var flags = (UacFlags) flag;
-                if ((flags & UacFlags.ServerTrustAccount) != 0)
-                {
-                    _utils.AddDomainController(itemID);
-                }
+                if ((flags & UacFlags.ServerTrustAccount) != 0) _utils.AddDomainController(itemID);
             }
 
             res.ObjectId = itemID;

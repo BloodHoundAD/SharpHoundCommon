@@ -66,15 +66,15 @@ namespace CommonLibTest
             var mockUtils = new Mock<ILDAPUtils>();
             mockUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns((string a, string b) => mockLdapUtils.ResolveIDAndType(a, b));
-            var sd =  new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
+            var sd = new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
             mockUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(sd);
-            
+
             var processor = new ACLProcessor(mockUtils.Object, true);
             var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
             var result = processor.ProcessACL(bytes, "TESTLAB.LOCAL", Label.Group, false);
-            
+
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
-            
+
             Assert.Contains(result,
                 x => x.RightName == EdgeNames.AddSelf &&
                      x.PrincipalSID == "S-1-5-21-3130019616-2776909439-2417379446-2606");

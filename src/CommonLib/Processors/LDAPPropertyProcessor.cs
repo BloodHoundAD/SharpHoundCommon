@@ -185,7 +185,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     if (d == null)
                         continue;
-                    
+
                     var resolvedHost = await _utils.ResolveHostToSid(d, domain);
                     if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
                         comps.Add(new TypedPrincipal

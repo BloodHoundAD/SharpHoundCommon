@@ -10,7 +10,10 @@
         public static readonly string[] GPCFileSysPath = {"gpcfilesyspath"};
 
         public static readonly string[] BaseQueryProps =
-            {"objectsid", "distiguishedname", "objectguid", "ms-mcs-admpwdexpirationtime", "isDeleted", "useraccountcontrol"};
+        {
+            "objectsid", "distiguishedname", "objectguid", "ms-mcs-admpwdexpirationtime", "isDeleted",
+            "useraccountcontrol"
+        };
 
         public static readonly string[] GroupResolutionProps =
         {

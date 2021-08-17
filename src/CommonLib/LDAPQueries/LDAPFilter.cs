@@ -172,14 +172,10 @@ namespace SharpHoundCommonLib.LDAPQueries
         public LDAPFilter AddFilter(string filter, bool enforce)
         {
             if (enforce)
-            {
                 _mandatory.Add(FixFilter(filter));
-            }
             else
-            {
                 _filterParts.Add(FixFilter(filter));
-            }
-            
+
             return this;
         }
 
@@ -194,7 +190,7 @@ namespace SharpHoundCommonLib.LDAPQueries
 
             var mandatory = string.Join("", _mandatory.ToArray());
             temp = _mandatory.Count > 0 ? $"(&{temp}{mandatory})" : temp;
-            
+
             return temp;
         }
     }

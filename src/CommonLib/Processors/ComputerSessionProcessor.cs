@@ -147,7 +147,7 @@ namespace SharpHoundCommonLib.Processors
                 //Filter out empty usernames and computer sessions
                 if (string.IsNullOrWhiteSpace(username) || username.EndsWith("$", StringComparison.Ordinal))
                     continue;
-                
+
                 //If we dont have a domain, ignore this object
                 if (string.IsNullOrWhiteSpace(domain))
                     continue;
