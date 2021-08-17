@@ -1884,12 +1884,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddDomains
   nameWithType: LDAPFilter.AddDomains
-- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddFilter(System.String)
-  name: AddFilter(String)
-  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddFilter_System_String_
-  commentId: M:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddFilter(System.String)
-  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddFilter(System.String)
-  nameWithType: LDAPFilter.AddFilter(String)
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddFilter(System.String,System.Boolean)
+  name: AddFilter(String, Boolean)
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddFilter_System_String_System_Boolean_
+  commentId: M:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddFilter(System.String,System.Boolean)
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddFilter(System.String, System.Boolean)
+  nameWithType: LDAPFilter.AddFilter(String, Boolean)
 - uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddFilter*
   name: AddFilter
   href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddFilter_
