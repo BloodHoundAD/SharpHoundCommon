@@ -45,13 +45,15 @@ namespace SharpHoundCommonLib
     {
         void SetLDAPConfig(LDAPConfig config);
         string[] GetUserGlobalCatalogMatches(string name);
-        TypedPrincipal ResolveIDAndType(string id, string defaultDomain);
+        TypedPrincipal ResolveIDAndType(string id, string fallbackDomain);
         Label LookupSidType(string sid, string domain);
         Label LookupGuidType(string guid, string domain);
         string GetDomainNameFromSid(string sid);
         Task<string> GetSidFromDomainName(string domainName);
         string ConvertWellKnownPrincipal(string sid, string domain);
         bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
+        void AddDomainController(string domainControllerId);
+        IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
 
         /// <summary>
         ///     Performs Attribute Ranged Retrieval

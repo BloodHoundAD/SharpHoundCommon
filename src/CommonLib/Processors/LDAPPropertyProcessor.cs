@@ -183,9 +183,10 @@ namespace SharpHoundCommonLib.Processors
 
                 foreach (var d in delegates)
                 {
-                    var hname = d.Contains("/") ? d.Split('/')[1] : d;
-                    hname = hname.Split(':')[0];
-                    var resolvedHost = await _utils.ResolveHostToSid(hname, domain);
+                    if (d == null)
+                        continue;
+
+                    var resolvedHost = await _utils.ResolveHostToSid(d, domain);
                     if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
                         comps.Add(new TypedPrincipal
                         {

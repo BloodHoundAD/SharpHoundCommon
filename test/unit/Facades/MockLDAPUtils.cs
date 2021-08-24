@@ -1,19 +1,24 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using Domain = SharpHoundCommonLib.OutputTypes.Domain;
 
 namespace CommonLibTest.Facades
 {
     public class MockLDAPUtils : ILDAPUtils
     {
+        private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
         private readonly Forest _forest;
+        private readonly ConcurrentDictionary<string, string> _seenWellKnownPrincipals = new();
 
         public MockLDAPUtils()
         {
@@ -38,15 +43,17 @@ namespace CommonLibTest.Facades
             };
         }
 
-        public TypedPrincipal ResolveIDAndType(string id, string defaultDomain)
+        public TypedPrincipal ResolveIDAndType(string id, string fallbackDomain)
         {
             id = id?.ToUpper();
-            if (GetWellKnownPrincipal(id, defaultDomain, out var principal)) return principal;
+            if (GetWellKnownPrincipal(id, fallbackDomain, out var principal)) return principal;
 
             principal = id switch
             {
                 "S-1-5-21-3130019616-2776909439-2417379446-512" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group),
+                "S-1-5-21-3130019616-2776909439-2417379446-2606" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-2606", Label.User),
                 "E32A6AC7-083B-4DD7-ACFF-6D9C2B1AFAF5" => new TypedPrincipal("E32A6AC7-083B-4DD7-ACFF-6D9C2B1AFAF5",
                     Label.Container),
                 "S-1-5-21-3130019616-2776909439-2417379446-519" => new TypedPrincipal(
@@ -690,7 +697,40 @@ namespace CommonLibTest.Facades
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
             commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
+            _seenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, sid);
             return true;
+        }
+
+        public void AddDomainController(string domainControllerId)
+        {
+            _domainControllers.TryAdd(domainControllerId, new byte());
+        }
+
+        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        {
+            foreach (var wkp in _seenWellKnownPrincipals)
+            {
+                WellKnownPrincipal.GetWellKnownPrincipal(wkp.Value, out var principal);
+                OutputBase output = principal.ObjectType switch
+                {
+                    Label.User => new User(),
+                    Label.Computer => new Computer(),
+                    Label.Group => new Group(),
+                    Label.GPO => new GPO(),
+                    Label.Domain => new Domain(),
+                    Label.OU => new OU(),
+                    Label.Container => new Container(),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                output.Properties.Add("name", principal.ObjectIdentifier);
+                output.ObjectIdentifier = wkp.Key;
+                yield return output;
+            }
+
+            var entdc = GetBaseEnterpriseDC();
+            entdc.Members = _domainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
+            yield return entdc;
         }
 
         public virtual IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
@@ -995,6 +1035,13 @@ namespace CommonLibTest.Facades
         {
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>();
             return mockSecurityDescriptor.Object;
+        }
+
+        private Group GetBaseEnterpriseDC()
+        {
+            var g = new Group {ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper()};
+            g.Properties.Add("name", "ENTERPRISE DOMAIN CONTROLLERS@TESTLAB.LOCAL".ToUpper());
+            return g;
         }
     }
 }

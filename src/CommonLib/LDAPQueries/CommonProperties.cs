@@ -10,7 +10,10 @@
         public static readonly string[] GPCFileSysPath = {"gpcfilesyspath"};
 
         public static readonly string[] BaseQueryProps =
-            {"objectsid", "distiguishedname", "objectguid", "ms-mcs-admpwdexpirationtime", "isDeleted"};
+        {
+            "objectsid", "distiguishedname", "objectguid", "ms-mcs-admpwdexpirationtime", "isDeleted",
+            "useraccountcontrol"
+        };
 
         public static readonly string[] GroupResolutionProps =
         {
@@ -32,7 +35,7 @@
         {
             "samaccountname", "distinguishedname", "samaccounttype", "pwdlastset", "lastlogon", "lastlogontimestamp",
             "objectsid",
-            "sidhistory", "useraccountcontrol", "dnshostname", "operatingsystem",
+            "sidhistory", "dnshostname", "operatingsystem",
             "operatingsystemservicepack", "serviceprincipalname", "displayname", "mail", "title",
             "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
             "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedToDelegateTo",

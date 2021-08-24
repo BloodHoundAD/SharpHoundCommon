@@ -111,11 +111,10 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="computerName"></param>
         /// <param name="computerSamAccountName"></param>
-        /// <param name="computerDomain"></param>
         /// <param name="computerSid"></param>
         /// <returns></returns>
         public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName,
-            string computerSamAccountName, string computerDomain, string computerSid)
+            string computerSamAccountName, string computerSid)
         {
             var ret = new SessionAPIResult();
             NativeMethods.WKSTA_USER_INFO_1[] apiResult;
@@ -146,14 +145,18 @@ namespace SharpHoundCommonLib.Processors
                     continue;
 
                 //Filter out empty usernames and computer sessions
-                if (username.Trim() == "" || username.EndsWith("$", StringComparison.Ordinal))
+                if (string.IsNullOrWhiteSpace(username) || username.EndsWith("$", StringComparison.Ordinal))
+                    continue;
+
+                //If we dont have a domain, ignore this object
+                if (string.IsNullOrWhiteSpace(domain))
                     continue;
 
                 //Any domain with a space is unusable. It'll be things like NT Authority or Font Driver
                 if (domain.Contains(" "))
                     continue;
 
-                var res = await _utils.ResolveAccountName(username, computerDomain);
+                var res = await _utils.ResolveAccountName(username, domain);
                 if (res == null)
                     continue;
 

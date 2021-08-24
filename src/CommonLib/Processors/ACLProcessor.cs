@@ -15,7 +15,7 @@ namespace SharpHoundCommonLib.Processors
     {
         private static readonly Dictionary<Label, string> BaseGuids;
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
-        private static bool isCacheBuilt;
+        private static bool _isCacheBuilt;
         private readonly ILDAPUtils _utils;
 
         static ACLProcessor()
@@ -46,7 +46,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         private void BuildGUIDCache()
         {
-            if (isCacheBuilt)
+            if (_isCacheBuilt)
                 return;
 
             var forest = _utils.GetForest();
@@ -67,7 +67,7 @@ namespace SharpHoundCommonLib.Processors
                 GuidMap.TryAdd(guid, name);
             }
 
-            isCacheBuilt = true;
+            _isCacheBuilt = true;
         }
 
         /// <summary>
@@ -198,16 +198,17 @@ namespace SharpHoundCommonLib.Processors
                     };
 
                 //Cool ACE courtesy of @rookuu. Allows a principal to add itself to a group and no one else
-                if (aceRights.HasFlag(ActiveDirectoryRights.Self))
-                    if (objectType == Label.Group)
-                        if (aceType == ACEGuids.AddSelfToGroup)
-                            yield return new ACE
-                            {
-                                PrincipalType = resolvedPrincipal.ObjectType,
-                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                                IsInherited = inherited,
-                                RightName = EdgeNames.AddSelf
-                            };
+                if (aceRights.HasFlag(ActiveDirectoryRights.Self) &&
+                    !aceRights.HasFlag(ActiveDirectoryRights.WriteProperty) &&
+                    !aceRights.HasFlag(ActiveDirectoryRights.GenericWrite) && objectType == Label.Group &&
+                    aceType == ACEGuids.WriteMember)
+                    yield return new ACE
+                    {
+                        PrincipalType = resolvedPrincipal.ObjectType,
+                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        IsInherited = inherited,
+                        RightName = EdgeNames.AddSelf
+                    };
 
                 //Process object type specific ACEs. Extended rights apply to users, domains, and computers
                 if (aceRights.HasFlag(ActiveDirectoryRights.ExtendedRight))
@@ -297,13 +298,13 @@ namespace SharpHoundCommonLib.Processors
                                 RightName = EdgeNames.GenericWrite
                             };
 
-                    if (objectType == Label.User && aceType == ACEGuids.WriteMember)
+                    if (objectType == Label.User && aceType == ACEGuids.WriteSPN)
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
                             PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                             IsInherited = inherited,
-                            RightName = EdgeNames.AddMember
+                            RightName = EdgeNames.WriteSPN
                         };
                     else if (objectType == Label.Computer && aceType == ACEGuids.WriteAllowedToAct)
                         yield return new ACE
@@ -312,6 +313,22 @@ namespace SharpHoundCommonLib.Processors
                             PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                             IsInherited = inherited,
                             RightName = EdgeNames.AddAllowedToAct
+                        };
+                    else if (objectType == Label.Group && aceType == ACEGuids.WriteMember)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.AddMember
+                        };
+                    else if (objectType is Label.User or Label.Computer && aceType == ACEGuids.AddKeyPrincipal)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.AddKeyCredentialLink
                         };
                 }
             }

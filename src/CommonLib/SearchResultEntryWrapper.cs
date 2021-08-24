@@ -46,6 +46,13 @@ namespace SharpHoundCommonLib
             if (itemID == null)
                 return null;
 
+            var uac = _entry.GetProperty("useraccountcontrol");
+            if (int.TryParse(uac, out var flag))
+            {
+                var flags = (UacFlags) flag;
+                if ((flags & UacFlags.ServerTrustAccount) != 0) _utils.AddDomainController(itemID);
+            }
+
             res.ObjectId = itemID;
             if (IsDeleted())
             {

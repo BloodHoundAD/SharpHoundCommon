@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using CommonLibTest.Facades;
 using Moq;
+using Newtonsoft.Json;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
@@ -25,9 +26,13 @@ namespace CommonLibTest
         private const string GMSAProperty =
             "AQAEgEAAAAAAAAAAAAAAABQAAAAEACwAAQAAAAAAJAD/AQ8AAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQ9AEAAAECAAAAAAAFIAAAACACAAA\u003d";
 
+        private const string AddMemberSecurityDescriptor =
+            "AQAEjGADAAAAAAAAAAAAABQAAAAEAEwDFQAAAAUAOAAIAAAAAQAAAMB5lr/mDdARooUAqgAwSeIBBQAAAAAABRUAAAAgT5C6f0aEpXZIFpAuCgAABQA4ACAAAAABAAAAwHmWv+YN0BGihQCqADBJ4gEFAAAAAAAFFQAAACBPkLp/RoSldkgWkEcIAAAFACwAEAAAAAEAAAAdsalGrmBaQLfo/4pY1FbSAQIAAAAAAAUgAAAAMAIAAAUAKAAAAQAAAQAAAFUacqsvHtARmBkAqgBAUpsBAQAAAAAABQsAAAAAACQA/wEPAAEFAAAAAAAFFQAAACBPkLp/RoSldkgWkAACAAAAABgA/wEPAAECAAAAAAAFIAAAACQCAAAAABQAlAACAAEBAAAAAAAFCgAAAAAAFACUAAIAAQEAAAAAAAULAAAAAAAUAP8BDwABAQAAAAAABRIAAAAFGjgAEAAAAAMAAABtnsa3xyzSEYVOAKDJg/YIhnqWv+YN0BGihQCqADBJ4gEBAAAAAAAFCQAAAAUSOAAQAAAAAwAAAG2exrfHLNIRhU4AoMmD9gicepa/5g3QEaKFAKoAMEniAQEAAAAAAAUJAAAABRo4ABAAAAADAAAAbZ7Gt8cs0hGFTgCgyYP2CLp6lr/mDdARooUAqgAwSeIBAQAAAAAABQkAAAAFGjgAIAAAAAMAAACTexvqSF7VRrxsTfT9p4o1hnqWv+YN0BGihQCqADBJ4gEBAAAAAAAFCgAAAAUaLACUAAIAAgAAABTMKEg3FLxFmwetbwFeXygBAgAAAAAABSAAAAAqAgAABRIsAJQAAgACAAAAnHqWv+YN0BGihQCqADBJ4gECAAAAAAAFIAAAACoCAAAFGiwAlAACAAIAAAC6epa/5g3QEaKFAKoAMEniAQIAAAAAAAUgAAAAKgIAAAUSKAAwAAAAAQAAAOXDeD+a971GoLidGBFt3HkBAQAAAAAABQoAAAAFEigAMAEAAAEAAADeR+aRb9lwS5VX1j/088zYAQEAAAAAAAUKAAAAABIkAP8BDwABBQAAAAAABRUAAAAgT5C6f0aEpXZIFpAHAgAAABIYAAQAAAABAgAAAAAABSAAAAAqAgAAABIYAL0BDwABAgAAAAAABSAAAAAgAgAAAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQAAIAAA==";
+
+        private readonly ACLProcessor _baseProcessor;
+
         private readonly string _testDomainName;
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly ACLProcessor _baseProcessor;
 
         public ACLProcessorTest(ITestOutputHelper testOutputHelper)
         {
@@ -52,6 +57,30 @@ namespace CommonLibTest
             var processor = new ACLProcessor(new MockLDAPUtils(), true);
             var result = processor.IsACLProtected(null);
             Assert.False(result);
+        }
+
+        [WindowsOnlyFact]
+        public void ACLProcessor_TestKnownDataAddMember()
+        {
+            var mockLdapUtils = new MockLDAPUtils();
+            var mockUtils = new Mock<ILDAPUtils>();
+            mockUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns((string a, string b) => mockLdapUtils.ResolveIDAndType(a, b));
+            var sd = new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
+            mockUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(sd);
+
+            var processor = new ACLProcessor(mockUtils.Object, true);
+            var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
+            var result = processor.ProcessACL(bytes, "TESTLAB.LOCAL", Label.Group, false);
+
+            _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
+
+            Assert.Contains(result,
+                x => x.RightName == EdgeNames.AddSelf &&
+                     x.PrincipalSID == "S-1-5-21-3130019616-2776909439-2417379446-2606");
+            Assert.Contains(result,
+                x => x.RightName == EdgeNames.AddMember &&
+                     x.PrincipalSID == "S-1-5-21-3130019616-2776909439-2417379446-2119");
         }
 
         [Fact]
@@ -494,7 +523,7 @@ namespace CommonLibTest
             mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
             mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
             mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.Self);
-            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AddSelfToGroup));
+            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
@@ -505,7 +534,7 @@ namespace CommonLibTest
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
-            var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+            var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
             var result = processor.ProcessACL(bytes, _testDomainName, Label.Group, false).ToArray();
 
             Assert.Single(result);
@@ -531,7 +560,7 @@ namespace CommonLibTest
             mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
             mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
             mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AddSelfToGroup));
+            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
@@ -935,8 +964,10 @@ namespace CommonLibTest
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
-            var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, true).ToArray();
+            var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Group, true).ToArray();
+
+            _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
 
             Assert.Single(result);
             var actual = result.First();
