@@ -94,7 +94,6 @@ namespace SharpHoundCommonLib.Processors
             {
                 _nativeMethods.CallSamCloseHandle(_domainHandle);
                 _domainHandle = IntPtr.Zero;
-                ;
             }
 
             if (_serverHandle != IntPtr.Zero)
@@ -102,6 +101,13 @@ namespace SharpHoundCommonLib.Processors
                 _nativeMethods.CallSamCloseHandle(_serverHandle);
                 _serverHandle = IntPtr.Zero;
             }
+            
+            _obj.Dispose();
+        }
+
+        ~SAMRPCServer()
+        {
+            Dispose();
         }
 
         /// <summary>
