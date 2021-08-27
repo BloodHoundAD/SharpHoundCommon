@@ -523,7 +523,7 @@ namespace CommonLibTest
             mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
             mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
             mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.Self);
-            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
+            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.Member));
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
@@ -560,7 +560,7 @@ namespace CommonLibTest
             mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
             mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
             mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
+            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.Member));
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
@@ -953,7 +953,7 @@ namespace CommonLibTest
             mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
             mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
             mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
-            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
+            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.Member));
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
@@ -992,7 +992,7 @@ namespace CommonLibTest
             mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
             mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
             mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
-            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteAllowedToAct));
+            mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllowedToAct));
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))

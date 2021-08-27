@@ -18,5 +18,7 @@
         public const string AddMember = "AddMember";
         public const string WriteSPN = "WriteSPN";
         public const string AddKeyCredentialLink = "AddKeyCredentialLink";
+        public const string WritePKIEnrollmentFlag = "WritePKIEnrollmentFlag";
+        public const string WritePKINameFlag = "WritePKINameFlag";
     }
 }

@@ -56,7 +56,7 @@ namespace SharpHoundCommonLib.Processors
                 return;
             }
 
-            var schema = forest.Schema?.Name;
+            var schema = forest.Schema.Name;
             if (string.IsNullOrEmpty(schema))
                 return;
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
@@ -201,7 +201,7 @@ namespace SharpHoundCommonLib.Processors
                 if (aceRights.HasFlag(ActiveDirectoryRights.Self) &&
                     !aceRights.HasFlag(ActiveDirectoryRights.WriteProperty) &&
                     !aceRights.HasFlag(ActiveDirectoryRights.GenericWrite) && objectType == Label.Group &&
-                    aceType == ACEGuids.WriteMember)
+                    aceType == ACEGuids.Member)
                     yield return new ACE
                     {
                         PrincipalType = resolvedPrincipal.ObjectType,
@@ -298,7 +298,7 @@ namespace SharpHoundCommonLib.Processors
                                 RightName = EdgeNames.GenericWrite
                             };
 
-                    if (objectType == Label.User && aceType == ACEGuids.WriteSPN)
+                    if (objectType == Label.User && aceType == ACEGuids.ServicePrincipalName)
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -306,7 +306,7 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.WriteSPN
                         };
-                    else if (objectType == Label.Computer && aceType == ACEGuids.WriteAllowedToAct)
+                    else if (objectType == Label.Computer && aceType == ACEGuids.AllowedToAct)
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -314,7 +314,7 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddAllowedToAct
                         };
-                    else if (objectType == Label.Group && aceType == ACEGuids.WriteMember)
+                    else if (objectType == Label.Group && aceType == ACEGuids.Member)
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -322,7 +322,7 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddMember
                         };
-                    else if (objectType is Label.User or Label.Computer && aceType == ACEGuids.AddKeyPrincipal)
+                    else if (objectType is Label.User or Label.Computer && aceType == ACEGuids.KeyPrincipal)
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -330,6 +330,26 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddKeyCredentialLink
                         };
+                    else if (objectType is Label.CertAuthority)
+                    {
+                        if (aceType == ACEGuids.PKIEnrollmentFlag)
+                        {
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WritePKIEnrollmentFlag
+                            };
+                        }else if (aceType == ACEGuids.PKINameFlag)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WritePKINameFlag
+                            };
+                    }
                 }
             }
         }

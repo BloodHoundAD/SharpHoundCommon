@@ -60,10 +60,29 @@ namespace SharpHoundCommonLib.Processors
                     continue;
 
                 var principalDomain = _utils.GetDomainNameFromSid(principalSid) ?? objectDomain;
-                var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
+                var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, principalDomain);
                 
                 var rights = (CertificationAuthorityRights) rule.ActiveDirectoryRights();
-                
+
+                if ((rights & CertificationAuthorityRights.ManageCA) != 0)
+                {
+                    yield return new ACE
+                    {
+                        IsInherited = false,
+                        PrincipalType = resolvedPrincipal.ObjectType,
+                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        RightName = "ManageCA"
+                    };
+                }else if ((rights & CertificationAuthorityRights.ManageCertificates) != 0)
+                {
+                    yield return new ACE
+                    {
+                        IsInherited = false,
+                        PrincipalType = resolvedPrincipal.ObjectType,
+                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        RightName = "ManageCertificates"
+                    };
+                }
             }
         }
 

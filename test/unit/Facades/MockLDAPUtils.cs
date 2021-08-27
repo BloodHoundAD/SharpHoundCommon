@@ -1037,6 +1037,11 @@ namespace CommonLibTest.Facades
             return mockSecurityDescriptor.Object;
         }
 
+        public string GetConfigurationPath(string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
         private Group GetBaseEnterpriseDC()
         {
             var g = new Group {ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper()};

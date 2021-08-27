@@ -139,5 +139,6 @@ namespace SharpHoundCommonLib
         Forest GetForest(string domainName = null);
 
         ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
+        string GetConfigurationPath(string domainName);
     }
 }

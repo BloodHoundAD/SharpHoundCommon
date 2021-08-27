@@ -809,6 +809,15 @@ namespace SharpHoundCommonLib
             return new(new ActiveDirectorySecurity());
         }
 
+        public string GetConfigurationPath(string domainName = null)
+        {
+            var rootDse = domainName == null
+                ? new DirectoryEntry("LDAP://RootDSE")
+                : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
+            
+            return $"{rootDse.Properties["configurationNamingContext"][0]}";
+        }
+
         private async Task<Group> GetBaseEnterpriseDC()
         {
             var forest = GetForest()?.Name;
