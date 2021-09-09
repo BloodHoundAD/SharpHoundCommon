@@ -49,18 +49,11 @@ namespace SharpHoundCommonLib.Processors
             if (_isCacheBuilt)
                 return;
 
-            var forest = _utils.GetForest();
-            if (forest == null)
-            {
-                Logging.Log(LogLevel.Error, "Unable to resolve forest for GUID cache");
-                return;
-            }
-
-            var schema = forest.Schema.Name;
-            if (string.IsNullOrEmpty(schema))
+            var schemaPath = _utils.GetSchemaPath(null);
+            if (string.IsNullOrEmpty(schemaPath))
                 return;
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
-                new[] {"schemaidguid", "name"}, adsPath: schema))
+                new[] {"schemaidguid", "name"}, adsPath: schemaPath))
             {
                 var name = entry.GetProperty("name")?.ToLower();
                 var guid = new Guid(entry.GetByteProperty("schemaidguid")).ToString();

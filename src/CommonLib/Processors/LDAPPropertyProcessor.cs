@@ -132,6 +132,12 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
+        public static Dictionary<string, object> ReadEnterpriseCAProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            return null;
+        }
+
         /// <summary>
         ///     Reads specific LDAP properties related to Users
         /// </summary>

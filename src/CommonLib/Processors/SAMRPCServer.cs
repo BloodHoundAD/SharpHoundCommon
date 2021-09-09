@@ -31,7 +31,7 @@ namespace SharpHoundCommonLib.Processors
         };
 
         private readonly NativeMethods _nativeMethods;
-        private readonly NativeMethods.OBJECT_ATTRIBUTES _obj;
+        private NativeMethods.OBJECT_ATTRIBUTES _obj;
         private readonly ILDAPUtils _utils;
         private IntPtr _domainHandle;
 
@@ -229,7 +229,6 @@ namespace SharpHoundCommonLib.Processors
                 _nativeMethods.CallSamCloseHandle(aliasHandle);
                 return machineSid;
             }
-
 
             status = _nativeMethods.CallSamGetMembersInAlias(aliasHandle, out var members, out var count);
             Logging.Trace($"SamGetMembersInAlias returned {status} for Administrators on {_computerName}");

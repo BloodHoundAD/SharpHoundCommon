@@ -71,7 +71,7 @@ namespace SharpHoundCommonLib.Processors
                         IsInherited = false,
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                        RightName = "ManageCA"
+                        RightName = EdgeNames.ManageCA
                     };
                 }else if ((rights & CertificationAuthorityRights.ManageCertificates) != 0)
                 {
@@ -80,7 +80,7 @@ namespace SharpHoundCommonLib.Processors
                         IsInherited = false,
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                        RightName = "ManageCertificates"
+                        RightName = EdgeNames.ManageCertificates
                     };
                 }
             }

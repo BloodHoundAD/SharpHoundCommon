@@ -270,7 +270,7 @@ namespace SharpHoundCommonLib
                     objectType = Label.Container;
                 else if (objectClasses.Contains("pKICertificateTemplate"))
                     objectType = Label.CertTemplate;
-                else if (objectClasses.Contains("pKIEnrollmentService"))
+                else if (objectClasses.Contains("pKIEnrollmentService") || objectClasses.Contains("certificateAuthority"))
                     objectType = Label.CertAuthority;
             }
 

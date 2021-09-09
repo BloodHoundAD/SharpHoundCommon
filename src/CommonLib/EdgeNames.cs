@@ -20,5 +20,7 @@
         public const string AddKeyCredentialLink = "AddKeyCredentialLink";
         public const string WritePKIEnrollmentFlag = "WritePKIEnrollmentFlag";
         public const string WritePKINameFlag = "WritePKINameFlag";
+        public const string ManageCA = "ManageCA";
+        public const string ManageCertificates = "ManageCertificates";
     }
 }

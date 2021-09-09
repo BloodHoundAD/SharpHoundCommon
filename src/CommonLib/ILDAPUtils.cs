@@ -140,5 +140,6 @@ namespace SharpHoundCommonLib
 
         ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
         string GetConfigurationPath(string domainName);
+        string GetSchemaPath(string domainName);
     }
 }

@@ -815,7 +815,16 @@ namespace SharpHoundCommonLib
                 ? new DirectoryEntry("LDAP://RootDSE")
                 : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
             
-            return $"{rootDse.Properties["configurationNamingContext"][0]}";
+            return $"{rootDse.Properties["configurationNamingContext"]?[0]}";
+        }
+
+        public string GetSchemaPath(string domainName)
+        {
+            var rootDse = domainName == null
+                ? new DirectoryEntry("LDAP://RootDSE")
+                : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
+            
+            return $"{rootDse.Properties["schemaNamingContext"]?[0]}";
         }
 
         private async Task<Group> GetBaseEnterpriseDC()
