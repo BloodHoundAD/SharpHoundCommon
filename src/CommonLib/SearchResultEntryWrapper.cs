@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
@@ -16,6 +17,7 @@ namespace SharpHoundCommonLib
         byte[] GetByteProperty(string propertyName);
         string[] GetArrayProperty(string propertyName);
         byte[][] GetByteArrayProperty(string propertyName);
+        X509Certificate2[] GetCertificateArrayProperty(string propertyName);
         string GetObjectIdentifier();
         bool IsDeleted();
         Label GetLabel();
@@ -167,6 +169,11 @@ namespace SharpHoundCommonLib
         public byte[][] GetByteArrayProperty(string propertyName)
         {
             return _entry.GetPropertyAsArrayOfBytes(propertyName);
+        }
+
+        public X509Certificate2[] GetCertificateArrayProperty(string propertyName)
+        {
+            return _entry.GetPropertyAsArrayOfCertificates(propertyName);
         }
 
         public string GetObjectIdentifier()

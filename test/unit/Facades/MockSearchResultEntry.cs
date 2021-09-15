@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
@@ -47,6 +49,11 @@ namespace CommonLibTest.Facades
         public byte[][] GetByteArrayProperty(string propertyName)
         {
             return _properties[propertyName] as byte[][];
+        }
+
+        public X509Certificate2[] GetCertificateArrayProperty(string propertyName)
+        {
+            return GetByteArrayProperty(propertyName).Select(x => new X509Certificate2(x)).ToArray();
         }
 
         public string GetObjectIdentifier()

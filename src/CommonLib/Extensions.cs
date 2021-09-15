@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -203,6 +204,15 @@ namespace SharpHoundCommonLib
                 return new byte[0];
 
             return bytes;
+        }
+
+        public static X509Certificate2[] GetPropertyAsArrayOfCertificates(this SearchResultEntry searchResultEntry,
+            string property)
+        {
+            if (!searchResultEntry.Attributes.Contains(property))
+                return null;
+
+            return searchResultEntry.GetPropertyAsArrayOfBytes(property).Select(x => new X509Certificate2(x)).ToArray();
         }
 
         /// <summary>

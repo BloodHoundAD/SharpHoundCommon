@@ -132,10 +132,16 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
-        public static Dictionary<string, object> ReadEnterpriseCAProperties(ISearchResultEntry entry)
+        public static Dictionary<string, object> ReadCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            return null;
+            return props;
+        }
+        
+        public static Dictionary<string, object> ReadCertTemplateProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            return props;
         }
 
         /// <summary>
