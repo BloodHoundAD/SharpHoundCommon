@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,19 @@ namespace SharpHoundCommonLib.Processors
         public CAProcessor(ILDAPUtils utils)
         {
             _utils = utils;
+        }
+
+        public IEnumerable<TypedPrincipal> ResolveTemplates(string[] templateNames, string objectDomain)
+        {
+            if (templateNames == null | templateNames.Length == 0)
+                yield break;
+
+            foreach (var template in templateNames)
+            {
+                var res = _utils.ResolveCertificateTemplate(template, objectDomain);
+                if (res != null)
+                    yield return res;
+            }
         }
 
         public IEnumerable<ACE> ProcessCAPermissions(byte[] security, string objectDomain)
@@ -73,7 +87,8 @@ namespace SharpHoundCommonLib.Processors
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         RightName = EdgeNames.ManageCA
                     };
-                }else if ((rights & CertificationAuthorityRights.ManageCertificates) != 0)
+                }
+                if ((rights & CertificationAuthorityRights.ManageCertificates) != 0)
                 {
                     yield return new ACE
                     {
@@ -81,6 +96,17 @@ namespace SharpHoundCommonLib.Processors
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         RightName = EdgeNames.ManageCertificates
+                    };
+                }
+
+                if ((rights & CertificationAuthorityRights.Enroll) != 0)
+                {
+                    yield return new ACE
+                    {
+                        IsInherited = false,
+                        PrincipalType = resolvedPrincipal.ObjectType,
+                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        RightName = EdgeNames.Enroll
                     };
                 }
             }
@@ -96,8 +122,40 @@ namespace SharpHoundCommonLib.Processors
             }
             catch (Exception e)
             {
+                Logging.Log(LogLevel.Error, "Error getting data from registry: {error}", e);
                 return null;
             }
+        }
+        
+        // Registry setting. If flipped, for any published template the CA is serving, any requesting user can specify any SAN they want. Overrides template settings. ManageCA allows you to flip this bit. 
+        // Also enumerate this on CAs. Still requires some other preconditions.
+        public bool IsUserSpecifiesSanEnabled(string target, string caName)
+        {
+            // ref- https://blog.keyfactor.com/hidden-dangers-certificate-subject-alternative-names-sans
+            //  NOTE: this appears to usually work, even if admin rights aren't available on the remote CA server
+            RegistryKey baseKey;
+            try
+            {
+                baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Could not connect to the HKLM hive - {e.Message}");
+            }
+
+            int editFlags;
+            try
+            {
+                var key = baseKey.OpenSubKey($"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}\\PolicyModules\\CertificateAuthority_MicrosoftDefault.Policy");
+                editFlags = (int)key.GetValue("EditFlags");
+            }
+            catch (SecurityException e)
+            {
+                throw new Exception($"Could not access the EditFlags registry value: {e.Message}");
+            }
+
+            // 0x00040000 -> EDITF_ATTRIBUTESUBJECTALTNAME2
+            return (editFlags & 0x00040000) == 0x00040000;
         }
     }
 }

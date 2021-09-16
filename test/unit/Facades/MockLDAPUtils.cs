@@ -1005,6 +1005,11 @@ namespace CommonLibTest.Facades
             };
         }
 
+        public TypedPrincipal ResolveCertificateTemplate(string templateName, string domain)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options)
         {
             throw new NotImplementedException();

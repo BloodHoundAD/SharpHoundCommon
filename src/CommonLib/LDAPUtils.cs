@@ -552,6 +552,25 @@ namespace SharpHoundCommonLib
             };
         }
 
+        public TypedPrincipal ResolveCertificateTemplate(string templateName, string domain)
+        {
+            var d = NormalizeDomainName(domain);
+            var configurationPath = GetConfigurationPath(d);
+            
+            var result = QueryLDAP($"(cn={templateName})", SearchScope.Subtree,
+                CommonProperties.ObjectID,
+                d, adsPath:$"CN=Certificate Templates,CN=Public Key Services,CN=Services,{configurationPath}").DefaultIfEmpty(null).FirstOrDefault();
+
+            var id = result?.GetObjectIdentifier();
+            if (id == null) return null;
+
+            return new TypedPrincipal
+            {
+                ObjectIdentifier = id,
+                ObjectType = Label.CertTemplate
+            };
+        }
+
         public IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options)
         {
             if (options.cancellationToken != null)

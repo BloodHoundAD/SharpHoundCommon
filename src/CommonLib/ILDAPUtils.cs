@@ -88,6 +88,8 @@ namespace SharpHoundCommonLib
         /// <returns>A <c>TypedPrincipal</c> object with the SID and Label</returns>
         TypedPrincipal ResolveDistinguishedName(string dn);
 
+        TypedPrincipal ResolveCertificateTemplate(string templateName, string domain);
+
         /// <summary>
         ///     Performs an LDAP query using the parameters specified by the user.
         /// </summary>

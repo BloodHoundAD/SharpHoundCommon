@@ -22,5 +22,6 @@
         public const string WritePKINameFlag = "WritePKINameFlag";
         public const string ManageCA = "ManageCA";
         public const string ManageCertificates = "ManageCertificates";
+        public const string Enroll = "Enroll";
     }
 }
