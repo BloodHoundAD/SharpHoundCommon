@@ -290,7 +290,7 @@ namespace SharpHoundCommonLib.Processors
                                 PrincipalType = resolvedPrincipal.ObjectType,
                                 PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                                 IsInherited = inherited,
-                                RightName = EdgeNames.Enroll
+                                RightName = EdgeNames.EnrollOther
                             };
                     }
                 }
