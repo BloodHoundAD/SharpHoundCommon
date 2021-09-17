@@ -12,5 +12,6 @@
         public const string KeyPrincipal = "5b47d60f-6090-40b2-9f37-2a4de88f3063";
         public const string PKINameFlag = "ea1dddc4-60ff-416e-8cc0-17cee534bce7";
         public const string PKIEnrollmentFlag = "d15ef7d8-f226-46db-ae79-b34e560bd12c";
+        public const string Enroll = "0e10c968-78fb-11d2-90d4-00c04f79dc55";
     }
 }

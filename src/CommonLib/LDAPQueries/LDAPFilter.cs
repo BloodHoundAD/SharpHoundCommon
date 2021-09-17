@@ -182,7 +182,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// <returns></returns>
         public LDAPFilter AddCertificateAuthorities(params string[] conditions)
         {
-            _filterParts.Add(BuildString("(objectCategory=certificationAuthority)", conditions));
+            _filterParts.Add(BuildString("(|(objectClass=certificationAuthority)(objectClass=pkiEnrollmentService))", conditions));
             return this;
         }
 

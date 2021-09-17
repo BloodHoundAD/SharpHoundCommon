@@ -274,6 +274,24 @@ namespace SharpHoundCommonLib.Processors
                                     RightName = EdgeNames.ReadLAPSPassword
                                 };
                         }
+                    } else if (objectType == Label.CertTemplate)
+                    {
+                        if (aceType is ACEGuids.AllGuid or "")
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.AllExtendedRights
+                            };
+                        else if (mappedGuid is ACEGuids.Enroll)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.Enroll
+                            };
                     }
                 }
 
@@ -281,7 +299,7 @@ namespace SharpHoundCommonLib.Processors
                 if (aceRights.HasFlag(ActiveDirectoryRights.GenericWrite) ||
                     aceRights.HasFlag(ActiveDirectoryRights.WriteProperty))
                 {
-                    if (objectType is Label.User or Label.Group or Label.Computer or Label.GPO)
+                    if (objectType is Label.User or Label.Group or Label.Computer or Label.GPO or Label.CertAuthority)
                         if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE
                             {

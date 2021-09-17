@@ -38,7 +38,7 @@ namespace CommonLibTest
         {
             _testOutputHelper = testOutputHelper;
             _testDomainName = "TESTLAB.LOCAL";
-            _baseProcessor = new ACLProcessor(new LDAPUtils());
+            _baseProcessor = new ACLProcessor(new LDAPUtils(), true);
         }
 
         public void Dispose()

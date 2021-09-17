@@ -12,6 +12,11 @@ namespace SharpHoundCommonLib.Processors
 {
     public class CAProcessor
     {
+        public const string EnterpriseCALocation = "CN=Enrollment Services,CN=Public Key Services,CN=Services,";
+        public const string RootCALocation = "CN=Certification Authorities,CN=Public Key Services,CN=Services,";
+        public const string CertTemplateLocation = "CN=Certificate Templates,CN=Public Key Services,CN=Services,";
+        public const string NTAuthCertificateLocation = "CN=NTAuthCertificates,CN=Public Key Services,CN=Services,";
+        
         private readonly ILDAPUtils _utils;
 
         public CAProcessor(ILDAPUtils utils)
