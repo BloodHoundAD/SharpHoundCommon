@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using SharpHoundCommonLib.Enums;
@@ -34,6 +35,19 @@ namespace SharpHoundCommonLib.Processors
                 var res = _utils.ResolveCertificateTemplate(template, objectDomain);
                 if (res != null)
                     yield return res;
+            }
+        }
+
+        public IEnumerable<EnrollmentAgentRestriction> ProcessEAPermissions(byte[] enrollmentAgentRestrictions)
+        {
+            if (enrollmentAgentRestrictions == null)
+                yield break;
+
+            var descriptor = new RawSecurityDescriptor(enrollmentAgentRestrictions, 0);
+            foreach (var genericAce in descriptor.DiscretionaryAcl)
+            {
+                var ace = (QualifiedAce)genericAce;
+                yield return new EnrollmentAgentRestriction(ace);
             }
         }
 
@@ -117,13 +131,19 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        public byte[] GetCASecurityFromRegistry(string target, string caName)
+        public CARegistryValues GetCARegistryValues(string target, string caName)
         {
             try
             {
                 var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
                 var key = baseKey.OpenSubKey($"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}");
-                return (byte[]) key?.GetValue("Security");
+                var values = new CARegistryValues
+                {
+                    CASecurity = (byte[]) key?.GetValue("Security"),
+                    EASecurity = (byte[]) key?.GetValue("EnrollmentAgentRights")
+                };
+
+                return values;
             }
             catch (Exception e)
             {
@@ -131,7 +151,7 @@ namespace SharpHoundCommonLib.Processors
                 return null;
             }
         }
-        
+
         // Registry setting. If flipped, for any published template the CA is serving, any requesting user can specify any SAN they want. Overrides template settings. ManageCA allows you to flip this bit. 
         // Also enumerate this on CAs. Still requires some other preconditions.
         public bool IsUserSpecifiesSanEnabled(string target, string caName)
@@ -162,5 +182,46 @@ namespace SharpHoundCommonLib.Processors
             // 0x00040000 -> EDITF_ATTRIBUTESUBJECTALTNAME2
             return (editFlags & 0x00040000) == 0x00040000;
         }
+    }
+
+    public class EnrollmentAgentRestriction
+    {
+        public string Agent { get; set; }
+        public string Template { get; set; }
+        public string[] Targets { get; set; }
+
+        public EnrollmentAgentRestriction(QualifiedAce ace)
+        {
+            var targets = new List<string>();
+            var index = 0;
+            Agent = ace.SecurityIdentifier.ToString().ToUpper();
+            var opaque = ace.GetOpaque();
+            var sidCount = BitConverter.ToUInt32(opaque, 0);
+            index += 4;
+
+            for (var i = 0; i < sidCount; i++)
+            {
+                var sid = new SecurityIdentifier(opaque, index);
+                targets.Add(sid.ToString().ToUpper());
+                index += sid.BinaryLength;
+            }
+
+            if (index < opaque.Length)
+            {
+                Template = Encoding.Unicode.GetString(opaque, index, (opaque.Length - index - 2)).Replace("\u0000", string.Empty);
+            }
+            else
+            {
+                Template = "<All>";
+            }
+
+            Targets = targets.ToArray();
+        }
+    }
+
+    public class CARegistryValues
+    {
+        public byte[] CASecurity { get; set; }
+        public byte[] EASecurity { get; set; }
     }
 }

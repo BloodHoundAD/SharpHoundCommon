@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
@@ -141,6 +142,26 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadCertTemplateProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
+            props.Add("validityperiod", ConvertPKIPeriod(entry.GetByteProperty("pkiexpirationperiod")));
+            props.Add("renewalperiod", ConvertPKIPeriod(entry.GetByteProperty("pkioverlapperiod")));
+            if (entry.GetIntProperty("mspki-template-schema-version", out var schemaVersion))
+            {
+                props.Add("schemaversion", schemaVersion);
+            }
+            props.Add("displayname", entry.GetProperty("displayname"));
+            props.Add("oid", new Oid(entry.GetProperty("mspki-cert-template-oid")));
+            if (entry.GetIntProperty("mspki-enrollment-flag", out var enrollmentFlagsRaw))
+            {
+                var enrollmentFlags = (PKIEnrollmentFlag)enrollmentFlagsRaw;
+                props.Add("requiresmanagerapproval", enrollmentFlags.HasFlag(PKIEnrollmentFlag.PEND_ALL_REQUESTS));
+            }
+
+            if (entry.GetIntProperty("mspki-certificate-name-flag", out var nameFlagsRaw))
+            {
+                var nameFlags = (PKICertificateNameFlag)nameFlagsRaw;
+                props.Add("enrolleesuppliessubject", nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
+            }
+            
             return props;
         }
 
@@ -444,6 +465,72 @@ namespace SharpHoundCommonLib.Processors
 
             return property;
         }
+        
+        private static string ConvertPKIPeriod(byte[] bytes)
+        {
+            if (bytes == null || bytes.Length == 0)
+                return "Unknown";
+            
+            // ref: https://www.sysadmins.lv/blog-en/how-to-convert-pkiexirationperiod-and-pkioverlapperiod-active-directory-attributes.aspx
+            try
+            {
+                Array.Reverse(bytes);
+                var temp = BitConverter.ToString(bytes).Replace("-", "");
+                var value = Convert.ToInt64(temp, 16) * -.0000001;
+
+                if (value % 31536000 == 0 && value / 31536000 >= 1)
+                {
+                    if (value / 31536000 == 1)
+                    {
+                        return "1 year";
+                    }
+
+                    return $"{value / 31536000} years";
+                }
+
+                if (value % 2592000 == 0 && value / 2592000 >= 1)
+                {
+                    if (value / 2592000 == 1)
+                    {
+                        return "1 month";
+                    }
+
+                    return $"{value / 2592000} months";
+                }
+                if (value % 604800 == 0 && value / 604800 >= 1)
+                {
+                    if (value / 604800 == 1)
+                    {
+                        return "1 week";
+                    }
+
+                    return $"{value / 604800} weeks";
+                }
+                if (value % 86400 == 0 && value / 86400 >= 1)
+                {
+                    if (value / 86400 == 1)
+                    {
+                        return "1 day";
+                    }
+
+                    return $"{value / 86400} days";
+                }
+                if (value % 3600 == 0 && value / 3600 >= 1)
+                {
+                    if (value / 3600 == 1)
+                    {
+                        return "1 hour";
+                    }
+
+                    return $"{value / 3600} hours";
+                }
+                return "";
+            }
+            catch (Exception)
+            {
+                return "Unknown";
+            }
+        }  
 
         [DllImport("Advapi32", SetLastError = false)]
         private static extern bool IsTextUnicode(byte[] buf, int len, ref IsTextUnicodeFlags opt);
@@ -491,5 +578,13 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToDelegate { get; set; }
         public TypedPrincipal[] AllowedToAct { get; set; }
         public TypedPrincipal[] SidHistory { get; set; }
+    }
+
+    public class CertTemplateProperties
+    {
+        public Dictionary<string, object> Props { get; set; }
+        public bool RequiresManagerApproval { get; set; }
+        public bool EnrolleeSuppliesSubject { get; set; }
+        
     }
 }

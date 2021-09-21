@@ -8,6 +8,8 @@ namespace SharpHoundCommonLib.OutputTypes
         public int SchemaVersion { get; set; }
         public string ValidityPeriod { get; set; }
         public string RenewalPeriod { get; set; }
+        public bool RequiresManagerApproval { get; set; }
+        public bool EnrolleeSuppliesSubject { get; set; }
         public Oid TemplateOid { get; set; }
         public PKIEnrollmentFlag EnrollmentFlags { get; set; }
         public PKICertificateNameFlag CertificateNameFlags { get; set; }

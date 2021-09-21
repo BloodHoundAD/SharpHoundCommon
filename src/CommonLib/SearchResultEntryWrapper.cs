@@ -17,6 +17,7 @@ namespace SharpHoundCommonLib
         byte[] GetByteProperty(string propertyName);
         string[] GetArrayProperty(string propertyName);
         byte[][] GetByteArrayProperty(string propertyName);
+        bool GetIntProperty(string propertyName, out int value);
         X509Certificate2[] GetCertificateArrayProperty(string propertyName);
         string GetObjectIdentifier();
         bool IsDeleted();
@@ -169,6 +170,11 @@ namespace SharpHoundCommonLib
         public byte[][] GetByteArrayProperty(string propertyName)
         {
             return _entry.GetPropertyAsArrayOfBytes(propertyName);
+        }
+
+        public bool GetIntProperty(string propertyName, out int value)
+        {
+            return _entry.GetPropertyAsInt(propertyName, out value);
         }
 
         public X509Certificate2[] GetCertificateArrayProperty(string propertyName)

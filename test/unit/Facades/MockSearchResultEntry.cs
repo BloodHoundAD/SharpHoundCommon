@@ -51,6 +51,12 @@ namespace CommonLibTest.Facades
             return _properties[propertyName] as byte[][];
         }
 
+        public bool GetIntProperty(string propertyName, out int value)
+        {
+            value = _properties[propertyName] is int ? (int)_properties[propertyName] : 0;
+            return true;
+        }
+
         public X509Certificate2[] GetCertificateArrayProperty(string propertyName)
         {
             return GetByteArrayProperty(propertyName).Select(x => new X509Certificate2(x)).ToArray();

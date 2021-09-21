@@ -95,6 +95,14 @@ namespace SharpHoundCommonLib
             return prop;
         }
 
+        public static bool GetPropertyAsInt(this SearchResultEntry entry, string property, out int value)
+        {
+            var prop = entry.GetProperty(property);
+            if (prop != null) return int.TryParse(prop, out value);
+            value = 0;
+            return false;
+        }
+
         /// <summary>
         ///     Get's the string representation of the "objectguid" property from the SearchResultEntry
         /// </summary>
@@ -198,10 +206,10 @@ namespace SharpHoundCommonLib
             var lookups = collection.GetValues(typeof(byte[]));
 
             if (lookups.Length == 0)
-                return new byte[0];
+                return Array.Empty<byte>();
 
             if (lookups[0] is not byte[] bytes || bytes.Length == 0)
-                return new byte[0];
+                return Array.Empty<byte>();
 
             return bytes;
         }
