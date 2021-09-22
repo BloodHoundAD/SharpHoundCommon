@@ -19,7 +19,8 @@ namespace SharpHoundCommonLib
             StatusAccessDenied = unchecked((int) 0xC0000022),
             StatusObjectTypeMismatch = unchecked((int) 0xC0000024),
             StatusNoSuchDomain = unchecked((int) 0xC00000DF),
-            StatusRpcServerUnavailable = unchecked((int) 0xC0020017)
+            StatusRpcServerUnavailable = unchecked((int) 0xC0020017),
+            StatusNoSuchAlias = unchecked((int) 0xC0000151)
         }
 
         private const string NetWkstaUserEnumQueryName = "NetWkstaUserEnum";

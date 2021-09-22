@@ -11,9 +11,9 @@ namespace SharpHoundCommonLib
 {
     public static class Helpers
     {
-        private static readonly HashSet<string> Groups = new() {"268435456", "268435457", "536870912", "536870913"};
-        private static readonly HashSet<string> Computers = new() {"805306369"};
-        private static readonly HashSet<string> Users = new() {"805306368"};
+        private static readonly HashSet<string> Groups = new() { "268435456", "268435457", "536870912", "536870913" };
+        private static readonly HashSet<string> Computers = new() { "805306369" };
+        private static readonly HashSet<string> Users = new() { "805306368" };
 
         private static readonly Regex DCReplaceRegex = new("DC=", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SPNRegex = new(@".*\/.*", RegexOptions.Compiled);
@@ -95,8 +95,12 @@ namespace SharpHoundCommonLib
         /// <returns>String representing the domain name of this object</returns>
         public static string DistinguishedNameToDomain(string distinguishedName)
         {
-            var temp = distinguishedName.Substring(distinguishedName.IndexOf("DC=",
-                StringComparison.CurrentCultureIgnoreCase));
+            var idx = distinguishedName.IndexOf("DC=",
+                StringComparison.CurrentCultureIgnoreCase);
+            if (idx < 0)
+                return null;
+
+            var temp = distinguishedName.Substring(idx);
             temp = DCReplaceRegex.Replace(temp, "").Replace(",", ".").ToUpper();
             return temp;
         }
@@ -140,7 +144,7 @@ namespace SharpHoundCommonLib
 
             try
             {
-                toReturn = (long) Math.Floor(DateTime.FromFileTimeUtc(time).Subtract(EpochDiff).TotalSeconds);
+                toReturn = (long)Math.Floor(DateTime.FromFileTimeUtc(time).Subtract(EpochDiff).TotalSeconds);
             }
             catch
             {
@@ -160,7 +164,7 @@ namespace SharpHoundCommonLib
             try
             {
                 var dt = DateTime.ParseExact(ldapTime, "yyyyMMddHHmmss.0K", CultureInfo.CurrentCulture);
-                return (long) dt.Subtract(EpochDiff).TotalSeconds;
+                return (long)dt.Subtract(EpochDiff).TotalSeconds;
             }
             catch
             {

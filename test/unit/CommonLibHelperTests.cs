@@ -125,12 +125,11 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void DistinguishedNameToDomain_InValidDistinguishedName_ArgumentOutOfRangeException()
+        public void DistinguishedNameToDomain_InValidDistinguishedName_ReturnsNull()
         {
             var testDCQuery = "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123; DX=wjatvar][]";
-            Exception ex = Assert.Throws<ArgumentOutOfRangeException>(() =>
-                SharpHoundCommonLib.Helpers.DistinguishedNameToDomain(testDCQuery));
-            Assert.Equal("StartIndex cannot be less than zero. (Parameter 'startIndex')", ex.Message);
+            var actual = SharpHoundCommonLib.Helpers.DistinguishedNameToDomain(testDCQuery);
+            Assert.Null(actual);
         }
 
         [Fact]
