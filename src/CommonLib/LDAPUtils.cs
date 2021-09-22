@@ -136,7 +136,7 @@ namespace SharpHoundCommonLib
                 return sids;
 
             var query = new LDAPFilter().AddUsers($"samaccountname={tempName}").GetFilter();
-            var results = QueryLDAP(query, SearchScope.Subtree, new[] {"objectsid"}, globalCatalog: true)
+            var results = QueryLDAP(query, SearchScope.Subtree, new[] { "objectsid" }, globalCatalog: true)
                 .Select(x => x.GetSid()).Where(x => x != null).ToArray();
             Cache.AddGCCache(tempName, results);
             return results;
@@ -284,7 +284,7 @@ namespace SharpHoundCommonLib
             var currentRange = $"{baseString};range={index}-*";
             var complete = false;
 
-            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] {currentRange},
+            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] { currentRange },
                 distinguishedName);
 
             if (searchRequest == null)
@@ -294,7 +294,7 @@ namespace SharpHoundCommonLib
             {
                 SearchResponse response;
 
-                response = (SearchResponse) conn.SendRequest(searchRequest);
+                response = (SearchResponse)conn.SendRequest(searchRequest);
 
                 //If we ever get more than one response from here, something is horribly wrong
                 if (response?.Entries.Count == 0)
@@ -649,9 +649,9 @@ namespace SharpHoundCommonLib
                 try
                 {
                     Logging.Log(LogLevel.Trace, "Sending LDAP request");
-                    response = (SearchResponse) conn.SendRequest(request);
+                    response = (SearchResponse)conn.SendRequest(request);
                     if (response != null)
-                        pageResponse = (PageResultResponseControl) response.Controls
+                        pageResponse = (PageResultResponseControl)response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
                 }
                 catch (LdapException le)
@@ -754,9 +754,9 @@ namespace SharpHoundCommonLib
                 try
                 {
                     Logging.Log(LogLevel.Trace, "Sending LDAP request");
-                    response = (SearchResponse) conn.SendRequest(request);
+                    response = (SearchResponse)conn.SendRequest(request);
                     if (response != null)
-                        pageResponse = (PageResultResponseControl) response.Controls
+                        pageResponse = (PageResultResponseControl)response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
                 }
                 catch (LdapException le)
@@ -768,7 +768,6 @@ namespace SharpHoundCommonLib
                 catch (Exception e)
                 {
                     Logging.Debug($"Exception in LDAP loop: {e}");
-                    Logging.Debug(e.InnerException.Message);
                     Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
                     yield break;
                 }
@@ -806,14 +805,14 @@ namespace SharpHoundCommonLib
 
         public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
         {
-            return new(new ActiveDirectorySecurity());
+            return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
         }
 
         private async Task<Group> GetBaseEnterpriseDC()
         {
             var forest = GetForest()?.Name;
             if (forest == null) Logging.Log(LogLevel.Warning, "Error getting forest, ENTDC sid is likely incorrect");
-            var g = new Group {ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper()};
+            var g = new Group { ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper() };
             g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest ?? "UNKNOWN"}".ToUpper());
             g.Properties.Add("domainsid", await GetSidFromDomainName(forest));
             g.Properties.Add("domain", forest);
@@ -839,7 +838,7 @@ namespace SharpHoundCommonLib
             //Search using objectsid first
             var result =
                 QueryLDAP($"(&(objectclass=domain)(objectsid={hexSid}))", SearchScope.Subtree,
-                    new[] {"distinguishedname"}, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+                    new[] { "distinguishedname" }, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result != null)
             {
@@ -850,7 +849,7 @@ namespace SharpHoundCommonLib
             //Try trusteddomain objects with the securityidentifier attribute
             result =
                 QueryLDAP($"(&(objectclass=trusteddomain)(securityidentifier={sid}))", SearchScope.Subtree,
-                    new[] {"cn"}, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+                    new[] { "cn" }, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result != null)
             {
@@ -1068,7 +1067,7 @@ namespace SharpHoundCommonLib
 
             var port = _ldapConfig.GetPort();
             var ident = new LdapDirectoryIdentifier(targetServer, port, false, false);
-            var connection = new LdapConnection(ident) {Timeout = new TimeSpan(0, 0, 5, 0)};
+            var connection = new LdapConnection(ident) { Timeout = new TimeSpan(0, 0, 5, 0) };
             if (_ldapConfig.Username != null)
             {
                 var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password, domain.Name);

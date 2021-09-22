@@ -49,7 +49,7 @@ namespace SharpHoundCommonLib
             var uac = _entry.GetProperty("useraccountcontrol");
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UacFlags) flag;
+                var flags = (UacFlags)flag;
                 if ((flags & UacFlags.ServerTrustAccount) != 0) _utils.AddDomainController(itemID);
             }
 
@@ -88,7 +88,14 @@ namespace SharpHoundCommonLib
             }
 
             if (itemID.StartsWith("S-1-"))
-                res.DomainSid = new SecurityIdentifier(itemID).AccountDomainSid.Value;
+                try
+                {
+                    res.DomainSid = new SecurityIdentifier(itemID).AccountDomainSid.Value;
+                }
+                catch
+                {
+                    res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+                }
             else
                 res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
 
@@ -115,18 +122,13 @@ namespace SharpHoundCommonLib
                         res.ObjectType = Label.User;
 
                     if (dns != null)
-                    {
                         res.DisplayName = dns;
-                    }
+                    else if (shortName == null && cn == null)
+                        res.DisplayName = $"UNKNOWN.{itemDomain}";
+                    else if (shortName != null)
+                        res.DisplayName = $"{shortName}.{itemDomain}";
                     else
-                    {
-                        if (shortName == null && cn == null)
-                            res.DisplayName = $"UNKNOWN.{itemDomain}";
-                        else if (shortName != null)
-                            res.DisplayName = $"{shortName}.{itemDomain}";
-                        else
-                            res.DisplayName = $"{cn}.{itemDomain}";
-                    }
+                        res.DisplayName = $"{cn}.{itemDomain}";
 
                     break;
                 case Label.GPO:

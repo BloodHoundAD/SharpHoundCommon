@@ -156,12 +156,12 @@ namespace SharpHoundCommonLib
         public static string[] GetPropertyAsArray(this SearchResultEntry entry, string property)
         {
             if (!entry.Attributes.Contains(property))
-                return new string[0];
+                return Array.Empty<string>();
 
             var values = entry.Attributes[property];
             var strings = values.GetValues(typeof(string));
 
-            return strings is not string[] result ? new string[0] : result;
+            return strings is not string[] result ? Array.Empty<string>() : result;
         }
 
         /// <summary>
@@ -174,12 +174,12 @@ namespace SharpHoundCommonLib
         public static byte[][] GetPropertyAsArrayOfBytes(this SearchResultEntry entry, string property)
         {
             if (!entry.Attributes.Contains(property))
-                return new byte[0][];
+                return Array.Empty<byte[]>();
 
             var values = entry.Attributes[property];
             var bytes = values.GetValues(typeof(byte[]));
 
-            return bytes is not byte[][] result ? new byte[0][] : result;
+            return bytes is not byte[][] result ? Array.Empty<byte[]>() : result;
         }
 
         /// <summary>
@@ -197,10 +197,10 @@ namespace SharpHoundCommonLib
             var lookups = collection.GetValues(typeof(byte[]));
 
             if (lookups.Length == 0)
-                return new byte[0];
+                return Array.Empty<byte>();
 
             if (lookups[0] is not byte[] bytes || bytes.Length == 0)
-                return new byte[0];
+                return Array.Empty<byte>();
 
             return bytes;
         }
