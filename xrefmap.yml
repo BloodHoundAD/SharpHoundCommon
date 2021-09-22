@@ -2751,6 +2751,12 @@ references:
   commentId: F:SharpHoundCommonLib.NativeMethods.NtStatus.StatusMoreEntries
   fullName: SharpHoundCommonLib.NativeMethods.NtStatus.StatusMoreEntries
   nameWithType: NativeMethods.NtStatus.StatusMoreEntries
+- uid: SharpHoundCommonLib.NativeMethods.NtStatus.StatusNoSuchAlias
+  name: StatusNoSuchAlias
+  href: api/SharpHoundCommonLib.NativeMethods.NtStatus.html#SharpHoundCommonLib_NativeMethods_NtStatus_StatusNoSuchAlias
+  commentId: F:SharpHoundCommonLib.NativeMethods.NtStatus.StatusNoSuchAlias
+  fullName: SharpHoundCommonLib.NativeMethods.NtStatus.StatusNoSuchAlias
+  nameWithType: NativeMethods.NtStatus.StatusNoSuchAlias
 - uid: SharpHoundCommonLib.NativeMethods.NtStatus.StatusNoSuchDomain
   name: StatusNoSuchDomain
   href: api/SharpHoundCommonLib.NativeMethods.NtStatus.html#SharpHoundCommonLib_NativeMethods_NtStatus_StatusNoSuchDomain

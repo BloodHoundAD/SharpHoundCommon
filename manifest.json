@@ -300,7 +300,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.DOMAIN_CONTROLLER_INFO.html",
-          "hash": "E8Ear/b8nvi0hGET5Ef+uA=="
+          "hash": "D4Rqb5ejUOzMAmwYairQeQ=="
         }
       },
       "is_incremental": false,
@@ -324,7 +324,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.GuidClass.html",
-          "hash": "v3zX8wTEWuOIVrx5TVOQnA=="
+          "hash": "6uOWEapITDHVG85o2xFc3w=="
         }
       },
       "is_incremental": false,
@@ -348,7 +348,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.NtStatus.html",
-          "hash": "s/OlmedIzO1mpeLiTuHQHg=="
+          "hash": "H0UVBOZOr1rnqT1qWtWIkA=="
         }
       },
       "is_incremental": false,
@@ -360,7 +360,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.OBJECT_ATTRIBUTES.html",
-          "hash": "2YQyD9cmJN6y1rM4/c13aA=="
+          "hash": "xu4ad5yAGZrXAziAjtaLWw=="
         }
       },
       "is_incremental": false,
@@ -372,7 +372,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.SESSION_INFO_10.html",
-          "hash": "KwJA3D5k2NcvqL8QLN/wPQ=="
+          "hash": "12sU9+kt5PLMJospoNjqMQ=="
         }
       },
       "is_incremental": false,
@@ -396,7 +396,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.UNICODE_STRING.html",
-          "hash": "B+yzLgBM7isBlV34rTTLDQ=="
+          "hash": "oCNeaXMDzy2XrPD8+q/qRA=="
         }
       },
       "is_incremental": false,
@@ -408,7 +408,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.WKSTA_USER_INFO_1.html",
-          "hash": "OEAtFXfWyN8ECjpN8n0EQQ=="
+          "hash": "gp5gjjrp9SFMB3TI7fUHog=="
         }
       },
       "is_incremental": false,
@@ -420,7 +420,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.WorkstationInfo100.html",
-          "hash": "Jg/v/VR6V9bMXcJnE8btCg=="
+          "hash": "x7z2wYM/NJq8D3f0qSPyOQ=="
         }
       },
       "is_incremental": false,
@@ -432,7 +432,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.html",
-          "hash": "tKT9YwsnS3wAnJcu44elTw=="
+          "hash": "OKs2gOM1xpEuTFGS9WAitw=="
         }
       },
       "is_incremental": false,
