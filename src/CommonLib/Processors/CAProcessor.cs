@@ -27,7 +27,7 @@ namespace SharpHoundCommonLib.Processors
 
         public IEnumerable<TypedPrincipal> ResolveTemplates(string[] templateNames, string objectDomain)
         {
-            if (templateNames == null | templateNames.Length == 0)
+            if (templateNames == null || templateNames.Length == 0)
                 yield break;
 
             foreach (var template in templateNames)

@@ -136,6 +136,12 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
+            if (entry.GetIntProperty("flags", out var flags))
+            {
+                Logging.Info($"Parsed flags to {flags}");
+                props.Add("flags", (PKICertificateAuthorityFlags) flags);    
+            }
+            
             return props;
         }
         
@@ -160,6 +166,12 @@ namespace SharpHoundCommonLib.Processors
             {
                 var nameFlags = (PKICertificateNameFlag)nameFlagsRaw;
                 props.Add("enrolleesuppliessubject", nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
+            }
+            
+            props.Add("ekus", entry.GetArrayProperty("pkiextendedkeyusage"));
+            if (entry.GetIntProperty("mspki-ra-signature", out var authorizedSignatures))
+            {
+                props.Add("authorizedsignatures", authorizedSignatures);
             }
             
             return props;
