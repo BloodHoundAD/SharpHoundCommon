@@ -36,7 +36,7 @@ namespace SharpHoundCommonLib.Processors
 
         private static Dictionary<string, object> GetCommonProps(ISearchResultEntry entry)
         {
-            return new()
+            return new Dictionary<string, object>
             {
                 {
                     "description", entry.GetProperty("description")
@@ -187,7 +187,7 @@ namespace SharpHoundCommonLib.Processors
                         continue;
 
                     var resolvedHost = await _utils.ResolveHostToSid(d, domain);
-                    if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
+                    if (resolvedHost != null && (resolvedHost.Contains(".") || resolvedHost.Contains("S-1")))
                         comps.Add(new TypedPrincipal
                         {
                             ObjectIdentifier = resolvedHost,
@@ -294,7 +294,7 @@ namespace SharpHoundCommonLib.Processors
                     var hname = d.Contains("/") ? d.Split('/')[1] : d;
                     hname = hname.Split(':')[0];
                     var resolvedHost = await _utils.ResolveHostToSid(hname, domain);
-                    if (resolvedHost.Contains(".") || resolvedHost.Contains("S-1"))
+                    if (resolvedHost != null && (resolvedHost.Contains(".") || resolvedHost.Contains("S-1")))
                         comps.Add(new TypedPrincipal
                         {
                             ObjectIdentifier = resolvedHost,
