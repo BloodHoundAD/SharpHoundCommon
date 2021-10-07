@@ -23,13 +23,15 @@ namespace SharpHoundCommonLib.Processors
             //Create a dictionary with the base GUIDs of each object type
             BaseGuids = new Dictionary<Label, string>
             {
-                {Label.User, "bf967aba-0de6-11d0-a285-00aa003049e2"},
-                {Label.Computer, "bf967a86-0de6-11d0-a285-00aa003049e2"},
-                {Label.Group, "bf967a9c-0de6-11d0-a285-00aa003049e2"},
-                {Label.Domain, "19195a5a-6da0-11d0-afd3-00c04fd930c9"},
-                {Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1"},
-                {Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2"},
-                {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"}
+                { Label.User, "bf967aba-0de6-11d0-a285-00aa003049e2" },
+                { Label.Computer, "bf967a86-0de6-11d0-a285-00aa003049e2" },
+                { Label.Group, "bf967a9c-0de6-11d0-a285-00aa003049e2" },
+                { Label.Domain, "19195a5a-6da0-11d0-afd3-00c04fd930c9" },
+                { Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1" },
+                { Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2" },
+                { Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2" },
+                { Label.CertAuthority, "ee4aa692-3bba-11d2-90cc-00c04fd91ab1" },
+                { Label.CertTemplate, "e5209ca2-3bba-11d2-90cc-00c04fd91ab1" }
             };
         }
 
@@ -53,7 +55,7 @@ namespace SharpHoundCommonLib.Processors
             if (string.IsNullOrEmpty(schemaPath))
                 return;
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
-                new[] {"schemaidguid", "name"}, adsPath: schemaPath))
+                new[] { "schemaidguid", "name" }, adsPath: schemaPath))
             {
                 var name = entry.GetProperty("name")?.ToLower();
                 var guid = new Guid(entry.GetByteProperty("schemaidguid")).ToString();
@@ -274,7 +276,8 @@ namespace SharpHoundCommonLib.Processors
                                     RightName = EdgeNames.ReadLAPSPassword
                                 };
                         }
-                    } else if (objectType == Label.CertTemplate)
+                    }
+                    else if (objectType == Label.CertTemplate)
                     {
                         if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE
@@ -310,6 +313,7 @@ namespace SharpHoundCommonLib.Processors
                             };
 
                     if (objectType == Label.User && aceType == ACEGuids.ServicePrincipalName)
+                    {
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -317,7 +321,9 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.WriteSPN
                         };
+                    }
                     else if (objectType == Label.Computer && aceType == ACEGuids.AllowedToAct)
+                    {
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -325,7 +331,9 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddAllowedToAct
                         };
+                    }
                     else if (objectType == Label.Group && aceType == ACEGuids.Member)
+                    {
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -333,7 +341,9 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddMember
                         };
+                    }
                     else if (objectType is Label.User or Label.Computer && aceType == ACEGuids.KeyPrincipal)
+                    {
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
@@ -341,10 +351,10 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddKeyCredentialLink
                         };
+                    }
                     else if (objectType is Label.CertAuthority)
                     {
                         if (aceType == ACEGuids.PKIEnrollmentFlag)
-                        {
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
@@ -352,7 +362,7 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.WritePKIEnrollmentFlag
                             };
-                        }else if (aceType == ACEGuids.PKINameFlag)
+                        else if (aceType == ACEGuids.PKINameFlag)
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,

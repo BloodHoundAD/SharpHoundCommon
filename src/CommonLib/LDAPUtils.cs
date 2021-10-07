@@ -556,10 +556,11 @@ namespace SharpHoundCommonLib
         {
             var d = NormalizeDomainName(domain);
             var configurationPath = GetConfigurationPath(d);
-            
+
             var result = QueryLDAP($"(cn={templateName})", SearchScope.Subtree,
-                CommonProperties.ObjectID,
-                d, adsPath:$"CN=Certificate Templates,CN=Public Key Services,CN=Services,{configurationPath}").DefaultIfEmpty(null).FirstOrDefault();
+                    CommonProperties.ObjectID,
+                    d, adsPath: $"CN=Certificate Templates,CN=Public Key Services,CN=Services,{configurationPath}")
+                .DefaultIfEmpty(null).FirstOrDefault();
 
             var id = result?.GetObjectIdentifier();
             if (id == null) return null;
@@ -832,7 +833,7 @@ namespace SharpHoundCommonLib
             var rootDse = domainName == null
                 ? new DirectoryEntry("LDAP://RootDSE")
                 : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
-            
+
             return $"{rootDse.Properties["configurationNamingContext"]?[0]}";
         }
 
@@ -841,8 +842,19 @@ namespace SharpHoundCommonLib
             var rootDse = domainName == null
                 ? new DirectoryEntry("LDAP://RootDSE")
                 : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
-            
+
             return $"{rootDse.Properties["schemaNamingContext"]?[0]}";
+        }
+
+        public bool IsForestRoot(string domainName)
+        {
+            var domain = GetDomain(domainName);
+            var forest = GetForest(domainName);
+
+            if (domain == null || forest == null)
+                return false;
+
+            return domain.Name.Equals(forest.Name, StringComparison.CurrentCultureIgnoreCase);
         }
 
         private async Task<Group> GetBaseEnterpriseDC()

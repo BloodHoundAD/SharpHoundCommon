@@ -2,6 +2,7 @@
 {
     public static class EdgeNames
     {
+        //ACLs
         public const string ReadGMSAPassword = "ReadGMSAPassword";
         public const string GenericWrite = "GenericWrite";
         public const string Owns = "Owns";
@@ -17,7 +18,10 @@
         public const string ReadLAPSPassword = "ReadLAPSPassword";
         public const string AddMember = "AddMember";
         public const string WriteSPN = "WriteSPN";
+
         public const string AddKeyCredentialLink = "AddKeyCredentialLink";
+
+        //CertAbuse edges
         public const string WritePKIEnrollmentFlag = "WritePKIEnrollmentFlag";
         public const string WritePKINameFlag = "WritePKINameFlag";
         public const string ManageCA = "ManageCA";

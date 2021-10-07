@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices.Protocols;
+using System.Linq;
 using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -7,22 +9,75 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
-    public class CAProcessor
+    public class CertAbuseProcessor
     {
         public const string EnterpriseCALocation = "CN=Enrollment Services,CN=Public Key Services,CN=Services,";
         public const string RootCALocation = "CN=Certification Authorities,CN=Public Key Services,CN=Services,";
         public const string CertTemplateLocation = "CN=Certificate Templates,CN=Public Key Services,CN=Services,";
         public const string NTAuthCertificateLocation = "CN=NTAuthCertificates,CN=Public Key Services,CN=Services,";
-        
+
         private readonly ILDAPUtils _utils;
 
-        public CAProcessor(ILDAPUtils utils)
+        public CertAbuseProcessor(ILDAPUtils utils)
         {
             _utils = utils;
+        }
+
+        public IEnumerable<RootCA> GetRootCAs(string domain)
+        {
+            if (!_utils.IsForestRoot(domain))
+                yield break;
+
+            var configurationPath = _utils.GetConfigurationPath(domain);
+            if (configurationPath == null)
+                yield break;
+
+            var query = new LDAPFilter();
+            query.AddCertificateAuthorities();
+            foreach (var rootCAEntry in _utils
+                .QueryLDAP(query.GetFilter(), SearchScope.Base, new[] { "objectguid", "cacertificate" },
+                    adsPath: $"{NTAuthCertificateLocation}{configurationPath}"))
+            {
+                var guid = rootCAEntry.GetObjectIdentifier();
+                var rawCertificate = rootCAEntry.GetByteProperty("cacertificate");
+                if (guid != null)
+                {
+                    var rootCa = new RootCA
+                    {
+                        ObjectIdentifier = guid
+                    };
+
+                    if (rawCertificate != null)
+                        rootCa.Certificate = new Certificate(rawCertificate);
+                    yield return rootCa;
+                }
+            }
+        }
+
+        public Certificate[] GetTrustedCerts(string domain)
+        {
+            if (!_utils.IsForestRoot(domain))
+                return Array.Empty<Certificate>();
+
+            var configurationPath = _utils.GetConfigurationPath(domain);
+            if (configurationPath == null)
+                return Array.Empty<Certificate>();
+
+            var query = new LDAPFilter();
+            query.AddCertificateAuthorities();
+            var ntAuthCert = _utils
+                .QueryLDAP(query.GetFilter(), SearchScope.Base, new[] { "cacertificate" },
+                    adsPath: $"{NTAuthCertificateLocation}{configurationPath}").DefaultIfEmpty(null).FirstOrDefault();
+
+            if (ntAuthCert == null)
+                return Array.Empty<Certificate>();
+
+            return ntAuthCert.GetByteArrayProperty("cacertificate").Select(x => new Certificate(x)).ToArray();
         }
 
         public IEnumerable<TypedPrincipal> ResolveTemplates(string[] templateNames, string objectDomain)
@@ -65,7 +120,6 @@ namespace SharpHoundCommonLib.Processors
             {
                 var resolvedOwner = _utils.ResolveIDAndType(ownerSid, objectDomain);
                 if (resolvedOwner != null)
-                {
                     yield return new ACE
                     {
                         PrincipalType = resolvedOwner.ObjectType,
@@ -73,7 +127,6 @@ namespace SharpHoundCommonLib.Processors
                         RightName = EdgeNames.Owns,
                         IsInherited = false
                     };
-                }
             }
             else
             {
@@ -94,11 +147,10 @@ namespace SharpHoundCommonLib.Processors
 
                 var principalDomain = _utils.GetDomainNameFromSid(principalSid) ?? objectDomain;
                 var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, principalDomain);
-                
-                var rights = (CertificationAuthorityRights) rule.ActiveDirectoryRights();
+
+                var rights = (CertificationAuthorityRights)rule.ActiveDirectoryRights();
 
                 if ((rights & CertificationAuthorityRights.ManageCA) != 0)
-                {
                     yield return new ACE
                     {
                         IsInherited = false,
@@ -106,9 +158,7 @@ namespace SharpHoundCommonLib.Processors
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         RightName = EdgeNames.ManageCA
                     };
-                }
                 if ((rights & CertificationAuthorityRights.ManageCertificates) != 0)
-                {
                     yield return new ACE
                     {
                         IsInherited = false,
@@ -116,10 +166,8 @@ namespace SharpHoundCommonLib.Processors
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         RightName = EdgeNames.ManageCertificates
                     };
-                }
 
                 if ((rights & CertificationAuthorityRights.Enroll) != 0)
-                {
                     yield return new ACE
                     {
                         IsInherited = false,
@@ -127,7 +175,6 @@ namespace SharpHoundCommonLib.Processors
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         RightName = EdgeNames.Enroll
                     };
-                }
             }
         }
 
@@ -139,8 +186,8 @@ namespace SharpHoundCommonLib.Processors
                 var key = baseKey.OpenSubKey($"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}");
                 var values = new CARegistryValues
                 {
-                    CASecurity = (byte[]) key?.GetValue("Security"),
-                    EASecurity = (byte[]) key?.GetValue("EnrollmentAgentRights")
+                    CASecurity = (byte[])key?.GetValue("Security"),
+                    EASecurity = (byte[])key?.GetValue("EnrollmentAgentRights")
                 };
 
                 return values;
@@ -171,7 +218,8 @@ namespace SharpHoundCommonLib.Processors
             int editFlags;
             try
             {
-                var key = baseKey.OpenSubKey($"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}\\PolicyModules\\CertificateAuthority_MicrosoftDefault.Policy");
+                var key = baseKey.OpenSubKey(
+                    $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}\\PolicyModules\\CertificateAuthority_MicrosoftDefault.Policy");
                 editFlags = (int)key.GetValue("EditFlags");
             }
             catch (SecurityException e)
@@ -186,10 +234,6 @@ namespace SharpHoundCommonLib.Processors
 
     public class EnrollmentAgentRestriction
     {
-        public string Agent { get; set; }
-        public string Template { get; set; }
-        public string[] Targets { get; set; }
-
         public EnrollmentAgentRestriction(QualifiedAce ace)
         {
             var targets = new List<string>();
@@ -207,16 +251,17 @@ namespace SharpHoundCommonLib.Processors
             }
 
             if (index < opaque.Length)
-            {
-                Template = Encoding.Unicode.GetString(opaque, index, (opaque.Length - index - 2)).Replace("\u0000", string.Empty);
-            }
+                Template = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2)
+                    .Replace("\u0000", string.Empty);
             else
-            {
                 Template = "<All>";
-            }
 
             Targets = targets.ToArray();
         }
+
+        public string Agent { get; set; }
+        public string Template { get; set; }
+        public string[] Targets { get; set; }
     }
 
     public class CARegistryValues

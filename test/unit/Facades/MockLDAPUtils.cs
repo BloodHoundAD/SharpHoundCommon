@@ -35,10 +35,10 @@ namespace CommonLibTest.Facades
             name = name.ToLower();
             return name switch
             {
-                "dfm" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-1105"},
+                "dfm" => new[] { "S-1-5-21-3130019616-2776909439-2417379446-1105" },
                 "administrator" => new[]
-                    {"S-1-5-21-3130019616-2776909439-2417379446-500", "S-1-5-21-3084884204-958224920-2707782874-500"},
-                "admin" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-2116"},
+                    { "S-1-5-21-3130019616-2776909439-2417379446-500", "S-1-5-21-3084884204-958224920-2707782874-500" },
+                "admin" => new[] { "S-1-5-21-3130019616-2776909439-2417379446-2116" },
                 _ => Array.Empty<string>()
             };
         }
@@ -1052,9 +1052,14 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
+        public bool IsForestRoot(string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
         private Group GetBaseEnterpriseDC()
         {
-            var g = new Group {ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper()};
+            var g = new Group { ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper() };
             g.Properties.Add("name", "ENTERPRISE DOMAIN CONTROLLERS@TESTLAB.LOCAL".ToUpper());
             return g;
         }
