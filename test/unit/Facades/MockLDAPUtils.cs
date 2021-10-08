@@ -675,7 +675,7 @@ namespace CommonLibTest.Facades
 
         public string GetDomainNameFromSid(string sid)
         {
-            throw new NotImplementedException();
+            return "TESTLAB.LOCAL";
         }
 
         public Task<string> GetSidFromDomainName(string domainName)
@@ -1036,13 +1036,13 @@ namespace CommonLibTest.Facades
             return _forest;
         }
 
-        public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
+        public virtual ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
         {
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>();
             return mockSecurityDescriptor.Object;
         }
 
-        public string GetConfigurationPath(string domainName)
+        public virtual string GetConfigurationPath(string domainName)
         {
             throw new NotImplementedException();
         }
@@ -1052,7 +1052,7 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        public bool IsForestRoot(string domainName)
+        public virtual bool IsForestRoot(string domainName)
         {
             throw new NotImplementedException();
         }

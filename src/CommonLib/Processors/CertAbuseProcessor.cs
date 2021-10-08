@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.Protocols;
 using System.Linq;
-using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
@@ -59,7 +59,7 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        public Certificate[] GetTrustedCerts(string domain)
+        public IEnumerable<Certificate> GetTrustedCerts(string domain)
         {
             if (!_utils.IsForestRoot(domain))
                 return Array.Empty<Certificate>();
@@ -77,7 +77,7 @@ namespace SharpHoundCommonLib.Processors
             if (ntAuthCert == null)
                 return Array.Empty<Certificate>();
 
-            return ntAuthCert.GetByteArrayProperty("cacertificate").Select(x => new Certificate(x)).ToArray();
+            return ntAuthCert.GetByteArrayProperty("cacertificate").Select(x => new Certificate(x));
         }
 
         public IEnumerable<TypedPrincipal> ResolveTemplates(string[] templateNames, string objectDomain)
@@ -178,6 +178,28 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
+        // IRegistryKey version for testing if we decide to write tests for this
+        // public CARegistryValues GetCARegistryValues(IRegistryKey registryKey, string caName)
+        // {
+        //     try
+        //     {
+        //         registryKey.OpenSubKey($"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}");
+        //         var values = new CARegistryValues
+        //         {
+        //             CASecurity = (byte[])registryKey.GetValue("Security"),
+        //             EASecurity = (byte[])registryKey.GetValue("EnrollmentAgentRights")
+        //         };
+        //
+        //         return values;
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Logging.Log(LogLevel.Error, "Error getting data from registry: {error}", e);
+        //         return null;
+        //     }
+        // }
+
+        [ExcludeFromCodeCoverage]
         public CARegistryValues GetCARegistryValues(string target, string caName)
         {
             try
@@ -201,34 +223,25 @@ namespace SharpHoundCommonLib.Processors
 
         // Registry setting. If flipped, for any published template the CA is serving, any requesting user can specify any SAN they want. Overrides template settings. ManageCA allows you to flip this bit. 
         // Also enumerate this on CAs. Still requires some other preconditions.
+        [ExcludeFromCodeCoverage]
         public bool IsUserSpecifiesSanEnabled(string target, string caName)
         {
             // ref- https://blog.keyfactor.com/hidden-dangers-certificate-subject-alternative-names-sans
             //  NOTE: this appears to usually work, even if admin rights aren't available on the remote CA server
-            RegistryKey baseKey;
-            try
-            {
-                baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"Could not connect to the HKLM hive - {e.Message}");
-            }
-
             int editFlags;
             try
             {
+                var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
                 var key = baseKey.OpenSubKey(
                     $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}\\PolicyModules\\CertificateAuthority_MicrosoftDefault.Policy");
                 editFlags = (int)key.GetValue("EditFlags");
+                // 0x00040000 -> EDITF_ATTRIBUTESUBJECTALTNAME2
+                return (editFlags & 0x00040000) == 0x00040000;
             }
-            catch (SecurityException e)
+            catch (Exception e)
             {
-                throw new Exception($"Could not access the EditFlags registry value: {e.Message}");
+                throw new Exception("Error getting data from registry: {error}", e);
             }
-
-            // 0x00040000 -> EDITF_ATTRIBUTESUBJECTALTNAME2
-            return (editFlags & 0x00040000) == 0x00040000;
         }
     }
 
