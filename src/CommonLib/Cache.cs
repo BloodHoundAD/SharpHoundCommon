@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.IO;
-using System.Text;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+﻿using System.Collections.Concurrent;
 using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
 {
     public class Cache
     {
-        [JsonProperty] private ConcurrentDictionary<string, string[]> _globalCatalogCache;
+        private ConcurrentDictionary<string, string[]> _globalCatalogCache;
 
-        [JsonProperty] private ConcurrentDictionary<string, Label> _idToTypeCache;
+        private ConcurrentDictionary<string, Label> _idToTypeCache;
 
-        [JsonProperty] private ConcurrentDictionary<string, string> _machineSidCache;
+        private ConcurrentDictionary<string, string> _machineSidCache;
 
-        [JsonProperty] private ConcurrentDictionary<string, string> _sidToDomainCache;
+        private ConcurrentDictionary<string, string> _sidToDomainCache;
 
-        [JsonProperty] private ConcurrentDictionary<string, string> _valueToIDCache;
+        private ConcurrentDictionary<string, string> _valueToIDCache;
 
         private Cache()
         {
@@ -130,6 +125,11 @@ namespace SharpHoundCommonLib
             CacheInstance = new Cache();
         }
 
+        public static void SetCacheInstance(Cache cache)
+        {
+            CacheInstance = cache;
+        }
+
         private static string GetCacheStats()
         {
             try
@@ -143,36 +143,41 @@ namespace SharpHoundCommonLib
             }
         }
 
-        public static void LoadExistingCache(string filePath)
+        public static Cache GetCacheInstance()
         {
-            if (!File.Exists(filePath))
-            {
-                CacheInstance = new Cache();
-                Logging.Debug("Cache file not found, empty cache created.");
-                return;
-            }
-
-            try
-            {
-                Logging.Debug($"Loading cache from {filePath}");
-                var bytes = File.ReadAllBytes(filePath);
-                var json = new UTF8Encoding(true).GetString(bytes);
-                CacheInstance = JsonConvert.DeserializeObject<Cache>(json, new JsonSerializerSettings
-                {
-                    DefaultValueHandling = DefaultValueHandling.Populate
-                });
-            }
-            catch (Exception e)
-            {
-                Logging.Debug($"Exception loading cache: {e}. Creating empty cache.");
-                CacheInstance = new Cache();
-            }
-
-            CreateMissingDictionaries();
-
-            Logging.Debug(
-                $"Cache file loaded!\n {GetCacheStats()}");
+            return CacheInstance;
         }
+
+        // public static void LoadExistingCache(string filePath)
+        // {
+        //     if (!File.Exists(filePath))
+        //     {
+        //         CacheInstance = new Cache();
+        //         Logging.Debug("Cache file not found, empty cache created.");
+        //         return;
+        //     }
+        //
+        //     try
+        //     {
+        //         Logging.Debug($"Loading cache from {filePath}");
+        //         var bytes = File.ReadAllBytes(filePath);
+        //         var json = new UTF8Encoding(true).GetString(bytes);
+        //         CacheInstance = JsonConvert.DeserializeObject<Cache>(json, new JsonSerializerSettings
+        //         {
+        //             DefaultValueHandling = DefaultValueHandling.Populate
+        //         });
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Logging.Debug($"Exception loading cache: {e}. Creating empty cache.");
+        //         CacheInstance = new Cache();
+        //     }
+        //
+        //     CreateMissingDictionaries();
+        //
+        //     Logging.Debug(
+        //         $"Cache file loaded!\n {GetCacheStats()}");
+        // }
 
         private static void CreateMissingDictionaries()
         {
@@ -184,16 +189,16 @@ namespace SharpHoundCommonLib
             CacheInstance._valueToIDCache ??= new ConcurrentDictionary<string, string>();
         }
 
-        public static void SaveCache(string filePath)
-        {
-            var serialized = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(CacheInstance,
-                new JsonSerializerSettings
-                {
-                    DefaultValueHandling = DefaultValueHandling.Include
-                }));
-            using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            stream.Write(serialized, 0, serialized.Length);
-            Logging.Log(LogLevel.Information, $"Wrote cache file to {filePath}\n{GetCacheStats()}");
-        }
+        // public static void SaveCache(string filePath)
+        // {
+        //     var serialized = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(CacheInstance,
+        //         new JsonSerializerSettings
+        //         {
+        //             DefaultValueHandling = DefaultValueHandling.Include
+        //         }));
+        //     using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+        //     stream.Write(serialized, 0, serialized.Length);
+        //     Logging.Log(LogLevel.Information, $"Wrote cache file to {filePath}\n{GetCacheStats()}");
+        // }
     }
 }
