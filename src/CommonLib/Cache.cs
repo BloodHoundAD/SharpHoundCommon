@@ -1,19 +1,20 @@
 ﻿using System.Collections.Concurrent;
+using System.Runtime.Serialization;
 using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
 {
     public class Cache
     {
-        private ConcurrentDictionary<string, string[]> _globalCatalogCache;
+        [DataMember]private ConcurrentDictionary<string, string[]> _globalCatalogCache;
 
-        private ConcurrentDictionary<string, Label> _idToTypeCache;
+        [DataMember]private ConcurrentDictionary<string, Label> _idToTypeCache;
 
-        private ConcurrentDictionary<string, string> _machineSidCache;
+        [DataMember]private ConcurrentDictionary<string, string> _machineSidCache;
 
-        private ConcurrentDictionary<string, string> _sidToDomainCache;
+        [DataMember]private ConcurrentDictionary<string, string> _sidToDomainCache;
 
-        private ConcurrentDictionary<string, string> _valueToIDCache;
+        [DataMember]private ConcurrentDictionary<string, string> _valueToIDCache;
 
         private Cache()
         {
@@ -24,6 +25,7 @@ namespace SharpHoundCommonLib
             _sidToDomainCache = new ConcurrentDictionary<string, string>();
         }
 
+        [IgnoreDataMember]
         private static Cache CacheInstance { get; set; }
 
         /// <summary>
@@ -120,9 +122,9 @@ namespace SharpHoundCommonLib
             return $"{key}|{domain}";
         }
 
-        public static void CreateNewCache()
+        public static Cache CreateNewCache()
         {
-            CacheInstance = new Cache();
+            return new Cache();
         }
 
         public static void SetCacheInstance(Cache cache)
@@ -130,12 +132,12 @@ namespace SharpHoundCommonLib
             CacheInstance = cache;
         }
 
-        private static string GetCacheStats()
+        public string GetCacheStats()
         {
             try
             {
                 return
-                    $"{CacheInstance._idToTypeCache.Count} ID to type mappings.\n {CacheInstance._valueToIDCache.Count} name to SID mappings.\n {CacheInstance._machineSidCache.Count} machine sid mappings.\n {CacheInstance._sidToDomainCache.Count} sid to domain mappings.\n {CacheInstance._globalCatalogCache.Count} global catalog mappings.";
+                    $"{_idToTypeCache.Count} ID to type mappings.\n {_valueToIDCache.Count} name to SID mappings.\n {_machineSidCache.Count} machine sid mappings.\n {_sidToDomainCache.Count} sid to domain mappings.\n {_globalCatalogCache.Count} global catalog mappings.";
             }
             catch
             {

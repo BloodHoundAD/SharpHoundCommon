@@ -19,7 +19,10 @@ namespace SharpHoundCommonLib
                 Logging.ConfigureLogging(log);
 
             if (cache == null)
-                Cache.CreateNewCache();
+            {
+                var newCache = Cache.CreateNewCache();
+                Cache.SetCacheInstance(newCache);
+            }
             else
                 Cache.SetCacheInstance(cache);
         }

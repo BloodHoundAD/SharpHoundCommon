@@ -13,7 +13,7 @@ namespace SharpHoundCommonLib
         ///     Converts to CSV format for output
         /// </summary>
         /// <returns></returns>
-        internal string ToCsv()
+        public string ToCsv()
         {
             return $"{StringToCsvCell(ComputerName)}, {StringToCsvCell(Task)}, {StringToCsvCell(Status)}";
         }
