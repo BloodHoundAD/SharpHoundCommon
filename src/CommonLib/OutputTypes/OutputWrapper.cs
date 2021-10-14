@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace SharpHoundCommonLib.OutputTypes
 {
     public class OutputWrapper<T>
     {
-        [JsonProperty(PropertyName = "meta")] internal MetaTag Meta { get; set; }
-
-        [JsonProperty(PropertyName = "data")] internal List<T> Data { get; set; }
+        [DataMember(Name = "meta")] public MetaTag Meta { get; set; }
+        [DataMember(Name = "data")] public List<T> Data { get; set; }
     }
 }
