@@ -150,37 +150,6 @@ namespace SharpHoundCommonLib
             return CacheInstance;
         }
 
-        // public static void LoadExistingCache(string filePath)
-        // {
-        //     if (!File.Exists(filePath))
-        //     {
-        //         CacheInstance = new Cache();
-        //         Logging.Debug("Cache file not found, empty cache created.");
-        //         return;
-        //     }
-        //
-        //     try
-        //     {
-        //         Logging.Debug($"Loading cache from {filePath}");
-        //         var bytes = File.ReadAllBytes(filePath);
-        //         var json = new UTF8Encoding(true).GetString(bytes);
-        //         CacheInstance = JsonConvert.DeserializeObject<Cache>(json, new JsonSerializerSettings
-        //         {
-        //             DefaultValueHandling = DefaultValueHandling.Populate
-        //         });
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Logging.Debug($"Exception loading cache: {e}. Creating empty cache.");
-        //         CacheInstance = new Cache();
-        //     }
-        //
-        //     CreateMissingDictionaries();
-        //
-        //     Logging.Debug(
-        //         $"Cache file loaded!\n {GetCacheStats()}");
-        // }
-
         private static void CreateMissingDictionaries()
         {
             CacheInstance ??= new Cache();
@@ -190,17 +159,5 @@ namespace SharpHoundCommonLib
             CacheInstance._sidToDomainCache ??= new ConcurrentDictionary<string, string>();
             CacheInstance._valueToIDCache ??= new ConcurrentDictionary<string, string>();
         }
-
-        // public static void SaveCache(string filePath)
-        // {
-        //     var serialized = new UTF8Encoding(true).GetBytes(JsonConvert.SerializeObject(CacheInstance,
-        //         new JsonSerializerSettings
-        //         {
-        //             DefaultValueHandling = DefaultValueHandling.Include
-        //         }));
-        //     using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-        //     stream.Write(serialized, 0, serialized.Length);
-        //     Logging.Log(LogLevel.Information, $"Wrote cache file to {filePath}\n{GetCacheStats()}");
-        // }
     }
 }
