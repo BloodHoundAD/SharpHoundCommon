@@ -206,44 +206,57 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Cache.CreateNewCache
   nameWithType: Cache.CreateNewCache
-- uid: SharpHoundCommonLib.Cache.LoadExistingCache(System.String)
-  name: LoadExistingCache(String)
-  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_LoadExistingCache_System_String_
-  commentId: M:SharpHoundCommonLib.Cache.LoadExistingCache(System.String)
-  fullName: SharpHoundCommonLib.Cache.LoadExistingCache(System.String)
-  nameWithType: Cache.LoadExistingCache(String)
-- uid: SharpHoundCommonLib.Cache.LoadExistingCache*
-  name: LoadExistingCache
-  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_LoadExistingCache_
-  commentId: Overload:SharpHoundCommonLib.Cache.LoadExistingCache
+- uid: SharpHoundCommonLib.Cache.GetCacheInstance
+  name: GetCacheInstance()
+  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_GetCacheInstance
+  commentId: M:SharpHoundCommonLib.Cache.GetCacheInstance
+  fullName: SharpHoundCommonLib.Cache.GetCacheInstance()
+  nameWithType: Cache.GetCacheInstance()
+- uid: SharpHoundCommonLib.Cache.GetCacheInstance*
+  name: GetCacheInstance
+  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_GetCacheInstance_
+  commentId: Overload:SharpHoundCommonLib.Cache.GetCacheInstance
   isSpec: "True"
-  fullName: SharpHoundCommonLib.Cache.LoadExistingCache
-  nameWithType: Cache.LoadExistingCache
-- uid: SharpHoundCommonLib.Cache.SaveCache(System.String)
-  name: SaveCache(String)
-  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_SaveCache_System_String_
-  commentId: M:SharpHoundCommonLib.Cache.SaveCache(System.String)
-  fullName: SharpHoundCommonLib.Cache.SaveCache(System.String)
-  nameWithType: Cache.SaveCache(String)
-- uid: SharpHoundCommonLib.Cache.SaveCache*
-  name: SaveCache
-  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_SaveCache_
-  commentId: Overload:SharpHoundCommonLib.Cache.SaveCache
+  fullName: SharpHoundCommonLib.Cache.GetCacheInstance
+  nameWithType: Cache.GetCacheInstance
+- uid: SharpHoundCommonLib.Cache.GetCacheStats
+  name: GetCacheStats()
+  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_GetCacheStats
+  commentId: M:SharpHoundCommonLib.Cache.GetCacheStats
+  fullName: SharpHoundCommonLib.Cache.GetCacheStats()
+  nameWithType: Cache.GetCacheStats()
+- uid: SharpHoundCommonLib.Cache.GetCacheStats*
+  name: GetCacheStats
+  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_GetCacheStats_
+  commentId: Overload:SharpHoundCommonLib.Cache.GetCacheStats
   isSpec: "True"
-  fullName: SharpHoundCommonLib.Cache.SaveCache
-  nameWithType: Cache.SaveCache
+  fullName: SharpHoundCommonLib.Cache.GetCacheStats
+  nameWithType: Cache.GetCacheStats
+- uid: SharpHoundCommonLib.Cache.SetCacheInstance(SharpHoundCommonLib.Cache)
+  name: SetCacheInstance(Cache)
+  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_SetCacheInstance_SharpHoundCommonLib_Cache_
+  commentId: M:SharpHoundCommonLib.Cache.SetCacheInstance(SharpHoundCommonLib.Cache)
+  fullName: SharpHoundCommonLib.Cache.SetCacheInstance(SharpHoundCommonLib.Cache)
+  nameWithType: Cache.SetCacheInstance(Cache)
+- uid: SharpHoundCommonLib.Cache.SetCacheInstance*
+  name: SetCacheInstance
+  href: api/SharpHoundCommonLib.Cache.html#SharpHoundCommonLib_Cache_SetCacheInstance_
+  commentId: Overload:SharpHoundCommonLib.Cache.SetCacheInstance
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Cache.SetCacheInstance
+  nameWithType: Cache.SetCacheInstance
 - uid: SharpHoundCommonLib.CommonLib
   name: CommonLib
   href: api/SharpHoundCommonLib.CommonLib.html
   commentId: T:SharpHoundCommonLib.CommonLib
   fullName: SharpHoundCommonLib.CommonLib
   nameWithType: CommonLib
-- uid: SharpHoundCommonLib.CommonLib.InitializeCommonLib(ILogger,System.String)
-  name: InitializeCommonLib(ILogger, String)
-  href: api/SharpHoundCommonLib.CommonLib.html#SharpHoundCommonLib_CommonLib_InitializeCommonLib_ILogger_System_String_
-  commentId: M:SharpHoundCommonLib.CommonLib.InitializeCommonLib(ILogger,System.String)
-  fullName: SharpHoundCommonLib.CommonLib.InitializeCommonLib(ILogger, System.String)
-  nameWithType: CommonLib.InitializeCommonLib(ILogger, String)
+- uid: SharpHoundCommonLib.CommonLib.InitializeCommonLib(ILogger,SharpHoundCommonLib.Cache)
+  name: InitializeCommonLib(ILogger, Cache)
+  href: api/SharpHoundCommonLib.CommonLib.html#SharpHoundCommonLib_CommonLib_InitializeCommonLib_ILogger_SharpHoundCommonLib_Cache_
+  commentId: M:SharpHoundCommonLib.CommonLib.InitializeCommonLib(ILogger,SharpHoundCommonLib.Cache)
+  fullName: SharpHoundCommonLib.CommonLib.InitializeCommonLib(ILogger, SharpHoundCommonLib.Cache)
+  nameWithType: CommonLib.InitializeCommonLib(ILogger, Cache)
 - uid: SharpHoundCommonLib.CommonLib.InitializeCommonLib*
   name: InitializeCommonLib
   href: api/SharpHoundCommonLib.CommonLib.html#SharpHoundCommonLib_CommonLib_InitializeCommonLib_
@@ -264,6 +277,64 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.CommonLib.ReconfigureLogging
   nameWithType: CommonLib.ReconfigureLogging
+- uid: SharpHoundCommonLib.CSVComputerStatus
+  name: CSVComputerStatus
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html
+  commentId: T:SharpHoundCommonLib.CSVComputerStatus
+  fullName: SharpHoundCommonLib.CSVComputerStatus
+  nameWithType: CSVComputerStatus
+- uid: SharpHoundCommonLib.CSVComputerStatus.ComputerName
+  name: ComputerName
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html#SharpHoundCommonLib_CSVComputerStatus_ComputerName
+  commentId: P:SharpHoundCommonLib.CSVComputerStatus.ComputerName
+  fullName: SharpHoundCommonLib.CSVComputerStatus.ComputerName
+  nameWithType: CSVComputerStatus.ComputerName
+- uid: SharpHoundCommonLib.CSVComputerStatus.ComputerName*
+  name: ComputerName
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html#SharpHoundCommonLib_CSVComputerStatus_ComputerName_
+  commentId: Overload:SharpHoundCommonLib.CSVComputerStatus.ComputerName
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.CSVComputerStatus.ComputerName
+  nameWithType: CSVComputerStatus.ComputerName
+- uid: SharpHoundCommonLib.CSVComputerStatus.Status
+  name: Status
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html#SharpHoundCommonLib_CSVComputerStatus_Status
+  commentId: P:SharpHoundCommonLib.CSVComputerStatus.Status
+  fullName: SharpHoundCommonLib.CSVComputerStatus.Status
+  nameWithType: CSVComputerStatus.Status
+- uid: SharpHoundCommonLib.CSVComputerStatus.Status*
+  name: Status
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html#SharpHoundCommonLib_CSVComputerStatus_Status_
+  commentId: Overload:SharpHoundCommonLib.CSVComputerStatus.Status
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.CSVComputerStatus.Status
+  nameWithType: CSVComputerStatus.Status
+- uid: SharpHoundCommonLib.CSVComputerStatus.Task
+  name: Task
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html#SharpHoundCommonLib_CSVComputerStatus_Task
+  commentId: P:SharpHoundCommonLib.CSVComputerStatus.Task
+  fullName: SharpHoundCommonLib.CSVComputerStatus.Task
+  nameWithType: CSVComputerStatus.Task
+- uid: SharpHoundCommonLib.CSVComputerStatus.Task*
+  name: Task
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html#SharpHoundCommonLib_CSVComputerStatus_Task_
+  commentId: Overload:SharpHoundCommonLib.CSVComputerStatus.Task
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.CSVComputerStatus.Task
+  nameWithType: CSVComputerStatus.Task
+- uid: SharpHoundCommonLib.CSVComputerStatus.ToCsv
+  name: ToCsv()
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html#SharpHoundCommonLib_CSVComputerStatus_ToCsv
+  commentId: M:SharpHoundCommonLib.CSVComputerStatus.ToCsv
+  fullName: SharpHoundCommonLib.CSVComputerStatus.ToCsv()
+  nameWithType: CSVComputerStatus.ToCsv()
+- uid: SharpHoundCommonLib.CSVComputerStatus.ToCsv*
+  name: ToCsv
+  href: api/SharpHoundCommonLib.CSVComputerStatus.html#SharpHoundCommonLib_CSVComputerStatus_ToCsv_
+  commentId: Overload:SharpHoundCommonLib.CSVComputerStatus.ToCsv
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.CSVComputerStatus.ToCsv
+  nameWithType: CSVComputerStatus.ToCsv
 - uid: SharpHoundCommonLib.EdgeNames
   name: EdgeNames
   href: api/SharpHoundCommonLib.EdgeNames.html
@@ -372,6 +443,48 @@ references:
   commentId: N:SharpHoundCommonLib.Enums
   fullName: SharpHoundCommonLib.Enums
   nameWithType: SharpHoundCommonLib.Enums
+- uid: SharpHoundCommonLib.Enums.DataTypes
+  name: DataTypes
+  href: api/SharpHoundCommonLib.Enums.DataTypes.html
+  commentId: T:SharpHoundCommonLib.Enums.DataTypes
+  fullName: SharpHoundCommonLib.Enums.DataTypes
+  nameWithType: DataTypes
+- uid: SharpHoundCommonLib.Enums.DataTypes.Computers
+  name: Computers
+  href: api/SharpHoundCommonLib.Enums.DataTypes.html#SharpHoundCommonLib_Enums_DataTypes_Computers
+  commentId: F:SharpHoundCommonLib.Enums.DataTypes.Computers
+  fullName: SharpHoundCommonLib.Enums.DataTypes.Computers
+  nameWithType: DataTypes.Computers
+- uid: SharpHoundCommonLib.Enums.DataTypes.Domains
+  name: Domains
+  href: api/SharpHoundCommonLib.Enums.DataTypes.html#SharpHoundCommonLib_Enums_DataTypes_Domains
+  commentId: F:SharpHoundCommonLib.Enums.DataTypes.Domains
+  fullName: SharpHoundCommonLib.Enums.DataTypes.Domains
+  nameWithType: DataTypes.Domains
+- uid: SharpHoundCommonLib.Enums.DataTypes.GPOs
+  name: GPOs
+  href: api/SharpHoundCommonLib.Enums.DataTypes.html#SharpHoundCommonLib_Enums_DataTypes_GPOs
+  commentId: F:SharpHoundCommonLib.Enums.DataTypes.GPOs
+  fullName: SharpHoundCommonLib.Enums.DataTypes.GPOs
+  nameWithType: DataTypes.GPOs
+- uid: SharpHoundCommonLib.Enums.DataTypes.Groups
+  name: Groups
+  href: api/SharpHoundCommonLib.Enums.DataTypes.html#SharpHoundCommonLib_Enums_DataTypes_Groups
+  commentId: F:SharpHoundCommonLib.Enums.DataTypes.Groups
+  fullName: SharpHoundCommonLib.Enums.DataTypes.Groups
+  nameWithType: DataTypes.Groups
+- uid: SharpHoundCommonLib.Enums.DataTypes.OUs
+  name: OUs
+  href: api/SharpHoundCommonLib.Enums.DataTypes.html#SharpHoundCommonLib_Enums_DataTypes_OUs
+  commentId: F:SharpHoundCommonLib.Enums.DataTypes.OUs
+  fullName: SharpHoundCommonLib.Enums.DataTypes.OUs
+  nameWithType: DataTypes.OUs
+- uid: SharpHoundCommonLib.Enums.DataTypes.Users
+  name: Users
+  href: api/SharpHoundCommonLib.Enums.DataTypes.html#SharpHoundCommonLib_Enums_DataTypes_Users
+  commentId: F:SharpHoundCommonLib.Enums.DataTypes.Users
+  fullName: SharpHoundCommonLib.Enums.DataTypes.Users
+  nameWithType: DataTypes.Users
 - uid: SharpHoundCommonLib.Enums.Label
   name: Label
   href: api/SharpHoundCommonLib.Enums.Label.html
@@ -438,6 +551,18 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.ACL
   fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.ACL
   nameWithType: ResolvedCollectionMethod.ACL
+- uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.All
+  name: All
+  href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_All
+  commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.All
+  fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.All
+  nameWithType: ResolvedCollectionMethod.All
+- uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.ComputerOnly
+  name: ComputerOnly
+  href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_ComputerOnly
+  commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.ComputerOnly
+  fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.ComputerOnly
+  nameWithType: ResolvedCollectionMethod.ComputerOnly
 - uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.Container
   name: Container
   href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_Container
@@ -456,6 +581,18 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnly
   fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnly
   nameWithType: ResolvedCollectionMethod.DCOnly
+- uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnlyInternal
+  name: DCOnlyInternal
+  href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_DCOnlyInternal
+  commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnlyInternal
+  fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnlyInternal
+  nameWithType: ResolvedCollectionMethod.DCOnlyInternal
+- uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.Default
+  name: Default
+  href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_Default
+  commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.Default
+  fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.Default
+  nameWithType: ResolvedCollectionMethod.Default
 - uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.GPOLocalGroup
   name: GPOLocalGroup
   href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_GPOLocalGroup
@@ -3803,6 +3940,40 @@ references:
   fullName.vb: SharpHoundCommonLib.OutputTypes.OutputWrapper(Of T)
   nameWithType: OutputWrapper<T>
   nameWithType.vb: OutputWrapper(Of T)
+- uid: SharpHoundCommonLib.OutputTypes.OutputWrapper`1.Data
+  name: Data
+  href: api/SharpHoundCommonLib.OutputTypes.OutputWrapper-1.html#SharpHoundCommonLib_OutputTypes_OutputWrapper_1_Data
+  commentId: P:SharpHoundCommonLib.OutputTypes.OutputWrapper`1.Data
+  fullName: SharpHoundCommonLib.OutputTypes.OutputWrapper<T>.Data
+  fullName.vb: SharpHoundCommonLib.OutputTypes.OutputWrapper(Of T).Data
+  nameWithType: OutputWrapper<T>.Data
+  nameWithType.vb: OutputWrapper(Of T).Data
+- uid: SharpHoundCommonLib.OutputTypes.OutputWrapper`1.Data*
+  name: Data
+  href: api/SharpHoundCommonLib.OutputTypes.OutputWrapper-1.html#SharpHoundCommonLib_OutputTypes_OutputWrapper_1_Data_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.OutputWrapper`1.Data
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.OutputWrapper<T>.Data
+  fullName.vb: SharpHoundCommonLib.OutputTypes.OutputWrapper(Of T).Data
+  nameWithType: OutputWrapper<T>.Data
+  nameWithType.vb: OutputWrapper(Of T).Data
+- uid: SharpHoundCommonLib.OutputTypes.OutputWrapper`1.Meta
+  name: Meta
+  href: api/SharpHoundCommonLib.OutputTypes.OutputWrapper-1.html#SharpHoundCommonLib_OutputTypes_OutputWrapper_1_Meta
+  commentId: P:SharpHoundCommonLib.OutputTypes.OutputWrapper`1.Meta
+  fullName: SharpHoundCommonLib.OutputTypes.OutputWrapper<T>.Meta
+  fullName.vb: SharpHoundCommonLib.OutputTypes.OutputWrapper(Of T).Meta
+  nameWithType: OutputWrapper<T>.Meta
+  nameWithType.vb: OutputWrapper(Of T).Meta
+- uid: SharpHoundCommonLib.OutputTypes.OutputWrapper`1.Meta*
+  name: Meta
+  href: api/SharpHoundCommonLib.OutputTypes.OutputWrapper-1.html#SharpHoundCommonLib_OutputTypes_OutputWrapper_1_Meta_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.OutputWrapper`1.Meta
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.OutputWrapper<T>.Meta
+  fullName.vb: SharpHoundCommonLib.OutputTypes.OutputWrapper(Of T).Meta
+  nameWithType: OutputWrapper<T>.Meta
+  nameWithType.vb: OutputWrapper(Of T).Meta
 - uid: SharpHoundCommonLib.OutputTypes.Session
   name: Session
   href: api/SharpHoundCommonLib.OutputTypes.Session.html

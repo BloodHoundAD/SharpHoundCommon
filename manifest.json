@@ -44,11 +44,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.CSVComputerStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.CSVComputerStatus.html",
+          "hash": "2qC0r5MvWP0zQVWfjWDLpw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/SharpHoundCommonLib.Cache.yml",
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Cache.html",
-          "hash": "Sdi4JI+NFTFh1ppqo5vodQ=="
+          "hash": "5r/LTw8jWnBk3G8pRajiJg=="
         }
       },
       "is_incremental": false,
@@ -60,7 +72,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.CommonLib.html",
-          "hash": "OIRNQl8eL8JtBuT05ocYcw=="
+          "hash": "rKXPed/GACpGs2XcXylTRw=="
         }
       },
       "is_incremental": false,
@@ -73,6 +85,18 @@
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.EdgeNames.html",
           "hash": "8uG8eEYacUjDafNkd+YK5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SharpHoundCommonLib.Enums.DataTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SharpHoundCommonLib.Enums.DataTypes.html",
+          "hash": "MI3P83ED6G8pLDsnLwSUPw=="
         }
       },
       "is_incremental": false,
@@ -96,7 +120,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html",
-          "hash": "zgQjKHuTG+Esez+cLw+AEQ=="
+          "hash": "im7gzjdqYed+OWqZoU8/rA=="
         }
       },
       "is_incremental": false,
@@ -156,7 +180,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Enums.html",
-          "hash": "lEufCRRPvvr4cGHRCasu+w=="
+          "hash": "XZoJo826dilwdnv43GK6Sg=="
         }
       },
       "is_incremental": false,
@@ -576,7 +600,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.MetaTag.html",
-          "hash": "+cuEmUH5DiipfZorOrWc/w=="
+          "hash": "4yBosqsIHKpBNRQS/jtbuQ=="
         }
       },
       "is_incremental": false,
@@ -612,7 +636,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.OutputWrapper-1.html",
-          "hash": "cd7OFjC99HwijT8m8Hch1g=="
+          "hash": "0r0H9MzUmXk4HgO5ip68kA=="
         }
       },
       "is_incremental": false,
@@ -636,7 +660,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.SPNTarget.html",
-          "hash": "idA5NJAHr1QoZVzcIYzWkg=="
+          "hash": "1/H4vDa8vljQMozpe6MIRA=="
         }
       },
       "is_incremental": false,
@@ -960,7 +984,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.html",
-          "hash": "xdztd9vAwLlwpc07AfN+rQ=="
+          "hash": "Otg6jH7u3yYrroTl3m9XlQ=="
         }
       },
       "is_incremental": false,
@@ -984,7 +1008,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "WdlCRIsS6LeZ2wICPjvGyA=="
+          "hash": "mgcyRPnupxAnKydePMw80A=="
         }
       },
       "is_incremental": false,
@@ -1063,6 +1087,17 @@
       "output": {
         "resource": {
           "relative_path": "coverage/report/SharpHoundCommonLib_ActiveDirectorySecurityDescriptor.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "coverage/report/SharpHoundCommonLib_CSVComputerStatus.html",
+      "output": {
+        "resource": {
+          "relative_path": "coverage/report/SharpHoundCommonLib_CSVComputerStatus.html"
         }
       },
       "is_incremental": false,
@@ -2026,7 +2061,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 79,
+          "total_file_count": 81,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
