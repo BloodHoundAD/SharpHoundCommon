@@ -443,6 +443,48 @@ references:
   commentId: N:SharpHoundCommonLib.Enums
   fullName: SharpHoundCommonLib.Enums
   nameWithType: SharpHoundCommonLib.Enums
+- uid: SharpHoundCommonLib.Enums.DataType
+  name: DataType
+  href: api/SharpHoundCommonLib.Enums.DataType.html
+  commentId: T:SharpHoundCommonLib.Enums.DataType
+  fullName: SharpHoundCommonLib.Enums.DataType
+  nameWithType: DataType
+- uid: SharpHoundCommonLib.Enums.DataType.Containers
+  name: Containers
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_Containers
+  commentId: F:SharpHoundCommonLib.Enums.DataType.Containers
+  fullName: SharpHoundCommonLib.Enums.DataType.Containers
+  nameWithType: DataType.Containers
+- uid: SharpHoundCommonLib.Enums.DataType.Domains
+  name: Domains
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_Domains
+  commentId: F:SharpHoundCommonLib.Enums.DataType.Domains
+  fullName: SharpHoundCommonLib.Enums.DataType.Domains
+  nameWithType: DataType.Domains
+- uid: SharpHoundCommonLib.Enums.DataType.GPOs
+  name: GPOs
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_GPOs
+  commentId: F:SharpHoundCommonLib.Enums.DataType.GPOs
+  fullName: SharpHoundCommonLib.Enums.DataType.GPOs
+  nameWithType: DataType.GPOs
+- uid: SharpHoundCommonLib.Enums.DataType.Groups
+  name: Groups
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_Groups
+  commentId: F:SharpHoundCommonLib.Enums.DataType.Groups
+  fullName: SharpHoundCommonLib.Enums.DataType.Groups
+  nameWithType: DataType.Groups
+- uid: SharpHoundCommonLib.Enums.DataType.OUs
+  name: OUs
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_OUs
+  commentId: F:SharpHoundCommonLib.Enums.DataType.OUs
+  fullName: SharpHoundCommonLib.Enums.DataType.OUs
+  nameWithType: DataType.OUs
+- uid: SharpHoundCommonLib.Enums.DataType.Users
+  name: Users
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_Users
+  commentId: F:SharpHoundCommonLib.Enums.DataType.Users
+  fullName: SharpHoundCommonLib.Enums.DataType.Users
+  nameWithType: DataType.Users
 - uid: SharpHoundCommonLib.Enums.DataTypes
   name: DataTypes
   href: api/SharpHoundCommonLib.Enums.DataTypes.html
@@ -1069,6 +1111,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Extensions.GetSid
   nameWithType: Extensions.GetSid
+- uid: SharpHoundCommonLib.Extensions.IsComputerCollectionSet(SharpHoundCommonLib.Enums.ResolvedCollectionMethod)
+  name: IsComputerCollectionSet(ResolvedCollectionMethod)
+  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_IsComputerCollectionSet_SharpHoundCommonLib_Enums_ResolvedCollectionMethod_
+  commentId: M:SharpHoundCommonLib.Extensions.IsComputerCollectionSet(SharpHoundCommonLib.Enums.ResolvedCollectionMethod)
+  fullName: SharpHoundCommonLib.Extensions.IsComputerCollectionSet(SharpHoundCommonLib.Enums.ResolvedCollectionMethod)
+  nameWithType: Extensions.IsComputerCollectionSet(ResolvedCollectionMethod)
+- uid: SharpHoundCommonLib.Extensions.IsComputerCollectionSet*
+  name: IsComputerCollectionSet
+  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_IsComputerCollectionSet_
+  commentId: Overload:SharpHoundCommonLib.Extensions.IsComputerCollectionSet
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Extensions.IsComputerCollectionSet
+  nameWithType: Extensions.IsComputerCollectionSet
 - uid: SharpHoundCommonLib.Extensions.IsDeleted(System.DirectoryServices.Protocols.SearchResultEntry)
   name: IsDeleted(SearchResultEntry)
   href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_IsDeleted_System_DirectoryServices_Protocols_SearchResultEntry_
@@ -1795,6 +1850,19 @@ references:
   commentId: T:SharpHoundCommonLib.LDAPQueries.CommonFilters
   fullName: SharpHoundCommonLib.LDAPQueries.CommonFilters
   nameWithType: CommonFilters
+- uid: SharpHoundCommonLib.LDAPQueries.CommonFilters.DomainControllers
+  name: DomainControllers
+  href: api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html#SharpHoundCommonLib_LDAPQueries_CommonFilters_DomainControllers
+  commentId: P:SharpHoundCommonLib.LDAPQueries.CommonFilters.DomainControllers
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonFilters.DomainControllers
+  nameWithType: CommonFilters.DomainControllers
+- uid: SharpHoundCommonLib.LDAPQueries.CommonFilters.DomainControllers*
+  name: DomainControllers
+  href: api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html#SharpHoundCommonLib_LDAPQueries_CommonFilters_DomainControllers_
+  commentId: Overload:SharpHoundCommonLib.LDAPQueries.CommonFilters.DomainControllers
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonFilters.DomainControllers
+  nameWithType: CommonFilters.DomainControllers
 - uid: SharpHoundCommonLib.LDAPQueries.CommonFilters.EnabledOnly
   name: EnabledOnly
   href: api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html#SharpHoundCommonLib_LDAPQueries_CommonFilters_EnabledOnly
@@ -1915,6 +1983,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPQueries.CommonProperties.GPCFileSysPath
   fullName: SharpHoundCommonLib.LDAPQueries.CommonProperties.GPCFileSysPath
   nameWithType: CommonProperties.GPCFileSysPath
+- uid: SharpHoundCommonLib.LDAPQueries.CommonProperties.GPOLocalGroupProps
+  name: GPOLocalGroupProps
+  href: api/SharpHoundCommonLib.LDAPQueries.CommonProperties.html#SharpHoundCommonLib_LDAPQueries_CommonProperties_GPOLocalGroupProps
+  commentId: F:SharpHoundCommonLib.LDAPQueries.CommonProperties.GPOLocalGroupProps
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonProperties.GPOLocalGroupProps
+  nameWithType: CommonProperties.GPOLocalGroupProps
 - uid: SharpHoundCommonLib.LDAPQueries.CommonProperties.GroupResolutionProps
   name: GroupResolutionProps
   href: api/SharpHoundCommonLib.LDAPQueries.CommonProperties.html#SharpHoundCommonLib_LDAPQueries_CommonProperties_GroupResolutionProps
@@ -3495,6 +3569,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.Error
   nameWithType: ComputerStatus.Error
+- uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.GetCSVStatus(System.String)
+  name: GetCSVStatus(String)
+  href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_GetCSVStatus_System_String_
+  commentId: M:SharpHoundCommonLib.OutputTypes.ComputerStatus.GetCSVStatus(System.String)
+  fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.GetCSVStatus(System.String)
+  nameWithType: ComputerStatus.GetCSVStatus(String)
+- uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.GetCSVStatus*
+  name: GetCSVStatus
+  href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_GetCSVStatus_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ComputerStatus.GetCSVStatus
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ComputerStatus.GetCSVStatus
+  nameWithType: ComputerStatus.GetCSVStatus
 - uid: SharpHoundCommonLib.OutputTypes.ComputerStatus.NonWindowsOS
   name: NonWindowsOS
   href: api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html#SharpHoundCommonLib_OutputTypes_ComputerStatus_NonWindowsOS
@@ -5119,6 +5206,32 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ResolvedSearchResult.DomainSid
   nameWithType: ResolvedSearchResult.DomainSid
+- uid: SharpHoundCommonLib.ResolvedSearchResult.IsDomainController
+  name: IsDomainController
+  href: api/SharpHoundCommonLib.ResolvedSearchResult.html#SharpHoundCommonLib_ResolvedSearchResult_IsDomainController
+  commentId: P:SharpHoundCommonLib.ResolvedSearchResult.IsDomainController
+  fullName: SharpHoundCommonLib.ResolvedSearchResult.IsDomainController
+  nameWithType: ResolvedSearchResult.IsDomainController
+- uid: SharpHoundCommonLib.ResolvedSearchResult.IsDomainController*
+  name: IsDomainController
+  href: api/SharpHoundCommonLib.ResolvedSearchResult.html#SharpHoundCommonLib_ResolvedSearchResult_IsDomainController_
+  commentId: Overload:SharpHoundCommonLib.ResolvedSearchResult.IsDomainController
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ResolvedSearchResult.IsDomainController
+  nameWithType: ResolvedSearchResult.IsDomainController
+- uid: SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
+  name: IsStealthTarget
+  href: api/SharpHoundCommonLib.ResolvedSearchResult.html#SharpHoundCommonLib_ResolvedSearchResult_IsStealthTarget
+  commentId: P:SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
+  fullName: SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
+  nameWithType: ResolvedSearchResult.IsStealthTarget
+- uid: SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget*
+  name: IsStealthTarget
+  href: api/SharpHoundCommonLib.ResolvedSearchResult.html#SharpHoundCommonLib_ResolvedSearchResult_IsStealthTarget_
+  commentId: Overload:SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
+  nameWithType: ResolvedSearchResult.IsStealthTarget
 - uid: SharpHoundCommonLib.ResolvedSearchResult.ObjectId
   name: ObjectId
   href: api/SharpHoundCommonLib.ResolvedSearchResult.html#SharpHoundCommonLib_ResolvedSearchResult_ObjectId
