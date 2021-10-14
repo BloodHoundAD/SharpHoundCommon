@@ -25,5 +25,15 @@
         public static string NonWindowsOS => "NonWindowsOS";
         public static string OldPwd => "PwdLastSetOutOfRange";
         public static string PortNotOpen => "PortNotOpen";
+
+        public CSVComputerStatus GetCSVStatus(string computerName)
+        {
+            return new CSVComputerStatus
+            {
+                Status = Error,
+                Task = "CheckAvailability",
+                ComputerName = computerName
+            };
+        }
     }
 }

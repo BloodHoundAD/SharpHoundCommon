@@ -69,6 +69,15 @@ namespace SharpHoundCommonLib
             };
         }
 
+        public static bool IsComputerCollectionSet(this ResolvedCollectionMethod methods)
+        {
+            return (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
+                   (methods & ResolvedCollectionMethod.DCOM) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0 ||
+                   (methods & ResolvedCollectionMethod.PSRemote) != 0 ||
+                   (methods & ResolvedCollectionMethod.Session) != 0 ||
+                   (methods & ResolvedCollectionMethod.LoggedOn) != 0;
+        }
+
         #region SearchResultEntry
 
         /// <summary>
