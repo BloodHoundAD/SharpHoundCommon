@@ -78,6 +78,13 @@ namespace SharpHoundCommonLib
                    (methods & ResolvedCollectionMethod.LoggedOn) != 0;
         }
 
+        public static bool IsLocalGroupCollectionSet(this ResolvedCollectionMethod methods)
+        {
+            return (methods & ResolvedCollectionMethod.DCOM) != 0 ||
+                   (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
+                   (methods & ResolvedCollectionMethod.PSRemote) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0;
+        }
+
         #region SearchResultEntry
 
         /// <summary>
