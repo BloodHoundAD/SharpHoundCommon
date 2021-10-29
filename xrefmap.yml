@@ -1137,6 +1137,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Extensions.IsDeleted
   nameWithType: Extensions.IsDeleted
+- uid: SharpHoundCommonLib.Extensions.IsLocalGroupCollectionSet(SharpHoundCommonLib.Enums.ResolvedCollectionMethod)
+  name: IsLocalGroupCollectionSet(ResolvedCollectionMethod)
+  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_IsLocalGroupCollectionSet_SharpHoundCommonLib_Enums_ResolvedCollectionMethod_
+  commentId: M:SharpHoundCommonLib.Extensions.IsLocalGroupCollectionSet(SharpHoundCommonLib.Enums.ResolvedCollectionMethod)
+  fullName: SharpHoundCommonLib.Extensions.IsLocalGroupCollectionSet(SharpHoundCommonLib.Enums.ResolvedCollectionMethod)
+  nameWithType: Extensions.IsLocalGroupCollectionSet(ResolvedCollectionMethod)
+- uid: SharpHoundCommonLib.Extensions.IsLocalGroupCollectionSet*
+  name: IsLocalGroupCollectionSet
+  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_IsLocalGroupCollectionSet_
+  commentId: Overload:SharpHoundCommonLib.Extensions.IsLocalGroupCollectionSet
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Extensions.IsLocalGroupCollectionSet
+  nameWithType: Extensions.IsLocalGroupCollectionSet
 - uid: SharpHoundCommonLib.Extensions.LdapValue(System.Guid)
   name: LdapValue(Guid)
   href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_LdapValue_System_Guid_
@@ -3485,6 +3498,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Computer.PrimaryGroupSID
   nameWithType: Computer.PrimaryGroupSID
+- uid: SharpHoundCommonLib.OutputTypes.Computer.PrivilegedSessions
+  name: PrivilegedSessions
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_PrivilegedSessions
+  commentId: P:SharpHoundCommonLib.OutputTypes.Computer.PrivilegedSessions
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.PrivilegedSessions
+  nameWithType: Computer.PrivilegedSessions
+- uid: SharpHoundCommonLib.OutputTypes.Computer.PrivilegedSessions*
+  name: PrivilegedSessions
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_PrivilegedSessions_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.Computer.PrivilegedSessions
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.PrivilegedSessions
+  nameWithType: Computer.PrivilegedSessions
 - uid: SharpHoundCommonLib.OutputTypes.Computer.PSRemoteUsers
   name: PSRemoteUsers
   href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_PSRemoteUsers
