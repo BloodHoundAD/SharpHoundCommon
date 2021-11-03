@@ -449,6 +449,12 @@ references:
   commentId: T:SharpHoundCommonLib.Enums.DataType
   fullName: SharpHoundCommonLib.Enums.DataType
   nameWithType: DataType
+- uid: SharpHoundCommonLib.Enums.DataType.Computers
+  name: Computers
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_Computers
+  commentId: F:SharpHoundCommonLib.Enums.DataType.Computers
+  fullName: SharpHoundCommonLib.Enums.DataType.Computers
+  nameWithType: DataType.Computers
 - uid: SharpHoundCommonLib.Enums.DataType.Containers
   name: Containers
   href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_Containers
