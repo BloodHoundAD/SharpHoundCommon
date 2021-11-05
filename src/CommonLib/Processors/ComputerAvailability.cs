@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.OutputTypes;
 
@@ -7,15 +8,22 @@ namespace SharpHoundCommonLib.Processors
     public class ComputerAvailability
     {
         private readonly PortScanner _scanner;
+        private readonly int _scanTimeout;
+        private readonly bool _skipPortScan;
+        private static readonly ConcurrentDictionary<string, bool> _pingCache = new();
 
-        public ComputerAvailability()
+        public ComputerAvailability(int timeout = 500, bool skipPortScan = false)
         {
             _scanner = new PortScanner();
+            _scanTimeout = timeout;
+            _skipPortScan = skipPortScan;
         }
 
-        public ComputerAvailability(PortScanner scanner)
+        public ComputerAvailability(PortScanner scanner, int timeout = 500, bool skipPortScan = false)
         {
             _scanner = scanner;
+            _scanTimeout = timeout;
+            _skipPortScan = skipPortScan;
         }
 
         /// <summary>
@@ -55,7 +63,14 @@ namespace SharpHoundCommonLib.Processors
             }
 
 
-            if (!await _scanner.CheckPort(computerName))
+            if (_skipPortScan)
+                return new ComputerStatus
+                {
+                    Connectable = true,
+                    Error = null
+                };
+
+            if (!await _scanner.CheckPort(computerName, timeout:_scanTimeout))
             {
                 Logging.Trace($"{computerName} is not available because port 445 is unavailable");
                 return new ComputerStatus

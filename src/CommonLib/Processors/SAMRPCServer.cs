@@ -154,7 +154,7 @@ namespace SharpHoundCommonLib.Processors
             for (var i = 0; i < count; i++)
                 try
                 {
-                    var raw = Marshal.ReadIntPtr(members, Marshal.SizeOf(typeof(IntPtr)) * i);
+                    var raw = Marshal.ReadIntPtr(members, Marshal.SizeOf<IntPtr>() * i);
                     var sid = new SecurityIdentifier(raw).Value;
                     sids.Add(sid);
                 }
@@ -251,7 +251,7 @@ namespace SharpHoundCommonLib.Processors
             for (var i = 0; i < count; i++)
                 try
                 {
-                    var ptr = Marshal.ReadIntPtr(members, Marshal.SizeOf(typeof(IntPtr)) * i);
+                    var ptr = Marshal.ReadIntPtr(members, Marshal.SizeOf<IntPtr>() * i);
                     var sid = new SecurityIdentifier(ptr).Value;
                     sids.Add(sid);
                 }

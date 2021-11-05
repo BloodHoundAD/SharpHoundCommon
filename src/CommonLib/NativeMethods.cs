@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Security;
 using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib
@@ -80,7 +81,7 @@ namespace SharpHoundCommonLib
                 for (var i = 0; i < entriesread; i++)
                 {
                     var data = Marshal.PtrToStructure<SESSION_INFO_10>(iter);
-                    iter = (IntPtr) (iter.ToInt64() + Marshal.SizeOf(typeof(SESSION_INFO_10)));
+                    iter = (IntPtr) (iter.ToInt64() + Marshal.SizeOf<SESSION_INFO_10>());
 
                     yield return data;
                 }
@@ -116,7 +117,7 @@ namespace SharpHoundCommonLib
                 for (var i = 0; i < entriesread; i++)
                 {
                     var data = Marshal.PtrToStructure<WKSTA_USER_INFO_1>(iter);
-                    iter = (IntPtr) (iter.ToInt64() + Marshal.SizeOf(typeof(WKSTA_USER_INFO_1)));
+                    iter = (IntPtr) (iter.ToInt64() + Marshal.SizeOf<WKSTA_USER_INFO_1>());
                     yield return data;
                 }
             }
@@ -183,6 +184,25 @@ namespace SharpHoundCommonLib
         internal virtual NtStatus CallSamCloseHandle(IntPtr handle)
         {
             return SamCloseHandle(handle);
+        }
+
+        public virtual NtStatus CallLSAOpenPolicy(ref LSA_UNICODE_STRING serverName, ref LSA_OBJECT_ATTRIBUTES lsaObjectAttributes,
+            LsaOpenMask openMask, out IntPtr policyHandle)
+        {
+            return LsaOpenPolicy(ref serverName, ref lsaObjectAttributes, openMask, out policyHandle);
+        }
+
+        public virtual NtStatus CallLSAEnumerateAccountsWithUserRight(IntPtr policyHandle, string privilege, out IntPtr buffer,
+            out int count)
+        {
+            var privileges = new LSA_UNICODE_STRING[1];
+            privileges[0] = new LSA_UNICODE_STRING(privilege);
+            return LsaEnumerateAccountsWithUserRight(policyHandle, privileges, out buffer, out count);
+        }
+
+        public virtual NtStatus CallLSAClose(IntPtr handle)
+        {
+            return LsaClose(handle);
         }
 
         public struct OBJECT_ATTRIBUTES : IDisposable
@@ -296,25 +316,6 @@ namespace SharpHoundCommonLib
             Read = 0x20004,
             Write = 0x20013,
             Execute = 0x20008
-        }
-
-        [Flags]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-        internal enum LsaOpenMask
-        {
-            ViewLocalInfo = 0x1,
-            ViewAuditInfo = 0x2,
-            GetPrivateInfo = 0x4,
-            TrustAdmin = 0x8,
-            CreateAccount = 0x10,
-            CreateSecret = 0x20,
-            CreatePrivilege = 0x40,
-            SetDefaultQuotaLimits = 0x80,
-            SetAuditRequirements = 0x100,
-            AuditLogAdmin = 0x200,
-            ServerAdmin = 0x400,
-            LookupNames = 0x800,
-            Notification = 0x1000
         }
 
         [Flags]
@@ -511,6 +512,102 @@ namespace SharpHoundCommonLib
             public uint Flags;
             [MarshalAs(UnmanagedType.LPTStr)] public string DcSiteName;
             [MarshalAs(UnmanagedType.LPTStr)] public string ClientSiteName;
+        }
+
+        #endregion
+
+        #region LSA Imports
+        [DllImport("advapi32.dll")]
+        private static extern NtStatus LsaOpenPolicy(
+            ref LSA_UNICODE_STRING server,
+            ref LSA_OBJECT_ATTRIBUTES objectAttributes,
+            LsaOpenMask desiredAccess,
+            out IntPtr policyHandle
+        );
+        
+        [DllImport("advapi32.dll")]
+        private static extern NtStatus LsaClose(
+            IntPtr buffer
+        );
+        
+        [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true), SuppressUnmanagedCodeSecurity]
+        public static extern NtStatus LsaEnumerateAccountsWithUserRight(
+            IntPtr PolicyHandle,
+            LSA_UNICODE_STRING[] UserRights,
+            out IntPtr EnumerationBuffer,
+            out int CountReturned
+        );
+        
+        [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        public enum LsaOpenMask
+        {
+            ViewLocalInfo = 0x1,
+            ViewAuditInfo = 0x2,
+            GetPrivateInfo = 0x4,
+            TrustAdmin = 0x8,
+            CreateAccount = 0x10,
+            CreateSecret = 0x20,
+            CreatePrivilege = 0x40,
+            SetDefaultQuotaLimits = 0x80,
+            SetAuditRequirements = 0x100,
+            AuditLogAdmin = 0x200,
+            ServerAdmin = 0x400,
+            LookupNames = 0x800,
+            Notification = 0x1000,
+            POLICY_READ = 0x20006,
+            POLICY_ALL_ACCESS = 0x00F0FFF,
+            POLICY_EXECUTE = 0X20801,
+            POLICY_WRITE = 0X207F8
+        }
+        
+        [StructLayout(LayoutKind.Sequential)]
+        public struct LSA_UNICODE_STRING : IDisposable
+        {
+            private readonly ushort Length;
+            private readonly ushort MaximumLength;
+            private IntPtr Buffer;
+
+            public LSA_UNICODE_STRING(string s)
+                : this()
+            {
+                if (s == null) return;
+                Length = (ushort) (s.Length * 2);
+                MaximumLength = (ushort) (Length + 2);
+                Buffer = Marshal.StringToHGlobalUni(s);
+            }
+
+            public void Dispose()
+            {
+                if (Buffer == IntPtr.Zero) return;
+                Marshal.FreeHGlobal(Buffer);
+                Buffer = IntPtr.Zero;
+            }
+
+            public override string ToString()
+            {
+                return (Buffer != IntPtr.Zero ? Marshal.PtrToStringUni(Buffer) : null) ??
+                       throw new InvalidOperationException();
+            }
+        }
+        
+        [StructLayout(LayoutKind.Sequential)]
+        public struct LSA_OBJECT_ATTRIBUTES
+        {
+            public int Length;
+            public IntPtr RootDirectory;
+            public IntPtr ObjectName;
+            public int Attributes;
+            public IntPtr SecurityDescriptor;
+            public IntPtr SecurityQualityOfService;
+            
+            public void Dispose()
+            {
+                if (ObjectName == IntPtr.Zero) return;
+                Marshal.DestroyStructure(ObjectName, typeof(LSA_UNICODE_STRING));
+                Marshal.FreeHGlobal(ObjectName);
+                ObjectName = IntPtr.Zero;
+            }
         }
 
         #endregion
