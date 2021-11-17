@@ -26,7 +26,6 @@ namespace SharpHoundCommonLib
         public string Domain { get; set; }
         public string DomainSid { get; set; }
         public bool IsDomainController { get; set; }
-        public bool IsStealthTarget { get; set; }
 
         public override string ToString()
         {

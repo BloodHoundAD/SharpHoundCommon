@@ -109,6 +109,14 @@ namespace SharpHoundCommonLib
             var itemType = GetLabel();
             res.ObjectType = itemType;
 
+            //If we have this object class, override the object type
+            if (GetArrayProperty("objectclass").Contains("msds-groupmanagedserviceaccount",
+                StringComparer.InvariantCultureIgnoreCase))
+            {
+                res.ObjectType = Label.User;
+                itemType = Label.User;
+            }
+
             switch (itemType)
             {
                 case Label.User:
@@ -119,11 +127,6 @@ namespace SharpHoundCommonLib
                     var shortName = samAccountName?.TrimEnd('$');
                     var dns = GetProperty("dnshostname");
                     var cn = GetProperty("cn");
-
-                    //If we have this object class, override the object type
-                    if (GetArrayProperty("objectclass").Contains("msds-groupmanagedserviceaccount",
-                        StringComparer.InvariantCultureIgnoreCase))
-                        res.ObjectType = Label.User;
 
                     if (dns != null)
                         res.DisplayName = dns;

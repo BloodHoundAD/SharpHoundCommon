@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Win32;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
+        private static readonly Regex SidRegex = new(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
         private readonly string _currentUserName;
         private readonly NativeMethods _nativeMethods;
         private readonly ILDAPUtils _utils;
@@ -19,7 +22,6 @@ namespace SharpHoundCommonLib.Processors
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _currentUserName = currentUserName ?? WindowsIdentity.GetCurrent().Name.Split('\\')[1];
-            ;
         }
 
         /// <summary>
@@ -86,7 +88,8 @@ namespace SharpHoundCommonLib.Processors
                 var matches = _utils.GetUserGlobalCatalogMatches(username);
                 if (matches.Length > 0)
                 {
-                    results.AddRange(matches.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
+                    results.AddRange(
+                        matches.Select(s => new Session { ComputerSID = resolvedComputerSID, UserSID = s }));
                 }
                 else
                 {
@@ -170,6 +173,37 @@ namespace SharpHoundCommonLib.Processors
             }).ToArray();
 
             return ret;
+        }
+
+        public async Task<SessionAPIResult> ReadUserSessionsRegistry(string computerName, string computerDomain,
+            string computerSid)
+        {
+            var ret = new SessionAPIResult();
+
+            RegistryKey key = null;
+
+            try
+            {
+                key = RegistryKey.OpenRemoteBaseKey(RegistryHive.Users, computerName);
+                ret.Collected = true;
+                ret.Results = key.GetSubKeyNames().Where(subkey => SidRegex.IsMatch(subkey)).Select(x => new Session
+                {
+                    ComputerSID = computerSid,
+                    UserSID = x
+                }).ToArray();
+
+                return ret;
+            }
+            catch (Exception e)
+            {
+                ret.Collected = false;
+                ret.FailureReason = e.Message;
+                return ret;
+            }
+            finally
+            {
+                key?.Dispose();
+            }
         }
     }
 }
