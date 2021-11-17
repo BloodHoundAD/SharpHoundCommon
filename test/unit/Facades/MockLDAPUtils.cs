@@ -30,6 +30,11 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
+        public bool TestLDAPConfig()
+        {
+            return true;
+        }
+
         public string[] GetUserGlobalCatalogMatches(string name)
         {
             name = name.ToLower();

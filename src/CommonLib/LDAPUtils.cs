@@ -678,7 +678,7 @@ namespace SharpHoundCommonLib
                     if (cancellationToken.IsCancellationRequested)
                         yield break;
 
-                    yield return new SearchResultEntryWrapper(entry);
+                    yield return new SearchResultEntryWrapper(entry, this);
                 }
 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 ||
@@ -778,7 +778,7 @@ namespace SharpHoundCommonLib
                     yield break;
 
                 foreach (SearchResultEntry entry in response.Entries)
-                    yield return new SearchResultEntryWrapper(entry);
+                    yield return new SearchResultEntryWrapper(entry, this);
 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0)
                     yield break;
@@ -824,8 +824,19 @@ namespace SharpHoundCommonLib
             _ldapConfig = config;
         }
 
-        private void TestLDAPConfig()
+        /// <summary>
+        /// Tests the current LDAP config to ensure its valid by pulling a domain object
+        /// </summary>
+        /// <returns>True if connection was successful, else false</returns>
+        public bool TestLDAPConfig()
         {
+            var filter = new LDAPFilter();
+            filter.AddDomains();
+
+            var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID)
+                .DefaultIfEmpty(null).FirstOrDefault();
+
+            return result != null;
         }
 
         private string GetDomainNameFromSidLdap(string sid)
