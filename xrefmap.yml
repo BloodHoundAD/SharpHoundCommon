@@ -1598,6 +1598,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.SetLDAPConfig
   nameWithType: ILDAPUtils.SetLDAPConfig
+- uid: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig
+  name: TestLDAPConfig()
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_TestLDAPConfig
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig
+  fullName: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig()
+  nameWithType: ILDAPUtils.TestLDAPConfig()
+- uid: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig*
+  name: TestLDAPConfig
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_TestLDAPConfig_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig
+  nameWithType: ILDAPUtils.TestLDAPConfig
 - uid: SharpHoundCommonLib.ISearchResultEntry
   name: ISearchResultEntry
   href: api/SharpHoundCommonLib.ISearchResultEntry.html
@@ -2608,6 +2621,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.SetLDAPConfig
   nameWithType: LDAPUtils.SetLDAPConfig
+- uid: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig
+  name: TestLDAPConfig()
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_TestLDAPConfig
+  commentId: M:SharpHoundCommonLib.LDAPUtils.TestLDAPConfig
+  fullName: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig()
+  nameWithType: LDAPUtils.TestLDAPConfig()
+- uid: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig*
+  name: TestLDAPConfig
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_TestLDAPConfig_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.TestLDAPConfig
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig
+  nameWithType: LDAPUtils.TestLDAPConfig
 - uid: SharpHoundCommonLib.LDAPUtils.UpdateLDAPConfig(SharpHoundCommonLib.LDAPConfig)
   name: UpdateLDAPConfig(LDAPConfig)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_UpdateLDAPConfig_SharpHoundCommonLib_LDAPConfig_
