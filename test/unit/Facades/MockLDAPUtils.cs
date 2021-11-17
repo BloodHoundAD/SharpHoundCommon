@@ -706,6 +706,11 @@ namespace CommonLibTest.Facades
             _domainControllers.TryAdd(domainControllerId, new byte());
         }
 
+        public System.DirectoryServices.ActiveDirectory.Domain GetDomain(string domainName = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
         {
             foreach (var wkp in _seenWellKnownPrincipals)

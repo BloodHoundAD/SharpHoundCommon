@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace SharpHoundCommonLib
 {
@@ -53,6 +54,7 @@ namespace SharpHoundCommonLib
         string ConvertWellKnownPrincipal(string sid, string domain);
         bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
         void AddDomainController(string domainControllerId);
+        Domain GetDomain(string domainName = null);
         IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
 
         /// <summary>

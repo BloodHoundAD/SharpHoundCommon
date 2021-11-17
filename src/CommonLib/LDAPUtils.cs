@@ -1096,7 +1096,7 @@ namespace SharpHoundCommonLib
             return connection;
         }
 
-        internal Domain GetDomain(string domainName = null)
+        public Domain GetDomain(string domainName = null)
         {
             var cacheKey = domainName ?? NullCacheKey;
             if (_domainCache.TryGetValue(cacheKey, out var domain)) return domain;
