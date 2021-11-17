@@ -3530,6 +3530,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Computer.PSRemoteUsers
   nameWithType: Computer.PSRemoteUsers
+- uid: SharpHoundCommonLib.OutputTypes.Computer.RegistrySessions
+  name: RegistrySessions
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_RegistrySessions
+  commentId: P:SharpHoundCommonLib.OutputTypes.Computer.RegistrySessions
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.RegistrySessions
+  nameWithType: Computer.RegistrySessions
+- uid: SharpHoundCommonLib.OutputTypes.Computer.RegistrySessions*
+  name: RegistrySessions
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_RegistrySessions_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.Computer.RegistrySessions
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.RegistrySessions
+  nameWithType: Computer.RegistrySessions
 - uid: SharpHoundCommonLib.OutputTypes.Computer.RemoteDesktopUsers
   name: RemoteDesktopUsers
   href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_RemoteDesktopUsers
@@ -4552,18 +4565,18 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ComputerAvailability
   fullName: SharpHoundCommonLib.Processors.ComputerAvailability
   nameWithType: ComputerAvailability
-- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor
-  name: ComputerAvailability()
-  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor
-  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor
-  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability()
-  nameWithType: ComputerAvailability.ComputerAvailability()
-- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner)
-  name: ComputerAvailability(PortScanner)
-  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_SharpHoundCommonLib_Processors_PortScanner_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner)
-  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(SharpHoundCommonLib.Processors.PortScanner)
-  nameWithType: ComputerAvailability.ComputerAvailability(PortScanner)
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Boolean)
+  name: ComputerAvailability(PortScanner, Int32, Boolean)
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_SharpHoundCommonLib_Processors_PortScanner_System_Int32_System_Boolean_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Boolean)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(SharpHoundCommonLib.Processors.PortScanner, System.Int32, System.Boolean)
+  nameWithType: ComputerAvailability.ComputerAvailability(PortScanner, Int32, Boolean)
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Boolean)
+  name: ComputerAvailability(Int32, Boolean)
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_System_Int32_System_Boolean_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Boolean)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(System.Int32, System.Boolean)
+  nameWithType: ComputerAvailability.ComputerAvailability(Int32, Boolean)
 - uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor*
   name: ComputerAvailability
   href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_
@@ -4687,6 +4700,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged
   nameWithType: ComputerSessionProcessor.ReadUserSessionsPrivileged
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsRegistry(System.String,System.String,System.String)
+  name: ReadUserSessionsRegistry(String, String, String)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessionsRegistry_System_String_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsRegistry(System.String,System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsRegistry(System.String, System.String, System.String)
+  nameWithType: ComputerSessionProcessor.ReadUserSessionsRegistry(String, String, String)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsRegistry*
+  name: ReadUserSessionsRegistry
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessionsRegistry_
+  commentId: Overload:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsRegistry
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsRegistry
+  nameWithType: ComputerSessionProcessor.ReadUserSessionsRegistry
 - uid: SharpHoundCommonLib.Processors.ContainerProcessor
   name: ContainerProcessor
   href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html
@@ -5251,19 +5277,6 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ResolvedSearchResult.IsDomainController
   nameWithType: ResolvedSearchResult.IsDomainController
-- uid: SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
-  name: IsStealthTarget
-  href: api/SharpHoundCommonLib.ResolvedSearchResult.html#SharpHoundCommonLib_ResolvedSearchResult_IsStealthTarget
-  commentId: P:SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
-  fullName: SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
-  nameWithType: ResolvedSearchResult.IsStealthTarget
-- uid: SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget*
-  name: IsStealthTarget
-  href: api/SharpHoundCommonLib.ResolvedSearchResult.html#SharpHoundCommonLib_ResolvedSearchResult_IsStealthTarget_
-  commentId: Overload:SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.ResolvedSearchResult.IsStealthTarget
-  nameWithType: ResolvedSearchResult.IsStealthTarget
 - uid: SharpHoundCommonLib.ResolvedSearchResult.ObjectId
   name: ObjectId
   href: api/SharpHoundCommonLib.ResolvedSearchResult.html#SharpHoundCommonLib_ResolvedSearchResult_ObjectId
