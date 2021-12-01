@@ -19,5 +19,11 @@
             var hSid = Helpers.ConvertSidToHexSid(sid);
             return $"(objectsid={hSid})";
         }
+
+        public static string SpecificGUID(string guid)
+        {
+            var hGuid = Helpers.ConvertGuidToHexGuid(guid);
+            return $"(objectguid={hGuid})";
+        }
     }
 }

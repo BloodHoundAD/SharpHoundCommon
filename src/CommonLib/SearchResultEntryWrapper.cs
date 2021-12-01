@@ -23,10 +23,14 @@ namespace SharpHoundCommonLib
         string GetGuid();
         int PropCount(string prop);
         IEnumerable<string> PropertyNames();
+        bool IsMSA();
+        bool IsGMSA();
     }
 
     public class SearchResultEntryWrapper : ISearchResultEntry
     {
+        private const string GMSAClass = "msds-groupmanagedserviceaccount";
+        private const string MSAClass = "msds-managedserviceaccount";
         private readonly SearchResultEntry _entry;
         private readonly ILDAPUtils _utils;
 
@@ -109,9 +113,7 @@ namespace SharpHoundCommonLib
             var itemType = GetLabel();
             res.ObjectType = itemType;
 
-            //If we have this object class, override the object type
-            if (GetArrayProperty("objectclass").Contains("msds-groupmanagedserviceaccount",
-                StringComparer.InvariantCultureIgnoreCase))
+            if (IsGMSA() || IsMSA())
             {
                 res.ObjectType = Label.User;
                 itemType = Label.User;
@@ -212,6 +214,18 @@ namespace SharpHoundCommonLib
         public IEnumerable<string> PropertyNames()
         {
             foreach (var property in _entry.Attributes.AttributeNames) yield return property.ToString().ToLower();
+        }
+
+        public bool IsMSA()
+        {
+            var classes = GetArrayProperty("objectclass");
+            return classes.Contains(MSAClass, StringComparer.InvariantCultureIgnoreCase);
+        }
+
+        public bool IsGMSA()
+        {
+            var classes = GetArrayProperty("objectclass");
+            return classes.Contains(GMSAClass, StringComparer.InvariantCultureIgnoreCase);
         }
 
         public SearchResultEntry GetEntry()

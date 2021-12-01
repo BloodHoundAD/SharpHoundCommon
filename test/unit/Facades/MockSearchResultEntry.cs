@@ -83,5 +83,15 @@ namespace CommonLibTest.Facades
         {
             throw new NotImplementedException();
         }
+
+        public bool IsMSA()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGMSA()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
