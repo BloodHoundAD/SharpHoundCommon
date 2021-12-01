@@ -1747,6 +1747,32 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ISearchResultEntry.IsDeleted
   nameWithType: ISearchResultEntry.IsDeleted
+- uid: SharpHoundCommonLib.ISearchResultEntry.IsGMSA
+  name: IsGMSA()
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_IsGMSA
+  commentId: M:SharpHoundCommonLib.ISearchResultEntry.IsGMSA
+  fullName: SharpHoundCommonLib.ISearchResultEntry.IsGMSA()
+  nameWithType: ISearchResultEntry.IsGMSA()
+- uid: SharpHoundCommonLib.ISearchResultEntry.IsGMSA*
+  name: IsGMSA
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_IsGMSA_
+  commentId: Overload:SharpHoundCommonLib.ISearchResultEntry.IsGMSA
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ISearchResultEntry.IsGMSA
+  nameWithType: ISearchResultEntry.IsGMSA
+- uid: SharpHoundCommonLib.ISearchResultEntry.IsMSA
+  name: IsMSA()
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_IsMSA
+  commentId: M:SharpHoundCommonLib.ISearchResultEntry.IsMSA
+  fullName: SharpHoundCommonLib.ISearchResultEntry.IsMSA()
+  nameWithType: ISearchResultEntry.IsMSA()
+- uid: SharpHoundCommonLib.ISearchResultEntry.IsMSA*
+  name: IsMSA
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_IsMSA_
+  commentId: Overload:SharpHoundCommonLib.ISearchResultEntry.IsMSA
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ISearchResultEntry.IsMSA
+  nameWithType: ISearchResultEntry.IsMSA
 - uid: SharpHoundCommonLib.ISearchResultEntry.PropCount(System.String)
   name: PropCount(String)
   href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_PropCount_System_String_
@@ -1960,6 +1986,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPQueries.CommonFilters.NeedsSPN
   nameWithType: CommonFilters.NeedsSPN
+- uid: SharpHoundCommonLib.LDAPQueries.CommonFilters.SpecificGUID(System.String)
+  name: SpecificGUID(String)
+  href: api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html#SharpHoundCommonLib_LDAPQueries_CommonFilters_SpecificGUID_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPQueries.CommonFilters.SpecificGUID(System.String)
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonFilters.SpecificGUID(System.String)
+  nameWithType: CommonFilters.SpecificGUID(String)
+- uid: SharpHoundCommonLib.LDAPQueries.CommonFilters.SpecificGUID*
+  name: SpecificGUID
+  href: api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html#SharpHoundCommonLib_LDAPQueries_CommonFilters_SpecificGUID_
+  commentId: Overload:SharpHoundCommonLib.LDAPQueries.CommonFilters.SpecificGUID
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonFilters.SpecificGUID
+  nameWithType: CommonFilters.SpecificGUID
 - uid: SharpHoundCommonLib.LDAPQueries.CommonFilters.SpecificSID(System.String)
   name: SpecificSID(String)
   href: api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html#SharpHoundCommonLib_LDAPQueries_CommonFilters_SpecificSID_System_String_
@@ -5530,6 +5569,32 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.IsDeleted
   nameWithType: SearchResultEntryWrapper.IsDeleted
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA
+  name: IsGMSA()
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_IsGMSA
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA()
+  nameWithType: SearchResultEntryWrapper.IsGMSA()
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA*
+  name: IsGMSA
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_IsGMSA_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA
+  nameWithType: SearchResultEntryWrapper.IsGMSA
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA
+  name: IsMSA()
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_IsMSA
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA()
+  nameWithType: SearchResultEntryWrapper.IsMSA()
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA*
+  name: IsMSA
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_IsMSA_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA
+  nameWithType: SearchResultEntryWrapper.IsMSA
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.PropCount(System.String)
   name: PropCount(String)
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_PropCount_System_String_

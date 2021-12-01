@@ -232,7 +232,7 @@ var assemblies = [
       { "name": "SharpHoundCommonLib.Extensions", "rp": "SharpHoundCommonLib_Extensions.html", "cl": 7, "ucl": 144, "cal": 151, "tl": 296, "ct": "LineCoverage", "mc": "-", "cb": 3, "tb": 86, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Helpers", "rp": "SharpHoundCommonLib_Helpers.html", "cl": 79, "ucl": 11, "cal": 90, "tl": 195, "ct": "LineCoverage", "mc": "-", "cb": 21, "tb": 24, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.LDAPConfig", "rp": "SharpHoundCommonLib_LDAPConfig.html", "cl": 6, "ucl": 3, "cal": 9, "tl": 17, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 4, "lch": [], "bch": [], "hc": [] },
-      { "name": "SharpHoundCommonLib.LDAPQueries.CommonFilters", "rp": "SharpHoundCommonLib_CommonFilters.html", "cl": 1, "ucl": 9, "cal": 10, "tl": 23, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "SharpHoundCommonLib.LDAPQueries.CommonFilters", "rp": "SharpHoundCommonLib_CommonFilters.html", "cl": 1, "ucl": 13, "cal": 14, "tl": 29, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.LDAPQueries.CommonProperties", "rp": "SharpHoundCommonLib_CommonProperties.html", "cl": 47, "ucl": 0, "cal": 47, "tl": 63, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.LDAPQueries.LDAPFilter", "rp": "SharpHoundCommonLib_LDAPFilter.html", "cl": 47, "ucl": 22, "cal": 69, "tl": 197, "ct": "LineCoverage", "mc": "-", "cb": 9, "tb": 12, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.LDAPUtils", "rp": "SharpHoundCommonLib_LDAPUtils.html", "cl": 102, "ucl": 644, "cal": 746, "tl": 1224, "ct": "LineCoverage", "mc": "-", "cb": 27, "tb": 332, "lch": [], "bch": [], "hc": [] },
@@ -273,7 +273,7 @@ var assemblies = [
       { "name": "SharpHoundCommonLib.Processors.SPNProcessors", "rp": "SharpHoundCommonLib_SPNProcessors.html", "cl": 29, "ucl": 0, "cal": 29, "tl": 48, "ct": "LineCoverage", "mc": "-", "cb": 22, "tb": 26, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.UserProperties", "rp": "SharpHoundCommonLib_UserProperties.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 483, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.ResolvedSearchResult", "rp": "SharpHoundCommonLib_ResolvedSearchResult.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 35, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "SharpHoundCommonLib.SearchResultEntryWrapper", "rp": "SharpHoundCommonLib_SearchResultEntryWrapper.html", "cl": 0, "ucl": 124, "cal": 124, "tl": 222, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 47, "lch": [], "bch": [], "hc": [] },
+      { "name": "SharpHoundCommonLib.SearchResultEntryWrapper", "rp": "SharpHoundCommonLib_SearchResultEntryWrapper.html", "cl": 0, "ucl": 131, "cal": 131, "tl": 236, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 49, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.WellKnownPrincipal", "rp": "SharpHoundCommonLib_WellKnownPrincipal.html", "cl": 71, "ucl": 0, "cal": 71, "tl": 88, "ct": "LineCoverage", "mc": "-", "cb": 318, "tb": 318, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
@@ -323,9 +323,9 @@ var riskHotspots = [
       { "value": 0, "exceeded": false },
     ]},
   {
-    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.SearchResultEntryWrapper", "reportPath": "SharpHoundCommonLib_SearchResultEntryWrapper.html", "methodName": "ResolveBloodHoundInfo()", "methodShortName": "ResolveBloodHoundInfo()", "fileIndex": 0, "line": 42,
+    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.SearchResultEntryWrapper", "reportPath": "SharpHoundCommonLib_SearchResultEntryWrapper.html", "methodName": "ResolveBloodHoundInfo()", "methodShortName": "ResolveBloodHoundInfo()", "fileIndex": 0, "line": 46,
     "metrics": [
-      { "value": 43, "exceeded": true },
+      { "value": 45, "exceeded": true },
       { "value": 0, "exceeded": false },
     ]},
 ];

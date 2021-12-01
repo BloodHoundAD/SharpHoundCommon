@@ -18,10 +18,10 @@
 <tr><th>Assembly:</th><td>SharpHoundCommonLib</td></tr>
 <tr><th>File(s):</th><td><a href="#DaSharpHoundCommonSharpHoundCommonsrcCommonLibLDAPQueriesCommonFilterscs" class="navigatetohash">D:\a\SharpHoundCommon\SharpHoundCommon\src\CommonLib\LDAPQueries\CommonFilters.cs</a></td></tr>
 <tr><th>Covered lines:</th><td>1</td></tr>
-<tr><th>Uncovered lines:</th><td>9</td></tr>
-<tr><th>Coverable lines:</th><td>10</td></tr>
-<tr><th>Total lines:</th><td>23</td></tr>
-<tr><th>Line coverage:</th><td>10% (1 of 10)</td></tr>
+<tr><th>Uncovered lines:</th><td>13</td></tr>
+<tr><th>Coverable lines:</th><td>14</td></tr>
+<tr><th>Total lines:</th><td>29</td></tr>
+<tr><th>Line coverage:</th><td>7.1% (1 of 14)</td></tr>
 <tr><th>Covered branches:</th><td>0</td></tr>
 <tr><th>Total branches:</th><td>0</td></tr>
 </tbody>
@@ -31,6 +31,7 @@
 <thead><tr><th>Method</th><th>Branch coverage <a href="https://en.wikipedia.org/wiki/Code_coverage"><i class="icon-info-circled"></i></a></th><th>Cyclomatic complexity <a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon-info-circled"></i></a></th><th>NPath complexity <a href="https://modess.io/npath-complexity-cyclomatic-complexity-explained"><i class="icon-info-circled"></i></a></th><th>Sequence coverage <a href="https://en.wikipedia.org/wiki/Code_coverage"><i class="icon-info-circled"></i></a></th></tr></thead>
 <tbody>
 <tr><td title="System.String SharpHoundCommonLib.LDAPQueries.CommonFilters::SpecificSID(System.String)"><a href="#file0_line18" class="navigatetohash">SpecificSID(...)</a></td><td>100%</td><td>1</td><td>0</td><td>0%</td></tr>
+<tr><td title="System.String SharpHoundCommonLib.LDAPQueries.CommonFilters::SpecificGUID(System.String)"><a href="#file0_line24" class="navigatetohash">SpecificGUID(...)</a></td><td>100%</td><td>1</td><td>0</td><td>0%</td></tr>
 </tbody>
 </table>
 <h1>File(s)</h1>
@@ -59,11 +60,17 @@
 <tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line19"></a><code>19</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;hSid&nbsp;=&nbsp;Helpers.ConvertSidToHexSid(sid);</code></td></tr>
 <tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line20"></a><code>20</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$&quot;(objectsid={hSid})&quot;;</code></td></tr>
 <tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line21"></a><code>21</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line22"></a><code>22</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line23"></a><code>23</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line22"></a><code>22</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line23"></a><code>23</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;string&nbsp;SpecificGUID(string&nbsp;guid)</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line24"></a><code>24</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line25"></a><code>25</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;hGuid&nbsp;=&nbsp;Helpers.ConvertGuidToHexGuid(guid);</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line26"></a><code>26</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$&quot;(objectguid={hGuid})&quot;;</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line27"></a><code>27</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line28"></a><code>28</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line29"></a><code>29</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />11/17/2021 - 10:17:57 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />12/1/2021 - 3:32:07 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
@@ -74,6 +81,7 @@
 <a href="#file0_line13" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - DomainControllers()"><i class="icon-wrench"></i>DomainControllers()</a><br />
 <a href="#file0_line15" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - TrustedDomains()"><i class="icon-wrench"></i>TrustedDomains()</a><br />
 <a href="#file0_line18" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - SpecificSID(System.String)"><i class="icon-cube"></i>SpecificSID(System.String)</a><br />
+<a href="#file0_line24" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - SpecificGUID(System.String)"><i class="icon-cube"></i>SpecificGUID(System.String)</a><br />
 <br/></div>
 </div></div>
 <script type="text/javascript">
