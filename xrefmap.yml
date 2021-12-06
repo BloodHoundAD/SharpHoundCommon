@@ -629,12 +629,6 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnly
   fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnly
   nameWithType: ResolvedCollectionMethod.DCOnly
-- uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnlyInternal
-  name: DCOnlyInternal
-  href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_DCOnlyInternal
-  commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnlyInternal
-  fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnlyInternal
-  nameWithType: ResolvedCollectionMethod.DCOnlyInternal
 - uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.Default
   name: Default
   href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_Default
@@ -4478,19 +4472,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.User.PrimaryGroupSID
   nameWithType: User.PrimaryGroupSID
-- uid: SharpHoundCommonLib.OutputTypes.User.SpnTargets
-  name: SpnTargets
-  href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_SpnTargets
-  commentId: P:SharpHoundCommonLib.OutputTypes.User.SpnTargets
-  fullName: SharpHoundCommonLib.OutputTypes.User.SpnTargets
-  nameWithType: User.SpnTargets
-- uid: SharpHoundCommonLib.OutputTypes.User.SpnTargets*
-  name: SpnTargets
-  href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_SpnTargets_
-  commentId: Overload:SharpHoundCommonLib.OutputTypes.User.SpnTargets
+- uid: SharpHoundCommonLib.OutputTypes.User.SPNTargets
+  name: SPNTargets
+  href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_SPNTargets
+  commentId: P:SharpHoundCommonLib.OutputTypes.User.SPNTargets
+  fullName: SharpHoundCommonLib.OutputTypes.User.SPNTargets
+  nameWithType: User.SPNTargets
+- uid: SharpHoundCommonLib.OutputTypes.User.SPNTargets*
+  name: SPNTargets
+  href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_SPNTargets_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.User.SPNTargets
   isSpec: "True"
-  fullName: SharpHoundCommonLib.OutputTypes.User.SpnTargets
-  nameWithType: User.SpnTargets
+  fullName: SharpHoundCommonLib.OutputTypes.User.SPNTargets
+  nameWithType: User.SPNTargets
 - uid: SharpHoundCommonLib.ParsedGPLink
   name: ParsedGPLink
   href: api/SharpHoundCommonLib.ParsedGPLink.html
