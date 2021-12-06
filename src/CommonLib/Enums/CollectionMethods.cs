@@ -20,11 +20,10 @@ namespace SharpHoundCommonLib.Enums
         LoggedOnLoop = 1 << 11,
         DCOM = 1 << 12,
         SPNTargets = 1 << 13,
-        DCOnlyInternal = 1 << 14,
-        PSRemote = 1 << 15,
+        PSRemote = 1 << 14,
         LocalGroups = DCOM | RDP | LocalAdmin | PSRemote,
         ComputerOnly = LocalGroups | Session,
-        DCOnly = ACL | Container | Group | ObjectProps | Trusts | GPOLocalGroup | DCOnlyInternal,
+        DCOnly = ACL | Container | Group | ObjectProps | Trusts | GPOLocalGroup,
         Default = Group | Session | Trusts | ACL | ObjectProps | LocalGroups | SPNTargets | Container,
         All = Default | LoggedOn | GPOLocalGroup
     }
