@@ -6,6 +6,7 @@ namespace SharpHoundCommonLib.Processors
     public class SPNProcessors
     {
         private readonly ILDAPUtils _utils;
+        private const string MSSQLSPNString = "mssqlsvc";
 
         public SPNProcessors(ILDAPUtils utils)
         {
@@ -26,7 +27,7 @@ namespace SharpHoundCommonLib.Processors
                 if (spn.Contains("@"))
                     continue;
 
-                if (spn.ToLower().Contains("mssqlsvc"))
+                if (spn.ToLower().Contains(MSSQLSPNString))
                 {
                     var port = 1433;
 
