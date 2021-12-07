@@ -2,7 +2,6 @@
 {
     public static class EdgeNames
     {
-        public const string ReadGMSAPassword = "ReadGMSAPassword";
         public const string GenericWrite = "GenericWrite";
         public const string Owns = "Owns";
         public const string GenericAll = "GenericAll";
@@ -15,6 +14,7 @@
         public const string ForceChangePassword = "ForceChangePassword";
         public const string AddAllowedToAct = "AddAllowedToAct";
         public const string ReadLAPSPassword = "ReadLAPSPassword";
+        public const string ReadGMSAPassword = "ReadGMSAPassword";
         public const string AddMember = "AddMember";
         public const string WriteSPN = "WriteSPN";
         public const string AddKeyCredentialLink = "AddKeyCredentialLink";
