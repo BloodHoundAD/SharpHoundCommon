@@ -4919,6 +4919,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ACLProcessor.ACLProcessor
   nameWithType: ACLProcessor.ACLProcessor
+- uid: SharpHoundCommonLib.Processors.ACLProcessor.IsACLProtected(SharpHoundCommonLib.ISearchResultEntry)
+  name: IsACLProtected(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_IsACLProtected_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.IsACLProtected(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.ACLProcessor.IsACLProtected(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: ACLProcessor.IsACLProtected(ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.ACLProcessor.IsACLProtected(System.Byte[])
   name: IsACLProtected(Byte[])
   href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_IsACLProtected_System_Byte___
@@ -5013,6 +5019,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability
   nameWithType: ComputerAvailability.ComputerAvailability
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  name: IsComputerAvailable(ResolvedSearchResult, ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability_IsComputerAvailable_SharpHoundCommonLib_ResolvedSearchResult_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(SharpHoundCommonLib.ResolvedSearchResult, SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: ComputerAvailability.IsComputerAvailable(ResolvedSearchResult, ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.ComputerAvailability.IsComputerAvailable(System.String,System.String,System.String)
   name: IsComputerAvailable(String, String, String)
   href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability_IsComputerAvailable_System_String_System_String_System_String_
