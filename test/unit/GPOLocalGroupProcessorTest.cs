@@ -135,10 +135,10 @@ namespace CommonLibTest
             mockSearchResults.Add(mockSearchResultEntry.Object);
             mockLDAPUtils.Setup(x => x.QueryLDAP(new LDAPQueryOptions
                 {
-                    filter = "(samaccounttype=805306369)",
-                    scope = SearchScope.Subtree,
-                    properties = CommonProperties.ObjectSID,
-                    adsPath = null
+                    Filter = "(samaccounttype=805306369)",
+                    Scope = SearchScope.Subtree,
+                    Properties = CommonProperties.ObjectSID,
+                    AdsPath = null
                 }))
                 .Returns(mockSearchResults.ToArray());
 

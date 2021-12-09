@@ -68,10 +68,10 @@ namespace SharpHoundCommonLib.Processors
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
             var options = new LDAPQueryOptions
             {
-                filter = new LDAPFilter().AddComputers().GetFilter(),
-                scope = SearchScope.Subtree,
-                properties = CommonProperties.ObjectSID,
-                adsPath = distinguishedName
+                Filter = new LDAPFilter().AddComputers().GetFilter(),
+                Scope = SearchScope.Subtree,
+                Properties = CommonProperties.ObjectSID,
+                AdsPath = distinguishedName
             };
 
             var affectedComputers = _utils.QueryLDAP(options)
@@ -121,10 +121,10 @@ namespace SharpHoundCommonLib.Processors
 
                     var opts = new LDAPQueryOptions
                     {
-                        filter = new LDAPFilter().AddAllObjects().GetFilter(),
-                        scope = SearchScope.Base,
-                        properties = CommonProperties.GPCFileSysPath,
-                        adsPath = linkDn
+                        Filter = new LDAPFilter().AddAllObjects().GetFilter(),
+                        Scope = SearchScope.Base,
+                        Properties = CommonProperties.GPCFileSysPath,
+                        AdsPath = linkDn
                     };
                     var filePath = _utils.QueryLDAP(opts).FirstOrDefault()?
                         .GetProperty("gpcfilesyspath");

@@ -66,7 +66,7 @@ namespace SharpHoundCommonLib
         {
             var ptr = IntPtr.Zero;
 
-            _log.LogTrace("Beginning NetSessionEnum for {serverName}", serverName);
+            _log.LogTrace("Beginning NetSessionEnum for {ServerName}", serverName);
             try
             {
                 var resumeHandle = 0;
@@ -74,7 +74,7 @@ namespace SharpHoundCommonLib
                     out var entriesread,
                     out _, ref resumeHandle);
 
-                _log.LogTrace("Result of NetSessionEnum for {serverName} is {result}", serverName, result);
+                _log.LogTrace("Result of NetSessionEnum for {ServerName} is {Result}", serverName, result);
 
                 if (result != NERR.NERR_Success)
                     throw new APIException
@@ -105,12 +105,12 @@ namespace SharpHoundCommonLib
             try
             {
                 var resumeHandle = 0;
-                _log.LogTrace("Beginning NetWkstaUserEnum for {servername}", servername);
+                _log.LogTrace("Beginning NetWkstaUserEnum for {ServerName}", servername);
                 var result = NetWkstaUserEnum(servername, NetWkstaUserEnumQueryLevel, out ptr, -1, out var entriesread,
                     out _,
                     ref resumeHandle);
 
-                _log.LogTrace("Result of NetWkstaUserEnum for computer {servername} is {result}", servername, result);
+                _log.LogTrace("Result of NetWkstaUserEnum for computer {ServerName} is {Result}", servername, result);
 
                 if (result != NERR.NERR_Success && result != NERR.ERROR_MORE_DATA)
                     throw new APIException
@@ -192,6 +192,7 @@ namespace SharpHoundCommonLib
             return SamCloseHandle(handle);
         }
 
+        // ReSharper disable once InconsistentNaming
         public struct OBJECT_ATTRIBUTES : IDisposable
         {
             public void Dispose()

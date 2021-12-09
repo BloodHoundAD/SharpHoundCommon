@@ -17,7 +17,7 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("ContainerProc");
         }
 
-        private static bool IsDNFiltered(string distinguishedName)
+        private static bool IsDistinguishedNameFiltered(string distinguishedName)
         {
             var dn = distinguishedName.ToUpper();
             if (dn.Contains("CN=PROGRAM DATA,DC=")) return true;
@@ -45,6 +45,7 @@ namespace SharpHoundCommonLib.Processors
         ///     Finds all immediate child objects of a container.
         /// </summary>
         /// <param name="distinguishedName"></param>
+        /// <param name="containerName"></param>
         /// <returns></returns>
         public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName)
         {
@@ -54,16 +55,16 @@ namespace SharpHoundCommonLib.Processors
                 adsPath: distinguishedName))
             {
                 var dn = childEntry.DistinguishedName;
-                if (IsDNFiltered(dn))
+                if (IsDistinguishedNameFiltered(dn))
                 {
-                    _log.LogTrace("Skipping filtered child {child} for {container}", dn, containerName);
+                    _log.LogTrace("Skipping filtered child {Child} for {Container}", dn, containerName);
                     continue;
                 }
 
                 var id = childEntry.GetObjectIdentifier();
                 if (id == null)
                 {
-                    _log.LogTrace("Got null ID for {childDn} under {container}", childEntry.DistinguishedName,
+                    _log.LogTrace("Got null ID for {ChildDN} under {Container}", childEntry.DistinguishedName,
                         containerName);
                     continue;
                 }
@@ -71,7 +72,7 @@ namespace SharpHoundCommonLib.Processors
                 var res = _utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(dn));
                 if (res == null)
                 {
-                    _log.LogTrace("Failed to resolve principal for {id}", id);
+                    _log.LogTrace("Failed to resolve principal for {ID}", id);
                     continue;
                 }
 
@@ -104,7 +105,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (res == null)
                 {
-                    _log.LogTrace("Failed to resolve DN {dn}", link.DistinguishedName);
+                    _log.LogTrace("Failed to resolve DN {DN}", link.DistinguishedName);
                     continue;
                 }
 

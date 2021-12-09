@@ -29,7 +29,7 @@ namespace SharpHoundCommonLib.Processors
                 await Task.WhenAny(ca, Task.Delay(timeout));
                 client.Close();
                 if (!ca.IsFaulted && ca.IsCompleted) return true;
-                _log.LogDebug("{hostname} did not respond to ping", hostname);
+                _log.LogDebug("{Hostname} did not respond to ping", hostname);
                 return false;
             }
             catch

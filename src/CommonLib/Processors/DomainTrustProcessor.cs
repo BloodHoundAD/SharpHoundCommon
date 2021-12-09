@@ -34,7 +34,7 @@ namespace SharpHoundCommonLib.Processors
                 var targetSidBytes = result.GetByteProperty("securityIdentifier");
                 if (targetSidBytes == null || targetSidBytes.Length == 0)
                 {
-                    _log.LogTrace("Trust sid is null or empty for target: {domain}", domain);
+                    _log.LogTrace("Trust sid is null or empty for target: {Domain}", domain);
                     continue;
                 }
 
@@ -45,7 +45,7 @@ namespace SharpHoundCommonLib.Processors
                 }
                 catch
                 {
-                    _log.LogTrace("Failed to convert bytes to SID for target: {domain}", domain);
+                    _log.LogTrace("Failed to convert bytes to SID for target: {Domain}", domain);
                     continue;
                 }
 
@@ -57,7 +57,7 @@ namespace SharpHoundCommonLib.Processors
                 }
                 else
                 {
-                    _log.LogTrace("Failed to convert trustdirection for target: {domain}", domain);
+                    _log.LogTrace("Failed to convert trustdirection for target: {Domain}", domain);
                     continue;
                 }
 
@@ -70,7 +70,7 @@ namespace SharpHoundCommonLib.Processors
                 }
                 else
                 {
-                    _log.LogTrace("Failed to convert trustattributes for target: {domain}", domain);
+                    _log.LogTrace("Failed to convert trustattributes for target: {Domain}", domain);
                     continue;
                 }
 

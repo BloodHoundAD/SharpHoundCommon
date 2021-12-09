@@ -44,7 +44,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
-                _log.LogTrace("{computerName} is not available because operating system does not match.", computerName);
+                _log.LogTrace("{ComputerName} is not available because operating system does not match", computerName);
                 return new ComputerStatus
                 {
                     Connectable = false,
@@ -57,7 +57,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (passwordLastSet < threshold)
             {
-                _log.LogTrace("{computerName} is not available because password last set is out of range",
+                _log.LogTrace("{ComputerName} is not available because password last set is out of range",
                     computerName);
                 return new ComputerStatus
                 {
@@ -76,7 +76,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (!await _scanner.CheckPort(computerName, timeout: _scanTimeout))
             {
-                _log.LogTrace("{computerName} is not available because port 445 is unavailable", computerName);
+                _log.LogTrace("{ComputerName} is not available because port 445 is unavailable", computerName);
                 return new ComputerStatus
                 {
                     Connectable = false,

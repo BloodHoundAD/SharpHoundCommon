@@ -116,6 +116,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>
         /// <param name="objectDomain"></param>
+        /// <param name="objectName"></param>
         /// <param name="objectType"></param>
         /// <param name="hasLaps"></param>
         /// <returns></returns>
@@ -125,7 +126,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (ntSecurityDescriptor == null)
             {
-                _log.LogDebug("Security Descriptor is null for {name}", objectName);
+                _log.LogDebug("Security Descriptor is null for {Name}", objectName);
                 yield break;
             }
 
@@ -148,26 +149,26 @@ namespace SharpHoundCommonLib.Processors
             }
             else
             {
-                _log.LogDebug("Owner is null for {name}", objectName);
+                _log.LogDebug("Owner is null for {Name}", objectName);
             }
 
             foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
                 if (ace == null)
                 {
-                    _log.LogTrace("Skipping null ACE for {name}", objectName);
+                    _log.LogTrace("Skipping null ACE for {Name}", objectName);
                     continue;
                 }
 
                 if (ace.AccessControlType() == AccessControlType.Deny)
                 {
-                    _log.LogTrace("Skipping deny ACE for {name}", objectName);
+                    _log.LogTrace("Skipping deny ACE for {Name}", objectName);
                     continue;
                 }
 
                 if (!ace.IsAceInheritedFrom(BaseGuids[objectType]))
                 {
-                    _log.LogTrace("Skipping ACE with unmatched GUID/inheritance for {name}", objectName);
+                    _log.LogTrace("Skipping ACE with unmatched GUID/inheritance for {Name}", objectName);
                     continue;
                 }
 
@@ -176,7 +177,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (principalSid == null)
                 {
-                    _log.LogTrace("Pre-Process excluded SID {sid} on {name}", ir ?? "null", objectName);
+                    _log.LogTrace("Pre-Process excluded SID {SID} on {Name}", ir ?? "null", objectName);
                     continue;
                 }
 
@@ -189,7 +190,7 @@ namespace SharpHoundCommonLib.Processors
 
                 GuidMap.TryGetValue(aceType, out var mappedGuid);
 
-                _log.LogTrace("Processing ACE with rights {rights} and guid {guid} on object {name}", aceRights,
+                _log.LogTrace("Processing ACE with rights {Rights} and guid {GUID} on object {Name}", aceRights,
                     aceType, objectName);
 
                 //GenericAll applies to every object
@@ -382,14 +383,15 @@ namespace SharpHoundCommonLib.Processors
         ///     Processes the msds-groupmsamembership property and returns ACEs representing principals that can read the GMSA
         ///     password from an object
         /// </summary>
-        /// <param name="entry"></param>
+        /// <param name="groupMSAMembership"></param>
+        /// <param name="objectName"></param>
         /// <param name="objectDomain"></param>
         /// <returns></returns>
         public IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectName, string objectDomain)
         {
             if (groupMSAMembership == null)
             {
-                _log.LogTrace("GMSA bytes are null for {name}", objectName);
+                _log.LogTrace("GMSA bytes are null for {Name}", objectName);
                 yield break;
             }
 
@@ -401,13 +403,13 @@ namespace SharpHoundCommonLib.Processors
             {
                 if (ace == null)
                 {
-                    _log.LogTrace("Skipping null GMSA ACE for {name}", objectName);
+                    _log.LogTrace("Skipping null GMSA ACE for {Name}", objectName);
                     continue;
                 }
 
                 if (ace.AccessControlType() == AccessControlType.Deny)
                 {
-                    _log.LogTrace("Skipping deny GMSA ACE for {name}", objectName);
+                    _log.LogTrace("Skipping deny GMSA ACE for {Name}", objectName);
                     continue;
                 }
 
@@ -416,11 +418,11 @@ namespace SharpHoundCommonLib.Processors
 
                 if (principalSid == null)
                 {
-                    _log.LogTrace("Pre-Process excluded SID {sid} on {name}", ir ?? "null", objectName);
+                    _log.LogTrace("Pre-Process excluded SID {SID} on {Name}", ir ?? "null", objectName);
                     continue;
                 }
 
-                _log.LogTrace("Processing GMSA ACE with principal {principal}", principalSid);
+                _log.LogTrace("Processing GMSA ACE with principal {Principal}", principalSid);
 
                 var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
 

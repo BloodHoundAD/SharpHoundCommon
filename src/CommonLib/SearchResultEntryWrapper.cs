@@ -53,7 +53,7 @@ namespace SharpHoundCommonLib
             var objectId = GetObjectIdentifier();
             if (objectId == null)
             {
-                _log.LogWarning("ObjectIdentifier is null for {dn}", DistinguishedName);
+                _log.LogWarning("ObjectIdentifier is null for {DN}", DistinguishedName);
                 return null;
             }
 
@@ -63,7 +63,7 @@ namespace SharpHoundCommonLib
                 var flags = (UacFlags)flag;
                 if ((flags & UacFlags.ServerTrustAccount) != 0)
                 {
-                    _log.LogTrace("Marked {sid} as a domain controller", objectId);
+                    _log.LogTrace("Marked {SID} as a domain controller", objectId);
                     res.IsDomainController = true;
                     _utils.AddDomainController(objectId);
                 }
@@ -73,7 +73,7 @@ namespace SharpHoundCommonLib
             if (IsDeleted())
             {
                 res.Deleted = IsDeleted();
-                _log.LogTrace("{sid} is tombstoned, skipping rest of resolution", objectId);
+                _log.LogTrace("{SID} is tombstoned, skipping rest of resolution", objectId);
                 return res;
             }
 
@@ -88,7 +88,7 @@ namespace SharpHoundCommonLib
                 }
                 else
                 {
-                    _log.LogWarning("Failed to resolve domain for {itemId}", objectId);
+                    _log.LogWarning("Failed to resolve domain for {ObjectID}", objectId);
                     return null;
                 }
             }
@@ -97,7 +97,7 @@ namespace SharpHoundCommonLib
                 itemDomain = Helpers.DistinguishedNameToDomain(distinguishedName);
             }
 
-            _log.LogTrace("Resolved domain for {sid} to {domain}", objectId, itemDomain);
+            _log.LogTrace("Resolved domain for {SID} to {Domain}", objectId, itemDomain);
 
             res.Domain = itemDomain;
 
@@ -108,7 +108,7 @@ namespace SharpHoundCommonLib
                 res.ObjectType = wkPrincipal.ObjectType;
                 res.ObjectId = _utils.ConvertWellKnownPrincipal(objectId, itemDomain);
 
-                _log.LogTrace("Resolved {dn} to wkp {objectid}", DistinguishedName, res.ObjectId);
+                _log.LogTrace("Resolved {DN} to wkp {ObjectID}", DistinguishedName, res.ObjectId);
                 return res;
             }
 
@@ -135,7 +135,7 @@ namespace SharpHoundCommonLib
                 itemType = Label.User;
             }
 
-            _log.LogTrace("Resolved type for {sid} to {type}", objectId, itemType);
+            _log.LogTrace("Resolved type for {SID} to {Label}", objectId, itemType);
 
             switch (itemType)
             {

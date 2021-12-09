@@ -36,6 +36,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="distinguishedName"></param>
         /// <param name="members"></param>
+        /// <param name="objectName"></param>
         /// <returns></returns>
         public IEnumerable<TypedPrincipal> ReadGroupMembers(string distinguishedName, string[] members,
             string objectName)
@@ -45,11 +46,11 @@ namespace SharpHoundCommonLib.Processors
             // more than a certain number of items. If we get nothing back from this, then the group is empty
             if (members.Length == 0)
             {
-                _log.LogTrace("Member property for {distinguishedName} is empty, trying range retrieval",
+                _log.LogTrace("Member property for {DistinguishedName} is empty, trying range retrieval",
                     distinguishedName);
                 foreach (var member in _utils.DoRangedRetrieval(distinguishedName, "member"))
                 {
-                    _log.LogTrace("Got member {dn} from ranged retrieval");
+                    _log.LogTrace("Got member {DN} from ranged retrieval", member);
                     var res = _utils.ResolveDistinguishedName(member);
 
                     if (res == null)

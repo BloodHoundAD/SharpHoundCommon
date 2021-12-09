@@ -15,7 +15,8 @@ namespace SharpHoundCommonLib
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
             Func<TState, Exception, string> formatter)
         {
-            Logging.Logger.Log(logLevel, eventId, state, exception, formatter);
+            var newLog = FormatLog(formatter(state, exception), exception);
+            Logging.Logger.Log(logLevel, newLog);
         }
 
         public bool IsEnabled(LogLevel logLevel)

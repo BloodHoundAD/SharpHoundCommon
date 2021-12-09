@@ -37,7 +37,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (servicePrincipalNames.Length == 0)
             {
-                _log.LogTrace("SPN Array is empty for {name}", objectName);
+                _log.LogTrace("SPN Array is empty for {Name}", objectName);
                 yield break;
             }
 
@@ -48,15 +48,15 @@ namespace SharpHoundCommonLib.Processors
                 //This SPN format isn't useful for us right now (username@domain)
                 if (spn.Contains("@"))
                 {
-                    _log.LogTrace("Skipping spn without @ {spn} for {name}", spn, objectName);
+                    _log.LogTrace("Skipping spn without @ {SPN} for {Name}", spn, objectName);
                     continue;
                 }
 
-                _log.LogTrace("Processing SPN {spn} for {name}", spn, objectName);
+                _log.LogTrace("Processing SPN {SPN} for {Name}", spn, objectName);
 
                 if (spn.ToLower().Contains(MSSQLSPNString))
                 {
-                    _log.LogTrace("Matched SQL SPN {spn} for {name}", spn, objectName);
+                    _log.LogTrace("Matched SQL SPN {SPN} for {Name}", spn, objectName);
                     var port = 1433;
 
                     if (spn.Contains(":"))
@@ -64,7 +64,7 @@ namespace SharpHoundCommonLib.Processors
                             port = 1433;
 
                     var host = await _utils.ResolveHostToSid(spn, domain);
-                    _log.LogTrace("Resolved {spn} to {host}", spn, host);
+                    _log.LogTrace("Resolved {SPN} to {Hostname}", spn, host);
                     if (host.StartsWith("S-1-"))
                         yield return new SPNTarget
                         {

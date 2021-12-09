@@ -29,7 +29,7 @@ namespace SharpHoundCommonLib
         private static Cache CacheInstance { get; set; }
 
         /// <summary>
-        ///     Add a SID <-> Domain mapping to the cache
+        ///     Add a SID to/from Domain mapping to the cache
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -130,6 +130,7 @@ namespace SharpHoundCommonLib
         public static void SetCacheInstance(Cache cache)
         {
             CacheInstance = cache;
+            CreateMissingDictionaries();
         }
 
         public string GetCacheStats()

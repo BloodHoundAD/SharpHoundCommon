@@ -47,7 +47,7 @@ namespace SharpHoundCommonLib.Processors
             }
             catch (APIException e)
             {
-                _log.LogDebug("NetSessionEnum failed on {computerName}: {reason}", computerName, e.Status);
+                _log.LogDebug("NetSessionEnum failed on {ComputerName}: {Status}", computerName, e.Status);
                 ret.Collected = false;
                 ret.FailureReason = e.Status;
                 return ret;
@@ -61,7 +61,7 @@ namespace SharpHoundCommonLib.Processors
                 var username = sesInfo.sesi10_username;
                 var computerSessionName = sesInfo.sesi10_cname;
 
-                _log.LogTrace("NetSessionEnum Entry: {username}@{computerSessionName} from {computerName}", username,
+                _log.LogTrace("NetSessionEnum Entry: {Username}@{ComputerSessionName} from {ComputerName}", username,
                     computerSessionName, computerName);
 
                 //Filter out blank/null cnames/usernames
@@ -77,7 +77,7 @@ namespace SharpHoundCommonLib.Processors
                     username.Equals(_currentUserName, StringComparison.CurrentCultureIgnoreCase) ||
                     username.Equals("anonymous logon", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _log.LogTrace("Skipping session for {username}", username);
+                    _log.LogTrace("Skipping session for {Username}", username);
                     continue;
                 }
 
@@ -96,7 +96,7 @@ namespace SharpHoundCommonLib.Processors
                 //Throw out this data if we couldn't resolve it successfully. 
                 if (resolvedComputerSID == null || !resolvedComputerSID.StartsWith("S-1"))
                 {
-                    _log.LogTrace("Unable to resolve {computerSessionName} to real SID", computerSessionName);
+                    _log.LogTrace("Unable to resolve {ComputerSessionName} to real SID", computerSessionName);
                     continue;
                 }
 
@@ -143,7 +143,7 @@ namespace SharpHoundCommonLib.Processors
             }
             catch (APIException e)
             {
-                _log.LogTrace("NetWkstaUserEnum failed on {computername}: {reason}", computerName, e.Status);
+                _log.LogTrace("NetWkstaUserEnum failed on {ComputerName}: {Status}", computerName, e.Status);
                 ret.Collected = false;
                 ret.FailureReason = e.Status;
                 return ret;
@@ -157,13 +157,13 @@ namespace SharpHoundCommonLib.Processors
                 var domain = wkstaUserInfo.wkui1_logon_domain;
                 var username = wkstaUserInfo.wkui1_username;
 
-                _log.LogTrace("NetWkstaUserEnum entry: {username}@{domain} from {computerName}", username, domain,
+                _log.LogTrace("NetWkstaUserEnum entry: {Username}@{Domain} from {ComputerName}", username, domain,
                     computerName);
 
                 //These are local computer accounts.
                 if (domain.Equals(computerSamAccountName, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _log.LogTrace("Skipping local entry {username}@{domain}", username, domain);
+                    _log.LogTrace("Skipping local entry {Username}@{Domain}", username, domain);
                     continue;
                 }
 
@@ -184,7 +184,7 @@ namespace SharpHoundCommonLib.Processors
                 //Any domain with a space is unusable. It'll be things like NT Authority or Font Driver
                 if (domain.Contains(" "))
                 {
-                    _log.LogTrace("Skipping domain with space: {domain}", domain);
+                    _log.LogTrace("Skipping domain with space: {Domain}", domain);
                     continue;
                 }
 
@@ -192,7 +192,7 @@ namespace SharpHoundCommonLib.Processors
                 if (res == null)
                     continue;
 
-                _log.LogTrace("Resolved NetWkstaUserEnum entry: {sid}", res.ObjectIdentifier);
+                _log.LogTrace("Resolved NetWkstaUserEnum entry: {SID}", res.ObjectIdentifier);
                 results.Add(res);
             }
 
@@ -226,7 +226,7 @@ namespace SharpHoundCommonLib.Processors
             }
             catch (Exception e)
             {
-                _log.LogTrace("Failed to open remote registry on {computerName}: {reason}", computerName, e.Message);
+                _log.LogTrace("Failed to open remote registry on {ComputerName}: {Status}", computerName, e.Message);
                 ret.Collected = false;
                 ret.FailureReason = e.Message;
                 return ret;

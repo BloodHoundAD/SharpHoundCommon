@@ -14,11 +14,11 @@ namespace SharpHoundCommonLib
 {
     public static class Extensions
     {
-        private static readonly ILogger _log;
+        private static readonly ILogger Log;
 
         static Extensions()
         {
-            _log = Logging.LogProvider.CreateLogger("Extensions");
+            Log = Logging.LogProvider.CreateLogger("Extensions");
         }
 
         internal static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items,
@@ -267,7 +267,7 @@ namespace SharpHoundCommonLib
 
             if (objectId == null)
             {
-                _log.LogWarning("Failed to get an object identifier for {dn}", entry.DistinguishedName);
+                Log.LogWarning("Failed to get an object identifier for {DN}", entry.DistinguishedName);
                 return Label.Base;
             }
 
