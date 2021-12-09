@@ -38,6 +38,11 @@ namespace SharpHoundCommonLib
             _log = log ?? Logging.LogProvider.CreateLogger("NativeMethods");
         }
 
+        public NativeMethods()
+        {
+            _log = Logging.LogProvider.CreateLogger("NativeMethods");
+        }
+
         public virtual WorkstationInfo100 CallNetWkstaGetInfo(string serverName)
         {
             var ptr = IntPtr.Zero;

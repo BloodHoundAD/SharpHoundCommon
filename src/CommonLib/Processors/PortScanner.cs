@@ -8,6 +8,11 @@ namespace SharpHoundCommonLib.Processors
     {
         private readonly ILogger _log;
 
+        public PortScanner()
+        {
+            _log = Logging.LogProvider.CreateLogger("PortScanner");
+        }
+        
         public PortScanner(ILogger log = null)
         {
             _log = log ?? Logging.LogProvider.CreateLogger("PortScanner");

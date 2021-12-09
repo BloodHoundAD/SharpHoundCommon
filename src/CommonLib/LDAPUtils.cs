@@ -54,6 +54,13 @@ namespace SharpHoundCommonLib
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
 
+        public LDAPUtils()
+        {
+            _nativeMethods = new NativeMethods();
+            _portScanner = new PortScanner();
+            _log = Logging.LogProvider.CreateLogger("LDAPUtils");
+        }
+        
         public LDAPUtils(ILogger log = null)
         {
             _nativeMethods = new NativeMethods();
