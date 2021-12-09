@@ -55,7 +55,7 @@ namespace CommonLibTest
         public void ACLProcessor_IsACLProtected_NullNTSD_ReturnsFalse()
         {
             var processor = new ACLProcessor(new MockLDAPUtils(), true);
-            var result = processor.IsACLProtected(null);
+            var result = processor.IsACLProtected((byte[])null);
             Assert.False(result);
         }
 

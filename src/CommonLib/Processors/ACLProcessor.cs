@@ -78,6 +78,17 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
+        /// Helper function to use commonlib types in IsACLProtected
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public bool IsACLProtected(ISearchResultEntry entry)
+        {
+            var ntsd = entry.GetByteProperty(LDAPProperties.SecurityDescriptor);
+            return IsACLProtected(ntsd);
+        }
+
+        /// <summary>
         ///     Gets the protection state of the access control list
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>

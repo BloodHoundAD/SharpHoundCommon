@@ -30,6 +30,21 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
+        /// Helper function to use commonlib types for IsComputerAvailable
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public Task<ComputerStatus> IsComputerAvailable(ResolvedSearchResult result, ISearchResultEntry entry)
+        {
+            var name = result.DisplayName;
+            var os = entry.GetProperty(LDAPProperties.OperatingSystem);
+            var pwdlastset = entry.GetProperty(LDAPProperties.PasswordLastSet);
+
+            return IsComputerAvailable(name, os, pwdlastset);
+        }
+
+        /// <summary>
         ///     Checks if a computer is available for SharpHound enumeration using the following criteria:
         ///     The "operatingsystem" LDAP attribute must contain the string "Windows"
         ///     The "pwdlastset" LDAP attribute must be within 60 days of the current date.
