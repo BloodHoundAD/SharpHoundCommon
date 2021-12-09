@@ -305,7 +305,7 @@ namespace SharpHoundCommonLib.Processors
                         //Loop over the members in the match, and try to convert them to SIDs
                         foreach (var member in val.Split(','))
                         {
-                            var res = await GetSid(member.Trim('*'), gpoDomain);
+                            var res = GetSid(member.Trim('*'), gpoDomain);
                             if (res == null)
                                 continue;
                             yield return new GroupAction
@@ -325,7 +325,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     var account = key.Trim('*').Substring(0, index - 3).ToUpper();
 
-                    var res = await GetSid(account, gpoDomain);
+                    var res = GetSid(account, gpoDomain);
                     if (res == null)
                         continue;
 
@@ -354,7 +354,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="account"></param>
         /// <param name="domainName"></param>
         /// <returns></returns>
-        private async Task<TypedPrincipal> GetSid(string account, string domainName)
+        private TypedPrincipal GetSid(string account, string domainName)
         {
             if (!account.StartsWith("S-1-", StringComparison.CurrentCulture))
             {
@@ -377,11 +377,11 @@ namespace SharpHoundCommonLib.Processors
                 user = user.ToUpper();
 
                 //Try to resolve as a user object first
-                var res = await _utils.ResolveAccountName(user, domain);
+                var res = _utils.ResolveAccountName(user, domain);
                 if (res != null)
                     return res;
 
-                res = await _utils.ResolveAccountName($"{user}$", domain);
+                res = _utils.ResolveAccountName($"{user}$", domain);
                 return res;
             }
 
@@ -521,7 +521,7 @@ namespace SharpHoundCommonLib.Processors
                                     var name = s[1];
                                     var domain = s[0];
 
-                                    var res = await _utils.ResolveAccountName(name, domain);
+                                    var res = _utils.ResolveAccountName(name, domain);
                                     ga.Target = GroupActionTarget.LocalGroup;
                                     ga.TargetSid = res.ObjectIdentifier;
                                     ga.TargetType = res.ObjectType;
@@ -530,7 +530,7 @@ namespace SharpHoundCommonLib.Processors
                                 }
                                 else
                                 {
-                                    var res = await _utils.ResolveAccountName(memberName, gpoDomain);
+                                    var res = _utils.ResolveAccountName(memberName, gpoDomain);
                                     ga.Target = GroupActionTarget.LocalGroup;
                                     ga.TargetSid = res.ObjectIdentifier;
                                     ga.TargetType = res.ObjectType;

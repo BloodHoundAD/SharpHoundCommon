@@ -3,6 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace SharpHoundCommonLib
 {
+    /// <summary>
+    /// ILogger implementation that passes log entries through to the configured ILogger and prepends an identification string
+    /// </summary>
     internal class PassThroughLogger : ILogger
     {
         private readonly string _name;

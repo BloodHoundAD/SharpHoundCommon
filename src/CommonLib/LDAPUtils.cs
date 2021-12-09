@@ -54,32 +54,46 @@ namespace SharpHoundCommonLib
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
 
+        /// <summary>
+        /// Creates a new instance of LDAP Utils with defaults
+        /// </summary>
         public LDAPUtils()
         {
             _nativeMethods = new NativeMethods();
             _portScanner = new PortScanner();
             _log = Logging.LogProvider.CreateLogger("LDAPUtils");
         }
-        
-        public LDAPUtils(ILogger log = null)
+
+        /// <summary>
+        /// Creates a new instance of LDAP utils and allows overriding implementations
+        /// </summary>
+        /// <param name="nativeMethods"></param>
+        /// <param name="scanner"></param>
+        /// <param name="log"></param>
+        public LDAPUtils(NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null)
         {
-            _nativeMethods = new NativeMethods();
-            _portScanner = new PortScanner();
+            _nativeMethods = nativeMethods ?? new NativeMethods();
+            _portScanner = scanner ?? new PortScanner();
             _log = log ?? Logging.LogProvider.CreateLogger("LDAPUtils");
         }
 
-        public LDAPUtils(NativeMethods nativeMethods, PortScanner scanner, ILogger log = null)
-        {
-            _nativeMethods = nativeMethods;
-            _portScanner = scanner;
-            _log = log ?? Logging.LogProvider.CreateLogger("LDAPUtils");
-        }
-
+        /// <summary>
+        /// Sets the configuration for LDAP queries
+        /// </summary>
+        /// <param name="config"></param>
+        /// <exception cref="Exception"></exception>
         public void SetLDAPConfig(LDAPConfig config)
         {
             _ldapConfig = config ?? throw new Exception("LDAP Configuration can not be null");
         }
 
+        /// <summary>
+        /// Turns a sid into a well known principal ID.
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="domain"></param>
+        /// <param name="commonPrincipal"></param>
+        /// <returns>True if a well known principal was identified, false if not</returns>
         public bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
@@ -93,11 +107,20 @@ namespace SharpHoundCommonLib
             return true;
         }
 
-        public void AddDomainController(string domainControllerId)
+        /// <summary>
+        /// Adds a SID to an internal list of domain controllers
+        /// </summary>
+        /// <param name="domainControllerSID"></param>
+        public void AddDomainController(string domainControllerSID)
         {
-            DomainControllers.TryAdd(domainControllerId, new byte());
+            DomainControllers.TryAdd(domainControllerSID, new byte());
         }
 
+        /// <summary>
+        /// Gets output objects for currently observed well known principals
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
         {
             foreach (var wkp in SeenWellKnownPrincipals)
@@ -116,18 +139,24 @@ namespace SharpHoundCommonLib
                 };
 
                 output.Properties.Add("name", $"{principal.ObjectIdentifier}@{wkp.Value.DomainName}".ToUpper());
-                var domainSid = await GetSidFromDomainName(wkp.Value.DomainName);
+                var domainSid = GetSidFromDomainName(wkp.Value.DomainName);
                 output.Properties.Add("domainsid", domainSid);
                 output.Properties.Add("domain", wkp.Value.DomainName.ToUpper());
                 output.ObjectIdentifier = wkp.Key;
                 yield return output;
             }
 
-            var entdc = await GetBaseEnterpriseDC();
+            var entdc = GetBaseEnterpriseDC();
             entdc.Members = DomainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
             yield return entdc;
         }
 
+        /// <summary>
+        /// Converts a 
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         public string ConvertWellKnownPrincipal(string sid, string domain)
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out _)) return sid;
@@ -139,6 +168,11 @@ namespace SharpHoundCommonLib
             return $"{forest ?? "UNKNOWN"}-{sid}".ToUpper();
         }
 
+        /// <summary>
+        /// Queries the global catalog to get potential SID matches for a username in the forest
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public string[] GetUserGlobalCatalogMatches(string name)
         {
             var tempName = name.ToLower();
@@ -152,6 +186,13 @@ namespace SharpHoundCommonLib
             return results;
         }
 
+        /// <summary>
+        /// Uses an LDAP lookup to attempt to find the Label for a given SID
+        /// Will also convert to a well known principal ID if needed
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fallbackDomain"></param>
+        /// <returns></returns>
         public TypedPrincipal ResolveIDAndType(string id, string fallbackDomain)
         {
             //This is a duplicated SID object which is weird and makes things unhappy. Throw it out
@@ -165,6 +206,12 @@ namespace SharpHoundCommonLib
             return new TypedPrincipal(id, type);
         }
 
+        /// <summary>
+        /// Attempts to lookup the Label for a sid
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         public Label LookupSidType(string sid, string domain)
         {
             if (Cache.GetIDType(sid, out var type))
@@ -185,6 +232,12 @@ namespace SharpHoundCommonLib
             return type;
         }
 
+        /// <summary>
+        /// Attempts to lookup the Label for a GUID
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         public Label LookupGuidType(string guid, string domain)
         {
             if (Cache.GetIDType(guid, out var type))
@@ -203,6 +256,11 @@ namespace SharpHoundCommonLib
             return type;
         }
 
+        /// <summary>
+        /// Attempts to find the domain associated with a SID
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <returns></returns>
         public string GetDomainNameFromSid(string sid)
         {
             try
@@ -235,9 +293,13 @@ namespace SharpHoundCommonLib
                 return null;
             }
         }
-
-#pragma warning disable CS1998 // TODO: deprecate API
-        public async Task<string> GetSidFromDomainName(string domainName)
+        
+        /// <summary>
+        /// Attempts to get the SID associated with a domain name
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
+        public string GetSidFromDomainName(string domainName)
         {
             var tempDomainName = NormalizeDomainName(domainName);
             if (Cache.GetDomainSidMapping(tempDomainName, out var sid)) return sid;
@@ -257,8 +319,6 @@ namespace SharpHoundCommonLib
 
             return sid;
         }
-#pragma warning restore CS1998
-
 
         /// <summary>
         ///     Performs Attribute Ranged Retrieval
@@ -377,7 +437,7 @@ namespace SharpHoundCommonLib
 
                 // Add $ to the end of the name to match how computers are stored in AD
                 tempName = $"{tempName}$".ToUpper();
-                var principal = await ResolveAccountName(tempName, tempDomain);
+                var principal = ResolveAccountName(tempName, tempDomain);
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
@@ -402,7 +462,7 @@ namespace SharpHoundCommonLib
                 {
                     //Append the $ to indicate this is a computer
                     tempName = $"{tempName}$".ToUpper();
-                    var principal = await ResolveAccountName(tempName, tempDomain);
+                    var principal = ResolveAccountName(tempName, tempDomain);
                     if (principal != null)
                     {
                         _hostResolutionMap.TryAdd(strippedHost, sid);
@@ -413,12 +473,12 @@ namespace SharpHoundCommonLib
 
             //Step 3: Socket magic
             // Attempt to request the NETBIOS name of the computer directly
-            if (RequestNetbiosNameFromComputer(strippedHost, normalDomain, out tempName))
+            if (RequestNETBIOSNameFromComputer(strippedHost, normalDomain, out tempName))
             {
                 tempDomain ??= normalDomain;
                 tempName = $"{tempName}$".ToUpper();
 
-                var principal = await ResolveAccountName(tempName, tempDomain);
+                var principal = ResolveAccountName(tempName, tempDomain);
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
@@ -444,7 +504,7 @@ namespace SharpHoundCommonLib
                 tempName = $"{splitName[0]}$".ToUpper();
                 tempDomain = string.Join(".", splitName.Skip(1));
 
-                var principal = await ResolveAccountName(tempName, tempDomain);
+                var principal = ResolveAccountName(tempName, tempDomain);
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
@@ -474,8 +534,7 @@ namespace SharpHoundCommonLib
         /// <param name="name"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-#pragma warning disable CS1998 // TODO: deprecate API
-        public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
+        public TypedPrincipal ResolveAccountName(string name, string domain)
         {
             if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetIDType(id, out var type))
                 return new TypedPrincipal
@@ -517,8 +576,7 @@ namespace SharpHoundCommonLib
                 ObjectType = type
             };
         }
-#pragma warning restore CS1998
-
+        
         /// <summary>
         ///     Attempts to convert a distinguishedname to its corresponding ID and object type.
         /// </summary>
@@ -567,6 +625,11 @@ namespace SharpHoundCommonLib
             };
         }
 
+        /// <summary>
+        /// Queries LDAP using LDAPQueryOptions
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options)
         {
             return QueryLDAP(
@@ -794,6 +857,12 @@ namespace SharpHoundCommonLib
             }
         }
 
+        /// <summary>
+        /// Gets the forest associated with a domain.
+        /// If no domain is provided, defaults to current domain
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
         public virtual Forest GetForest(string domainName = null)
         {
             try
@@ -810,6 +879,11 @@ namespace SharpHoundCommonLib
             }
         }
 
+        /// <summary>
+        /// Creates a new ActiveDirectorySecurityDescriptor
+        /// Function created for testing purposes
+        /// </summary>
+        /// <returns></returns>
         public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
         {
             return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
@@ -830,6 +904,12 @@ namespace SharpHoundCommonLib
             return result != null;
         }
 
+        /// <summary>
+        /// Gets the domain object associated with the specified domain name.
+        /// Defaults to current domain if none specified
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
         public Domain GetDomain(string domainName = null)
         {
             var cacheKey = domainName ?? NullCacheKey;
@@ -860,17 +940,21 @@ namespace SharpHoundCommonLib
             return domain;
         }
 
-        private async Task<Group> GetBaseEnterpriseDC()
+        private Group GetBaseEnterpriseDC()
         {
             var forest = GetForest()?.Name;
             if (forest == null) _log.LogWarning("Error getting forest, ENTDC sid is likely incorrect");
             var g = new Group { ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper() };
             g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest ?? "UNKNOWN"}".ToUpper());
-            g.Properties.Add("domainsid", await GetSidFromDomainName(forest));
+            g.Properties.Add("domainsid", GetSidFromDomainName(forest));
             g.Properties.Add("domain", forest);
             return g;
         }
 
+        /// <summary>
+        /// Updates the config for querying LDAP
+        /// </summary>
+        /// <param name="config"></param>
         public void UpdateLDAPConfig(LDAPConfig config)
         {
             _ldapConfig = config;
@@ -916,7 +1000,7 @@ namespace SharpHoundCommonLib
         /// <param name="domain"></param>
         /// <param name="netbios"></param>
         /// <returns></returns>
-        private bool RequestNetbiosNameFromComputer(string server, string domain, out string netbios)
+        private static bool RequestNETBIOSNameFromComputer(string server, string domain, out string netbios)
         {
             var receiveBuffer = new byte[1024];
             var requestSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

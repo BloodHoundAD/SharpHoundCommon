@@ -19,6 +19,13 @@ namespace SharpHoundCommonLib
         private static readonly Regex SPNRegex = new(@".*\/.*", RegexOptions.Compiled);
         private static readonly DateTime EpochDiff = new(1970, 1, 1);
 
+        /// <summary>
+        /// Splits a GPLink property into its representative parts
+        /// Filters disabled links by default
+        /// </summary>
+        /// <param name="linkProp"></param>
+        /// <param name="filterDisabled"></param>
+        /// <returns></returns>
         public static IEnumerable<ParsedGPLink> SplitGPLinkProperty(string linkProp, bool filterDisabled = true)
         {
             foreach (var link in linkProp.Split(']', '[')

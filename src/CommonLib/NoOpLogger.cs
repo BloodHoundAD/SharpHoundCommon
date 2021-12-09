@@ -3,6 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace SharpHoundCommonLib
 {
+    /// <summary>
+    /// An ILogger interface that does nothing
+    /// </summary>
     public class NoOpLogger : ILogger
     {
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,

@@ -35,11 +35,11 @@ namespace SharpHoundCommonLib
         Label LookupSidType(string sid, string domain);
         Label LookupGuidType(string guid, string domain);
         string GetDomainNameFromSid(string sid);
-        Task<string> GetSidFromDomainName(string domainName);
+        string GetSidFromDomainName(string domainName);
         string ConvertWellKnownPrincipal(string sid, string domain);
         bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
-        void AddDomainController(string domainControllerId);
         Domain GetDomain(string domainName = null);
+        void AddDomainController(string domainControllerSID);
         IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace SharpHoundCommonLib
         /// <param name="name"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        Task<TypedPrincipal> ResolveAccountName(string name, string domain);
+        TypedPrincipal ResolveAccountName(string name, string domain);
 
         /// <summary>
         ///     Attempts to convert a distinguishedname to its corresponding ID and object type.

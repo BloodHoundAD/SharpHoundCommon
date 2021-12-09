@@ -26,14 +26,8 @@ namespace SharpHoundCommonLib.Processors
             return ReadSPNTargets(members, dn, name);
         }
 
-        public IAsyncEnumerable<SPNTarget> ReadSPNTargets(string[] servicePrincipalNames,
-            string distinguishedName)
-        {
-            return ReadSPNTargets(servicePrincipalNames, distinguishedName, string.Empty);
-        }
-
         public async IAsyncEnumerable<SPNTarget> ReadSPNTargets(string[] servicePrincipalNames,
-            string distinguishedName, string objectName)
+            string distinguishedName, string objectName = "")
         {
             if (servicePrincipalNames.Length == 0)
             {

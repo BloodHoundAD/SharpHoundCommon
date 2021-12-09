@@ -27,6 +27,12 @@ namespace SharpHoundCommonLib.Processors
             return false;
         }
 
+        /// <summary>
+        /// Helper function using commonlib types to pass to GetContainerChildObjects
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public IEnumerable<TypedPrincipal> GetContainerChildObjects(ResolvedSearchResult result,
             ISearchResultEntry entry)
         {
@@ -36,18 +42,13 @@ namespace SharpHoundCommonLib.Processors
             return GetContainerChildObjects(dn, name);
         }
 
-        public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName)
-        {
-            return GetContainerChildObjects(distinguishedName, "");
-        }
-
         /// <summary>
         ///     Finds all immediate child objects of a container.
         /// </summary>
         /// <param name="distinguishedName"></param>
         /// <param name="containerName"></param>
         /// <returns></returns>
-        public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName)
+        public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName = "")
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
             foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,

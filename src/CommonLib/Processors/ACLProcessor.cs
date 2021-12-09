@@ -93,6 +93,12 @@ namespace SharpHoundCommonLib.Processors
             return descriptor.AreAccessRulesProtected();
         }
 
+        /// <summary>
+        /// Helper function to use common lib types and pass appropriate vars to ProcessACL
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="searchResult"></param>
+        /// <returns></returns>
         public IEnumerable<ACE> ProcessACL(ResolvedSearchResult result, ISearchResultEntry searchResult)
         {
             var descriptor = searchResult.GetByteProperty("ntsecuritydescriptor");
@@ -101,15 +107,9 @@ namespace SharpHoundCommonLib.Processors
             var hasLaps = searchResult.HasLAPS();
             var name = result.DisplayName;
 
-            return ProcessACL(descriptor, name, domain, type, hasLaps);
+            return ProcessACL(descriptor, domain, type, hasLaps, name);
         }
-
-        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType,
-            bool hasLaps)
-        {
-            return ProcessACL(ntSecurityDescriptor, "", objectDomain, objectType, hasLaps);
-        }
-
+        
         /// <summary>
         ///     Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that
         ///     BloodHound is not interested in
@@ -120,9 +120,9 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectType"></param>
         /// <param name="hasLaps"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectName, string objectDomain,
+        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain,
             Label objectType,
-            bool hasLaps)
+            bool hasLaps, string objectName = "")
         {
             if (ntSecurityDescriptor == null)
             {
@@ -364,6 +364,12 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
+        /// <summary>
+        /// Helper function to use commonlib types and pass to ProcessGMSAReaders
+        /// </summary>
+        /// <param name="resolvedSearchResult"></param>
+        /// <param name="searchResultEntry"></param>
+        /// <returns></returns>
         public IEnumerable<ACE> ProcessGMSAReaders(ResolvedSearchResult resolvedSearchResult,
             ISearchResultEntry searchResultEntry)
         {
@@ -374,6 +380,12 @@ namespace SharpHoundCommonLib.Processors
             return ProcessGMSAReaders(descriptor, name, domain);
         }
 
+        /// <summary>
+        /// ProcessGMSAMembership with no account name
+        /// </summary>
+        /// <param name="groupMSAMembership"></param>
+        /// <param name="objectDomain"></param>
+        /// <returns></returns>
         public IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectDomain)
         {
             return ProcessGMSAReaders(groupMSAMembership, "", objectDomain);

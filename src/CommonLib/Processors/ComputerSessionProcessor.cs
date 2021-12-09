@@ -108,7 +108,7 @@ namespace SharpHoundCommonLib.Processors
                 }
                 else
                 {
-                    var res = await _utils.ResolveAccountName(username, computerDomain);
+                    var res = _utils.ResolveAccountName(username, computerDomain);
                     if (res != null)
                         results.Add(new Session
                         {
@@ -131,7 +131,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerSid"></param>
         /// <returns></returns>
-        public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName,
+        public SessionAPIResult ReadUserSessionsPrivileged(string computerName,
             string computerSamAccountName, string computerSid)
         {
             var ret = new SessionAPIResult();
@@ -188,7 +188,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                var res = await _utils.ResolveAccountName(username, domain);
+                var res = _utils.ResolveAccountName(username, domain);
                 if (res == null)
                     continue;
 

@@ -228,7 +228,7 @@ namespace CommonLibTest
         {
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
+                .Returns(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
             var gpcFileSysPath = Path.GetTempPath();
             var groupsXmlPath = Path.Join(gpcFileSysPath, "MACHINE", "Preferences", "Groups", "Groups.xml");
 
@@ -293,7 +293,7 @@ namespace CommonLibTest
         {
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
+                .Returns(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
             var gpcFileSysPath = Path.GetTempPath();
             var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
 

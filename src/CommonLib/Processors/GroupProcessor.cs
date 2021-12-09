@@ -26,11 +26,6 @@ namespace SharpHoundCommonLib.Processors
             return ReadGroupMembers(dn, members, name);
         }
 
-        public IEnumerable<TypedPrincipal> ReadGroupMembers(string distinguishedName, string[] members)
-        {
-            return ReadGroupMembers(distinguishedName, members, string.Empty);
-        }
-
         /// <summary>
         ///     Processes the "member" property of groups and converts the resulting list of distinguishednames to TypedPrincipals
         /// </summary>
@@ -39,15 +34,15 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectName"></param>
         /// <returns></returns>
         public IEnumerable<TypedPrincipal> ReadGroupMembers(string distinguishedName, string[] members,
-            string objectName)
+            string objectName = "")
         {
             // If our returned array has a length of 0, one of two things is happening
             // The first possibility we'll look at is we need to use ranged retrieval, because AD will not return
             // more than a certain number of items. If we get nothing back from this, then the group is empty
             if (members.Length == 0)
             {
-                _log.LogTrace("Member property for {DistinguishedName} is empty, trying range retrieval",
-                    distinguishedName);
+                _log.LogTrace("Member property for {ObjectName} is empty, trying range retrieval",
+                    objectName);
                 foreach (var member in _utils.DoRangedRetrieval(distinguishedName, "member"))
                 {
                     _log.LogTrace("Got member {DN} from ranged retrieval", member);

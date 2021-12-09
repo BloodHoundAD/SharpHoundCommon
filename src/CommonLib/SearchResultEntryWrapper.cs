@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Security.Principal;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 
@@ -12,7 +11,7 @@ namespace SharpHoundCommonLib
     public interface ISearchResultEntry
     {
         string DistinguishedName { get; }
-        Task<ResolvedSearchResult> ResolveBloodHoundInfo();
+        ResolvedSearchResult ResolveBloodHoundInfo();
         string GetProperty(string propertyName);
         byte[] GetByteProperty(string propertyName);
         string[] GetArrayProperty(string propertyName);
@@ -46,7 +45,7 @@ namespace SharpHoundCommonLib
 
         public string DistinguishedName => _entry.DistinguishedName;
 
-        public async Task<ResolvedSearchResult> ResolveBloodHoundInfo()
+        public ResolvedSearchResult ResolveBloodHoundInfo()
         {
             var res = new ResolvedSearchResult();
 
@@ -103,7 +102,7 @@ namespace SharpHoundCommonLib
 
             if (WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var wkPrincipal))
             {
-                res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+                res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
                 res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
                 res.ObjectType = wkPrincipal.ObjectType;
                 res.ObjectId = _utils.ConvertWellKnownPrincipal(objectId, itemDomain);
@@ -119,10 +118,10 @@ namespace SharpHoundCommonLib
                 }
                 catch
                 {
-                    res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+                    res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
                 }
             else
-                res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+                res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
 
             var samAccountName = GetProperty("samaccountname");
 
