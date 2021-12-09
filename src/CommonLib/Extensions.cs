@@ -7,12 +7,20 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
 {
     public static class Extensions
     {
+        private static readonly ILogger _log;
+
+        static Extensions()
+        {
+            _log = Logging.LogProvider.CreateLogger("Extensions");
+        }
+
         internal static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items,
             CancellationToken cancellationToken = default)
         {
@@ -27,7 +35,7 @@ namespace SharpHoundCommonLib
         ///     Helper function to print attributes of a SearchResultEntry
         /// </summary>
         /// <param name="searchResultEntry"></param>
-        public static void PrintEntry(this SearchResultEntry searchResultEntry)
+        public static string PrintEntry(this SearchResultEntry searchResultEntry)
         {
             var sb = new StringBuilder();
             foreach (var propertyName in searchResultEntry.Attributes.AttributeNames)
@@ -36,7 +44,7 @@ namespace SharpHoundCommonLib
                 sb.Append(property).Append("\t").Append(searchResultEntry.GetProperty(property)).Append("\n");
             }
 
-            Logging.Trace(sb.ToString());
+            return sb.ToString();
         }
 
         public static string LdapValue(this SecurityIdentifier s)
@@ -258,7 +266,10 @@ namespace SharpHoundCommonLib
             var objectId = entry.GetObjectIdentifier();
 
             if (objectId == null)
+            {
+                _log.LogWarning("Failed to get an object identifier for {dn}", entry.DistinguishedName);
                 return Label.Base;
+            }
 
             if (objectId.StartsWith("S-1") &&
                 WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))

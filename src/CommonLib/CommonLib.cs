@@ -10,7 +10,7 @@ namespace SharpHoundCommonLib
         {
             if (_initialized)
             {
-                Logging.Log(LogLevel.Error, "Common Library is already initialized");
+                log?.LogWarning("Common Library is already initialized");
                 return;
             }
 
@@ -24,7 +24,9 @@ namespace SharpHoundCommonLib
                 Cache.SetCacheInstance(newCache);
             }
             else
+            {
                 Cache.SetCacheInstance(cache);
+            }
         }
 
         public static void ReconfigureLogging(ILogger log)

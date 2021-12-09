@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
@@ -30,6 +31,8 @@ namespace SharpHoundCommonLib.Processors
             "S-1-5-19", "S-1-5-20"
         };
 
+        private readonly ILogger _log;
+
         private readonly NativeMethods _nativeMethods;
         private readonly NativeMethods.OBJECT_ATTRIBUTES _obj;
         private readonly ILDAPUtils _utils;
@@ -49,9 +52,8 @@ namespace SharpHoundCommonLib.Processors
         /// </exception>
         public SAMRPCServer(string computerName, string samAccountName, string computerSid, string computerDomain,
             ILDAPUtils utils = null,
-            NativeMethods methods = null)
+            NativeMethods methods = null, ILogger log = null)
         {
-            Logging.Trace($"Opening SAM Server for {computerName}");
             _computerSAN = samAccountName;
             _computerSID = computerSid;
             _computerName = computerName;
@@ -59,6 +61,9 @@ namespace SharpHoundCommonLib.Processors
             _utils = utils;
             _nativeMethods = methods ?? new NativeMethods();
             _utils = utils ?? new LDAPUtils();
+            _log = log ?? Logging.LogProvider.CreateLogger("SAMRPCServer");
+
+            _log.LogTrace("Opening SAM Server for {computerName}", computerName);
 
             var us = new NativeMethods.UNICODE_STRING(computerName);
             //Every API call we make relies on both SamConnect and SamOpenDomain
@@ -66,7 +71,7 @@ namespace SharpHoundCommonLib.Processors
             var status = _nativeMethods.CallSamConnect(ref us, out _serverHandle,
                 NativeMethods.SamAccessMasks.SamServerLookupDomain | NativeMethods.SamAccessMasks.SamServerConnect,
                 ref _obj);
-            Logging.Trace($"SamConnect returned {status} for {computerName}");
+            _log.LogTrace("SamConnect returned {status} for {computerName}", status, computerName);
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
                 _nativeMethods.CallSamCloseHandle(_serverHandle);
@@ -79,7 +84,7 @@ namespace SharpHoundCommonLib.Processors
 
             status = _nativeMethods.CallSamOpenDomain(_serverHandle, NativeMethods.DomainAccessMask.Lookup,
                 WellKnownSidBytes.Value, out _domainHandle);
-            Logging.Trace($"SamOpenDomain returned {status} for {computerName}");
+            _log.LogTrace("SamOpenDomain returned {status} for {computerName}", status, computerName);
             if (status != NativeMethods.NtStatus.StatusSuccess)
                 throw new APIException
                 {
@@ -101,7 +106,7 @@ namespace SharpHoundCommonLib.Processors
                 _nativeMethods.CallSamCloseHandle(_serverHandle);
                 _serverHandle = IntPtr.Zero;
             }
-            
+
             _obj.Dispose();
         }
 
@@ -122,7 +127,8 @@ namespace SharpHoundCommonLib.Processors
 
             var status = _nativeMethods.CallSamOpenAlias(_domainHandle, NativeMethods.AliasOpenFlags.ListMembers,
                 groupRid, out var aliasHandle);
-            Logging.Trace($"SamOpenAlias returned {status} for RID {groupRid} on {_computerName}");
+            _log.LogTrace("SamOpenAlias returned {status} for RID {groupRid} on {computerName}", status, groupRid,
+                _computerName);
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
                 _nativeMethods.CallSamCloseHandle(aliasHandle);
@@ -131,7 +137,8 @@ namespace SharpHoundCommonLib.Processors
             }
 
             status = _nativeMethods.CallSamGetMembersInAlias(aliasHandle, out var members, out var count);
-            Logging.Trace($"SamGetMembersInAlias returned {status} for RID {groupRid} on {_computerName}");
+            _log.LogTrace("SamGetMembersInAlias returned {status} for RID {groupRid} on {computerName}", status,
+                groupRid, _computerName);
             _nativeMethods.CallSamCloseHandle(aliasHandle);
 
             if (status != NativeMethods.NtStatus.StatusSuccess)
@@ -141,7 +148,8 @@ namespace SharpHoundCommonLib.Processors
                 return result;
             }
 
-            Logging.Trace($"SamGetMembersInAlias returned {count} items for RID {groupRid} on {_computerName}");
+            _log.LogTrace("SamGetMembersInAlias returned {count} items for RID {groupRid} on {computerName}", count,
+                groupRid, _computerName);
 
             if (count == 0)
             {
@@ -160,16 +168,15 @@ namespace SharpHoundCommonLib.Processors
                 }
                 catch (Exception e)
                 {
-                    Logging.Trace($"Exception converting sid: {e}");
+                    _log.LogTrace(e, "Exception converting sid");
                 }
 
             _nativeMethods.CallSamFreeMemory(members);
 
             var machineSid = GetMachineSid();
-            Logging.Trace($"Resolved machine sid for {_computerName} to {machineSid}");
+            _log.LogTrace("Resolved machine sid for {computerName} to {machineSid}", _computerName, machineSid);
             var converted = sids.Select(x =>
             {
-                Logging.Debug(x);
                 //Filter out machine accounts, service accounts, iis app pool accounts, window manager, font driver
                 if (x.StartsWith(machineSid) || x.StartsWith("S-1-5-80") || x.StartsWith("S-1-5-82") ||
                     x.StartsWith("S-1-5-90") || x.StartsWith("S-1-5-96")) return null;
@@ -202,7 +209,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 var san = new NativeMethods.UNICODE_STRING(_computerSAN);
                 status = _nativeMethods.CallSamLookupDomainInSamServer(_serverHandle, ref san, out var temp);
-                Logging.Trace($"SamLookupDomainInSamServer returned {status} on {_computerName}");
+                _log.LogTrace("SamLookupDomainInSamServer returned {status} on {computerName}", status, _computerName);
                 if (status == NativeMethods.NtStatus.StatusSuccess)
                 {
                     machineSid = new SecurityIdentifier(temp).Value;
@@ -222,8 +229,8 @@ namespace SharpHoundCommonLib.Processors
             //If at any time we encounter a failure, just return a dummy sid that wont match anything
 
             status = _nativeMethods.CallSamOpenAlias(_domainHandle, NativeMethods.AliasOpenFlags.ListMembers,
-                (int) LocalGroupRids.Administrators, out var aliasHandle);
-            Logging.Trace($"SamOpenAlias returned {status} for Administrators on {_computerName}");
+                (int)LocalGroupRids.Administrators, out var aliasHandle);
+            _log.LogTrace("SamOpenAlias returned {status} for Administrators on {computerName}", status, _computerName);
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
                 _nativeMethods.CallSamCloseHandle(aliasHandle);
@@ -232,7 +239,8 @@ namespace SharpHoundCommonLib.Processors
 
 
             status = _nativeMethods.CallSamGetMembersInAlias(aliasHandle, out var members, out var count);
-            Logging.Trace($"SamGetMembersInAlias returned {status} for Administrators on {_computerName}");
+            _log.LogTrace("SamGetMembersInAlias returned {status} for Administrators on {computerName}", status,
+                _computerName);
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
                 _nativeMethods.CallSamCloseHandle(aliasHandle);
@@ -257,7 +265,7 @@ namespace SharpHoundCommonLib.Processors
                 }
                 catch (Exception e)
                 {
-                    Logging.Debug($"Exception converting sid: {e}");
+                    _log.LogDebug(e, "GetMachineSid - Exception converting sid");
                 }
 
             _nativeMethods.CallSamFreeMemory(members);
@@ -279,7 +287,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (machineSid == null)
             {
-                Logging.Trace($"Did not get a machine SID for {_computerName}");
+                _log.LogTrace("Did not get a machine SID for {computerName}", _computerName);
                 return "DUMMYSTRING";
             }
 

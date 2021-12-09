@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 
@@ -7,11 +8,13 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ContainerProcessor
     {
+        private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
-        public ContainerProcessor(ILDAPUtils utils)
+        public ContainerProcessor(ILDAPUtils utils, ILogger log = null)
         {
             _utils = utils;
+            _log = log ?? Logging.LogProvider.CreateLogger("ContainerProc");
         }
 
         private static bool IsDNFiltered(string distinguishedName)
@@ -24,12 +27,26 @@ namespace SharpHoundCommonLib.Processors
             return false;
         }
 
+        public IEnumerable<TypedPrincipal> GetContainerChildObjects(ResolvedSearchResult result,
+            ISearchResultEntry entry)
+        {
+            var name = result.DisplayName;
+            var dn = entry.DistinguishedName;
+
+            return GetContainerChildObjects(dn, name);
+        }
+
+        public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName)
+        {
+            return GetContainerChildObjects(distinguishedName, "");
+        }
+
         /// <summary>
         ///     Finds all immediate child objects of a container.
         /// </summary>
         /// <param name="distinguishedName"></param>
         /// <returns></returns>
-        public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName)
+        public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName)
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
             foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
@@ -38,17 +55,35 @@ namespace SharpHoundCommonLib.Processors
             {
                 var dn = childEntry.DistinguishedName;
                 if (IsDNFiltered(dn))
+                {
+                    _log.LogTrace("Skipping filtered child {child} for {container}", dn, containerName);
                     continue;
+                }
 
                 var id = childEntry.GetObjectIdentifier();
                 if (id == null)
+                {
+                    _log.LogTrace("Got null ID for {childDn} under {container}", childEntry.DistinguishedName,
+                        containerName);
                     continue;
+                }
 
                 var res = _utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(dn));
                 if (res == null)
+                {
+                    _log.LogTrace("Failed to resolve principal for {id}", id);
                     continue;
+                }
+
                 yield return res;
             }
+        }
+
+        public IEnumerable<GPLink> ReadContainerGPLinks(ResolvedSearchResult result, ISearchResultEntry entry)
+        {
+            var links = entry.GetProperty("gplink");
+
+            return ReadContainerGPLinks(links);
         }
 
         /// <summary>
@@ -68,7 +103,10 @@ namespace SharpHoundCommonLib.Processors
                 var res = _utils.ResolveDistinguishedName(link.DistinguishedName);
 
                 if (res == null)
+                {
+                    _log.LogTrace("Failed to resolve DN {dn}", link.DistinguishedName);
                     continue;
+                }
 
                 yield return new GPLink
                 {

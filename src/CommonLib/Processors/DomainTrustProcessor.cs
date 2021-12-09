@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Security.Principal;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -9,11 +10,13 @@ namespace SharpHoundCommonLib.Processors
 {
     public class DomainTrustProcessor
     {
+        private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
-        public DomainTrustProcessor(ILDAPUtils utils)
+        public DomainTrustProcessor(ILDAPUtils utils, ILogger log = null)
         {
             _utils = utils;
+            _log = log ?? Logging.LogProvider.CreateLogger("DomainTrustProc");
         }
 
         /// <summary>
@@ -30,7 +33,10 @@ namespace SharpHoundCommonLib.Processors
                 var trust = new DomainTrust();
                 var targetSidBytes = result.GetByteProperty("securityIdentifier");
                 if (targetSidBytes == null || targetSidBytes.Length == 0)
+                {
+                    _log.LogTrace("Trust sid is null or empty for target: {domain}", domain);
                     continue;
+                }
 
                 string sid;
                 try
@@ -39,22 +45,34 @@ namespace SharpHoundCommonLib.Processors
                 }
                 catch
                 {
+                    _log.LogTrace("Failed to convert bytes to SID for target: {domain}", domain);
                     continue;
                 }
 
                 trust.TargetDomainSid = sid;
 
                 if (int.TryParse(result.GetProperty("trustdirection"), out var td))
-                    trust.TrustDirection = (TrustDirection) td;
+                {
+                    trust.TrustDirection = (TrustDirection)td;
+                }
                 else
+                {
+                    _log.LogTrace("Failed to convert trustdirection for target: {domain}", domain);
                     continue;
+                }
+
 
                 TrustAttributes attributes;
 
                 if (int.TryParse(result.GetProperty("trustattributes"), out var ta))
-                    attributes = (TrustAttributes) ta;
+                {
+                    attributes = (TrustAttributes)ta;
+                }
                 else
+                {
+                    _log.LogTrace("Failed to convert trustattributes for target: {domain}", domain);
                     continue;
+                }
 
                 trust.IsTransitive = (attributes & TrustAttributes.NonTransitive) == 0;
                 var name = result.GetProperty("cn")?.ToUpper();

@@ -1,10 +1,18 @@
 ﻿using System.Net.Sockets;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class PortScanner
     {
+        private readonly ILogger _log;
+
+        public PortScanner(ILogger log = null)
+        {
+            _log = log ?? Logging.LogProvider.CreateLogger("PortScanner");
+        }
+
         /// <summary>
         ///     Checks if a specified port is open on a host. Defaults to 445 (SMB)
         /// </summary>
@@ -21,7 +29,7 @@ namespace SharpHoundCommonLib.Processors
                 await Task.WhenAny(ca, Task.Delay(timeout));
                 client.Close();
                 if (!ca.IsFaulted && ca.IsCompleted) return true;
-                Logging.Debug($"{hostname} did not respond to ping");
+                _log.LogDebug("{hostname} did not respond to ping", hostname);
                 return false;
             }
             catch

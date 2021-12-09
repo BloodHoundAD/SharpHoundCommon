@@ -93,5 +93,10 @@ namespace CommonLibTest.Facades
         {
             throw new NotImplementedException();
         }
+
+        public bool HasLAPS()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

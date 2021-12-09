@@ -16,6 +16,7 @@ namespace SharpHoundCommonLib.Processors
         private static readonly Dictionary<Label, string> BaseGuids;
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
         private static bool _isCacheBuilt;
+        private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
         static ACLProcessor()
@@ -23,19 +24,20 @@ namespace SharpHoundCommonLib.Processors
             //Create a dictionary with the base GUIDs of each object type
             BaseGuids = new Dictionary<Label, string>
             {
-                {Label.User, "bf967aba-0de6-11d0-a285-00aa003049e2"},
-                {Label.Computer, "bf967a86-0de6-11d0-a285-00aa003049e2"},
-                {Label.Group, "bf967a9c-0de6-11d0-a285-00aa003049e2"},
-                {Label.Domain, "19195a5a-6da0-11d0-afd3-00c04fd930c9"},
-                {Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1"},
-                {Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2"},
-                {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"}
+                { Label.User, "bf967aba-0de6-11d0-a285-00aa003049e2" },
+                { Label.Computer, "bf967a86-0de6-11d0-a285-00aa003049e2" },
+                { Label.Group, "bf967a9c-0de6-11d0-a285-00aa003049e2" },
+                { Label.Domain, "19195a5a-6da0-11d0-afd3-00c04fd930c9" },
+                { Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1" },
+                { Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2" },
+                { Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2" }
             };
         }
 
-        public ACLProcessor(ILDAPUtils utils, bool noGuidCache = false)
+        public ACLProcessor(ILDAPUtils utils, bool noGuidCache = false, ILogger log = null)
         {
             _utils = utils;
+            _log = log ?? Logging.LogProvider.CreateLogger("ACLProc");
             if (!noGuidCache)
                 BuildGUIDCache();
         }
@@ -52,15 +54,20 @@ namespace SharpHoundCommonLib.Processors
             var forest = _utils.GetForest();
             if (forest == null)
             {
-                Logging.Log(LogLevel.Error, "Unable to resolve forest for GUID cache");
+                _log.LogError("BuildGUIDCache - Unable to resolve forest");
                 return;
             }
 
             var schema = forest.Schema?.Name;
             if (string.IsNullOrEmpty(schema))
+            {
+                _log.LogError("BuildGUIDCache - Schema string is null or empty");
                 return;
+            }
+
+            _log.LogTrace("BuildGUIDCache - Successfully grabbed schema");
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
-                new[] {"schemaidguid", "name"}, adsPath: schema))
+                new[] { "schemaidguid", "name" }, adsPath: schema))
             {
                 var name = entry.GetProperty("name")?.ToLower();
                 var guid = new Guid(entry.GetByteProperty("schemaidguid")).ToString();
@@ -86,6 +93,23 @@ namespace SharpHoundCommonLib.Processors
             return descriptor.AreAccessRulesProtected();
         }
 
+        public IEnumerable<ACE> ProcessACL(ResolvedSearchResult result, ISearchResultEntry searchResult)
+        {
+            var descriptor = searchResult.GetByteProperty("ntsecuritydescriptor");
+            var domain = result.Domain;
+            var type = result.ObjectType;
+            var hasLaps = searchResult.HasLAPS();
+            var name = result.DisplayName;
+
+            return ProcessACL(descriptor, name, domain, type, hasLaps);
+        }
+
+        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType,
+            bool hasLaps)
+        {
+            return ProcessACL(ntSecurityDescriptor, "", objectDomain, objectType, hasLaps);
+        }
+
         /// <summary>
         ///     Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that
         ///     BloodHound is not interested in
@@ -95,12 +119,13 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectType"></param>
         /// <param name="hasLaps"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain, Label objectType,
+        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectName, string objectDomain,
+            Label objectType,
             bool hasLaps)
         {
             if (ntSecurityDescriptor == null)
             {
-                Logging.Log(LogLevel.Debug, "ProcessACL received null ntSecurityDescriptor");
+                _log.LogDebug("Security Descriptor is null for {name}", objectName);
                 yield break;
             }
 
@@ -123,34 +148,35 @@ namespace SharpHoundCommonLib.Processors
             }
             else
             {
-                Logging.Log(LogLevel.Debug, "Owner on ACE is null");
+                _log.LogDebug("Owner is null for {name}", objectName);
             }
 
             foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
                 if (ace == null)
                 {
-                    Logging.Trace("Skipping null ACE");
+                    _log.LogTrace("Skipping null ACE for {name}", objectName);
                     continue;
                 }
 
                 if (ace.AccessControlType() == AccessControlType.Deny)
                 {
-                    Logging.Trace("Skipping deny ACE");
+                    _log.LogTrace("Skipping deny ACE for {name}", objectName);
                     continue;
                 }
 
                 if (!ace.IsAceInheritedFrom(BaseGuids[objectType]))
                 {
-                    Logging.Trace("Skipping ACE with unmatched GUID/inheritance");
+                    _log.LogTrace("Skipping ACE with unmatched GUID/inheritance for {name}", objectName);
                     continue;
                 }
 
-                var principalSid = PreProcessSID(ace.IdentityReference());
+                var ir = ace.IdentityReference();
+                var principalSid = PreProcessSID(ir);
 
                 if (principalSid == null)
                 {
-                    Logging.Trace("Pre-Process excluded SID");
+                    _log.LogTrace("Pre-Process excluded SID {sid} on {name}", ir ?? "null", objectName);
                     continue;
                 }
 
@@ -162,6 +188,9 @@ namespace SharpHoundCommonLib.Processors
                 var inherited = ace.IsInherited();
 
                 GuidMap.TryGetValue(aceType, out var mappedGuid);
+
+                _log.LogTrace("Processing ACE with rights {rights} and guid {guid} on object {name}", aceRights,
+                    aceType, objectName);
 
                 //GenericAll applies to every object
                 if (aceRights.HasFlag(ActiveDirectoryRights.GenericAll))
@@ -334,6 +363,21 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
+        public IEnumerable<ACE> ProcessGMSAReaders(ResolvedSearchResult resolvedSearchResult,
+            ISearchResultEntry searchResultEntry)
+        {
+            var descriptor = searchResultEntry.GetByteProperty("msds-groupmsamembership");
+            var domain = resolvedSearchResult.Domain;
+            var name = resolvedSearchResult.DisplayName;
+
+            return ProcessGMSAReaders(descriptor, name, domain);
+        }
+
+        public IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectDomain)
+        {
+            return ProcessGMSAReaders(groupMSAMembership, "", objectDomain);
+        }
+
         /// <summary>
         ///     Processes the msds-groupmsamembership property and returns ACEs representing principals that can read the GMSA
         ///     password from an object
@@ -341,10 +385,14 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="entry"></param>
         /// <param name="objectDomain"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectDomain)
+        public IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectName, string objectDomain)
         {
             if (groupMSAMembership == null)
+            {
+                _log.LogTrace("GMSA bytes are null for {name}", objectName);
                 yield break;
+            }
+
 
             var descriptor = _utils.MakeSecurityDescriptor();
             descriptor.SetSecurityDescriptorBinaryForm(groupMSAMembership);
@@ -352,15 +400,27 @@ namespace SharpHoundCommonLib.Processors
             foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {
                 if (ace == null)
+                {
+                    _log.LogTrace("Skipping null GMSA ACE for {name}", objectName);
                     continue;
+                }
 
                 if (ace.AccessControlType() == AccessControlType.Deny)
+                {
+                    _log.LogTrace("Skipping deny GMSA ACE for {name}", objectName);
                     continue;
+                }
 
-                var principalSid = PreProcessSID(ace.IdentityReference());
+                var ir = ace.IdentityReference();
+                var principalSid = PreProcessSID(ir);
 
                 if (principalSid == null)
+                {
+                    _log.LogTrace("Pre-Process excluded SID {sid} on {name}", ir ?? "null", objectName);
                     continue;
+                }
+
+                _log.LogTrace("Processing GMSA ACE with principal {principal}", principalSid);
 
                 var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
 
@@ -382,9 +442,10 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         private static string PreProcessSID(string sid)
         {
+            sid = sid?.ToUpper();
             if (sid != null)
                 //Ignore Local System/Creator Owner/Principal Self
-                return sid is "S-1-5-18" or "S-1-3-0" or "S-1-5-10" ? null : sid.ToUpper();
+                return sid is "S-1-5-18" or "S-1-3-0" or "S-1-5-10" ? null : sid;
 
             return null;
         }
