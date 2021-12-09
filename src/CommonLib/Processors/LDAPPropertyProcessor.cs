@@ -306,7 +306,7 @@ namespace SharpHoundCommonLib.Processors
             compProps.AllowedToDelegate = comps.Distinct().ToArray();
 
             var allowedToActPrincipals = new List<TypedPrincipal>();
-            var rawAllowedToAct = entry.GetByteProperty(LDAPProperties.AllowedToAct);
+            var rawAllowedToAct = entry.GetByteProperty(LDAPProperties.AllowedToActOnBehalfOfOtherIdentity);
             if (rawAllowedToAct != null)
             {
                 var sd = _utils.MakeSecurityDescriptor();

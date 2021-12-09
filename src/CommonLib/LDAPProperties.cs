@@ -30,7 +30,7 @@
         public const string HomeDirectory = "homedirectory";
         public const string UserPassword = "userpassword";
         public const string SIDHistory = "sidhistory";
-        public const string AllowedToAct = "msds-allowedtoactonbehalfofotheridentity";
+        public const string AllowedToActOnBehalfOfOtherIdentity = "msds-allowedtoactonbehalfofotheridentity";
         public const string OperatingSystem = "operatingsystem";
         public const string ServicePack = "operatingsystemservicepack";
         public const string DNSHostName = "dnshostname";
