@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 
@@ -24,7 +23,7 @@ namespace CommonLibTest.Facades
 
         public string DistinguishedName { get; }
 
-        public Task<ResolvedSearchResult> ResolveBloodHoundInfo()
+        public ResolvedSearchResult ResolveBloodHoundInfo()
         {
             throw new NotImplementedException();
         }
@@ -90,6 +89,11 @@ namespace CommonLibTest.Facades
         }
 
         public bool IsGMSA()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HasLAPS()
         {
             throw new NotImplementedException();
         }

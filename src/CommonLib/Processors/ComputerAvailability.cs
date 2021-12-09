@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class ComputerAvailability
     {
+        private readonly ILogger _log;
         private readonly PortScanner _scanner;
         private readonly int _scanTimeout;
         private readonly bool _skipPortScan;
 
-        public ComputerAvailability(int timeout = 500, bool skipPortScan = false)
+        public ComputerAvailability(int timeout = 500, bool skipPortScan = false, ILogger log = null)
         {
             _scanner = new PortScanner();
             _scanTimeout = timeout;
             _skipPortScan = skipPortScan;
+            _log = log ?? Logging.LogProvider.CreateLogger("CompAvail");
         }
 
-        public ComputerAvailability(PortScanner scanner, int timeout = 500, bool skipPortScan = false)
+        public ComputerAvailability(PortScanner scanner, int timeout = 500, bool skipPortScan = false,
+            ILogger log = null)
         {
             _scanner = scanner;
             _scanTimeout = timeout;
             _skipPortScan = skipPortScan;
+            _log = log ?? Logging.LogProvider.CreateLogger("CompAvail");
         }
 
         /// <summary>
@@ -39,7 +44,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
-                Logging.Trace($"{computerName} is not available because operating system does not match.");
+                _log.LogTrace("{ComputerName} is not available because operating system does not match", computerName);
                 return new ComputerStatus
                 {
                     Connectable = false,
@@ -52,7 +57,8 @@ namespace SharpHoundCommonLib.Processors
 
             if (passwordLastSet < threshold)
             {
-                Logging.Trace($"{computerName} is not available because password last set is out of range");
+                _log.LogTrace("{ComputerName} is not available because password last set is out of range",
+                    computerName);
                 return new ComputerStatus
                 {
                     Connectable = false,
@@ -70,7 +76,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (!await _scanner.CheckPort(computerName, timeout: _scanTimeout))
             {
-                Logging.Trace($"{computerName} is not available because port 445 is unavailable");
+                _log.LogTrace("{ComputerName} is not available because port 445 is unavailable", computerName);
                 return new ComputerStatus
                 {
                     Connectable = false,

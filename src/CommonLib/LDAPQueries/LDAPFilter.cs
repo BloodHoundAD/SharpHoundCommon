@@ -165,9 +165,10 @@ namespace SharpHoundCommonLib.LDAPQueries
         }
 
         /// <summary>
-        ///     Add a generic filter user-specified filter
+        /// Adds a generic user specified filter
         /// </summary>
-        /// <param name="filter"></param>
+        /// <param name="filter">LDAP Filter to add to query</param>
+        /// <param name="enforce">If true, filter will be AND otherwise OR</param>
         /// <returns></returns>
         public LDAPFilter AddFilter(string filter, bool enforce)
         {

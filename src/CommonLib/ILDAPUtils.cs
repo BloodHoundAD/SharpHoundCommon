@@ -9,37 +9,21 @@ using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace SharpHoundCommonLib
 {
+    /// <summary>
+    /// Struct representing options to create an LDAP query
+    /// </summary>
     public struct LDAPQueryOptions
     {
-        /// <param name="filter">LDAP filter</param>
-        public string filter;
-
-        /// <param name="scope">SearchScope to query</param>
-        public SearchScope scope;
-
-        /// <param name="properties">LDAP properties to fetch for each object</param>
-        public string[] properties;
-
-        /// <param name="cancellationToken">Cancellation Token</param>
-        public CancellationToken cancellationToken;
-
-        /// <param name="domainName">Domain to query</param>
-        public string domainName;
-
-        /// <param name="includeAcl">Include the DACL and Owner values in the NTSecurityDescriptor</param>
-        public bool includeAcl;
-
-        /// <param name="showDeleted">Include deleted objects</param>
-        public bool showDeleted;
-
-        /// <param name="adsPath">ADS path to limit the query too</param>
-        public string adsPath;
-
-        /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
-        public bool globalCatalog;
-
-        /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
-        public bool skipCache;
+        public string Filter;
+        public SearchScope Scope;
+        public string[] Properties;
+        public CancellationToken CancellationToken;
+        public string DomainName;
+        public bool IncludeAcl;
+        public bool ShowDeleted;
+        public string AdsPath;
+        public bool GlobalCatalog;
+        public bool SkipCache;
     }
 
     public interface ILDAPUtils
@@ -51,11 +35,11 @@ namespace SharpHoundCommonLib
         Label LookupSidType(string sid, string domain);
         Label LookupGuidType(string guid, string domain);
         string GetDomainNameFromSid(string sid);
-        Task<string> GetSidFromDomainName(string domainName);
+        string GetSidFromDomainName(string domainName);
         string ConvertWellKnownPrincipal(string sid, string domain);
         bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
-        void AddDomainController(string domainControllerId);
         Domain GetDomain(string domainName = null);
+        void AddDomainController(string domainControllerSID);
         IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
 
         /// <summary>
@@ -82,7 +66,7 @@ namespace SharpHoundCommonLib
         /// <param name="name"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        Task<TypedPrincipal> ResolveAccountName(string name, string domain);
+        TypedPrincipal ResolveAccountName(string name, string domain);
 
         /// <summary>
         ///     Attempts to convert a distinguishedname to its corresponding ID and object type.

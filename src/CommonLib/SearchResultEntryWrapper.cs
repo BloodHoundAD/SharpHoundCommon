@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Security.Principal;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib
@@ -11,7 +11,7 @@ namespace SharpHoundCommonLib
     public interface ISearchResultEntry
     {
         string DistinguishedName { get; }
-        Task<ResolvedSearchResult> ResolveBloodHoundInfo();
+        ResolvedSearchResult ResolveBloodHoundInfo();
         string GetProperty(string propertyName);
         byte[] GetByteProperty(string propertyName);
         string[] GetArrayProperty(string propertyName);
@@ -25,6 +25,7 @@ namespace SharpHoundCommonLib
         IEnumerable<string> PropertyNames();
         bool IsMSA();
         bool IsGMSA();
+        bool HasLAPS();
     }
 
     public class SearchResultEntryWrapper : ISearchResultEntry
@@ -32,39 +33,46 @@ namespace SharpHoundCommonLib
         private const string GMSAClass = "msds-groupmanagedserviceaccount";
         private const string MSAClass = "msds-managedserviceaccount";
         private readonly SearchResultEntry _entry;
+        private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
-        public SearchResultEntryWrapper(SearchResultEntry entry, ILDAPUtils utils = null)
+        public SearchResultEntryWrapper(SearchResultEntry entry, ILDAPUtils utils = null, ILogger log = null)
         {
             _entry = entry;
             _utils = utils ?? new LDAPUtils();
+            _log = log ?? Logging.LogProvider.CreateLogger("SearchResultWrapper");
         }
 
         public string DistinguishedName => _entry.DistinguishedName;
 
-        public async Task<ResolvedSearchResult> ResolveBloodHoundInfo()
+        public ResolvedSearchResult ResolveBloodHoundInfo()
         {
             var res = new ResolvedSearchResult();
 
-            var itemID = GetObjectIdentifier();
-            if (itemID == null)
+            var objectId = GetObjectIdentifier();
+            if (objectId == null)
+            {
+                _log.LogWarning("ObjectIdentifier is null for {DN}", DistinguishedName);
                 return null;
+            }
 
-            var uac = _entry.GetProperty("useraccountcontrol");
+            var uac = _entry.GetProperty(LDAPProperties.UserAccountControl);
             if (int.TryParse(uac, out var flag))
             {
                 var flags = (UacFlags)flag;
                 if ((flags & UacFlags.ServerTrustAccount) != 0)
                 {
+                    _log.LogTrace("Marked {SID} as a domain controller", objectId);
                     res.IsDomainController = true;
-                    _utils.AddDomainController(itemID);
+                    _utils.AddDomainController(objectId);
                 }
             }
 
-            res.ObjectId = itemID;
+            res.ObjectId = objectId;
             if (IsDeleted())
             {
                 res.Deleted = IsDeleted();
+                _log.LogTrace("{SID} is tombstoned, skipping rest of resolution", objectId);
                 return res;
             }
 
@@ -73,42 +81,49 @@ namespace SharpHoundCommonLib
             string itemDomain;
             if (distinguishedName == null)
             {
-                if (itemID.StartsWith("S-1-"))
-                    itemDomain = _utils.GetDomainNameFromSid(itemID);
+                if (objectId.StartsWith("S-1-"))
+                {
+                    itemDomain = _utils.GetDomainNameFromSid(objectId);
+                }
                 else
+                {
+                    _log.LogWarning("Failed to resolve domain for {ObjectID}", objectId);
                     return null;
+                }
             }
             else
             {
                 itemDomain = Helpers.DistinguishedNameToDomain(distinguishedName);
             }
 
+            _log.LogTrace("Resolved domain for {SID} to {Domain}", objectId, itemDomain);
+
             res.Domain = itemDomain;
 
-            if (WellKnownPrincipal.GetWellKnownPrincipal(itemID, out var wkPrincipal))
+            if (WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var wkPrincipal))
             {
-                res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+                res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
                 res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
                 res.ObjectType = wkPrincipal.ObjectType;
-                res.ObjectId = _utils.ConvertWellKnownPrincipal(itemID, itemDomain);
+                res.ObjectId = _utils.ConvertWellKnownPrincipal(objectId, itemDomain);
 
+                _log.LogTrace("Resolved {DN} to wkp {ObjectID}", DistinguishedName, res.ObjectId);
                 return res;
             }
 
-            if (itemID.StartsWith("S-1-"))
+            if (objectId.StartsWith("S-1-"))
                 try
                 {
-                    res.DomainSid = new SecurityIdentifier(itemID).AccountDomainSid.Value;
+                    res.DomainSid = new SecurityIdentifier(objectId).AccountDomainSid.Value;
                 }
                 catch
                 {
-                    res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+                    res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
                 }
             else
-                res.DomainSid = await _utils.GetSidFromDomainName(itemDomain);
+                res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
 
-
-            var samAccountName = GetProperty("samaccountname");
+            var samAccountName = GetProperty(LDAPProperties.SAMAccountName);
 
             var itemType = GetLabel();
             res.ObjectType = itemType;
@@ -119,6 +134,8 @@ namespace SharpHoundCommonLib
                 itemType = Label.User;
             }
 
+            _log.LogTrace("Resolved type for {SID} to {Label}", objectId, itemType);
+
             switch (itemType)
             {
                 case Label.User:
@@ -127,8 +144,8 @@ namespace SharpHoundCommonLib
                     break;
                 case Label.Computer:
                     var shortName = samAccountName?.TrimEnd('$');
-                    var dns = GetProperty("dnshostname");
-                    var cn = GetProperty("cn");
+                    var dns = GetProperty(LDAPProperties.DNSHostName);
+                    var cn = GetProperty(LDAPProperties.CanonicalName);
 
                     if (dns != null)
                         res.DisplayName = dns;
@@ -141,14 +158,14 @@ namespace SharpHoundCommonLib
 
                     break;
                 case Label.GPO:
-                    res.DisplayName = $"{GetProperty("displayname")}@{itemDomain}";
+                    res.DisplayName = $"{GetProperty(LDAPProperties.DisplayName)}@{itemDomain}";
                     break;
                 case Label.Domain:
                     res.DisplayName = itemDomain;
                     break;
                 case Label.OU:
                 case Label.Container:
-                    res.DisplayName = $"{GetProperty("name")}@{itemDomain}";
+                    res.DisplayName = $"{GetProperty(LDAPProperties.Name)}@{itemDomain}";
                     break;
                 case Label.Base:
                     res.DisplayName = $"{samAccountName}@{itemDomain}";
@@ -218,14 +235,19 @@ namespace SharpHoundCommonLib
 
         public bool IsMSA()
         {
-            var classes = GetArrayProperty("objectclass");
+            var classes = GetArrayProperty(LDAPProperties.ObjectClass);
             return classes.Contains(MSAClass, StringComparer.InvariantCultureIgnoreCase);
         }
 
         public bool IsGMSA()
         {
-            var classes = GetArrayProperty("objectclass");
+            var classes = GetArrayProperty(LDAPProperties.ObjectClass);
             return classes.Contains(GMSAClass, StringComparer.InvariantCultureIgnoreCase);
+        }
+
+        public bool HasLAPS()
+        {
+            return GetProperty(LDAPProperties.LAPSExpirationTime) != null;
         }
 
         public SearchResultEntry GetEntry()

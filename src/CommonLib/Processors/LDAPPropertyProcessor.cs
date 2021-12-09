@@ -39,10 +39,10 @@ namespace SharpHoundCommonLib.Processors
             return new Dictionary<string, object>
             {
                 {
-                    "description", entry.GetProperty("description")
+                    "description", entry.GetProperty(LDAPProperties.Description)
                 },
                 {
-                    "whencreated", Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty("whenCreated"))
+                    "whencreated", Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty(LDAPProperties.WhenCreated))
                 }
             };
         }
@@ -56,7 +56,7 @@ namespace SharpHoundCommonLib.Processors
         {
             var props = GetCommonProps(entry);
 
-            if (!int.TryParse(entry.GetProperty("msds-behavior-version"), out var level)) level = -1;
+            if (!int.TryParse(entry.GetProperty(LDAPProperties.DomainFunctionalLevel), out var level)) level = -1;
 
             props.Add("functionallevel", FunctionalLevelToString(level));
 
@@ -94,7 +94,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadGPOProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            props.Add("gpcpath", entry.GetProperty("gpcfilesyspath")?.ToUpper());
+            props.Add("gpcpath", entry.GetProperty(LDAPProperties.GPCFileSYSPath)?.ToUpper());
             return props;
         }
 
@@ -118,7 +118,7 @@ namespace SharpHoundCommonLib.Processors
         {
             var props = GetCommonProps(entry);
 
-            var ac = entry.GetProperty("admincount");
+            var ac = entry.GetProperty(LDAPProperties.AdminCount);
             if (ac != null)
             {
                 var a = int.Parse(ac);
@@ -142,7 +142,7 @@ namespace SharpHoundCommonLib.Processors
             var userProps = new UserProperties();
             var props = GetCommonProps(entry);
 
-            var uac = entry.GetProperty("useraccountcontrol");
+            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
             bool enabled, trustedToAuth, sensitive, dontReqPreAuth, passwdNotReq, unconstrained, pwdNeverExpires;
             if (int.TryParse(uac, out var flag))
             {
@@ -178,7 +178,7 @@ namespace SharpHoundCommonLib.Processors
             var comps = new List<TypedPrincipal>();
             if (trustedToAuth)
             {
-                var delegates = entry.GetArrayProperty("msds-allowedToDelegateTo");
+                var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
                 props.Add("allowedtodelegate", delegates);
 
                 foreach (var d in delegates)
@@ -198,20 +198,20 @@ namespace SharpHoundCommonLib.Processors
 
             userProps.AllowedToDelegate = comps.Distinct().ToArray();
 
-            props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogon")));
+            props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
-                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
-            props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("pwdlastset")));
-            var spn = entry.GetArrayProperty("serviceprincipalname");
+                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
+            props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
+            var spn = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
             props.Add("serviceprincipalnames", spn);
             props.Add("hasspn", spn.Length > 0);
-            props.Add("displayname", entry.GetProperty("displayname"));
-            props.Add("email", entry.GetProperty("mail"));
-            props.Add("title", entry.GetProperty("title"));
-            props.Add("homedirectory", entry.GetProperty("homedirectory"));
-            props.Add("userpassword", entry.GetProperty("userpassword"));
+            props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
+            props.Add("email", entry.GetProperty(LDAPProperties.Email));
+            props.Add("title", entry.GetProperty(LDAPProperties.Title));
+            props.Add("homedirectory", entry.GetProperty(LDAPProperties.HomeDirectory));
+            props.Add("userpassword", entry.GetProperty(LDAPProperties.UserPassword));
 
-            var ac = entry.GetProperty("admincount");
+            var ac = entry.GetProperty(LDAPProperties.AdminCount);
             if (ac != null)
             {
                 if (int.TryParse(ac, out var parsed))
@@ -224,7 +224,7 @@ namespace SharpHoundCommonLib.Processors
                 props.Add("admincount", false);
             }
 
-            var sh = entry.GetByteArrayProperty("sidhistory");
+            var sh = entry.GetByteArrayProperty(LDAPProperties.SIDHistory);
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();
             foreach (var sid in sh)
@@ -265,7 +265,7 @@ namespace SharpHoundCommonLib.Processors
             var compProps = new ComputerProperties();
             var props = GetCommonProps(entry);
 
-            var uac = entry.GetProperty("useraccountcontrol");
+            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
             bool enabled, unconstrained, trustedToAuth;
             if (int.TryParse(uac, out var flag))
             {
@@ -286,7 +286,7 @@ namespace SharpHoundCommonLib.Processors
             var comps = new List<TypedPrincipal>();
             if (trustedToAuth)
             {
-                var delegates = entry.GetArrayProperty("msds-allowedToDelegateTo");
+                var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
                 props.Add("allowedtodelegate", delegates);
 
                 foreach (var d in delegates)
@@ -306,7 +306,7 @@ namespace SharpHoundCommonLib.Processors
             compProps.AllowedToDelegate = comps.Distinct().ToArray();
 
             var allowedToActPrincipals = new List<TypedPrincipal>();
-            var rawAllowedToAct = entry.GetByteProperty("msDS-AllowedToActOnBehalfOfOtherIdentity");
+            var rawAllowedToAct = entry.GetByteProperty(LDAPProperties.AllowedToActOnBehalfOfOtherIdentity);
             if (rawAllowedToAct != null)
             {
                 var sd = _utils.MakeSecurityDescriptor();
@@ -323,19 +323,19 @@ namespace SharpHoundCommonLib.Processors
             props.Add("enabled", enabled);
             props.Add("unconstraineddelegation", unconstrained);
             props.Add("trustedtoauth", trustedToAuth);
-            props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogon")));
+            props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
-                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("lastlogontimestamp")));
-            props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty("pwdlastset")));
-            props.Add("serviceprincipalnames", entry.GetArrayProperty("serviceprincipalname"));
-            var os = entry.GetProperty("operatingsystem");
-            var sp = entry.GetProperty("operatingsystemservicepack");
+                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
+            props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
+            props.Add("serviceprincipalnames", entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames));
+            var os = entry.GetProperty(LDAPProperties.OperatingSystem);
+            var sp = entry.GetProperty(LDAPProperties.ServicePack);
 
             if (sp != null) os = $"{os} {sp}";
 
             props.Add("operatingsystem", os);
 
-            var sh = entry.GetByteArrayProperty("sidhistory");
+            var sh = entry.GetByteArrayProperty(LDAPProperties.SIDHistory);
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();
             foreach (var sid in sh)
