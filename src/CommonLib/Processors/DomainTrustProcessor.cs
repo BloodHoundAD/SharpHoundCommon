@@ -31,7 +31,7 @@ namespace SharpHoundCommonLib.Processors
                 domain))
             {
                 var trust = new DomainTrust();
-                var targetSidBytes = result.GetByteProperty("securityIdentifier");
+                var targetSidBytes = result.GetByteProperty(LDAPProperties.SecurityIdentifier);
                 if (targetSidBytes == null || targetSidBytes.Length == 0)
                 {
                     _log.LogTrace("Trust sid is null or empty for target: {Domain}", domain);
@@ -51,7 +51,7 @@ namespace SharpHoundCommonLib.Processors
 
                 trust.TargetDomainSid = sid;
 
-                if (int.TryParse(result.GetProperty("trustdirection"), out var td))
+                if (int.TryParse(result.GetProperty(LDAPProperties.TrustDirection), out var td))
                 {
                     trust.TrustDirection = (TrustDirection)td;
                 }
@@ -64,7 +64,7 @@ namespace SharpHoundCommonLib.Processors
 
                 TrustAttributes attributes;
 
-                if (int.TryParse(result.GetProperty("trustattributes"), out var ta))
+                if (int.TryParse(result.GetProperty(LDAPProperties.TrustAttributes), out var ta))
                 {
                     attributes = (TrustAttributes)ta;
                 }
@@ -75,7 +75,7 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 trust.IsTransitive = (attributes & TrustAttributes.NonTransitive) == 0;
-                var name = result.GetProperty("cn")?.ToUpper();
+                var name = result.GetProperty(LDAPProperties.CanonicalName)?.ToUpper();
                 if (name != null)
                     trust.TargetDomainName = name;
 

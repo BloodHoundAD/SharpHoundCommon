@@ -19,7 +19,7 @@ namespace SharpHoundCommonLib.Processors
         public IAsyncEnumerable<SPNTarget> ReadSPNTargets(ResolvedSearchResult result,
             ISearchResultEntry entry)
         {
-            var members = entry.GetArrayProperty("member");
+            var members = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
             var name = result.DisplayName;
             var dn = entry.DistinguishedName;
 

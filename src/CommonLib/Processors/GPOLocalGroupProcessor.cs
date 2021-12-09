@@ -127,7 +127,7 @@ namespace SharpHoundCommonLib.Processors
                         AdsPath = linkDn
                     };
                     var filePath = _utils.QueryLDAP(opts).FirstOrDefault()?
-                        .GetProperty("gpcfilesyspath");
+                        .GetProperty(LDAPProperties.GPCFileSYSPath);
 
                     if (filePath == null)
                     {
@@ -136,7 +136,7 @@ namespace SharpHoundCommonLib.Processors
                     }
 
                     //Add the actions for each file. The GPO template file actions will override the XML file actions
-                    actions.AddRange(await ProcessGPOXmlFile(filePath, gpoDomain).ToListAsync());
+                    actions.AddRange(ProcessGPOXmlFile(filePath, gpoDomain).ToList());
                     actions.AddRange(await ProcessGPOTemplateFile(filePath, gpoDomain).ToListAsync());
                 }
 
@@ -400,7 +400,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns>A list of GPO "Actions"</returns>
-        internal async IAsyncEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
+        internal IEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
         {
             var xmlPath = Path.Combine(basePath, "MACHINE", "Preferences", "Groups", "Groups.xml");
 

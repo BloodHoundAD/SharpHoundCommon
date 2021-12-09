@@ -56,7 +56,7 @@ namespace SharpHoundCommonLib
                 return null;
             }
 
-            var uac = _entry.GetProperty("useraccountcontrol");
+            var uac = _entry.GetProperty(LDAPProperties.UserAccountControl);
             if (int.TryParse(uac, out var flag))
             {
                 var flags = (UacFlags)flag;
@@ -123,7 +123,7 @@ namespace SharpHoundCommonLib
             else
                 res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
 
-            var samAccountName = GetProperty("samaccountname");
+            var samAccountName = GetProperty(LDAPProperties.SAMAccountName);
 
             var itemType = GetLabel();
             res.ObjectType = itemType;
@@ -144,8 +144,8 @@ namespace SharpHoundCommonLib
                     break;
                 case Label.Computer:
                     var shortName = samAccountName?.TrimEnd('$');
-                    var dns = GetProperty("dnshostname");
-                    var cn = GetProperty("cn");
+                    var dns = GetProperty(LDAPProperties.DNSHostName);
+                    var cn = GetProperty(LDAPProperties.CanonicalName);
 
                     if (dns != null)
                         res.DisplayName = dns;
@@ -158,14 +158,14 @@ namespace SharpHoundCommonLib
 
                     break;
                 case Label.GPO:
-                    res.DisplayName = $"{GetProperty("displayname")}@{itemDomain}";
+                    res.DisplayName = $"{GetProperty(LDAPProperties.DisplayName)}@{itemDomain}";
                     break;
                 case Label.Domain:
                     res.DisplayName = itemDomain;
                     break;
                 case Label.OU:
                 case Label.Container:
-                    res.DisplayName = $"{GetProperty("name")}@{itemDomain}";
+                    res.DisplayName = $"{GetProperty(LDAPProperties.Name)}@{itemDomain}";
                     break;
                 case Label.Base:
                     res.DisplayName = $"{samAccountName}@{itemDomain}";
@@ -235,19 +235,19 @@ namespace SharpHoundCommonLib
 
         public bool IsMSA()
         {
-            var classes = GetArrayProperty("objectclass");
+            var classes = GetArrayProperty(LDAPProperties.ObjectClass);
             return classes.Contains(MSAClass, StringComparer.InvariantCultureIgnoreCase);
         }
 
         public bool IsGMSA()
         {
-            var classes = GetArrayProperty("objectclass");
+            var classes = GetArrayProperty(LDAPProperties.ObjectClass);
             return classes.Contains(GMSAClass, StringComparer.InvariantCultureIgnoreCase);
         }
 
         public bool HasLAPS()
         {
-            return GetProperty("ms-mcs-admpwdexpirationtime") != null;
+            return GetProperty(LDAPProperties.LAPSExpirationTime) != null;
         }
 
         public SearchResultEntry GetEntry()

@@ -19,7 +19,7 @@ namespace SharpHoundCommonLib.Processors
 
         public IEnumerable<TypedPrincipal> ReadGroupMembers(ResolvedSearchResult result, ISearchResultEntry entry)
         {
-            var members = entry.GetArrayProperty("member");
+            var members = entry.GetArrayProperty(LDAPProperties.Members);
             var name = result.DisplayName;
             var dn = entry.DistinguishedName;
 

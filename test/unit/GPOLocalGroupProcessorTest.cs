@@ -201,7 +201,7 @@ namespace CommonLibTest
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
             var gpcFileSysPath = Path.Join(Path.GetTempPath(), "made", "up", "path");
 
-            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
@@ -218,7 +218,7 @@ namespace CommonLibTest
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
-            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
@@ -236,7 +236,7 @@ namespace CommonLibTest
             File.WriteAllText(groupsXmlPath, GroupXmlContent);
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
-            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
 
             Assert.NotNull(actual);
             Assert.NotEmpty(actual);

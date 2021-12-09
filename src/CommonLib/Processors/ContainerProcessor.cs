@@ -83,7 +83,7 @@ namespace SharpHoundCommonLib.Processors
 
         public IEnumerable<GPLink> ReadContainerGPLinks(ResolvedSearchResult result, ISearchResultEntry entry)
         {
-            var links = entry.GetProperty("gplink");
+            var links = entry.GetProperty(LDAPProperties.GPLink);
 
             return ReadContainerGPLinks(links);
         }

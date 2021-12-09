@@ -67,10 +67,10 @@ namespace SharpHoundCommonLib.Processors
 
             _log.LogTrace("BuildGUIDCache - Successfully grabbed schema");
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
-                new[] { "schemaidguid", "name" }, adsPath: schema))
+                new[] { LDAPProperties.SchemaIDGUID, LDAPProperties.Name }, adsPath: schema))
             {
-                var name = entry.GetProperty("name")?.ToLower();
-                var guid = new Guid(entry.GetByteProperty("schemaidguid")).ToString();
+                var name = entry.GetProperty(LDAPProperties.Name)?.ToLower();
+                var guid = new Guid(entry.GetByteProperty(LDAPProperties.SchemaIDGUID)).ToString();
                 GuidMap.TryAdd(guid, name);
             }
 
@@ -101,7 +101,7 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         public IEnumerable<ACE> ProcessACL(ResolvedSearchResult result, ISearchResultEntry searchResult)
         {
-            var descriptor = searchResult.GetByteProperty("ntsecuritydescriptor");
+            var descriptor = searchResult.GetByteProperty(LDAPProperties.SecurityDescriptor);
             var domain = result.Domain;
             var type = result.ObjectType;
             var hasLaps = searchResult.HasLAPS();
@@ -373,7 +373,7 @@ namespace SharpHoundCommonLib.Processors
         public IEnumerable<ACE> ProcessGMSAReaders(ResolvedSearchResult resolvedSearchResult,
             ISearchResultEntry searchResultEntry)
         {
-            var descriptor = searchResultEntry.GetByteProperty("msds-groupmsamembership");
+            var descriptor = searchResultEntry.GetByteProperty(LDAPProperties.GroupMSAMembership);
             var domain = resolvedSearchResult.Domain;
             var name = resolvedSearchResult.DisplayName;
 

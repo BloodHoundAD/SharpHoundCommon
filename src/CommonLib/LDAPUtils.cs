@@ -985,7 +985,7 @@ namespace SharpHoundCommonLib
 
             if (result != null)
             {
-                var domainName = result.GetProperty("cn");
+                var domainName = result.GetProperty(LDAPProperties.CanonicalName);
                 return domainName;
             }
 

@@ -38,6 +38,7 @@ namespace SharpHoundCommonLib
         public static string PrintEntry(this SearchResultEntry searchResultEntry)
         {
             var sb = new StringBuilder();
+            if (searchResultEntry.Attributes.AttributeNames == null) return sb.ToString();
             foreach (var propertyName in searchResultEntry.Attributes.AttributeNames)
             {
                 var property = propertyName.ToString();
@@ -65,10 +66,10 @@ namespace SharpHoundCommonLib
 
         public static string GetSid(this DirectoryEntry result)
         {
-            if (!result.Properties.Contains("objectsid"))
+            if (!result.Properties.Contains(LDAPProperties.ObjectSID))
                 return null;
 
-            var s = result.Properties["objectsid"][0];
+            var s = result.Properties[LDAPProperties.ObjectSID][0];
             return s switch
             {
                 byte[] b => new SecurityIdentifier(b, 0).ToString(),
@@ -135,9 +136,9 @@ namespace SharpHoundCommonLib
         /// <returns>The string representation of the object's GUID if possible, otherwise null</returns>
         public static string GetGuid(this SearchResultEntry entry)
         {
-            if (entry.Attributes.Contains("objectguid"))
+            if (entry.Attributes.Contains(LDAPProperties.ObjectGUID))
             {
-                var guidBytes = entry.GetPropertyAsBytes("objectguid");
+                var guidBytes = entry.GetPropertyAsBytes(LDAPProperties.ObjectGUID);
 
                 return new Guid(guidBytes).ToString().ToUpper();
             }
@@ -152,12 +153,12 @@ namespace SharpHoundCommonLib
         /// <returns>The string representation of the object's SID if possible, otherwise null</returns>
         public static string GetSid(this SearchResultEntry entry)
         {
-            if (!entry.Attributes.Contains("objectsid")) return null;
+            if (!entry.Attributes.Contains(LDAPProperties.ObjectSID)) return null;
 
             object[] s;
             try
             {
-                s = entry.Attributes["objectsid"].GetValues(typeof(byte[]));
+                s = entry.Attributes[LDAPProperties.ObjectSID].GetValues(typeof(byte[]));
             }
             catch (NotSupportedException)
             {
@@ -257,7 +258,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public static bool IsDeleted(this SearchResultEntry entry)
         {
-            var deleted = entry.GetProperty("isDeleted");
+            var deleted = entry.GetProperty(LDAPProperties.IsDeleted);
             return bool.TryParse(deleted, out var isDeleted) && isDeleted;
         }
 
@@ -270,7 +271,7 @@ namespace SharpHoundCommonLib
         public static Label GetLabel(this SearchResultEntry entry)
         {
             //Test if we have the msds-groupmsamembership property first. We want to override this as a user object
-            if (entry.GetPropertyAsBytes("msds-groupmsamembership") != null)
+            if (entry.GetPropertyAsBytes(LDAPProperties.GroupMSAMembership) != null)
                 return Label.User;
 
             var objectId = entry.GetObjectIdentifier();
@@ -286,7 +287,7 @@ namespace SharpHoundCommonLib
                 return commonPrincipal.ObjectType;
 
             var objectType = Label.Base;
-            var samAccountType = entry.GetProperty("samaccounttype");
+            var samAccountType = entry.GetProperty(LDAPProperties.SAMAccountType);
             //Its not a common principal. Lets use properties to figure out what it actually is
             if (samAccountType != null)
             {
@@ -294,16 +295,16 @@ namespace SharpHoundCommonLib
             }
             else
             {
-                var objectClasses = entry.GetPropertyAsArray("objectClass");
+                var objectClasses = entry.GetPropertyAsArray(LDAPProperties.ObjectClass);
                 if (objectClasses == null)
                     objectType = Label.Base;
-                else if (objectClasses.Contains("groupPolicyContainer"))
+                else if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.GPO;
-                else if (objectClasses.Contains("organizationalUnit"))
+                else if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.OU;
-                else if (objectClasses.Contains("domain"))
+                else if (objectClasses.Contains(DomainClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.Domain;
-                else if (objectClasses.Contains("container"))
+                else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.Container;
             }
 
@@ -311,6 +312,11 @@ namespace SharpHoundCommonLib
             Cache.AddType(objectId, objectType);
             return objectType;
         }
+
+        private const string GroupPolicyContainerClass = "groupPolicyContainer";
+        private const string OrganizationalUnitClass = "organizationalUnit";
+        private const string DomainClass = "domain";
+        private const string ContainerClass = "container";
 
         #endregion
     }
