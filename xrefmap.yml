@@ -419,6 +419,12 @@ references:
   commentId: F:SharpHoundCommonLib.EdgeNames.ReadLAPSPassword
   fullName: SharpHoundCommonLib.EdgeNames.ReadLAPSPassword
   nameWithType: EdgeNames.ReadLAPSPassword
+- uid: SharpHoundCommonLib.EdgeNames.SQLAdmin
+  name: SQLAdmin
+  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_SQLAdmin
+  commentId: F:SharpHoundCommonLib.EdgeNames.SQLAdmin
+  fullName: SharpHoundCommonLib.EdgeNames.SQLAdmin
+  nameWithType: EdgeNames.SQLAdmin
 - uid: SharpHoundCommonLib.EdgeNames.WriteDacl
   name: WriteDacl
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WriteDacl
@@ -4597,63 +4603,51 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.SessionAPIResult.Results
   nameWithType: SessionAPIResult.Results
-- uid: SharpHoundCommonLib.OutputTypes.SPNService
-  name: SPNService
-  href: api/SharpHoundCommonLib.OutputTypes.SPNService.html
-  commentId: T:SharpHoundCommonLib.OutputTypes.SPNService
-  fullName: SharpHoundCommonLib.OutputTypes.SPNService
-  nameWithType: SPNService
-- uid: SharpHoundCommonLib.OutputTypes.SPNService.MSSQL
-  name: MSSQL
-  href: api/SharpHoundCommonLib.OutputTypes.SPNService.html#SharpHoundCommonLib_OutputTypes_SPNService_MSSQL
-  commentId: F:SharpHoundCommonLib.OutputTypes.SPNService.MSSQL
-  fullName: SharpHoundCommonLib.OutputTypes.SPNService.MSSQL
-  nameWithType: SPNService.MSSQL
-- uid: SharpHoundCommonLib.OutputTypes.SPNTarget
-  name: SPNTarget
-  href: api/SharpHoundCommonLib.OutputTypes.SPNTarget.html
-  commentId: T:SharpHoundCommonLib.OutputTypes.SPNTarget
-  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget
-  nameWithType: SPNTarget
-- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
+- uid: SharpHoundCommonLib.OutputTypes.SPNPrivilege
+  name: SPNPrivilege
+  href: api/SharpHoundCommonLib.OutputTypes.SPNPrivilege.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.SPNPrivilege
+  fullName: SharpHoundCommonLib.OutputTypes.SPNPrivilege
+  nameWithType: SPNPrivilege
+- uid: SharpHoundCommonLib.OutputTypes.SPNPrivilege.ComputerSID
   name: ComputerSID
-  href: api/SharpHoundCommonLib.OutputTypes.SPNTarget.html#SharpHoundCommonLib_OutputTypes_SPNTarget_ComputerSID
-  commentId: P:SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
-  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
-  nameWithType: SPNTarget.ComputerSID
-- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID*
+  href: api/SharpHoundCommonLib.OutputTypes.SPNPrivilege.html#SharpHoundCommonLib_OutputTypes_SPNPrivilege_ComputerSID
+  commentId: P:SharpHoundCommonLib.OutputTypes.SPNPrivilege.ComputerSID
+  fullName: SharpHoundCommonLib.OutputTypes.SPNPrivilege.ComputerSID
+  nameWithType: SPNPrivilege.ComputerSID
+- uid: SharpHoundCommonLib.OutputTypes.SPNPrivilege.ComputerSID*
   name: ComputerSID
-  href: api/SharpHoundCommonLib.OutputTypes.SPNTarget.html#SharpHoundCommonLib_OutputTypes_SPNTarget_ComputerSID_
-  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
+  href: api/SharpHoundCommonLib.OutputTypes.SPNPrivilege.html#SharpHoundCommonLib_OutputTypes_SPNPrivilege_ComputerSID_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNPrivilege.ComputerSID
   isSpec: "True"
-  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.ComputerSID
-  nameWithType: SPNTarget.ComputerSID
-- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.Port
+  fullName: SharpHoundCommonLib.OutputTypes.SPNPrivilege.ComputerSID
+  nameWithType: SPNPrivilege.ComputerSID
+- uid: SharpHoundCommonLib.OutputTypes.SPNPrivilege.Port
   name: Port
-  href: api/SharpHoundCommonLib.OutputTypes.SPNTarget.html#SharpHoundCommonLib_OutputTypes_SPNTarget_Port
-  commentId: P:SharpHoundCommonLib.OutputTypes.SPNTarget.Port
-  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.Port
-  nameWithType: SPNTarget.Port
-- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.Port*
+  href: api/SharpHoundCommonLib.OutputTypes.SPNPrivilege.html#SharpHoundCommonLib_OutputTypes_SPNPrivilege_Port
+  commentId: P:SharpHoundCommonLib.OutputTypes.SPNPrivilege.Port
+  fullName: SharpHoundCommonLib.OutputTypes.SPNPrivilege.Port
+  nameWithType: SPNPrivilege.Port
+- uid: SharpHoundCommonLib.OutputTypes.SPNPrivilege.Port*
   name: Port
-  href: api/SharpHoundCommonLib.OutputTypes.SPNTarget.html#SharpHoundCommonLib_OutputTypes_SPNTarget_Port_
-  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNTarget.Port
+  href: api/SharpHoundCommonLib.OutputTypes.SPNPrivilege.html#SharpHoundCommonLib_OutputTypes_SPNPrivilege_Port_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNPrivilege.Port
   isSpec: "True"
-  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.Port
-  nameWithType: SPNTarget.Port
-- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.Service
+  fullName: SharpHoundCommonLib.OutputTypes.SPNPrivilege.Port
+  nameWithType: SPNPrivilege.Port
+- uid: SharpHoundCommonLib.OutputTypes.SPNPrivilege.Service
   name: Service
-  href: api/SharpHoundCommonLib.OutputTypes.SPNTarget.html#SharpHoundCommonLib_OutputTypes_SPNTarget_Service
-  commentId: P:SharpHoundCommonLib.OutputTypes.SPNTarget.Service
-  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.Service
-  nameWithType: SPNTarget.Service
-- uid: SharpHoundCommonLib.OutputTypes.SPNTarget.Service*
+  href: api/SharpHoundCommonLib.OutputTypes.SPNPrivilege.html#SharpHoundCommonLib_OutputTypes_SPNPrivilege_Service
+  commentId: P:SharpHoundCommonLib.OutputTypes.SPNPrivilege.Service
+  fullName: SharpHoundCommonLib.OutputTypes.SPNPrivilege.Service
+  nameWithType: SPNPrivilege.Service
+- uid: SharpHoundCommonLib.OutputTypes.SPNPrivilege.Service*
   name: Service
-  href: api/SharpHoundCommonLib.OutputTypes.SPNTarget.html#SharpHoundCommonLib_OutputTypes_SPNTarget_Service_
-  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNTarget.Service
+  href: api/SharpHoundCommonLib.OutputTypes.SPNPrivilege.html#SharpHoundCommonLib_OutputTypes_SPNPrivilege_Service_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.SPNPrivilege.Service
   isSpec: "True"
-  fullName: SharpHoundCommonLib.OutputTypes.SPNTarget.Service
-  nameWithType: SPNTarget.Service
+  fullName: SharpHoundCommonLib.OutputTypes.SPNPrivilege.Service
+  nameWithType: SPNPrivilege.Service
 - uid: SharpHoundCommonLib.OutputTypes.TypedPrincipal
   name: TypedPrincipal
   href: api/SharpHoundCommonLib.OutputTypes.TypedPrincipal.html
