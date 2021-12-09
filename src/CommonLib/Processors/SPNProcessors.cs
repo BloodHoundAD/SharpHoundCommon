@@ -16,7 +16,7 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("SPNProc");
         }
 
-        public IAsyncEnumerable<SPNTarget> ReadSPNTargets(ResolvedSearchResult result,
+        public IAsyncEnumerable<SPNPrivilege> ReadSPNTargets(ResolvedSearchResult result,
             ISearchResultEntry entry)
         {
             var members = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
@@ -26,7 +26,7 @@ namespace SharpHoundCommonLib.Processors
             return ReadSPNTargets(members, dn, name);
         }
 
-        public async IAsyncEnumerable<SPNTarget> ReadSPNTargets(string[] servicePrincipalNames,
+        public async IAsyncEnumerable<SPNPrivilege> ReadSPNTargets(string[] servicePrincipalNames,
             string distinguishedName, string objectName = "")
         {
             if (servicePrincipalNames.Length == 0)
@@ -60,11 +60,11 @@ namespace SharpHoundCommonLib.Processors
                     var host = await _utils.ResolveHostToSid(spn, domain);
                     _log.LogTrace("Resolved {SPN} to {Hostname}", spn, host);
                     if (host.StartsWith("S-1-"))
-                        yield return new SPNTarget
+                        yield return new SPNPrivilege
                         {
                             ComputerSID = host,
                             Port = port,
-                            Service = SPNService.MSSQL
+                            Service = EdgeNames.SQLAdmin
                         };
                 }
             }
