@@ -33,7 +33,7 @@ namespace CommonLibTest
                         {"trusttype", "2"},
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
-                        {"securityIdentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
+                        {"securityidentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "", Label.Domain)
             };
 

@@ -182,7 +182,7 @@ namespace CommonLibTest
                     },
                     {"pwdlastset", "132131667346106691"},
                     {
-                        "msds-allowedToDelegateTo", new[]
+                        "msds-allowedtodelegateto", new[]
                         {
                             "host/primary",
                             "rdpman/win10"
@@ -405,7 +405,7 @@ namespace CommonLibTest
                         }
                     },
                     {
-                        "msds-allowedToDelegateTo", new[]
+                        "msds-allowedtodelegateto", new[]
                         {
                             "ldap/PRIMARY.testlab.local/testlab.local",
                             "ldap/PRIMARY.testlab.local",
