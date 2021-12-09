@@ -1728,6 +1728,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ISearchResultEntry.GetSid
   nameWithType: ISearchResultEntry.GetSid
+- uid: SharpHoundCommonLib.ISearchResultEntry.HasLAPS
+  name: HasLAPS()
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_HasLAPS
+  commentId: M:SharpHoundCommonLib.ISearchResultEntry.HasLAPS
+  fullName: SharpHoundCommonLib.ISearchResultEntry.HasLAPS()
+  nameWithType: ISearchResultEntry.HasLAPS()
+- uid: SharpHoundCommonLib.ISearchResultEntry.HasLAPS*
+  name: HasLAPS
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_HasLAPS_
+  commentId: Overload:SharpHoundCommonLib.ISearchResultEntry.HasLAPS
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ISearchResultEntry.HasLAPS
+  nameWithType: ISearchResultEntry.HasLAPS
 - uid: SharpHoundCommonLib.ISearchResultEntry.IsDeleted
   name: IsDeleted()
   href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_IsDeleted
@@ -1903,6 +1916,246 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPConfig.Username
   nameWithType: LDAPConfig.Username
+- uid: SharpHoundCommonLib.LDAPProperties
+  name: LDAPProperties
+  href: api/SharpHoundCommonLib.LDAPProperties.html
+  commentId: T:SharpHoundCommonLib.LDAPProperties
+  fullName: SharpHoundCommonLib.LDAPProperties
+  nameWithType: LDAPProperties
+- uid: SharpHoundCommonLib.LDAPProperties.AdminCount
+  name: AdminCount
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_AdminCount
+  commentId: F:SharpHoundCommonLib.LDAPProperties.AdminCount
+  fullName: SharpHoundCommonLib.LDAPProperties.AdminCount
+  nameWithType: LDAPProperties.AdminCount
+- uid: SharpHoundCommonLib.LDAPProperties.AllowedToActOnBehalfOfOtherIdentity
+  name: AllowedToActOnBehalfOfOtherIdentity
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_AllowedToActOnBehalfOfOtherIdentity
+  commentId: F:SharpHoundCommonLib.LDAPProperties.AllowedToActOnBehalfOfOtherIdentity
+  fullName: SharpHoundCommonLib.LDAPProperties.AllowedToActOnBehalfOfOtherIdentity
+  nameWithType: LDAPProperties.AllowedToActOnBehalfOfOtherIdentity
+- uid: SharpHoundCommonLib.LDAPProperties.AllowedToDelegateTo
+  name: AllowedToDelegateTo
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_AllowedToDelegateTo
+  commentId: F:SharpHoundCommonLib.LDAPProperties.AllowedToDelegateTo
+  fullName: SharpHoundCommonLib.LDAPProperties.AllowedToDelegateTo
+  nameWithType: LDAPProperties.AllowedToDelegateTo
+- uid: SharpHoundCommonLib.LDAPProperties.CanonicalName
+  name: CanonicalName
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CanonicalName
+  commentId: F:SharpHoundCommonLib.LDAPProperties.CanonicalName
+  fullName: SharpHoundCommonLib.LDAPProperties.CanonicalName
+  nameWithType: LDAPProperties.CanonicalName
+- uid: SharpHoundCommonLib.LDAPProperties.Description
+  name: Description
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Description
+  commentId: F:SharpHoundCommonLib.LDAPProperties.Description
+  fullName: SharpHoundCommonLib.LDAPProperties.Description
+  nameWithType: LDAPProperties.Description
+- uid: SharpHoundCommonLib.LDAPProperties.DisplayName
+  name: DisplayName
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_DisplayName
+  commentId: F:SharpHoundCommonLib.LDAPProperties.DisplayName
+  fullName: SharpHoundCommonLib.LDAPProperties.DisplayName
+  nameWithType: LDAPProperties.DisplayName
+- uid: SharpHoundCommonLib.LDAPProperties.DNSHostName
+  name: DNSHostName
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_DNSHostName
+  commentId: F:SharpHoundCommonLib.LDAPProperties.DNSHostName
+  fullName: SharpHoundCommonLib.LDAPProperties.DNSHostName
+  nameWithType: LDAPProperties.DNSHostName
+- uid: SharpHoundCommonLib.LDAPProperties.DomainFunctionalLevel
+  name: DomainFunctionalLevel
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_DomainFunctionalLevel
+  commentId: F:SharpHoundCommonLib.LDAPProperties.DomainFunctionalLevel
+  fullName: SharpHoundCommonLib.LDAPProperties.DomainFunctionalLevel
+  nameWithType: LDAPProperties.DomainFunctionalLevel
+- uid: SharpHoundCommonLib.LDAPProperties.Email
+  name: Email
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Email
+  commentId: F:SharpHoundCommonLib.LDAPProperties.Email
+  fullName: SharpHoundCommonLib.LDAPProperties.Email
+  nameWithType: LDAPProperties.Email
+- uid: SharpHoundCommonLib.LDAPProperties.GPCFileSYSPath
+  name: GPCFileSYSPath
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_GPCFileSYSPath
+  commentId: F:SharpHoundCommonLib.LDAPProperties.GPCFileSYSPath
+  fullName: SharpHoundCommonLib.LDAPProperties.GPCFileSYSPath
+  nameWithType: LDAPProperties.GPCFileSYSPath
+- uid: SharpHoundCommonLib.LDAPProperties.GPLink
+  name: GPLink
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_GPLink
+  commentId: F:SharpHoundCommonLib.LDAPProperties.GPLink
+  fullName: SharpHoundCommonLib.LDAPProperties.GPLink
+  nameWithType: LDAPProperties.GPLink
+- uid: SharpHoundCommonLib.LDAPProperties.GroupMSAMembership
+  name: GroupMSAMembership
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_GroupMSAMembership
+  commentId: F:SharpHoundCommonLib.LDAPProperties.GroupMSAMembership
+  fullName: SharpHoundCommonLib.LDAPProperties.GroupMSAMembership
+  nameWithType: LDAPProperties.GroupMSAMembership
+- uid: SharpHoundCommonLib.LDAPProperties.HomeDirectory
+  name: HomeDirectory
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_HomeDirectory
+  commentId: F:SharpHoundCommonLib.LDAPProperties.HomeDirectory
+  fullName: SharpHoundCommonLib.LDAPProperties.HomeDirectory
+  nameWithType: LDAPProperties.HomeDirectory
+- uid: SharpHoundCommonLib.LDAPProperties.IsDeleted
+  name: IsDeleted
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_IsDeleted
+  commentId: F:SharpHoundCommonLib.LDAPProperties.IsDeleted
+  fullName: SharpHoundCommonLib.LDAPProperties.IsDeleted
+  nameWithType: LDAPProperties.IsDeleted
+- uid: SharpHoundCommonLib.LDAPProperties.LAPSExpirationTime
+  name: LAPSExpirationTime
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LAPSExpirationTime
+  commentId: F:SharpHoundCommonLib.LDAPProperties.LAPSExpirationTime
+  fullName: SharpHoundCommonLib.LDAPProperties.LAPSExpirationTime
+  nameWithType: LDAPProperties.LAPSExpirationTime
+- uid: SharpHoundCommonLib.LDAPProperties.LastLogon
+  name: LastLogon
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LastLogon
+  commentId: F:SharpHoundCommonLib.LDAPProperties.LastLogon
+  fullName: SharpHoundCommonLib.LDAPProperties.LastLogon
+  nameWithType: LDAPProperties.LastLogon
+- uid: SharpHoundCommonLib.LDAPProperties.LastLogonTimestamp
+  name: LastLogonTimestamp
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LastLogonTimestamp
+  commentId: F:SharpHoundCommonLib.LDAPProperties.LastLogonTimestamp
+  fullName: SharpHoundCommonLib.LDAPProperties.LastLogonTimestamp
+  nameWithType: LDAPProperties.LastLogonTimestamp
+- uid: SharpHoundCommonLib.LDAPProperties.Members
+  name: Members
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Members
+  commentId: F:SharpHoundCommonLib.LDAPProperties.Members
+  fullName: SharpHoundCommonLib.LDAPProperties.Members
+  nameWithType: LDAPProperties.Members
+- uid: SharpHoundCommonLib.LDAPProperties.Name
+  name: Name
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Name
+  commentId: F:SharpHoundCommonLib.LDAPProperties.Name
+  fullName: SharpHoundCommonLib.LDAPProperties.Name
+  nameWithType: LDAPProperties.Name
+- uid: SharpHoundCommonLib.LDAPProperties.ObjectClass
+  name: ObjectClass
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ObjectClass
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ObjectClass
+  fullName: SharpHoundCommonLib.LDAPProperties.ObjectClass
+  nameWithType: LDAPProperties.ObjectClass
+- uid: SharpHoundCommonLib.LDAPProperties.ObjectGUID
+  name: ObjectGUID
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ObjectGUID
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ObjectGUID
+  fullName: SharpHoundCommonLib.LDAPProperties.ObjectGUID
+  nameWithType: LDAPProperties.ObjectGUID
+- uid: SharpHoundCommonLib.LDAPProperties.ObjectSID
+  name: ObjectSID
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ObjectSID
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ObjectSID
+  fullName: SharpHoundCommonLib.LDAPProperties.ObjectSID
+  nameWithType: LDAPProperties.ObjectSID
+- uid: SharpHoundCommonLib.LDAPProperties.OperatingSystem
+  name: OperatingSystem
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_OperatingSystem
+  commentId: F:SharpHoundCommonLib.LDAPProperties.OperatingSystem
+  fullName: SharpHoundCommonLib.LDAPProperties.OperatingSystem
+  nameWithType: LDAPProperties.OperatingSystem
+- uid: SharpHoundCommonLib.LDAPProperties.PasswordLastSet
+  name: PasswordLastSet
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PasswordLastSet
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PasswordLastSet
+  fullName: SharpHoundCommonLib.LDAPProperties.PasswordLastSet
+  nameWithType: LDAPProperties.PasswordLastSet
+- uid: SharpHoundCommonLib.LDAPProperties.PrimaryGroupID
+  name: PrimaryGroupID
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PrimaryGroupID
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PrimaryGroupID
+  fullName: SharpHoundCommonLib.LDAPProperties.PrimaryGroupID
+  nameWithType: LDAPProperties.PrimaryGroupID
+- uid: SharpHoundCommonLib.LDAPProperties.SAMAccountName
+  name: SAMAccountName
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_SAMAccountName
+  commentId: F:SharpHoundCommonLib.LDAPProperties.SAMAccountName
+  fullName: SharpHoundCommonLib.LDAPProperties.SAMAccountName
+  nameWithType: LDAPProperties.SAMAccountName
+- uid: SharpHoundCommonLib.LDAPProperties.SAMAccountType
+  name: SAMAccountType
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_SAMAccountType
+  commentId: F:SharpHoundCommonLib.LDAPProperties.SAMAccountType
+  fullName: SharpHoundCommonLib.LDAPProperties.SAMAccountType
+  nameWithType: LDAPProperties.SAMAccountType
+- uid: SharpHoundCommonLib.LDAPProperties.SchemaIDGUID
+  name: SchemaIDGUID
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_SchemaIDGUID
+  commentId: F:SharpHoundCommonLib.LDAPProperties.SchemaIDGUID
+  fullName: SharpHoundCommonLib.LDAPProperties.SchemaIDGUID
+  nameWithType: LDAPProperties.SchemaIDGUID
+- uid: SharpHoundCommonLib.LDAPProperties.SecurityDescriptor
+  name: SecurityDescriptor
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_SecurityDescriptor
+  commentId: F:SharpHoundCommonLib.LDAPProperties.SecurityDescriptor
+  fullName: SharpHoundCommonLib.LDAPProperties.SecurityDescriptor
+  nameWithType: LDAPProperties.SecurityDescriptor
+- uid: SharpHoundCommonLib.LDAPProperties.SecurityIdentifier
+  name: SecurityIdentifier
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_SecurityIdentifier
+  commentId: F:SharpHoundCommonLib.LDAPProperties.SecurityIdentifier
+  fullName: SharpHoundCommonLib.LDAPProperties.SecurityIdentifier
+  nameWithType: LDAPProperties.SecurityIdentifier
+- uid: SharpHoundCommonLib.LDAPProperties.ServicePack
+  name: ServicePack
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ServicePack
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ServicePack
+  fullName: SharpHoundCommonLib.LDAPProperties.ServicePack
+  nameWithType: LDAPProperties.ServicePack
+- uid: SharpHoundCommonLib.LDAPProperties.ServicePrincipalNames
+  name: ServicePrincipalNames
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ServicePrincipalNames
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ServicePrincipalNames
+  fullName: SharpHoundCommonLib.LDAPProperties.ServicePrincipalNames
+  nameWithType: LDAPProperties.ServicePrincipalNames
+- uid: SharpHoundCommonLib.LDAPProperties.SIDHistory
+  name: SIDHistory
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_SIDHistory
+  commentId: F:SharpHoundCommonLib.LDAPProperties.SIDHistory
+  fullName: SharpHoundCommonLib.LDAPProperties.SIDHistory
+  nameWithType: LDAPProperties.SIDHistory
+- uid: SharpHoundCommonLib.LDAPProperties.Title
+  name: Title
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Title
+  commentId: F:SharpHoundCommonLib.LDAPProperties.Title
+  fullName: SharpHoundCommonLib.LDAPProperties.Title
+  nameWithType: LDAPProperties.Title
+- uid: SharpHoundCommonLib.LDAPProperties.TrustAttributes
+  name: TrustAttributes
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_TrustAttributes
+  commentId: F:SharpHoundCommonLib.LDAPProperties.TrustAttributes
+  fullName: SharpHoundCommonLib.LDAPProperties.TrustAttributes
+  nameWithType: LDAPProperties.TrustAttributes
+- uid: SharpHoundCommonLib.LDAPProperties.TrustDirection
+  name: TrustDirection
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_TrustDirection
+  commentId: F:SharpHoundCommonLib.LDAPProperties.TrustDirection
+  fullName: SharpHoundCommonLib.LDAPProperties.TrustDirection
+  nameWithType: LDAPProperties.TrustDirection
+- uid: SharpHoundCommonLib.LDAPProperties.UserAccountControl
+  name: UserAccountControl
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_UserAccountControl
+  commentId: F:SharpHoundCommonLib.LDAPProperties.UserAccountControl
+  fullName: SharpHoundCommonLib.LDAPProperties.UserAccountControl
+  nameWithType: LDAPProperties.UserAccountControl
+- uid: SharpHoundCommonLib.LDAPProperties.UserPassword
+  name: UserPassword
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_UserPassword
+  commentId: F:SharpHoundCommonLib.LDAPProperties.UserPassword
+  fullName: SharpHoundCommonLib.LDAPProperties.UserPassword
+  nameWithType: LDAPProperties.UserPassword
+- uid: SharpHoundCommonLib.LDAPProperties.WhenCreated
+  name: WhenCreated
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_WhenCreated
+  commentId: F:SharpHoundCommonLib.LDAPProperties.WhenCreated
+  fullName: SharpHoundCommonLib.LDAPProperties.WhenCreated
+  nameWithType: LDAPProperties.WhenCreated
 - uid: SharpHoundCommonLib.LDAPQueries
   name: SharpHoundCommonLib.LDAPQueries
   href: api/SharpHoundCommonLib.LDAPQueries.html
@@ -2301,66 +2554,66 @@ references:
   commentId: T:SharpHoundCommonLib.LDAPQueryOptions
   fullName: SharpHoundCommonLib.LDAPQueryOptions
   nameWithType: LDAPQueryOptions
-- uid: SharpHoundCommonLib.LDAPQueryOptions.adsPath
-  name: adsPath
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_adsPath
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.adsPath
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.adsPath
-  nameWithType: LDAPQueryOptions.adsPath
-- uid: SharpHoundCommonLib.LDAPQueryOptions.cancellationToken
-  name: cancellationToken
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_cancellationToken
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.cancellationToken
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.cancellationToken
-  nameWithType: LDAPQueryOptions.cancellationToken
-- uid: SharpHoundCommonLib.LDAPQueryOptions.domainName
-  name: domainName
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_domainName
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.domainName
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.domainName
-  nameWithType: LDAPQueryOptions.domainName
-- uid: SharpHoundCommonLib.LDAPQueryOptions.filter
-  name: filter
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_filter
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.filter
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.filter
-  nameWithType: LDAPQueryOptions.filter
-- uid: SharpHoundCommonLib.LDAPQueryOptions.globalCatalog
-  name: globalCatalog
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_globalCatalog
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.globalCatalog
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.globalCatalog
-  nameWithType: LDAPQueryOptions.globalCatalog
-- uid: SharpHoundCommonLib.LDAPQueryOptions.includeAcl
-  name: includeAcl
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_includeAcl
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.includeAcl
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.includeAcl
-  nameWithType: LDAPQueryOptions.includeAcl
-- uid: SharpHoundCommonLib.LDAPQueryOptions.properties
-  name: properties
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_properties
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.properties
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.properties
-  nameWithType: LDAPQueryOptions.properties
-- uid: SharpHoundCommonLib.LDAPQueryOptions.scope
-  name: scope
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_scope
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.scope
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.scope
-  nameWithType: LDAPQueryOptions.scope
-- uid: SharpHoundCommonLib.LDAPQueryOptions.showDeleted
-  name: showDeleted
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_showDeleted
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.showDeleted
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.showDeleted
-  nameWithType: LDAPQueryOptions.showDeleted
-- uid: SharpHoundCommonLib.LDAPQueryOptions.skipCache
-  name: skipCache
-  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_skipCache
-  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.skipCache
-  fullName: SharpHoundCommonLib.LDAPQueryOptions.skipCache
-  nameWithType: LDAPQueryOptions.skipCache
+- uid: SharpHoundCommonLib.LDAPQueryOptions.AdsPath
+  name: AdsPath
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_AdsPath
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.AdsPath
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.AdsPath
+  nameWithType: LDAPQueryOptions.AdsPath
+- uid: SharpHoundCommonLib.LDAPQueryOptions.CancellationToken
+  name: CancellationToken
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_CancellationToken
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.CancellationToken
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.CancellationToken
+  nameWithType: LDAPQueryOptions.CancellationToken
+- uid: SharpHoundCommonLib.LDAPQueryOptions.DomainName
+  name: DomainName
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_DomainName
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.DomainName
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.DomainName
+  nameWithType: LDAPQueryOptions.DomainName
+- uid: SharpHoundCommonLib.LDAPQueryOptions.Filter
+  name: Filter
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_Filter
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.Filter
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.Filter
+  nameWithType: LDAPQueryOptions.Filter
+- uid: SharpHoundCommonLib.LDAPQueryOptions.GlobalCatalog
+  name: GlobalCatalog
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_GlobalCatalog
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.GlobalCatalog
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.GlobalCatalog
+  nameWithType: LDAPQueryOptions.GlobalCatalog
+- uid: SharpHoundCommonLib.LDAPQueryOptions.IncludeAcl
+  name: IncludeAcl
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_IncludeAcl
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.IncludeAcl
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.IncludeAcl
+  nameWithType: LDAPQueryOptions.IncludeAcl
+- uid: SharpHoundCommonLib.LDAPQueryOptions.Properties
+  name: Properties
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_Properties
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.Properties
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.Properties
+  nameWithType: LDAPQueryOptions.Properties
+- uid: SharpHoundCommonLib.LDAPQueryOptions.Scope
+  name: Scope
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_Scope
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.Scope
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.Scope
+  nameWithType: LDAPQueryOptions.Scope
+- uid: SharpHoundCommonLib.LDAPQueryOptions.ShowDeleted
+  name: ShowDeleted
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_ShowDeleted
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.ShowDeleted
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.ShowDeleted
+  nameWithType: LDAPQueryOptions.ShowDeleted
+- uid: SharpHoundCommonLib.LDAPQueryOptions.SkipCache
+  name: SkipCache
+  href: api/SharpHoundCommonLib.LDAPQueryOptions.html#SharpHoundCommonLib_LDAPQueryOptions_SkipCache
+  commentId: F:SharpHoundCommonLib.LDAPQueryOptions.SkipCache
+  fullName: SharpHoundCommonLib.LDAPQueryOptions.SkipCache
+  nameWithType: LDAPQueryOptions.SkipCache
 - uid: SharpHoundCommonLib.LDAPUtils
   name: LDAPUtils
   href: api/SharpHoundCommonLib.LDAPUtils.html
@@ -2373,12 +2626,12 @@ references:
   commentId: M:SharpHoundCommonLib.LDAPUtils.#ctor
   fullName: SharpHoundCommonLib.LDAPUtils.LDAPUtils()
   nameWithType: LDAPUtils.LDAPUtils()
-- uid: SharpHoundCommonLib.LDAPUtils.#ctor(SharpHoundCommonLib.NativeMethods,SharpHoundCommonLib.Processors.PortScanner)
-  name: LDAPUtils(NativeMethods, PortScanner)
-  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils__ctor_SharpHoundCommonLib_NativeMethods_SharpHoundCommonLib_Processors_PortScanner_
-  commentId: M:SharpHoundCommonLib.LDAPUtils.#ctor(SharpHoundCommonLib.NativeMethods,SharpHoundCommonLib.Processors.PortScanner)
-  fullName: SharpHoundCommonLib.LDAPUtils.LDAPUtils(SharpHoundCommonLib.NativeMethods, SharpHoundCommonLib.Processors.PortScanner)
-  nameWithType: LDAPUtils.LDAPUtils(NativeMethods, PortScanner)
+- uid: SharpHoundCommonLib.LDAPUtils.#ctor(SharpHoundCommonLib.NativeMethods,SharpHoundCommonLib.Processors.PortScanner,ILogger)
+  name: LDAPUtils(NativeMethods, PortScanner, ILogger)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils__ctor_SharpHoundCommonLib_NativeMethods_SharpHoundCommonLib_Processors_PortScanner_ILogger_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.#ctor(SharpHoundCommonLib.NativeMethods,SharpHoundCommonLib.Processors.PortScanner,ILogger)
+  fullName: SharpHoundCommonLib.LDAPUtils.LDAPUtils(SharpHoundCommonLib.NativeMethods, SharpHoundCommonLib.Processors.PortScanner, ILogger)
+  nameWithType: LDAPUtils.LDAPUtils(NativeMethods, PortScanner, ILogger)
 - uid: SharpHoundCommonLib.LDAPUtils.#ctor*
   name: LDAPUtils
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils__ctor_
@@ -2686,6 +2939,25 @@ references:
   commentId: T:SharpHoundCommonLib.NativeMethods
   fullName: SharpHoundCommonLib.NativeMethods
   nameWithType: NativeMethods
+- uid: SharpHoundCommonLib.NativeMethods.#ctor
+  name: NativeMethods()
+  href: api/SharpHoundCommonLib.NativeMethods.html#SharpHoundCommonLib_NativeMethods__ctor
+  commentId: M:SharpHoundCommonLib.NativeMethods.#ctor
+  fullName: SharpHoundCommonLib.NativeMethods.NativeMethods()
+  nameWithType: NativeMethods.NativeMethods()
+- uid: SharpHoundCommonLib.NativeMethods.#ctor(ILogger)
+  name: NativeMethods(ILogger)
+  href: api/SharpHoundCommonLib.NativeMethods.html#SharpHoundCommonLib_NativeMethods__ctor_ILogger_
+  commentId: M:SharpHoundCommonLib.NativeMethods.#ctor(ILogger)
+  fullName: SharpHoundCommonLib.NativeMethods.NativeMethods(ILogger)
+  nameWithType: NativeMethods.NativeMethods(ILogger)
+- uid: SharpHoundCommonLib.NativeMethods.#ctor*
+  name: NativeMethods
+  href: api/SharpHoundCommonLib.NativeMethods.html#SharpHoundCommonLib_NativeMethods__ctor_
+  commentId: Overload:SharpHoundCommonLib.NativeMethods.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.NativeMethods.NativeMethods
+  nameWithType: NativeMethods.NativeMethods
 - uid: SharpHoundCommonLib.NativeMethods.CallDsGetDcName(System.String,System.String)
   name: CallDsGetDcName(String, String)
   href: api/SharpHoundCommonLib.NativeMethods.html#SharpHoundCommonLib_NativeMethods_CallDsGetDcName_System_String_System_String_
@@ -3364,6 +3636,57 @@ references:
   commentId: F:SharpHoundCommonLib.NativeMethods.WorkstationInfo100.ver_minor
   fullName: SharpHoundCommonLib.NativeMethods.WorkstationInfo100.ver_minor
   nameWithType: NativeMethods.WorkstationInfo100.ver_minor
+- uid: SharpHoundCommonLib.NoOpLogger
+  name: NoOpLogger
+  href: api/SharpHoundCommonLib.NoOpLogger.html
+  commentId: T:SharpHoundCommonLib.NoOpLogger
+  fullName: SharpHoundCommonLib.NoOpLogger
+  nameWithType: NoOpLogger
+- uid: SharpHoundCommonLib.NoOpLogger.BeginScope*
+  name: BeginScope
+  href: api/SharpHoundCommonLib.NoOpLogger.html#SharpHoundCommonLib_NoOpLogger_BeginScope_
+  commentId: Overload:SharpHoundCommonLib.NoOpLogger.BeginScope
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.NoOpLogger.BeginScope
+  nameWithType: NoOpLogger.BeginScope
+- uid: SharpHoundCommonLib.NoOpLogger.BeginScope``1(``0)
+  name: BeginScope<TState>(TState)
+  href: api/SharpHoundCommonLib.NoOpLogger.html#SharpHoundCommonLib_NoOpLogger_BeginScope__1___0_
+  commentId: M:SharpHoundCommonLib.NoOpLogger.BeginScope``1(``0)
+  name.vb: BeginScope(Of TState)(TState)
+  fullName: SharpHoundCommonLib.NoOpLogger.BeginScope<TState>(TState)
+  fullName.vb: SharpHoundCommonLib.NoOpLogger.BeginScope(Of TState)(TState)
+  nameWithType: NoOpLogger.BeginScope<TState>(TState)
+  nameWithType.vb: NoOpLogger.BeginScope(Of TState)(TState)
+- uid: SharpHoundCommonLib.NoOpLogger.IsEnabled(LogLevel)
+  name: IsEnabled(LogLevel)
+  href: api/SharpHoundCommonLib.NoOpLogger.html#SharpHoundCommonLib_NoOpLogger_IsEnabled_LogLevel_
+  commentId: M:SharpHoundCommonLib.NoOpLogger.IsEnabled(LogLevel)
+  fullName: SharpHoundCommonLib.NoOpLogger.IsEnabled(LogLevel)
+  nameWithType: NoOpLogger.IsEnabled(LogLevel)
+- uid: SharpHoundCommonLib.NoOpLogger.IsEnabled*
+  name: IsEnabled
+  href: api/SharpHoundCommonLib.NoOpLogger.html#SharpHoundCommonLib_NoOpLogger_IsEnabled_
+  commentId: Overload:SharpHoundCommonLib.NoOpLogger.IsEnabled
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.NoOpLogger.IsEnabled
+  nameWithType: NoOpLogger.IsEnabled
+- uid: SharpHoundCommonLib.NoOpLogger.Log*
+  name: Log
+  href: api/SharpHoundCommonLib.NoOpLogger.html#SharpHoundCommonLib_NoOpLogger_Log_
+  commentId: Overload:SharpHoundCommonLib.NoOpLogger.Log
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.NoOpLogger.Log
+  nameWithType: NoOpLogger.Log
+- uid: SharpHoundCommonLib.NoOpLogger.Log``1(LogLevel,EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})
+  name: Log<TState>(LogLevel, EventId, TState, Exception, Func<TState, Exception, String>)
+  href: api/SharpHoundCommonLib.NoOpLogger.html#SharpHoundCommonLib_NoOpLogger_Log__1_LogLevel_EventId___0_System_Exception_System_Func___0_System_Exception_System_String__
+  commentId: M:SharpHoundCommonLib.NoOpLogger.Log``1(LogLevel,EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})
+  name.vb: Log(Of TState)(LogLevel, EventId, TState, Exception, Func(Of TState, Exception, String))
+  fullName: SharpHoundCommonLib.NoOpLogger.Log<TState>(LogLevel, EventId, TState, System.Exception, System.Func<TState, System.Exception, System.String>)
+  fullName.vb: SharpHoundCommonLib.NoOpLogger.Log(Of TState)(LogLevel, EventId, TState, System.Exception, System.Func(Of TState, System.Exception, System.String))
+  nameWithType: NoOpLogger.Log<TState>(LogLevel, EventId, TState, Exception, Func<TState, Exception, String>)
+  nameWithType.vb: NoOpLogger.Log(Of TState)(LogLevel, EventId, TState, Exception, Func(Of TState, Exception, String))
 - uid: SharpHoundCommonLib.OutputTypes
   name: SharpHoundCommonLib.OutputTypes
   href: api/SharpHoundCommonLib.OutputTypes.html
@@ -4583,12 +4906,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ACLProcessor
   fullName: SharpHoundCommonLib.Processors.ACLProcessor
   nameWithType: ACLProcessor
-- uid: SharpHoundCommonLib.Processors.ACLProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.Boolean)
-  name: ACLProcessor(ILDAPUtils, Boolean)
-  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_Boolean_
-  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.Boolean)
-  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ACLProcessor(SharpHoundCommonLib.ILDAPUtils, System.Boolean)
-  nameWithType: ACLProcessor.ACLProcessor(ILDAPUtils, Boolean)
+- uid: SharpHoundCommonLib.Processors.ACLProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.Boolean,ILogger)
+  name: ACLProcessor(ILDAPUtils, Boolean, ILogger)
+  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_Boolean_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.Boolean,ILogger)
+  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ACLProcessor(SharpHoundCommonLib.ILDAPUtils, System.Boolean, ILogger)
+  nameWithType: ACLProcessor.ACLProcessor(ILDAPUtils, Boolean, ILogger)
 - uid: SharpHoundCommonLib.Processors.ACLProcessor.#ctor*
   name: ACLProcessor
   href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor__ctor_
@@ -4612,15 +4935,21 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ACLProcessor.IsACLProtected
   nameWithType: ACLProcessor.IsACLProtected
-- uid: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(System.Byte[],System.String,SharpHoundCommonLib.Enums.Label,System.Boolean)
-  name: ProcessACL(Byte[], String, Label, Boolean)
-  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_ProcessACL_System_Byte___System_String_SharpHoundCommonLib_Enums_Label_System_Boolean_
-  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(System.Byte[],System.String,SharpHoundCommonLib.Enums.Label,System.Boolean)
-  name.vb: ProcessACL(Byte(), String, Label, Boolean)
-  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(System.Byte[], System.String, SharpHoundCommonLib.Enums.Label, System.Boolean)
-  fullName.vb: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(System.Byte(), System.String, SharpHoundCommonLib.Enums.Label, System.Boolean)
-  nameWithType: ACLProcessor.ProcessACL(Byte[], String, Label, Boolean)
-  nameWithType.vb: ACLProcessor.ProcessACL(Byte(), String, Label, Boolean)
+- uid: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  name: ProcessACL(ResolvedSearchResult, ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_ProcessACL_SharpHoundCommonLib_ResolvedSearchResult_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(SharpHoundCommonLib.ResolvedSearchResult, SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: ACLProcessor.ProcessACL(ResolvedSearchResult, ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(System.Byte[],System.String,SharpHoundCommonLib.Enums.Label,System.Boolean,System.String)
+  name: ProcessACL(Byte[], String, Label, Boolean, String)
+  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_ProcessACL_System_Byte___System_String_SharpHoundCommonLib_Enums_Label_System_Boolean_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(System.Byte[],System.String,SharpHoundCommonLib.Enums.Label,System.Boolean,System.String)
+  name.vb: ProcessACL(Byte(), String, Label, Boolean, String)
+  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(System.Byte[], System.String, SharpHoundCommonLib.Enums.Label, System.Boolean, System.String)
+  fullName.vb: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL(System.Byte(), System.String, SharpHoundCommonLib.Enums.Label, System.Boolean, System.String)
+  nameWithType: ACLProcessor.ProcessACL(Byte[], String, Label, Boolean, String)
+  nameWithType.vb: ACLProcessor.ProcessACL(Byte(), String, Label, Boolean, String)
 - uid: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL*
   name: ProcessACL
   href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_ProcessACL_
@@ -4628,6 +4957,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ACLProcessor.ProcessACL
   nameWithType: ACLProcessor.ProcessACL
+- uid: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  name: ProcessGMSAReaders(ResolvedSearchResult, ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_ProcessGMSAReaders_SharpHoundCommonLib_ResolvedSearchResult_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(SharpHoundCommonLib.ResolvedSearchResult, SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: ACLProcessor.ProcessGMSAReaders(ResolvedSearchResult, ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.Byte[],System.String)
   name: ProcessGMSAReaders(Byte[], String)
   href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_ProcessGMSAReaders_System_Byte___System_String_
@@ -4637,6 +4972,15 @@ references:
   fullName.vb: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.Byte(), System.String)
   nameWithType: ACLProcessor.ProcessGMSAReaders(Byte[], String)
   nameWithType.vb: ACLProcessor.ProcessGMSAReaders(Byte(), String)
+- uid: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.Byte[],System.String,System.String)
+  name: ProcessGMSAReaders(Byte[], String, String)
+  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_ProcessGMSAReaders_System_Byte___System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.Byte[],System.String,System.String)
+  name.vb: ProcessGMSAReaders(Byte(), String, String)
+  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.Byte[], System.String, System.String)
+  fullName.vb: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders(System.Byte(), System.String, System.String)
+  nameWithType: ACLProcessor.ProcessGMSAReaders(Byte[], String, String)
+  nameWithType.vb: ACLProcessor.ProcessGMSAReaders(Byte(), String, String)
 - uid: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders*
   name: ProcessGMSAReaders
   href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor_ProcessGMSAReaders_
@@ -4650,18 +4994,18 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ComputerAvailability
   fullName: SharpHoundCommonLib.Processors.ComputerAvailability
   nameWithType: ComputerAvailability
-- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Boolean)
-  name: ComputerAvailability(PortScanner, Int32, Boolean)
-  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_SharpHoundCommonLib_Processors_PortScanner_System_Int32_System_Boolean_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Boolean)
-  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(SharpHoundCommonLib.Processors.PortScanner, System.Int32, System.Boolean)
-  nameWithType: ComputerAvailability.ComputerAvailability(PortScanner, Int32, Boolean)
-- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Boolean)
-  name: ComputerAvailability(Int32, Boolean)
-  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_System_Int32_System_Boolean_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Boolean)
-  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(System.Int32, System.Boolean)
-  nameWithType: ComputerAvailability.ComputerAvailability(Int32, Boolean)
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Boolean,ILogger)
+  name: ComputerAvailability(PortScanner, Int32, Boolean, ILogger)
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_SharpHoundCommonLib_Processors_PortScanner_System_Int32_System_Boolean_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Boolean,ILogger)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(SharpHoundCommonLib.Processors.PortScanner, System.Int32, System.Boolean, ILogger)
+  nameWithType: ComputerAvailability.ComputerAvailability(PortScanner, Int32, Boolean, ILogger)
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Boolean,ILogger)
+  name: ComputerAvailability(Int32, Boolean, ILogger)
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_System_Int32_System_Boolean_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Boolean,ILogger)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(System.Int32, System.Boolean, ILogger)
+  nameWithType: ComputerAvailability.ComputerAvailability(Int32, Boolean, ILogger)
 - uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor*
   name: ComputerAvailability
   href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_
@@ -4746,12 +5090,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ComputerSessionProcessor
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor
   nameWithType: ComputerSessionProcessor
-- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods)
-  name: ComputerSessionProcessor(ILDAPUtils, String, NativeMethods)
-  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_String_SharpHoundCommonLib_NativeMethods_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods)
-  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor(SharpHoundCommonLib.ILDAPUtils, System.String, SharpHoundCommonLib.NativeMethods)
-  nameWithType: ComputerSessionProcessor.ComputerSessionProcessor(ILDAPUtils, String, NativeMethods)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods,ILogger)
+  name: ComputerSessionProcessor(ILDAPUtils, String, NativeMethods, ILogger)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_String_SharpHoundCommonLib_NativeMethods_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods,ILogger)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor(SharpHoundCommonLib.ILDAPUtils, System.String, SharpHoundCommonLib.NativeMethods, ILogger)
+  nameWithType: ComputerSessionProcessor.ComputerSessionProcessor(ILDAPUtils, String, NativeMethods, ILogger)
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor*
   name: ComputerSessionProcessor
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_
@@ -4804,12 +5148,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ContainerProcessor
   fullName: SharpHoundCommonLib.Processors.ContainerProcessor
   nameWithType: ContainerProcessor
-- uid: SharpHoundCommonLib.Processors.ContainerProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  name: ContainerProcessor(ILDAPUtils)
-  href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_
-  commentId: M:SharpHoundCommonLib.Processors.ContainerProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  fullName: SharpHoundCommonLib.Processors.ContainerProcessor.ContainerProcessor(SharpHoundCommonLib.ILDAPUtils)
-  nameWithType: ContainerProcessor.ContainerProcessor(ILDAPUtils)
+- uid: SharpHoundCommonLib.Processors.ContainerProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  name: ContainerProcessor(ILDAPUtils, ILogger)
+  href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.ContainerProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  fullName: SharpHoundCommonLib.Processors.ContainerProcessor.ContainerProcessor(SharpHoundCommonLib.ILDAPUtils, ILogger)
+  nameWithType: ContainerProcessor.ContainerProcessor(ILDAPUtils, ILogger)
 - uid: SharpHoundCommonLib.Processors.ContainerProcessor.#ctor*
   name: ContainerProcessor
   href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor__ctor_
@@ -4817,12 +5161,18 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ContainerProcessor.ContainerProcessor
   nameWithType: ContainerProcessor.ContainerProcessor
-- uid: SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(System.String)
-  name: GetContainerChildObjects(String)
-  href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor_GetContainerChildObjects_System_String_
-  commentId: M:SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(System.String)
-  fullName: SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(System.String)
-  nameWithType: ContainerProcessor.GetContainerChildObjects(String)
+- uid: SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  name: GetContainerChildObjects(ResolvedSearchResult, ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor_GetContainerChildObjects_SharpHoundCommonLib_ResolvedSearchResult_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(SharpHoundCommonLib.ResolvedSearchResult, SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: ContainerProcessor.GetContainerChildObjects(ResolvedSearchResult, ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(System.String,System.String)
+  name: GetContainerChildObjects(String, String)
+  href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor_GetContainerChildObjects_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects(System.String, System.String)
+  nameWithType: ContainerProcessor.GetContainerChildObjects(String, String)
 - uid: SharpHoundCommonLib.Processors.ContainerProcessor.GetContainerChildObjects*
   name: GetContainerChildObjects
   href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor_GetContainerChildObjects_
@@ -4843,6 +5193,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ContainerProcessor.ReadBlocksInheritance
   nameWithType: ContainerProcessor.ReadBlocksInheritance
+- uid: SharpHoundCommonLib.Processors.ContainerProcessor.ReadContainerGPLinks(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadContainerGPLinks(ResolvedSearchResult, ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor_ReadContainerGPLinks_SharpHoundCommonLib_ResolvedSearchResult_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.ContainerProcessor.ReadContainerGPLinks(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.ContainerProcessor.ReadContainerGPLinks(SharpHoundCommonLib.ResolvedSearchResult, SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: ContainerProcessor.ReadContainerGPLinks(ResolvedSearchResult, ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.ContainerProcessor.ReadContainerGPLinks(System.String)
   name: ReadContainerGPLinks(String)
   href: api/SharpHoundCommonLib.Processors.ContainerProcessor.html#SharpHoundCommonLib_Processors_ContainerProcessor_ReadContainerGPLinks_System_String_
@@ -4862,12 +5218,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.DomainTrustProcessor
   fullName: SharpHoundCommonLib.Processors.DomainTrustProcessor
   nameWithType: DomainTrustProcessor
-- uid: SharpHoundCommonLib.Processors.DomainTrustProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  name: DomainTrustProcessor(ILDAPUtils)
-  href: api/SharpHoundCommonLib.Processors.DomainTrustProcessor.html#SharpHoundCommonLib_Processors_DomainTrustProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_
-  commentId: M:SharpHoundCommonLib.Processors.DomainTrustProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  fullName: SharpHoundCommonLib.Processors.DomainTrustProcessor.DomainTrustProcessor(SharpHoundCommonLib.ILDAPUtils)
-  nameWithType: DomainTrustProcessor.DomainTrustProcessor(ILDAPUtils)
+- uid: SharpHoundCommonLib.Processors.DomainTrustProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  name: DomainTrustProcessor(ILDAPUtils, ILogger)
+  href: api/SharpHoundCommonLib.Processors.DomainTrustProcessor.html#SharpHoundCommonLib_Processors_DomainTrustProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.DomainTrustProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  fullName: SharpHoundCommonLib.Processors.DomainTrustProcessor.DomainTrustProcessor(SharpHoundCommonLib.ILDAPUtils, ILogger)
+  nameWithType: DomainTrustProcessor.DomainTrustProcessor(ILDAPUtils, ILogger)
 - uid: SharpHoundCommonLib.Processors.DomainTrustProcessor.#ctor*
   name: DomainTrustProcessor
   href: api/SharpHoundCommonLib.Processors.DomainTrustProcessor.html#SharpHoundCommonLib_Processors_DomainTrustProcessor__ctor_
@@ -4963,12 +5319,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.GroupProcessor
   fullName: SharpHoundCommonLib.Processors.GroupProcessor
   nameWithType: GroupProcessor
-- uid: SharpHoundCommonLib.Processors.GroupProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  name: GroupProcessor(ILDAPUtils)
-  href: api/SharpHoundCommonLib.Processors.GroupProcessor.html#SharpHoundCommonLib_Processors_GroupProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_
-  commentId: M:SharpHoundCommonLib.Processors.GroupProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  fullName: SharpHoundCommonLib.Processors.GroupProcessor.GroupProcessor(SharpHoundCommonLib.ILDAPUtils)
-  nameWithType: GroupProcessor.GroupProcessor(ILDAPUtils)
+- uid: SharpHoundCommonLib.Processors.GroupProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  name: GroupProcessor(ILDAPUtils, ILogger)
+  href: api/SharpHoundCommonLib.Processors.GroupProcessor.html#SharpHoundCommonLib_Processors_GroupProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.GroupProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  fullName: SharpHoundCommonLib.Processors.GroupProcessor.GroupProcessor(SharpHoundCommonLib.ILDAPUtils, ILogger)
+  nameWithType: GroupProcessor.GroupProcessor(ILDAPUtils, ILogger)
 - uid: SharpHoundCommonLib.Processors.GroupProcessor.#ctor*
   name: GroupProcessor
   href: api/SharpHoundCommonLib.Processors.GroupProcessor.html#SharpHoundCommonLib_Processors_GroupProcessor__ctor_
@@ -4989,15 +5345,21 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.GroupProcessor.GetPrimaryGroupInfo
   nameWithType: GroupProcessor.GetPrimaryGroupInfo
-- uid: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(System.String,System.String[])
-  name: ReadGroupMembers(String, String[])
-  href: api/SharpHoundCommonLib.Processors.GroupProcessor.html#SharpHoundCommonLib_Processors_GroupProcessor_ReadGroupMembers_System_String_System_String___
-  commentId: M:SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(System.String,System.String[])
-  name.vb: ReadGroupMembers(String, String())
-  fullName: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(System.String, System.String[])
-  fullName.vb: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(System.String, System.String())
-  nameWithType: GroupProcessor.ReadGroupMembers(String, String[])
-  nameWithType.vb: GroupProcessor.ReadGroupMembers(String, String())
+- uid: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadGroupMembers(ResolvedSearchResult, ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.GroupProcessor.html#SharpHoundCommonLib_Processors_GroupProcessor_ReadGroupMembers_SharpHoundCommonLib_ResolvedSearchResult_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(SharpHoundCommonLib.ResolvedSearchResult, SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: GroupProcessor.ReadGroupMembers(ResolvedSearchResult, ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(System.String,System.String[],System.String)
+  name: ReadGroupMembers(String, String[], String)
+  href: api/SharpHoundCommonLib.Processors.GroupProcessor.html#SharpHoundCommonLib_Processors_GroupProcessor_ReadGroupMembers_System_String_System_String___System_String_
+  commentId: M:SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(System.String,System.String[],System.String)
+  name.vb: ReadGroupMembers(String, String(), String)
+  fullName: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(System.String, System.String[], System.String)
+  fullName.vb: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers(System.String, System.String(), System.String)
+  nameWithType: GroupProcessor.ReadGroupMembers(String, String[], String)
+  nameWithType.vb: GroupProcessor.ReadGroupMembers(String, String(), String)
 - uid: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers*
   name: ReadGroupMembers
   href: api/SharpHoundCommonLib.Processors.GroupProcessor.html#SharpHoundCommonLib_Processors_GroupProcessor_ReadGroupMembers_
@@ -5121,6 +5483,25 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.PortScanner
   fullName: SharpHoundCommonLib.Processors.PortScanner
   nameWithType: PortScanner
+- uid: SharpHoundCommonLib.Processors.PortScanner.#ctor
+  name: PortScanner()
+  href: api/SharpHoundCommonLib.Processors.PortScanner.html#SharpHoundCommonLib_Processors_PortScanner__ctor
+  commentId: M:SharpHoundCommonLib.Processors.PortScanner.#ctor
+  fullName: SharpHoundCommonLib.Processors.PortScanner.PortScanner()
+  nameWithType: PortScanner.PortScanner()
+- uid: SharpHoundCommonLib.Processors.PortScanner.#ctor(ILogger)
+  name: PortScanner(ILogger)
+  href: api/SharpHoundCommonLib.Processors.PortScanner.html#SharpHoundCommonLib_Processors_PortScanner__ctor_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.PortScanner.#ctor(ILogger)
+  fullName: SharpHoundCommonLib.Processors.PortScanner.PortScanner(ILogger)
+  nameWithType: PortScanner.PortScanner(ILogger)
+- uid: SharpHoundCommonLib.Processors.PortScanner.#ctor*
+  name: PortScanner
+  href: api/SharpHoundCommonLib.Processors.PortScanner.html#SharpHoundCommonLib_Processors_PortScanner__ctor_
+  commentId: Overload:SharpHoundCommonLib.Processors.PortScanner.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.PortScanner.PortScanner
+  nameWithType: PortScanner.PortScanner
 - uid: SharpHoundCommonLib.Processors.PortScanner.CheckPort(System.String,System.Int32,System.Int32)
   name: CheckPort(String, Int32, Int32)
   href: api/SharpHoundCommonLib.Processors.PortScanner.html#SharpHoundCommonLib_Processors_PortScanner_CheckPort_System_String_System_Int32_System_Int32_
@@ -5217,12 +5598,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.SPNProcessors
   fullName: SharpHoundCommonLib.Processors.SPNProcessors
   nameWithType: SPNProcessors
-- uid: SharpHoundCommonLib.Processors.SPNProcessors.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  name: SPNProcessors(ILDAPUtils)
-  href: api/SharpHoundCommonLib.Processors.SPNProcessors.html#SharpHoundCommonLib_Processors_SPNProcessors__ctor_SharpHoundCommonLib_ILDAPUtils_
-  commentId: M:SharpHoundCommonLib.Processors.SPNProcessors.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  fullName: SharpHoundCommonLib.Processors.SPNProcessors.SPNProcessors(SharpHoundCommonLib.ILDAPUtils)
-  nameWithType: SPNProcessors.SPNProcessors(ILDAPUtils)
+- uid: SharpHoundCommonLib.Processors.SPNProcessors.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  name: SPNProcessors(ILDAPUtils, ILogger)
+  href: api/SharpHoundCommonLib.Processors.SPNProcessors.html#SharpHoundCommonLib_Processors_SPNProcessors__ctor_SharpHoundCommonLib_ILDAPUtils_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.SPNProcessors.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  fullName: SharpHoundCommonLib.Processors.SPNProcessors.SPNProcessors(SharpHoundCommonLib.ILDAPUtils, ILogger)
+  nameWithType: SPNProcessors.SPNProcessors(ILDAPUtils, ILogger)
 - uid: SharpHoundCommonLib.Processors.SPNProcessors.#ctor*
   name: SPNProcessors
   href: api/SharpHoundCommonLib.Processors.SPNProcessors.html#SharpHoundCommonLib_Processors_SPNProcessors__ctor_
@@ -5230,15 +5611,21 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.SPNProcessors.SPNProcessors
   nameWithType: SPNProcessors.SPNProcessors
-- uid: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(System.String[],System.String)
-  name: ReadSPNTargets(String[], String)
-  href: api/SharpHoundCommonLib.Processors.SPNProcessors.html#SharpHoundCommonLib_Processors_SPNProcessors_ReadSPNTargets_System_String___System_String_
-  commentId: M:SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(System.String[],System.String)
-  name.vb: ReadSPNTargets(String(), String)
-  fullName: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(System.String[], System.String)
-  fullName.vb: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(System.String(), System.String)
-  nameWithType: SPNProcessors.ReadSPNTargets(String[], String)
-  nameWithType.vb: SPNProcessors.ReadSPNTargets(String(), String)
+- uid: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadSPNTargets(ResolvedSearchResult, ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.SPNProcessors.html#SharpHoundCommonLib_Processors_SPNProcessors_ReadSPNTargets_SharpHoundCommonLib_ResolvedSearchResult_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(SharpHoundCommonLib.ResolvedSearchResult, SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: SPNProcessors.ReadSPNTargets(ResolvedSearchResult, ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(System.String[],System.String,System.String)
+  name: ReadSPNTargets(String[], String, String)
+  href: api/SharpHoundCommonLib.Processors.SPNProcessors.html#SharpHoundCommonLib_Processors_SPNProcessors_ReadSPNTargets_System_String___System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(System.String[],System.String,System.String)
+  name.vb: ReadSPNTargets(String(), String, String)
+  fullName: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(System.String[], System.String, System.String)
+  fullName.vb: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets(System.String(), System.String, System.String)
+  nameWithType: SPNProcessors.ReadSPNTargets(String[], String, String)
+  nameWithType.vb: SPNProcessors.ReadSPNTargets(String(), String, String)
 - uid: SharpHoundCommonLib.Processors.SPNProcessors.ReadSPNTargets*
   name: ReadSPNTargets
   href: api/SharpHoundCommonLib.Processors.SPNProcessors.html#SharpHoundCommonLib_Processors_SPNProcessors_ReadSPNTargets_
@@ -5407,12 +5794,12 @@ references:
   commentId: T:SharpHoundCommonLib.SearchResultEntryWrapper
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper
   nameWithType: SearchResultEntryWrapper
-- uid: SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILDAPUtils)
-  name: SearchResultEntryWrapper(SearchResultEntry, ILDAPUtils)
-  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper__ctor_System_DirectoryServices_Protocols_SearchResultEntry_SharpHoundCommonLib_ILDAPUtils_
-  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILDAPUtils)
-  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.SearchResultEntryWrapper(System.DirectoryServices.Protocols.SearchResultEntry, SharpHoundCommonLib.ILDAPUtils)
-  nameWithType: SearchResultEntryWrapper.SearchResultEntryWrapper(SearchResultEntry, ILDAPUtils)
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILDAPUtils,ILogger)
+  name: SearchResultEntryWrapper(SearchResultEntry, ILDAPUtils, ILogger)
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper__ctor_System_DirectoryServices_Protocols_SearchResultEntry_SharpHoundCommonLib_ILDAPUtils_ILogger_
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILDAPUtils,ILogger)
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.SearchResultEntryWrapper(System.DirectoryServices.Protocols.SearchResultEntry, SharpHoundCommonLib.ILDAPUtils, ILogger)
+  nameWithType: SearchResultEntryWrapper.SearchResultEntryWrapper(SearchResultEntry, ILDAPUtils, ILogger)
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.#ctor*
   name: SearchResultEntryWrapper
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper__ctor_
@@ -5550,6 +5937,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.GetSid
   nameWithType: SearchResultEntryWrapper.GetSid
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS
+  name: HasLAPS()
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_HasLAPS
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS()
+  nameWithType: SearchResultEntryWrapper.HasLAPS()
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS*
+  name: HasLAPS
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_HasLAPS_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS
+  nameWithType: SearchResultEntryWrapper.HasLAPS
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.IsDeleted
   name: IsDeleted()
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_IsDeleted
