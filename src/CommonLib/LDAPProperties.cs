@@ -41,5 +41,6 @@
         public const string ObjectSID = "objectsid";
         public const string ObjectGUID = "objectguid";
         public const string PrimaryGroupID = "primarygroupid";
+        public const string GroupPolicyOptions = "gpoptions";
     }
 }
