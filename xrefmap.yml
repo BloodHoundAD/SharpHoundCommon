@@ -2000,6 +2000,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.GroupMSAMembership
   fullName: SharpHoundCommonLib.LDAPProperties.GroupMSAMembership
   nameWithType: LDAPProperties.GroupMSAMembership
+- uid: SharpHoundCommonLib.LDAPProperties.GroupPolicyOptions
+  name: GroupPolicyOptions
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_GroupPolicyOptions
+  commentId: F:SharpHoundCommonLib.LDAPProperties.GroupPolicyOptions
+  fullName: SharpHoundCommonLib.LDAPProperties.GroupPolicyOptions
+  nameWithType: LDAPProperties.GroupPolicyOptions
 - uid: SharpHoundCommonLib.LDAPProperties.HomeDirectory
   name: HomeDirectory
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_HomeDirectory
