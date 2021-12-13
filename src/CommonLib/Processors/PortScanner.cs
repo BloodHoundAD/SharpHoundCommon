@@ -8,7 +8,7 @@ namespace SharpHoundCommonLib.Processors
     public class PortScanner
     {
         private readonly ILogger _log;
-        private static readonly ConcurrentDictionary<PingCacheKey, bool> PingCache = new();
+        private static readonly ConcurrentDictionary<PingCacheKey, bool> PortScanCache = new();
 
         public PortScanner()
         {
@@ -35,7 +35,7 @@ namespace SharpHoundCommonLib.Processors
                 HostName = hostname
             };
 
-            if (PingCache.TryGetValue(key, out var status))
+            if (PortScanCache.TryGetValue(key, out var status))
             {
                 _log.LogTrace("Ping cache hit for {HostName} on {Port}: {Status}", hostname, port, status);
                 return status;
@@ -49,24 +49,24 @@ namespace SharpHoundCommonLib.Processors
                 client.Close();
                 if (!ca.IsFaulted && ca.IsCompleted)
                 {
-                    PingCache.TryAdd(key, true);
+                    PortScanCache.TryAdd(key, true);
                     return true;
                 }
                 
                 _log.LogDebug("{Hostname} did not respond to ping", hostname);
-                PingCache.TryAdd(key, false);
+                PortScanCache.TryAdd(key, false);
                 return false;
             }
             catch
             {
-                PingCache.TryAdd(key, false);
+                PortScanCache.TryAdd(key, false);
                 return false;
             }
         }
 
         public static void ClearCache()
         {
-            PingCache.Clear();
+            PortScanCache.Clear();
         }
         
         private class PingCacheKey
