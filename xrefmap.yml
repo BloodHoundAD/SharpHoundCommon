@@ -5527,6 +5527,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.PortScanner.CheckPort
   nameWithType: PortScanner.CheckPort
+- uid: SharpHoundCommonLib.Processors.PortScanner.ClearCache
+  name: ClearCache()
+  href: api/SharpHoundCommonLib.Processors.PortScanner.html#SharpHoundCommonLib_Processors_PortScanner_ClearCache
+  commentId: M:SharpHoundCommonLib.Processors.PortScanner.ClearCache
+  fullName: SharpHoundCommonLib.Processors.PortScanner.ClearCache()
+  nameWithType: PortScanner.ClearCache()
+- uid: SharpHoundCommonLib.Processors.PortScanner.ClearCache*
+  name: ClearCache
+  href: api/SharpHoundCommonLib.Processors.PortScanner.html#SharpHoundCommonLib_Processors_PortScanner_ClearCache_
+  commentId: Overload:SharpHoundCommonLib.Processors.PortScanner.ClearCache
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.PortScanner.ClearCache
+  nameWithType: PortScanner.ClearCache
 - uid: SharpHoundCommonLib.Processors.ResultingGPOChanges
   name: ResultingGPOChanges
   href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html
