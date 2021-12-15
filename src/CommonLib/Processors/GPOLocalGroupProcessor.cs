@@ -13,15 +13,6 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
-    public class ResultingGPOChanges
-    {
-        public TypedPrincipal[] LocalAdmins { get; set; }
-        public TypedPrincipal[] RemoteDesktopUsers { get; set; }
-        public TypedPrincipal[] DcomUsers { get; set; }
-        public TypedPrincipal[] PSRemoteUsers { get; set; }
-        public TypedPrincipal[] AffectedComputers { get; set; }
-    }
-
     public class GPOLocalGroupProcessor
     {
         private static readonly Regex KeyRegex = new(@"(.+?)\s*=(.*)", RegexOptions.Compiled);
@@ -60,9 +51,10 @@ namespace SharpHoundCommonLib.Processors
 
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName)
         {
+            var ret = new ResultingGPOChanges();
             //If the gplink property is null, we don't need to process anything
             if (gpLink == null)
-                return null;
+                return ret;
 
             // First lets check if this OU actually has computers that it contains. If not, then we'll ignore it.
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
@@ -85,7 +77,7 @@ namespace SharpHoundCommonLib.Processors
 
             //If there's no computers then we don't care about this OU
             if (affectedComputers.Length == 0)
-                return null;
+                return ret;
 
             var enforced = new List<string>();
             var unenforced = new List<string>();
@@ -203,10 +195,7 @@ namespace SharpHoundCommonLib.Processors
                 }
             }
 
-            var rs = new ResultingGPOChanges
-            {
-                AffectedComputers = affectedComputers
-            };
+            ret.AffectedComputers = affectedComputers;
 
             //At this point, we've resolved individual add/substract methods for each linked GPO.
             //Now we need to actually squish them together into the resulting set of changes
@@ -229,21 +218,21 @@ namespace SharpHoundCommonLib.Processors
                 switch (key)
                 {
                     case LocalGroupRids.Administrators:
-                        rs.LocalAdmins = finalArr;
+                        ret.LocalAdmins = finalArr;
                         break;
                     case LocalGroupRids.RemoteDesktopUsers:
-                        rs.RemoteDesktopUsers = finalArr;
+                        ret.RemoteDesktopUsers = finalArr;
                         break;
                     case LocalGroupRids.DcomUsers:
-                        rs.DcomUsers = finalArr;
+                        ret.DcomUsers = finalArr;
                         break;
                     case LocalGroupRids.PSRemote:
-                        rs.PSRemoteUsers = finalArr;
+                        ret.PSRemoteUsers = finalArr;
                         break;
                 }
             }
 
-            return rs;
+            return ret;
         }
 
         /// <summary>

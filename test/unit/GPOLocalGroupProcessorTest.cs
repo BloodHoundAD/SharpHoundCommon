@@ -100,7 +100,12 @@ namespace CommonLibTest
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
             var result = await processor.ReadGPOLocalGroups(null, null);
-            Assert.Null(result);
+            Assert.NotNull(result);
+            Assert.Empty(result.AffectedComputers);
+            Assert.Empty(result.DcomUsers);
+            Assert.Empty(result.RemoteDesktopUsers);
+            Assert.Empty(result.LocalAdmins);
+            Assert.Empty(result.PSRemoteUsers);
         }
 
         [Fact(Skip = "")]
@@ -122,7 +127,12 @@ namespace CommonLibTest
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
             var result = await processor.ReadGPOLocalGroups("teapot", null);
-            Assert.Null(result);
+            Assert.NotNull(result);
+            Assert.Empty(result.AffectedComputers);
+            Assert.Empty(result.DcomUsers);
+            Assert.Empty(result.RemoteDesktopUsers);
+            Assert.Empty(result.LocalAdmins);
+            Assert.Empty(result.PSRemoteUsers);
         }
 
         [Fact(Skip = "")]

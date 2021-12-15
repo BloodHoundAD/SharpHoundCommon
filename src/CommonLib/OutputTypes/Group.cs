@@ -1,7 +1,9 @@
-﻿namespace SharpHoundCommonLib.OutputTypes
+﻿using System;
+
+namespace SharpHoundCommonLib.OutputTypes
 {
     public class Group : OutputBase
     {
-        public TypedPrincipal[] Members { get; set; } = new TypedPrincipal[0];
+        public TypedPrincipal[] Members { get; set; } = Array.Empty<TypedPrincipal>();
     }
 }
