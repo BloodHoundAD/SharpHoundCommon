@@ -5,7 +5,7 @@
         public const string GenericWrite = "GenericWrite";
         public const string Owns = "Owns";
         public const string GenericAll = "GenericAll";
-        public const string WriteDacl = "WriteDacl";
+        public const string WriteDacl = "WriteDACL";
         public const string WriteOwner = "WriteOwner";
         public const string AddSelf = "AddSelf";
         public const string GetChanges = "GetChanges";

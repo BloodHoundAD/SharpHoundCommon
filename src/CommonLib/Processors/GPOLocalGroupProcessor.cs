@@ -49,6 +49,13 @@ namespace SharpHoundCommonLib.Processors
             _utils = utils;
         }
 
+        public Task<ResultingGPOChanges> ReadGPOLocalGroups(ISearchResultEntry entry)
+        {
+            var links = entry.GetProperty(LDAPProperties.GPLink);
+            var dn = entry.DistinguishedName;
+            return ReadGPOLocalGroups(links, dn);
+        }
+        
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName)
         {
             var ret = new ResultingGPOChanges();
