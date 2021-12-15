@@ -5395,6 +5395,12 @@ references:
   commentId: F:SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GroupResults.RestrictedMemberOf
   fullName: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GroupResults.RestrictedMemberOf
   nameWithType: GPOLocalGroupProcessor.GroupResults.RestrictedMemberOf
+- uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.ReadGPOLocalGroups(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadGPOLocalGroups(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html#SharpHoundCommonLib_Processors_GPOLocalGroupProcessor_ReadGPOLocalGroups_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.ReadGPOLocalGroups(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.ReadGPOLocalGroups(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: GPOLocalGroupProcessor.ReadGPOLocalGroups(ISearchResultEntry)
 - uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.ReadGPOLocalGroups(System.String,System.String)
   name: ReadGPOLocalGroups(String, String)
   href: api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html#SharpHoundCommonLib_Processors_GPOLocalGroupProcessor_ReadGPOLocalGroups_System_String_System_String_

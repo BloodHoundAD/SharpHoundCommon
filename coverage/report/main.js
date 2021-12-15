@@ -268,7 +268,7 @@ var assemblies = [
       { "name": "SharpHoundCommonLib.Processors.ComputerSessionProcessor", "rp": "SharpHoundCommonLib_ComputerSessionProcessor.html", "cl": 113, "ucl": 23, "cal": 136, "tl": 240, "ct": "LineCoverage", "mc": "-", "cb": 42, "tb": 48, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.ContainerProcessor", "rp": "SharpHoundCommonLib_ContainerProcessor.html", "cl": 57, "ucl": 9, "cal": 66, "tl": 131, "ct": "LineCoverage", "mc": "-", "cb": 20, "tb": 20, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.DomainTrustProcessor", "rp": "SharpHoundCommonLib_DomainTrustProcessor.html", "cl": 48, "ucl": 10, "cal": 58, "tl": 106, "ct": "LineCoverage", "mc": "-", "cb": 21, "tb": 24, "lch": [], "bch": [], "hc": [] },
-      { "name": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "rp": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "cl": 314, "ucl": 53, "cal": 367, "tl": 588, "ct": "LineCoverage", "mc": "-", "cb": 116, "tb": 140, "lch": [], "bch": [], "hc": [] },
+      { "name": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "rp": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "cl": 314, "ucl": 58, "cal": 372, "tl": 595, "ct": "LineCoverage", "mc": "-", "cb": 116, "tb": 140, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.GroupProcessor", "rp": "SharpHoundCommonLib_GroupProcessor.html", "cl": 49, "ucl": 7, "cal": 56, "tl": 106, "ct": "LineCoverage", "mc": "-", "cb": 15, "tb": 16, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.LDAPPropertyProcessor", "rp": "SharpHoundCommonLib_LDAPPropertyProcessor.html", "cl": 222, "ucl": 60, "cal": 282, "tl": 483, "ct": "LineCoverage", "mc": "-", "cb": 50, "tb": 91, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.PortScanner", "rp": "SharpHoundCommonLib_PortScanner.html", "cl": 4, "ucl": 50, "cal": 54, "tl": 99, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 18, "lch": [], "bch": [], "hc": [] },
@@ -302,13 +302,13 @@ var riskHotspots = [
       { "value": 0, "exceeded": false },
     ]},
   {
-    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "reportPath": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "methodName": "ReadGPOLocalGroups()", "methodShortName": "ReadGPOLocalGroups()", "fileIndex": 0, "line": 53,
+    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "reportPath": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "methodName": "ReadGPOLocalGroups()", "methodShortName": "ReadGPOLocalGroups()", "fileIndex": 0, "line": 60,
     "metrics": [
       { "value": 51, "exceeded": true },
       { "value": 0, "exceeded": false },
     ]},
   {
-    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "reportPath": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "methodName": "ProcessGPOTemplateFile()", "methodShortName": "ProcessGPOTemplateFile()", "fileIndex": 0, "line": 245,
+    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "reportPath": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "methodName": "ProcessGPOTemplateFile()", "methodShortName": "ProcessGPOTemplateFile()", "fileIndex": 0, "line": 252,
     "metrics": [
       { "value": 45, "exceeded": true },
       { "value": 0, "exceeded": false },
@@ -326,7 +326,7 @@ var riskHotspots = [
       { "value": 0, "exceeded": false },
     ]},
   {
-    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "reportPath": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "methodName": "ProcessGPOXmlFile()", "methodShortName": "ProcessGPOXmlFile()", "fileIndex": 0, "line": 393,
+    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "reportPath": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "methodName": "ProcessGPOXmlFile()", "methodShortName": "ProcessGPOXmlFile()", "fileIndex": 0, "line": 400,
     "metrics": [
       { "value": 38, "exceeded": true },
       { "value": 0, "exceeded": false },
