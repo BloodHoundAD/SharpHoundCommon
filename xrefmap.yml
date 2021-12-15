@@ -4124,6 +4124,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Domain.ChildObjects
   nameWithType: Domain.ChildObjects
+- uid: SharpHoundCommonLib.OutputTypes.Domain.GPOChanges
+  name: GPOChanges
+  href: api/SharpHoundCommonLib.OutputTypes.Domain.html#SharpHoundCommonLib_OutputTypes_Domain_GPOChanges
+  commentId: F:SharpHoundCommonLib.OutputTypes.Domain.GPOChanges
+  fullName: SharpHoundCommonLib.OutputTypes.Domain.GPOChanges
+  nameWithType: Domain.GPOChanges
 - uid: SharpHoundCommonLib.OutputTypes.Domain.Links
   name: Links
   href: api/SharpHoundCommonLib.OutputTypes.Domain.html#SharpHoundCommonLib_OutputTypes_Domain_Links
@@ -4406,6 +4412,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.OU.ChildObjects
   nameWithType: OU.ChildObjects
+- uid: SharpHoundCommonLib.OutputTypes.OU.GPOChanges
+  name: GPOChanges
+  href: api/SharpHoundCommonLib.OutputTypes.OU.html#SharpHoundCommonLib_OutputTypes_OU_GPOChanges
+  commentId: F:SharpHoundCommonLib.OutputTypes.OU.GPOChanges
+  fullName: SharpHoundCommonLib.OutputTypes.OU.GPOChanges
+  nameWithType: OU.GPOChanges
 - uid: SharpHoundCommonLib.OutputTypes.OU.Links
   name: Links
   href: api/SharpHoundCommonLib.OutputTypes.OU.html#SharpHoundCommonLib_OutputTypes_OU_Links
@@ -4526,6 +4538,77 @@ references:
   fullName.vb: SharpHoundCommonLib.OutputTypes.OutputWrapper(Of T).Meta
   nameWithType: OutputWrapper<T>.Meta
   nameWithType.vb: OutputWrapper(Of T).Meta
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges
+  name: ResultingGPOChanges
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges
+  nameWithType: ResultingGPOChanges
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.AffectedComputers
+  name: AffectedComputers
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_AffectedComputers
+  commentId: P:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.AffectedComputers
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.AffectedComputers
+  nameWithType: ResultingGPOChanges.AffectedComputers
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.AffectedComputers*
+  name: AffectedComputers
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_AffectedComputers_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.AffectedComputers
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.AffectedComputers
+  nameWithType: ResultingGPOChanges.AffectedComputers
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.DcomUsers
+  name: DcomUsers
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_DcomUsers
+  commentId: P:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.DcomUsers
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.DcomUsers
+  nameWithType: ResultingGPOChanges.DcomUsers
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.DcomUsers*
+  name: DcomUsers
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_DcomUsers_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.DcomUsers
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.DcomUsers
+  nameWithType: ResultingGPOChanges.DcomUsers
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.LocalAdmins
+  name: LocalAdmins
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_LocalAdmins
+  commentId: P:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.LocalAdmins
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.LocalAdmins
+  nameWithType: ResultingGPOChanges.LocalAdmins
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.LocalAdmins*
+  name: LocalAdmins
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_LocalAdmins_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.LocalAdmins
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.LocalAdmins
+  nameWithType: ResultingGPOChanges.LocalAdmins
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.PSRemoteUsers
+  name: PSRemoteUsers
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_PSRemoteUsers
+  commentId: P:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.PSRemoteUsers
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.PSRemoteUsers
+  nameWithType: ResultingGPOChanges.PSRemoteUsers
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.PSRemoteUsers*
+  name: PSRemoteUsers
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_PSRemoteUsers_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.PSRemoteUsers
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.PSRemoteUsers
+  nameWithType: ResultingGPOChanges.PSRemoteUsers
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.RemoteDesktopUsers
+  name: RemoteDesktopUsers
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_RemoteDesktopUsers
+  commentId: P:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.RemoteDesktopUsers
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.RemoteDesktopUsers
+  nameWithType: ResultingGPOChanges.RemoteDesktopUsers
+- uid: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.RemoteDesktopUsers*
+  name: RemoteDesktopUsers
+  href: api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html#SharpHoundCommonLib_OutputTypes_ResultingGPOChanges_RemoteDesktopUsers_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.RemoteDesktopUsers
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.RemoteDesktopUsers
+  nameWithType: ResultingGPOChanges.RemoteDesktopUsers
 - uid: SharpHoundCommonLib.OutputTypes.Session
   name: Session
   href: api/SharpHoundCommonLib.OutputTypes.Session.html
@@ -5540,77 +5623,6 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.PortScanner.ClearCache
   nameWithType: PortScanner.ClearCache
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges
-  name: ResultingGPOChanges
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html
-  commentId: T:SharpHoundCommonLib.Processors.ResultingGPOChanges
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges
-  nameWithType: ResultingGPOChanges
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.AffectedComputers
-  name: AffectedComputers
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_AffectedComputers
-  commentId: P:SharpHoundCommonLib.Processors.ResultingGPOChanges.AffectedComputers
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.AffectedComputers
-  nameWithType: ResultingGPOChanges.AffectedComputers
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.AffectedComputers*
-  name: AffectedComputers
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_AffectedComputers_
-  commentId: Overload:SharpHoundCommonLib.Processors.ResultingGPOChanges.AffectedComputers
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.AffectedComputers
-  nameWithType: ResultingGPOChanges.AffectedComputers
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.DcomUsers
-  name: DcomUsers
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_DcomUsers
-  commentId: P:SharpHoundCommonLib.Processors.ResultingGPOChanges.DcomUsers
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.DcomUsers
-  nameWithType: ResultingGPOChanges.DcomUsers
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.DcomUsers*
-  name: DcomUsers
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_DcomUsers_
-  commentId: Overload:SharpHoundCommonLib.Processors.ResultingGPOChanges.DcomUsers
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.DcomUsers
-  nameWithType: ResultingGPOChanges.DcomUsers
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.LocalAdmins
-  name: LocalAdmins
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_LocalAdmins
-  commentId: P:SharpHoundCommonLib.Processors.ResultingGPOChanges.LocalAdmins
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.LocalAdmins
-  nameWithType: ResultingGPOChanges.LocalAdmins
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.LocalAdmins*
-  name: LocalAdmins
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_LocalAdmins_
-  commentId: Overload:SharpHoundCommonLib.Processors.ResultingGPOChanges.LocalAdmins
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.LocalAdmins
-  nameWithType: ResultingGPOChanges.LocalAdmins
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.PSRemoteUsers
-  name: PSRemoteUsers
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_PSRemoteUsers
-  commentId: P:SharpHoundCommonLib.Processors.ResultingGPOChanges.PSRemoteUsers
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.PSRemoteUsers
-  nameWithType: ResultingGPOChanges.PSRemoteUsers
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.PSRemoteUsers*
-  name: PSRemoteUsers
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_PSRemoteUsers_
-  commentId: Overload:SharpHoundCommonLib.Processors.ResultingGPOChanges.PSRemoteUsers
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.PSRemoteUsers
-  nameWithType: ResultingGPOChanges.PSRemoteUsers
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.RemoteDesktopUsers
-  name: RemoteDesktopUsers
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_RemoteDesktopUsers
-  commentId: P:SharpHoundCommonLib.Processors.ResultingGPOChanges.RemoteDesktopUsers
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.RemoteDesktopUsers
-  nameWithType: ResultingGPOChanges.RemoteDesktopUsers
-- uid: SharpHoundCommonLib.Processors.ResultingGPOChanges.RemoteDesktopUsers*
-  name: RemoteDesktopUsers
-  href: api/SharpHoundCommonLib.Processors.ResultingGPOChanges.html#SharpHoundCommonLib_Processors_ResultingGPOChanges_RemoteDesktopUsers_
-  commentId: Overload:SharpHoundCommonLib.Processors.ResultingGPOChanges.RemoteDesktopUsers
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.Processors.ResultingGPOChanges.RemoteDesktopUsers
-  nameWithType: ResultingGPOChanges.RemoteDesktopUsers
 - uid: SharpHoundCommonLib.Processors.SAMRPCServer
   name: SAMRPCServer
   href: api/SharpHoundCommonLib.Processors.SAMRPCServer.html
