@@ -4393,6 +4393,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.MetaTag.DataType
   nameWithType: MetaTag.DataType
+- uid: SharpHoundCommonLib.OutputTypes.MetaTag.Version
+  name: Version
+  href: api/SharpHoundCommonLib.OutputTypes.MetaTag.html#SharpHoundCommonLib_OutputTypes_MetaTag_Version
+  commentId: P:SharpHoundCommonLib.OutputTypes.MetaTag.Version
+  fullName: SharpHoundCommonLib.OutputTypes.MetaTag.Version
+  nameWithType: MetaTag.Version
+- uid: SharpHoundCommonLib.OutputTypes.MetaTag.Version*
+  name: Version
+  href: api/SharpHoundCommonLib.OutputTypes.MetaTag.html#SharpHoundCommonLib_OutputTypes_MetaTag_Version_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.MetaTag.Version
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.MetaTag.Version
+  nameWithType: MetaTag.Version
 - uid: SharpHoundCommonLib.OutputTypes.OU
   name: OU
   href: api/SharpHoundCommonLib.OutputTypes.OU.html
