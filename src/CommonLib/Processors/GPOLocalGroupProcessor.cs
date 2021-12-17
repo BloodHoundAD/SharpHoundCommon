@@ -136,7 +136,10 @@ namespace SharpHoundCommonLib.Processors
 
                     //Add the actions for each file. The GPO template file actions will override the XML file actions
                     actions.AddRange(ProcessGPOXmlFile(filePath, gpoDomain).ToList());
-                    actions.AddRange(await ProcessGPOTemplateFile(filePath, gpoDomain).ToListAsync());
+                    await foreach (var item in ProcessGPOTemplateFile(filePath, gpoDomain))
+                    {
+                        actions.Add(item);
+                    }
                 }
 
                 //Cache the actions for this GPO for later
