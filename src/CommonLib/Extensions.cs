@@ -5,7 +5,6 @@ using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
@@ -15,17 +14,18 @@ namespace SharpHoundCommonLib
     public static class Extensions
     {
         private static readonly ILogger Log;
+        private const string GMSAClass = "msds-groupmanagedserviceaccount";
+        private const string MSAClass = "msds-managedserviceaccount";
 
         static Extensions()
         {
             Log = Logging.LogProvider.CreateLogger("Extensions");
         }
 
-        internal static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items,
-            CancellationToken cancellationToken = default)
+        internal static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items)
         {
             var results = new List<T>();
-            await foreach (var item in items.WithCancellation(cancellationToken)
+            await foreach (var item in items
                 .ConfigureAwait(false))
                 results.Add(item);
             return results;
@@ -270,10 +270,6 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public static Label GetLabel(this SearchResultEntry entry)
         {
-            //Test if we have the msds-groupmsamembership property first. We want to override this as a user object
-            if (entry.GetPropertyAsBytes(LDAPProperties.GroupMSAMembership) != null)
-                return Label.User;
-
             var objectId = entry.GetObjectIdentifier();
 
             if (objectId == null)
@@ -284,21 +280,49 @@ namespace SharpHoundCommonLib
 
             if (objectId.StartsWith("S-1") &&
                 WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
+            {
+                Log.LogDebug("GetLabel - {ObjectID} is a WellKnownPrincipal with {Type}", objectId, commonPrincipal.ObjectType);
                 return commonPrincipal.ObjectType;
+            }
+                
 
             var objectType = Label.Base;
             var samAccountType = entry.GetProperty(LDAPProperties.SAMAccountType);
-            //Its not a common principal. Lets use properties to figure out what it actually is
-            if (samAccountType != null)
+            var objectClasses = entry.GetPropertyAsArray(LDAPProperties.ObjectClass);
+
+            //Override object class for GMSA/MSA accounts
+            if (objectClasses != null && (objectClasses.Contains(MSAClass, StringComparer.OrdinalIgnoreCase) ||
+                                          objectClasses.Contains(GMSAClass, StringComparer.OrdinalIgnoreCase)))
             {
-                objectType = Helpers.SamAccountTypeToType(samAccountType);
+                Log.LogDebug("GetLabel - {ObjectID} is an MSA/GMSA, returning User", objectId);
+                Cache.AddConvertedValue(entry.DistinguishedName, objectId);
+                Cache.AddType(objectId, objectType);
+                return Label.User;
+            }
+                
+            
+            //Its not a common principal. Lets use properties to figure out what it actually is
+            if (samAccountType != null) objectType = Helpers.SamAccountTypeToType(samAccountType);
+
+            Log.LogDebug("GetLabel - SamAccountTypeToType returned {Label}", objectType);
+            if (objectType != Label.Base)
+            {
+                Cache.AddConvertedValue(entry.DistinguishedName, objectId);
+                Cache.AddType(objectId, objectType);
+                return objectType;
+            }
+            
+            
+
+            if (objectClasses == null)
+            {
+                Log.LogDebug("GetLabel - ObjectClasses for {ObjectID} is null", objectId);
+                objectType = Label.Base;
             }
             else
             {
-                var objectClasses = entry.GetPropertyAsArray(LDAPProperties.ObjectClass);
-                if (objectClasses == null)
-                    objectType = Label.Base;
-                else if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
+                Log.LogDebug("GetLabel - ObjectClasses for {ObjectID}: {Classes}", objectId, string.Join(", ", objectClasses));
+                if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.GPO;
                 else if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.OU;
@@ -307,6 +331,8 @@ namespace SharpHoundCommonLib
                 else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.Container;
             }
+            
+            Log.LogDebug("GetLabel - Final label for {ObjectID}: {Label}", objectId, objectType);
 
             Cache.AddConvertedValue(entry.DistinguishedName, objectId);
             Cache.AddType(objectId, objectType);

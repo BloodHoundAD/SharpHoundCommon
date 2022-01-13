@@ -59,7 +59,7 @@ namespace SharpHoundCommonLib.Processors
 
                     var host = await _utils.ResolveHostToSid(spn, domain);
                     _log.LogTrace("Resolved {SPN} to {Hostname}", spn, host);
-                    if (host.StartsWith("S-1-"))
+                    if (host != null && host.StartsWith("S-1-"))
                         yield return new SPNPrivilege
                         {
                             ComputerSID = host,
