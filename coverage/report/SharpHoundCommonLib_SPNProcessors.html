@@ -22,9 +22,9 @@
 <tr><th>Coverable lines:</th><td>43</td></tr>
 <tr><th>Total lines:</th><td>73</td></tr>
 <tr><th>Line coverage:</th><td>86% (37 of 43)</td></tr>
-<tr><th>Covered branches:</th><td>24</td></tr>
-<tr><th>Total branches:</th><td>28</td></tr>
-<tr><th>Branch coverage:</th><td>85.7% (24 of 28)</td></tr>
+<tr><th>Covered branches:</th><td>25</td></tr>
+<tr><th>Total branches:</th><td>30</td></tr>
+<tr><th>Branch coverage:</th><td>83.3% (25 of 30)</td></tr>
 </tbody>
 </table>
 <h1>Metrics</h1>
@@ -33,7 +33,7 @@
 <tbody>
 <tr><td title="System.Void SharpHoundCommonLib.Processors.SPNProcessors::.ctor(SharpHoundCommonLib.ILDAPUtils,Microsoft.Extensions.Logging.ILogger)"><a href="#file0_line13" class="navigatetohash">.ctor(...)</a></td><td>100%</td><td>2</td><td>0</td><td>100%</td></tr>
 <tr><td title="System.Collections.Generic.IAsyncEnumerable`1&lt;SharpHoundCommonLib.OutputTypes.SPNPrivilege&gt; SharpHoundCommonLib.Processors.SPNProcessors::ReadSPNTargets(SharpHoundCommonLib.ResolvedSearchResult,SharpHoundCommonLib.ISearchResultEntry)"><a href="#file0_line21" class="navigatetohash">ReadSPNTargets(...)</a></td><td>100%</td><td>1</td><td>0</td><td>0%</td></tr>
-<tr><td title="ReadSPNTargets()"><a href="#file0_line31" class="navigatetohash">ReadSPNTargets()</a></td><td>84.61%</td><td>26</td><td>0</td><td>100%</td></tr>
+<tr><td title="ReadSPNTargets()"><a href="#file0_line31" class="navigatetohash">ReadSPNTargets()</a></td><td>82.14%</td><td>28</td><td>0</td><td>100%</td></tr>
 </tbody>
 </table>
 <h1>File(s)</h1>
@@ -102,7 +102,7 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line59"></a><code>59</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="coverableline" title="Partially covered (3 visits, 1 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'orange'}}"><td class="orange">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line60"></a><code>60</code></td><td class="percentagebar percentagebar50"><i class="icon-fork"></i></td><td class="lightorange"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;host&nbsp;=&nbsp;await&nbsp;_utils.ResolveHostToSid(spn,&nbsp;domain);</code></td></tr>
 <tr class="coverableline" title="Covered (3 visits)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line61"></a><code>61</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_log.LogTrace(&quot;Resolved&nbsp;{SPN}&nbsp;to&nbsp;{Hostname}&quot;,&nbsp;spn,&nbsp;host);</code></td></tr>
-<tr class="coverableline" title="Covered (3 visits, 2 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line62"></a><code>62</code></td><td class="percentagebar percentagebar100"><i class="icon-fork"></i></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(host.StartsWith(&quot;S-1-&quot;))</code></td></tr>
+<tr class="coverableline" title="Partially covered (3 visits, 3 of 4 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'orange'}}"><td class="orange">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line62"></a><code>62</code></td><td class="percentagebar percentagebar70"><i class="icon-fork"></i></td><td class="lightorange"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(host&nbsp;!=&nbsp;null&nbsp;&amp;&amp;&nbsp;host.StartsWith(&quot;S-1-&quot;))</code></td></tr>
 <tr class="coverableline" title="Partially covered (3 visits, 1 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'orange'}}"><td class="orange">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line63"></a><code>63</code></td><td class="percentagebar percentagebar50"><i class="icon-fork"></i></td><td class="lightorange"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yield&nbsp;return&nbsp;new&nbsp;SPNPrivilege</code></td></tr>
 <tr class="coverableline" title="Covered (3 visits)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line64"></a><code>64</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
 <tr class="coverableline" title="Covered (3 visits)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line65"></a><code>65</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ComputerSID&nbsp;=&nbsp;host,</code></td></tr>
@@ -116,7 +116,7 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line73"></a><code>73</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />12/17/2021 - 5:59:26 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />1/13/2022 - 5:14:40 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
