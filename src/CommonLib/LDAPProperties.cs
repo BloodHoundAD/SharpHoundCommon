@@ -42,5 +42,8 @@
         public const string ObjectGUID = "objectguid";
         public const string PrimaryGroupID = "primarygroupid";
         public const string GroupPolicyOptions = "gpoptions";
+        public const string UnixUserPassword = "unixuserpassword";
+        public const string UnicodePassword = "unicodepwd";
+        public const string MsSFU30Password = "msSFU30Password";
     }
 }
