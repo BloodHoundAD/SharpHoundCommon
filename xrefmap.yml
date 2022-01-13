@@ -2042,6 +2042,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.Members
   fullName: SharpHoundCommonLib.LDAPProperties.Members
   nameWithType: LDAPProperties.Members
+- uid: SharpHoundCommonLib.LDAPProperties.MsSFU30Password
+  name: MsSFU30Password
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_MsSFU30Password
+  commentId: F:SharpHoundCommonLib.LDAPProperties.MsSFU30Password
+  fullName: SharpHoundCommonLib.LDAPProperties.MsSFU30Password
+  nameWithType: LDAPProperties.MsSFU30Password
 - uid: SharpHoundCommonLib.LDAPProperties.Name
   name: Name
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Name
@@ -2150,6 +2156,18 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.TrustDirection
   fullName: SharpHoundCommonLib.LDAPProperties.TrustDirection
   nameWithType: LDAPProperties.TrustDirection
+- uid: SharpHoundCommonLib.LDAPProperties.UnicodePassword
+  name: UnicodePassword
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_UnicodePassword
+  commentId: F:SharpHoundCommonLib.LDAPProperties.UnicodePassword
+  fullName: SharpHoundCommonLib.LDAPProperties.UnicodePassword
+  nameWithType: LDAPProperties.UnicodePassword
+- uid: SharpHoundCommonLib.LDAPProperties.UnixUserPassword
+  name: UnixUserPassword
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_UnixUserPassword
+  commentId: F:SharpHoundCommonLib.LDAPProperties.UnixUserPassword
+  fullName: SharpHoundCommonLib.LDAPProperties.UnixUserPassword
+  nameWithType: LDAPProperties.UnixUserPassword
 - uid: SharpHoundCommonLib.LDAPProperties.UserAccountControl
   name: UserAccountControl
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_UserAccountControl
