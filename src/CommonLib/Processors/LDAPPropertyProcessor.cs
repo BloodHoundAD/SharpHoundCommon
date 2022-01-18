@@ -133,6 +133,17 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
+        /// Reads specific LDAP properties related to containers
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static Dictionary<string, object> ReadContainerProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            return props;
+        }
+
+        /// <summary>
         ///     Reads specific LDAP properties related to Users
         /// </summary>
         /// <param name="entry"></param>
