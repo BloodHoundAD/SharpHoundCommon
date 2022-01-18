@@ -5544,6 +5544,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties
   nameWithType: LDAPPropertyProcessor.ReadComputerProperties
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadContainerProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadContainerProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadContainerProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadContainerProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadContainerProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadContainerProperties(ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadContainerProperties*
+  name: ReadContainerProperties
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadContainerProperties_
+  commentId: Overload:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadContainerProperties
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadContainerProperties
+  nameWithType: LDAPPropertyProcessor.ReadContainerProperties
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.ISearchResultEntry)
   name: ReadDomainProperties(ISearchResultEntry)
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadDomainProperties_SharpHoundCommonLib_ISearchResultEntry_
