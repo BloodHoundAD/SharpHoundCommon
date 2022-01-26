@@ -724,9 +724,13 @@ namespace SharpHoundCommonLib
                 }
                 catch (LdapException le)
                 {
-                    _log.LogWarning(le,
-                        "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
-                        le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
+                    if (le.ErrorCode != 82)
+                    {
+                        _log.LogWarning(le,
+                            "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
+                            le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);    
+                    }
+                    
                     yield break;
                 }
                 catch (Exception e)
@@ -831,9 +835,12 @@ namespace SharpHoundCommonLib
                 }
                 catch (LdapException le)
                 {
-                    _log.LogWarning(le,
-                        "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
-                        le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
+                    if (le.ErrorCode != 82)
+                    {
+                        _log.LogWarning(le,
+                            "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
+                            le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
+                    }
                     yield break;
                 }
                 catch (Exception e)
