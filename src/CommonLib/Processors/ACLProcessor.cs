@@ -58,27 +58,29 @@ namespace SharpHoundCommonLib.Processors
                 return;
             }
 
-            var schema = forest.Schema?.Name;
+            var schema = forest.Schema.Name;
             if (string.IsNullOrEmpty(schema))
             {
                 _log.LogError("BuildGUIDCache - Schema string is null or empty");
                 return;
             }
 
-            _log.LogTrace("BuildGUIDCache - Successfully grabbed schema");
+            _log.LogTrace("Requesting schema from {Schema}", schema);
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
-                new[] { LDAPProperties.SchemaIDGUID, LDAPProperties.Name }, adsPath: schema))
+                         new[] { LDAPProperties.SchemaIDGUID, LDAPProperties.Name }, adsPath: schema))
             {
                 var name = entry.GetProperty(LDAPProperties.Name)?.ToLower();
                 var guid = new Guid(entry.GetByteProperty(LDAPProperties.SchemaIDGUID)).ToString();
                 GuidMap.TryAdd(guid, name);
             }
 
+            _log.LogTrace("BuildGUIDCache - Successfully grabbed schema");
+
             _isCacheBuilt = true;
         }
 
         /// <summary>
-        /// Helper function to use commonlib types in IsACLProtected
+        ///     Helper function to use commonlib types in IsACLProtected
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -105,7 +107,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Helper function to use common lib types and pass appropriate vars to ProcessACL
+        ///     Helper function to use common lib types and pass appropriate vars to ProcessACL
         /// </summary>
         /// <param name="result"></param>
         /// <param name="searchResult"></param>
@@ -120,7 +122,7 @@ namespace SharpHoundCommonLib.Processors
 
             return ProcessACL(descriptor, domain, type, hasLaps, name);
         }
-        
+
         /// <summary>
         ///     Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that
         ///     BloodHound is not interested in
@@ -376,7 +378,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Helper function to use commonlib types and pass to ProcessGMSAReaders
+        ///     Helper function to use commonlib types and pass to ProcessGMSAReaders
         /// </summary>
         /// <param name="resolvedSearchResult"></param>
         /// <param name="searchResultEntry"></param>
@@ -392,7 +394,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// ProcessGMSAMembership with no account name
+        ///     ProcessGMSAMembership with no account name
         /// </summary>
         /// <param name="groupMSAMembership"></param>
         /// <param name="objectDomain"></param>
