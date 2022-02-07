@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.0.10
+### Summary
+Code cleanup and logging
+
+## v2.0.9
+### Summary
+Adds some new properties to users based on https://github.com/BloodHoundAD/BloodHound/issues/380. Also filters the unactionable local error exceptions
+
+## v2.0.8
+### Summary
+Removes the ToListAsync call which was failing when compiled through Fody. Adds more logging in various locations
+
 ## v2.0.7 (2021DEC16)
 ### Summary
 Add version property to MetaTag
