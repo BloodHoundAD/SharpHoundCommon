@@ -39,7 +39,9 @@ namespace SharpHoundCommonLib
             0x00, 0x01
         };
 
-        private static readonly ConcurrentDictionary<string, ResolvedWellKnownPrincipal> SeenWellKnownPrincipals = new();
+        private static readonly ConcurrentDictionary<string, ResolvedWellKnownPrincipal>
+            SeenWellKnownPrincipals = new();
+
         private static readonly ConcurrentDictionary<string, byte> DomainControllers = new();
 
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
@@ -55,7 +57,7 @@ namespace SharpHoundCommonLib
         private LDAPConfig _ldapConfig = new();
 
         /// <summary>
-        /// Creates a new instance of LDAP Utils with defaults
+        ///     Creates a new instance of LDAP Utils with defaults
         /// </summary>
         public LDAPUtils()
         {
@@ -65,7 +67,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Creates a new instance of LDAP utils and allows overriding implementations
+        ///     Creates a new instance of LDAP utils and allows overriding implementations
         /// </summary>
         /// <param name="nativeMethods"></param>
         /// <param name="scanner"></param>
@@ -78,7 +80,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Sets the configuration for LDAP queries
+        ///     Sets the configuration for LDAP queries
         /// </summary>
         /// <param name="config"></param>
         /// <exception cref="Exception"></exception>
@@ -88,7 +90,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Turns a sid into a well known principal ID.
+        ///     Turns a sid into a well known principal ID.
         /// </summary>
         /// <param name="sid"></param>
         /// <param name="domain"></param>
@@ -108,7 +110,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Adds a SID to an internal list of domain controllers
+        ///     Adds a SID to an internal list of domain controllers
         /// </summary>
         /// <param name="domainControllerSID"></param>
         public void AddDomainController(string domainControllerSID)
@@ -117,7 +119,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets output objects for currently observed well known principals
+        ///     Gets output objects for currently observed well known principals
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -152,7 +154,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Converts a 
+        ///     Converts a
         /// </summary>
         /// <param name="sid"></param>
         /// <param name="domain"></param>
@@ -169,7 +171,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Queries the global catalog to get potential SID matches for a username in the forest
+        ///     Queries the global catalog to get potential SID matches for a username in the forest
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -187,8 +189,8 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Uses an LDAP lookup to attempt to find the Label for a given SID
-        /// Will also convert to a well known principal ID if needed
+        ///     Uses an LDAP lookup to attempt to find the Label for a given SID
+        ///     Will also convert to a well known principal ID if needed
         /// </summary>
         /// <param name="id"></param>
         /// <param name="fallbackDomain"></param>
@@ -207,7 +209,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Attempts to lookup the Label for a sid
+        ///     Attempts to lookup the Label for a sid
         /// </summary>
         /// <param name="sid"></param>
         /// <param name="domain"></param>
@@ -233,7 +235,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Attempts to lookup the Label for a GUID
+        ///     Attempts to lookup the Label for a GUID
         /// </summary>
         /// <param name="guid"></param>
         /// <param name="domain"></param>
@@ -257,7 +259,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Attempts to find the domain associated with a SID
+        ///     Attempts to find the domain associated with a SID
         /// </summary>
         /// <param name="sid"></param>
         /// <returns></returns>
@@ -293,9 +295,9 @@ namespace SharpHoundCommonLib
                 return null;
             }
         }
-        
+
         /// <summary>
-        /// Attempts to get the SID associated with a domain name
+        ///     Attempts to get the SID associated with a domain name
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
@@ -576,7 +578,7 @@ namespace SharpHoundCommonLib
                 ObjectType = type
             };
         }
-        
+
         /// <summary>
         ///     Attempts to convert a distinguishedname to its corresponding ID and object type.
         /// </summary>
@@ -626,7 +628,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Queries LDAP using LDAPQueryOptions
+        ///     Queries LDAP using LDAPQueryOptions
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -725,12 +727,10 @@ namespace SharpHoundCommonLib
                 catch (LdapException le)
                 {
                     if (le.ErrorCode != 82)
-                    {
                         _log.LogWarning(le,
                             "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
-                            le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);    
-                    }
-                    
+                            le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
+
                     yield break;
                 }
                 catch (Exception e)
@@ -836,11 +836,9 @@ namespace SharpHoundCommonLib
                 catch (LdapException le)
                 {
                     if (le.ErrorCode != 82)
-                    {
                         _log.LogWarning(le,
                             "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
                             le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
-                    }
                     yield break;
                 }
                 catch (Exception e)
@@ -865,8 +863,8 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets the forest associated with a domain.
-        /// If no domain is provided, defaults to current domain
+        ///     Gets the forest associated with a domain.
+        ///     If no domain is provided, defaults to current domain
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
@@ -887,8 +885,8 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Creates a new ActiveDirectorySecurityDescriptor
-        /// Function created for testing purposes
+        ///     Creates a new ActiveDirectorySecurityDescriptor
+        ///     Function created for testing purposes
         /// </summary>
         /// <returns></returns>
         public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
@@ -912,8 +910,8 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets the domain object associated with the specified domain name.
-        /// Defaults to current domain if none specified
+        ///     Gets the domain object associated with the specified domain name.
+        ///     Defaults to current domain if none specified
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
@@ -959,7 +957,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Updates the config for querying LDAP
+        ///     Updates the config for querying LDAP
         /// </summary>
         /// <param name="config"></param>
         public void UpdateLDAPConfig(LDAPConfig config)
