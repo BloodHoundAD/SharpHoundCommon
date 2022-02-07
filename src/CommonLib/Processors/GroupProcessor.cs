@@ -45,7 +45,7 @@ namespace SharpHoundCommonLib.Processors
                     objectName);
                 foreach (var member in _utils.DoRangedRetrieval(distinguishedName, "member"))
                 {
-                    _log.LogTrace("Got member {DN} from ranged retrieval", member);
+                    _log.LogTrace("Got member {DN} for {ObjectName} from ranged retrieval", member, objectName);
                     var res = _utils.ResolveDistinguishedName(member);
 
                     if (res == null)
@@ -63,6 +63,7 @@ namespace SharpHoundCommonLib.Processors
                 //If we're here, we just read the data directly and life is good
                 foreach (var member in members)
                 {
+                    _log.LogTrace("Got member {DN} for {ObjectName}", member, objectName);
                     var res = _utils.ResolveDistinguishedName(member);
 
                     if (res == null)
