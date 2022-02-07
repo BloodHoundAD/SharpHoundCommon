@@ -59,7 +59,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
-                _log.LogTrace("{ComputerName} is not available because operating system does not match", computerName);
+                _log.LogTrace("{ComputerName} is not available because operating system {OperatingSystem} is not valid", computerName, operatingSystem);
                 return new ComputerStatus
                 {
                     Connectable = false,
@@ -72,8 +72,8 @@ namespace SharpHoundCommonLib.Processors
 
             if (passwordLastSet < threshold)
             {
-                _log.LogTrace("{ComputerName} is not available because password last set is out of range",
-                    computerName);
+                _log.LogTrace("{ComputerName} is not available because password last set {PwdLastSet} is out of range",
+                    computerName, passwordLastSet);
                 return new ComputerStatus
                 {
                     Connectable = false,
