@@ -1450,12 +1450,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipal
   nameWithType: ILDAPUtils.GetWellKnownPrincipal
-- uid: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput
-  name: GetWellKnownPrincipalOutput()
-  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetWellKnownPrincipalOutput
-  commentId: M:SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput
-  fullName: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput()
-  nameWithType: ILDAPUtils.GetWellKnownPrincipalOutput()
+- uid: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput(System.String)
+  name: GetWellKnownPrincipalOutput(String)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetWellKnownPrincipalOutput_System_String_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput(System.String)
+  fullName: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput(System.String)
+  nameWithType: ILDAPUtils.GetWellKnownPrincipalOutput(String)
 - uid: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput*
   name: GetWellKnownPrincipalOutput
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetWellKnownPrincipalOutput_
@@ -1598,12 +1598,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.SetLDAPConfig
   nameWithType: ILDAPUtils.SetLDAPConfig
-- uid: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig
-  name: TestLDAPConfig()
-  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_TestLDAPConfig
-  commentId: M:SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig
-  fullName: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig()
-  nameWithType: ILDAPUtils.TestLDAPConfig()
+- uid: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig(System.String)
+  name: TestLDAPConfig(String)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_TestLDAPConfig_System_String_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig(System.String)
+  fullName: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig(System.String)
+  nameWithType: ILDAPUtils.TestLDAPConfig(String)
 - uid: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig*
   name: TestLDAPConfig
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_TestLDAPConfig_
@@ -2789,12 +2789,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipal
   nameWithType: LDAPUtils.GetWellKnownPrincipal
-- uid: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput
-  name: GetWellKnownPrincipalOutput()
-  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetWellKnownPrincipalOutput
-  commentId: M:SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput
-  fullName: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput()
-  nameWithType: LDAPUtils.GetWellKnownPrincipalOutput()
+- uid: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput(System.String)
+  name: GetWellKnownPrincipalOutput(String)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetWellKnownPrincipalOutput_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput(System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput(System.String)
+  nameWithType: LDAPUtils.GetWellKnownPrincipalOutput(String)
 - uid: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput*
   name: GetWellKnownPrincipalOutput
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetWellKnownPrincipalOutput_
@@ -2937,12 +2937,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.SetLDAPConfig
   nameWithType: LDAPUtils.SetLDAPConfig
-- uid: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig
-  name: TestLDAPConfig()
-  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_TestLDAPConfig
-  commentId: M:SharpHoundCommonLib.LDAPUtils.TestLDAPConfig
-  fullName: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig()
-  nameWithType: LDAPUtils.TestLDAPConfig()
+- uid: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig(System.String)
+  name: TestLDAPConfig(String)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_TestLDAPConfig_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.TestLDAPConfig(System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig(System.String)
+  nameWithType: LDAPUtils.TestLDAPConfig(String)
 - uid: SharpHoundCommonLib.LDAPUtils.TestLDAPConfig*
   name: TestLDAPConfig
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_TestLDAPConfig_
@@ -5020,12 +5020,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ACLProcessor
   fullName: SharpHoundCommonLib.Processors.ACLProcessor
   nameWithType: ACLProcessor
-- uid: SharpHoundCommonLib.Processors.ACLProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.Boolean,ILogger)
-  name: ACLProcessor(ILDAPUtils, Boolean, ILogger)
-  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_Boolean_ILogger_
-  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.Boolean,ILogger)
-  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ACLProcessor(SharpHoundCommonLib.ILDAPUtils, System.Boolean, ILogger)
-  nameWithType: ACLProcessor.ACLProcessor(ILDAPUtils, Boolean, ILogger)
+- uid: SharpHoundCommonLib.Processors.ACLProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.Boolean,ILogger,System.String)
+  name: ACLProcessor(ILDAPUtils, Boolean, ILogger, String)
+  href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_Boolean_ILogger_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ACLProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.Boolean,ILogger,System.String)
+  fullName: SharpHoundCommonLib.Processors.ACLProcessor.ACLProcessor(SharpHoundCommonLib.ILDAPUtils, System.Boolean, ILogger, System.String)
+  nameWithType: ACLProcessor.ACLProcessor(ILDAPUtils, Boolean, ILogger, String)
 - uid: SharpHoundCommonLib.Processors.ACLProcessor.#ctor*
   name: ACLProcessor
   href: api/SharpHoundCommonLib.Processors.ACLProcessor.html#SharpHoundCommonLib_Processors_ACLProcessor__ctor_
