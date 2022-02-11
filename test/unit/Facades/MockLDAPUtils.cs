@@ -30,7 +30,7 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        public bool TestLDAPConfig()
+        public bool TestLDAPConfig(string domain)
         {
             return true;
         }
@@ -716,7 +716,7 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput(string domain)
         {
             foreach (var wkp in _seenWellKnownPrincipals)
             {

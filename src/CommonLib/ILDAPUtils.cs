@@ -29,7 +29,7 @@ namespace SharpHoundCommonLib
     public interface ILDAPUtils
     {
         void SetLDAPConfig(LDAPConfig config);
-        bool TestLDAPConfig();
+        bool TestLDAPConfig(string domain);
         string[] GetUserGlobalCatalogMatches(string name);
         TypedPrincipal ResolveIDAndType(string id, string fallbackDomain);
         Label LookupSidType(string sid, string domain);
@@ -40,7 +40,7 @@ namespace SharpHoundCommonLib
         bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
         Domain GetDomain(string domainName = null);
         void AddDomainController(string domainControllerSID);
-        IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
+        IEnumerable<OutputBase> GetWellKnownPrincipalOutput(string domain);
 
         /// <summary>
         ///     Performs Attribute Ranged Retrieval

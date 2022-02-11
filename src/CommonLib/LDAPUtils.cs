@@ -123,7 +123,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput(string domain)
         {
             foreach (var wkp in SeenWellKnownPrincipals)
             {
@@ -148,7 +148,7 @@ namespace SharpHoundCommonLib
                 yield return output;
             }
 
-            var entdc = GetBaseEnterpriseDC();
+            var entdc = GetBaseEnterpriseDC(domain);
             entdc.Members = DomainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
             yield return entdc;
         }
@@ -304,6 +304,8 @@ namespace SharpHoundCommonLib
         public string GetSidFromDomainName(string domainName)
         {
             var tempDomainName = NormalizeDomainName(domainName);
+            if (tempDomainName == null)
+                return null;
             if (Cache.GetDomainSidMapping(tempDomainName, out var sid)) return sid;
 
             var domainObj = GetDomain(tempDomainName);
@@ -898,12 +900,14 @@ namespace SharpHoundCommonLib
         ///     Tests the current LDAP config to ensure its valid by pulling a domain object
         /// </summary>
         /// <returns>True if connection was successful, else false</returns>
-        public bool TestLDAPConfig()
+        public bool TestLDAPConfig(string domain)
         {
             var filter = new LDAPFilter();
             filter.AddDomains();
 
-            var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID)
+            var resDomain = GetDomain(domain)?.Name ?? domain;
+            
+            var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID, resDomain)
                 .DefaultIfEmpty(null).FirstOrDefault();
 
             return result != null;
@@ -945,9 +949,9 @@ namespace SharpHoundCommonLib
             return domain;
         }
 
-        private Group GetBaseEnterpriseDC()
+        private Group GetBaseEnterpriseDC(string domain)
         {
-            var forest = GetForest()?.Name;
+            var forest = GetForest(domain)?.Name;
             if (forest == null) _log.LogWarning("Error getting forest, ENTDC sid is likely incorrect");
             var g = new Group { ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper() };
             g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest ?? "UNKNOWN"}".ToUpper());

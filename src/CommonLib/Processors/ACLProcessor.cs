@@ -34,24 +34,24 @@ namespace SharpHoundCommonLib.Processors
             };
         }
 
-        public ACLProcessor(ILDAPUtils utils, bool noGuidCache = false, ILogger log = null)
+        public ACLProcessor(ILDAPUtils utils, bool noGuidCache = false, ILogger log = null, string domain = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("ACLProc");
             if (!noGuidCache)
-                BuildGUIDCache();
+                BuildGUIDCache(domain);
         }
 
         /// <summary>
         ///     Builds a mapping of GUID -> Name for LDAP rights. Used for rights that are created using an extended schema such as
         ///     LAPS
         /// </summary>
-        private void BuildGUIDCache()
+        private void BuildGUIDCache(string domain)
         {
             if (_isCacheBuilt)
                 return;
 
-            var forest = _utils.GetForest();
+            var forest = _utils.GetForest(domain);
             if (forest == null)
             {
                 _log.LogError("BuildGUIDCache - Unable to resolve forest");
