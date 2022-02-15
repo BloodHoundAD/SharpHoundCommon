@@ -1132,13 +1132,6 @@ namespace SharpHoundCommonLib
         /// <returns>A connected LdapConnection or null</returns>
         private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null)
         {
-            var domain = GetDomain(domainName);
-            if (domain == null)
-            {
-                _log.LogDebug("Unable to create global catalog connection for domain {DomainName}", domainName);
-                return null;
-            }
-
             string targetServer;
             if (_ldapConfig.Server != null)
             {
@@ -1146,6 +1139,13 @@ namespace SharpHoundCommonLib
             }
             else
             {
+                var domain = GetDomain(domainName);
+                if (domain == null)
+                {
+                    _log.LogDebug("Unable to create global catalog connection for domain {DomainName}", domainName);
+                    return null;
+                }
+                
                 if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
@@ -1159,6 +1159,12 @@ namespace SharpHoundCommonLib
             connection = new LdapConnection(new LdapDirectoryIdentifier(targetServer, 3268));
 
             connection.SessionOptions.ProtocolVersion = 3;
+            
+            if (_ldapConfig.Username != null)
+            {
+                var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password);
+                connection.Credential = cred;
+            }
 
             if (_ldapConfig.DisableSigning)
             {
@@ -1181,13 +1187,6 @@ namespace SharpHoundCommonLib
         /// <returns>A connected LDAP connection or null</returns>
         private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false)
         {
-            var domain = GetDomain(domainName);
-            if (domain == null)
-            {
-                _log.LogDebug("Unable to create ldap connection for domain {DomainName}", domainName);
-                return null;
-            }
-
             string targetServer;
             if (_ldapConfig.Server != null)
             {
@@ -1195,6 +1194,13 @@ namespace SharpHoundCommonLib
             }
             else
             {
+                var domain = GetDomain(domainName);
+                if (domain == null)
+                {
+                    _log.LogDebug("Unable to create ldap connection for domain {DomainName}", domainName);
+                    return null;
+                }
+                
                 if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
@@ -1211,7 +1217,7 @@ namespace SharpHoundCommonLib
             var connection = new LdapConnection(ident) { Timeout = new TimeSpan(0, 0, 5, 0) };
             if (_ldapConfig.Username != null)
             {
-                var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password, domain.Name);
+                var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password);
                 connection.Credential = cred;
             }
 
