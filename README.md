@@ -7,6 +7,16 @@ Common library used by SharpHound.
 [![Coverage](https://bloodhoundad.github.io/SharpHoundCommon/coverage/report/badge_combined.svg)](https://bloodhoundad.github.io/SharpHoundCommon/coverage/report/index.html)
 [![Documentation](https://img.shields.io/static/v1?label=&message=documentation&color=blue)](https://bloodhoundad.github.io/SharpHoundCommon/index.html)
 
+## Prerequisites
+* .NET Core 5.0
+* Visual Studio 2019 Build Tools
+
+## Building
+```
+dotnet restore
+dotnet build
+```
+
 ### Contributors
 
 Check out the [CONTRIBUTING](./CONTRIBUTING.md) guide.
