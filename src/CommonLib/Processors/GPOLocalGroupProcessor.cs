@@ -434,8 +434,8 @@ namespace SharpHoundCommonLib.Processors
                         if (!action.Equals("u", StringComparison.OrdinalIgnoreCase))
                             continue;
 
-                        var groupSid = currentProperties.GetAttribute("groupSid", "").Trim();
-                        var groupName = currentProperties.GetAttribute("groupName", "").Trim();
+                        var groupSid = currentProperties.GetAttribute("groupSid", "")?.Trim();
+                        var groupName = currentProperties.GetAttribute("groupName", "")?.Trim();
 
                         //Next is to determine what group is being updated.
 
@@ -495,12 +495,10 @@ namespace SharpHoundCommonLib.Processors
                                 Action = memberAction
                             };
 
-                            Label memberType;
-
                             //If we have a memberSid, this is the best case scenario
                             if (!string.IsNullOrWhiteSpace(memberSid))
                             {
-                                memberType = _utils.LookupSidType(memberSid, _utils.GetDomainNameFromSid(memberSid));
+                                var memberType = _utils.LookupSidType(memberSid, _utils.GetDomainNameFromSid(memberSid));
                                 ga.Target = GroupActionTarget.LocalGroup;
                                 ga.TargetSid = memberSid;
                                 ga.TargetType = memberType;
