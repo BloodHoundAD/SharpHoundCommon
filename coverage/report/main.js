@@ -268,7 +268,7 @@ var assemblies = [
       { "name": "SharpHoundCommonLib.Processors.ComputerSessionProcessor", "rp": "SharpHoundCommonLib_ComputerSessionProcessor.html", "cl": 113, "ucl": 23, "cal": 136, "tl": 240, "ct": "LineCoverage", "mc": "-", "cb": 42, "tb": 48, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.ContainerProcessor", "rp": "SharpHoundCommonLib_ContainerProcessor.html", "cl": 57, "ucl": 9, "cal": 66, "tl": 131, "ct": "LineCoverage", "mc": "-", "cb": 20, "tb": 20, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.DomainTrustProcessor", "rp": "SharpHoundCommonLib_DomainTrustProcessor.html", "cl": 48, "ucl": 10, "cal": 58, "tl": 106, "ct": "LineCoverage", "mc": "-", "cb": 21, "tb": 24, "lch": [], "bch": [], "hc": [] },
-      { "name": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "rp": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "cl": 314, "ucl": 61, "cal": 375, "tl": 598, "ct": "LineCoverage", "mc": "-", "cb": 116, "tb": 146, "lch": [], "bch": [], "hc": [] },
+      { "name": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "rp": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "cl": 314, "ucl": 61, "cal": 375, "tl": 596, "ct": "LineCoverage", "mc": "-", "cb": 118, "tb": 150, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.GroupProcessor", "rp": "SharpHoundCommonLib_GroupProcessor.html", "cl": 50, "ucl": 7, "cal": 57, "tl": 107, "ct": "LineCoverage", "mc": "-", "cb": 15, "tb": 16, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.LDAPPropertyProcessor", "rp": "SharpHoundCommonLib_LDAPPropertyProcessor.html", "cl": 225, "ucl": 64, "cal": 289, "tl": 497, "ct": "LineCoverage", "mc": "-", "cb": 50, "tb": 91, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Processors.PortScanner", "rp": "SharpHoundCommonLib_PortScanner.html", "cl": 4, "ucl": 50, "cal": 54, "tl": 99, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 18, "lch": [], "bch": [], "hc": [] },
@@ -314,6 +314,12 @@ var riskHotspots = [
       { "value": 0, "exceeded": false },
     ]},
   {
+    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "reportPath": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "methodName": "ProcessGPOXmlFile()", "methodShortName": "ProcessGPOXmlFile()", "fileIndex": 0, "line": 403,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 0, "exceeded": false },
+    ]},
+  {
     "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.SearchResultEntryWrapper", "reportPath": "SharpHoundCommonLib_SearchResultEntryWrapper.html", "methodName": "SharpHoundCommonLib.ResolvedSearchResult SharpHoundCommonLib.SearchResultEntryWrapper::ResolveBloodHoundInfo()", "methodShortName": "ResolveBloodHoundInfo()", "fileIndex": 0, "line": 49,
     "metrics": [
       { "value": 39, "exceeded": true },
@@ -321,12 +327,6 @@ var riskHotspots = [
     ]},
   {
     "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.LDAPUtils", "reportPath": "SharpHoundCommonLib_LDAPUtils.html", "methodName": "ResolveHostToSid()", "methodShortName": "ResolveHostToSid()", "fileIndex": 0, "line": 415,
-    "metrics": [
-      { "value": 38, "exceeded": true },
-      { "value": 0, "exceeded": false },
-    ]},
-  {
-    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.GPOLocalGroupProcessor", "reportPath": "SharpHoundCommonLib_GPOLocalGroupProcessor.html", "methodName": "ProcessGPOXmlFile()", "methodShortName": "ProcessGPOXmlFile()", "fileIndex": 0, "line": 403,
     "metrics": [
       { "value": 38, "exceeded": true },
       { "value": 0, "exceeded": false },
