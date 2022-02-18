@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Security.AccessControl;
+using System.Reflection.Emit;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -145,12 +147,43 @@ namespace SharpHoundCommonLib
                 output.Properties.Add("domainsid", domainSid);
                 output.Properties.Add("domain", wkp.Value.DomainName.ToUpper());
                 output.ObjectIdentifier = wkp.Key;
+
+                bool highValue = principal.ObjectType switch {
+                    Label.Domain => true,
+                    Label.Group => IsHighValueGroup(principal.ObjectIdentifier),
+                    _ => false
+                };
+                output.Properties.Add("highvalue", highValue);
+
                 yield return output;
             }
 
             var entdc = GetBaseEnterpriseDC(domain);
             entdc.Members = DomainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
             yield return entdc;
+        }
+
+        private bool IsHighValueGroup(string objectId)
+        {
+            var suffixes = new string []
+            {
+                "-512",
+                "-516",
+                "-519",
+                "S-1-5-32-544",
+                "S-1-5-32-548",
+                "S-1-5-32-549",
+                "S-1-5-32-550",
+                "S-1-5-32-551",
+            };
+            foreach (var suffix in suffixes)
+            {
+                if (objectId.EndsWith(suffix))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
