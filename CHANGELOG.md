@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.0.13
+### Summary
+Fix ranged retrieval and allow for changing the LDAP authtype via the ldapconfig
+
+## v2.0.12
+### Summary
+Readme updates and a null check in gpolocalgroup
+
+## v2.0.11
+### Summary
+Some updates to try and fix running under netonly context
+
 ## v2.0.10
 ### Summary
 Code cleanup and logging
