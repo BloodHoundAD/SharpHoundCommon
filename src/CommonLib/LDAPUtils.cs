@@ -358,7 +358,7 @@ namespace SharpHoundCommonLib
             var currentRange = $"{baseString};range={index}-*";
             var complete = false;
 
-            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] { currentRange },
+            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] { currentRange }, domainName, 
                 distinguishedName);
 
             if (searchRequest == null)
