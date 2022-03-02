@@ -335,7 +335,7 @@ namespace SharpHoundCommonLib
         public IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
         {
             var domainName = Helpers.DistinguishedNameToDomain(distinguishedName);
-            var task = Task.Run(() => CreateLDAPConnection(domainName));
+            var task = Task.Run(() => CreateLDAPConnection(domainName, authType: _ldapConfig.AuthType));
 
             LdapConnection conn;
 
@@ -674,8 +674,8 @@ namespace SharpHoundCommonLib
             _log.LogTrace("Creating ldap connection for {Target} with filter {Filter}",
                 globalCatalog ? "Global Catalog" : "DC", ldapFilter);
             var task = globalCatalog
-                ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
-                : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
+                ? Task.Run(() => CreateGlobalCatalogConnection(domainName, _ldapConfig.AuthType))
+                : Task.Run(() => CreateLDAPConnection(domainName, skipCache, _ldapConfig.AuthType));
 
             LdapConnection conn;
             try
@@ -786,8 +786,8 @@ namespace SharpHoundCommonLib
             _log.LogTrace("Creating ldap connection for {Target} with filter {Filter}",
                 globalCatalog ? "Global Catalog" : "DC", ldapFilter);
             var task = globalCatalog
-                ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
-                : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
+                ? Task.Run(() => CreateGlobalCatalogConnection(domainName, _ldapConfig.AuthType))
+                : Task.Run(() => CreateLDAPConnection(domainName, skipCache, _ldapConfig.AuthType));
 
             LdapConnection conn;
             try
@@ -1110,12 +1110,12 @@ namespace SharpHoundCommonLib
         private SearchRequest CreateSearchRequest(string filter, SearchScope scope, string[] attributes,
             string domainName = null, string adsPath = null, bool showDeleted = false)
         {
-            var domain = GetDomain(domainName);
+            var domain = GetDomain(domainName)?.Name ?? domainName;
+
             if (domain == null)
                 return null;
 
-            var dName = domain.Name;
-            var adPath = adsPath?.Replace("LDAP://", "") ?? $"DC={dName.Replace(".", ",DC=")}";
+            var adPath = adsPath?.Replace("LDAP://", "") ?? $"DC={domain.Replace(".", ",DC=")}";
 
             var request = new SearchRequest(adPath, filter, scope, attributes);
             request.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
@@ -1129,8 +1129,9 @@ namespace SharpHoundCommonLib
         ///     Creates a LDAP connection to a global catalog server
         /// </summary>
         /// <param name="domainName">Domain to connect too</param>
+        /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly scenarios</param>
         /// <returns>A connected LdapConnection or null</returns>
-        private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null)
+        private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null, AuthType authType = AuthType.Kerberos)
         {
             string targetServer;
             if (_ldapConfig.Server != null)
@@ -1171,9 +1172,8 @@ namespace SharpHoundCommonLib
                 connection.SessionOptions.Sealing = false;
                 connection.SessionOptions.Signing = false;
             }
-
-            //Force kerberos auth
-            connection.AuthType = AuthType.Kerberos;
+            
+            connection.AuthType = authType;
 
             _globalCatalogConnections.TryAdd(targetServer, connection);
             return connection;
@@ -1184,8 +1184,9 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domainName">The domain to connect too</param>
         /// <param name="skipCache">Skip the connection cache</param>
+        /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly scenarios</param>
         /// <returns>A connected LDAP connection or null</returns>
-        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false)
+        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false, AuthType authType = AuthType.Kerberos)
         {
             string targetServer;
             if (_ldapConfig.Server != null)
@@ -1233,9 +1234,8 @@ namespace SharpHoundCommonLib
 
             if (_ldapConfig.SSL)
                 connection.SessionOptions.SecureSocketLayer = true;
-
-            //Force kerberos auth
-            connection.AuthType = AuthType.Kerberos;
+            
+            connection.AuthType = authType;
 
             if (!skipCache)
                 _ldapConnections.TryAdd(targetServer, connection);
