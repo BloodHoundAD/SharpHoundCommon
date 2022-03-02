@@ -1831,6 +1831,19 @@ references:
   commentId: T:SharpHoundCommonLib.LDAPConfig
   fullName: SharpHoundCommonLib.LDAPConfig
   nameWithType: LDAPConfig
+- uid: SharpHoundCommonLib.LDAPConfig.AuthType
+  name: AuthType
+  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_AuthType
+  commentId: P:SharpHoundCommonLib.LDAPConfig.AuthType
+  fullName: SharpHoundCommonLib.LDAPConfig.AuthType
+  nameWithType: LDAPConfig.AuthType
+- uid: SharpHoundCommonLib.LDAPConfig.AuthType*
+  name: AuthType
+  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_AuthType_
+  commentId: Overload:SharpHoundCommonLib.LDAPConfig.AuthType
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConfig.AuthType
+  nameWithType: LDAPConfig.AuthType
 - uid: SharpHoundCommonLib.LDAPConfig.DisableSigning
   name: DisableSigning
   href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_DisableSigning
