@@ -277,7 +277,7 @@ var assemblies = [
       { "name": "SharpHoundCommonLib.Processors.UserProperties", "rp": "SharpHoundCommonLib_UserProperties.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 497, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.ResolvedSearchResult", "rp": "SharpHoundCommonLib_ResolvedSearchResult.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 35, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.SearchResultEntryWrapper", "rp": "SharpHoundCommonLib_SearchResultEntryWrapper.html", "cl": 0, "ucl": 146, "cal": 146, "tl": 258, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 45, "lch": [], "bch": [], "hc": [] },
-      { "name": "SharpHoundCommonLib.WellKnownPrincipal", "rp": "SharpHoundCommonLib_WellKnownPrincipal.html", "cl": 71, "ucl": 0, "cal": 71, "tl": 88, "ct": "LineCoverage", "mc": "-", "cb": 318, "tb": 318, "lch": [], "bch": [], "hc": [] },
+      { "name": "SharpHoundCommonLib.WellKnownPrincipal", "rp": "SharpHoundCommonLib_WellKnownPrincipal.html", "cl": 71, "ucl": 3, "cal": 74, "tl": 91, "ct": "LineCoverage", "mc": "-", "cb": 321, "tb": 330, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -292,7 +292,7 @@ var riskHotspots = [
   {
     "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.WellKnownPrincipal", "reportPath": "SharpHoundCommonLib_WellKnownPrincipal.html", "methodName": "System.Boolean SharpHoundCommonLib.WellKnownPrincipal::GetWellKnownPrincipal(System.String,SharpHoundCommonLib.OutputTypes.TypedPrincipal&)", "methodShortName": "GetWellKnownPrincipal(...)", "fileIndex": 0, "line": 15,
     "metrics": [
-      { "value": 318, "exceeded": true },
+      { "value": 330, "exceeded": true },
       { "value": 0, "exceeded": false },
     ]},
   {
