@@ -53,7 +53,7 @@ namespace SharpHoundCommonLib.Processors
                     return true;
                 }
                 
-                _log.LogDebug("{Hostname} did not respond to ping", hostname);
+                _log.LogDebug("{Hostname} did not respond to scan on port {Port}", hostname, port);
                 PortScanCache.TryAdd(key, false);
                 return false;
             }
