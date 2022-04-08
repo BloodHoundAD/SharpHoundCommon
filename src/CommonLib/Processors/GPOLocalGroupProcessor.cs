@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.XPath;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -43,10 +44,12 @@ namespace SharpHoundCommonLib.Processors
             };
 
         private readonly ILDAPUtils _utils;
+        private readonly ILogger _log;
 
-        public GPOLocalGroupProcessor(ILDAPUtils utils)
+        public GPOLocalGroupProcessor(ILDAPUtils utils, ILogger log = null)
         {
             _utils = utils;
+            _log = log ?? Logging.LogProvider.CreateLogger("GPOLocalGroupProc");
         }
 
         public Task<ResultingGPOChanges> ReadGPOLocalGroups(ISearchResultEntry entry)
@@ -408,7 +411,17 @@ namespace SharpHoundCommonLib.Processors
                 yield break;
 
             //Create an XPathDocument to let us navigate the XML
-            var doc = new XPathDocument(xmlPath);
+            XPathDocument doc;
+            try
+            {
+                doc = new XPathDocument(xmlPath);
+            }
+            catch (Exception e)
+            {
+                _log.LogError(e, "error reading GPO XML file {File}", xmlPath);
+                yield break;
+            }
+             
             var navigator = doc.CreateNavigator();
             //Grab all the Groups nodes
             var groupsNodes = navigator.Select("/Groups");
