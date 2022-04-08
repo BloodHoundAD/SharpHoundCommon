@@ -5402,12 +5402,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.GPOLocalGroupProcessor
   fullName: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor
   nameWithType: GPOLocalGroupProcessor
-- uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  name: GPOLocalGroupProcessor(ILDAPUtils)
-  href: api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html#SharpHoundCommonLib_Processors_GPOLocalGroupProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_
-  commentId: M:SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils)
-  fullName: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GPOLocalGroupProcessor(SharpHoundCommonLib.ILDAPUtils)
-  nameWithType: GPOLocalGroupProcessor.GPOLocalGroupProcessor(ILDAPUtils)
+- uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  name: GPOLocalGroupProcessor(ILDAPUtils, ILogger)
+  href: api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html#SharpHoundCommonLib_Processors_GPOLocalGroupProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  fullName: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GPOLocalGroupProcessor(SharpHoundCommonLib.ILDAPUtils, ILogger)
+  nameWithType: GPOLocalGroupProcessor.GPOLocalGroupProcessor(ILDAPUtils, ILogger)
 - uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.#ctor*
   name: GPOLocalGroupProcessor
   href: api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html#SharpHoundCommonLib_Processors_GPOLocalGroupProcessor__ctor_
