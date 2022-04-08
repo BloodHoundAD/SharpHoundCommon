@@ -39,7 +39,9 @@ namespace SharpHoundCommonLib
             0x00, 0x01
         };
 
-        private static readonly ConcurrentDictionary<string, ResolvedWKP> SeenWellKnownPrincipals = new();
+        private static readonly ConcurrentDictionary<string, ResolvedWellKnownPrincipal>
+            SeenWellKnownPrincipals = new();
+
         private static readonly ConcurrentDictionary<string, byte> DomainControllers = new();
 
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
@@ -48,34 +50,58 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
         private readonly ConcurrentDictionary<string, LdapConnection> _ldapConnections = new();
+        private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
 
+        /// <summary>
+        ///     Creates a new instance of LDAP Utils with defaults
+        /// </summary>
         public LDAPUtils()
         {
             _nativeMethods = new NativeMethods();
             _portScanner = new PortScanner();
+            _log = Logging.LogProvider.CreateLogger("LDAPUtils");
         }
 
-        public LDAPUtils(NativeMethods nativeMethods = null, PortScanner scanner = null)
+        /// <summary>
+        ///     Creates a new instance of LDAP utils and allows overriding implementations
+        /// </summary>
+        /// <param name="nativeMethods"></param>
+        /// <param name="scanner"></param>
+        /// <param name="log"></param>
+        public LDAPUtils(NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null)
         {
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _portScanner = scanner ?? new PortScanner();
+            _log = log ?? Logging.LogProvider.CreateLogger("LDAPUtils");
         }
 
+        /// <summary>
+        ///     Sets the configuration for LDAP queries
+        /// </summary>
+        /// <param name="config"></param>
+        /// <exception cref="Exception"></exception>
         public void SetLDAPConfig(LDAPConfig config)
         {
             _ldapConfig = config ?? throw new Exception("LDAP Configuration can not be null");
         }
 
+        /// <summary>
+        ///     Turns a sid into a well known principal ID.
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="domain"></param>
+        /// <param name="commonPrincipal"></param>
+        /// <returns>True if a well known principal was identified, false if not</returns>
         public bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
             var tempDomain = domain ?? GetDomain()?.Name ?? "UNKNOWN";
             commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, tempDomain);
-            SeenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, new ResolvedWKP
+            SeenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, new ResolvedWellKnownPrincipal
             {
                 DomainName = domain,
                 WkpId = sid
@@ -83,12 +109,21 @@ namespace SharpHoundCommonLib
             return true;
         }
 
-        public void AddDomainController(string domainControllerId)
+        /// <summary>
+        ///     Adds a SID to an internal list of domain controllers
+        /// </summary>
+        /// <param name="domainControllerSID"></param>
+        public void AddDomainController(string domainControllerSID)
         {
-            DomainControllers.TryAdd(domainControllerId, new byte());
+            DomainControllers.TryAdd(domainControllerSID, new byte());
         }
 
-        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        /// <summary>
+        ///     Gets output objects for currently observed well known principals
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput(string domain)
         {
             foreach (var wkp in SeenWellKnownPrincipals)
             {
@@ -106,18 +141,24 @@ namespace SharpHoundCommonLib
                 };
 
                 output.Properties.Add("name", $"{principal.ObjectIdentifier}@{wkp.Value.DomainName}".ToUpper());
-                var domainSid = await GetSidFromDomainName(wkp.Value.DomainName);
+                var domainSid = GetSidFromDomainName(wkp.Value.DomainName);
                 output.Properties.Add("domainsid", domainSid);
                 output.Properties.Add("domain", wkp.Value.DomainName.ToUpper());
                 output.ObjectIdentifier = wkp.Key;
                 yield return output;
             }
 
-            var entdc = await GetBaseEnterpriseDC();
+            var entdc = GetBaseEnterpriseDC(domain);
             entdc.Members = DomainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
             yield return entdc;
         }
 
+        /// <summary>
+        ///     Converts a
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         public string ConvertWellKnownPrincipal(string sid, string domain)
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out _)) return sid;
@@ -125,10 +166,15 @@ namespace SharpHoundCommonLib
             if (sid != "S-1-5-9") return $"{domain}-{sid}".ToUpper();
 
             var forest = GetForest(domain)?.Name;
-            if (forest == null) Logging.Log(LogLevel.Warning, "Error getting forest, ENTDC sid is likely incorrect");
+            if (forest == null) _log.LogWarning("Error getting forest, ENTDC sid is likely incorrect");
             return $"{forest ?? "UNKNOWN"}-{sid}".ToUpper();
         }
 
+        /// <summary>
+        ///     Queries the global catalog to get potential SID matches for a username in the forest
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public string[] GetUserGlobalCatalogMatches(string name)
         {
             var tempName = name.ToLower();
@@ -142,6 +188,13 @@ namespace SharpHoundCommonLib
             return results;
         }
 
+        /// <summary>
+        ///     Uses an LDAP lookup to attempt to find the Label for a given SID
+        ///     Will also convert to a well known principal ID if needed
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fallbackDomain"></param>
+        /// <returns></returns>
         public TypedPrincipal ResolveIDAndType(string id, string fallbackDomain)
         {
             //This is a duplicated SID object which is weird and makes things unhappy. Throw it out
@@ -155,6 +208,12 @@ namespace SharpHoundCommonLib
             return new TypedPrincipal(id, type);
         }
 
+        /// <summary>
+        ///     Attempts to lookup the Label for a sid
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         public Label LookupSidType(string sid, string domain)
         {
             if (Cache.GetIDType(sid, out var type))
@@ -175,6 +234,12 @@ namespace SharpHoundCommonLib
             return type;
         }
 
+        /// <summary>
+        ///     Attempts to lookup the Label for a GUID
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
         public Label LookupGuidType(string guid, string domain)
         {
             if (Cache.GetIDType(guid, out var type))
@@ -193,6 +258,11 @@ namespace SharpHoundCommonLib
             return type;
         }
 
+        /// <summary>
+        ///     Attempts to find the domain associated with a SID
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <returns></returns>
         public string GetDomainNameFromSid(string sid)
         {
             try
@@ -202,14 +272,14 @@ namespace SharpHoundCommonLib
                 if (domainSid == null)
                     return null;
 
-                Logging.Debug($"Resolving sid {domainSid}");
+                _log.LogDebug("Resolving sid {DomainSid}", domainSid);
 
                 if (Cache.GetDomainSidMapping(domainSid, out var domain))
                     return domain;
 
-                Logging.Debug($"No cache hit for {domainSid}");
+                _log.LogDebug("No cache hit for {DomainSid}", domainSid);
                 domain = GetDomainNameFromSidLdap(domainSid);
-                Logging.Debug($"Resolved to {domain}");
+                _log.LogDebug("Resolved to {Domain}", domain);
 
                 //Cache both to and from so we can use this later
                 if (domain != null)
@@ -226,10 +296,16 @@ namespace SharpHoundCommonLib
             }
         }
 
-#pragma warning disable CS1998 // TODO: deprecate API
-        public async Task<string> GetSidFromDomainName(string domainName)
+        /// <summary>
+        ///     Attempts to get the SID associated with a domain name
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
+        public string GetSidFromDomainName(string domainName)
         {
             var tempDomainName = NormalizeDomainName(domainName);
+            if (tempDomainName == null)
+                return null;
             if (Cache.GetDomainSidMapping(tempDomainName, out var sid)) return sid;
 
             var domainObj = GetDomain(tempDomainName);
@@ -247,8 +323,6 @@ namespace SharpHoundCommonLib
 
             return sid;
         }
-#pragma warning restore CS1998
-
 
         /// <summary>
         ///     Performs Attribute Ranged Retrieval
@@ -261,7 +335,7 @@ namespace SharpHoundCommonLib
         public IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
         {
             var domainName = Helpers.DistinguishedNameToDomain(distinguishedName);
-            var task = Task.Run(() => CreateLDAPConnection(domainName));
+            var task = Task.Run(() => CreateLDAPConnection(domainName, authType: _ldapConfig.AuthType));
 
             LdapConnection conn;
 
@@ -284,7 +358,7 @@ namespace SharpHoundCommonLib
             var currentRange = $"{baseString};range={index}-*";
             var complete = false;
 
-            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] { currentRange },
+            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] { currentRange }, domainName, 
                 distinguishedName);
 
             if (searchRequest == null)
@@ -297,7 +371,7 @@ namespace SharpHoundCommonLib
                 response = (SearchResponse)conn.SendRequest(searchRequest);
 
                 //If we ever get more than one response from here, something is horribly wrong
-                if (response?.Entries.Count == 0)
+                if (response?.Entries.Count == 1)
                 {
                     var entry = response.Entries[0];
                     //Process the attribute we get back to determine a few things
@@ -367,7 +441,7 @@ namespace SharpHoundCommonLib
 
                 // Add $ to the end of the name to match how computers are stored in AD
                 tempName = $"{tempName}$".ToUpper();
-                var principal = await ResolveAccountName(tempName, tempDomain);
+                var principal = ResolveAccountName(tempName, tempDomain);
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
@@ -392,7 +466,7 @@ namespace SharpHoundCommonLib
                 {
                     //Append the $ to indicate this is a computer
                     tempName = $"{tempName}$".ToUpper();
-                    var principal = await ResolveAccountName(tempName, tempDomain);
+                    var principal = ResolveAccountName(tempName, tempDomain);
                     if (principal != null)
                     {
                         _hostResolutionMap.TryAdd(strippedHost, sid);
@@ -403,12 +477,12 @@ namespace SharpHoundCommonLib
 
             //Step 3: Socket magic
             // Attempt to request the NETBIOS name of the computer directly
-            if (RequestNetbiosNameFromComputer(strippedHost, normalDomain, out tempName))
+            if (RequestNETBIOSNameFromComputer(strippedHost, normalDomain, out tempName))
             {
                 tempDomain ??= normalDomain;
                 tempName = $"{tempName}$".ToUpper();
 
-                var principal = await ResolveAccountName(tempName, tempDomain);
+                var principal = ResolveAccountName(tempName, tempDomain);
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
@@ -434,7 +508,7 @@ namespace SharpHoundCommonLib
                 tempName = $"{splitName[0]}$".ToUpper();
                 tempDomain = string.Join(".", splitName.Skip(1));
 
-                var principal = await ResolveAccountName(tempName, tempDomain);
+                var principal = ResolveAccountName(tempName, tempDomain);
                 sid = principal?.ObjectIdentifier;
                 if (sid != null)
                 {
@@ -464,8 +538,7 @@ namespace SharpHoundCommonLib
         /// <param name="name"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-#pragma warning disable CS1998 // TODO: deprecate API
-        public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
+        public TypedPrincipal ResolveAccountName(string name, string domain)
         {
             if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetIDType(id, out var type))
                 return new TypedPrincipal
@@ -480,14 +553,19 @@ namespace SharpHoundCommonLib
                 d).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result == null)
+            {
+                _log.LogDebug("ResolveAccountName - unable to get result for {Name}", name);
                 return null;
+            }
+
 
             type = result.GetLabel();
             id = result.GetObjectIdentifier();
 
             if (id == null)
             {
-                Logging.Debug($"No resolved ID for {name}");
+                _log.LogDebug("ResolveAccountName - could not retrieve ID on {DN} for {Name}", result.DistinguishedName,
+                    name);
                 return null;
             }
 
@@ -502,7 +580,6 @@ namespace SharpHoundCommonLib
                 ObjectType = type
             };
         }
-#pragma warning restore CS1998
 
         /// <summary>
         ///     Attempts to convert a distinguishedname to its corresponding ID and object type.
@@ -525,14 +602,14 @@ namespace SharpHoundCommonLib
 
             if (result == null)
             {
-                Logging.Debug($"No result found for {dn}");
+                _log.LogDebug("ResolveDistinguishedName - No result for {DN}", dn);
                 return null;
             }
 
             id = result.GetObjectIdentifier();
             if (id == null)
             {
-                Logging.Debug($"ResolveDistinguishedName: could not retrieve objectidentifier from {dn}");
+                _log.LogDebug("ResolveDistinguishedName - could not retrieve object identifier from {DN}", dn);
                 return null;
             }
 
@@ -552,31 +629,24 @@ namespace SharpHoundCommonLib
             };
         }
 
+        /// <summary>
+        ///     Queries LDAP using LDAPQueryOptions
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options)
         {
-            if (options.cancellationToken != null)
-                return QueryLDAP(
-                    options.filter,
-                    options.scope,
-                    options.properties,
-                    options.cancellationToken,
-                    options.domainName,
-                    options.includeAcl,
-                    options.showDeleted,
-                    options.adsPath,
-                    options.globalCatalog,
-                    options.skipCache
-                );
             return QueryLDAP(
-                options.filter,
-                options.scope,
-                options.properties,
-                options.domainName,
-                options.includeAcl,
-                options.showDeleted,
-                options.adsPath,
-                options.globalCatalog,
-                options.skipCache
+                options.Filter,
+                options.Scope,
+                options.Properties,
+                options.CancellationToken,
+                options.DomainName,
+                options.IncludeAcl,
+                options.ShowDeleted,
+                options.AdsPath,
+                options.GlobalCatalog,
+                options.SkipCache
             );
         }
 
@@ -601,10 +671,11 @@ namespace SharpHoundCommonLib
             string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false,
             bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
-            Logging.Log(LogLevel.Trace, "Creating ldap connection");
+            _log.LogTrace("Creating ldap connection for {Target} with filter {Filter}",
+                globalCatalog ? "Global Catalog" : "DC", ldapFilter);
             var task = globalCatalog
-                ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
-                : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
+                ? Task.Run(() => CreateGlobalCatalogConnection(domainName, _ldapConfig.AuthType))
+                : Task.Run(() => CreateLDAPConnection(domainName, skipCache, _ldapConfig.AuthType));
 
             LdapConnection conn;
             try
@@ -618,7 +689,8 @@ namespace SharpHoundCommonLib
 
             if (conn == null)
             {
-                Logging.Log(LogLevel.Trace, "LDAP connection is null");
+                _log.LogTrace("LDAP connection is null for filter {Filter} and domain {Domain}", ldapFilter,
+                    domainName);
                 yield break;
             }
 
@@ -626,7 +698,7 @@ namespace SharpHoundCommonLib
 
             if (request == null)
             {
-                Logging.Log(LogLevel.Trace, "Search request is null");
+                _log.LogTrace("Search request is null for filter {Filter} and domain {Domain}", ldapFilter, domainName);
                 yield break;
             }
 
@@ -648,7 +720,7 @@ namespace SharpHoundCommonLib
                 SearchResponse response;
                 try
                 {
-                    Logging.Log(LogLevel.Trace, "Sending LDAP request");
+                    _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
                     response = (SearchResponse)conn.SendRequest(request);
                     if (response != null)
                         pageResponse = (PageResultResponseControl)response.Controls
@@ -656,14 +728,16 @@ namespace SharpHoundCommonLib
                 }
                 catch (LdapException le)
                 {
-                    Logging.Debug($"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}");
-                    Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
+                    if (le.ErrorCode != 82)
+                        _log.LogWarning(le,
+                            "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
+                            le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
+
                     yield break;
                 }
                 catch (Exception e)
                 {
-                    Logging.Log(LogLevel.Error, $"Exception in LDAP loop: {e}");
-                    Logging.Log(LogLevel.Error, $"Filter: {ldapFilter}, Domain: {domainName}");
+                    _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
                     yield break;
                 }
 
@@ -678,7 +752,7 @@ namespace SharpHoundCommonLib
                     if (cancellationToken.IsCancellationRequested)
                         yield break;
 
-                    yield return new SearchResultEntryWrapper(entry);
+                    yield return new SearchResultEntryWrapper(entry, this);
                 }
 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 ||
@@ -709,10 +783,11 @@ namespace SharpHoundCommonLib
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false,
             string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
-            Logging.Log(LogLevel.Trace, "Creating ldap connection");
+            _log.LogTrace("Creating ldap connection for {Target} with filter {Filter}",
+                globalCatalog ? "Global Catalog" : "DC", ldapFilter);
             var task = globalCatalog
-                ? Task.Run(() => CreateGlobalCatalogConnection(domainName))
-                : Task.Run(() => CreateLDAPConnection(domainName, skipCache));
+                ? Task.Run(() => CreateGlobalCatalogConnection(domainName, _ldapConfig.AuthType))
+                : Task.Run(() => CreateLDAPConnection(domainName, skipCache, _ldapConfig.AuthType));
 
             LdapConnection conn;
             try
@@ -726,7 +801,8 @@ namespace SharpHoundCommonLib
 
             if (conn == null)
             {
-                Logging.Log(LogLevel.Trace, "LDAP connection is null");
+                _log.LogTrace("LDAP connection is null for filter {Filter} and domain {Domain}", ldapFilter,
+                    domainName);
                 yield break;
             }
 
@@ -734,7 +810,7 @@ namespace SharpHoundCommonLib
 
             if (request == null)
             {
-                Logging.Log(LogLevel.Trace, "Search request is null");
+                _log.LogTrace("Search request is null for filter {Filter} and domain {Domain}", ldapFilter, domainName);
                 yield break;
             }
 
@@ -753,7 +829,7 @@ namespace SharpHoundCommonLib
                 SearchResponse response;
                 try
                 {
-                    Logging.Log(LogLevel.Trace, "Sending LDAP request");
+                    _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
                     response = (SearchResponse)conn.SendRequest(request);
                     if (response != null)
                         pageResponse = (PageResultResponseControl)response.Controls
@@ -761,14 +837,15 @@ namespace SharpHoundCommonLib
                 }
                 catch (LdapException le)
                 {
-                    Logging.Debug($"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}.");
-                    Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
+                    if (le.ErrorCode != 82)
+                        _log.LogWarning(le,
+                            "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
+                            le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
                     yield break;
                 }
                 catch (Exception e)
                 {
-                    Logging.Debug($"Exception in LDAP loop: {e}");
-                    Logging.Debug($"Filter: {ldapFilter}, Domain: {domainName}");
+                    _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
                     yield break;
                 }
 
@@ -778,7 +855,7 @@ namespace SharpHoundCommonLib
                     yield break;
 
                 foreach (SearchResultEntry entry in response.Entries)
-                    yield return new SearchResultEntryWrapper(entry);
+                    yield return new SearchResultEntryWrapper(entry, this);
 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0)
                     yield break;
@@ -787,6 +864,12 @@ namespace SharpHoundCommonLib
             }
         }
 
+        /// <summary>
+        ///     Gets the forest associated with a domain.
+        ///     If no domain is provided, defaults to current domain
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
         public virtual Forest GetForest(string domainName = null)
         {
             try
@@ -803,29 +886,87 @@ namespace SharpHoundCommonLib
             }
         }
 
+        /// <summary>
+        ///     Creates a new ActiveDirectorySecurityDescriptor
+        ///     Function created for testing purposes
+        /// </summary>
+        /// <returns></returns>
         public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
         {
             return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
         }
 
-        private async Task<Group> GetBaseEnterpriseDC()
+        /// <summary>
+        ///     Tests the current LDAP config to ensure its valid by pulling a domain object
+        /// </summary>
+        /// <returns>True if connection was successful, else false</returns>
+        public bool TestLDAPConfig(string domain)
         {
-            var forest = GetForest()?.Name;
-            if (forest == null) Logging.Log(LogLevel.Warning, "Error getting forest, ENTDC sid is likely incorrect");
+            var filter = new LDAPFilter();
+            filter.AddDomains();
+
+            var resDomain = GetDomain(domain)?.Name ?? domain;
+            
+            var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID, resDomain)
+                .DefaultIfEmpty(null).FirstOrDefault();
+
+            return result != null;
+        }
+
+        /// <summary>
+        ///     Gets the domain object associated with the specified domain name.
+        ///     Defaults to current domain if none specified
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
+        public Domain GetDomain(string domainName = null)
+        {
+            var cacheKey = domainName ?? NullCacheKey;
+            if (_domainCache.TryGetValue(cacheKey, out var domain)) return domain;
+
+            try
+            {
+                DirectoryContext context;
+                if (_ldapConfig.Username != null)
+                    context = domainName != null
+                        ? new DirectoryContext(DirectoryContextType.Domain, domainName, _ldapConfig.Username,
+                            _ldapConfig.Password)
+                        : new DirectoryContext(DirectoryContextType.Domain, _ldapConfig.Username,
+                            _ldapConfig.Password);
+                else
+                    context = domainName != null
+                        ? new DirectoryContext(DirectoryContextType.Domain, domainName)
+                        : new DirectoryContext(DirectoryContextType.Domain);
+
+                domain = Domain.GetDomain(context);
+            }
+            catch
+            {
+                domain = null;
+            }
+
+            _domainCache.TryAdd(cacheKey, domain);
+            return domain;
+        }
+
+        private Group GetBaseEnterpriseDC(string domain)
+        {
+            var forest = GetForest(domain)?.Name;
+            if (forest == null) _log.LogWarning("Error getting forest, ENTDC sid is likely incorrect");
             var g = new Group { ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper() };
             g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest ?? "UNKNOWN"}".ToUpper());
-            g.Properties.Add("domainsid", await GetSidFromDomainName(forest));
+            g.Properties.Add("domainsid", GetSidFromDomainName(forest));
             g.Properties.Add("domain", forest);
             return g;
         }
 
+        /// <summary>
+        ///     Updates the config for querying LDAP
+        /// </summary>
+        /// <param name="config"></param>
         public void UpdateLDAPConfig(LDAPConfig config)
         {
             _ldapConfig = config;
-        }
-
-        private void TestLDAPConfig()
-        {
         }
 
         private string GetDomainNameFromSidLdap(string sid)
@@ -853,7 +994,7 @@ namespace SharpHoundCommonLib
 
             if (result != null)
             {
-                var domainName = result.GetProperty("cn");
+                var domainName = result.GetProperty(LDAPProperties.CanonicalName);
                 return domainName;
             }
 
@@ -868,7 +1009,7 @@ namespace SharpHoundCommonLib
         /// <param name="domain"></param>
         /// <param name="netbios"></param>
         /// <returns></returns>
-        private bool RequestNetbiosNameFromComputer(string server, string domain, out string netbios)
+        private static bool RequestNETBIOSNameFromComputer(string server, string domain, out string netbios)
         {
             var receiveBuffer = new byte[1024];
             var requestSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -969,12 +1110,12 @@ namespace SharpHoundCommonLib
         private SearchRequest CreateSearchRequest(string filter, SearchScope scope, string[] attributes,
             string domainName = null, string adsPath = null, bool showDeleted = false)
         {
-            var domain = GetDomain(domainName);
+            var domain = GetDomain(domainName)?.Name ?? domainName;
+
             if (domain == null)
                 return null;
 
-            var dName = domain.Name;
-            var adPath = adsPath?.Replace("LDAP://", "") ?? $"DC={dName.Replace(".", ",DC=")}";
+            var adPath = adsPath?.Replace("LDAP://", "") ?? $"DC={domain.Replace(".", ",DC=")}";
 
             var request = new SearchRequest(adPath, filter, scope, attributes);
             request.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
@@ -988,16 +1129,10 @@ namespace SharpHoundCommonLib
         ///     Creates a LDAP connection to a global catalog server
         /// </summary>
         /// <param name="domainName">Domain to connect too</param>
+        /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly scenarios</param>
         /// <returns>A connected LdapConnection or null</returns>
-        private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null)
+        private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null, AuthType authType = AuthType.Kerberos)
         {
-            var domain = GetDomain(domainName);
-            if (domain == null)
-            {
-                Logging.Debug($"Unable to contact domain {domainName}");
-                return null;
-            }
-
             string targetServer;
             if (_ldapConfig.Server != null)
             {
@@ -1005,6 +1140,13 @@ namespace SharpHoundCommonLib
             }
             else
             {
+                var domain = GetDomain(domainName);
+                if (domain == null)
+                {
+                    _log.LogDebug("Unable to create global catalog connection for domain {DomainName}", domainName);
+                    return null;
+                }
+                
                 if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
@@ -1018,15 +1160,20 @@ namespace SharpHoundCommonLib
             connection = new LdapConnection(new LdapDirectoryIdentifier(targetServer, 3268));
 
             connection.SessionOptions.ProtocolVersion = 3;
+            
+            if (_ldapConfig.Username != null)
+            {
+                var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password);
+                connection.Credential = cred;
+            }
 
             if (_ldapConfig.DisableSigning)
             {
                 connection.SessionOptions.Sealing = false;
                 connection.SessionOptions.Signing = false;
             }
-
-            //Force kerberos auth
-            connection.AuthType = AuthType.Kerberos;
+            
+            connection.AuthType = authType;
 
             _globalCatalogConnections.TryAdd(targetServer, connection);
             return connection;
@@ -1037,16 +1184,10 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domainName">The domain to connect too</param>
         /// <param name="skipCache">Skip the connection cache</param>
+        /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly scenarios</param>
         /// <returns>A connected LDAP connection or null</returns>
-        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false)
+        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false, AuthType authType = AuthType.Kerberos)
         {
-            var domain = GetDomain(domainName);
-            if (domain == null)
-            {
-                Logging.Debug($"Unable to contact domain {domainName}");
-                return null;
-            }
-
             string targetServer;
             if (_ldapConfig.Server != null)
             {
@@ -1054,6 +1195,13 @@ namespace SharpHoundCommonLib
             }
             else
             {
+                var domain = GetDomain(domainName);
+                if (domain == null)
+                {
+                    _log.LogDebug("Unable to create ldap connection for domain {DomainName}", domainName);
+                    return null;
+                }
+                
                 if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
@@ -1070,7 +1218,7 @@ namespace SharpHoundCommonLib
             var connection = new LdapConnection(ident) { Timeout = new TimeSpan(0, 0, 5, 0) };
             if (_ldapConfig.Username != null)
             {
-                var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password, domain.Name);
+                var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password);
                 connection.Credential = cred;
             }
 
@@ -1086,44 +1234,13 @@ namespace SharpHoundCommonLib
 
             if (_ldapConfig.SSL)
                 connection.SessionOptions.SecureSocketLayer = true;
-
-            //Force kerberos auth
-            connection.AuthType = AuthType.Kerberos;
+            
+            connection.AuthType = authType;
 
             if (!skipCache)
                 _ldapConnections.TryAdd(targetServer, connection);
 
             return connection;
-        }
-
-        internal Domain GetDomain(string domainName = null)
-        {
-            var cacheKey = domainName ?? NullCacheKey;
-            if (_domainCache.TryGetValue(cacheKey, out var domain)) return domain;
-
-            try
-            {
-                DirectoryContext context;
-                if (_ldapConfig.Username != null)
-                    context = domainName != null
-                        ? new DirectoryContext(DirectoryContextType.Domain, domainName, _ldapConfig.Username,
-                            _ldapConfig.Password)
-                        : new DirectoryContext(DirectoryContextType.Domain, _ldapConfig.Username,
-                            _ldapConfig.Password);
-                else
-                    context = domainName != null
-                        ? new DirectoryContext(DirectoryContextType.Domain, domainName)
-                        : new DirectoryContext(DirectoryContextType.Domain);
-
-                domain = Domain.GetDomain(context);
-            }
-            catch
-            {
-                domain = null;
-            }
-
-            _domainCache.TryAdd(cacheKey, domain);
-            return domain;
         }
 
         private async Task<string> GetUsableDomainController(Domain domain, bool gc = false)
@@ -1133,7 +1250,7 @@ namespace SharpHoundCommonLib
             if (await _portScanner.CheckPort(pdc, port))
             {
                 _domainControllerCache.TryAdd(domain.Name, pdc);
-                Logging.Debug($"Found usable Domain Controller for {domain.Name} : {pdc}");
+                _log.LogDebug("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, pdc);
                 return pdc;
             }
 
@@ -1142,14 +1259,14 @@ namespace SharpHoundCommonLib
             {
                 var name = domainController.Name;
                 if (!await _portScanner.CheckPort(name, port)) continue;
-                Logging.Debug($"Found usable Domain Controller for {domain.Name} : {name}");
+                _log.LogDebug("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, name);
                 _domainControllerCache.TryAdd(domain.Name, name);
                 return name;
             }
 
             //If we get here, somehow we didn't get any usable DCs. Save it off as null
             _domainControllerCache.TryAdd(domain.Name, null);
-            Logging.Debug($"Unable to find usable domain controller for {domain.Name}");
+            _log.LogDebug("Unable to find usable domain controller for {Domain}", domain.Name);
             return null;
         }
 
@@ -1204,7 +1321,7 @@ namespace SharpHoundCommonLib
             return domainName.ToUpper();
         }
 
-        private class ResolvedWKP
+        private class ResolvedWellKnownPrincipal
         {
             public string DomainName { get; set; }
             public string WkpId { get; set; }

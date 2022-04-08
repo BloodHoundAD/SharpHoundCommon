@@ -13,6 +13,7 @@ namespace SharpHoundCommonLib.OutputTypes
         public TypedPrincipal[] HasSIDHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public SessionAPIResult Sessions { get; set; } = new();
         public SessionAPIResult PrivilegedSessions { get; set; } = new();
+        public SessionAPIResult RegistrySessions { get; set; } = new();
         public LocalGroupAPIResult LocalAdmins { get; set; } = new();
         public LocalGroupAPIResult RemoteDesktopUsers { get; set; } = new();
         public LocalGroupAPIResult DcomUsers { get; set; } = new();

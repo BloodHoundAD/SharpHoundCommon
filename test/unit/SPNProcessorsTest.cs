@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
+using SharpHoundCommonLib;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using Xunit;
@@ -26,9 +27,9 @@ namespace CommonLibTest
             string[] servicePrincipalNames = {"MSSQLSvc/PRIMARY.TESTLAB.LOCAL"};
             const string distinguishedName = "cn=policies,cn=system,DC=testlab,DC=local";
 
-            var expected = new SPNTarget
+            var expected = new SPNPrivilege
             {
-                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 1433, Service = SPNService.MSSQL
+                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 1433, Service = EdgeNames.SQLAdmin
             };
 
             await foreach (var actual in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))
@@ -46,9 +47,9 @@ namespace CommonLibTest
             string[] servicePrincipalNames = {"MSSQLSvc/PRIMARY.TESTLAB.LOCAL:abcd"};
             const string distinguishedName = "cn=policies,cn=system,DC=testlab,DC=local";
 
-            var expected = new SPNTarget
+            var expected = new SPNPrivilege
             {
-                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 1433, Service = SPNService.MSSQL
+                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 1433, Service = EdgeNames.SQLAdmin
             };
 
             await foreach (var actual in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))
@@ -66,9 +67,9 @@ namespace CommonLibTest
             string[] servicePrincipalNames = {"MSSQLSvc/PRIMARY.TESTLAB.LOCAL:2345"};
             const string distinguishedName = "cn=policies,cn=system,DC=testlab,DC=local";
 
-            var expected = new SPNTarget
+            var expected = new SPNPrivilege
             {
-                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 2345, Service = SPNService.MSSQL
+                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 2345, Service = EdgeNames.SQLAdmin
             };
 
             await foreach (var actual in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))

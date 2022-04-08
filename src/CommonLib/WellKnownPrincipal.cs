@@ -79,6 +79,9 @@ namespace SharpHoundCommonLib
                 "S-1-5-32-578" => new TypedPrincipal("Hyper-V Administrators", Label.Group),
                 "S-1-5-32-579" => new TypedPrincipal("Access Control Assistance Operators", Label.Group),
                 "S-1-5-32-580" => new TypedPrincipal("Remote Management Users", Label.Group),
+                "S-1-5-32-581" => new TypedPrincipal("System Managed Accounts Group", Label.Group),
+                "S-1-5-32-582" => new TypedPrincipal("Storage Replica Administrators", Label.Group),
+                "S-1-5-32-583" => new TypedPrincipal("Device Owners", Label.Group),
                 _ => null
             };
 

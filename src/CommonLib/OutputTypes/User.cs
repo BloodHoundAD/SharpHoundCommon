@@ -1,10 +1,12 @@
-﻿namespace SharpHoundCommonLib.OutputTypes
+﻿using System;
+
+namespace SharpHoundCommonLib.OutputTypes
 {
     public class User : OutputBase
     {
-        public TypedPrincipal[] AllowedToDelegate { get; set; } = new TypedPrincipal[0];
+        public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
         public string PrimaryGroupSID { get; set; }
-        public TypedPrincipal[] HasSIDHistory { get; set; } = new TypedPrincipal[0];
-        public SPNTarget[] SpnTargets { get; set; } = new SPNTarget[0];
+        public TypedPrincipal[] HasSIDHistory { get; set; } = Array.Empty<TypedPrincipal>();
+        public SPNPrivilege[] SPNTargets { get; set; } = Array.Empty<SPNPrivilege>();
     }
 }

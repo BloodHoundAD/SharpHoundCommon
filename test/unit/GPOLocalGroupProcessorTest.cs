@@ -100,7 +100,12 @@ namespace CommonLibTest
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
             var result = await processor.ReadGPOLocalGroups(null, null);
-            Assert.Null(result);
+            Assert.NotNull(result);
+            Assert.Empty(result.AffectedComputers);
+            Assert.Empty(result.DcomUsers);
+            Assert.Empty(result.RemoteDesktopUsers);
+            Assert.Empty(result.LocalAdmins);
+            Assert.Empty(result.PSRemoteUsers);
         }
 
         [Fact(Skip = "")]
@@ -122,7 +127,12 @@ namespace CommonLibTest
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
             var result = await processor.ReadGPOLocalGroups("teapot", null);
-            Assert.Null(result);
+            Assert.NotNull(result);
+            Assert.Empty(result.AffectedComputers);
+            Assert.Empty(result.DcomUsers);
+            Assert.Empty(result.RemoteDesktopUsers);
+            Assert.Empty(result.LocalAdmins);
+            Assert.Empty(result.PSRemoteUsers);
         }
 
         [Fact(Skip = "")]
@@ -135,10 +145,10 @@ namespace CommonLibTest
             mockSearchResults.Add(mockSearchResultEntry.Object);
             mockLDAPUtils.Setup(x => x.QueryLDAP(new LDAPQueryOptions
                 {
-                    filter = "(samaccounttype=805306369)",
-                    scope = SearchScope.Subtree,
-                    properties = CommonProperties.ObjectSID,
-                    adsPath = null
+                    Filter = "(samaccounttype=805306369)",
+                    Scope = SearchScope.Subtree,
+                    Properties = CommonProperties.ObjectSID,
+                    AdsPath = null
                 }))
                 .Returns(mockSearchResults.ToArray());
 
@@ -201,7 +211,7 @@ namespace CommonLibTest
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
             var gpcFileSysPath = Path.Join(Path.GetTempPath(), "made", "up", "path");
 
-            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
@@ -218,7 +228,7 @@ namespace CommonLibTest
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
-            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
@@ -228,7 +238,7 @@ namespace CommonLibTest
         {
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
+                .Returns(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
             var gpcFileSysPath = Path.GetTempPath();
             var groupsXmlPath = Path.Join(gpcFileSysPath, "MACHINE", "Preferences", "Groups", "Groups.xml");
 
@@ -236,7 +246,7 @@ namespace CommonLibTest
             File.WriteAllText(groupsXmlPath, GroupXmlContent);
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
-            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToListAsync();
+            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
 
             Assert.NotNull(actual);
             Assert.NotEmpty(actual);
@@ -293,7 +303,7 @@ namespace CommonLibTest
         {
             var mockLDAPUtils = new Mock<ILDAPUtils>();
             mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
+                .Returns(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
             var gpcFileSysPath = Path.GetTempPath();
             var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
 

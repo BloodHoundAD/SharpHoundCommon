@@ -30,6 +30,11 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
+        public bool TestLDAPConfig(string domain)
+        {
+            return true;
+        }
+
         public string[] GetUserGlobalCatalogMatches(string name)
         {
             name = name.ToLower();
@@ -678,7 +683,7 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        public Task<string> GetSidFromDomainName(string domainName)
+        public string GetSidFromDomainName(string domainName)
         {
             throw new NotImplementedException();
         }
@@ -701,12 +706,17 @@ namespace CommonLibTest.Facades
             return true;
         }
 
-        public void AddDomainController(string domainControllerId)
+        public void AddDomainController(string domainControllerSID)
         {
-            _domainControllers.TryAdd(domainControllerId, new byte());
+            _domainControllers.TryAdd(domainControllerSID, new byte());
         }
 
-        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput()
+        public System.DirectoryServices.ActiveDirectory.Domain GetDomain(string domainName = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput(string domain)
         {
             foreach (var wkp in _seenWellKnownPrincipals)
             {
@@ -755,7 +765,7 @@ namespace CommonLibTest.Facades
 #pragma warning restore CS1998
 
 #pragma warning disable CS1998
-        public async Task<TypedPrincipal> ResolveAccountName(string name, string domain)
+        public TypedPrincipal ResolveAccountName(string name, string domain)
         {
             return name.ToUpper() switch
             {

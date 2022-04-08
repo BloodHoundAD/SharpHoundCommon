@@ -1,14 +1,9 @@
 ﻿namespace SharpHoundCommonLib.OutputTypes
 {
-    public class SPNTarget
+    public class SPNPrivilege
     {
         public string ComputerSID { get; set; }
         public int Port { get; set; }
-        public SPNService Service { get; set; }
-    }
-
-    public enum SPNService
-    {
-        MSSQL
+        public string Service { get; set; }
     }
 }

@@ -7,21 +7,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.XPath;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
-    public class ResultingGPOChanges
-    {
-        public TypedPrincipal[] LocalAdmins { get; set; }
-        public TypedPrincipal[] RemoteDesktopUsers { get; set; }
-        public TypedPrincipal[] DcomUsers { get; set; }
-        public TypedPrincipal[] PSRemoteUsers { get; set; }
-        public TypedPrincipal[] AffectedComputers { get; set; }
-    }
-
     public class GPOLocalGroupProcessor
     {
         private static readonly Regex KeyRegex = new(@"(.+?)\s*=(.*)", RegexOptions.Compiled);
@@ -52,26 +44,36 @@ namespace SharpHoundCommonLib.Processors
             };
 
         private readonly ILDAPUtils _utils;
+        private readonly ILogger _log;
 
-        public GPOLocalGroupProcessor(ILDAPUtils utils)
+        public GPOLocalGroupProcessor(ILDAPUtils utils, ILogger log = null)
         {
             _utils = utils;
+            _log = log ?? Logging.LogProvider.CreateLogger("GPOLocalGroupProc");
         }
 
+        public Task<ResultingGPOChanges> ReadGPOLocalGroups(ISearchResultEntry entry)
+        {
+            var links = entry.GetProperty(LDAPProperties.GPLink);
+            var dn = entry.DistinguishedName;
+            return ReadGPOLocalGroups(links, dn);
+        }
+        
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName)
         {
+            var ret = new ResultingGPOChanges();
             //If the gplink property is null, we don't need to process anything
             if (gpLink == null)
-                return null;
+                return ret;
 
             // First lets check if this OU actually has computers that it contains. If not, then we'll ignore it.
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
             var options = new LDAPQueryOptions
             {
-                filter = new LDAPFilter().AddComputers().GetFilter(),
-                scope = SearchScope.Subtree,
-                properties = CommonProperties.ObjectSID,
-                adsPath = distinguishedName
+                Filter = new LDAPFilter().AddComputers().GetFilter(),
+                Scope = SearchScope.Subtree,
+                Properties = CommonProperties.ObjectSID,
+                AdsPath = distinguishedName
             };
 
             var affectedComputers = _utils.QueryLDAP(options)
@@ -85,7 +87,7 @@ namespace SharpHoundCommonLib.Processors
 
             //If there's no computers then we don't care about this OU
             if (affectedComputers.Length == 0)
-                return null;
+                return ret;
 
             var enforced = new List<string>();
             var unenforced = new List<string>();
@@ -121,13 +123,13 @@ namespace SharpHoundCommonLib.Processors
 
                     var opts = new LDAPQueryOptions
                     {
-                        filter = new LDAPFilter().AddAllObjects().GetFilter(),
-                        scope = SearchScope.Base,
-                        properties = CommonProperties.GPCFileSysPath,
-                        adsPath = linkDn
+                        Filter = new LDAPFilter().AddAllObjects().GetFilter(),
+                        Scope = SearchScope.Base,
+                        Properties = CommonProperties.GPCFileSysPath,
+                        AdsPath = linkDn
                     };
                     var filePath = _utils.QueryLDAP(opts).FirstOrDefault()?
-                        .GetProperty("gpcfilesyspath");
+                        .GetProperty(LDAPProperties.GPCFileSYSPath);
 
                     if (filePath == null)
                     {
@@ -136,8 +138,11 @@ namespace SharpHoundCommonLib.Processors
                     }
 
                     //Add the actions for each file. The GPO template file actions will override the XML file actions
-                    actions.AddRange(await ProcessGPOXmlFile(filePath, gpoDomain).ToListAsync());
-                    actions.AddRange(await ProcessGPOTemplateFile(filePath, gpoDomain).ToListAsync());
+                    actions.AddRange(ProcessGPOXmlFile(filePath, gpoDomain).ToList());
+                    await foreach (var item in ProcessGPOTemplateFile(filePath, gpoDomain))
+                    {
+                        actions.Add(item);
+                    }
                 }
 
                 //Cache the actions for this GPO for later
@@ -203,10 +208,7 @@ namespace SharpHoundCommonLib.Processors
                 }
             }
 
-            var rs = new ResultingGPOChanges
-            {
-                AffectedComputers = affectedComputers
-            };
+            ret.AffectedComputers = affectedComputers;
 
             //At this point, we've resolved individual add/substract methods for each linked GPO.
             //Now we need to actually squish them together into the resulting set of changes
@@ -229,21 +231,21 @@ namespace SharpHoundCommonLib.Processors
                 switch (key)
                 {
                     case LocalGroupRids.Administrators:
-                        rs.LocalAdmins = finalArr;
+                        ret.LocalAdmins = finalArr;
                         break;
                     case LocalGroupRids.RemoteDesktopUsers:
-                        rs.RemoteDesktopUsers = finalArr;
+                        ret.RemoteDesktopUsers = finalArr;
                         break;
                     case LocalGroupRids.DcomUsers:
-                        rs.DcomUsers = finalArr;
+                        ret.DcomUsers = finalArr;
                         break;
                     case LocalGroupRids.PSRemote:
-                        rs.PSRemoteUsers = finalArr;
+                        ret.PSRemoteUsers = finalArr;
                         break;
                 }
             }
 
-            return rs;
+            return ret;
         }
 
         /// <summary>
@@ -305,7 +307,7 @@ namespace SharpHoundCommonLib.Processors
                         //Loop over the members in the match, and try to convert them to SIDs
                         foreach (var member in val.Split(','))
                         {
-                            var res = await GetSid(member.Trim('*'), gpoDomain);
+                            var res = GetSid(member.Trim('*'), gpoDomain);
                             if (res == null)
                                 continue;
                             yield return new GroupAction
@@ -325,7 +327,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     var account = key.Trim('*').Substring(0, index - 3).ToUpper();
 
-                    var res = await GetSid(account, gpoDomain);
+                    var res = GetSid(account, gpoDomain);
                     if (res == null)
                         continue;
 
@@ -354,7 +356,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="account"></param>
         /// <param name="domainName"></param>
         /// <returns></returns>
-        private async Task<TypedPrincipal> GetSid(string account, string domainName)
+        private TypedPrincipal GetSid(string account, string domainName)
         {
             if (!account.StartsWith("S-1-", StringComparison.CurrentCulture))
             {
@@ -377,11 +379,11 @@ namespace SharpHoundCommonLib.Processors
                 user = user.ToUpper();
 
                 //Try to resolve as a user object first
-                var res = await _utils.ResolveAccountName(user, domain);
+                var res = _utils.ResolveAccountName(user, domain);
                 if (res != null)
                     return res;
 
-                res = await _utils.ResolveAccountName($"{user}$", domain);
+                res = _utils.ResolveAccountName($"{user}$", domain);
                 return res;
             }
 
@@ -400,7 +402,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns>A list of GPO "Actions"</returns>
-        internal async IAsyncEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
+        internal IEnumerable<GroupAction> ProcessGPOXmlFile(string basePath, string gpoDomain)
         {
             var xmlPath = Path.Combine(basePath, "MACHINE", "Preferences", "Groups", "Groups.xml");
 
@@ -409,7 +411,17 @@ namespace SharpHoundCommonLib.Processors
                 yield break;
 
             //Create an XPathDocument to let us navigate the XML
-            var doc = new XPathDocument(xmlPath);
+            XPathDocument doc;
+            try
+            {
+                doc = new XPathDocument(xmlPath);
+            }
+            catch (Exception e)
+            {
+                _log.LogError(e, "error reading GPO XML file {File}", xmlPath);
+                yield break;
+            }
+             
             var navigator = doc.CreateNavigator();
             //Grab all the Groups nodes
             var groupsNodes = navigator.Select("/Groups");
@@ -435,8 +447,8 @@ namespace SharpHoundCommonLib.Processors
                         if (!action.Equals("u", StringComparison.OrdinalIgnoreCase))
                             continue;
 
-                        var groupSid = currentProperties.GetAttribute("groupSid", "").Trim();
-                        var groupName = currentProperties.GetAttribute("groupName", "").Trim();
+                        var groupSid = currentProperties.GetAttribute("groupSid", "")?.Trim();
+                        var groupName = currentProperties.GetAttribute("groupName", "")?.Trim();
 
                         //Next is to determine what group is being updated.
 
@@ -496,12 +508,10 @@ namespace SharpHoundCommonLib.Processors
                                 Action = memberAction
                             };
 
-                            Label memberType;
-
                             //If we have a memberSid, this is the best case scenario
                             if (!string.IsNullOrWhiteSpace(memberSid))
                             {
-                                memberType = _utils.LookupSidType(memberSid, _utils.GetDomainNameFromSid(memberSid));
+                                var memberType = _utils.LookupSidType(memberSid, _utils.GetDomainNameFromSid(memberSid));
                                 ga.Target = GroupActionTarget.LocalGroup;
                                 ga.TargetSid = memberSid;
                                 ga.TargetType = memberType;
@@ -521,7 +531,7 @@ namespace SharpHoundCommonLib.Processors
                                     var name = s[1];
                                     var domain = s[0];
 
-                                    var res = await _utils.ResolveAccountName(name, domain);
+                                    var res = _utils.ResolveAccountName(name, domain);
                                     ga.Target = GroupActionTarget.LocalGroup;
                                     ga.TargetSid = res.ObjectIdentifier;
                                     ga.TargetType = res.ObjectType;
@@ -530,7 +540,7 @@ namespace SharpHoundCommonLib.Processors
                                 }
                                 else
                                 {
-                                    var res = await _utils.ResolveAccountName(memberName, gpoDomain);
+                                    var res = _utils.ResolveAccountName(memberName, gpoDomain);
                                     ga.Target = GroupActionTarget.LocalGroup;
                                     ga.TargetSid = res.ObjectIdentifier;
                                     ga.TargetType = res.ObjectType;

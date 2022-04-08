@@ -211,7 +211,7 @@ namespace CommonLibTest
             };
             mockNativeMethods.Setup(x => x.CallNetWkstaUserEnum(It.IsAny<string>())).Throws(ex);
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
-            var test = await processor.ReadUserSessionsPrivileged("test", "test", "test");
+            var test = processor.ReadUserSessionsPrivileged("test", "test", "test");
             Assert.False(test.Collected);
             Assert.Equal(NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString(), test.FailureReason);
         }
@@ -313,7 +313,7 @@ namespace CommonLibTest
             };
 
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), nativeMethods: mockNativeMethods.Object);
-            var test = await processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName, _computerSid);
+            var test = processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName, _computerSid);
             Assert.True(test.Collected);
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(test.Results));
             Assert.Equal(2, test.Results.Length);

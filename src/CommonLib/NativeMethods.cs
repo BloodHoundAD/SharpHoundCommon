@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using Microsoft.Extensions.Logging;
 using System.Security;
 using SharpHoundCommonLib.Processors;
 
@@ -15,13 +16,13 @@ namespace SharpHoundCommonLib
             StatusSuccess = 0x0,
             StatusMoreEntries = 0x105,
             StatusSomeMapped = 0x107,
-            StatusInvalidHandle = unchecked((int) 0xC0000008),
-            StatusInvalidParameter = unchecked((int) 0xC000000D),
-            StatusAccessDenied = unchecked((int) 0xC0000022),
-            StatusObjectTypeMismatch = unchecked((int) 0xC0000024),
-            StatusNoSuchDomain = unchecked((int) 0xC00000DF),
-            StatusRpcServerUnavailable = unchecked((int) 0xC0020017),
-            StatusNoSuchAlias = unchecked((int) 0xC0000151)
+            StatusInvalidHandle = unchecked((int)0xC0000008),
+            StatusInvalidParameter = unchecked((int)0xC000000D),
+            StatusAccessDenied = unchecked((int)0xC0000022),
+            StatusObjectTypeMismatch = unchecked((int)0xC0000024),
+            StatusNoSuchDomain = unchecked((int)0xC00000DF),
+            StatusRpcServerUnavailable = unchecked((int)0xC0020017),
+            StatusNoSuchAlias = unchecked((int)0xC0000151)
         }
 
         private const string NetWkstaUserEnumQueryName = "NetWkstaUserEnum";
@@ -31,6 +32,17 @@ namespace SharpHoundCommonLib
         private const int NetWkstaUserEnumQueryLevel = 1;
         private const int NetSessionEnumLevel = 10;
         private const int NetWkstaGetInfoQueryLevel = 100;
+        private readonly ILogger _log;
+
+        public NativeMethods(ILogger log = null)
+        {
+            _log = log ?? Logging.LogProvider.CreateLogger("NativeMethods");
+        }
+
+        public NativeMethods()
+        {
+            _log = Logging.LogProvider.CreateLogger("NativeMethods");
+        }
 
         public virtual WorkstationInfo100 CallNetWkstaGetInfo(string serverName)
         {
@@ -60,7 +72,7 @@ namespace SharpHoundCommonLib
         {
             var ptr = IntPtr.Zero;
 
-            Logging.Trace($"Beginning NetSessionEnum for {serverName}");
+            _log.LogTrace("Beginning NetSessionEnum for {ServerName}", serverName);
             try
             {
                 var resumeHandle = 0;
@@ -68,7 +80,7 @@ namespace SharpHoundCommonLib
                     out var entriesread,
                     out _, ref resumeHandle);
 
-                Logging.Trace($"Result of NetSessionEnum for {serverName} is {result}");
+                _log.LogTrace("Result of NetSessionEnum for {ServerName} is {Result}", serverName, result);
 
                 if (result != NERR.NERR_Success)
                     throw new APIException
@@ -99,12 +111,12 @@ namespace SharpHoundCommonLib
             try
             {
                 var resumeHandle = 0;
-                Logging.Trace($"Beginning NetWkstaUserEnum for {servername}");
+                _log.LogTrace("Beginning NetWkstaUserEnum for {ServerName}", servername);
                 var result = NetWkstaUserEnum(servername, NetWkstaUserEnumQueryLevel, out ptr, -1, out var entriesread,
                     out _,
                     ref resumeHandle);
 
-                Logging.Trace($"Result of NetWkstaUserEnum for computer {servername} is {result}");
+                _log.LogTrace("Result of NetWkstaUserEnum for computer {ServerName} is {Result}", servername, result);
 
                 if (result != NERR.NERR_Success && result != NERR.ERROR_MORE_DATA)
                     throw new APIException
@@ -134,7 +146,7 @@ namespace SharpHoundCommonLib
             try
             {
                 var result = DsGetDcName(computerName, domainName, null, null,
-                    (uint) (DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME), out ptr);
+                    (uint)(DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME), out ptr);
 
                 if (result != 0) return null;
                 var info = Marshal.PtrToStructure<DOMAIN_CONTROLLER_INFO>(ptr);
@@ -235,8 +247,8 @@ namespace SharpHoundCommonLib
                 : this()
             {
                 if (s == null) return;
-                Length = (ushort) (s.Length * 2);
-                MaximumLength = (ushort) (Length + 2);
+                Length = (ushort)(s.Length * 2);
+                MaximumLength = (ushort)(Length + 2);
                 Buffer = Marshal.StringToHGlobalUni(s);
             }
 

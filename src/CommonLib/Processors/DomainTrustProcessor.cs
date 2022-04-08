@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Security.Principal;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -9,11 +10,13 @@ namespace SharpHoundCommonLib.Processors
 {
     public class DomainTrustProcessor
     {
+        private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
-        public DomainTrustProcessor(ILDAPUtils utils)
+        public DomainTrustProcessor(ILDAPUtils utils, ILogger log = null)
         {
             _utils = utils;
+            _log = log ?? Logging.LogProvider.CreateLogger("DomainTrustProc");
         }
 
         /// <summary>
@@ -28,9 +31,12 @@ namespace SharpHoundCommonLib.Processors
                 domain))
             {
                 var trust = new DomainTrust();
-                var targetSidBytes = result.GetByteProperty("securityIdentifier");
+                var targetSidBytes = result.GetByteProperty(LDAPProperties.SecurityIdentifier);
                 if (targetSidBytes == null || targetSidBytes.Length == 0)
+                {
+                    _log.LogTrace("Trust sid is null or empty for target: {Domain}", domain);
                     continue;
+                }
 
                 string sid;
                 try
@@ -39,25 +45,37 @@ namespace SharpHoundCommonLib.Processors
                 }
                 catch
                 {
+                    _log.LogTrace("Failed to convert bytes to SID for target: {Domain}", domain);
                     continue;
                 }
 
                 trust.TargetDomainSid = sid;
 
-                if (int.TryParse(result.GetProperty("trustdirection"), out var td))
-                    trust.TrustDirection = (TrustDirection) td;
+                if (int.TryParse(result.GetProperty(LDAPProperties.TrustDirection), out var td))
+                {
+                    trust.TrustDirection = (TrustDirection)td;
+                }
                 else
+                {
+                    _log.LogTrace("Failed to convert trustdirection for target: {Domain}", domain);
                     continue;
+                }
+
 
                 TrustAttributes attributes;
 
-                if (int.TryParse(result.GetProperty("trustattributes"), out var ta))
-                    attributes = (TrustAttributes) ta;
+                if (int.TryParse(result.GetProperty(LDAPProperties.TrustAttributes), out var ta))
+                {
+                    attributes = (TrustAttributes)ta;
+                }
                 else
+                {
+                    _log.LogTrace("Failed to convert trustattributes for target: {Domain}", domain);
                     continue;
+                }
 
                 trust.IsTransitive = (attributes & TrustAttributes.NonTransitive) == 0;
-                var name = result.GetProperty("cn")?.ToUpper();
+                var name = result.GetProperty(LDAPProperties.CanonicalName)?.ToUpper();
                 if (name != null)
                     trust.TargetDomainName = name;
 

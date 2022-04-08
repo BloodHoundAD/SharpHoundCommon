@@ -2,24 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
+        private static readonly Regex SidRegex = new(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
         private readonly string _currentUserName;
+        private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
         private readonly ILDAPUtils _utils;
 
         public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null,
-            NativeMethods nativeMethods = null)
+            NativeMethods nativeMethods = null, ILogger log = null)
         {
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _currentUserName = currentUserName ?? WindowsIdentity.GetCurrent().Name.Split('\\')[1];
-            ;
+            _log = log ?? Logging.LogProvider.CreateLogger("CompSessions");
         }
 
         /// <summary>
@@ -42,6 +47,7 @@ namespace SharpHoundCommonLib.Processors
             }
             catch (APIException e)
             {
+                _log.LogDebug("NetSessionEnum failed on {ComputerName}: {Status}", computerName, e.Status);
                 ret.Collected = false;
                 ret.FailureReason = e.Status;
                 return ret;
@@ -55,17 +61,25 @@ namespace SharpHoundCommonLib.Processors
                 var username = sesInfo.sesi10_username;
                 var computerSessionName = sesInfo.sesi10_cname;
 
-                Logging.Trace($"NetSessionEnum Entry: {username}@{computerSessionName}");
+                _log.LogTrace("NetSessionEnum Entry: {Username}@{ComputerSessionName} from {ComputerName}", username,
+                    computerSessionName, computerName);
 
                 //Filter out blank/null cnames/usernames
                 if (string.IsNullOrWhiteSpace(computerSessionName) || string.IsNullOrWhiteSpace(username))
+                {
+                    _log.LogTrace("Skipping session entry with null session/user");
                     continue;
+                }
+
 
                 //Filter out blank usernames, computer accounts, the user we're doing enumeration with, and anonymous logons
                 if (username.EndsWith("$") ||
                     username.Equals(_currentUserName, StringComparison.CurrentCultureIgnoreCase) ||
                     username.Equals("anonymous logon", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    _log.LogTrace("Skipping session for {Username}", username);
                     continue;
+                }
 
                 // Remove leading slashes for unc paths
                 computerSessionName = computerSessionName.TrimStart('\\');
@@ -81,16 +95,20 @@ namespace SharpHoundCommonLib.Processors
 
                 //Throw out this data if we couldn't resolve it successfully. 
                 if (resolvedComputerSID == null || !resolvedComputerSID.StartsWith("S-1"))
+                {
+                    _log.LogTrace("Unable to resolve {ComputerSessionName} to real SID", computerSessionName);
                     continue;
+                }
 
                 var matches = _utils.GetUserGlobalCatalogMatches(username);
                 if (matches.Length > 0)
                 {
-                    results.AddRange(matches.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
+                    results.AddRange(
+                        matches.Select(s => new Session { ComputerSID = resolvedComputerSID, UserSID = s }));
                 }
                 else
                 {
-                    var res = await _utils.ResolveAccountName(username, computerDomain);
+                    var res = _utils.ResolveAccountName(username, computerDomain);
                     if (res != null)
                         results.Add(new Session
                         {
@@ -113,7 +131,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerSid"></param>
         /// <returns></returns>
-        public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName,
+        public SessionAPIResult ReadUserSessionsPrivileged(string computerName,
             string computerSamAccountName, string computerSid)
         {
             var ret = new SessionAPIResult();
@@ -125,6 +143,7 @@ namespace SharpHoundCommonLib.Processors
             }
             catch (APIException e)
             {
+                _log.LogTrace("NetWkstaUserEnum failed on {ComputerName}: {Status}", computerName, e.Status);
                 ret.Collected = false;
                 ret.FailureReason = e.Status;
                 return ret;
@@ -138,28 +157,42 @@ namespace SharpHoundCommonLib.Processors
                 var domain = wkstaUserInfo.wkui1_logon_domain;
                 var username = wkstaUserInfo.wkui1_username;
 
-                Logging.Trace($"NetWkstaUserEnum entry: {username}@{domain}");
+                _log.LogTrace("NetWkstaUserEnum entry: {Username}@{Domain} from {ComputerName}", username, domain,
+                    computerName);
 
                 //These are local computer accounts.
                 if (domain.Equals(computerSamAccountName, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    _log.LogTrace("Skipping local entry {Username}@{Domain}", username, domain);
                     continue;
+                }
 
                 //Filter out empty usernames and computer sessions
                 if (string.IsNullOrWhiteSpace(username) || username.EndsWith("$", StringComparison.Ordinal))
+                {
+                    _log.LogTrace("Skipping null or computer session");
                     continue;
+                }
 
                 //If we dont have a domain, ignore this object
                 if (string.IsNullOrWhiteSpace(domain))
+                {
+                    _log.LogTrace("Skipping null/empty domain");
                     continue;
+                }
 
                 //Any domain with a space is unusable. It'll be things like NT Authority or Font Driver
                 if (domain.Contains(" "))
+                {
+                    _log.LogTrace("Skipping domain with space: {Domain}", domain);
                     continue;
+                }
 
-                var res = await _utils.ResolveAccountName(username, domain);
+                var res = _utils.ResolveAccountName(username, domain);
                 if (res == null)
                     continue;
 
+                _log.LogTrace("Resolved NetWkstaUserEnum entry: {SID}", res.ObjectIdentifier);
                 results.Add(res);
             }
 
@@ -170,6 +203,38 @@ namespace SharpHoundCommonLib.Processors
             }).ToArray();
 
             return ret;
+        }
+
+        public SessionAPIResult ReadUserSessionsRegistry(string computerName, string computerDomain,
+            string computerSid)
+        {
+            var ret = new SessionAPIResult();
+
+            RegistryKey key = null;
+
+            try
+            {
+                key = RegistryKey.OpenRemoteBaseKey(RegistryHive.Users, computerName);
+                ret.Collected = true;
+                ret.Results = key.GetSubKeyNames().Where(subkey => SidRegex.IsMatch(subkey)).Select(x => new Session
+                {
+                    ComputerSID = computerSid,
+                    UserSID = x
+                }).ToArray();
+
+                return ret;
+            }
+            catch (Exception e)
+            {
+                _log.LogTrace("Failed to open remote registry on {ComputerName}: {Status}", computerName, e.Message);
+                ret.Collected = false;
+                ret.FailureReason = e.Message;
+                return ret;
+            }
+            finally
+            {
+                key?.Dispose();
+            }
         }
     }
 }
