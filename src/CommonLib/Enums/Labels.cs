@@ -5,6 +5,7 @@
         User,
         Computer,
         Group,
+        LocalGroup,
         GPO,
         Domain,
         OU,

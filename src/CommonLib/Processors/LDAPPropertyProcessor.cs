@@ -482,16 +482,16 @@ namespace SharpHoundCommonLib.Processors
 
     public class UserProperties
     {
-        public Dictionary<string, object> Props { get; set; }
-        public TypedPrincipal[] AllowedToDelegate { get; set; }
-        public TypedPrincipal[] SidHistory { get; set; }
+        public Dictionary<string, object> Props { get; set; } = new();
+        public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
     }
 
     public class ComputerProperties
     {
-        public Dictionary<string, object> Props { get; set; }
-        public TypedPrincipal[] AllowedToDelegate { get; set; }
-        public TypedPrincipal[] AllowedToAct { get; set; }
-        public TypedPrincipal[] SidHistory { get; set; }
+        public Dictionary<string, object> Props { get; set; } = new();
+        public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
     }
 }

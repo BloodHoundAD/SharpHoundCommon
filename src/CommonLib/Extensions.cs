@@ -104,6 +104,13 @@ namespace SharpHoundCommonLib
                    (methods & ResolvedCollectionMethod.PSRemote) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0;
         }
 
+        public static int Rid(this SecurityIdentifier securityIdentifier)
+        {
+            var value = securityIdentifier.Value;
+            var rid = int.Parse(value.Substring(value.LastIndexOf("-")));
+            return rid;
+        }
+
         #region SearchResultEntry
 
         /// <summary>

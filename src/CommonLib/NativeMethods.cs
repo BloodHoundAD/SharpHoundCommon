@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using System.Security;
+using System.Security.Principal;
 using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib
@@ -188,6 +189,13 @@ namespace SharpHoundCommonLib
             return SamLookupDomainInSamServer(serverHandle, ref name, out sid);
         }
 
+        internal virtual NtStatus CallSamEnumerateAliasesInDomain(IntPtr domainHandle, out IntPtr rids, out int count)
+        {
+            var enumContext = 0;
+            return SamEnumerateAliasesInDomain(domainHandle, ref enumContext, out rids, -1, out count);
+        }
+        
+
         internal virtual NtStatus CallSamFreeMemory(IntPtr handle)
         {
             return SamFreeMemory(handle);
@@ -198,13 +206,20 @@ namespace SharpHoundCommonLib
             return SamCloseHandle(handle);
         }
 
-        public virtual NtStatus CallLSAOpenPolicy(ref LSA_UNICODE_STRING serverName, ref LSA_OBJECT_ATTRIBUTES lsaObjectAttributes,
+        internal virtual NtStatus CallSamEnumerateDomainsInSamServer(IntPtr serverHandle, out IntPtr domains,
+            out int count)
+        {
+            var enumContext = 0;
+            return SamEnumerateDomainsInSamServer(serverHandle, ref enumContext, out domains, -1, out count);
+        }
+
+        internal virtual NtStatus CallLSAOpenPolicy(ref LSA_UNICODE_STRING serverName, ref LSA_OBJECT_ATTRIBUTES lsaObjectAttributes,
             LsaOpenMask openMask, out IntPtr policyHandle)
         {
             return LsaOpenPolicy(ref serverName, ref lsaObjectAttributes, openMask, out policyHandle);
         }
 
-        public virtual NtStatus CallLSAEnumerateAccountsWithUserRight(IntPtr policyHandle, string privilege, out IntPtr buffer,
+        internal virtual NtStatus CallLSAEnumerateAccountsWithUserRight(IntPtr policyHandle, string privilege, out IntPtr buffer,
             out int count)
         {
             var privileges = new LSA_UNICODE_STRING[1];
@@ -212,9 +227,81 @@ namespace SharpHoundCommonLib
             return LsaEnumerateAccountsWithUserRight(policyHandle, privileges, out buffer, out count);
         }
 
+        internal virtual NtStatus CallSamLookupIdsInDomain(IntPtr domainHandle, int[] rids, out IntPtr names,
+            out IntPtr use)
+        {
+            var count = rids.Length;
+
+            return SamLookupIdsInDomain(domainHandle, count, rids, out names, out use);
+        }
+
         public virtual NtStatus CallLSAClose(IntPtr handle)
         {
             return LsaClose(handle);
+        }
+
+        public virtual NtStatus CallLSALookupSids(IntPtr policyHandle, SecurityIdentifier[] sids,
+            out IntPtr referencedDomains, out IntPtr names)
+        {
+            var count = sids.Length;
+            var gcHandles = new GCHandle[count];
+            var pSids = new IntPtr[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                var sid = sids[i];
+                var b = new byte[sid.BinaryLength];
+                sid.GetBinaryForm(b, 0);
+                gcHandles[i] = GCHandle.Alloc(b, GCHandleType.Pinned);
+                pSids[i] = gcHandles[i].AddrOfPinnedObject();
+            }
+
+            try
+            {
+                return LsaLookupSids(policyHandle, (uint) count, pSids, out referencedDomains, out names);
+            }
+            finally
+            {
+                foreach (var handle in gcHandles)
+                {
+                    if (handle.IsAllocated)
+                    {
+                        handle.Free();
+                    }
+                }
+            }
+        }
+
+        public virtual NtStatus CallLSALookupSids2(IntPtr policyHandle, LsaLookupOptions lookupOptions,
+            SecurityIdentifier[] sids, out IntPtr referencedDomains, out IntPtr names)
+        {
+            var count = sids.Length;
+            var gcHandles = new GCHandle[count];
+            var pSids = new IntPtr[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                var sid = sids[i];
+                var b = new byte[sid.BinaryLength];
+                sid.GetBinaryForm(b, 0);
+                gcHandles[i] = GCHandle.Alloc(b, GCHandleType.Pinned);
+                pSids[i] = gcHandles[i].AddrOfPinnedObject();
+            }
+            
+            try
+            {
+                return LsaLookupSids2(policyHandle, lookupOptions, (uint)count, pSids, out referencedDomains, out names);
+            }
+            finally
+            {
+                foreach (var handle in gcHandles)
+                {
+                    if (handle.IsAllocated)
+                    {
+                        handle.Free();
+                    }
+                }
+            }
         }
 
         public struct OBJECT_ATTRIBUTES : IDisposable
@@ -261,7 +348,7 @@ namespace SharpHoundCommonLib
 
             public override string ToString()
             {
-                return (Buffer != IntPtr.Zero ? Marshal.PtrToStringUni(Buffer) : null) ??
+                return (Buffer != IntPtr.Zero ? Marshal.PtrToStringUni(Buffer, Length / 2) : null) ??
                        throw new InvalidOperationException();
             }
         }
@@ -297,8 +384,7 @@ namespace SharpHoundCommonLib
             int aliasId,
             out IntPtr aliasHandle
         );
-
-
+        
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
         private static extern NtStatus SamConnect(
             ref UNICODE_STRING serverName,
@@ -314,6 +400,29 @@ namespace SharpHoundCommonLib
             [MarshalAs(UnmanagedType.LPArray)] byte[] domainSid,
             out IntPtr domainHandle
         );
+
+        [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
+        private static extern NtStatus SamLookupIdsInDomain(IntPtr domainHandle,
+            int count,
+            int[] rids,
+            out IntPtr names,
+            out IntPtr use);
+
+        [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
+        private static extern NtStatus SamEnumerateAliasesInDomain(
+            IntPtr domainHandle, 
+            ref int enumerationContext,
+            out IntPtr buffer, 
+            int prefMaxLen, 
+            out int count);
+
+        [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
+        private static extern NtStatus SamEnumerateDomainsInSamServer(
+            IntPtr serverHandle,
+            ref int enumerationContext,
+            out IntPtr buffer,
+            int prefMaxLen,
+            out int count);
 
         [Flags]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
@@ -332,7 +441,7 @@ namespace SharpHoundCommonLib
 
         [Flags]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
-        internal enum DomainAccessMask
+        public enum DomainAccessMask
         {
             ReadPasswordParameters = 0x1,
             WritePasswordParameters = 0x2,
@@ -380,6 +489,14 @@ namespace SharpHoundCommonLib
             SamServerRead = 0x20010,
             SamServerWrite = 0x2000e,
             SamServerExecute = 0x20021
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SamRidEnumeration
+        {
+            internal static readonly int SizeOf = Marshal.SizeOf<SamRidEnumeration>();
+            public int Rid;
+            public UNICODE_STRING Name;
         }
 
         #endregion
@@ -536,6 +653,32 @@ namespace SharpHoundCommonLib
             LsaOpenMask desiredAccess,
             out IntPtr policyHandle
         );
+
+        [DllImport("advapi32.dll")]
+        private static extern NtStatus LsaEnumerateAccountRights(
+            IntPtr policyHandle,
+            IntPtr accountSid,
+            IntPtr accountRights,
+            out int count);
+        
+        [DllImport("advapi32.dll")]
+        private static extern NtStatus LsaLookupSids(
+            IntPtr policyHandle,
+            uint count,
+            [MarshalAs(UnmanagedType.LPArray)] IntPtr[] sidArray,
+            out IntPtr referencedDomains,
+            out IntPtr names
+        );
+
+        [DllImport("advapi32.dll")]
+        private static extern NtStatus LsaLookupSids2(
+            IntPtr policyHandle,
+            LsaLookupOptions lookupOptions,
+            uint count,
+            [MarshalAs(UnmanagedType.LPArray)] IntPtr[] sidArray,
+            out IntPtr referencedDomains,
+            out IntPtr names
+        );
         
         [DllImport("advapi32.dll")]
         private static extern NtStatus LsaClose(
@@ -549,6 +692,14 @@ namespace SharpHoundCommonLib
             out IntPtr EnumerationBuffer,
             out int CountReturned
         );
+
+        [Flags]
+        public enum LsaLookupOptions : uint
+        {
+            ReturnLocalNames = 0,
+            PreferInternetNames = 0x40000000,
+            DisallowsConnectedAccountInternetSid = 0x80000000
+        }
         
         [Flags]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
@@ -619,6 +770,18 @@ namespace SharpHoundCommonLib
                 Marshal.DestroyStructure(ObjectName, typeof(LSA_UNICODE_STRING));
                 Marshal.FreeHGlobal(ObjectName);
                 ObjectName = IntPtr.Zero;
+            }
+        }
+
+        public class SidPointer
+        {
+            private readonly byte[] data;
+
+            public SidPointer(SecurityIdentifier identifier)
+            {
+                data = new byte[identifier.BinaryLength];
+                identifier.GetBinaryForm(data, 0);
+                
             }
         }
 
