@@ -11,22 +11,25 @@ namespace SharpHoundCommonLib.Processors
         private readonly PortScanner _scanner;
         private readonly int _scanTimeout;
         private readonly bool _skipPortScan;
+        private readonly int _computerExpiryDays;
 
-        public ComputerAvailability(int timeout = 500, bool skipPortScan = false, ILogger log = null)
+        public ComputerAvailability(int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false, ILogger log = null)
         {
             _scanner = new PortScanner();
             _scanTimeout = timeout;
             _skipPortScan = skipPortScan;
             _log = log ?? Logging.LogProvider.CreateLogger("CompAvail");
+            _computerExpiryDays = computerExpiryDays;
         }
 
-        public ComputerAvailability(PortScanner scanner, int timeout = 500, bool skipPortScan = false,
+        public ComputerAvailability(PortScanner scanner, int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false,
             ILogger log = null)
         {
             _scanner = scanner;
             _scanTimeout = timeout;
             _skipPortScan = skipPortScan;
             _log = log ?? Logging.LogProvider.CreateLogger("CompAvail");
+            _computerExpiryDays = computerExpiryDays;
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace SharpHoundCommonLib.Processors
         /// <summary>
         ///     Checks if a computer is available for SharpHound enumeration using the following criteria:
         ///     The "operatingsystem" LDAP attribute must contain the string "Windows"
-        ///     The "pwdlastset" LDAP attribute must be within 60 days of the current date.
+        ///     The "pwdlastset" LDAP attribute must be within 60 days of the current date by default.
         ///     Port 445 must be open to allow API calls to succeed
         /// </summary>
         /// <param name="computerName">The computer to check availability for</param>
@@ -68,7 +71,7 @@ namespace SharpHoundCommonLib.Processors
             }
 
             var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
-            var threshold = DateTime.Now.AddDays(-60).ToFileTimeUtc();
+            var threshold = DateTime.Now.AddDays(_computerExpiryDays * -1).ToFileTimeUtc();
 
             if (passwordLastSet < threshold)
             {
