@@ -27,11 +27,9 @@ namespace SharpHoundCommonLib.Processors
         private readonly string _computerSAMAccountName;
         private readonly SecurityIdentifier _computerSID;
 
-        // Map domain sid to domain, and use AccountDomainSid to retrieve this
-        private readonly ConcurrentDictionary<string, IntPtr> _domainHandles = new();
-        private readonly ConcurrentDictionary<string, string> _sidToDomainCache = new();
+        private readonly DomainHandleManager _domainHandleManager;
         private string _cachedMachineSid;
-        private readonly ConcurrentDictionary<string, Label> _typeCache = new();
+        private readonly ConcurrentDictionary<string, CachedLocalItem> _typeCache = new();
 
         private readonly string[] _filteredSids =
         {
@@ -76,6 +74,7 @@ namespace SharpHoundCommonLib.Processors
             _utils = utils;
             _nativeMethods = methods ?? new NativeMethods();
             _utils = utils ?? new LDAPUtils();
+            _domainHandleManager = new DomainHandleManager(_nativeMethods);
             _log = log ?? Logging.LogProvider.CreateLogger("RPCServer");
         }
 
@@ -112,17 +111,7 @@ namespace SharpHoundCommonLib.Processors
                     APICall = "SamConnect"
                 };
             }
-            //
-            // status = _nativeMethods.CallSamOpenDomain(_samServerHandle, requestedDomainAccess,
-            //     WellKnownSidBytes.Value, out _samDomainHandle);
-            // _log.LogTrace("SamOpenDomain returned {Status} for {ComputerName}", status, _computerName);
-            // if (status != NativeMethods.NtStatus.StatusSuccess)
-            //     throw new APIException
-            //     {
-            //         Status = status.ToString(),
-            //         APICall = "SamOpenDomain"
-            //     };
-
+            
             _samServerOpen = true;
         }
 
@@ -144,34 +133,83 @@ namespace SharpHoundCommonLib.Processors
                 {
                     foreach (var group in GetGroupsFromDomain(domainHandle))
                     {
-                        _typeCache.TryAdd(group.ObjectID, Label.LocalGroup);
-                        _log.LogInformation("Got group {Group}", group.Name);
+                        _typeCache.TryAdd(group.ObjectID, new CachedLocalItem(group.Name, Label.LocalGroup));
                         var result = GetLocalGroupMembers(domainHandle, group);
                         groupCache.Add(result);
                     }
                 }   
             }
+            _log.LogInformation("Beginning resolution of local types");
             // We've got all our local groups, now we need to resolve unresolved types
-            var toResolve = new ConcurrentDictionary<string, List<SecurityIdentifier>>();
             foreach (var group in groupCache)
             {
                 if (!group.Collected)
                     continue;
-                foreach (var result in group.Results.Where(x => x.ObjectType == Label.Base))
+                
+                _log.LogInformation("Resolving types for {Group}", group.Name);
+
+                var names = new List<NamedPrincipal>();
+                var resolvedPrincipals = new List<TypedPrincipal>();
+                
+                foreach (var result in group.Results)
                 {
+                    _log.LogInformation(result.ToString());
+                    if (result.ObjectType != Label.Base || !result.ObjectIdentifier.StartsWith(machineSid) || result.ObjectIdentifier.StartsWith(_computerSID.AccountDomainSid.Value))
+                    {
+                        resolvedPrincipals.Add(result);
+                        continue;
+                    }
+
                     var sid = new SecurityIdentifier(result.ObjectIdentifier);
-                    toResolve[sid.AccountDomainSid.Value].Add(sid);
+                    _log.LogInformation("Resolving {Sid} in local", sid.Value);
+                    if (!ResolveLocalSid(sid, out var name, out var type))
+                    {
+                        resolvedPrincipals.Add(result);
+                        continue;
+                    }
+                    
+                    names.Add(new NamedPrincipal(name, result.ObjectIdentifier));
+                    resolvedPrincipals.Add(new TypedPrincipal(result.ObjectIdentifier, type));
                 }
+
+                group.Results = resolvedPrincipals.ToArray();
+                group.LocalNames = names.ToArray();
+
+                yield return group;
             }
         }
+
+        // public bool OpenDomainHandle(SecurityIdentifier securityIdentifier, out IntPtr domainHandle,
+        //     NativeMethods.DomainAccessMask requestedDomainAccess = NativeMethods.DomainAccessMask.Lookup |
+        //                                                            NativeMethods.DomainAccessMask.ListAccounts)
+        // {
+        //     var sid = securityIdentifier.AccountDomainSid.Value;
+        //     if (_domainHandleManager.GetHandleBySid(securityIdentifier, out domainHandle))
+        //         return true;
+        //
+        //     var bytes = new byte[securityIdentifier.BinaryLength];
+        //     securityIdentifier.GetBinaryForm(bytes, 0);
+        //     var status =
+        //         _nativeMethods.CallSamOpenDomain(_samServerHandle, requestedDomainAccess, bytes, out domainHandle);
+        //     if (status != NativeMethods.NtStatus.StatusSuccess)
+        //     {
+        //         if (domainHandle != IntPtr.Zero)
+        //             _nativeMethods.CallSamFreeMemory(domainHandle);
+        //         return false;
+        //     }
+        //     
+        //     _domainHandleManager.AddMappedDomain(securityIdentifier,);
+        //
+        //     return true;
+        // }
 
         public bool OpenDomainHandle(string domainName, out IntPtr domainHandle,
             NativeMethods.DomainAccessMask requestedDomainAccess = NativeMethods.DomainAccessMask.Lookup |
                                                                    NativeMethods.DomainAccessMask.ListAccounts)
         {
-            if (_domainHandles.TryGetValue(domainName.ToUpper(), out domainHandle))
+            if (_domainHandleManager.GetHandleByName(domainName, out domainHandle))
                 return true;
-
+            
             domainHandle = IntPtr.Zero;
             if (!LookupDomainSid(domainName, out var sid)) return false;
 
@@ -185,8 +223,9 @@ namespace SharpHoundCommonLib.Processors
                     _nativeMethods.CallSamFreeMemory(domainHandle);
                 return false;
             }
-
-            _domainHandles.TryAdd(domainName.ToUpper(), domainHandle);
+            
+            _log.LogInformation("Adding domain to manager: {domain}, {sid}", domainName, sid.ToString());
+            _domainHandleManager.AddMappedDomain(sid, domainName, domainHandle);
 
             return true;
         }
@@ -195,7 +234,7 @@ namespace SharpHoundCommonLib.Processors
             NativeMethods.DomainAccessMask requestedDomainAccess = NativeMethods.DomainAccessMask.Lookup |
                                                                    NativeMethods.DomainAccessMask.ListAccounts)
         {
-            if (_domainHandles.TryGetValue("BUILTIN", out domainHandle))
+            if (_domainHandleManager.GetHandleByName("BUILTIN", out domainHandle))
                 return true;
 
             var status =
@@ -208,7 +247,7 @@ namespace SharpHoundCommonLib.Processors
                 return false;
             }
 
-            _domainHandles.TryAdd("BUILTIN", domainHandle);
+            _domainHandleManager.AddMappedDomain("S-1-5-32","BUILTIN", domainHandle);
 
             return true;
         }
@@ -253,15 +292,8 @@ namespace SharpHoundCommonLib.Processors
                 _nativeMethods.CallLSAClose(_lsaPolicyHandle);
                 _lsaPolicyHandle = IntPtr.Zero;
             }
-
-            foreach (var kv in _domainHandles)
-            {
-                if (kv.Value != IntPtr.Zero)
-                {
-                    _nativeMethods.CallSamCloseHandle(kv.Value);
-                    _domainHandles[kv.Key] = IntPtr.Zero;
-                }
-            }
+            
+            _domainHandleManager.Dispose();
 
             _obj.Dispose();
             _lsaObj.Dispose();
@@ -289,10 +321,11 @@ namespace SharpHoundCommonLib.Processors
             var status = _nativeMethods.CallSamEnumerateAliasesInDomain(domainHandle, out var rids, out var count);
             _log.LogTrace("SamEnumerateAliasesInDomain returned {Status} on {ComputerName}", status,
                 _computerName);
-            if (status != NativeMethods.NtStatus.StatusSuccess || count == 0)
-            {
+            if (status != NativeMethods.NtStatus.StatusSuccess)
+                throw new APIException("SamEnumerateAliasesInDomain", status);
+
+            if (count == 0)
                 yield break;
-            }
 
             for (var i = 0; i < count; i++)
             {
@@ -433,6 +466,7 @@ namespace SharpHoundCommonLib.Processors
                 var sid = x.Value.ToUpper();
                 if (!sid.StartsWith(machineSid) || sid.StartsWith(_computerSID.AccountDomainSid.Value))
                 {
+                    _log.LogInformation("Resolving {Sid} in domain", sid);
                     return _utils.ResolveIDAndType(sid, _computerDomain);
                 }
                 
@@ -449,30 +483,74 @@ namespace SharpHoundCommonLib.Processors
             return result;
         }
 
-        private Label ResolveLocalSidType(SecurityIdentifier identifier)
+        private bool ResolveLocalSid(SecurityIdentifier identifier, out string name, out Label objectType)
         {
-            if (_typeCache.TryGetValue(identifier.Value, out var type))
-                return type;
+            if (_typeCache.TryGetValue(identifier.Value, out var item))
+            {
+                _log.LogInformation("Cache hit for {ID}", identifier.Value);
+                name = item.Name;
+                objectType = item.Type;
+                return true;
+            }
 
             var domainSid = identifier.AccountDomainSid.Value;
             var rid = identifier.Rid();
+            
+            _log.LogTrace("Starting resolution for {ID} in domain {Domain} with RID {rid}", identifier.Value, domainSid, rid);
 
-            if (_sidToDomainCache.TryGetValue(domainSid, out var domainName))
+            name = null;
+            objectType = Label.Base;
+            
+            if (!_domainHandleManager.GetHandleBySid(domainSid, out var handle))
             {
-                if (OpenDomainHandle(domainName, out var domainHandle))
-                {
-                    var ridArray = new int[1];
-                    ridArray[0] = rid;
-                    var status =
-                        _nativeMethods.CallSamLookupIdsInDomain(domainHandle, ridArray, out var names, out var use);
-                    if (status != NativeMethods.NtStatus.StatusSuccess)
-                    {
-                        return Label.Base;
-                    }
-                    
-                    
-                }
+                _log.LogInformation("Failed to get handle by SID");
+                return false;
             }
+            
+            var ridArray = new int[1];
+            ridArray[0] = rid;
+            var status =
+                _nativeMethods.CallSamLookupIdsInDomain(handle, ridArray, out var names, out var use);
+            if (status != NativeMethods.NtStatus.StatusSuccess)
+            {
+                name = null;
+                objectType = Label.Base;
+                return false;
+            }
+
+            var convertedName = Marshal.PtrToStructure<NativeMethods.UNICODE_STRING>(names);
+            name = convertedName.ToString();
+            
+            _log.LogInformation(name);
+
+            var snu = (NativeMethods.SidNameUse)Marshal.ReadInt32(use, 0);
+
+            switch (snu)
+            {
+                case NativeMethods.SidNameUse.User:
+                    objectType = Label.LocalUser;
+                    break;
+                case NativeMethods.SidNameUse.Group:
+                    objectType = Label.LocalGroup;
+                    break;
+                case NativeMethods.SidNameUse.Alias:
+                    objectType = Label.LocalGroup;
+                    break;
+                case NativeMethods.SidNameUse.WellKnownGroup:
+                case NativeMethods.SidNameUse.Domain:
+                case NativeMethods.SidNameUse.DeletedAccount:
+                case NativeMethods.SidNameUse.Invalid:
+                case NativeMethods.SidNameUse.Unknown:
+                case NativeMethods.SidNameUse.Computer:
+                case NativeMethods.SidNameUse.Label:
+                case NativeMethods.SidNameUse.LogonSession:
+                    objectType = Label.Base;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -634,6 +712,16 @@ namespace SharpHoundCommonLib.Processors
         public string Status { get; set; }
         public string APICall { get; set; }
 
+        public APIException()
+        {
+        }
+
+        public APIException(string apiCall, NativeMethods.NtStatus status)
+        {
+            Status = status.ToString();
+            APICall = apiCall;
+        }
+
         public override string ToString()
         {
             return $"Call to {APICall} returned {Status}";
@@ -656,4 +744,101 @@ namespace SharpHoundCommonLib.Processors
         DcomUsers = 562,
         PSRemote = 580
     }
+    
+    class DomainHandleManager
+    {
+        private Dictionary<string, string> _sidToDomainMap = new();
+        private Dictionary<string, IntPtr> _nameToHandleMap = new();
+        private readonly NativeMethods _nativeMethods;
+
+        internal DomainHandleManager(NativeMethods nativeMethods = null)
+        {
+            _nativeMethods = nativeMethods ?? new NativeMethods();
+        }
+
+        internal void AddMappedDomain(SecurityIdentifier sid, string name, IntPtr handle)
+        {
+            if (name.Equals("Builtin", StringComparison.CurrentCultureIgnoreCase))
+            {
+                _sidToDomainMap.Add(sid.Value.ToUpper(), name.ToUpper());
+                _sidToDomainMap.Add(name.ToUpper(), sid.Value.ToUpper());
+            }
+            else
+            {
+                _sidToDomainMap.Add(sid.AccountDomainSid.Value.ToUpper(), name.ToUpper());
+                _sidToDomainMap.Add(name.ToUpper(), sid.AccountDomainSid.Value.ToUpper());
+            }
+            
+            
+            _nameToHandleMap.Add(name.ToUpper(), handle);
+        }
+        
+        internal void AddMappedDomain(string sid, string name, IntPtr handle)
+        {
+            _sidToDomainMap.Add(sid.ToUpper(), name.ToUpper());
+            _sidToDomainMap.Add(name.ToUpper(), sid.ToUpper());
+            _nameToHandleMap.Add(name.ToUpper(), handle);
+        }
+
+        internal bool GetHandleByName(string name, out IntPtr domainHandle)
+        {
+            return _nameToHandleMap.TryGetValue(name.ToUpper(), out domainHandle);
+        }
+
+        internal bool GetHandleBySid(string sid, out IntPtr domainHandle)
+        {
+            if (_sidToDomainMap.TryGetValue(sid.ToUpper(), out var domainName))
+            {
+                return _nameToHandleMap.TryGetValue(domainName, out domainHandle);
+            }
+
+            domainHandle = IntPtr.Zero;
+            return false;
+        }
+
+        internal bool GetHandleBySid(SecurityIdentifier sid, out IntPtr domainHandle)
+        {
+            var sidString = sid.AccountDomainSid.Value.ToUpper();
+            if (_sidToDomainMap.TryGetValue(sidString, out var domainName))
+            {
+                return _nameToHandleMap.TryGetValue(domainName, out domainHandle);
+            }
+
+            domainHandle = IntPtr.Zero;
+            return false;
+        }
+
+        internal void Dispose()
+        {
+            foreach (var kv in _nameToHandleMap.ToList())
+            {
+                if (kv.Value == IntPtr.Zero) continue;
+                _nativeMethods.CallSamCloseHandle(kv.Value);
+                _nameToHandleMap[kv.Key] = IntPtr.Zero;
+            }
+
+            foreach (var kv in _nameToHandleMap)
+            {
+                
+            }
+        }
+
+        ~DomainHandleManager()
+        {
+            Dispose();
+        }
+    }
+
+    class CachedLocalItem
+    {
+        public string Name { get; set; }
+        public Label Type { get; set; }
+
+        public CachedLocalItem(string name, Label type)
+        {
+            Name = name;
+            Type = type;
+        }
+    }
 }
+

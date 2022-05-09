@@ -107,7 +107,7 @@ namespace SharpHoundCommonLib
         public static int Rid(this SecurityIdentifier securityIdentifier)
         {
             var value = securityIdentifier.Value;
-            var rid = int.Parse(value.Substring(value.LastIndexOf("-")));
+            var rid = int.Parse(value.Substring(value.LastIndexOf("-") + 1));
             return rid;
         }
 

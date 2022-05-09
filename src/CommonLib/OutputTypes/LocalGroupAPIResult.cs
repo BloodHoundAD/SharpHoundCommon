@@ -19,6 +19,13 @@ namespace SharpHoundCommonLib.OutputTypes
             {
                 builder.AppendLine(x.ToString());
             }
+
+            builder.AppendLine("Extra Names:");
+
+            foreach (var x in LocalNames)
+            {
+                builder.AppendLine(x.ToString());
+            }
             return builder.ToString();
         }
     }

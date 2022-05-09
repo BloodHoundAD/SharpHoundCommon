@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using Microsoft.Extensions.Logging;
 using System.Security;
 using System.Security.Principal;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib
@@ -17,13 +17,13 @@ namespace SharpHoundCommonLib
             StatusSuccess = 0x0,
             StatusMoreEntries = 0x105,
             StatusSomeMapped = 0x107,
-            StatusInvalidHandle = unchecked((int)0xC0000008),
-            StatusInvalidParameter = unchecked((int)0xC000000D),
-            StatusAccessDenied = unchecked((int)0xC0000022),
-            StatusObjectTypeMismatch = unchecked((int)0xC0000024),
-            StatusNoSuchDomain = unchecked((int)0xC00000DF),
-            StatusRpcServerUnavailable = unchecked((int)0xC0020017),
-            StatusNoSuchAlias = unchecked((int)0xC0000151)
+            StatusInvalidHandle = unchecked((int) 0xC0000008),
+            StatusInvalidParameter = unchecked((int) 0xC000000D),
+            StatusAccessDenied = unchecked((int) 0xC0000022),
+            StatusObjectTypeMismatch = unchecked((int) 0xC0000024),
+            StatusNoSuchDomain = unchecked((int) 0xC00000DF),
+            StatusRpcServerUnavailable = unchecked((int) 0xC0020017),
+            StatusNoSuchAlias = unchecked((int) 0xC0000151)
         }
 
         private const string NetWkstaUserEnumQueryName = "NetWkstaUserEnum";
@@ -147,7 +147,7 @@ namespace SharpHoundCommonLib
             try
             {
                 var result = DsGetDcName(computerName, domainName, null, null,
-                    (uint)(DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME), out ptr);
+                    (uint) (DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME | DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME), out ptr);
 
                 if (result != 0) return null;
                 var info = Marshal.PtrToStructure<DOMAIN_CONTROLLER_INFO>(ptr);
@@ -194,7 +194,7 @@ namespace SharpHoundCommonLib
             var enumContext = 0;
             return SamEnumerateAliasesInDomain(domainHandle, ref enumContext, out rids, -1, out count);
         }
-        
+
 
         internal virtual NtStatus CallSamFreeMemory(IntPtr handle)
         {
@@ -213,13 +213,15 @@ namespace SharpHoundCommonLib
             return SamEnumerateDomainsInSamServer(serverHandle, ref enumContext, out domains, -1, out count);
         }
 
-        internal virtual NtStatus CallLSAOpenPolicy(ref LSA_UNICODE_STRING serverName, ref LSA_OBJECT_ATTRIBUTES lsaObjectAttributes,
+        internal virtual NtStatus CallLSAOpenPolicy(ref LSA_UNICODE_STRING serverName,
+            ref LSA_OBJECT_ATTRIBUTES lsaObjectAttributes,
             LsaOpenMask openMask, out IntPtr policyHandle)
         {
             return LsaOpenPolicy(ref serverName, ref lsaObjectAttributes, openMask, out policyHandle);
         }
 
-        internal virtual NtStatus CallLSAEnumerateAccountsWithUserRight(IntPtr policyHandle, string privilege, out IntPtr buffer,
+        internal virtual NtStatus CallLSAEnumerateAccountsWithUserRight(IntPtr policyHandle, string privilege,
+            out IntPtr buffer,
             out int count)
         {
             var privileges = new LSA_UNICODE_STRING[1];
@@ -263,12 +265,8 @@ namespace SharpHoundCommonLib
             finally
             {
                 foreach (var handle in gcHandles)
-                {
                     if (handle.IsAllocated)
-                    {
                         handle.Free();
-                    }
-                }
             }
         }
 
@@ -287,20 +285,17 @@ namespace SharpHoundCommonLib
                 gcHandles[i] = GCHandle.Alloc(b, GCHandleType.Pinned);
                 pSids[i] = gcHandles[i].AddrOfPinnedObject();
             }
-            
+
             try
             {
-                return LsaLookupSids2(policyHandle, lookupOptions, (uint)count, pSids, out referencedDomains, out names);
+                return LsaLookupSids2(policyHandle, lookupOptions, (uint) count, pSids, out referencedDomains,
+                    out names);
             }
             finally
             {
                 foreach (var handle in gcHandles)
-                {
                     if (handle.IsAllocated)
-                    {
                         handle.Free();
-                    }
-                }
             }
         }
 
@@ -334,8 +329,8 @@ namespace SharpHoundCommonLib
                 : this()
             {
                 if (s == null) return;
-                Length = (ushort)(s.Length * 2);
-                MaximumLength = (ushort)(Length + 2);
+                Length = (ushort) (s.Length * 2);
+                MaximumLength = (ushort) (Length + 2);
                 Buffer = Marshal.StringToHGlobalUni(s);
             }
 
@@ -384,7 +379,7 @@ namespace SharpHoundCommonLib
             int aliasId,
             out IntPtr aliasHandle
         );
-        
+
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
         private static extern NtStatus SamConnect(
             ref UNICODE_STRING serverName,
@@ -410,10 +405,10 @@ namespace SharpHoundCommonLib
 
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
         private static extern NtStatus SamEnumerateAliasesInDomain(
-            IntPtr domainHandle, 
+            IntPtr domainHandle,
             ref int enumerationContext,
-            out IntPtr buffer, 
-            int prefMaxLen, 
+            out IntPtr buffer,
+            int prefMaxLen,
             out int count);
 
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
@@ -497,6 +492,21 @@ namespace SharpHoundCommonLib
             internal static readonly int SizeOf = Marshal.SizeOf<SamRidEnumeration>();
             public int Rid;
             public UNICODE_STRING Name;
+        }
+        
+        public enum SidNameUse : int
+        {
+            User = 1,
+            Group,
+            Domain,
+            Alias,
+            WellKnownGroup,
+            DeletedAccount,
+            Invalid,
+            Unknown,
+            Computer,
+            Label,
+            LogonSession
         }
 
         #endregion
@@ -646,6 +656,7 @@ namespace SharpHoundCommonLib
         #endregion
 
         #region LSA Imports
+
         [DllImport("advapi32.dll")]
         private static extern NtStatus LsaOpenPolicy(
             ref LSA_UNICODE_STRING server,
@@ -660,7 +671,7 @@ namespace SharpHoundCommonLib
             IntPtr accountSid,
             IntPtr accountRights,
             out int count);
-        
+
         [DllImport("advapi32.dll")]
         private static extern NtStatus LsaLookupSids(
             IntPtr policyHandle,
@@ -679,13 +690,14 @@ namespace SharpHoundCommonLib
             out IntPtr referencedDomains,
             out IntPtr names
         );
-        
+
         [DllImport("advapi32.dll")]
         private static extern NtStatus LsaClose(
             IntPtr buffer
         );
-        
-        [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true), SuppressUnmanagedCodeSecurity]
+
+        [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true)]
+        [SuppressUnmanagedCodeSecurity]
         public static extern NtStatus LsaEnumerateAccountsWithUserRight(
             IntPtr PolicyHandle,
             LSA_UNICODE_STRING[] UserRights,
@@ -700,7 +712,7 @@ namespace SharpHoundCommonLib
             PreferInternetNames = 0x40000000,
             DisallowsConnectedAccountInternetSid = 0x80000000
         }
-        
+
         [Flags]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
         public enum LsaOpenMask
@@ -723,7 +735,7 @@ namespace SharpHoundCommonLib
             POLICY_EXECUTE = 0X20801,
             POLICY_WRITE = 0X207F8
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
         public struct LSA_UNICODE_STRING : IDisposable
         {
@@ -753,7 +765,7 @@ namespace SharpHoundCommonLib
                        throw new InvalidOperationException();
             }
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
         public struct LSA_OBJECT_ATTRIBUTES
         {
@@ -763,7 +775,7 @@ namespace SharpHoundCommonLib
             public int Attributes;
             public IntPtr SecurityDescriptor;
             public IntPtr SecurityQualityOfService;
-            
+
             public void Dispose()
             {
                 if (ObjectName == IntPtr.Zero) return;
@@ -781,7 +793,6 @@ namespace SharpHoundCommonLib
             {
                 data = new byte[identifier.BinaryLength];
                 identifier.GetBinaryForm(data, 0);
-                
             }
         }
 
