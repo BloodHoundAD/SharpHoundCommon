@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Text;
+using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib.OutputTypes
 {
-    public class LocalGroupAPIResult : APIResult
+    public class UserRightsAssignmentAPIResult : APIResult
     {
-        public int GroupRID { get; set; }
-        public string ObjectId { get; set; }
-        public string Name { get; set; }
+        public string Privilege { get; set; }
         public TypedPrincipal[] Results { get; set; } = Array.Empty<TypedPrincipal>();
         public NamedPrincipal[] LocalNames { get; set; } = Array.Empty<NamedPrincipal>();
         
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.AppendLine($"Local group {Name} ({ObjectId})");
+            builder.AppendLine($"Privilege {Privilege}");
             foreach (var x in Results)
             {
                 builder.AppendLine(x.ToString());

@@ -13,6 +13,8 @@ namespace SharpHoundCommonLib.Processors
 {
     public class RPCServer : IDisposable
     {
+        private const string DummyMachineSid = "DUMMYSTRING";
+
         private static readonly Lazy<byte[]> WellKnownSidBytes = new(() =>
         {
             var sid = new SecurityIdentifier("S-1-5-32");
@@ -26,10 +28,9 @@ namespace SharpHoundCommonLib.Processors
         private readonly string _computerName;
         private readonly string _computerSAMAccountName;
         private readonly SecurityIdentifier _computerSID;
+        private readonly string _computerDomainSid;
 
         private readonly DomainHandleManager _domainHandleManager;
-        private string _cachedMachineSid;
-        private readonly ConcurrentDictionary<string, CachedLocalItem> _typeCache = new();
 
         private readonly string[] _filteredSids =
         {
@@ -37,22 +38,23 @@ namespace SharpHoundCommonLib.Processors
             "S-1-5-19", "S-1-5-20"
         };
 
-        private const string DummyMachineSid = "DUMMYSTRING";
-
         private readonly ILogger _log;
 
         private readonly NativeMethods _nativeMethods;
-        private NativeMethods.OBJECT_ATTRIBUTES _obj;
-        private NativeMethods.LSA_OBJECT_ATTRIBUTES _lsaObj;
+        private readonly ConcurrentDictionary<string, CachedLocalItem> _typeCache = new();
         private readonly ILDAPUtils _utils;
-        private IntPtr _samServerHandle;
+        private string _cachedMachineSid;
+        private NativeMethods.LSA_OBJECT_ATTRIBUTES _lsaObj;
         private IntPtr _lsaPolicyHandle;
 
-        private bool _lsaServerOpen = false;
-        private bool _samServerOpen = false;
+        private bool _lsaServerOpen;
+        private NativeMethods.OBJECT_ATTRIBUTES _obj;
+        private IntPtr _samServerHandle;
+        private bool _samServerOpen;
 
         /// <summary>
-        ///     Creates an instance of an RPCServer which is used for making SharpHound specific SAMRPC/LSA API calls for computers.
+        ///     Creates an instance of an RPCServer which is used for making SharpHound specific SAMRPC/LSA API calls for
+        ///     computers.
         ///     OpenSAMServer should be called before any other operations
         /// </summary>
         /// <param name="computerName">The name of the computer to connect too. This should be the network name of the computer</param>
@@ -69,6 +71,7 @@ namespace SharpHoundCommonLib.Processors
             //Remove the trailing '$' from the SAMAccountName
             _computerSAMAccountName = samAccountName.Remove(samAccountName.Length - 1, 1);
             _computerSID = new SecurityIdentifier(computerSid);
+            _computerDomainSid = _computerSID.AccountDomainSid.Value;
             _computerName = computerName;
             _computerDomain = computerDomain;
             _utils = utils;
@@ -78,9 +81,30 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("RPCServer");
         }
 
+        public void Dispose()
+        {
+            if (_samServerHandle != IntPtr.Zero)
+            {
+                _nativeMethods.CallSamCloseHandle(_samServerHandle);
+                _samServerHandle = IntPtr.Zero;
+            }
+
+            if (_lsaPolicyHandle != IntPtr.Zero)
+            {
+                _nativeMethods.CallLSAClose(_lsaPolicyHandle);
+                _lsaPolicyHandle = IntPtr.Zero;
+            }
+
+            _domainHandleManager.Dispose();
+
+            _obj.Dispose();
+            _lsaObj.Dispose();
+        }
+
         /// <summary>
-        /// Opens the SAMRPC server for further use. This needs to be called before any other operations.
-        /// Refer to https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-samr/87bacbd0-7b8b-429f-abc6-4b3d895d4e90 for access masks 
+        ///     Opens the SAMRPC server for further use. This needs to be called before any other operations.
+        ///     Refer to https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-samr/87bacbd0-7b8b-429f-abc6-4b3d895d4e90
+        ///     for access masks
         /// </summary>
         /// <param name="requestedConnectAccess"></param>
         /// <param name="requestedDomainAccess"></param>
@@ -111,63 +135,254 @@ namespace SharpHoundCommonLib.Processors
                     APICall = "SamConnect"
                 };
             }
-            
+
             _samServerOpen = true;
+        }
+        
+        /// <summary>
+        ///     Opens the LSA policy for further use.
+        /// </summary>
+        /// <param name="desiredAccess"></param>
+        /// <exception cref="APIException">
+        ///     An exception indicates a failure to open the LSA policy
+        /// </exception>
+        public void OpenLSAServer(
+            NativeMethods.LsaOpenMask desiredAccess =
+                NativeMethods.LsaOpenMask.LookupNames | NativeMethods.LsaOpenMask.ViewLocalInfo)
+        {
+            var us = new NativeMethods.LSA_UNICODE_STRING(_computerName);
+            var status = _nativeMethods.CallLSAOpenPolicy(ref us, ref _lsaObj, desiredAccess,
+                out _lsaPolicyHandle);
+            _log.LogTrace($"LSAOpenPolicy returned {status} for {_computerName}");
+            if (status != NativeMethods.NtStatus.StatusSuccess)
+                throw new APIException
+                {
+                    Status = status.ToString(),
+                    APICall = "LSAOpenPolicy"
+                };
+
+            _lsaServerOpen = true;
+        }
+
+        public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments()
+        {
+            if (!_lsaServerOpen) OpenLSAServer();
+            
+            foreach (var privilege in LSAPrivileges.DesiredPrivileges)
+            {
+                var result = new UserRightsAssignmentAPIResult
+                {
+                    Collected = false,
+                    Privilege = privilege
+                };
+                
+                var status = _nativeMethods.CallLSAEnumerateAccountsWithUserRight(_lsaPolicyHandle, privilege,
+                    out var buffer, out var count);
+
+                if (status != NativeMethods.NtStatus.StatusSuccess)
+                {
+                    if (buffer != IntPtr.Zero)
+                    {
+                        _nativeMethods.CallLSAFreeMemory(buffer);
+                    }
+                    
+                    result.FailureReason = $"LSAEnumerateAccountsWithUserRight returned {status}";
+                    yield return result;
+                }
+
+                result.Collected = true;
+
+                var sids = new List<SecurityIdentifier>();
+                for (var i = 0; i < count; i++)
+                {
+                    try
+                    {
+                        var raw = Marshal.ReadIntPtr(buffer, Marshal.SizeOf<IntPtr>() * i);
+                        var sid = new SecurityIdentifier(raw);
+                        _log.LogTrace("Got sid {sid} for {ura}", sid.Value, privilege);
+                        sids.Add(sid);
+                    }
+                    catch (Exception e)
+                    {
+                        _log.LogTrace(e,"Exception converting sid");
+                    }
+                }
+                
+                if (_cachedMachineSid == null && !_samServerOpen)
+                {
+                    OpenSAMServer();
+                }
+
+                var resolved = new List<TypedPrincipal>();
+                var toResolve = new List<SecurityIdentifier>();
+                foreach (var sid in sids)
+                {
+                    if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+                    {
+                        common.ObjectIdentifier = $"{_computerSID}-{sid.Rid()}";
+                        if (common.ObjectType == Label.User)
+                        {
+                            common.ObjectType = Label.LocalUser;
+                        }else if (common.ObjectType == Label.Group)
+                        {
+                            common.ObjectType = Label.LocalGroup;
+                        }
+                        resolved.Add(common);
+                    }else if (IsMachineAccount(sid))
+                    {
+                        toResolve.Add(sid);
+                    }
+                    else
+                    {
+                        var res = _utils.ResolveIDAndType(sid.Value, _computerDomain);
+                        resolved.Add(res);
+                    }
+                }
+
+                if (toResolve.Count == 0)
+                {
+                    result.Results = resolved.ToArray();
+                    yield return result;
+                }
+                    
+
+                var resolvedNames = new List<NamedPrincipal>();
+                status = _nativeMethods.CallLSALookupSids(_lsaPolicyHandle, toResolve.ToArray(), out var domains,
+                    out var names);
+
+                if (status != NativeMethods.NtStatus.StatusSuccess && status != NativeMethods.NtStatus.StatusSomeMapped)
+                {
+                    _log.LogError("LSALookupSids returned {status} for {computer}, unable to resolve local sids", status, _computerName);
+                    resolved.AddRange(toResolve.Select(x => new TypedPrincipal(x.Value, Label.Base)));
+                    result.Results = resolved.ToArray();
+                    yield return result;
+                }
+
+                for (var i = 0; i < toResolve.Count; i++)
+                {
+                    var translated = Marshal.PtrToStructure<NativeMethods.LSATranslatedNames>(names +
+                        Marshal.SizeOf<NativeMethods.LSATranslatedNames>() * i);
+
+                    Label objectType;
+                    switch (translated.Use)
+                    {
+                        case NativeMethods.SidNameUse.User:
+                            objectType = Label.LocalUser;
+                            break;
+                        case NativeMethods.SidNameUse.Group:
+                            objectType = Label.LocalGroup;
+                            break;
+                        case NativeMethods.SidNameUse.Alias:
+                            objectType = Label.LocalGroup;
+                            break;
+                        case NativeMethods.SidNameUse.Domain:
+                        case NativeMethods.SidNameUse.WellKnownGroup:
+                        case NativeMethods.SidNameUse.DeletedAccount:
+                        case NativeMethods.SidNameUse.Invalid:
+                        case NativeMethods.SidNameUse.Unknown:
+                        case NativeMethods.SidNameUse.Computer:
+                        case NativeMethods.SidNameUse.Label:
+                        case NativeMethods.SidNameUse.LogonSession:
+                        default:
+                            objectType = Label.Base;
+                            break;
+                    }
+                    
+                    resolved.Add(new TypedPrincipal(toResolve[i].Value, objectType));
+                    try
+                    {
+                        resolvedNames.Add(new NamedPrincipal(translated.Name.ToString(), toResolve[i].Value));    
+                    }catch {}
+                    
+                }
+
+                _nativeMethods.CallLSAFreeMemory(names);
+                _nativeMethods.CallLSAFreeMemory(domains);
+
+                result.Results = resolved.ToArray();
+                result.LocalNames = resolvedNames.ToArray();
+
+                yield return result;
+            }
+        }
+
+        private bool IsMachineAccount(SecurityIdentifier sid)
+        {
+            var stringSid = sid.Value;
+            return IsMachineAccount(stringSid);
+        }
+
+        private bool IsMachineAccount(string sid)
+        {
+            if (sid.StartsWith(_computerDomainSid))
+                return false;
+
+            string machineSid;
+
+            if (_lsaServerOpen)
+            {
+                GetMachineSidLSA(out machineSid);
+            }else if (_samServerOpen)
+            {
+                GetMachineSid(out machineSid);    
+            }
+            else
+            {
+                OpenSAMServer();
+                GetMachineSid(out machineSid);
+            }
+
+            if (machineSid.StartsWith(_computerDomainSid))
+                return false;
+
+            return true;
         }
 
         public IEnumerable<LocalGroupAPIResult> GetGroupsAndMembers()
         {
             //First open the SAM server if it hasn't already been
-            if (!_samServerOpen)
-            {
-                OpenSAMServer();
-            }
+            if (!_samServerOpen) OpenSAMServer();
 
             var groupCache = new ConcurrentBag<LocalGroupAPIResult>();
 
             GetMachineSid(out var machineSid);
 
             foreach (var domainName in ListDomainsInServer())
-            {
                 if (OpenDomainHandle(domainName, out var domainHandle))
-                {
                     foreach (var group in GetGroupsFromDomain(domainHandle))
                     {
                         _typeCache.TryAdd(group.ObjectID, new CachedLocalItem(group.Name, Label.LocalGroup));
                         var result = GetLocalGroupMembers(domainHandle, group);
                         groupCache.Add(result);
                     }
-                }   
-            }
-            _log.LogInformation("Beginning resolution of local types");
+
+            _log.LogTrace("Beginning resolution of local types");
             // We've got all our local groups, now we need to resolve unresolved types
             foreach (var group in groupCache)
             {
                 if (!group.Collected)
                     continue;
-                
-                _log.LogInformation("Resolving types for {Group}", group.Name);
 
                 var names = new List<NamedPrincipal>();
                 var resolvedPrincipals = new List<TypedPrincipal>();
-                
+
                 foreach (var result in group.Results)
                 {
-                    _log.LogInformation(result.ToString());
-                    if (result.ObjectType != Label.Base || !result.ObjectIdentifier.StartsWith(machineSid) || result.ObjectIdentifier.StartsWith(_computerSID.AccountDomainSid.Value))
+                    if (result.ObjectType != Label.Base || !result.ObjectIdentifier.StartsWith(machineSid) ||
+                        result.ObjectIdentifier.StartsWith(_computerSID.AccountDomainSid.Value))
                     {
                         resolvedPrincipals.Add(result);
                         continue;
                     }
 
                     var sid = new SecurityIdentifier(result.ObjectIdentifier);
-                    _log.LogInformation("Resolving {Sid} in local", sid.Value);
+                    _log.LogTrace("Resolving {Sid} in local", sid.Value);
                     if (!ResolveLocalSid(sid, out var name, out var type))
                     {
                         resolvedPrincipals.Add(result);
                         continue;
                     }
-                    
+
                     names.Add(new NamedPrincipal(name, result.ObjectIdentifier));
                     resolvedPrincipals.Add(new TypedPrincipal(result.ObjectIdentifier, type));
                 }
@@ -179,37 +394,13 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        // public bool OpenDomainHandle(SecurityIdentifier securityIdentifier, out IntPtr domainHandle,
-        //     NativeMethods.DomainAccessMask requestedDomainAccess = NativeMethods.DomainAccessMask.Lookup |
-        //                                                            NativeMethods.DomainAccessMask.ListAccounts)
-        // {
-        //     var sid = securityIdentifier.AccountDomainSid.Value;
-        //     if (_domainHandleManager.GetHandleBySid(securityIdentifier, out domainHandle))
-        //         return true;
-        //
-        //     var bytes = new byte[securityIdentifier.BinaryLength];
-        //     securityIdentifier.GetBinaryForm(bytes, 0);
-        //     var status =
-        //         _nativeMethods.CallSamOpenDomain(_samServerHandle, requestedDomainAccess, bytes, out domainHandle);
-        //     if (status != NativeMethods.NtStatus.StatusSuccess)
-        //     {
-        //         if (domainHandle != IntPtr.Zero)
-        //             _nativeMethods.CallSamFreeMemory(domainHandle);
-        //         return false;
-        //     }
-        //     
-        //     _domainHandleManager.AddMappedDomain(securityIdentifier,);
-        //
-        //     return true;
-        // }
-
         public bool OpenDomainHandle(string domainName, out IntPtr domainHandle,
             NativeMethods.DomainAccessMask requestedDomainAccess = NativeMethods.DomainAccessMask.Lookup |
                                                                    NativeMethods.DomainAccessMask.ListAccounts)
         {
             if (_domainHandleManager.GetHandleByName(domainName, out domainHandle))
                 return true;
-            
+
             domainHandle = IntPtr.Zero;
             if (!LookupDomainSid(domainName, out var sid)) return false;
 
@@ -223,8 +414,8 @@ namespace SharpHoundCommonLib.Processors
                     _nativeMethods.CallSamFreeMemory(domainHandle);
                 return false;
             }
-            
-            _log.LogInformation("Adding domain to manager: {domain}, {sid}", domainName, sid.ToString());
+
+            _log.LogTrace("Adding domain to manager: {domain}, {sid}", domainName, sid.ToString());
             _domainHandleManager.AddMappedDomain(sid, domainName, domainHandle);
 
             return true;
@@ -247,56 +438,9 @@ namespace SharpHoundCommonLib.Processors
                 return false;
             }
 
-            _domainHandleManager.AddMappedDomain("S-1-5-32","BUILTIN", domainHandle);
+            _domainHandleManager.AddMappedDomain("S-1-5-32", "BUILTIN", domainHandle);
 
             return true;
-        }
-
-        /// <summary>
-        /// Opens the LSA policy for further use.
-        /// </summary>
-        /// <param name="desiredAccess"></param>
-        /// <exception cref="APIException">
-        /// An exception indicates a failure to open the LSA policy
-        /// </exception>
-        public void OpenLSAServer(
-            NativeMethods.LsaOpenMask desiredAccess =
-                NativeMethods.LsaOpenMask.LookupNames | NativeMethods.LsaOpenMask.ViewLocalInfo)
-        {
-            var us = new NativeMethods.LSA_UNICODE_STRING(_computerName);
-            var status = _nativeMethods.CallLSAOpenPolicy(ref us, ref _lsaObj, desiredAccess,
-                out _lsaPolicyHandle);
-            _log.LogTrace($"LSAOpenPolicy returned {status} for {_computerName}");
-            if (status != NativeMethods.NtStatus.StatusSuccess)
-            {
-                throw new APIException
-                {
-                    Status = status.ToString(),
-                    APICall = "LSAOpenPolicy"
-                };
-            }
-
-            _lsaServerOpen = true;
-        }
-
-        public void Dispose()
-        {
-            if (_samServerHandle != IntPtr.Zero)
-            {
-                _nativeMethods.CallSamCloseHandle(_samServerHandle);
-                _samServerHandle = IntPtr.Zero;
-            }
-
-            if (_lsaPolicyHandle != IntPtr.Zero)
-            {
-                _nativeMethods.CallLSAClose(_lsaPolicyHandle);
-                _lsaPolicyHandle = IntPtr.Zero;
-            }
-            
-            _domainHandleManager.Dispose();
-
-            _obj.Dispose();
-            _lsaObj.Dispose();
         }
 
         ~RPCServer()
@@ -330,13 +474,13 @@ namespace SharpHoundCommonLib.Processors
             for (var i = 0; i < count; i++)
             {
                 var data = Marshal.PtrToStructure<NativeMethods.SamRidEnumeration>(rids +
-                    (i * NativeMethods.SamRidEnumeration.SizeOf));
+                    i * NativeMethods.SamRidEnumeration.SizeOf);
                 _log.LogTrace("Got entry {Name} with RID {Rid}", data.Name, data.Rid);
                 var group = new LocalGroup
                 {
                     Name = data.Name.ToString(),
                     Rid = data.Rid,
-                    ObjectID = $"{machineSid}-{data.Rid}"
+                    ObjectID = $"{_computerSID}-{data.Rid}"
                 };
                 yield return group;
             }
@@ -358,18 +502,16 @@ namespace SharpHoundCommonLib.Processors
                 _log.LogTrace("SamEnumerateDomainsInSamServer returned {Status} on {ComputerName}", status,
                     _computerName);
                 if (status != NativeMethods.NtStatus.StatusSuccess || count == 0)
-                {
                     throw new APIException
                     {
                         Status = status.ToString(),
                         APICall = "SamEnumerateDomainsInSamServer"
                     };
-                }
 
                 for (var i = 0; i < count; i++)
                 {
                     var data = Marshal.PtrToStructure<NativeMethods.SamRidEnumeration>(domains +
-                        (i * NativeMethods.SamRidEnumeration.SizeOf));
+                        i * NativeMethods.SamRidEnumeration.SizeOf);
                     yield return data.Name.ToString();
                 }
             }
@@ -379,10 +521,11 @@ namespace SharpHoundCommonLib.Processors
                     _nativeMethods.CallSamFreeMemory(domains);
             }
         }
-        
+
 
         /// <summary>
-        ///     Reads the members in a specified local group from the open domain. The group is referenced by its RID (Relative Identifier).
+        ///     Reads the members in a specified local group from the open domain. The group is referenced by its RID (Relative
+        ///     Identifier).
         ///     Groups current used by SharpHound can be found in <cref>LocalGroupRids</cref>
         /// </summary>
         /// <param name="domainHandle"></param>
@@ -466,10 +609,10 @@ namespace SharpHoundCommonLib.Processors
                 var sid = x.Value.ToUpper();
                 if (!sid.StartsWith(machineSid) || sid.StartsWith(_computerSID.AccountDomainSid.Value))
                 {
-                    _log.LogInformation("Resolving {Sid} in domain", sid);
+                    _log.LogTrace("Resolving {Sid} in domain", sid);
                     return _utils.ResolveIDAndType(sid, _computerDomain);
                 }
-                
+
                 return new TypedPrincipal
                 {
                     ObjectIdentifier = sid,
@@ -487,7 +630,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (_typeCache.TryGetValue(identifier.Value, out var item))
             {
-                _log.LogInformation("Cache hit for {ID}", identifier.Value);
+                _log.LogTrace("ResolveLocalSid - Cache hit for {ID}", identifier.Value);
                 name = item.Name;
                 objectType = item.Type;
                 return true;
@@ -495,61 +638,104 @@ namespace SharpHoundCommonLib.Processors
 
             var domainSid = identifier.AccountDomainSid.Value;
             var rid = identifier.Rid();
-            
-            _log.LogTrace("Starting resolution for {ID} in domain {Domain} with RID {rid}", identifier.Value, domainSid, rid);
+
+            _log.LogTrace("ResolveLocalSid - Starting resolution for {ID} in domain {Domain} with RID {rid}",
+                identifier.Value, domainSid, rid);
 
             name = null;
             objectType = Label.Base;
-            
+
             if (!_domainHandleManager.GetHandleBySid(domainSid, out var handle))
             {
-                _log.LogInformation("Failed to get handle by SID");
+                _log.LogTrace("ResolveLocalSid - Failed to get handle for {SID}", domainSid);
                 return false;
             }
-            
+
             var ridArray = new int[1];
             ridArray[0] = rid;
             var status =
                 _nativeMethods.CallSamLookupIdsInDomain(handle, ridArray, out var names, out var use);
+            try
+            {
+                if (status != NativeMethods.NtStatus.StatusSuccess)
+                {
+                    _log.LogTrace("SamLookupIdsInDomain returned {Status} for {Rid} in domain {Domain}", status, rid,
+                        domainSid);
+                    name = null;
+                    objectType = Label.Base;
+                    return false;
+                }
+
+                var convertedName = Marshal.PtrToStructure<NativeMethods.UNICODE_STRING>(names);
+                name = convertedName.ToString();
+
+                var snu = (NativeMethods.SidNameUse) Marshal.ReadInt32(use, 0);
+
+                switch (snu)
+                {
+                    case NativeMethods.SidNameUse.User:
+                        objectType = Label.LocalUser;
+                        break;
+                    case NativeMethods.SidNameUse.Group:
+                        objectType = Label.LocalGroup;
+                        break;
+                    case NativeMethods.SidNameUse.Alias:
+                        objectType = Label.LocalGroup;
+                        break;
+                    case NativeMethods.SidNameUse.Domain:
+                    case NativeMethods.SidNameUse.WellKnownGroup:
+                    case NativeMethods.SidNameUse.DeletedAccount:
+                    case NativeMethods.SidNameUse.Invalid:
+                    case NativeMethods.SidNameUse.Unknown:
+                    case NativeMethods.SidNameUse.Computer:
+                    case NativeMethods.SidNameUse.Label:
+                    case NativeMethods.SidNameUse.LogonSession:
+                    default:
+                        objectType = Label.Base;
+                        break;
+                }
+
+                return true;
+            }
+            finally
+            {
+                if (names != IntPtr.Zero) _nativeMethods.CallSamFreeMemory(names);
+
+                if (use != IntPtr.Zero) _nativeMethods.CallSamFreeMemory(use);
+            }
+        }
+
+        public bool GetMachineSidLSA(out string machineSid)
+        {
+            if (Cache.GetMachineSid(_computerSID.Value, out machineSid))
+                return true;
+
+            if (_cachedMachineSid != null)
+            {
+                machineSid = _cachedMachineSid;
+                return true;
+            }
+
+            if (!_lsaServerOpen)
+            {
+                OpenLSAServer();
+            }
+
+            var status = _nativeMethods.CallLsaQueryInformationPolicy(_lsaPolicyHandle,
+                NativeMethods.LSAPolicyInformation.PolicyAccountDomainInformation, out var buffer);
             if (status != NativeMethods.NtStatus.StatusSuccess)
             {
-                name = null;
-                objectType = Label.Base;
+                machineSid = DummyMachineSid;
                 return false;
             }
 
-            var convertedName = Marshal.PtrToStructure<NativeMethods.UNICODE_STRING>(names);
-            name = convertedName.ToString();
-            
-            _log.LogInformation(name);
+            var data = Marshal.PtrToStructure<NativeMethods.POLICY_ACCOUNT_DOMAIN_INFO>(buffer);
+            _nativeMethods.CallLSAFreeMemory(buffer);
 
-            var snu = (NativeMethods.SidNameUse)Marshal.ReadInt32(use, 0);
-
-            switch (snu)
-            {
-                case NativeMethods.SidNameUse.User:
-                    objectType = Label.LocalUser;
-                    break;
-                case NativeMethods.SidNameUse.Group:
-                    objectType = Label.LocalGroup;
-                    break;
-                case NativeMethods.SidNameUse.Alias:
-                    objectType = Label.LocalGroup;
-                    break;
-                case NativeMethods.SidNameUse.WellKnownGroup:
-                case NativeMethods.SidNameUse.Domain:
-                case NativeMethods.SidNameUse.DeletedAccount:
-                case NativeMethods.SidNameUse.Invalid:
-                case NativeMethods.SidNameUse.Unknown:
-                case NativeMethods.SidNameUse.Computer:
-                case NativeMethods.SidNameUse.Label:
-                case NativeMethods.SidNameUse.LogonSession:
-                    objectType = Label.Base;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
+            var sid = new SecurityIdentifier(data.DomainSid);
+            machineSid = sid.Value;
+            _cachedMachineSid = machineSid;
+            Cache.AddMachineSid(_computerSID.Value, machineSid);
             return true;
         }
 
@@ -592,10 +778,7 @@ namespace SharpHoundCommonLib.Processors
             machineSid = DummyMachineSid;
             _cachedMachineSid = machineSid;
 
-            if (!OpenBuiltInDomain(out var domainHandle))
-            {
-                return false;
-            }
+            if (!OpenBuiltInDomain(out var domainHandle)) return false;
 
             //As a fallback, try and retrieve the local administrators group and get the first account with a rid of 500
             //If at any time we encounter a failure, just return a dummy sid that wont match anything
@@ -709,9 +892,6 @@ namespace SharpHoundCommonLib.Processors
 
     public class APIException : Exception
     {
-        public string Status { get; set; }
-        public string APICall { get; set; }
-
         public APIException()
         {
         }
@@ -721,6 +901,9 @@ namespace SharpHoundCommonLib.Processors
             Status = status.ToString();
             APICall = apiCall;
         }
+
+        public string Status { get; set; }
+        public string APICall { get; set; }
 
         public override string ToString()
         {
@@ -744,12 +927,12 @@ namespace SharpHoundCommonLib.Processors
         DcomUsers = 562,
         PSRemote = 580
     }
-    
-    class DomainHandleManager
+
+    internal class DomainHandleManager
     {
-        private Dictionary<string, string> _sidToDomainMap = new();
-        private Dictionary<string, IntPtr> _nameToHandleMap = new();
         private readonly NativeMethods _nativeMethods;
+        private readonly Dictionary<string, IntPtr> _nameToHandleMap = new();
+        private readonly Dictionary<string, string> _sidToDomainMap = new();
 
         internal DomainHandleManager(NativeMethods nativeMethods = null)
         {
@@ -768,11 +951,11 @@ namespace SharpHoundCommonLib.Processors
                 _sidToDomainMap.Add(sid.AccountDomainSid.Value.ToUpper(), name.ToUpper());
                 _sidToDomainMap.Add(name.ToUpper(), sid.AccountDomainSid.Value.ToUpper());
             }
-            
-            
+
+
             _nameToHandleMap.Add(name.ToUpper(), handle);
         }
-        
+
         internal void AddMappedDomain(string sid, string name, IntPtr handle)
         {
             _sidToDomainMap.Add(sid.ToUpper(), name.ToUpper());
@@ -788,9 +971,7 @@ namespace SharpHoundCommonLib.Processors
         internal bool GetHandleBySid(string sid, out IntPtr domainHandle)
         {
             if (_sidToDomainMap.TryGetValue(sid.ToUpper(), out var domainName))
-            {
                 return _nameToHandleMap.TryGetValue(domainName, out domainHandle);
-            }
 
             domainHandle = IntPtr.Zero;
             return false;
@@ -800,9 +981,7 @@ namespace SharpHoundCommonLib.Processors
         {
             var sidString = sid.AccountDomainSid.Value.ToUpper();
             if (_sidToDomainMap.TryGetValue(sidString, out var domainName))
-            {
                 return _nameToHandleMap.TryGetValue(domainName, out domainHandle);
-            }
 
             domainHandle = IntPtr.Zero;
             return false;
@@ -819,7 +998,6 @@ namespace SharpHoundCommonLib.Processors
 
             foreach (var kv in _nameToHandleMap)
             {
-                
             }
         }
 
@@ -829,16 +1007,15 @@ namespace SharpHoundCommonLib.Processors
         }
     }
 
-    class CachedLocalItem
+    internal class CachedLocalItem
     {
-        public string Name { get; set; }
-        public Label Type { get; set; }
-
         public CachedLocalItem(string name, Label type)
         {
             Name = name;
             Type = type;
         }
+
+        public string Name { get; set; }
+        public Label Type { get; set; }
     }
 }
-

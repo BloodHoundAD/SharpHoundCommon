@@ -242,6 +242,11 @@ namespace SharpHoundCommonLib
             return LsaClose(handle);
         }
 
+        public virtual NtStatus CallLSAFreeMemory(IntPtr handle)
+        {
+            return LsaFreeMemory(handle);
+        }
+
         public virtual NtStatus CallLSALookupSids(IntPtr policyHandle, SecurityIdentifier[] sids,
             out IntPtr referencedDomains, out IntPtr names)
         {
@@ -297,6 +302,19 @@ namespace SharpHoundCommonLib
                     if (handle.IsAllocated)
                         handle.Free();
             }
+        }
+
+        public virtual NtStatus CallLsaQueryInformationPolicy(IntPtr policyHandle,
+            LSAPolicyInformation policyInformation, out IntPtr buffer)
+        {
+            return LsaQueryInformationPolicy(policyHandle, policyInformation, out buffer);
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POLICY_ACCOUNT_DOMAIN_INFO
+        {
+            public LSA_UNICODE_STRING DomainName;
+            public IntPtr DomainSid;
         }
 
         public struct OBJECT_ATTRIBUTES : IDisposable
@@ -692,7 +710,16 @@ namespace SharpHoundCommonLib
         );
 
         [DllImport("advapi32.dll")]
+        private static extern NtStatus LsaQueryInformationPolicy(
+            IntPtr policyHandle, LSAPolicyInformation policyInformation, out IntPtr buffer);
+
+        [DllImport("advapi32.dll")]
         private static extern NtStatus LsaClose(
+            IntPtr buffer
+        );
+
+        [DllImport("advapi32.dll")]
+        public static extern NtStatus LsaFreeMemory(
             IntPtr buffer
         );
 
@@ -711,6 +738,23 @@ namespace SharpHoundCommonLib
             ReturnLocalNames = 0,
             PreferInternetNames = 0x40000000,
             DisallowsConnectedAccountInternetSid = 0x80000000
+        }
+        
+        [Flags]
+        public enum LSAPolicyInformation
+        {
+            PolicyAuditLogInformation = 1,
+            PolicyAuditEventsInformation,
+            PolicyPrimaryDomainInformation,
+            PolicyPdAccountInformation,
+            PolicyAccountDomainInformation,
+            PolicyLsaServerRoleInformation,
+            PolicyReplicaSourceInformation,
+            PolicyDefaultQuotaInformation,
+            PolicyModificationInformation,
+            PolicyAuditFullSetInformation,
+            PolicyAuditFullQueryInformation,
+            PolicyDnsDomainInformation
         }
 
         [Flags]
@@ -761,7 +805,7 @@ namespace SharpHoundCommonLib
 
             public override string ToString()
             {
-                return (Buffer != IntPtr.Zero ? Marshal.PtrToStringUni(Buffer) : null) ??
+                return (Buffer != IntPtr.Zero ? Marshal.PtrToStringUni(Buffer, Length / 2) : null) ??
                        throw new InvalidOperationException();
             }
         }
@@ -783,6 +827,14 @@ namespace SharpHoundCommonLib
                 Marshal.FreeHGlobal(ObjectName);
                 ObjectName = IntPtr.Zero;
             }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct LSATranslatedNames
+        {
+            public SidNameUse Use;
+            public LSA_UNICODE_STRING Name;
+            public int DomainIndex;
         }
 
         public class SidPointer

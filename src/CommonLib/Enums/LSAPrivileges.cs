@@ -46,5 +46,7 @@
         public const string TimeZone = "SeTimeZonePrivilege";
         public const string TrustedCredManAccess = "SeTrustedCredManAccessPrivilege";
         public const string Undock = "SeUndockPrivilege";
+
+        public static readonly string[] DesiredPrivileges = {RemoteInteractiveLogon};
     }
 }
