@@ -207,11 +207,8 @@ namespace SharpHoundCommonLib.Processors
                         _log.LogTrace(e,"Exception converting sid");
                     }
                 }
-                
-                if (_cachedMachineSid == null && !_samServerOpen)
-                {
-                    OpenSAMServer();
-                }
+
+                GetMachineSidLSA(out var machineSid);
 
                 var resolved = new List<TypedPrincipal>();
                 var toResolve = new List<SecurityIdentifier>();
@@ -219,7 +216,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
                     {
-                        common.ObjectIdentifier = $"{_computerSID}-{sid.Rid()}";
+                        common.ObjectIdentifier = $"{machineSid}-{sid.Rid()}";
                         if (common.ObjectType == Label.User)
                         {
                             common.ObjectType = Label.LocalUser;
@@ -480,7 +477,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     Name = data.Name.ToString(),
                     Rid = data.Rid,
-                    ObjectID = $"{_computerSID}-{data.Rid}"
+                    ObjectID = $"{machineSid}-{data.Rid}"
                 };
                 yield return group;
             }
