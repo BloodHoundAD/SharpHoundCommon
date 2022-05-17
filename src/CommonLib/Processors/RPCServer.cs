@@ -164,11 +164,18 @@ namespace SharpHoundCommonLib.Processors
             _lsaServerOpen = true;
         }
 
-        public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments()
+        /// <summary>
+        /// Gets principals with specified User Rights. If no rights are provided, defaults to the list in LSAPrivileges.DesiredPrivileges
+        /// </summary>
+        /// <param name="desiredPrivileges"></param>
+        /// <returns></returns>
+        public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string[] desiredPrivileges = null)
         {
             if (!_lsaServerOpen) OpenLSAServer();
+
+            desiredPrivileges ??= LSAPrivileges.DesiredPrivileges;
             
-            foreach (var privilege in LSAPrivileges.DesiredPrivileges)
+            foreach (var privilege in desiredPrivileges)
             {
                 var result = new UserRightsAssignmentAPIResult
                 {
@@ -302,7 +309,7 @@ namespace SharpHoundCommonLib.Processors
                 yield return result;
             }
         }
-
+        
         private bool IsMachineAccount(SecurityIdentifier sid)
         {
             var stringSid = sid.Value;
@@ -335,6 +342,10 @@ namespace SharpHoundCommonLib.Processors
             return true;
         }
 
+        /// <summary>
+        /// Gets all local groups and their members
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<LocalGroupAPIResult> GetGroupsAndMembers()
         {
             //First open the SAM server if it hasn't already been
@@ -391,6 +402,13 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
+        /// <summary>
+        /// Opens a domain handle in the SAM server
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <param name="domainHandle"></param>
+        /// <param name="requestedDomainAccess"></param>
+        /// <returns></returns>
         public bool OpenDomainHandle(string domainName, out IntPtr domainHandle,
             NativeMethods.DomainAccessMask requestedDomainAccess = NativeMethods.DomainAccessMask.Lookup |
                                                                    NativeMethods.DomainAccessMask.ListAccounts)
@@ -418,6 +436,12 @@ namespace SharpHoundCommonLib.Processors
             return true;
         }
 
+        /// <summary>
+        /// Opens the built in domain
+        /// </summary>
+        /// <param name="domainHandle"></param>
+        /// <param name="requestedDomainAccess"></param>
+        /// <returns></returns>
         public bool OpenBuiltInDomain(out IntPtr domainHandle,
             NativeMethods.DomainAccessMask requestedDomainAccess = NativeMethods.DomainAccessMask.Lookup |
                                                                    NativeMethods.DomainAccessMask.ListAccounts)
@@ -445,6 +469,12 @@ namespace SharpHoundCommonLib.Processors
             Dispose();
         }
 
+        /// <summary>
+        /// Gets the list of aliases in a domain
+        /// </summary>
+        /// <param name="domainHandle"></param>
+        /// <returns></returns>
+        /// <exception cref="APIException"></exception>
         public IEnumerable<LocalGroup> GetGroupsFromDomain(IntPtr domainHandle)
         {
             if (!_samServerOpen)
@@ -483,6 +513,11 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
+        /// <summary>
+        /// Lists the domains in the SAM Server
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="APIException"></exception>
         public IEnumerable<string> ListDomainsInServer()
         {
             if (!_samServerOpen)
@@ -539,7 +574,7 @@ namespace SharpHoundCommonLib.Processors
             var result = new LocalGroupAPIResult
             {
                 GroupRID = group.Rid,
-                ObjectId = group.ObjectID,
+                ObjectIdentifier = group.ObjectID,
                 Name = group.Name
             };
 
@@ -702,6 +737,11 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
+        /// <summary>
+        /// Gets the machine SID using LSA calls
+        /// </summary>
+        /// <param name="machineSid"></param>
+        /// <returns></returns>
         public bool GetMachineSidLSA(out string machineSid)
         {
             if (Cache.GetMachineSid(_computerSID.Value, out machineSid))

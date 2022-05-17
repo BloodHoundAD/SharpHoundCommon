@@ -14,10 +14,8 @@ namespace SharpHoundCommonLib.OutputTypes
         public SessionAPIResult Sessions { get; set; } = new();
         public SessionAPIResult PrivilegedSessions { get; set; } = new();
         public SessionAPIResult RegistrySessions { get; set; } = new();
-        public LocalGroupAPIResult LocalAdmins { get; set; } = new();
-        public LocalGroupAPIResult RemoteDesktopUsers { get; set; } = new();
-        public LocalGroupAPIResult DcomUsers { get; set; } = new();
-        public LocalGroupAPIResult PSRemoteUsers { get; set; } = new();
+        public LocalGroupAPIResult[] LocalGroups { get; set; } = Array.Empty<LocalGroupAPIResult>();
+        public UserRightsAssignmentAPIResult[] UserRights { get; set; } = Array.Empty<UserRightsAssignmentAPIResult>();
         public ComputerStatus Status { get; set; }
     }
 
