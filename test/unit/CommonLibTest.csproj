@@ -37,18 +37,6 @@
     <PackageReference Include="ReportGenerator" Version="4.8.9" />
   </ItemGroup>
 
-  <!-- Tools -->
-  <ItemGroup>
-    <Folder Include="LDAPDumps" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="LDAPDumps\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DeploymentContent>true</DeploymentContent>
-      <Link>LDAPDumps\%(RecursiveDir)\%(Filename)%(Extension)</Link>
-    </Content>
-  </ItemGroup>
-
   <!-- Coverage -->
   <ItemGroup>
     <CoverageFiles Include="../../docfx/coverage/coverage.opencover.xml" />
