@@ -1,6 +1,3 @@
-﻿using System;
-
-namespace SharpHoundCommonLib.Processors
+﻿namespace SharpHoundCommonLib.Processors
 {
-    
 }

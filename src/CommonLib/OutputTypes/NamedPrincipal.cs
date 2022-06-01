@@ -2,15 +2,18 @@
 {
     public class NamedPrincipal
     {
-        public string PrincipalName { get; set; }
-        public string ObjectId { get; set; }
-        public NamedPrincipal(){}
+        public NamedPrincipal()
+        {
+        }
 
         public NamedPrincipal(string principalName, string objectId)
         {
             PrincipalName = principalName;
             ObjectId = objectId;
         }
+
+        public string PrincipalName { get; set; }
+        public string ObjectId { get; set; }
 
         public override string ToString()
         {

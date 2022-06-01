@@ -511,8 +511,8 @@ namespace SharpHoundCommonLib
             public int Rid;
             public UNICODE_STRING Name;
         }
-        
-        public enum SidNameUse : int
+
+        public enum SidNameUse
         {
             User = 1,
             Group,
@@ -739,7 +739,7 @@ namespace SharpHoundCommonLib
             PreferInternetNames = 0x40000000,
             DisallowsConnectedAccountInternetSid = 0x80000000
         }
-        
+
         [Flags]
         public enum LSAPolicyInformation
         {

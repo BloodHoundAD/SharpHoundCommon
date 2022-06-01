@@ -28,7 +28,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Helper function using commonlib types to pass to GetContainerChildObjects
+        ///     Helper function using commonlib types to pass to GetContainerChildObjects
         /// </summary>
         /// <param name="result"></param>
         /// <param name="entry"></param>
@@ -52,8 +52,8 @@ namespace SharpHoundCommonLib.Processors
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
             foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
-                CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName),
-                adsPath: distinguishedName))
+                         CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName),
+                         adsPath: distinguishedName))
             {
                 var dn = childEntry.DistinguishedName;
                 if (IsDistinguishedNameFiltered(dn))

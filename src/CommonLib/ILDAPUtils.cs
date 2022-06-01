@@ -10,7 +10,7 @@ using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 namespace SharpHoundCommonLib
 {
     /// <summary>
-    /// Struct representing options to create an LDAP query
+    ///     Struct representing options to create an LDAP query
     /// </summary>
     public struct LDAPQueryOptions
     {

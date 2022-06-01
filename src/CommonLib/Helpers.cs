@@ -11,17 +11,17 @@ namespace SharpHoundCommonLib
 {
     public static class Helpers
     {
-        private static readonly HashSet<string> Groups = new() { "268435456", "268435457", "536870912", "536870913" };
-        private static readonly HashSet<string> Computers = new() { "805306369" };
-        private static readonly HashSet<string> Users = new() { "805306368" };
+        private static readonly HashSet<string> Groups = new() {"268435456", "268435457", "536870912", "536870913"};
+        private static readonly HashSet<string> Computers = new() {"805306369"};
+        private static readonly HashSet<string> Users = new() {"805306368"};
 
         private static readonly Regex DCReplaceRegex = new("DC=", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SPNRegex = new(@".*\/.*", RegexOptions.Compiled);
         private static readonly DateTime EpochDiff = new(1970, 1, 1);
 
         /// <summary>
-        /// Splits a GPLink property into its representative parts
-        /// Filters disabled links by default
+        ///     Splits a GPLink property into its representative parts
+        ///     Filters disabled links by default
         /// </summary>
         /// <param name="linkProp"></param>
         /// <param name="filterDisabled"></param>
@@ -29,7 +29,7 @@ namespace SharpHoundCommonLib
         public static IEnumerable<ParsedGPLink> SplitGPLinkProperty(string linkProp, bool filterDisabled = true)
         {
             foreach (var link in linkProp.Split(']', '[')
-                .Where(x => x.StartsWith("LDAP", StringComparison.OrdinalIgnoreCase)))
+                         .Where(x => x.StartsWith("LDAP", StringComparison.OrdinalIgnoreCase)))
             {
                 var s = link.Split(';');
                 var dn = s[0].Substring(s[0].IndexOf("CN=", StringComparison.OrdinalIgnoreCase));
@@ -151,7 +151,7 @@ namespace SharpHoundCommonLib
 
             try
             {
-                toReturn = (long)Math.Floor(DateTime.FromFileTimeUtc(time).Subtract(EpochDiff).TotalSeconds);
+                toReturn = (long) Math.Floor(DateTime.FromFileTimeUtc(time).Subtract(EpochDiff).TotalSeconds);
             }
             catch
             {
@@ -171,7 +171,7 @@ namespace SharpHoundCommonLib
             try
             {
                 var dt = DateTime.ParseExact(ldapTime, "yyyyMMddHHmmss.0K", CultureInfo.CurrentCulture);
-                return (long)dt.Subtract(EpochDiff).TotalSeconds;
+                return (long) dt.Subtract(EpochDiff).TotalSeconds;
             }
             catch
             {

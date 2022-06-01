@@ -59,7 +59,7 @@ namespace SharpHoundCommonLib
             var uac = _entry.GetProperty(LDAPProperties.UserAccountControl);
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UacFlags)flag;
+                var flags = (UacFlags) flag;
                 if ((flags & UacFlags.ServerTrustAccount) != 0)
                 {
                     _log.LogTrace("Marked {SID} as a domain controller", objectId);
@@ -99,7 +99,7 @@ namespace SharpHoundCommonLib
             _log.LogTrace("Resolved domain for {SID} to {Domain}", objectId, itemDomain);
 
             res.Domain = itemDomain;
-            
+
             if (WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var wkPrincipal))
             {
                 res.DomainSid = _utils.GetSidFromDomainName(itemDomain);

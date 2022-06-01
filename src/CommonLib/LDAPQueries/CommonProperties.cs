@@ -3,11 +3,11 @@
     public static class CommonProperties
     {
         public static readonly string[] TypeResolutionProps =
-            { "samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership" };
+            {"samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership"};
 
-        public static readonly string[] ObjectID = { "objectsid", "objectguid" };
-        public static readonly string[] ObjectSID = { "objectsid" };
-        public static readonly string[] GPCFileSysPath = { "gpcfilesyspath" };
+        public static readonly string[] ObjectID = {"objectsid", "objectguid"};
+        public static readonly string[] ObjectSID = {"objectsid"};
+        public static readonly string[] GPCFileSysPath = {"gpcfilesyspath"};
 
         public static readonly string[] BaseQueryProps =
         {
@@ -53,7 +53,7 @@
         };
 
         public static readonly string[] DomainTrustProps =
-            { "trustattributes", "securityidentifier", "trustdirection", "trusttype", "cn" };
+            {"trustattributes", "securityidentifier", "trustdirection", "trusttype", "cn"};
 
         public static readonly string[] GPOLocalGroupProps =
         {

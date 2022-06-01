@@ -28,7 +28,7 @@ namespace SharpHoundCommonLib.Processors
         {
             var query = CommonFilters.TrustedDomains;
             foreach (var result in _utils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps,
-                domain))
+                         domain))
             {
                 var trust = new DomainTrust();
                 var targetSidBytes = result.GetByteProperty(LDAPProperties.SecurityIdentifier);
@@ -53,7 +53,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (int.TryParse(result.GetProperty(LDAPProperties.TrustDirection), out var td))
                 {
-                    trust.TrustDirection = (TrustDirection)td;
+                    trust.TrustDirection = (TrustDirection) td;
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (int.TryParse(result.GetProperty(LDAPProperties.TrustAttributes), out var ta))
                 {
-                    attributes = (TrustAttributes)ta;
+                    attributes = (TrustAttributes) ta;
                 }
                 else
                 {

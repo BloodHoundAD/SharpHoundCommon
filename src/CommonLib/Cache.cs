@@ -6,15 +6,15 @@ namespace SharpHoundCommonLib
 {
     public class Cache
     {
-        [DataMember]private ConcurrentDictionary<string, string[]> _globalCatalogCache;
+        [DataMember] private ConcurrentDictionary<string, string[]> _globalCatalogCache;
 
-        [DataMember]private ConcurrentDictionary<string, Label> _idToTypeCache;
+        [DataMember] private ConcurrentDictionary<string, Label> _idToTypeCache;
 
-        [DataMember]private ConcurrentDictionary<string, string> _machineSidCache;
+        [DataMember] private ConcurrentDictionary<string, string> _machineSidCache;
 
-        [DataMember]private ConcurrentDictionary<string, string> _sidToDomainCache;
+        [DataMember] private ConcurrentDictionary<string, string> _sidToDomainCache;
 
-        [DataMember]private ConcurrentDictionary<string, string> _valueToIDCache;
+        [DataMember] private ConcurrentDictionary<string, string> _valueToIDCache;
 
         private Cache()
         {
@@ -25,8 +25,7 @@ namespace SharpHoundCommonLib
             _sidToDomainCache = new ConcurrentDictionary<string, string>();
         }
 
-        [IgnoreDataMember]
-        private static Cache CacheInstance { get; set; }
+        [IgnoreDataMember] private static Cache CacheInstance { get; set; }
 
         /// <summary>
         ///     Add a SID to/from Domain mapping to the cache
@@ -123,7 +122,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Creates a new empty cache instance
+        ///     Creates a new empty cache instance
         /// </summary>
         /// <returns></returns>
         public static Cache CreateNewCache()
@@ -132,7 +131,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Sets the cache instance being used by the common library
+        ///     Sets the cache instance being used by the common library
         /// </summary>
         /// <param name="cache"></param>
         public static void SetCacheInstance(Cache cache)
@@ -142,7 +141,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets stats from the currently loaded cache
+        ///     Gets stats from the currently loaded cache
         /// </summary>
         /// <returns></returns>
         public string GetCacheStats()
@@ -157,9 +156,9 @@ namespace SharpHoundCommonLib
                 return "";
             }
         }
-        
+
         /// <summary>
-        /// Returns the currently loaded cache instance
+        ///     Returns the currently loaded cache instance
         /// </summary>
         /// <returns></returns>
         public static Cache GetCacheInstance()

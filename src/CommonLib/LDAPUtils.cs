@@ -182,7 +182,7 @@ namespace SharpHoundCommonLib
                 return sids;
 
             var query = new LDAPFilter().AddUsers($"samaccountname={tempName}").GetFilter();
-            var results = QueryLDAP(query, SearchScope.Subtree, new[] { "objectsid" }, globalCatalog: true)
+            var results = QueryLDAP(query, SearchScope.Subtree, new[] {"objectsid"}, globalCatalog: true)
                 .Select(x => x.GetSid()).Where(x => x != null).ToArray();
             Cache.AddGCCache(tempName, results);
             return results;
@@ -358,7 +358,8 @@ namespace SharpHoundCommonLib
             var currentRange = $"{baseString};range={index}-*";
             var complete = false;
 
-            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] { currentRange }, domainName, 
+            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] {currentRange},
+                domainName,
                 distinguishedName);
 
             if (searchRequest == null)
@@ -368,7 +369,7 @@ namespace SharpHoundCommonLib
             {
                 SearchResponse response;
 
-                response = (SearchResponse)conn.SendRequest(searchRequest);
+                response = (SearchResponse) conn.SendRequest(searchRequest);
 
                 //If we ever get more than one response from here, something is horribly wrong
                 if (response?.Entries.Count == 1)
@@ -721,9 +722,9 @@ namespace SharpHoundCommonLib
                 try
                 {
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
-                    response = (SearchResponse)conn.SendRequest(request);
+                    response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
-                        pageResponse = (PageResultResponseControl)response.Controls
+                        pageResponse = (PageResultResponseControl) response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
                 }
                 catch (LdapException le)
@@ -830,9 +831,9 @@ namespace SharpHoundCommonLib
                 try
                 {
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
-                    response = (SearchResponse)conn.SendRequest(request);
+                    response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
-                        pageResponse = (PageResultResponseControl)response.Controls
+                        pageResponse = (PageResultResponseControl) response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
                 }
                 catch (LdapException le)
@@ -906,7 +907,7 @@ namespace SharpHoundCommonLib
             filter.AddDomains();
 
             var resDomain = GetDomain(domain)?.Name ?? domain;
-            
+
             var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID, resDomain)
                 .DefaultIfEmpty(null).FirstOrDefault();
 
@@ -953,7 +954,7 @@ namespace SharpHoundCommonLib
         {
             var forest = GetForest(domain)?.Name;
             if (forest == null) _log.LogWarning("Error getting forest, ENTDC sid is likely incorrect");
-            var g = new Group { ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper() };
+            var g = new Group {ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper()};
             g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest ?? "UNKNOWN"}".ToUpper());
             g.Properties.Add("domainsid", GetSidFromDomainName(forest));
             g.Properties.Add("domain", forest);
@@ -979,7 +980,7 @@ namespace SharpHoundCommonLib
             //Search using objectsid first
             var result =
                 QueryLDAP($"(&(objectclass=domain)(objectsid={hexSid}))", SearchScope.Subtree,
-                    new[] { "distinguishedname" }, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+                    new[] {"distinguishedname"}, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result != null)
             {
@@ -990,7 +991,7 @@ namespace SharpHoundCommonLib
             //Try trusteddomain objects with the securityidentifier attribute
             result =
                 QueryLDAP($"(&(objectclass=trusteddomain)(securityidentifier={sid}))", SearchScope.Subtree,
-                    new[] { "cn" }, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+                    new[] {"cn"}, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result != null)
             {
@@ -1131,7 +1132,8 @@ namespace SharpHoundCommonLib
         /// <param name="domainName">Domain to connect too</param>
         /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly scenarios</param>
         /// <returns>A connected LdapConnection or null</returns>
-        private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null, AuthType authType = AuthType.Kerberos)
+        private async Task<LdapConnection> CreateGlobalCatalogConnection(string domainName = null,
+            AuthType authType = AuthType.Kerberos)
         {
             string targetServer;
             if (_ldapConfig.Server != null)
@@ -1146,7 +1148,7 @@ namespace SharpHoundCommonLib
                     _log.LogDebug("Unable to create global catalog connection for domain {DomainName}", domainName);
                     return null;
                 }
-                
+
                 if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
@@ -1160,7 +1162,7 @@ namespace SharpHoundCommonLib
             connection = new LdapConnection(new LdapDirectoryIdentifier(targetServer, 3268));
 
             connection.SessionOptions.ProtocolVersion = 3;
-            
+
             if (_ldapConfig.Username != null)
             {
                 var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password);
@@ -1172,7 +1174,7 @@ namespace SharpHoundCommonLib
                 connection.SessionOptions.Sealing = false;
                 connection.SessionOptions.Signing = false;
             }
-            
+
             connection.AuthType = authType;
 
             _globalCatalogConnections.TryAdd(targetServer, connection);
@@ -1186,7 +1188,8 @@ namespace SharpHoundCommonLib
         /// <param name="skipCache">Skip the connection cache</param>
         /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly scenarios</param>
         /// <returns>A connected LDAP connection or null</returns>
-        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false, AuthType authType = AuthType.Kerberos)
+        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false,
+            AuthType authType = AuthType.Kerberos)
         {
             string targetServer;
             if (_ldapConfig.Server != null)
@@ -1201,7 +1204,7 @@ namespace SharpHoundCommonLib
                     _log.LogDebug("Unable to create ldap connection for domain {DomainName}", domainName);
                     return null;
                 }
-                
+
                 if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
                     targetServer = await GetUsableDomainController(domain);
             }
@@ -1215,7 +1218,7 @@ namespace SharpHoundCommonLib
 
             var port = _ldapConfig.GetPort();
             var ident = new LdapDirectoryIdentifier(targetServer, port, false, false);
-            var connection = new LdapConnection(ident) { Timeout = new TimeSpan(0, 0, 5, 0) };
+            var connection = new LdapConnection(ident) {Timeout = new TimeSpan(0, 0, 5, 0)};
             if (_ldapConfig.Username != null)
             {
                 var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password);
@@ -1234,7 +1237,7 @@ namespace SharpHoundCommonLib
 
             if (_ldapConfig.SSL)
                 connection.SessionOptions.SecureSocketLayer = true;
-            
+
             connection.AuthType = authType;
 
             if (!skipCache)

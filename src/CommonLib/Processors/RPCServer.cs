@@ -24,11 +24,11 @@ namespace SharpHoundCommonLib.Processors
         }, LazyThreadSafetyMode.PublicationOnly);
 
         private readonly string _computerDomain;
+        private readonly string _computerDomainSid;
 
         private readonly string _computerName;
         private readonly string _computerSAMAccountName;
         private readonly SecurityIdentifier _computerSID;
-        private readonly string _computerDomainSid;
 
         private readonly DomainHandleManager _domainHandleManager;
 
@@ -138,7 +138,7 @@ namespace SharpHoundCommonLib.Processors
 
             _samServerOpen = true;
         }
-        
+
         /// <summary>
         ///     Opens the LSA policy for further use.
         /// </summary>
@@ -165,7 +165,8 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Gets principals with specified User Rights. If no rights are provided, defaults to the list in LSAPrivileges.DesiredPrivileges
+        ///     Gets principals with specified User Rights. If no rights are provided, defaults to the list in
+        ///     LSAPrivileges.DesiredPrivileges
         /// </summary>
         /// <param name="desiredPrivileges"></param>
         /// <returns></returns>
@@ -174,7 +175,7 @@ namespace SharpHoundCommonLib.Processors
             if (!_lsaServerOpen) OpenLSAServer();
 
             desiredPrivileges ??= LSAPrivileges.DesiredPrivileges;
-            
+
             foreach (var privilege in desiredPrivileges)
             {
                 var result = new UserRightsAssignmentAPIResult
@@ -182,17 +183,14 @@ namespace SharpHoundCommonLib.Processors
                     Collected = false,
                     Privilege = privilege
                 };
-                
+
                 var status = _nativeMethods.CallLSAEnumerateAccountsWithUserRight(_lsaPolicyHandle, privilege,
                     out var buffer, out var count);
 
                 if (status != NativeMethods.NtStatus.StatusSuccess)
                 {
-                    if (buffer != IntPtr.Zero)
-                    {
-                        _nativeMethods.CallLSAFreeMemory(buffer);
-                    }
-                    
+                    if (buffer != IntPtr.Zero) _nativeMethods.CallLSAFreeMemory(buffer);
+
                     result.FailureReason = $"LSAEnumerateAccountsWithUserRight returned {status}";
                     yield return result;
                 }
@@ -201,7 +199,6 @@ namespace SharpHoundCommonLib.Processors
 
                 var sids = new List<SecurityIdentifier>();
                 for (var i = 0; i < count; i++)
-                {
                     try
                     {
                         var raw = Marshal.ReadIntPtr(buffer, Marshal.SizeOf<IntPtr>() * i);
@@ -211,9 +208,8 @@ namespace SharpHoundCommonLib.Processors
                     }
                     catch (Exception e)
                     {
-                        _log.LogTrace(e,"Exception converting sid");
+                        _log.LogTrace(e, "Exception converting sid");
                     }
-                }
 
                 GetMachineSidLSA(out var machineSid);
 
@@ -223,12 +219,12 @@ namespace SharpHoundCommonLib.Processors
                 foreach (var sid in sids)
                 {
                     var value = sid.Value;
-                    
+
                     if (value.StartsWith("S-1-5-80") || value.StartsWith("S-1-5-82") ||
                         value.StartsWith("S-1-5-90") || value.StartsWith("S-1-5-96")) continue;
-                    
+
                     if (_filteredSids.Contains(value)) continue;
-                    
+
                     if (isDc)
                     {
                         if (_utils.GetWellKnownPrincipal(sid.Value, _computerDomain, out var principal))
@@ -249,12 +245,8 @@ namespace SharpHoundCommonLib.Processors
                         {
                             common.ObjectIdentifier = $"{machineSid}-{sid.Rid()}";
                             if (common.ObjectType == Label.User)
-                            {
                                 common.ObjectType = Label.LocalUser;
-                            }else if (common.ObjectType == Label.Group)
-                            {
-                                common.ObjectType = Label.LocalGroup;
-                            }
+                            else if (common.ObjectType == Label.Group) common.ObjectType = Label.LocalGroup;
                             resolved.Add(common);
                         }
                         else
@@ -276,7 +268,8 @@ namespace SharpHoundCommonLib.Processors
 
                 if (status != NativeMethods.NtStatus.StatusSuccess && status != NativeMethods.NtStatus.StatusSomeMapped)
                 {
-                    _log.LogError("LSALookupSids returned {status} for {computer}, unable to resolve local sids", status, _computerName);
+                    _log.LogError("LSALookupSids returned {status} for {computer}, unable to resolve local sids",
+                        status, _computerName);
                     resolved.AddRange(toResolve.Select(x => new TypedPrincipal(x.Value, Label.Base)));
                     result.Results = resolved.ToArray();
                     yield return result;
@@ -311,13 +304,15 @@ namespace SharpHoundCommonLib.Processors
                             objectType = Label.Base;
                             break;
                     }
-                    
+
                     resolved.Add(new TypedPrincipal(toResolve[i].Value, objectType));
                     try
                     {
-                        resolvedNames.Add(new NamedPrincipal(translated.Name.ToString(), toResolve[i].Value));    
-                    }catch {}
-                    
+                        resolvedNames.Add(new NamedPrincipal(translated.Name.ToString(), toResolve[i].Value));
+                    }
+                    catch
+                    {
+                    }
                 }
 
                 _nativeMethods.CallLSAFreeMemory(names);
@@ -329,7 +324,7 @@ namespace SharpHoundCommonLib.Processors
                 yield return result;
             }
         }
-        
+
         private bool IsMachineAccount(SecurityIdentifier sid)
         {
             var stringSid = sid.Value;
@@ -342,7 +337,8 @@ namespace SharpHoundCommonLib.Processors
             if (_lsaServerOpen)
             {
                 GetMachineSidLSA(out machineSid);
-            }else if (_samServerOpen)
+            }
+            else if (_samServerOpen)
             {
                 GetMachineSid(out machineSid);
             }
@@ -365,9 +361,10 @@ namespace SharpHoundCommonLib.Processors
             if (_lsaServerOpen)
             {
                 GetMachineSidLSA(out machineSid);
-            }else if (_samServerOpen)
+            }
+            else if (_samServerOpen)
             {
-                GetMachineSid(out machineSid);    
+                GetMachineSid(out machineSid);
             }
             else
             {
@@ -382,7 +379,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Gets all local groups and their members
+        ///     Gets all local groups and their members
         /// </summary>
         /// <returns></returns>
         public IEnumerable<LocalGroupAPIResult> GetGroupsAndMembers()
@@ -396,7 +393,8 @@ namespace SharpHoundCommonLib.Processors
 
             foreach (var domainName in ListDomainsInServer())
                 if (OpenDomainHandle(domainName, out var domainHandle))
-                    foreach (var group in GetGroupsFromDomain(domainHandle, domainName.Equals("builtin", StringComparison.OrdinalIgnoreCase)))
+                    foreach (var group in GetGroupsFromDomain(domainHandle,
+                                 domainName.Equals("builtin", StringComparison.OrdinalIgnoreCase)))
                     {
                         _typeCache.TryAdd(group.ObjectID, new CachedLocalItem(group.Name, Label.LocalGroup));
                         var result = GetLocalGroupMembers(domainHandle, group);
@@ -442,7 +440,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Opens a domain handle in the SAM server
+        ///     Opens a domain handle in the SAM server
         /// </summary>
         /// <param name="domainName"></param>
         /// <param name="domainHandle"></param>
@@ -476,7 +474,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Opens the built in domain
+        ///     Opens the built in domain
         /// </summary>
         /// <param name="domainHandle"></param>
         /// <param name="requestedDomainAccess"></param>
@@ -509,7 +507,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Gets the list of aliases in a domain
+        ///     Gets the list of aliases in a domain
         /// </summary>
         /// <param name="domainHandle"></param>
         /// <returns></returns>
@@ -575,13 +573,13 @@ namespace SharpHoundCommonLib.Processors
                         ObjectID = $"{machineSid}-{data.Rid}"
                     };
                 }
-                
+
                 yield return group;
             }
         }
 
         /// <summary>
-        /// Lists the domains in the SAM Server
+        ///     Lists the domains in the SAM Server
         /// </summary>
         /// <returns></returns>
         /// <exception cref="APIException"></exception>
@@ -807,7 +805,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Gets the machine SID using LSA calls
+        ///     Gets the machine SID using LSA calls
         /// </summary>
         /// <param name="machineSid"></param>
         /// <returns></returns>
@@ -822,10 +820,7 @@ namespace SharpHoundCommonLib.Processors
                 return true;
             }
 
-            if (!_lsaServerOpen)
-            {
-                OpenLSAServer();
-            }
+            if (!_lsaServerOpen) OpenLSAServer();
 
             var status = _nativeMethods.CallLsaQueryInformationPolicy(_lsaPolicyHandle,
                 NativeMethods.LSAPolicyInformation.PolicyAccountDomainInformation, out var buffer);
@@ -1036,8 +1031,8 @@ namespace SharpHoundCommonLib.Processors
 
     internal class DomainHandleManager
     {
-        private readonly NativeMethods _nativeMethods;
         private readonly Dictionary<string, IntPtr> _nameToHandleMap = new();
+        private readonly NativeMethods _nativeMethods;
         private readonly Dictionary<string, string> _sidToDomainMap = new();
 
         internal DomainHandleManager(NativeMethods nativeMethods = null)

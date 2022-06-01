@@ -7,13 +7,14 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerAvailability
     {
+        private readonly int _computerExpiryDays;
         private readonly ILogger _log;
         private readonly PortScanner _scanner;
         private readonly int _scanTimeout;
         private readonly bool _skipPortScan;
-        private readonly int _computerExpiryDays;
 
-        public ComputerAvailability(int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false, ILogger log = null)
+        public ComputerAvailability(int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false,
+            ILogger log = null)
         {
             _scanner = new PortScanner();
             _scanTimeout = timeout;
@@ -22,7 +23,8 @@ namespace SharpHoundCommonLib.Processors
             _computerExpiryDays = computerExpiryDays;
         }
 
-        public ComputerAvailability(PortScanner scanner, int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false,
+        public ComputerAvailability(PortScanner scanner, int timeout = 500, int computerExpiryDays = 60,
+            bool skipPortScan = false,
             ILogger log = null)
         {
             _scanner = scanner;
@@ -33,7 +35,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Helper function to use commonlib types for IsComputerAvailable
+        ///     Helper function to use commonlib types for IsComputerAvailable
         /// </summary>
         /// <param name="result"></param>
         /// <param name="entry"></param>
@@ -62,7 +64,8 @@ namespace SharpHoundCommonLib.Processors
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
-                _log.LogTrace("{ComputerName} is not available because operating system {OperatingSystem} is not valid", computerName, operatingSystem);
+                _log.LogTrace("{ComputerName} is not available because operating system {OperatingSystem} is not valid",
+                    computerName, operatingSystem);
                 return new ComputerStatus
                 {
                     Connectable = false,

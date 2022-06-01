@@ -104,7 +104,7 @@ namespace SharpHoundCommonLib.Processors
                 if (matches.Length > 0)
                 {
                     results.AddRange(
-                        matches.Select(s => new Session { ComputerSID = resolvedComputerSID, UserSID = s }));
+                        matches.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
                 }
                 else
                 {

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace SharpHoundCommonLib
 {
     /// <summary>
-    /// An ILogger interface that does nothing
+    ///     An ILogger interface that does nothing
     /// </summary>
     public class NoOpLogger : ILogger
     {

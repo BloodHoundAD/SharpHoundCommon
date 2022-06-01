@@ -10,22 +10,16 @@ namespace SharpHoundCommonLib.OutputTypes
         public string Name { get; set; }
         public TypedPrincipal[] Results { get; set; } = Array.Empty<TypedPrincipal>();
         public NamedPrincipal[] LocalNames { get; set; } = Array.Empty<NamedPrincipal>();
-        
+
         public override string ToString()
         {
             var builder = new StringBuilder();
             builder.AppendLine($"Local group {Name} ({ObjectIdentifier})");
-            foreach (var x in Results)
-            {
-                builder.AppendLine(x.ToString());
-            }
+            foreach (var x in Results) builder.AppendLine(x.ToString());
 
             builder.AppendLine("Extra Names:");
 
-            foreach (var x in LocalNames)
-            {
-                builder.AppendLine(x.ToString());
-            }
+            foreach (var x in LocalNames) builder.AppendLine(x.ToString());
             return builder.ToString();
         }
     }
