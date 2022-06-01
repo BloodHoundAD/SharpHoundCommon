@@ -99,7 +99,7 @@ namespace SharpHoundCommonLib
             _log.LogTrace("Resolved domain for {SID} to {Domain}", objectId, itemDomain);
 
             res.Domain = itemDomain;
-
+            
             if (WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var wkPrincipal))
             {
                 res.DomainSid = _utils.GetSidFromDomainName(itemDomain);

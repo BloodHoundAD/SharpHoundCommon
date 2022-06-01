@@ -219,27 +219,48 @@ namespace SharpHoundCommonLib.Processors
 
                 var resolved = new List<TypedPrincipal>();
                 var toResolve = new List<SecurityIdentifier>();
+                var isDc = IsDomainController();
                 foreach (var sid in sids)
                 {
-                    if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+                    var value = sid.Value;
+                    
+                    if (value.StartsWith("S-1-5-80") || value.StartsWith("S-1-5-82") ||
+                        value.StartsWith("S-1-5-90") || value.StartsWith("S-1-5-96")) continue;
+                    
+                    if (_filteredSids.Contains(value)) continue;
+                    
+                    if (isDc)
                     {
-                        common.ObjectIdentifier = $"{machineSid}-{sid.Rid()}";
-                        if (common.ObjectType == Label.User)
+                        if (_utils.GetWellKnownPrincipal(sid.Value, _computerDomain, out var principal))
                         {
-                            common.ObjectType = Label.LocalUser;
-                        }else if (common.ObjectType == Label.Group)
-                        {
-                            common.ObjectType = Label.LocalGroup;
+                            _log.LogInformation("Found WKP {sid} on DC", sid.Value);
+                            resolved.Add(principal);
                         }
-                        resolved.Add(common);
-                    }else if (IsMachineAccount(sid))
-                    {
-                        toResolve.Add(sid);
+                        else
+                        {
+                            var res = _utils.ResolveIDAndType(sid.Value, _computerDomain);
+                            _log.LogInformation("Resolved {sid} on DC", res.ObjectIdentifier);
+                            resolved.Add(res);
+                        }
                     }
                     else
                     {
-                        var res = _utils.ResolveIDAndType(sid.Value, _computerDomain);
-                        resolved.Add(res);
+                        if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+                        {
+                            common.ObjectIdentifier = $"{machineSid}-{sid.Rid()}";
+                            if (common.ObjectType == Label.User)
+                            {
+                                common.ObjectType = Label.LocalUser;
+                            }else if (common.ObjectType == Label.Group)
+                            {
+                                common.ObjectType = Label.LocalGroup;
+                            }
+                            resolved.Add(common);
+                        }
+                        else
+                        {
+                            toResolve.Add(sid);
+                        }
                     }
                 }
 
@@ -248,7 +269,6 @@ namespace SharpHoundCommonLib.Processors
                     result.Results = resolved.ToArray();
                     yield return result;
                 }
-                    
 
                 var resolvedNames = new List<NamedPrincipal>();
                 status = _nativeMethods.CallLSALookupSids(_lsaPolicyHandle, toResolve.ToArray(), out var domains,
@@ -316,6 +336,25 @@ namespace SharpHoundCommonLib.Processors
             return IsMachineAccount(stringSid);
         }
 
+        private bool IsDomainController()
+        {
+            string machineSid;
+            if (_lsaServerOpen)
+            {
+                GetMachineSidLSA(out machineSid);
+            }else if (_samServerOpen)
+            {
+                GetMachineSid(out machineSid);
+            }
+            else
+            {
+                OpenSAMServer();
+                GetMachineSid(out machineSid);
+            }
+
+            return machineSid == _computerDomainSid;
+        }
+
         private bool IsMachineAccount(string sid)
         {
             if (sid.StartsWith(_computerDomainSid))
@@ -357,7 +396,7 @@ namespace SharpHoundCommonLib.Processors
 
             foreach (var domainName in ListDomainsInServer())
                 if (OpenDomainHandle(domainName, out var domainHandle))
-                    foreach (var group in GetGroupsFromDomain(domainHandle))
+                    foreach (var group in GetGroupsFromDomain(domainHandle, domainName.Equals("builtin", StringComparison.OrdinalIgnoreCase)))
                     {
                         _typeCache.TryAdd(group.ObjectID, new CachedLocalItem(group.Name, Label.LocalGroup));
                         var result = GetLocalGroupMembers(domainHandle, group);
@@ -475,7 +514,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="domainHandle"></param>
         /// <returns></returns>
         /// <exception cref="APIException"></exception>
-        public IEnumerable<LocalGroup> GetGroupsFromDomain(IntPtr domainHandle)
+        public IEnumerable<LocalGroup> GetGroupsFromDomain(IntPtr domainHandle, bool isBuiltIn)
         {
             if (!_samServerOpen)
             {
@@ -503,12 +542,40 @@ namespace SharpHoundCommonLib.Processors
                 var data = Marshal.PtrToStructure<NativeMethods.SamRidEnumeration>(rids +
                     i * NativeMethods.SamRidEnumeration.SizeOf);
                 _log.LogTrace("Got entry {Name} with RID {Rid}", data.Name, data.Rid);
-                var group = new LocalGroup
+                LocalGroup group;
+                if (IsDomainController())
                 {
-                    Name = data.Name.ToString(),
-                    Rid = data.Rid,
-                    ObjectID = $"{machineSid}-{data.Rid}"
-                };
+                    if (isBuiltIn)
+                    {
+                        var sid = $"S-1-5-32-{data.Rid}";
+                        _utils.GetWellKnownPrincipal(sid, _computerDomain, out var principal);
+                        group = new LocalGroup
+                        {
+                            ObjectID = principal.ObjectIdentifier,
+                            Rid = data.Rid,
+                            Name = "IGNOREME"
+                        };
+                    }
+                    else
+                    {
+                        group = new LocalGroup
+                        {
+                            Name = "IGNOREME",
+                            Rid = data.Rid,
+                            ObjectID = $"{machineSid}-{data.Rid}"
+                        };
+                    }
+                }
+                else
+                {
+                    group = new LocalGroup
+                    {
+                        Name = $"{data.Name.ToString()}@{_computerName}".ToUpper(),
+                        Rid = data.Rid,
+                        ObjectID = $"{machineSid}-{data.Rid}"
+                    };
+                }
+                
                 yield return group;
             }
         }
@@ -636,10 +703,12 @@ namespace SharpHoundCommonLib.Processors
 
             GetMachineSid(out var machineSid);
 
+            var isDc = IsDomainController();
+
             var converted = sids.Select(x =>
             {
                 var sid = x.Value.ToUpper();
-                if (!sid.StartsWith(machineSid) || sid.StartsWith(_computerSID.AccountDomainSid.Value))
+                if (isDc || !sid.StartsWith(machineSid) || sid.StartsWith(_computerSID.AccountDomainSid.Value))
                 {
                     _log.LogTrace("Resolving {Sid} in domain", sid);
                     return _utils.ResolveIDAndType(sid, _computerDomain);
