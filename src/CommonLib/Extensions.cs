@@ -104,10 +104,15 @@ namespace SharpHoundCommonLib
                    (methods & ResolvedCollectionMethod.PSRemote) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0;
         }
 
+        /// <summary>
+        /// Gets the relative identifier for a SID
+        /// </summary>
+        /// <param name="securityIdentifier"></param>
+        /// <returns></returns>
         public static int Rid(this SecurityIdentifier securityIdentifier)
         {
             var value = securityIdentifier.Value;
-            var rid = int.Parse(value.Substring(value.LastIndexOf("-") + 1));
+            var rid = int.Parse(value.Substring(value.LastIndexOf("-", StringComparison.Ordinal) + 1));
             return rid;
         }
 
