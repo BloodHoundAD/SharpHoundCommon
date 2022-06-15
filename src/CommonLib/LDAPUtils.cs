@@ -541,6 +541,9 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public TypedPrincipal ResolveAccountName(string name, string domain)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+            
             if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetIDType(id, out var type))
                 return new TypedPrincipal
                 {
