@@ -1238,6 +1238,9 @@ namespace SharpHoundCommonLib
             if (_ldapConfig.SSL)
                 connection.SessionOptions.SecureSocketLayer = true;
             
+            if (_ldapConfig.DisableCertVerification)
+                connection.SessionOptions.VerifyServerCertificate = (ldapConnection, certificate) => true;
+
             connection.AuthType = authType;
 
             if (!skipCache)
