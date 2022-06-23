@@ -5140,18 +5140,18 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ComputerAvailability
   fullName: SharpHoundCommonLib.Processors.ComputerAvailability
   nameWithType: ComputerAvailability
-- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Int32,System.Boolean,System.Boolean,ILogger)
-  name: ComputerAvailability(PortScanner, Int32, Int32, Boolean, Boolean, ILogger)
-  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_SharpHoundCommonLib_Processors_PortScanner_System_Int32_System_Int32_System_Boolean_System_Boolean_ILogger_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Int32,System.Boolean,System.Boolean,ILogger)
-  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(SharpHoundCommonLib.Processors.PortScanner, System.Int32, System.Int32, System.Boolean, System.Boolean, ILogger)
-  nameWithType: ComputerAvailability.ComputerAvailability(PortScanner, Int32, Int32, Boolean, Boolean, ILogger)
-- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Int32,System.Boolean,System.Boolean,ILogger)
-  name: ComputerAvailability(Int32, Int32, Boolean, Boolean, ILogger)
-  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_System_Int32_System_Int32_System_Boolean_System_Boolean_ILogger_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Int32,System.Boolean,System.Boolean,ILogger)
-  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(System.Int32, System.Int32, System.Boolean, System.Boolean, ILogger)
-  nameWithType: ComputerAvailability.ComputerAvailability(Int32, Int32, Boolean, Boolean, ILogger)
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Int32,System.Boolean,ILogger)
+  name: ComputerAvailability(PortScanner, Int32, Int32, Boolean, ILogger)
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_SharpHoundCommonLib_Processors_PortScanner_System_Int32_System_Int32_System_Boolean_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(SharpHoundCommonLib.Processors.PortScanner,System.Int32,System.Int32,System.Boolean,ILogger)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(SharpHoundCommonLib.Processors.PortScanner, System.Int32, System.Int32, System.Boolean, ILogger)
+  nameWithType: ComputerAvailability.ComputerAvailability(PortScanner, Int32, Int32, Boolean, ILogger)
+- uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Int32,System.Boolean,ILogger)
+  name: ComputerAvailability(Int32, Int32, Boolean, ILogger)
+  href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_System_Int32_System_Int32_System_Boolean_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerAvailability.#ctor(System.Int32,System.Int32,System.Boolean,ILogger)
+  fullName: SharpHoundCommonLib.Processors.ComputerAvailability.ComputerAvailability(System.Int32, System.Int32, System.Boolean, ILogger)
+  nameWithType: ComputerAvailability.ComputerAvailability(Int32, Int32, Boolean, ILogger)
 - uid: SharpHoundCommonLib.Processors.ComputerAvailability.#ctor*
   name: ComputerAvailability
   href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html#SharpHoundCommonLib_Processors_ComputerAvailability__ctor_
