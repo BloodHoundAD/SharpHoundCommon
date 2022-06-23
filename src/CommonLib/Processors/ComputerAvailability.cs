@@ -7,14 +7,15 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerAvailability
     {
+        private readonly int _computerExpiryDays;
         private readonly ILogger _log;
         private readonly PortScanner _scanner;
         private readonly int _scanTimeout;
-        private readonly bool _skipPortScan;
-        private readonly int _computerExpiryDays;
         private readonly bool _skipPasswordCheck;
+        private readonly bool _skipPortScan;
 
-        public ComputerAvailability(int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false, bool skipPasswordCheck = false, ILogger log = null)
+        public ComputerAvailability(int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false,
+            bool skipPasswordCheck = false, ILogger log = null)
         {
             _scanner = new PortScanner();
             _scanTimeout = timeout;
@@ -24,7 +25,8 @@ namespace SharpHoundCommonLib.Processors
             _skipPasswordCheck = skipPasswordCheck;
         }
 
-        public ComputerAvailability(PortScanner scanner, int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false, bool skipPasswordCheck = false,
+        public ComputerAvailability(PortScanner scanner, int timeout = 500, int computerExpiryDays = 60,
+            bool skipPortScan = false, bool skipPasswordCheck = false,
             ILogger log = null)
         {
             _scanner = scanner;
@@ -81,7 +83,8 @@ namespace SharpHoundCommonLib.Processors
 
                 if (passwordLastSet < threshold)
                 {
-                    _log.LogTrace("{ComputerName} is not available because password last set {PwdLastSet} is out of range",
+                    _log.LogTrace(
+                        "{ComputerName} is not available because password last set {PwdLastSet} is out of range",
                         computerName, passwordLastSet);
                     return new ComputerStatus
                     {

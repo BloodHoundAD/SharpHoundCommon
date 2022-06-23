@@ -543,7 +543,7 @@ namespace SharpHoundCommonLib
         {
             if (string.IsNullOrWhiteSpace(name))
                 return null;
-            
+
             if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetIDType(id, out var type))
                 return new TypedPrincipal
                 {
@@ -1240,7 +1240,7 @@ namespace SharpHoundCommonLib
 
             if (_ldapConfig.SSL)
                 connection.SessionOptions.SecureSocketLayer = true;
-            
+
             if (_ldapConfig.DisableCertVerification)
                 connection.SessionOptions.VerifyServerCertificate = (ldapConnection, certificate) => true;
 

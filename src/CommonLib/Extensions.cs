@@ -105,7 +105,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Gets the relative identifier for a SID
+        ///     Gets the relative identifier for a SID
         /// </summary>
         /// <param name="securityIdentifier"></param>
         /// <returns></returns>
