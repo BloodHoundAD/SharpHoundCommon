@@ -7,24 +7,24 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerAvailability
     {
-        private readonly int _computerExpiryDays;
         private readonly ILogger _log;
         private readonly PortScanner _scanner;
         private readonly int _scanTimeout;
         private readonly bool _skipPortScan;
+        private readonly int _computerExpiryDays;
+        private readonly bool _skipPasswordCheck;
 
-        public ComputerAvailability(int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false,
-            ILogger log = null)
+        public ComputerAvailability(int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false, bool skipPasswordCheck = false, ILogger log = null)
         {
             _scanner = new PortScanner();
             _scanTimeout = timeout;
             _skipPortScan = skipPortScan;
             _log = log ?? Logging.LogProvider.CreateLogger("CompAvail");
             _computerExpiryDays = computerExpiryDays;
+            _skipPasswordCheck = skipPasswordCheck;
         }
 
-        public ComputerAvailability(PortScanner scanner, int timeout = 500, int computerExpiryDays = 60,
-            bool skipPortScan = false,
+        public ComputerAvailability(PortScanner scanner, int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false, bool skipPasswordCheck = false,
             ILogger log = null)
         {
             _scanner = scanner;
@@ -32,6 +32,7 @@ namespace SharpHoundCommonLib.Processors
             _skipPortScan = skipPortScan;
             _log = log ?? Logging.LogProvider.CreateLogger("CompAvail");
             _computerExpiryDays = computerExpiryDays;
+            _skipPasswordCheck = skipPasswordCheck;
         }
 
         /// <summary>
@@ -73,18 +74,21 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
-            var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
-            var threshold = DateTime.Now.AddDays(_computerExpiryDays * -1).ToFileTimeUtc();
-
-            if (passwordLastSet < threshold)
+            if (!_skipPasswordCheck)
             {
-                _log.LogTrace("{ComputerName} is not available because password last set {PwdLastSet} is out of range",
-                    computerName, passwordLastSet);
-                return new ComputerStatus
+                var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
+                var threshold = DateTime.Now.AddDays(_computerExpiryDays * -1).ToFileTimeUtc();
+
+                if (passwordLastSet < threshold)
                 {
-                    Connectable = false,
-                    Error = ComputerStatus.OldPwd
-                };
+                    _log.LogTrace("{ComputerName} is not available because password last set {PwdLastSet} is out of range",
+                        computerName, passwordLastSet);
+                    return new ComputerStatus
+                    {
+                        Connectable = false,
+                        Error = ComputerStatus.OldPwd
+                    };
+                }
             }
 
             if (_skipPortScan)
