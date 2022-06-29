@@ -2,7 +2,8 @@ name: Publish
 
 on:
   push:
-    branches: [ master ]
+    tags:
+      - "v*.*.*"
 
 jobs:
   nuget:
@@ -32,12 +33,21 @@ jobs:
       - name: Pack
         run: dotnet pack --no-restore -c Release --output .
 
+      - uses: web3j/substr-action@v1.2
+        id: version
+        with:
+          value: ${{ github.refname }}
+          start: 0
+
       - name: Publish NuGet
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/CommonLib/SharpHoundCommonLib.csproj
           PACKAGE_NAME: SharpHoundCommon
+          VERSION_STATIC: ${{ steps.version.outputs.result }}
           NUGET_KEY: ${{secrets.NUGET_TOKEN}}
+          INCLUDE_SYMBOLS: true
+          TAG_COMMIT: false
 
   ghpages:
     name: ghpages
