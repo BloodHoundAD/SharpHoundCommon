@@ -17,7 +17,7 @@ jobs:
         uses: web3j/substr-action@v1.2
         id: version
         with:
-          value: ${{ github.refname }}
+          value: ${{ github.ref_name }}
           start: 0
 
       - name: Setup .NET
