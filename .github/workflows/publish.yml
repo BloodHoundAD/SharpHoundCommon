@@ -18,7 +18,7 @@ jobs:
         id: version
         with:
           value: ${{ github.ref_name }}
-          start: 0
+          start: 1
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
