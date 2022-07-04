@@ -27,7 +27,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="port"></param>
         /// <param name="timeout">Timeout in milliseconds</param>
         /// <returns>True if port is open, otherwise false</returns>
-        public virtual async Task<bool> CheckPort(string hostname, int port = 445, int timeout = 500)
+        public virtual async Task<bool> CheckPort(string hostname, int port = 445, int timeout = 2000)
         {
             var key = new PingCacheKey
             {
