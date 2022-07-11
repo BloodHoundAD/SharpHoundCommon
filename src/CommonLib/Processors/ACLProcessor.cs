@@ -304,26 +304,31 @@ namespace SharpHoundCommonLib.Processors
                     }
                     else if (objectType == Label.Computer)
                     {
-                        //ReadLAPSPassword is only applicable if the computer actually has LAPS. Check the world readable property ms-mcs-admpwdexpirationtime
-                        if (hasLaps)
-                        {
-                            if (aceType is ACEGuids.AllGuid or "")
-                                yield return new ACE
-                                {
-                                    PrincipalType = resolvedPrincipal.ObjectType,
-                                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                                    IsInherited = inherited,
-                                    RightName = EdgeNames.AllExtendedRights
-                                };
-                            else if (mappedGuid is "ms-mcs-admpwd")
-                                yield return new ACE
-                                {
-                                    PrincipalType = resolvedPrincipal.ObjectType,
-                                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                                    IsInherited = inherited,
-                                    RightName = EdgeNames.ReadLAPSPassword
-                                };
-                        }
+                        if (aceType == ACEGuids.UserForceChangePassword)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.ForceChangePassword
+                            };
+                        else if (aceType is ACEGuids.AllGuid or "")
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.AllExtendedRights
+                            };
+                        //ReadLAPSPassword is only applicable if the computer actually has LAPS. Check the world readable property ms-mcs-admpwdexpirationtime                            
+                        else if (hasLaps && mappedGuid is "ms-mcs-admpwd")
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.ReadLAPSPassword
+                            };
                     }
                 }
 
