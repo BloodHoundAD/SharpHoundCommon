@@ -224,6 +224,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add("unixpassword", entry.GetProperty(LDAPProperties.UnixUserPassword));
             props.Add("unicodepassword", entry.GetProperty(LDAPProperties.UnicodePassword));
             props.Add("sfupassword", entry.GetProperty(LDAPProperties.MsSFU30Password));
+            props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
 
             var ac = entry.GetProperty(LDAPProperties.AdminCount);
             if (ac != null)
