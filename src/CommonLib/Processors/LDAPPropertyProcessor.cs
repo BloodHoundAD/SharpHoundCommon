@@ -21,8 +21,7 @@ namespace SharpHoundCommonLib.Processors
             "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
             "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedtodelegateto",
             "msDS-allowedtoactonbehalfofotheridentity", "displayname",
-            "sidhistory", "samaccountname", "samaccounttype", "objectsid", "objectguid", "objectclass",
-            "samaccountname", "msds-groupmsamembership",
+            "sidhistory", "samaccountname", "samaccounttype", "objectsid", "objectguid", "objectclass", "msds-groupmsamembership",
             "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector",
             "member", "whenCreated"
         };
