@@ -386,7 +386,7 @@ namespace SharpHoundCommonLib.Processors
         ///     format using a best guess
         /// </summary>
         /// <param name="entry"></param>
-        private static Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
+        public Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
         {
             var flag = IsTextUnicodeFlags.IS_TEXT_UNICODE_STATISTICS;
             var props = new Dictionary<string, object>();
