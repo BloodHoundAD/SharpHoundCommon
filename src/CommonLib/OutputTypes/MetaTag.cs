@@ -2,6 +2,7 @@
 
 namespace SharpHoundCommonLib.OutputTypes
 {
+    [DataContract]
     public class MetaTag
     {
         [DataMember(Name="methods")] public long CollectionMethods { get; set; }
