@@ -10,6 +10,7 @@
         public const string AddSelf = "AddSelf";
         public const string GetChanges = "GetChanges";
         public const string GetChangesAll = "GetChangesAll";
+        public const string GetChangesInFilteredSet = "GetChangesInFilteredSet";
         public const string AllExtendedRights = "AllExtendedRights";
         public const string ForceChangePassword = "ForceChangePassword";
         public const string AddAllowedToAct = "AddAllowedToAct";
