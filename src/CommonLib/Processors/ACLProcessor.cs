@@ -274,6 +274,14 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.GetChangesAll
                             };
+                        else if (aceType == ACEGuids.DSReplicationGetChangesInFilteredSet)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.GetChangesInFilteredSet
+                            };
                         else if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE
                             {
