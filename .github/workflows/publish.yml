@@ -13,6 +13,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      - name: Parse Version
+        uses: web3j/substr-action@v1.2
+        id: version
+        with:
+          value: ${{ github.ref_name }}
+          start: 1
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
@@ -31,23 +38,10 @@ jobs:
           path: docfx/coverage/report/
 
       - name: Pack
-        run: dotnet pack --no-restore -c Release --output .
-
-      - uses: web3j/substr-action@v1.2
-        id: version
-        with:
-          value: ${{ github.refname }}
-          start: 0
+        run: dotnet pack --include-symbols --no-restore -c Release -p:PackageVersion=${{ steps.version.outputs.result }} -o .
 
       - name: Publish NuGet
-        uses: rohith/publish-nuget@v2
-        with:
-          PROJECT_FILE_PATH: src/CommonLib/SharpHoundCommonLib.csproj
-          PACKAGE_NAME: SharpHoundCommon
-          VERSION_STATIC: ${{ steps.version.outputs.result }}
-          NUGET_KEY: ${{secrets.NUGET_TOKEN}}
-          INCLUDE_SYMBOLS: true
-          TAG_COMMIT: false
+        run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }}
 
   ghpages:
     name: ghpages
