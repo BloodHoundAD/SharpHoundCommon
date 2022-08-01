@@ -17,9 +17,10 @@
         <DebugType>full</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="System.ValueTuple" Version="4.5.0"/>
+        <PackageReference Include="FluentResults" Version="3.8.0" />
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Properties"/>
+        <Folder Include="Properties" />
     </ItemGroup>
 </Project>
