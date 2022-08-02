@@ -795,7 +795,7 @@ namespace CommonLibTest
             Assert.Equal(actual.RightName, expectedRightName);
         }
 
-        [Fact]
+/*        [Fact]
         public void ACLProcessor_ProcessACL_ExtendedRight_Computer_NoLAPS()
         {
             var expectedPrincipalType = Label.Group;
@@ -825,7 +825,7 @@ namespace CommonLibTest
             var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, false).ToArray();
 
             Assert.Empty(result);
-        }
+        }*/
 
         [Fact]
         public void ACLProcessor_ProcessACL_ExtendedRight_Computer_All()
