@@ -19,5 +19,6 @@
         public const string WriteSPN = "WriteSPN";
         public const string AddKeyCredentialLink = "AddKeyCredentialLink";
         public const string SQLAdmin = "SQLAdmin";
+        public const string WriteAccountRestrictions = "WriteAccountRestrictions";
     }
 }
