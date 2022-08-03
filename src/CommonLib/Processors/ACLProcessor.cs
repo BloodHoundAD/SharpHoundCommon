@@ -253,6 +253,7 @@ namespace SharpHoundCommonLib.Processors
                         RightName = EdgeNames.AddSelf
                     };
 
+
                 //Process object type specific ACEs. Extended rights apply to users, domains, and computers
                 if (aceRights.HasFlag(ActiveDirectoryRights.ExtendedRight))
                 {
@@ -330,6 +331,17 @@ namespace SharpHoundCommonLib.Processors
                                     PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                                     IsInherited = inherited,
                                     RightName = EdgeNames.ReadLAPSPassword
+                                };
+                        }
+                        else
+                        {
+                            if (aceType is ACEGuids.AllGuid or "")
+                                yield return new ACE
+                                {
+                                    PrincipalType = resolvedPrincipal.ObjectType,
+                                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                    IsInherited = inherited,
+                                    RightName = EdgeNames.AllExtendedRights
                                 };
                         }
                     }
