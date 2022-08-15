@@ -1256,7 +1256,7 @@ namespace SharpHoundCommonLib
             if (await _portScanner.CheckPort(pdc, port))
             {
                 _domainControllerCache.TryAdd(domain.Name, pdc);
-                _log.LogDebug("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, pdc);
+                _log.LogInformation("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, pdc);
                 return pdc;
             }
 
@@ -1265,7 +1265,7 @@ namespace SharpHoundCommonLib
             {
                 var name = domainController.Name;
                 if (!await _portScanner.CheckPort(name, port)) continue;
-                _log.LogDebug("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, name);
+                _log.LogInformation("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, name);
                 _domainControllerCache.TryAdd(domain.Name, name);
                 return name;
             }
