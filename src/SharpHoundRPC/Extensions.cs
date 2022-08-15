@@ -36,5 +36,12 @@ namespace SharpHoundRPC
             var rid = int.Parse(value.Substring(value.LastIndexOf("-", StringComparison.Ordinal) + 1));
             return rid;
         }
+
+        public static byte[] GetBytes(this SecurityIdentifier identifier)
+        {
+            var bytes = new byte[identifier.BinaryLength];
+            identifier.GetBinaryForm(bytes, 0);
+            return bytes;
+        } 
     }
 }

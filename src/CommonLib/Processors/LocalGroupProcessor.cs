@@ -23,7 +23,10 @@ namespace SharpHoundCommonLib.Processors
             "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
             "S-1-5-19", "S-1-5-20"
         };
-        
+
+        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+        public event ComputerStatusDelegate ComputerStatusEvent;
+
         public LocalGroupProcessor(ILDAPUtils utils, ILogger log = null)
         {
             _utils = utils;
@@ -36,12 +39,18 @@ namespace SharpHoundCommonLib.Processors
             var typeCache = new ConcurrentDictionary<string, CachedLocalItem>();
             var computerSid = new SecurityIdentifier(computerDomainSid);
 
-            try
+            var machineSid = server.GetMachineSid().ValueOrDefault;
+            var getDomainsResult = server.GetDomains();
+            if (getDomainsResult.IsFailed)
             {
-                
+                SendComputerStatus(new CSVComputerStatus
+                {
+                    Task = "GetDomains",
+                    ComputerName = server.ComputerName,
+                    Status = getDomainsResult.
+                });
+                yield break;
             }
-
-            var machineSid = server.GetMachineSid();
             foreach (var domainResult in server.GetDomains())
             {
                 var ret = new LocalGroupAPIResult
@@ -161,6 +170,11 @@ namespace SharpHoundCommonLib.Processors
                 return true;
 
             return false;
+        }
+
+        private void SendComputerStatus(CSVComputerStatus status)
+        {
+            ComputerStatusEvent?.Invoke(status);
         }
     }
 }

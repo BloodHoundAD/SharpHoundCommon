@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using FluentResults;
 using SharpHoundRPC.Handles;
 using SharpHoundRPC.SAMRPCNative;
 using SharpHoundRPC.Shared;
@@ -12,28 +14,55 @@ namespace SharpHoundRPC.Wrappers
         {
         }
 
-        public (string Name, SharedEnums.SidNameUse Type) LookupUserByRid(int rid)
+        public Result<(string Name, SharedEnums.SidNameUse Type)> LookupUserByRid(int rid)
         {
-            return SAMMethods.SamLookupIdsInDomain(Handle, rid);
+            var ridArray = new[] {rid};
+            var status = SAMMethods.SamLookupIdsInDomain(Handle, 1, ridArray, out var namePointer, out var usePointer);
+            if (status.IsError())
+            {
+                return Result.Fail($"SAMLookupIdsInDomain returned {status}");
+            }
+
+            return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(), (SharedEnums.SidNameUse)usePointer.GetData<int>());
         }
 
-        public IEnumerable<(string Name, int Rid)> GetAliases()
+        public Result<IEnumerable<(string Name, int Rid)>> GetAliases()
         {
-            return SAMMethods.SamEnumerateAliasesInDomain(Handle);
+            var enumerationContext = 0;
+            var status = SAMMethods.SamEnumerateAliasesInDomain(Handle, ref enumerationContext, out var ridPointer ,-1,
+                out var count);
+            if (status.IsError())
+            {
+                return Result.Fail($"SAMEnumerateAliasesInDomain returned {status}");
+            }
+
+            return Result.Ok(ridPointer.GetEnumerable<SAMStructs.SamRidEnumeration>(count)
+                .Select(x => (x.Name.ToString(), x.Rid)));
         }
 
-        public SAMAlias OpenAlias(int rid)
+        public Result<SAMAlias> OpenAlias(int rid, SAMEnums.AliasOpenFlags desiredAccess = SAMEnums.AliasOpenFlags.ListMembers)
         {
-            return SAMMethods.SamOpenAlias(Handle, rid);
+            var status = SAMMethods.SamOpenAlias(Handle, desiredAccess, rid, out var aliasHandle);
+            if (status.IsError())
+            {
+                return Result.Fail($"SAMOpenAlias returned {status}");
+            }
+
+            return new SAMAlias(aliasHandle);
         }
 
-        public SAMAlias OpenAlias(string name)
+        public Result<SAMAlias> OpenAlias(string name)
         {
-            foreach (var alias in GetAliases())
+            var getAliasesResult = GetAliases();
+            if (getAliasesResult.IsFailed)
+            {
+                return Result.Fail(getAliasesResult.Errors.First());
+            }
+            foreach (var alias in getAliasesResult.Value)
                 if (alias.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     return OpenAlias(alias.Rid);
 
-            throw new RPCException(RPCException.OpenAlias, RPCException.AliasNotFound);
+            return Result.Fail($"Alias {name} was not found");
         }
     }
 }

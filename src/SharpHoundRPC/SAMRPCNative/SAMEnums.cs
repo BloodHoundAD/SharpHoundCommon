@@ -44,7 +44,7 @@ namespace SharpHoundRPC.SAMRPCNative
 
         [Flags]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
-        internal enum AliasOpenFlags
+        public enum AliasOpenFlags
         {
             AddMember = 0x1,
             RemoveMember = 0x2,
