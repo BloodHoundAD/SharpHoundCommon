@@ -31,7 +31,7 @@ jobs:
       - name: Generate Coverage Report
         run: dotnet test # coverage happens by default
 
-      - name: Updload Coverage Report
+      - name: Upload Coverage Report
         uses: actions/upload-artifact@v2
         with:
           name: report
