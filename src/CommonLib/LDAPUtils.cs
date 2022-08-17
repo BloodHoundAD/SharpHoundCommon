@@ -1272,7 +1272,7 @@ namespace SharpHoundCommonLib
 
             //If we get here, somehow we didn't get any usable DCs. Save it off as null
             _domainControllerCache.TryAdd(domain.Name, null);
-            _log.LogDebug("Unable to find usable domain controller for {Domain}", domain.Name);
+            _log.LogInformation("Unable to find usable domain controller for {Domain}", domain.Name);
             return null;
         }
 
