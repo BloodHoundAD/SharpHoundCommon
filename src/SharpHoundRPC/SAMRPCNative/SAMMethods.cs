@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
-using FluentResults;
 using SharpHoundRPC.Handles;
 using SharpHoundRPC.Shared;
-using SharpHoundRPC.Wrappers;
 
 namespace SharpHoundRPC.SAMRPCNative
 {
@@ -66,31 +63,60 @@ namespace SharpHoundRPC.SAMRPCNative
             ref SharedStructs.UnicodeString name,
             out SAMPointer sid);
 
+        internal static (NtStatus status, SAMHandle domainHandle) SamOpenDomain(SAMHandle serverHandle,
+            SAMEnums.DomainAccessMask desiredAccess, byte[] domainSid)
+        {
+            var status = SamOpenDomain(serverHandle, desiredAccess, domainSid, out var domainHandle);
+            return (status, domainHandle);
+        }
+
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
-        internal static extern NtStatus SamOpenDomain(
+        private static extern NtStatus SamOpenDomain(
             SAMHandle serverHandle,
             SAMEnums.DomainAccessMask desiredAccess,
             [MarshalAs(UnmanagedType.LPArray)] byte[] domainSid,
             out SAMHandle domainHandle
         );
 
+        internal static (NtStatus status, SAMSidArray members, int count) SamGetMembersInAlias(SAMHandle aliasHandle)
+        {
+            var status = SamGetMembersInAlias(aliasHandle, out var members, out var count);
+            return (status, members, count);
+        }
+
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
-        internal static extern NtStatus SamGetMembersInAlias(
+        private static extern NtStatus SamGetMembersInAlias(
             SAMHandle aliasHandle,
             out SAMSidArray members,
             out int count
         );
 
+        internal static (NtStatus status, SAMHandle aliasHandle) SamOpenAlias(SAMHandle domainHandle,
+            SAMEnums.AliasOpenFlags desiredAccess, int aliasId)
+        {
+            var status = SamOpenAlias(domainHandle, desiredAccess, aliasId, out var aliasHandle);
+            return (status, aliasHandle);
+        }
+
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
-        internal static extern NtStatus SamOpenAlias(
+        private static extern NtStatus SamOpenAlias(
             SAMHandle domainHandle,
             SAMEnums.AliasOpenFlags desiredAccess,
             int aliasId,
             out SAMHandle aliasHandle
         );
 
+        internal static (NtStatus status, SAMPointer pointer, int count) SamEnumerateAliasesInDomain(
+            SAMHandle domainHandle)
+        {
+            var enumerationContext = 0;
+            var status = SamEnumerateAliasesInDomain(domainHandle, ref enumerationContext, out var buffer, -1,
+                out var count);
+            return (status, buffer, count);
+        }
+        
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
-        internal static extern NtStatus SamEnumerateAliasesInDomain(
+        private static extern NtStatus SamEnumerateAliasesInDomain(
             SAMHandle domainHandle,
             ref int enumerationContext,
             out SAMPointer buffer,
@@ -113,8 +139,16 @@ namespace SharpHoundRPC.SAMRPCNative
         //     Marshal.Copy(usePointer.DangerousGetHandle(), (int[]) (object) types, 0, count);
         // }
 
+        internal static (NtStatus status, SAMPointer names, SAMPointer use) SamLookupIdsInDomain(SAMHandle domainHandle,
+            int rid)
+        {
+            var rids = new[] {rid};
+            var status = SamLookupIdsInDomain(domainHandle, 1, rids, out var names, out var use);
+            return (status, names, use);
+        }
+
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
-        internal static extern NtStatus SamLookupIdsInDomain(SAMHandle domainHandle,
+        private static extern NtStatus SamLookupIdsInDomain(SAMHandle domainHandle,
             int count,
             int[] rids,
             out SAMPointer names,

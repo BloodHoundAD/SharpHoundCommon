@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentResults;
 using SharpHoundRPC.Handles;
 using SharpHoundRPC.SAMRPCNative;
 using SharpHoundRPC.Shared;
@@ -14,13 +13,12 @@ namespace SharpHoundRPC.Wrappers
         {
         }
 
-        public Result<(string Name, SharedEnums.SidNameUse Type)> LookupUserByRid(int rid)
+        public Result<(string Name, SharedEnums.SidNameUse Type)> LookupPrincipalByRid(int rid)
         {
-            var ridArray = new[] {rid};
-            var status = SAMMethods.SamLookupIdsInDomain(Handle, 1, ridArray, out var namePointer, out var usePointer);
+            var (status, namePointer, usePointer) = SAMMethods.SamLookupIdsInDomain(Handle, rid);
             if (status.IsError())
             {
-                return Result.Fail($"SAMLookupIdsInDomain returned {status}");
+                return status;
             }
 
             return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(), (SharedEnums.SidNameUse)usePointer.GetData<int>());
@@ -29,23 +27,22 @@ namespace SharpHoundRPC.Wrappers
         public Result<IEnumerable<(string Name, int Rid)>> GetAliases()
         {
             var enumerationContext = 0;
-            var status = SAMMethods.SamEnumerateAliasesInDomain(Handle, ref enumerationContext, out var ridPointer ,-1,
-                out var count);
+            var (status, ridPointer, count) = SAMMethods.SamEnumerateAliasesInDomain(Handle);
             if (status.IsError())
             {
-                return Result.Fail($"SAMEnumerateAliasesInDomain returned {status}");
+                return status;
             }
 
-            return Result.Ok(ridPointer.GetEnumerable<SAMStructs.SamRidEnumeration>(count)
+            return Result<IEnumerable<(string Name, int Rid)>>.Ok(ridPointer.GetEnumerable<SAMStructs.SamRidEnumeration>(count)
                 .Select(x => (x.Name.ToString(), x.Rid)));
         }
 
         public Result<SAMAlias> OpenAlias(int rid, SAMEnums.AliasOpenFlags desiredAccess = SAMEnums.AliasOpenFlags.ListMembers)
         {
-            var status = SAMMethods.SamOpenAlias(Handle, desiredAccess, rid, out var aliasHandle);
+            var (status, aliasHandle) = SAMMethods.SamOpenAlias(Handle, desiredAccess, rid);
             if (status.IsError())
             {
-                return Result.Fail($"SAMOpenAlias returned {status}");
+                return status;
             }
 
             return new SAMAlias(aliasHandle);
@@ -56,13 +53,14 @@ namespace SharpHoundRPC.Wrappers
             var getAliasesResult = GetAliases();
             if (getAliasesResult.IsFailed)
             {
-                return Result.Fail(getAliasesResult.Errors.First());
+                return getAliasesResult.Status;
             }
+            
             foreach (var alias in getAliasesResult.Value)
                 if (alias.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     return OpenAlias(alias.Rid);
 
-            return Result.Fail($"Alias {name} was not found");
+            return $"Alias {name} was not found";
         }
     }
 }

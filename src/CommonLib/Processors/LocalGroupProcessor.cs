@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
-using SharpHoundRPC;
 using SharpHoundRPC.Shared;
 using SharpHoundRPC.Wrappers;
 
@@ -33,25 +29,51 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("LocalGroupProcessor");
         }
 
-        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(SAMServer server, string computerDomainSid, string computerDomain)
+        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerDomainSid, string computerDomain)
         {
-            var groupCache = new ConcurrentBag<LocalGroupAPIResult>();
+            var openServerResult = SAMServer.OpenServer(computerName);
+            if (openServerResult.IsFailed)
+            {
+                SendComputerStatus(new CSVComputerStatus
+                {
+                    Task = "SamConnect",
+                    ComputerName = computerName,
+                    Status = openServerResult.Status.ToString()
+                });
+                yield break;
+            }
+
+            var server = openServerResult.Value;
             var typeCache = new ConcurrentDictionary<string, CachedLocalItem>();
             var computerSid = new SecurityIdentifier(computerDomainSid);
+            
+            if (!Cache.GetMachineSid(computerDomainSid, out var machineSid))
+            {
+                var getMachineSidResult = server.GetMachineSid();
+                if (getMachineSidResult.IsFailed)
+                {
+                    machineSid = "UNKNOWN";
+                }
+                else
+                {
+                    machineSid = getMachineSidResult.Value.Value;
+                    Cache.AddMachineSid(computerDomainSid, machineSid);
+                }
+            }
 
-            var machineSid = server.GetMachineSid().ValueOrDefault;
+            
             var getDomainsResult = server.GetDomains();
             if (getDomainsResult.IsFailed)
             {
                 SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "GetDomains",
-                    ComputerName = server.ComputerName,
-                    Status = getDomainsResult.
+                    ComputerName = computerName,
+                    Status = getDomainsResult.Status.ToString()
                 });
                 yield break;
             }
-            foreach (var domainResult in server.GetDomains())
+            foreach (var domainResult in getDomainsResult.Value)
             {
                 var ret = new LocalGroupAPIResult
                 {
@@ -59,102 +81,160 @@ namespace SharpHoundCommonLib.Processors
                     GroupRID = domainResult.Rid,
                 };
                 
-                try
+                var openDomainResult = server.OpenDomain(domainResult.Name);
+                if (openDomainResult.IsFailed)
                 {
-                    var domain = server.OpenDomain(domainResult.Name);; 
-                    foreach (var alias in domain.GetAliases())
+                    SendComputerStatus(new CSVComputerStatus
                     {
-                        var results = new List<TypedPrincipal>();
-                        var names = new List<NamedPrincipal>();
-                        using var localGroup = domain.OpenAlias(alias.Rid);
-                        foreach (var securityIdentifier in localGroup.GetMembers())
+                        Task = $"OpenDomain - {domainResult.Name}",
+                        ComputerName = computerName,
+                        Status = openDomainResult.Status.ToString()
+                    });
+                    continue;
+                }
+
+                var domain = openDomainResult.Value;
+
+                var getAliasesResult = domain.GetAliases();
+
+                if (getAliasesResult.IsFailed)
+                {
+                    SendComputerStatus(new CSVComputerStatus
+                    {
+                        Task = $"GetAliases - {domainResult.Name}",
+                        ComputerName = computerName,
+                        Status = getAliasesResult.Status.ToString()
+                    });
+                    continue;
+                }
+                
+                foreach (var alias in getAliasesResult.Value)
+                {
+                    var openAliasResult = domain.OpenAlias(alias.Rid);
+                    if (openAliasResult.IsFailed)
+                    {
+                        SendComputerStatus(new CSVComputerStatus
                         {
-                            if (IsSidFiltered(securityIdentifier))
-                                continue;
+                            Task = $"OpenAlias - {alias.Name}",
+                            ComputerName = computerName,
+                            Status = openAliasResult.Status.ToString()
+                        });
+                        ret.Collected = false;
+                        ret.FailureReason = $"SamOpenAliasInDomain failed with status {openAliasResult.Status}";
+                        yield return ret;
+                    }
+                    
+                    var results = new List<TypedPrincipal>();
+                    var names = new List<NamedPrincipal>();
 
-                            var sidValue = securityIdentifier.Value;
+                    var localGroup = openAliasResult.Value;
+                    var getMembersResult = localGroup.GetMembers();
+                    if (getMembersResult.IsFailed)
+                    {
+                        SendComputerStatus(new CSVComputerStatus
+                        {
+                            Task = $"GetMembersInAlias - {alias.Name}",
+                            ComputerName = computerName,
+                            Status = getMembersResult.Status.ToString()
+                        });
+                        ret.Collected = false;
+                        ret.FailureReason = $"SamGetMembersInAlias failed with status {getMembersResult.Status}";
+                        yield return ret;
+                    }
 
-                            if (server.IsDomainController(computerSid))
+                    foreach (var securityIdentifier in getMembersResult.Value)
+                    {
+                        if (IsSidFiltered(securityIdentifier))
+                            continue;
+
+                        var sidValue = securityIdentifier.Value;
+
+                        if (server.IsDomainController(computerSid))
+                        {
+                            if (_utils.GetWellKnownPrincipal(sidValue, computerDomain, out var wellKnown))
+                                results.Add(wellKnown);
+                            else
+                                results.Add(_utils.ResolveIDAndType(sidValue, computerDomain));
+                        }
+                        else
+                        {
+                            if (WellKnownPrincipal.GetWellKnownPrincipal(sidValue, out var wellKnown))
                             {
-                                if (_utils.GetWellKnownPrincipal(sidValue, computerDomain,
-                                        out var wellKnown))
+                                if (machineSid == "UNKNOWN")
+                                    continue;
+                                wellKnown.ObjectIdentifier = $"{machineSid}-{securityIdentifier.Rid()}";
+                                wellKnown.ObjectType = wellKnown.ObjectType switch
                                 {
-                                    results.Add(wellKnown);
-                                }
-                                else
-                                {
-                                    results.Add(_utils.ResolveIDAndType(sidValue, computerDomain));
-                                }
+                                    Label.User => Label.LocalUser,
+                                    Label.Group => Label.LocalGroup,
+                                    _ => wellKnown.ObjectType
+                                };
+                                results.Add(wellKnown);
                             }
                             else
                             {
-                                if (WellKnownPrincipal.GetWellKnownPrincipal(sidValue,
-                                        out var wellKnown))
+                                if (securityIdentifier.IsEqualDomainSid(computerSid))
                                 {
-                                    wellKnown.ObjectIdentifier = $"{machineSid.Value}-{securityIdentifier.Rid()}";
-                                    wellKnown.ObjectType = wellKnown.ObjectType switch
-                                    {
-                                        Label.User => Label.LocalUser,
-                                        Label.Group => Label.LocalGroup,
-                                        _ => wellKnown.ObjectType
-                                    };
-                                    results.Add(wellKnown);
-                                } else
+                                    results.Add(_utils.ResolveIDAndType(sidValue, computerDomain));
+                                }
+                                else
                                 {
-                                    if (securityIdentifier.IsEqualDomainSid(computerSid))
+                                    if (typeCache.TryGetValue(sidValue, out var item))
                                     {
-                                        results.Add(_utils.ResolveIDAndType(sidValue, computerDomain));
+                                        results.Add(new TypedPrincipal
+                                        {
+                                            ObjectIdentifier = sidValue,
+                                            ObjectType = item.Type
+                                        });
+                                        
+                                        names.Add(new NamedPrincipal
+                                        {
+                                            ObjectId = sidValue,
+                                            PrincipalName = item.Name
+                                        });
                                     }
                                     else
                                     {
-                                        if (typeCache.TryGetValue(sidValue, out var item))
+                                        var lookupUserResult = server.LookupPrincipalBySid(securityIdentifier);
+                                        if (lookupUserResult.IsFailed)
                                         {
-                                            _log.LogTrace("ResolveLocalSid - Cache hit for {ID}", sidValue);
-                                            results.Add(new TypedPrincipal
-                                            {
-                                                ObjectIdentifier = sidValue,
-                                                ObjectType = item.Type
-                                            });
-                                            
-                                            names.Add(new NamedPrincipal
-                                            {
-                                                ObjectId = sidValue,
-                                                PrincipalName = item.Name
-                                            });
+                                            _log.LogTrace("Unable to resolve local sid {SID}", sidValue);
+                                            continue;
                                         }
 
-                                        try
+                                        var (name, use) = lookupUserResult.Value;
+                                        var objectType = use switch
                                         {
-                                            var (name, use) = server.LookupUserBySid(securityIdentifier);
-                                            var objectType = use switch
-                                            {
-                                                SharedEnums.SidNameUse.User => Label.LocalUser,
-                                                SharedEnums.SidNameUse.Group => Label.LocalGroup,
-                                                SharedEnums.SidNameUse.Alias => Label.LocalGroup,
-                                                _ => Label.Base
-                                            };
-                                            
-                                            results.Add(new TypedPrincipal
-                                            {
-                                                
-                                            });
-                                        }
-                                        catch (Exception e)
+                                            SharedEnums.SidNameUse.User => Label.LocalUser,
+                                            SharedEnums.SidNameUse.Group => Label.LocalGroup,
+                                            SharedEnums.SidNameUse.Alias => Label.LocalGroup,
+                                            _ => Label.Base
+                                        };
+
+                                        typeCache.TryAdd(sidValue, new CachedLocalItem(name, objectType));
+                                        
+                                        results.Add(new TypedPrincipal
                                         {
-                                            _log.LogTrace(e, "Unable to resolve local sid {SID}", securityIdentifier.Value);
-                                        }
+                                            ObjectIdentifier = sidValue,
+                                            ObjectType = objectType
+                                        });
+                                        
+                                        names.Add(new NamedPrincipal
+                                        {
+                                            PrincipalName = name,
+                                            ObjectId = sidValue
+                                        });
                                     }
+                                    
                                 }
                             }
                         }
                     }
+
+                    ret.LocalNames = names.ToArray();
+                    ret.Results = results.ToArray();
+                    yield return ret;
                 }
-                catch (RPCException e)
-                {
-                    ret.Collected = false;
-                    ret.FailureReason = e.ToString();
-                }
-                yield return ret;
             }
         }
 

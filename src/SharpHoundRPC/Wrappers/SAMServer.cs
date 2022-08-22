@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using FluentResults;
 using SharpHoundRPC.Handles;
 using SharpHoundRPC.SAMRPCNative;
 using SharpHoundRPC.Shared;
@@ -30,20 +29,20 @@ namespace SharpHoundRPC.Wrappers
             var (status, handle) = SAMMethods.SamConnect(computerName, requestedConnectAccess);
 
             return status.IsError()
-                ? Result<SAMServer>.Fail(status)
-                : Result<SAMServer>.Ok(new SAMServer(handle, computerName));
+                ? status
+                : new SAMServer(handle, computerName);
         }
 
         public Result<IEnumerable<(string Name, int Rid)>> GetDomains()
         {
             var (status, rids) = SAMMethods.SamEnumerateDomainsInSamServer(Handle);
-            return status.IsError() ? Result<IEnumerable<(string Name, int Rid)>>.Fail(status) : Result<IEnumerable<(string Name, int Rid)>>.Ok(rids.Select(x => (x.Name.ToString(), x.Rid)));
+            return status.IsError() ? status : Result<IEnumerable<(string Name, int Rid)>>.Ok(rids.Select(x => (x.Name.ToString(), x.Rid)));
         }
 
         public Result<SecurityIdentifier> LookupDomain(string name)
         {
             var (status, sid) = SAMMethods.SamLookupDomainInSamServer(Handle, name);
-            return status.IsError() ? Result.Fail(status.ToString()) : Result.Ok(sid);
+            return status.IsError() ? status : sid;
         }
 
         public Result<SecurityIdentifier> GetMachineSid(string testName = null)
@@ -75,10 +74,9 @@ namespace SharpHoundRPC.Wrappers
                 }
             }
 
-            if (sid == null) return Result.Fail("Unable to get machine sid");
+            if (sid == null) return "Unable to get machine sid";
             _cachedMachineSid = sid;
-            return Result.Ok(sid);
-
+            return sid;
         }
 
         public bool IsDomainController(SecurityIdentifier domainMachineSid)
@@ -86,17 +84,17 @@ namespace SharpHoundRPC.Wrappers
             return domainMachineSid.AccountDomainSid.Equals(GetMachineSid().Value.AccountDomainSid);
         }
         
-        public Result<(string Name, SharedEnums.SidNameUse Type)> LookupUserBySid(SecurityIdentifier securityIdentifier)
+        public Result<(string Name, SharedEnums.SidNameUse Type)> LookupPrincipalBySid(SecurityIdentifier securityIdentifier)
         {
             var openDomainResult = OpenDomain(securityIdentifier);
             if (openDomainResult.IsFailed)
             {
-                return Result.Fail(openDomainResult.Errors.First());
+                return $"OpenDomain returned {openDomainResult.Status}";
             }
 
             var domain = openDomainResult.Value;
             
-            return domain.LookupUserByRid(securityIdentifier.Rid());
+            return domain.LookupPrincipalByRid(securityIdentifier.Rid());
         }
 
         public Result<SAMDomain> OpenDomain(string domainName, SAMEnums.DomainAccessMask requestedDomainAccess =
@@ -106,7 +104,7 @@ namespace SharpHoundRPC.Wrappers
             var lookupResult = LookupDomain(domainName);
             if (lookupResult.IsFailed)
             {
-                return Result.Fail(lookupResult.Errors.First());
+                return $"LookupDomain returned {lookupResult.Error}";
             }
 
             var sid = lookupResult.Value;
@@ -116,10 +114,10 @@ namespace SharpHoundRPC.Wrappers
                 return domain;
             }
 
-            var status = SAMMethods.SamOpenDomain(Handle, requestedDomainAccess, sid.GetBytes(), out var domainHandle);
+            var (status, domainHandle) = SAMMethods.SamOpenDomain(Handle, requestedDomainAccess, sid.GetBytes());
             if (status.IsError())
             {
-                return Result.Fail(status.ToString());
+                return status;
             }
 
             domain = new SAMDomain(domainHandle);
@@ -138,10 +136,10 @@ namespace SharpHoundRPC.Wrappers
                 return domain;
             }
             
-            var status = SAMMethods.SamOpenDomain(Handle, requestedDomainAccess, securityIdentifier.GetBytes(), out var domainHandle);
+            var (status, domainHandle) = SAMMethods.SamOpenDomain(Handle, requestedDomainAccess, securityIdentifier.GetBytes());
             if (status.IsError())
             {
-                return Result.Fail(status.ToString());
+                return status.ToString();
             }
 
             domain = new SAMDomain(domainHandle);

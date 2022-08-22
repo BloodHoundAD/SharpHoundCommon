@@ -16,38 +16,87 @@ namespace SharpHoundRPC.Wrappers
             _computerName = computerName;
         }
 
-        public static LSAPolicy OpenPolicy(string computerName, LSAEnums.LsaOpenMask desiredAccess =
+        public static Result<LSAPolicy> OpenPolicy(string computerName, LSAEnums.LsaOpenMask desiredAccess =
             LSAEnums.LsaOpenMask.LookupNames | LSAEnums.LsaOpenMask.ViewLocalInfo)
         {
-            var handle = LSAMethods.LsaOpenPolicy(computerName, desiredAccess);
+            var (status, handle) = LSAMethods.LsaOpenPolicy(computerName, desiredAccess);
+            if (status.IsError())
+            {
+                return status;
+            }
             return new LSAPolicy(computerName, handle);
         }
 
-        public (string Name, string Sid) GetLocalDomainInformation()
+        public Result<(string Name, string Sid)> GetLocalDomainInformation()
         {
             var result = LSAMethods.LsaQueryInformationPolicy(Handle,
                 LSAEnums.LSAPolicyInformation.PolicyAccountDomainInformation);
 
-            var domainInfo = result.GetData<LSAStructs.PolicyAccountDomainInfo>();
+            if (result.status.IsError())
+            {
+                return result.status;
+            }
+
+            var domainInfo = result.pointer.GetData<LSAStructs.PolicyAccountDomainInfo>();
             var domainSid = new SecurityIdentifier(domainInfo.DomainSid);
             return (domainInfo.DomainName.ToString(), domainSid.Value.ToUpper());
         }
 
-        public IEnumerable<SecurityIdentifier> GetPrincipalsWithPrivilege(string userRight)
+        public Result<IEnumerable<SecurityIdentifier>> GetPrincipalsWithPrivilege(string userRight)
         {
-            return LSAMethods.LsaEnumerateAccountsWithUserRight(Handle, userRight);
+            var (status, sids, count) = LSAMethods.LsaEnumerateAccountsWithUserRight(Handle, userRight);
+            if (status.IsError())
+            {
+                return status;
+            }
+            
+            return Result<IEnumerable<SecurityIdentifier>>.Ok(sids.GetEnumerable<SecurityIdentifier>(count));
         }
 
-        public (string Name, SharedEnums.SidNameUse Use, string Domains) LookupSid(SecurityIdentifier sid)
+        public Result<(string Name, SharedEnums.SidNameUse Use, string Domains)> LookupSid(SecurityIdentifier sid)
         {
-            var result = LSAMethods.LsaLookupSids(Handle, new[] {sid}).First();
-            return (result.Name, result.Use, result.Domain);
+            if (sid == null)
+                return "SID cannot be null";
+
+            var (status, referencedDomains, names, count) = LSAMethods.LsaLookupSids(Handle, new[] {sid});
+            if (status.IsError())
+            {
+                return status;
+            }
+            
+            var translatedNames = names.GetEnumerable<LSAStructs.LSATranslatedNames>(count).ToArray();
+            var domainList = referencedDomains.GetData<LSAStructs.LSAReferencedDomains>();
+            var safeDomains = new LSAPointer(domainList.Domains);
+            var domains = safeDomains.GetEnumerable<LSAStructs.LSATrustInformation>(domainList.Entries).ToArray();
+            return (translatedNames[0].Name.ToString(), translatedNames[0].Use,
+                domains[translatedNames[0].DomainIndex].Name.ToString());
         }
 
-        public IEnumerable<(SecurityIdentifier Sid, string Name, SharedEnums.SidNameUse Use, string Domain)> LookupSids(
+        public Result<IEnumerable<(SecurityIdentifier Sid, string Name, SharedEnums.SidNameUse Use, string Domain)>> LookupSids(
             SecurityIdentifier[] sids)
         {
-            return LSAMethods.LsaLookupSids(Handle, sids);
+            sids = sids.Where(x => x != null).ToArray();
+            if (sids.Length == 0)
+                return "No non-null SIDs specified";
+            
+            var (status, referencedDomains, names, count) = LSAMethods.LsaLookupSids(Handle, sids);
+            if (status.IsError())
+            {
+                return status;
+            }
+            
+            var translatedNames = names.GetEnumerable<LSAStructs.LSATranslatedNames>(count).ToArray();
+            var domainList = referencedDomains.GetData<LSAStructs.LSAReferencedDomains>();
+            var safeDomains = new LSAPointer(domainList.Domains);
+            var domains = safeDomains.GetEnumerable<LSAStructs.LSATrustInformation>(domainList.Entries).ToArray();
+
+            var ret = new List<(SecurityIdentifier Sid, string Name, SharedEnums.SidNameUse Use, string Domain)>();
+            for (var i = 0; i < count; i++)
+            {
+                ret.Add((sids[i], translatedNames[i].Name.ToString(), translatedNames[i].Use, domains[translatedNames[i].DomainIndex].Name.ToString()));
+            }
+
+            return ret.ToArray();
         }
     }
 }

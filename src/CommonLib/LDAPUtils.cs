@@ -686,15 +686,16 @@ namespace SharpHoundCommonLib
             {
                 conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogTrace(e,"Error getting LDAP connection for filter {Filter} and domain {Domain}", ldapFilter, domainName ?? "null");
                 yield break;
             }
 
             if (conn == null)
             {
                 _log.LogTrace("LDAP connection is null for filter {Filter} and domain {Domain}", ldapFilter,
-                    domainName);
+                    domainName ?? "null");
                 yield break;
             }
 
@@ -702,7 +703,7 @@ namespace SharpHoundCommonLib
 
             if (request == null)
             {
-                _log.LogTrace("Search request is null for filter {Filter} and domain {Domain}", ldapFilter, domainName);
+                _log.LogTrace("Search request is null for filter {Filter} and domain {Domain}", ldapFilter, domainName ?? "null");
                 yield break;
             }
 

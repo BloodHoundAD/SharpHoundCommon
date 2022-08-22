@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Principal;
-using FluentResults;
 
 namespace SharpHoundRPC
 {
@@ -13,16 +12,6 @@ namespace SharpHoundRPC
                 return true;
 
             return false;
-        }
-
-        public static Result<T> ResultValue<T>(this Result result, string failureMessage, T value)
-        {
-            if (result.IsSuccess)
-            {
-                return Result.Ok(value);
-            }
-
-            return Result.Fail(failureMessage);
         }
 
         /// <summary>
