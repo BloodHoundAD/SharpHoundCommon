@@ -685,15 +685,16 @@ namespace SharpHoundCommonLib
             {
                 conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogWarning(e, "Exception getting LDAP connection for {Filter} and domain {Domain}", ldapFilter, domainName ?? "Default Domain");
                 yield break;
             }
 
             if (conn == null)
             {
-                _log.LogTrace("LDAP connection is null for filter {Filter} and domain {Domain}", ldapFilter,
-                    domainName);
+                _log.LogWarning("LDAP connection is null for filter {Filter} and domain {Domain}", ldapFilter,
+                    domainName ?? "Default Domain");
                 yield break;
             }
 
@@ -701,7 +702,7 @@ namespace SharpHoundCommonLib
 
             if (request == null)
             {
-                _log.LogTrace("Search request is null for filter {Filter} and domain {Domain}", ldapFilter, domainName);
+                _log.LogWarning("Search request is null for filter {Filter} and domain {Domain}", ldapFilter, domainName ?? "Default Domain");
                 yield break;
             }
 
@@ -797,15 +798,16 @@ namespace SharpHoundCommonLib
             {
                 conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogWarning(e, "Exception getting LDAP connection for filter {Filter} and domain {Domain}", ldapFilter, domainName ?? "Default Domain");
                 yield break;
             }
 
             if (conn == null)
             {
-                _log.LogTrace("LDAP connection is null for filter {Filter} and domain {Domain}", ldapFilter,
-                    domainName);
+                _log.LogWarning("LDAP connection is null for filter {Filter} and domain {Domain}", ldapFilter,
+                    domainName ?? "Default Domain");
                 yield break;
             }
 
@@ -813,7 +815,7 @@ namespace SharpHoundCommonLib
 
             if (request == null)
             {
-                _log.LogTrace("Search request is null for filter {Filter} and domain {Domain}", ldapFilter, domainName);
+                _log.LogWarning("Search request is null for filter {Filter} and domain {Domain}", ldapFilter, domainName ?? "Default Domain");
                 yield break;
             }
 
@@ -848,7 +850,7 @@ namespace SharpHoundCommonLib
                 }
                 catch (Exception e)
                 {
-                    _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
+                    _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName ?? "Default Domain");
                     yield break;
                 }
 
@@ -907,11 +909,14 @@ namespace SharpHoundCommonLib
         {
             var filter = new LDAPFilter();
             filter.AddDomains();
-
+            
             var resDomain = GetDomain(domain)?.Name ?? domain;
+            _log.LogTrace("Testing LDAP connection for domain {Domain}", resDomain);
             
             var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID, resDomain)
                 .DefaultIfEmpty(null).FirstOrDefault();
+            
+            _log.LogTrace("Result object from LDAP connection test is {DN}", result?.DistinguishedName ?? "null");
 
             return result != null;
         }
@@ -1272,7 +1277,7 @@ namespace SharpHoundCommonLib
 
             //If we get here, somehow we didn't get any usable DCs. Save it off as null
             _domainControllerCache.TryAdd(domain.Name, null);
-            _log.LogInformation("Unable to find usable domain controller for {Domain}", domain.Name);
+            _log.LogWarning("Unable to find usable domain controller for {Domain}", domain.Name);
             return null;
         }
 

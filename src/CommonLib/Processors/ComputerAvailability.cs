@@ -65,7 +65,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
-                _log.LogTrace("{ComputerName} is not available because operating system {OperatingSystem} is not valid", computerName, operatingSystem);
+                _log.LogDebug("{ComputerName} is not available because operating system {OperatingSystem} is not valid", computerName, operatingSystem);
                 return new ComputerStatus
                 {
                     Connectable = false,
@@ -80,7 +80,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (passwordLastSet < threshold)
                 {
-                    _log.LogTrace("{ComputerName} is not available because password last set {PwdLastSet} is out of range",
+                    _log.LogDebug("{ComputerName} is not available because password last set {PwdLastSet} is out of range",
                         computerName, passwordLastSet);
                     return new ComputerStatus
                     {
@@ -100,7 +100,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (!await _scanner.CheckPort(computerName, timeout: _scanTimeout))
             {
-                _log.LogTrace("{ComputerName} is not available because port 445 is unavailable", computerName);
+                _log.LogDebug("{ComputerName} is not available because port 445 is unavailable", computerName);
                 return new ComputerStatus
                 {
                     Connectable = false,
