@@ -4,6 +4,7 @@ using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundRPC.Shared;
 using SharpHoundRPC.Wrappers;
 
 namespace SharpHoundCommonLib.Processors
@@ -52,7 +53,7 @@ namespace SharpHoundCommonLib.Processors
                     Privilege = privilege
                 };
 
-                var enumerateAccountsResult = server.GetPrincipalsWithPrivilege(privilege);
+                var enumerateAccountsResult = server.GetResolvedPrincipalsWithPrivilege(privilege);
                 if (enumerateAccountsResult.IsFailed)
                 {
                     SendComputerStatus(new CSVComputerStatus
@@ -83,10 +84,11 @@ namespace SharpHoundCommonLib.Processors
                 var isDc = computerSid.IsEqualDomainSid(new SecurityIdentifier(machineSid));
                 
                 var resolved = new List<TypedPrincipal>();
-                var toResolve = new List<SecurityIdentifier>();
+                var names = new List<NamedPrincipal>();
 
-                foreach (var sid in enumerateAccountsResult.Value)
+                foreach (var value in enumerateAccountsResult.Value)
                 {
+                    var (sid, name, use, domain) = value;
                     if (IsSidFiltered(sid))
                         continue;
 
@@ -108,21 +110,53 @@ namespace SharpHoundCommonLib.Processors
                         {
                             if (machineSid == "UNKNOWN")
                                 continue;
-                            common.ObjectIdentifier = $"{machineSid}-{sid.Rid()}";
-                            common.ObjectType = common.ObjectType switch
+                            var convertedId = $"{machineSid}-{sid.Rid()}";
+                            names.Add(new NamedPrincipal
+                            {
+                                ObjectId = convertedId,
+                                PrincipalName = common.ObjectIdentifier
+                            });
+                            
+                            var objectType = common.ObjectType switch
                             {
                                 Label.User => Label.LocalUser,
                                 Label.Group => Label.LocalGroup,
                                 _ => common.ObjectType
                             };
-                            resolved.Add(common);
+                            resolved.Add(new TypedPrincipal
+                            {
+                                ObjectIdentifier = convertedId,
+                                ObjectType = objectType
+                            });
                         }
                         else
                         {
+                            var objectType = use switch
+                            {
+                                SharedEnums.SidNameUse.User => Label.LocalUser,
+                                SharedEnums.SidNameUse.Group => Label.LocalGroup,
+                                SharedEnums.SidNameUse.Alias => Label.LocalGroup,
+                                _ => Label.Base
+                            };
                             
+                            names.Add(new NamedPrincipal
+                            {
+                                ObjectId = sid.ToString(),
+                                PrincipalName = name
+                            });
+                            
+                            resolved.Add(new TypedPrincipal
+                            {
+                                ObjectIdentifier = sid.ToString(),
+                                ObjectType = objectType
+                            });
                         }
                     }
                 }
+
+                result.LocalNames = names.ToArray();
+                result.Results = resolved.ToArray();
+                yield return result;
             }
         }
         

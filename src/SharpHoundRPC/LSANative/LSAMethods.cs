@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
@@ -12,7 +10,8 @@ namespace SharpHoundRPC.LSANative
     [SuppressUnmanagedCodeSecurity]
     public class LSAMethods
     {
-        internal static (NtStatus status, LSAHandle policyHandle) LsaOpenPolicy(string computerName, LSAEnums.LsaOpenMask desiredAccess)
+        internal static (NtStatus status, LSAHandle policyHandle) LsaOpenPolicy(string computerName,
+            LSAEnums.LsaOpenMask desiredAccess)
         {
             var us = new SharedStructs.UnicodeString(computerName);
             var objectAttributes = default(LSAStructs.ObjectAttributes);
@@ -54,7 +53,8 @@ namespace SharpHoundRPC.LSANative
             out LSAPointer buffer
         );
 
-        internal static (NtStatus status, LSAPointer sids, int count) LsaEnumerateAccountsWithUserRight(LSAHandle policyHandle,
+        internal static (NtStatus status, LSAPointer sids, int count) LsaEnumerateAccountsWithUserRight(
+            LSAHandle policyHandle,
             string userRight)
         {
             var arr = new SharedStructs.UnicodeString[1];
@@ -75,13 +75,20 @@ namespace SharpHoundRPC.LSANative
 
         internal static (NtStatus status, LSAPointer referencedDomains, LSAPointer names, int count)
             LsaLookupSids(LSAHandle policyHandle,
+                LSAPointer sids, int count)
+        {
+            var status = LsaLookupSids(policyHandle, count, sids, out var referencedDomains, out var names);
+            return (status, referencedDomains, names, count);
+        }
+
+        internal static (NtStatus status, LSAPointer referencedDomains, LSAPointer names, int count)
+            LsaLookupSids(LSAHandle policyHandle,
                 SecurityIdentifier[] sids)
         {
-            
             var count = sids.Length;
             if (count == 0)
                 return (NtStatus.StatusInvalidParameter, null, null, 0);
-            
+
             var gcHandles = new GCHandle[count];
             var pSids = new IntPtr[count];
 
@@ -106,6 +113,15 @@ namespace SharpHoundRPC.LSANative
                         handle.Free();
             }
         }
+
+        [DllImport("advapi32.dll")]
+        private static extern NtStatus LsaLookupSids(
+            LSAHandle policyHandle,
+            int count,
+            LSAPointer sidArray,
+            out LSAPointer referencedDomains,
+            out LSAPointer names
+        );
 
         [DllImport("advapi32.dll")]
         private static extern NtStatus LsaLookupSids(
