@@ -17,6 +17,9 @@ namespace SharpHoundCommonLib.Processors
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
         private readonly ILDAPUtils _utils;
+        
+        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+        public event ComputerStatusDelegate ComputerStatusEvent;
 
         public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null,
             NativeMethods nativeMethods = null, ILogger log = null)
@@ -235,6 +238,11 @@ namespace SharpHoundCommonLib.Processors
             {
                 key?.Dispose();
             }
+        }
+        
+        private void SendComputerStatus(CSVComputerStatus status)
+        {
+            ComputerStatusEvent?.Invoke(status);
         }
     }
 }
