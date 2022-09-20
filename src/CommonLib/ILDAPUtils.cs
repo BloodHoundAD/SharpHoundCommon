@@ -24,6 +24,7 @@ namespace SharpHoundCommonLib
         public string AdsPath;
         public bool GlobalCatalog;
         public bool SkipCache;
+        public bool ThrowException;
     }
 
     public interface ILDAPUtils
@@ -98,10 +99,12 @@ namespace SharpHoundCommonLib
         ///     Skip the connection cache and force a new connection. You must dispose of this connection
         ///     yourself.
         /// </param>
+        /// <param name="throwException">Throw exceptions rather than logging the errors directly</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
         IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false,
-            bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false);
+            bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false,
+            bool throwException = false);
 
         /// <summary>
         ///     Performs an LDAP query using the parameters specified by the user.
@@ -118,10 +121,11 @@ namespace SharpHoundCommonLib
         ///     Skip the connection cache and force a new connection. You must dispose of this connection
         ///     yourself.
         /// </param>
+        /// <param name="throwException">Throw exceptions rather than logging the errors directly</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
         IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false,
-            string adsPath = null, bool globalCatalog = false, bool skipCache = false);
+            string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false);
 
         Forest GetForest(string domainName = null);
 
