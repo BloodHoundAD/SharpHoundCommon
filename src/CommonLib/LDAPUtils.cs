@@ -639,6 +639,7 @@ namespace SharpHoundCommonLib
         /// <param name="ldapFilter">LDAP filter</param>
         /// <param name="scope">SearchScope to query</param>
         /// <param name="props">LDAP properties to fetch for each object</param>
+        /// <param name="includeAcl">Include the DACL and Owner values in the NTSecurityDescriptor</param>
         /// <param name="domainName">Domain to query</param>
         /// <param name="showDeleted">Include deleted objects</param>
         /// <param name="adsPath">ADS path to limit the query too</param>
@@ -647,9 +648,9 @@ namespace SharpHoundCommonLib
         ///     Skip the connection cache and force a new connection. You must dispose of this connection
         ///     yourself.
         /// </param>
-        /// <returns>Tuple of LdapConnection, SearchRequest, and SharpHoundCommonException</returns>
-        public Tuple<LdapConnection, SearchRequest, SharpHoundCommonException> SetupLDAPQueryFilter(string ldapFilter,
-            SearchScope scope, string[] props, string domainName = null, bool showDeleted = false,
+        /// <returns>Tuple of LdapConnection, SearchRequest, PageResultRequestControl and SharpHoundCommonException</returns>
+        public Tuple<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException> SetupLDAPQueryFilter(string ldapFilter,
+            SearchScope scope, string[] props, bool includeAcl = false, string domainName = null, bool showDeleted = false,
             string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
             _log.LogTrace("Creating ldap connection for {Target} with filter {Filter}",
@@ -667,16 +668,16 @@ namespace SharpHoundCommonLib
             {
                 var errorString = String.Format("Exception getting LDAP connection for {0} and domain {1}", ldapFilter,
                     domainName ?? "Default Domain");
-                return Tuple.Create<LdapConnection, SearchRequest, SharpHoundCommonException>(null, null,
-                    new SharpHoundCommonException(errorString, e));
+                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException>(
+                    null, null, null, new SharpHoundCommonException(errorString, e));
             }
 
             if (conn == null)
             {
                 var errorString = String.Format("LDAP connection is null for filter {0} and domain {1}", ldapFilter,
                     domainName ?? "Default Domain");
-                return Tuple.Create<LdapConnection, SearchRequest, SharpHoundCommonException>(null, null,
-                    new SharpHoundCommonException(errorString));
+                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException>(
+                    null, null, null, new SharpHoundCommonException(errorString));
             }
 
             var request = CreateSearchRequest(ldapFilter, scope, props, domainName, adsPath, showDeleted);
@@ -685,11 +686,20 @@ namespace SharpHoundCommonLib
             {
                 var errorString = String.Format("Search request is null for filter {0} and domain {1}", ldapFilter,
                     domainName ?? "Default Domain");
-                return Tuple.Create<LdapConnection, SearchRequest, SharpHoundCommonException>(null, null,
-                    new SharpHoundCommonException(errorString));
+                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException>(
+                    null, null, null, new SharpHoundCommonException(errorString));
             }
 
-            return Tuple.Create<LdapConnection, SearchRequest, SharpHoundCommonException>(conn, request, null);
+            var pageControl = new PageResultRequestControl(500);
+            request.Controls.Add(pageControl);
+
+            if (includeAcl)
+                request.Controls.Add(new SecurityDescriptorFlagControl
+                {
+                    SecurityMasks = SecurityMasks.Dacl | SecurityMasks.Owner
+                });
+
+            return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException>(conn, request, pageControl, null);
         }
 
         /// <summary>
@@ -741,10 +751,12 @@ namespace SharpHoundCommonLib
             bool throwException = false)
         {
             // TODO: Find a better abstraction than a tuple of results
-            var setupTuple = SetupLDAPQueryFilter(ldapFilter, scope, props, domainName, includeAcl, adsPath, globalCatalog, skipCache);
+            var setupTuple = SetupLDAPQueryFilter(
+                ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
             var conn = setupTuple.Item1;
             var request = setupTuple.Item2;
-            var error = setupTuple.Item3;
+            var pageControl = setupTuple.Item3;
+            var error = setupTuple.Item4;
 
             if (error != null)
             {
@@ -757,15 +769,6 @@ namespace SharpHoundCommonLib
                     _log.LogWarning(error, "Failed to setup LDAP Query Filter");
                 }
             }
-
-            var pageControl = new PageResultRequestControl(500);
-            request.Controls.Add(pageControl);
-
-            if (includeAcl)
-                request.Controls.Add(new SecurityDescriptorFlagControl
-                {
-                    SecurityMasks = SecurityMasks.Dacl | SecurityMasks.Owner
-                });
 
             PageResultResponseControl pageResponse = null;
             while (true)
@@ -861,10 +864,12 @@ namespace SharpHoundCommonLib
             string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false)
         {
             // TODO: Find a better abstraction than a tuple of results
-            var setupTuple = SetupLDAPQueryFilter(ldapFilter, scope, props, domainName, includeAcl, adsPath, globalCatalog, skipCache);
+            var setupTuple = SetupLDAPQueryFilter(
+                ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
             var conn = setupTuple.Item1;
             var request = setupTuple.Item2;
-            var error = setupTuple.Item3;
+            var pageControl = setupTuple.Item3;
+            var error = setupTuple.Item4;
 
             if (error != null)
             {
@@ -878,15 +883,6 @@ namespace SharpHoundCommonLib
                     yield break;
                 }
             }
-
-            var pageControl = new PageResultRequestControl(500);
-            request.Controls.Add(pageControl);
-
-            if (includeAcl)
-                request.Controls.Add(new SecurityDescriptorFlagControl
-                {
-                    SecurityMasks = SecurityMasks.Dacl | SecurityMasks.Owner
-                });
 
             PageResultResponseControl pageResponse = null;
             while (true)
