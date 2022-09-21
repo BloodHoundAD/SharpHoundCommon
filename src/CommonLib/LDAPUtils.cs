@@ -648,8 +648,8 @@ namespace SharpHoundCommonLib
         ///     Skip the connection cache and force a new connection. You must dispose of this connection
         ///     yourself.
         /// </param>
-        /// <returns>Tuple of LdapConnection, SearchRequest, PageResultRequestControl and SharpHoundCommonException</returns>
-        public Tuple<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException> SetupLDAPQueryFilter(string ldapFilter,
+        /// <returns>Tuple of LdapConnection, SearchRequest, PageResultRequestControl and LDAPQueryException</returns>
+        public Tuple<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException> SetupLDAPQueryFilter(string ldapFilter,
             SearchScope scope, string[] props, bool includeAcl = false, string domainName = null, bool showDeleted = false,
             string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
@@ -668,16 +668,16 @@ namespace SharpHoundCommonLib
             {
                 var errorString = String.Format("Exception getting LDAP connection for {0} and domain {1}", ldapFilter,
                     domainName ?? "Default Domain");
-                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException>(
-                    null, null, null, new SharpHoundCommonException(errorString, e));
+                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
+                    null, null, null, new LDAPQueryException(errorString, e));
             }
 
             if (conn == null)
             {
                 var errorString = String.Format("LDAP connection is null for filter {0} and domain {1}", ldapFilter,
                     domainName ?? "Default Domain");
-                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException>(
-                    null, null, null, new SharpHoundCommonException(errorString));
+                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
+                    null, null, null, new LDAPQueryException(errorString));
             }
 
             var request = CreateSearchRequest(ldapFilter, scope, props, domainName, adsPath, showDeleted);
@@ -686,8 +686,8 @@ namespace SharpHoundCommonLib
             {
                 var errorString = String.Format("Search request is null for filter {0} and domain {1}", ldapFilter,
                     domainName ?? "Default Domain");
-                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException>(
-                    null, null, null, new SharpHoundCommonException(errorString));
+                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
+                    null, null, null, new LDAPQueryException(errorString));
             }
 
             var pageControl = new PageResultRequestControl(500);
@@ -699,7 +699,7 @@ namespace SharpHoundCommonLib
                     SecurityMasks = SecurityMasks.Dacl | SecurityMasks.Owner
                 });
 
-            return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, SharpHoundCommonException>(conn, request, pageControl, null);
+            return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(conn, request, pageControl, null);
         }
 
         /// <summary>
@@ -742,8 +742,8 @@ namespace SharpHoundCommonLib
         /// </param>
         /// <param name="throwException">Throw exceptions rather than logging the errors directly</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
-        /// <exception cref="SharpHoundCommonException">
-        ///     Thrown when an error occurs during LDAP query
+        /// <exception cref="LDAPQueryException">
+        ///     Thrown when an error occurs during LDAP query (only when throwException = true)
         /// </exception>
         public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false,
@@ -762,7 +762,7 @@ namespace SharpHoundCommonLib
             {
                 if (throwException)
                 {
-                    throw new SharpHoundCommonException("Failed to setup LDAP Query Filter", error);
+                    throw new LDAPQueryException("Failed to setup LDAP Query Filter", error);
                 }
                 else
                 {
@@ -790,7 +790,7 @@ namespace SharpHoundCommonLib
                     if (le.ErrorCode != 82)
                         if (throwException)
                         {
-                            throw new SharpHoundCommonException(String.Format(
+                            throw new LDAPQueryException(String.Format(
                                 "LDAP Exception in Loop: {0}. {1}. {2}. Filter: {3}. Domain: {4}.",
                                 le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName), le);
                         }
@@ -807,7 +807,7 @@ namespace SharpHoundCommonLib
                 {
                     if (throwException)
                     {
-                        throw new SharpHoundCommonException(String.Format("Exception in LDAP loop for {0} and {1}",
+                        throw new LDAPQueryException(String.Format("Exception in LDAP loop for {0} and {1}",
                             ldapFilter, domainName));
                     }
                     else
@@ -856,8 +856,8 @@ namespace SharpHoundCommonLib
         /// </param>
         /// <param name="throwException">Throw exceptions rather than logging the errors directly</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
-        /// <exception cref="SharpHoundCommonException">
-        ///     Thrown when an error occurs during LDAP query
+        /// <exception cref="LDAPQueryException">
+        ///     Thrown when an error occurs during LDAP query (only when throwException = true)
         /// </exception>
         public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false,
@@ -875,7 +875,7 @@ namespace SharpHoundCommonLib
             {
                 if (throwException)
                 {
-                    throw new SharpHoundCommonException("Failed to setup LDAP Query Filter", error);
+                    throw new LDAPQueryException("Failed to setup LDAP Query Filter", error);
                 }
                 else
                 {
@@ -901,7 +901,7 @@ namespace SharpHoundCommonLib
                     if (le.ErrorCode != 82)
                         if (throwException)
                         {
-                            throw new SharpHoundCommonException(String.Format(
+                            throw new LDAPQueryException(String.Format(
                                 "LDAP Exception in Loop: {0}. {1}. {2}. Filter: {3}. Domain: {4}",
                                 le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName), le);
                         }
@@ -917,7 +917,7 @@ namespace SharpHoundCommonLib
                 {
                     if (throwException)
                     {
-                        throw new SharpHoundCommonException(String.Format(
+                        throw new LDAPQueryException(String.Format(
                             "Exception in LDAP loop for {0} and {1}", ldapFilter, domainName ?? "Default Domain"), e);
                     }
                     else

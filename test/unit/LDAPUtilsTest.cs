@@ -117,7 +117,7 @@ namespace CommonLibTest
                 ThrowException = true
             };
 
-            Assert.Throws<SharpHoundCommonException>(
+            Assert.Throws<LDAPQueryException>(
                 () =>
                 {
                     foreach (var sre in _utils.QueryLDAP(null, new SearchScope(), null, new CancellationToken(), null, false, false, null, false, false, true))
@@ -126,7 +126,7 @@ namespace CommonLibTest
                     };
                 });
 
-            Assert.Throws<SharpHoundCommonException>(
+            Assert.Throws<LDAPQueryException>(
                 () =>
                 {
                     foreach (var sre in _utils.QueryLDAP(options))
