@@ -2,10 +2,10 @@ using System;
 
 namespace SharpHoundCommonLib.Exceptions
 {
-    public class SharpHoundCommonException : Exception
+    public class LDAPQueryException : Exception
     {
-        public SharpHoundCommonException() { }
-        public SharpHoundCommonException(string message) : base(message) { }
-        public SharpHoundCommonException(string message, Exception inner) : base(message, inner) { }
+        public LDAPQueryException() { }
+        public LDAPQueryException(string message) : base(message) { }
+        public LDAPQueryException(string message, Exception inner) : base(message, inner) { }
     }
 }
