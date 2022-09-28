@@ -3,6 +3,9 @@ using CommonLibTest.Facades;
 using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.Exceptions;
+using System.DirectoryServices.Protocols;
+using System.Threading;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -104,6 +107,64 @@ namespace CommonLibTest
             Assert.True(result);
             Assert.Equal(Label.Group, typedPrincipal.ObjectType);
             Assert.Equal($"{_testDomainName}-S-1-5-32-544", typedPrincipal.ObjectIdentifier);
+        }
+
+        [Fact]
+        public void QueryLDAP_With_Exception()
+        {
+            var options = new LDAPQueryOptions
+            {
+                ThrowException = true
+            };
+
+            Assert.Throws<LDAPQueryException>(
+                () =>
+                {
+                    foreach (var sre in _utils.QueryLDAP(null, new SearchScope(), null, new CancellationToken(), null, false, false, null, false, false, true))
+                    {
+                        // We shouldn't reach this anyway, and all we care about is if exceptions are bubbling
+                    };
+                });
+
+            Assert.Throws<LDAPQueryException>(
+                () =>
+                {
+                    foreach (var sre in _utils.QueryLDAP(options))
+                    {
+                        // We shouldn't reach this anyway, and all we care about is if exceptions are bubbling
+                    };
+                });
+        }
+
+        [Fact]
+        public void QueryLDAP_Without_Exception()
+        {
+            Exception exception;
+
+            var options = new LDAPQueryOptions
+            {
+                ThrowException = false
+            };
+
+            exception = Record.Exception(
+                () =>
+                {
+                    foreach (var sre in _utils.QueryLDAP(null, new SearchScope(), null, new CancellationToken()))
+                    {
+                        // We shouldn't reach this anyway, and all we care about is if exceptions are bubbling
+                    };
+                });
+            Assert.Null(exception);
+
+            exception = Record.Exception(
+                () =>
+                {
+                    foreach (var sre in _utils.QueryLDAP(options))
+                    {
+                        // We shouldn't reach this anyway, and all we care about is if exceptions are bubbling
+                    };
+                });
+            Assert.Null(exception);
         }
 
         #endregion

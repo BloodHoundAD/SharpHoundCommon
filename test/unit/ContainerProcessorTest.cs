@@ -100,7 +100,7 @@ namespace CommonLibTest
 
             mock.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
-                It.IsAny<bool>())).Returns(searchResults);
+                It.IsAny<bool>(), It.IsAny<bool>())).Returns(searchResults);
 
             var processor = new ContainerProcessor(mock.Object);
             var test = processor.GetContainerChildObjects(_testGpLinkString).ToArray();
