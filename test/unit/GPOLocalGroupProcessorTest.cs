@@ -122,6 +122,7 @@ namespace CommonLibTest
                 It.IsAny<bool>(),
                 It.IsAny<string>(),
                 It.IsAny<bool>(),
+                It.IsAny<bool>(),
                 It.IsAny<bool>()
             )).Returns(new List<ISearchResultEntry>());
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
@@ -143,7 +144,8 @@ namespace CommonLibTest
             mockSearchResultEntry.Setup(x => x.GetSid()).Returns("teapot");
             var mockSearchResults = new List<ISearchResultEntry>();
             mockSearchResults.Add(mockSearchResultEntry.Object);
-            mockLDAPUtils.Setup(x => x.QueryLDAP(new LDAPQueryOptions
+            mockLDAPUtils.Setup(x => x.QueryLDAP(
+                new LDAPQueryOptions
                 {
                     Filter = "(samaccounttype=805306369)",
                     Scope = SearchScope.Subtree,
