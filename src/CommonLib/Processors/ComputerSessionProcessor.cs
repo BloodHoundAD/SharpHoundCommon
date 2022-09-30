@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using SharpHoundCommonLib.Exceptions;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
@@ -48,7 +49,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
             }
-            catch (APIException e)
+            catch (ComputerAPIException e)
             {
                 _log.LogDebug("NetSessionEnum failed on {ComputerName}: {Status}", computerName, e.Status);
                 ret.Collected = false;
@@ -144,7 +145,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
             }
-            catch (APIException e)
+            catch (ComputerAPIException e)
             {
                 _log.LogTrace("NetWkstaUserEnum failed on {ComputerName}: {Status}", computerName, e.Status);
                 ret.Collected = false;

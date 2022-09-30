@@ -4,6 +4,7 @@ using CommonLibTest.Facades;
 using Moq;
 using Newtonsoft.Json;
 using SharpHoundCommonLib;
+using SharpHoundCommonLib.Exceptions;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using Xunit;
@@ -189,7 +190,7 @@ namespace CommonLibTest
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
-            var ex = new APIException
+            var ex = new ComputerAPIException
             {
                 Status = NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString()
             };
@@ -205,7 +206,7 @@ namespace CommonLibTest
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
-            var ex = new APIException
+            var ex = new ComputerAPIException
             {
                 Status = NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString()
             };
