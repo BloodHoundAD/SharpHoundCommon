@@ -52,11 +52,15 @@ namespace SharpHoundRPC.Wrappers
             if (status.IsError()) return status;
 
             var (lookupStatus, referencedDomains, names, lookupCount) = LSAMethods.LsaLookupSids(Handle, sids, count);
+            if (lookupStatus.IsError())
+            {
+                return lookupStatus;
+            }
             var translatedNames = names.GetEnumerable<LSAStructs.LSATranslatedNames>(count).ToArray();
             var domainList = referencedDomains.GetData<LSAStructs.LSAReferencedDomains>();
             var safeDomains = new LSAPointer(domainList.Domains);
             var domains = safeDomains.GetEnumerable<LSAStructs.LSATrustInformation>(domainList.Entries).ToArray();
-            var convertedSids = sids.GetEnumerable<SecurityIdentifier>(count).ToArray();
+            var convertedSids = sids.GetEnumerable<SecurityIdentifier>(lookupCount).ToArray();
 
             var ret = new List<(SecurityIdentifier sid, string Name, SharedEnums.SidNameUse Use, string Domain)>();
             for (var i = 0; i < count; i++)

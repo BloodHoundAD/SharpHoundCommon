@@ -36,7 +36,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 SendComputerStatus(new CSVComputerStatus
                 {
-                    Task = "SamConnect",
+                    Task = "LSAOpenPolicy",
                     ComputerName = computerName,
                     Status = policyOpenResult.Status.ToString()
                 });
