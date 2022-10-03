@@ -15,11 +15,11 @@ namespace SharpHoundRPC.Handles
 
         public LSAPointer(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
         {
-            SetHandle(handle);
         }
 
         protected override bool ReleaseHandle()
         {
+            if (handle == IntPtr.Zero) return true;
             return LSAMethods.LsaFreeMemory(handle) == NtStatus.StatusSuccess;
         }
     }

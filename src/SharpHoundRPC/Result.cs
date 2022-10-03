@@ -1,4 +1,6 @@
-﻿namespace SharpHoundRPC
+﻿using SharpHoundRPC.NetAPINative;
+
+namespace SharpHoundRPC
 {
     public class Result<T>
     {

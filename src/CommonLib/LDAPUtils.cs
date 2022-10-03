@@ -17,6 +17,7 @@ using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using SharpHoundCommonLib.Exceptions;
+using SharpHoundRPC.NetAPINative;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 using SecurityMasks = System.DirectoryServices.Protocols.SecurityMasks;
@@ -454,11 +455,11 @@ namespace SharpHoundCommonLib
             //Step 2: Try NetWkstaGetInfo
             //Next we'll try calling NetWkstaGetInfo in hopes of getting the NETBIOS name directly from the computer
             //We'll use the hostname that we started with instead of the one from our previous step
-            var workstationInfo = await CallNetWkstaGetInfo(strippedHost);
+            var workstationInfo = await GetWorkstationInfo(strippedHost);
             if (workstationInfo.HasValue)
             {
-                tempName = workstationInfo.Value.computer_name;
-                tempDomain = workstationInfo.Value.lan_group;
+                tempName = workstationInfo.Value.ComputerName;
+                tempDomain = workstationInfo.Value.LanGroup;
 
                 if (string.IsNullOrEmpty(tempDomain))
                     tempDomain = normalDomain;
@@ -470,8 +471,8 @@ namespace SharpHoundCommonLib
                     var principal = ResolveAccountName(tempName, tempDomain);
                     if (principal != null)
                     {
-                        _hostResolutionMap.TryAdd(strippedHost, sid);
-                        return sid;
+                        _hostResolutionMap.TryAdd(strippedHost, principal.ObjectIdentifier);
+                        return principal.ObjectIdentifier;
                     }
                 }
             }
@@ -1162,19 +1163,18 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="hostname"></param>
         /// <returns></returns>
-        private async Task<NativeMethods.WorkstationInfo100?> CallNetWkstaGetInfo(string hostname)
+        private async Task<NetAPIStructs.WorkstationInfo100?> GetWorkstationInfo(string hostname)
         {
             if (!await _portScanner.CheckPort(hostname))
                 return null;
 
-            try
+            var result = NetAPIMethods.NetWkstaGetInfo(hostname);
+            if (result.IsSuccess)
             {
-                return _nativeMethods.CallNetWkstaGetInfo(hostname);
+                return result.Value;
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
 
         /// <summary>
@@ -1396,7 +1396,7 @@ namespace SharpHoundCommonLib
             var computerName = _ldapConfig.Server;
 
             var dci = _nativeMethods.CallDsGetDcName(computerName, domainName);
-            if (dci.HasValue)
+            if (dci.IsSuccess)
             {
                 flatName = dci.Value.DomainName;
                 _netbiosCache.TryAdd(key, flatName);

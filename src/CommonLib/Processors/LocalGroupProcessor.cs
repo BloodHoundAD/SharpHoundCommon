@@ -225,7 +225,6 @@ namespace SharpHoundCommonLib.Processors
                                             ObjectId = sidValue
                                         });
                                     }
-                                    
                                 }
                             }
                         }

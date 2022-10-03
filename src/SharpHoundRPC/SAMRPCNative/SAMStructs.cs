@@ -10,18 +10,18 @@ namespace SharpHoundRPC.SAMRPCNative
         {
             public void Dispose()
             {
-                if (objectName == IntPtr.Zero) return;
-                Marshal.DestroyStructure(objectName, typeof(SharedStructs.UnicodeString));
-                Marshal.FreeHGlobal(objectName);
-                objectName = IntPtr.Zero;
+                if (_objectName == IntPtr.Zero) return;
+                Marshal.DestroyStructure(_objectName, typeof(SharedStructs.UnicodeString));
+                Marshal.FreeHGlobal(_objectName);
+                _objectName = IntPtr.Zero;
             }
 
-            public int len;
-            public IntPtr rootDirectory;
-            public uint attribs;
-            public IntPtr sid;
-            public IntPtr qos;
-            private IntPtr objectName;
+            public int Length;
+            public IntPtr RootDirectory;
+            public uint Attributes;
+            public IntPtr SID;
+            public IntPtr Qos;
+            private IntPtr _objectName;
             public SharedStructs.UnicodeString ObjectName;
         }
 

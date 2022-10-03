@@ -37,7 +37,8 @@ namespace SharpHoundRPC.SAMRPCNative
                 SamEnumerateDomainsInSamServer(serverHandle, ref enumerationContext, out var domains, -1,
                     out var count);
 
-            return (status, domains.GetEnumerable<SAMStructs.SamRidEnumeration>(count));
+            using (domains)
+                return (status, domains.GetEnumerable<SAMStructs.SamRidEnumeration>(count));
         }
 
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
@@ -54,7 +55,8 @@ namespace SharpHoundRPC.SAMRPCNative
             var us = new SharedStructs.UnicodeString(name);
             var status = SamLookupDomainInSamServer(serverHandle, ref us, out var sid);
 
-            return (status, sid.GetData<SecurityIdentifier>());
+            using (sid)
+                return (status, sid.GetData<SecurityIdentifier>());
         }
 
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
@@ -123,21 +125,6 @@ namespace SharpHoundRPC.SAMRPCNative
             int prefMaxLen,
             out int count
         );
-
-        //
-        // internal static void SamLookupIdsInDomain(SAMHandle domainHandle, int[] rids, out string[] names,
-        //     out SharedEnums.SidNameUse[] types)
-        // {
-        //     var count = rids.Length;
-        //     var status = SamLookupIdsInDomain(domainHandle, count, rids, out var namePointer, out var usePointer);
-        //
-        //     status.CheckError(RPCException.LookupIds);
-        //
-        //     names = namePointer.GetEnumerable<SharedStructs.UnicodeString>(count).Select(x => x.ToString()).ToArray();
-        //     types = new SharedEnums.SidNameUse[count];
-        //
-        //     Marshal.Copy(usePointer.DangerousGetHandle(), (int[]) (object) types, 0, count);
-        // }
 
         internal static (NtStatus status, SAMPointer names, SAMPointer use) SamLookupIdsInDomain(SAMHandle domainHandle,
             int rid)
