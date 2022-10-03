@@ -877,11 +877,9 @@ namespace SharpHoundCommonLib
                 {
                     throw new LDAPQueryException("Failed to setup LDAP Query Filter", error);
                 }
-                else
-                {
-                    _log.LogWarning(error, "Failed to setup LDAP Query Filter");
-                    yield break;
-                }
+
+                _log.LogWarning(error, "Failed to setup LDAP Query Filter");
+                yield break;
             }
 
             PageResultResponseControl pageResponse = null;
