@@ -16,25 +16,33 @@ namespace SharpHoundRPC.Wrappers
         public Result<(string Name, SharedEnums.SidNameUse Type)> LookupPrincipalByRid(int rid)
         {
             var (status, namePointer, usePointer) = SAMMethods.SamLookupIdsInDomain(Handle, rid);
-            if (status.IsError())
+            using (namePointer)
             {
-                return status;
-            }
+                using (usePointer)
+                {
+                    if (status.IsError())
+                    {
+                        return status;
+                    }
 
-            return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(), (SharedEnums.SidNameUse)usePointer.GetData<int>());
+                    return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(), (SharedEnums.SidNameUse)usePointer.GetData<int>());
+                }
+            }
         }
 
         public Result<IEnumerable<(string Name, int Rid)>> GetAliases()
         {
-            var enumerationContext = 0;
             var (status, ridPointer, count) = SAMMethods.SamEnumerateAliasesInDomain(Handle);
-            if (status.IsError())
+            using (ridPointer)
             {
-                return status;
-            }
+                if (status.IsError())
+                {
+                    return status;
+                }
 
-            return Result<IEnumerable<(string Name, int Rid)>>.Ok(ridPointer.GetEnumerable<SAMStructs.SamRidEnumeration>(count)
-                .Select(x => (x.Name.ToString(), x.Rid)));
+                return Result<IEnumerable<(string Name, int Rid)>>.Ok(ridPointer.GetEnumerable<SAMStructs.SamRidEnumeration>(count)
+                    .Select(x => (x.Name.ToString(), x.Rid)));
+            }
         }
 
         public Result<SAMAlias> OpenAlias(int rid, SAMEnums.AliasOpenFlags desiredAccess = SAMEnums.AliasOpenFlags.ListMembers)

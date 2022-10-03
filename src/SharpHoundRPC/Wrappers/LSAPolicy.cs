@@ -40,34 +40,46 @@ namespace SharpHoundRPC.Wrappers
         public Result<IEnumerable<SecurityIdentifier>> GetPrincipalsWithPrivilege(string userRight)
         {
             var (status, sids, count) = LSAMethods.LsaEnumerateAccountsWithUserRight(Handle, userRight);
-            if (status.IsError()) return status;
+            using (sids)
+            {
+                if (status.IsError()) return status;
 
-            return Result<IEnumerable<SecurityIdentifier>>.Ok(sids.GetEnumerable<SecurityIdentifier>(count));
+                return Result<IEnumerable<SecurityIdentifier>>.Ok(sids.GetEnumerable<SecurityIdentifier>(count));
+            }
         }
 
         public Result<IEnumerable<(SecurityIdentifier sid, string Name, SharedEnums.SidNameUse Use, string Domain)>>
             GetResolvedPrincipalsWithPrivilege(string userRight)
         {
             var (status, sids, count) = LSAMethods.LsaEnumerateAccountsWithUserRight(Handle, userRight);
-            if (status.IsError()) return status;
-
-            var (lookupStatus, referencedDomains, names, lookupCount) = LSAMethods.LsaLookupSids(Handle, sids, count);
-            if (lookupStatus.IsError())
+            using (sids)
             {
-                return lookupStatus;
+                if (status.IsError()) return status;
+
+                var (lookupStatus, referencedDomains, names, lookupCount) = LSAMethods.LsaLookupSids(Handle, sids, count);
+                if (lookupStatus.IsError())
+                {
+                    referencedDomains.Dispose();
+                    names.Dispose();
+                    return lookupStatus;
+                }
+                var translatedNames = names.GetEnumerable<LSAStructs.LSATranslatedNames>(count).ToArray();
+                var domainList = referencedDomains.GetData<LSAStructs.LSAReferencedDomains>();
+                var safeDomains = new LSAPointer(domainList.Domains);
+                var domains = safeDomains.GetEnumerable<LSAStructs.LSATrustInformation>(domainList.Entries).ToArray();
+                var convertedSids = sids.GetEnumerable<SecurityIdentifier>(lookupCount).ToArray();
+
+                var ret = new List<(SecurityIdentifier sid, string Name, SharedEnums.SidNameUse Use, string Domain)>();
+                for (var i = 0; i < count; i++)
+                    ret.Add((convertedSids[i], translatedNames[i].Name.ToString(), translatedNames[i].Use,
+                        domains[translatedNames[i].DomainIndex].Name.ToString()));
+
+                referencedDomains.Dispose();
+                names.Dispose();
+                safeDomains.Dispose();
+                
+                return ret;
             }
-            var translatedNames = names.GetEnumerable<LSAStructs.LSATranslatedNames>(count).ToArray();
-            var domainList = referencedDomains.GetData<LSAStructs.LSAReferencedDomains>();
-            var safeDomains = new LSAPointer(domainList.Domains);
-            var domains = safeDomains.GetEnumerable<LSAStructs.LSATrustInformation>(domainList.Entries).ToArray();
-            var convertedSids = sids.GetEnumerable<SecurityIdentifier>(lookupCount).ToArray();
-
-            var ret = new List<(SecurityIdentifier sid, string Name, SharedEnums.SidNameUse Use, string Domain)>();
-            for (var i = 0; i < count; i++)
-                ret.Add((convertedSids[i], translatedNames[i].Name.ToString(), translatedNames[i].Use,
-                    domains[translatedNames[i].DomainIndex].Name.ToString()));
-
-            return ret;
         }
 
         public Result<(string Name, SharedEnums.SidNameUse Use, string Domains)> LookupSid(SecurityIdentifier sid)
@@ -76,12 +88,20 @@ namespace SharpHoundRPC.Wrappers
                 return "SID cannot be null";
 
             var (status, referencedDomains, names, count) = LSAMethods.LsaLookupSids(Handle, new[] {sid});
-            if (status.IsError()) return status;
+            if (status.IsError())
+            {
+                names.Dispose();
+                referencedDomains.Dispose();
+                return status;
+            }
 
             var translatedNames = names.GetEnumerable<LSAStructs.LSATranslatedNames>(count).ToArray();
             var domainList = referencedDomains.GetData<LSAStructs.LSAReferencedDomains>();
             var safeDomains = new LSAPointer(domainList.Domains);
             var domains = safeDomains.GetEnumerable<LSAStructs.LSATrustInformation>(domainList.Entries).ToArray();
+            names.Dispose();
+            referencedDomains.Dispose();
+            safeDomains.Dispose();
             return (translatedNames[0].Name.ToString(), translatedNames[0].Use,
                 domains[translatedNames[0].DomainIndex].Name.ToString());
         }
@@ -95,7 +115,12 @@ namespace SharpHoundRPC.Wrappers
                 return "No non-null SIDs specified";
 
             var (status, referencedDomains, names, count) = LSAMethods.LsaLookupSids(Handle, sids);
-            if (status.IsError()) return status;
+            if (status.IsError())
+            {
+                referencedDomains.Dispose();
+                names.Dispose();
+                return status;
+            }
 
             var translatedNames = names.GetEnumerable<LSAStructs.LSATranslatedNames>(count).ToArray();
             var domainList = referencedDomains.GetData<LSAStructs.LSAReferencedDomains>();
@@ -107,6 +132,10 @@ namespace SharpHoundRPC.Wrappers
                 ret.Add((sids[i], translatedNames[i].Name.ToString(), translatedNames[i].Use,
                     domains[translatedNames[i].DomainIndex].Name.ToString()));
 
+            referencedDomains.Dispose();
+            names.Dispose();
+            safeDomains.Dispose();
+            
             return ret.ToArray();
         }
     }

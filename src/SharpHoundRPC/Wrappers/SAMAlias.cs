@@ -17,12 +17,15 @@ namespace SharpHoundRPC.Wrappers
         public Result<IEnumerable<SecurityIdentifier>> GetMembers()
         {
             var (status, members, count) = SAMMethods.SamGetMembersInAlias(Handle);
-            if (status.IsError())
+            using (members)
             {
-                return status;
-            }
+                if (status.IsError())
+                {
+                    return status;
+                }
             
-            return Result<IEnumerable<SecurityIdentifier>>.Ok(members.GetData(count));
+                return Result<IEnumerable<SecurityIdentifier>>.Ok(members.GetData(count));
+            }
         }
     }
 }
