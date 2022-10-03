@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,7 +11,7 @@ namespace SharpHoundRPC.NetAPINative
         private const int NetWkstaUserEnumQueryLevel = 1;
         private const int NetSessionEnumLevel = 10;
         private const int NetWkstaGetInfoQueryLevel = 100;
-        
+
         [DllImport("netapi32.dll")]
         internal static extern NetAPIEnums.NetAPIStatus NetApiBufferFree(
             IntPtr buffer);
@@ -26,15 +25,14 @@ namespace SharpHoundRPC.NetAPINative
             using (buffer)
             {
                 if (result != NetAPIEnums.NetAPIStatus.Success && result != NetAPIEnums.NetAPIStatus.ErrorMoreData)
-                { 
                     return result;
-                }
-                
-                return NetAPIResult<IEnumerable<NetWkstaUserEnumResults>>.Ok(buffer.GetEnumerable<NetAPIStructs.WkstaUserInfo1>(entriesRead)
+
+                return NetAPIResult<IEnumerable<NetWkstaUserEnumResults>>.Ok(buffer
+                    .GetEnumerable<NetAPIStructs.WkstaUserInfo1>(entriesRead)
                     .Select(x => new NetWkstaUserEnumResults(x.Username, x.LogonDomain)));
             }
         }
-        
+
         [DllImport("netapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern NetAPIEnums.NetAPIStatus NetWkstaUserEnum(
             string servername,
@@ -54,11 +52,10 @@ namespace SharpHoundRPC.NetAPINative
             using (buffer)
             {
                 if (result != NetAPIEnums.NetAPIStatus.Success && result != NetAPIEnums.NetAPIStatus.ErrorMoreData)
-                { 
                     return result;
-                }
-                
-                return NetAPIResult<IEnumerable<NetSessionEnumResults>>.Ok(buffer.GetEnumerable<NetAPIStructs.SessionInfo10>(entriesRead)
+
+                return NetAPIResult<IEnumerable<NetSessionEnumResults>>.Ok(buffer
+                    .GetEnumerable<NetAPIStructs.SessionInfo10>(entriesRead)
                     .Select(x => new NetSessionEnumResults(x.Username, x.CName)));
             }
         }
@@ -81,10 +78,7 @@ namespace SharpHoundRPC.NetAPINative
 
             using (buffer)
             {
-                if (result != NetAPIEnums.NetAPIStatus.Success)
-                { 
-                    return result;
-                }
+                if (result != NetAPIEnums.NetAPIStatus.Success) return result;
 
                 return buffer.GetData<NetAPIStructs.WorkstationInfo100>();
             }
@@ -104,14 +98,10 @@ namespace SharpHoundRPC.NetAPINative
                         NetAPIEnums.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME), out var buffer);
             using (buffer)
             {
-                if (result != NetAPIEnums.NetAPIStatus.Success)
-                {
-                    return result;
-                }
+                if (result != NetAPIEnums.NetAPIStatus.Success) return result;
 
                 return buffer.GetData<NetAPIStructs.DomainControllerInfo>();
             }
-            
         }
 
         [DllImport("Netapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]

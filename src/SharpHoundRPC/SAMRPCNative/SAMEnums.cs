@@ -7,6 +7,21 @@ namespace SharpHoundRPC.SAMRPCNative
     {
         [Flags]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        public enum AliasOpenFlags
+        {
+            AddMember = 0x1,
+            RemoveMember = 0x2,
+            ListMembers = 0x4,
+            ReadInfo = 0x8,
+            WriteAccount = 0x10,
+            AllAccess = 0xf001f,
+            Read = 0x20004,
+            Write = 0x20013,
+            Execute = 0x20008
+        }
+
+        [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         public enum DomainAccessMask
         {
             ReadPasswordParameters = 0x1,
@@ -40,21 +55,6 @@ namespace SharpHoundRPC.SAMRPCNative
             SamServerRead = 0x20010,
             SamServerWrite = 0x2000e,
             SamServerExecute = 0x20021
-        }
-
-        [Flags]
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-        public enum AliasOpenFlags
-        {
-            AddMember = 0x1,
-            RemoveMember = 0x2,
-            ListMembers = 0x4,
-            ReadInfo = 0x8,
-            WriteAccount = 0x10,
-            AllAccess = 0xf001f,
-            Read = 0x20004,
-            Write = 0x20013,
-            Execute = 0x20008
         }
 
         [Flags]

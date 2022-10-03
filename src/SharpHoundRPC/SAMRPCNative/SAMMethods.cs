@@ -11,7 +11,8 @@ namespace SharpHoundRPC.SAMRPCNative
     [SuppressUnmanagedCodeSecurity]
     public static class SAMMethods
     {
-        internal static (NtStatus status, SAMHandle handle) SamConnect(string serverName, SAMEnums.SamAccessMasks requestedConnectAccess)
+        internal static (NtStatus status, SAMHandle handle) SamConnect(string serverName,
+            SAMEnums.SamAccessMasks requestedConnectAccess)
         {
             var us = new SharedStructs.UnicodeString(serverName);
             var objectAttributes = default(SAMStructs.ObjectAttributes);
@@ -30,7 +31,8 @@ namespace SharpHoundRPC.SAMRPCNative
             ref SAMStructs.ObjectAttributes objectAttributes
         );
 
-        internal static (NtStatus status, IEnumerable<SAMStructs.SamRidEnumeration> domainRids) SamEnumerateDomainsInSamServer(SAMHandle serverHandle)
+        internal static (NtStatus status, IEnumerable<SAMStructs.SamRidEnumeration> domainRids)
+            SamEnumerateDomainsInSamServer(SAMHandle serverHandle)
         {
             var enumerationContext = 0;
             var status =
@@ -38,7 +40,9 @@ namespace SharpHoundRPC.SAMRPCNative
                     out var count);
 
             using (domains)
+            {
                 return (status, domains.GetEnumerable<SAMStructs.SamRidEnumeration>(count));
+            }
         }
 
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
@@ -50,13 +54,16 @@ namespace SharpHoundRPC.SAMRPCNative
             out int count
         );
 
-        internal static (NtStatus status, SecurityIdentifier securityIdentifier) SamLookupDomainInSamServer(SAMHandle serverHandle, string name)
+        internal static (NtStatus status, SecurityIdentifier securityIdentifier) SamLookupDomainInSamServer(
+            SAMHandle serverHandle, string name)
         {
             var us = new SharedStructs.UnicodeString(name);
             var status = SamLookupDomainInSamServer(serverHandle, ref us, out var sid);
 
             using (sid)
+            {
                 return (status, sid.GetData<SecurityIdentifier>());
+            }
         }
 
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
@@ -116,7 +123,7 @@ namespace SharpHoundRPC.SAMRPCNative
                 out var count);
             return (status, buffer, count);
         }
-        
+
         [DllImport("samlib.dll", CharSet = CharSet.Unicode)]
         private static extern NtStatus SamEnumerateAliasesInDomain(
             SAMHandle domainHandle,

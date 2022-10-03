@@ -13,7 +13,7 @@ namespace SharpHoundRPC.NetAPINative
             public string OtherDomains;
             public string LogonServer;
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
         public struct SessionInfo10
         {
@@ -22,7 +22,7 @@ namespace SharpHoundRPC.NetAPINative
             public uint Time;
             public uint IdleTIme;
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
         public struct WorkstationInfo100
         {
@@ -32,13 +32,13 @@ namespace SharpHoundRPC.NetAPINative
             public int MajorVersion;
             public int MinorVersion;
         }
-        
+
         [StructLayout(LayoutKind.Sequential)]
         public class GuidClass
         {
             public Guid TheGuid;
         }
-        
+
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct DomainControllerInfo
         {

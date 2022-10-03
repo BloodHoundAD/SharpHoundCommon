@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace SharpHoundRPC.NetAPINative
+﻿namespace SharpHoundRPC.NetAPINative
 {
     public class NetWkstaUserEnumResults
     {
@@ -21,7 +19,7 @@ namespace SharpHoundRPC.NetAPINative
             Username = username;
             ComputerName = cname;
         }
-        
+
         public string Username { get; }
         public string ComputerName { get; }
     }

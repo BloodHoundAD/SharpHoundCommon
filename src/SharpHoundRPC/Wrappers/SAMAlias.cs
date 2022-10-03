@@ -19,11 +19,8 @@ namespace SharpHoundRPC.Wrappers
             var (status, members, count) = SAMMethods.SamGetMembersInAlias(Handle);
             using (members)
             {
-                if (status.IsError())
-                {
-                    return status;
-                }
-            
+                if (status.IsError()) return status;
+
                 return Result<IEnumerable<SecurityIdentifier>>.Ok(members.GetData(count));
             }
         }

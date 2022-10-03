@@ -56,13 +56,15 @@ namespace SharpHoundRPC.Wrappers
             {
                 if (status.IsError()) return status;
 
-                var (lookupStatus, referencedDomains, names, lookupCount) = LSAMethods.LsaLookupSids(Handle, sids, count);
+                var (lookupStatus, referencedDomains, names, lookupCount) =
+                    LSAMethods.LsaLookupSids(Handle, sids, count);
                 if (lookupStatus.IsError())
                 {
                     referencedDomains.Dispose();
                     names.Dispose();
                     return lookupStatus;
                 }
+
                 var translatedNames = names.GetEnumerable<LSAStructs.LSATranslatedNames>(count).ToArray();
                 var domainList = referencedDomains.GetData<LSAStructs.LSAReferencedDomains>();
                 var safeDomains = new LSAPointer(domainList.Domains);
@@ -77,7 +79,7 @@ namespace SharpHoundRPC.Wrappers
                 referencedDomains.Dispose();
                 names.Dispose();
                 safeDomains.Dispose();
-                
+
                 return ret;
             }
         }
@@ -135,7 +137,7 @@ namespace SharpHoundRPC.Wrappers
             referencedDomains.Dispose();
             names.Dispose();
             safeDomains.Dispose();
-            
+
             return ret.ToArray();
         }
     }

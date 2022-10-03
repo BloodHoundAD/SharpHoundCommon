@@ -20,12 +20,10 @@ namespace SharpHoundRPC.Wrappers
             {
                 using (usePointer)
                 {
-                    if (status.IsError())
-                    {
-                        return status;
-                    }
+                    if (status.IsError()) return status;
 
-                    return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(), (SharedEnums.SidNameUse)usePointer.GetData<int>());
+                    return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(),
+                        (SharedEnums.SidNameUse) usePointer.GetData<int>());
                 }
             }
         }
@@ -35,23 +33,19 @@ namespace SharpHoundRPC.Wrappers
             var (status, ridPointer, count) = SAMMethods.SamEnumerateAliasesInDomain(Handle);
             using (ridPointer)
             {
-                if (status.IsError())
-                {
-                    return status;
-                }
+                if (status.IsError()) return status;
 
-                return Result<IEnumerable<(string Name, int Rid)>>.Ok(ridPointer.GetEnumerable<SAMStructs.SamRidEnumeration>(count)
+                return Result<IEnumerable<(string Name, int Rid)>>.Ok(ridPointer
+                    .GetEnumerable<SAMStructs.SamRidEnumeration>(count)
                     .Select(x => (x.Name.ToString(), x.Rid)));
             }
         }
 
-        public Result<SAMAlias> OpenAlias(int rid, SAMEnums.AliasOpenFlags desiredAccess = SAMEnums.AliasOpenFlags.ListMembers)
+        public Result<SAMAlias> OpenAlias(int rid,
+            SAMEnums.AliasOpenFlags desiredAccess = SAMEnums.AliasOpenFlags.ListMembers)
         {
             var (status, aliasHandle) = SAMMethods.SamOpenAlias(Handle, desiredAccess, rid);
-            if (status.IsError())
-            {
-                return status;
-            }
+            if (status.IsError()) return status;
 
             return new SAMAlias(aliasHandle);
         }
@@ -59,11 +53,8 @@ namespace SharpHoundRPC.Wrappers
         public Result<SAMAlias> OpenAlias(string name)
         {
             var getAliasesResult = GetAliases();
-            if (getAliasesResult.IsFailed)
-            {
-                return getAliasesResult.Status;
-            }
-            
+            if (getAliasesResult.IsFailed) return getAliasesResult.Status;
+
             foreach (var alias in getAliasesResult.Value)
                 if (alias.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     return OpenAlias(alias.Rid);

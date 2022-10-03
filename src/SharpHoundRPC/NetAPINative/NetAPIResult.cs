@@ -8,10 +8,20 @@
         public string Error { get; private set; }
         public bool IsFailed => !IsSuccess;
 
-        public static NetAPIResult<T> Ok(T value) => new() {IsSuccess = true, Value = value};
+        public static NetAPIResult<T> Ok(T value)
+        {
+            return new NetAPIResult<T> {IsSuccess = true, Value = value};
+        }
 
-        public static NetAPIResult<T> Fail(NetAPIEnums.NetAPIStatus status) => new() {Status = status};
-        public static NetAPIResult<T> Fail(string error) => new() {Error = error};
+        public static NetAPIResult<T> Fail(NetAPIEnums.NetAPIStatus status)
+        {
+            return new NetAPIResult<T> {Status = status};
+        }
+
+        public static NetAPIResult<T> Fail(string error)
+        {
+            return new NetAPIResult<T> {Error = error};
+        }
 
         public static implicit operator NetAPIResult<T>(T input)
         {

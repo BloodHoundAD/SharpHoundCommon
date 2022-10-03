@@ -1,6 +1,4 @@
-﻿using SharpHoundRPC.NetAPINative;
-
-namespace SharpHoundRPC
+﻿namespace SharpHoundRPC
 {
     public class Result<T>
     {
@@ -10,10 +8,20 @@ namespace SharpHoundRPC
         public string Error { get; private set; }
         public bool IsFailed => !IsSuccess;
 
-        public static Result<T> Ok(T value) => new() {IsSuccess = true, Value = value};
+        public static Result<T> Ok(T value)
+        {
+            return new() {IsSuccess = true, Value = value};
+        }
 
-        public static Result<T> Fail(NtStatus status) => new() {Status = status};
-        public static Result<T> Fail(string error) => new() {Error = error};
+        public static Result<T> Fail(NtStatus status)
+        {
+            return new() {Status = status};
+        }
+
+        public static Result<T> Fail(string error)
+        {
+            return new() {Error = error};
+        }
 
         public static implicit operator Result<T>(T input)
         {

@@ -31,6 +31,6 @@ namespace SharpHoundRPC
             var bytes = new byte[identifier.BinaryLength];
             identifier.GetBinaryForm(bytes, 0);
             return bytes;
-        } 
+        }
     }
 }
