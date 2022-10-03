@@ -12,16 +12,16 @@ namespace SharpHoundCommonLib.Processors
 {
     public class LocalGroupProcessor
     {
-        private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+
         private readonly string[] _filteredSids =
         {
             "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
             "S-1-5-19", "S-1-5-20"
         };
 
-        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
-        public event ComputerStatusDelegate ComputerStatusEvent;
+        private readonly ILogger _log;
+        private readonly ILDAPUtils _utils;
 
         public LocalGroupProcessor(ILDAPUtils utils, ILogger log = null)
         {
@@ -29,7 +29,10 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("LocalGroupProcessor");
         }
 
-        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerDomainSid, string computerDomain)
+        public event ComputerStatusDelegate ComputerStatusEvent;
+
+        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerDomainSid,
+            string computerDomain)
         {
             var openServerResult = SAMServer.OpenServer(computerName);
             if (openServerResult.IsFailed)
@@ -46,7 +49,7 @@ namespace SharpHoundCommonLib.Processors
             var server = openServerResult.Value;
             var typeCache = new ConcurrentDictionary<string, CachedLocalItem>();
             var computerSid = new SecurityIdentifier(computerDomainSid);
-            
+
             if (!Cache.GetMachineSid(computerDomainSid, out var machineSid))
             {
                 var getMachineSidResult = server.GetMachineSid();
@@ -61,7 +64,7 @@ namespace SharpHoundCommonLib.Processors
                 }
             }
 
-            
+
             var getDomainsResult = server.GetDomains();
             if (getDomainsResult.IsFailed)
             {
@@ -73,14 +76,15 @@ namespace SharpHoundCommonLib.Processors
                 });
                 yield break;
             }
+
             foreach (var domainResult in getDomainsResult.Value)
             {
                 var ret = new LocalGroupAPIResult
                 {
                     Name = domainResult.Name,
-                    GroupRID = domainResult.Rid,
+                    GroupRID = domainResult.Rid
                 };
-                
+
                 var openDomainResult = server.OpenDomain(domainResult.Name);
                 if (openDomainResult.IsFailed)
                 {
@@ -107,7 +111,7 @@ namespace SharpHoundCommonLib.Processors
                     });
                     continue;
                 }
-                
+
                 foreach (var alias in getAliasesResult.Value)
                 {
                     var openAliasResult = domain.OpenAlias(alias.Rid);
@@ -123,7 +127,7 @@ namespace SharpHoundCommonLib.Processors
                         ret.FailureReason = $"SamOpenAliasInDomain failed with status {openAliasResult.Status}";
                         yield return ret;
                     }
-                    
+
                     var results = new List<TypedPrincipal>();
                     var names = new List<NamedPrincipal>();
 
@@ -186,7 +190,7 @@ namespace SharpHoundCommonLib.Processors
                                             ObjectIdentifier = sidValue,
                                             ObjectType = item.Type
                                         });
-                                        
+
                                         names.Add(new NamedPrincipal
                                         {
                                             ObjectId = sidValue,
@@ -212,13 +216,13 @@ namespace SharpHoundCommonLib.Processors
                                         };
 
                                         typeCache.TryAdd(sidValue, new CachedLocalItem(name, objectType));
-                                        
+
                                         results.Add(new TypedPrincipal
                                         {
                                             ObjectIdentifier = sidValue,
                                             ObjectType = objectType
                                         });
-                                        
+
                                         names.Add(new NamedPrincipal
                                         {
                                             PrincipalName = name,

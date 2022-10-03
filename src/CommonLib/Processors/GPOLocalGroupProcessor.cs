@@ -604,7 +604,7 @@ namespace SharpHoundCommonLib.Processors
             RestrictedMember,
             LocalGroup
         }
-        
+
         internal enum LocalGroupRids
         {
             None = 0,

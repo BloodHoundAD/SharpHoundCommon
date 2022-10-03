@@ -6,22 +6,19 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
-using SharpHoundCommonLib.Exceptions;
 using SharpHoundCommonLib.OutputTypes;
-using SharpHoundRPC.NetAPINative;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
+        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+
         private static readonly Regex SidRegex = new(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
         private readonly string _currentUserName;
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
         private readonly ILDAPUtils _utils;
-        
-        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
-        public event ComputerStatusDelegate ComputerStatusEvent;
 
         public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null,
             NativeMethods nativeMethods = null, ILogger log = null)
@@ -31,6 +28,8 @@ namespace SharpHoundCommonLib.Processors
             _currentUserName = currentUserName ?? WindowsIdentity.GetCurrent().Name.Split('\\')[1];
             _log = log ?? Logging.LogProvider.CreateLogger("CompSessions");
         }
+
+        public event ComputerStatusDelegate ComputerStatusEvent;
 
         /// <summary>
         ///     Uses the NetSessionEnum Win32 API call to get network sessions from a remote computer.
@@ -233,7 +232,7 @@ namespace SharpHoundCommonLib.Processors
                 key?.Dispose();
             }
         }
-        
+
         private void SendComputerStatus(CSVComputerStatus status)
         {
             ComputerStatusEvent?.Invoke(status);

@@ -31,7 +31,8 @@ namespace SharpHoundCommonLib
             return NetAPIMethods.NetWkstaUserEnum(servername);
         }
 
-        public virtual NetAPIResult<NetAPIStructs.DomainControllerInfo> CallDsGetDcName(string computerName, string domainName)
+        public virtual NetAPIResult<NetAPIStructs.DomainControllerInfo> CallDsGetDcName(string computerName,
+            string domainName)
         {
             return NetAPIMethods.DsGetDcName(computerName, domainName);
         }

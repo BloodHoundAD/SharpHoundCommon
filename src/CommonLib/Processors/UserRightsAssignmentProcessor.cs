@@ -11,24 +11,27 @@ namespace SharpHoundCommonLib.Processors
 {
     public class UserRightsAssignmentProcessor
     {
-        private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+
         private readonly string[] _filteredSids =
         {
             "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
             "S-1-5-19", "S-1-5-20"
         };
-        
-        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
-        public event ComputerStatusDelegate ComputerStatusEvent;
-        
+
+        private readonly ILogger _log;
+        private readonly ILDAPUtils _utils;
+
         public UserRightsAssignmentProcessor(ILDAPUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("LocalGroupProcessor");
         }
 
-        public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName, string computerDomainSid, string computerDomain, string[] desiredPrivileges = null)
+        public event ComputerStatusDelegate ComputerStatusEvent;
+
+        public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
+            string computerDomainSid, string computerDomain, string[] desiredPrivileges = null)
         {
             var computerSid = new SecurityIdentifier(computerDomainSid);
             var policyOpenResult = LSAPolicy.OpenPolicy(computerName);
@@ -82,7 +85,7 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 var isDc = computerSid.IsEqualDomainSid(new SecurityIdentifier(machineSid));
-                
+
                 var resolved = new List<TypedPrincipal>();
                 var names = new List<NamedPrincipal>();
 
@@ -116,7 +119,7 @@ namespace SharpHoundCommonLib.Processors
                                 ObjectId = convertedId,
                                 PrincipalName = common.ObjectIdentifier
                             });
-                            
+
                             var objectType = common.ObjectType switch
                             {
                                 Label.User => Label.LocalUser,
@@ -138,13 +141,13 @@ namespace SharpHoundCommonLib.Processors
                                 SharedEnums.SidNameUse.Alias => Label.LocalGroup,
                                 _ => Label.Base
                             };
-                            
+
                             names.Add(new NamedPrincipal
                             {
                                 ObjectId = sid.ToString(),
                                 PrincipalName = name
                             });
-                            
+
                             resolved.Add(new TypedPrincipal
                             {
                                 ObjectIdentifier = sid.ToString(),
@@ -159,7 +162,7 @@ namespace SharpHoundCommonLib.Processors
                 yield return result;
             }
         }
-        
+
         private bool IsSidFiltered(SecurityIdentifier identifier)
         {
             var value = identifier.Value;
@@ -173,7 +176,7 @@ namespace SharpHoundCommonLib.Processors
 
             return false;
         }
-        
+
         private void SendComputerStatus(CSVComputerStatus status)
         {
             ComputerStatusEvent?.Invoke(status);
