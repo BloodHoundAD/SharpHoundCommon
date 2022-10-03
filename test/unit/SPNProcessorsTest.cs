@@ -29,7 +29,8 @@ namespace CommonLibTest
 
             var expected = new SPNPrivilege
             {
-                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 1433, Service = EdgeNames.SQLAdmin
+                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 1433,
+                Service = EdgeNames.SQLAdmin
             };
 
             await foreach (var actual in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))
@@ -49,7 +50,8 @@ namespace CommonLibTest
 
             var expected = new SPNPrivilege
             {
-                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 1433, Service = EdgeNames.SQLAdmin
+                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 1433,
+                Service = EdgeNames.SQLAdmin
             };
 
             await foreach (var actual in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))
@@ -69,7 +71,8 @@ namespace CommonLibTest
 
             var expected = new SPNPrivilege
             {
-                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 2345, Service = EdgeNames.SQLAdmin
+                ComputerSID = "S-1-5-21-3130019616-2776909439-2417379446-1001", Port = 2345,
+                Service = EdgeNames.SQLAdmin
             };
 
             await foreach (var actual in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))

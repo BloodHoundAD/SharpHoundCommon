@@ -4,7 +4,6 @@ using CommonLibTest.Facades;
 using Moq;
 using Newtonsoft.Json;
 using SharpHoundCommonLib;
-using SharpHoundCommonLib.Exceptions;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using SharpHoundRPC.NetAPINative;
@@ -39,7 +38,7 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_ReadUserSessions_FilteringWorks()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
-            
+
             var apiResult = new NetSessionEnumResults[]
             {
                 new("dfm", "\\\\192.168.92.110"),
@@ -164,7 +163,8 @@ namespace CommonLibTest
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
-            mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Returns(NetAPIEnums.NetAPIStatus.ErrorAccessDenied);
+            mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>()))
+                .Returns(NetAPIEnums.NetAPIStatus.ErrorAccessDenied);
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
             var test = await processor.ReadUserSessions("test", "test", "test");
             Assert.False(test.Collected);
@@ -176,7 +176,8 @@ namespace CommonLibTest
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
-            mockNativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>())).Returns(NetAPIEnums.NetAPIStatus.ErrorAccessDenied);
+            mockNativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>()))
+                .Returns(NetAPIEnums.NetAPIStatus.ErrorAccessDenied);
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
             var test = processor.ReadUserSessionsPrivileged("test", "test", "test");
             Assert.False(test.Collected);
