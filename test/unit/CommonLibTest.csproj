@@ -11,6 +11,7 @@
     <!-- Project references -->
     <ItemGroup>
         <ProjectReference Include="..\..\src\CommonLib\SharpHoundCommonLib.csproj"/>
+        <ProjectReference Include="..\..\src\SharpHoundRPC\SharpHoundRPC.csproj"/>
     </ItemGroup>
 
     <!-- Package references -->
