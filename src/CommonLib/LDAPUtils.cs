@@ -220,15 +220,12 @@ namespace SharpHoundCommonLib
         {
             if (Cache.GetIDType(sid, out var type))
                 return type;
-
-            var hex = Helpers.ConvertSidToHexSid(sid);
-            if (hex == null)
-                return Label.Base;
-
+            
             var rDomain = GetDomainNameFromSid(sid) ?? domain;
+            _log.LogInformation("looking up sid {sid} in domain {domain}", sid, domain);
 
             var result =
-                QueryLDAP($"(objectsid={hex})", SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain)
+                QueryLDAP(CommonFilters.SpecificSID(sid), SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain)
                     .DefaultIfEmpty(null).FirstOrDefault();
 
             type = result?.GetLabel() ?? Label.Base;
