@@ -25,7 +25,7 @@ namespace SharpHoundCommonLib.Processors
         public UserRightsAssignmentProcessor(ILDAPUtils utils, ILogger log = null)
         {
             _utils = utils;
-            _log = log ?? Logging.LogProvider.CreateLogger("LocalGroupProcessor");
+            _log = log ?? Logging.LogProvider.CreateLogger("UserRightsAssignmentProcessor");
         }
 
         public event ComputerStatusDelegate ComputerStatusEvent;
@@ -68,6 +68,7 @@ namespace SharpHoundCommonLib.Processors
                     result.FailureReason =
                         $"LSAEnumerateAccountsWithUserRights returned {enumerateAccountsResult.Status}";
                     yield return result;
+                    continue;
                 }
 
                 if (!Cache.GetMachineSid(computerDomainSid, out var machineSid))
