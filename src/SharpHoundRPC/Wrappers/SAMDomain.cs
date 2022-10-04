@@ -31,14 +31,17 @@ namespace SharpHoundRPC.Wrappers
         public Result<IEnumerable<(string Name, int Rid)>> GetAliases()
         {
             var (status, ridPointer, count) = SAMMethods.SamEnumerateAliasesInDomain(Handle);
-            using (ridPointer)
-            {
-                if (status.IsError()) return status;
 
-                return Result<IEnumerable<(string Name, int Rid)>>.Ok(ridPointer
-                    .GetEnumerable<SAMStructs.SamRidEnumeration>(count)
-                    .Select(x => (x.Name.ToString(), x.Rid)));
+            if (status.IsError())
+            {
+                return status;
             }
+
+            var ret = Result<IEnumerable<(string Name, int Rid)>>.Ok(ridPointer
+                .GetEnumerable<SAMStructs.SamRidEnumeration>(count)
+                .Select(x => (x.Name.ToString(), x.Rid)));
+            
+            return ret;
         }
 
         public Result<SAMAlias> OpenAlias(int rid,

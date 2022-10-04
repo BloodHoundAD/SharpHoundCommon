@@ -40,12 +40,10 @@ namespace SharpHoundRPC.Wrappers
         public Result<IEnumerable<SecurityIdentifier>> GetPrincipalsWithPrivilege(string userRight)
         {
             var (status, sids, count) = LSAMethods.LsaEnumerateAccountsWithUserRight(Handle, userRight);
-            using (sids)
-            {
-                if (status.IsError()) return status;
+            
+            if (status.IsError()) return status;
 
-                return Result<IEnumerable<SecurityIdentifier>>.Ok(sids.GetEnumerable<SecurityIdentifier>(count));
-            }
+            return Result<IEnumerable<SecurityIdentifier>>.Ok(sids.GetEnumerable<SecurityIdentifier>(count));
         }
 
         public Result<IEnumerable<(SecurityIdentifier sid, string Name, SharedEnums.SidNameUse Use, string Domain)>>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -36,16 +37,21 @@ namespace SharpHoundRPC.Wrappers
 
         public Result<IEnumerable<(string Name, int Rid)>> GetDomains()
         {
-            var (status, rids) = SAMMethods.SamEnumerateDomainsInSamServer(Handle);
-            return status.IsError()
-                ? status
-                : Result<IEnumerable<(string Name, int Rid)>>.Ok(rids.Select(x => (x.Name.ToString(), x.Rid)));
+            var (status, rids, count) = SAMMethods.SamEnumerateDomainsInSamServer(Handle);
+            if (status.IsError())
+            {
+                return status;
+            }
+            
+            var ret = Result<IEnumerable<(string Name, int Rid)>>.Ok(rids.GetEnumerable<SAMStructs.SamRidEnumeration>(count).Select(x => (x.Name.ToString(), x.Rid)));
+            return ret;
         }
 
         public Result<SecurityIdentifier> LookupDomain(string name)
         {
             var (status, sid) = SAMMethods.SamLookupDomainInSamServer(Handle, name);
-            return status.IsError() ? status : sid;
+            using (sid)
+                return status.IsError() ? status : sid.GetData<SecurityIdentifier>();
         }
 
         public Result<SecurityIdentifier> GetMachineSid(string testName = null)
