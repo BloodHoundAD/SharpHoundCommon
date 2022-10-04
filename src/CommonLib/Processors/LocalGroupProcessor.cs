@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -77,14 +78,10 @@ namespace SharpHoundCommonLib.Processors
                 yield break;
             }
 
+            var isDc = server.IsDomainController(computerSid);
+
             foreach (var domainResult in getDomainsResult.Value)
             {
-                var ret = new LocalGroupAPIResult
-                {
-                    Name = domainResult.Name,
-                    GroupRID = domainResult.Rid
-                };
-
                 var openDomainResult = server.OpenDomain(domainResult.Name);
                 if (openDomainResult.IsFailed)
                 {
@@ -114,6 +111,13 @@ namespace SharpHoundCommonLib.Processors
 
                 foreach (var alias in getAliasesResult.Value)
                 {
+                    var resolvedName = ResolveGroupName(alias.Name, computerName, machineSid, computerDomain, alias.Rid, isDc,
+                        domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase));
+                    var ret = new LocalGroupAPIResult
+                    {
+                        Name = resolvedName.PrincipalName,
+                        ObjectIdentifier = resolvedName.ObjectId
+                    };
                     var openAliasResult = domain.OpenAlias(alias.Rid);
                     if (openAliasResult.IsFailed)
                     {
@@ -239,6 +243,34 @@ namespace SharpHoundCommonLib.Processors
                     yield return ret;
                 }
             }
+        }
+
+        private NamedPrincipal ResolveGroupName(string baseName, string computerName, string machineSid, string domainName, int groupRid, bool isDc, bool isBuiltIn)
+        {
+            if (isDc)
+            {
+                if (isBuiltIn)
+                {
+                    _utils.GetWellKnownPrincipal($"S-1-5-32-{groupRid}".ToUpper(), domainName, out var principal);
+                    return new NamedPrincipal
+                    {
+                        ObjectId = principal.ObjectIdentifier,
+                        PrincipalName = "IGNOREME"
+                    };
+                }
+
+                return new NamedPrincipal
+                {
+                    ObjectId = $"{machineSid}-{groupRid}".ToUpper(),
+                    PrincipalName = "IGNOREME"
+                };
+            }
+
+            return new NamedPrincipal
+            {
+                ObjectId = $"{machineSid}-{groupRid}",
+                PrincipalName = $"{baseName}@{computerName}".ToUpper()
+            };
         }
 
         private bool IsSidFiltered(SecurityIdentifier identifier)
