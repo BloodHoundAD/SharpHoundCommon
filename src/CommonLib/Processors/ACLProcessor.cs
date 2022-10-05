@@ -344,6 +344,24 @@ namespace SharpHoundCommonLib.Processors
                                     RightName = EdgeNames.ReadLAPSPassword
                                 };
                         }
+                    } else if (objectType == Label.CertTemplate)
+                    {
+                        if (aceType is ACEGuids.AllGuid or "")
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.AllExtendedRights
+                            };
+                        else if (mappedGuid is ACEGuids.Enroll)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.EnrollOther
+                            };
                     }
                 }
 
@@ -401,6 +419,25 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddKeyCredentialLink
                         };
+                    else if (objectType is Label.CertAuthority)
+                    {
+                        if (aceType == ACEGuids.PKIEnrollmentFlag)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WritePKIEnrollmentFlag
+                            };
+                        else if (aceType == ACEGuids.PKINameFlag)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WritePKINameFlag
+                            };
+                    }
                 }
             }
         }
