@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
@@ -14,20 +15,6 @@ namespace SharpHoundCommonLib.Processors
 {
     public class LDAPPropertyProcessor
     {
-        private static readonly string[] ReservedAttributes =
-        {
-            "pwdlastset", "lastlogon", "lastlogontimestamp", "objectsid",
-            "sidhistory", "useraccountcontrol", "operatingsystem",
-            "operatingsystemservicepack", "serviceprincipalname", "displayname", "mail", "title",
-            "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
-            "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedtodelegateto",
-            "msDS-allowedtoactonbehalfofotheridentity", "displayname",
-            "sidhistory", "samaccountname", "samaccounttype", "objectsid", "objectguid", "objectclass",
-            "msds-groupmsamembership",
-            "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector",
-            "member", "whenCreated"
-        };
-
         private readonly ILDAPUtils _utils;
 
         public LDAPPropertyProcessor(ILDAPUtils utils)
@@ -395,27 +382,27 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadCertTemplateProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            props.Add("validityperiod", ConvertPKIPeriod(entry.GetByteProperty("pkiexpirationperiod")));
-            props.Add("renewalperiod", ConvertPKIPeriod(entry.GetByteProperty("pkioverlapperiod")));
-            if (entry.GetIntProperty("mspki-template-schema-version", out var schemaVersion))
+            props.Add("validityperiod", ConvertPKIPeriod(entry.GetByteProperty(LDAPProperties.PKIExpirationPeriod)));
+            props.Add("renewalperiod", ConvertPKIPeriod(entry.GetByteProperty(LDAPProperties.PKIOverlappedPeriod)));
+            if (entry.GetIntProperty(LDAPProperties.TemplateSchemaVersion, out var schemaVersion))
                 props.Add("schemaversion", schemaVersion);
-            props.Add("displayname", entry.GetProperty("displayname"));
-            props.Add("oid", new Oid(entry.GetProperty("mspki-cert-template-oid")));
-            if (entry.GetIntProperty("mspki-enrollment-flag", out var enrollmentFlagsRaw))
+            props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
+            props.Add("oid", new Oid(entry.GetProperty(LDAPProperties.CertTemplateOID)));
+            if (entry.GetIntProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw))
             {
                 var enrollmentFlags = (PKIEnrollmentFlag) enrollmentFlagsRaw;
                 props.Add("requiresmanagerapproval", enrollmentFlags.HasFlag(PKIEnrollmentFlag.PEND_ALL_REQUESTS));
             }
 
-            if (entry.GetIntProperty("mspki-certificate-name-flag", out var nameFlagsRaw))
+            if (entry.GetIntProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw))
             {
                 var nameFlags = (PKICertificateNameFlag) nameFlagsRaw;
                 props.Add("enrolleesuppliessubject",
                     nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
             }
 
-            props.Add("ekus", entry.GetArrayProperty("pkiextendedkeyusage"));
-            if (entry.GetIntProperty("mspki-ra-signature", out var authorizedSignatures))
+            props.Add("ekus", entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage));
+            if (entry.GetIntProperty(LDAPProperties.RASignature, out var authorizedSignatures))
                 props.Add("authorizedsignatures", authorizedSignatures);
 
             return props;
@@ -431,9 +418,12 @@ namespace SharpHoundCommonLib.Processors
             var flag = IsTextUnicodeFlags.IS_TEXT_UNICODE_STATISTICS;
             var props = new Dictionary<string, object>();
 
+            var type = typeof(LDAPProperties);
+            var reserved = type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(x => x.GetValue(null).ToString()).ToArray();
+
             foreach (var property in entry.PropertyNames())
             {
-                if (ReservedAttributes.Contains(property))
+                if (reserved.Contains(property, StringComparer.InvariantCultureIgnoreCase))
                     continue;
 
                 var collCount = entry.PropCount(property);
