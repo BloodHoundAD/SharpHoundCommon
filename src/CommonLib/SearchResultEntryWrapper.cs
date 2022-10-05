@@ -142,6 +142,7 @@ namespace SharpHoundCommonLib
             {
                 case Label.User:
                 case Label.Group:
+                case Label.Base:
                     res.DisplayName = $"{samAccountName}@{itemDomain}";
                     break;
                 case Label.Computer:
@@ -167,10 +168,9 @@ namespace SharpHoundCommonLib
                     break;
                 case Label.OU:
                 case Label.Container:
+                case Label.CertAuthority:
+                case Label.CertTemplate:
                     res.DisplayName = $"{GetProperty(LDAPProperties.Name)}@{itemDomain}";
-                    break;
-                case Label.Base:
-                    res.DisplayName = $"{samAccountName}@{itemDomain}";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

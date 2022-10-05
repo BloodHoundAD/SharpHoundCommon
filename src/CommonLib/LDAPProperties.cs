@@ -1,6 +1,6 @@
 ﻿namespace SharpHoundCommonLib
 {
-    public class LDAPProperties
+    public static class LDAPProperties
     {
         public const string GroupMSAMembership = "msds-groupmsamembership";
         public const string UserAccountControl = "useraccountcontrol";
@@ -48,5 +48,13 @@
         public const string ScriptPath = "scriptpath";
         public const string LdapAdminLimits = "ldapadminlimits";
         public const string HostServiceAccount = "msds-hostserviceaccount";
+        public const string PKIExpirationPeriod = "pkiexpirationperiod";
+        public const string PKIOverlappedPeriod = "pkioverlapperiod";
+        public const string TemplateSchemaVersion = "mspki-template-schema-version";
+        public const string CertTemplateOID = "mspki-cert-template-oid";
+        public const string PKIEnrollmentFlag = "mspki-enrollment-flag";
+        public const string PKINameFlag = "mspki-certificate-name-flag";
+        public const string ExtendedKeyUsage = "pkiextendedkeyusage";
+        public const string RASignature = "mspki-ra-signature";
     }
 }
