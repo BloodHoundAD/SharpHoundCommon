@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
@@ -383,6 +384,43 @@ namespace SharpHoundCommonLib.Processors
             return compProps;
         }
 
+        public static Dictionary<string, object> ReadCAProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKICertificateAuthorityFlags) flags);
+
+            return props;
+        }
+
+        public static Dictionary<string, object> ReadCertTemplateProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            props.Add("validityperiod", ConvertPKIPeriod(entry.GetByteProperty("pkiexpirationperiod")));
+            props.Add("renewalperiod", ConvertPKIPeriod(entry.GetByteProperty("pkioverlapperiod")));
+            if (entry.GetIntProperty("mspki-template-schema-version", out var schemaVersion))
+                props.Add("schemaversion", schemaVersion);
+            props.Add("displayname", entry.GetProperty("displayname"));
+            props.Add("oid", new Oid(entry.GetProperty("mspki-cert-template-oid")));
+            if (entry.GetIntProperty("mspki-enrollment-flag", out var enrollmentFlagsRaw))
+            {
+                var enrollmentFlags = (PKIEnrollmentFlag) enrollmentFlagsRaw;
+                props.Add("requiresmanagerapproval", enrollmentFlags.HasFlag(PKIEnrollmentFlag.PEND_ALL_REQUESTS));
+            }
+
+            if (entry.GetIntProperty("mspki-certificate-name-flag", out var nameFlagsRaw))
+            {
+                var nameFlags = (PKICertificateNameFlag) nameFlagsRaw;
+                props.Add("enrolleesuppliessubject",
+                    nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
+            }
+
+            props.Add("ekus", entry.GetArrayProperty("pkiextendedkeyusage"));
+            if (entry.GetIntProperty("mspki-ra-signature", out var authorizedSignatures))
+                props.Add("authorizedsignatures", authorizedSignatures);
+
+            return props;
+        }
+
         /// <summary>
         ///     Attempts to parse all LDAP attributes outside of the ones already collected and converts them to a human readable
         ///     format using a best guess
@@ -448,6 +486,66 @@ namespace SharpHoundCommonLib.Processors
             if (property == "9223372036854775807") return -1;
 
             return property;
+        }
+
+        /// <summary>
+        ///     Converts PKIExpirationPeriod/PKIOverlappedPeriod attributes to time approximate times
+        /// </summary>
+        /// <remarks>https://www.sysadmins.lv/blog-en/how-to-convert-pkiexirationperiod-and-pkioverlapperiod-active-directory-attributes.aspx</remarks>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        private static string ConvertPKIPeriod(byte[] bytes)
+        {
+            if (bytes == null || bytes.Length == 0)
+                return "Unknown";
+
+            try
+            {
+                Array.Reverse(bytes);
+                var temp = BitConverter.ToString(bytes).Replace("-", "");
+                var value = Convert.ToInt64(temp, 16) * -.0000001;
+
+                if (value % 31536000 == 0 && value / 31536000 >= 1)
+                {
+                    if (value / 31536000 == 1) return "1 year";
+
+                    return $"{value / 31536000} years";
+                }
+
+                if (value % 2592000 == 0 && value / 2592000 >= 1)
+                {
+                    if (value / 2592000 == 1) return "1 month";
+
+                    return $"{value / 2592000} months";
+                }
+
+                if (value % 604800 == 0 && value / 604800 >= 1)
+                {
+                    if (value / 604800 == 1) return "1 week";
+
+                    return $"{value / 604800} weeks";
+                }
+
+                if (value % 86400 == 0 && value / 86400 >= 1)
+                {
+                    if (value / 86400 == 1) return "1 day";
+
+                    return $"{value / 86400} days";
+                }
+
+                if (value % 3600 == 0 && value / 3600 >= 1)
+                {
+                    if (value / 3600 == 1) return "1 hour";
+
+                    return $"{value / 3600} hours";
+                }
+
+                return "";
+            }
+            catch (Exception)
+            {
+                return "Unknown";
+            }
         }
 
         [DllImport("Advapi32", SetLastError = false)]

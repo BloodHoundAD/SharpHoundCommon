@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -253,6 +254,37 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
+        ///     Gets the specified property as an int
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="property"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool GetPropertyAsInt(this SearchResultEntry entry, string property, out int value)
+        {
+            var prop = entry.GetProperty(property);
+            if (prop != null) return int.TryParse(prop, out value);
+            value = 0;
+            return false;
+        }
+
+        /// <summary>
+        ///     Gets the specified property as an array of X509 certificates.
+        /// </summary>
+        /// <param name="searchResultEntry"></param>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public static X509Certificate2[] GetPropertyAsArrayOfCertificates(this SearchResultEntry searchResultEntry,
+            string property)
+        {
+            if (!searchResultEntry.Attributes.Contains(property))
+                return null;
+
+            return searchResultEntry.GetPropertyAsArrayOfBytes(property).Select(x => new X509Certificate2(x)).ToArray();
+        }
+
+
+        /// <summary>
         ///     Attempts to get the unique object identifier as used by BloodHound for the Search Result Entry. Tries to get
         ///     objectsid first, and then objectguid next.
         /// </summary>
@@ -343,6 +375,11 @@ namespace SharpHoundCommonLib
                     objectType = Label.Domain;
                 else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.Container;
+                else if (objectClasses.Contains(CertTemplateClass, StringComparer.InvariantCultureIgnoreCase))
+                    objectType = Label.CertTemplate;
+                else if (objectClasses.Contains(EnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase) ||
+                         objectClasses.Contains(CertAuthorityClass, StringComparer.InvariantCultureIgnoreCase))
+                    objectType = Label.CertAuthority;
             }
 
             Log.LogDebug("GetLabel - Final label for {ObjectID}: {Label}", objectId, objectType);
@@ -356,6 +393,9 @@ namespace SharpHoundCommonLib
         private const string OrganizationalUnitClass = "organizationalUnit";
         private const string DomainClass = "domain";
         private const string ContainerClass = "container";
+        private const string CertTemplateClass = "pKICertificateTemplate";
+        private const string EnrollmentServiceClass = "pKIEnrollmentService";
+        private const string CertAuthorityClass = "certificateAuthority";
 
         #endregion
     }

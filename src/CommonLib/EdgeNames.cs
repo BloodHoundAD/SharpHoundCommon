@@ -19,5 +19,13 @@
         public const string WriteSPN = "WriteSPN";
         public const string AddKeyCredentialLink = "AddKeyCredentialLink";
         public const string SQLAdmin = "SQLAdmin";
+
+        //CertAbuse edges
+        public const string WritePKIEnrollmentFlag = "WritePKIEnrollmentFlag";
+        public const string WritePKINameFlag = "WritePKINameFlag";
+        public const string ManageCA = "ManageCA";
+        public const string ManageCertificates = "ManageCertificates";
+        public const string Enroll = "Enroll";
+        public const string EnrollOther = "EnrollAsOther";
     }
 }

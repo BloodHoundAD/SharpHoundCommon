@@ -10,5 +10,11 @@
         public const string WriteAllowedToAct = "3f78c3e5-f79a-46bd-a0b8-9d18116ddc79";
         public const string WriteSPN = "f3a64788-5306-11d1-a9c5-0000f80367c1";
         public const string AddKeyPrincipal = "5b47d60f-6090-40b2-9f37-2a4de88f3063";
+
+        //Cert abuse ACEs
+        public const string PKINameFlag = "ea1dddc4-60ff-416e-8cc0-17cee534bce7";
+        public const string PKIEnrollmentFlag = "d15ef7d8-f226-46db-ae79-b34e560bd12c";
+        public const string Enroll = "0e10c968-78fb-11d2-90d4-00c04f79dc55";
+        public const string AutoEnroll = "a05b8cc2-17bc-4802-a710-e7c15ab866a2"; //TODO: Add this if it becomes abusable
     }
 }

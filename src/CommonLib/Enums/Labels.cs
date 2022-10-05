@@ -11,6 +11,8 @@
         Domain,
         OU,
         Container,
+        CertTemplate,
+        CertAuthority,
         Base
     }
 }
