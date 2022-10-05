@@ -11,7 +11,7 @@
 
         public static readonly string[] BaseQueryProps =
         {
-            "objectsid", "distiguishedname", "objectguid", "ms-mcs-admpwdexpirationtime", "isDeleted",
+            "objectsid", "distinguishedname", "objectguid", "ms-mcs-admpwdexpirationtime", "isDeleted",
             "useraccountcontrol"
         };
 

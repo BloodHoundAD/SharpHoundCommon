@@ -12,6 +12,8 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
+        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+
         private static readonly Regex SidRegex = new(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
         private readonly string _currentUserName;
         private readonly ILogger _log;
@@ -27,6 +29,8 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("CompSessions");
         }
 
+        public event ComputerStatusDelegate ComputerStatusEvent;
+
         /// <summary>
         ///     Uses the NetSessionEnum Win32 API call to get network sessions from a remote computer.
         ///     These are usually from SMB share accesses or other network sessions of the sort
@@ -39,27 +43,23 @@ namespace SharpHoundCommonLib.Processors
             string computerDomain)
         {
             var ret = new SessionAPIResult();
-            NativeMethods.SESSION_INFO_10[] apiResult;
 
-            try
+            var result = _nativeMethods.NetSessionEnum(computerName);
+            if (result.IsFailed)
             {
-                apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
-            }
-            catch (APIException e)
-            {
-                _log.LogDebug("NetSessionEnum failed on {ComputerName}: {Status}", computerName, e.Status);
+                _log.LogDebug("NetSessionEnum failed on {ComputerName}: {Status}", computerName, result.Status);
                 ret.Collected = false;
-                ret.FailureReason = e.Status;
+                ret.FailureReason = result.Status.ToString();
                 return ret;
             }
 
             ret.Collected = true;
             var results = new List<Session>();
 
-            foreach (var sesInfo in apiResult)
+            foreach (var sesInfo in result.Value)
             {
-                var username = sesInfo.sesi10_username;
-                var computerSessionName = sesInfo.sesi10_cname;
+                var username = sesInfo.Username;
+                var computerSessionName = sesInfo.ComputerName;
 
                 _log.LogTrace("NetSessionEnum Entry: {Username}@{ComputerSessionName} from {ComputerName}", username,
                     computerSessionName, computerName);
@@ -135,27 +135,23 @@ namespace SharpHoundCommonLib.Processors
             string computerSamAccountName, string computerSid)
         {
             var ret = new SessionAPIResult();
-            NativeMethods.WKSTA_USER_INFO_1[] apiResult;
+            var result = _nativeMethods.NetWkstaUserEnum(computerName);
 
-            try
+            if (result.IsFailed)
             {
-                apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
-            }
-            catch (APIException e)
-            {
-                _log.LogTrace("NetWkstaUserEnum failed on {ComputerName}: {Status}", computerName, e.Status);
+                _log.LogTrace("NetWkstaUserEnum failed on {ComputerName}: {Status}", computerName, result.Status);
                 ret.Collected = false;
-                ret.FailureReason = e.Status;
+                ret.FailureReason = result.Status.ToString();
                 return ret;
             }
 
             ret.Collected = true;
 
             var results = new List<TypedPrincipal>();
-            foreach (var wkstaUserInfo in apiResult)
+            foreach (var wkstaUserInfo in result.Value)
             {
-                var domain = wkstaUserInfo.wkui1_logon_domain;
-                var username = wkstaUserInfo.wkui1_username;
+                var domain = wkstaUserInfo.LogonDomain;
+                var username = wkstaUserInfo.Username;
 
                 _log.LogTrace("NetWkstaUserEnum entry: {Username}@{Domain} from {ComputerName}", username, domain,
                     computerName);
@@ -235,6 +231,11 @@ namespace SharpHoundCommonLib.Processors
             {
                 key?.Dispose();
             }
+        }
+
+        private void SendComputerStatus(CSVComputerStatus status)
+        {
+            ComputerStatusEvent?.Invoke(status);
         }
     }
 }

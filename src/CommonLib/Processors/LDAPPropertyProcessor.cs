@@ -22,7 +22,7 @@ namespace SharpHoundCommonLib.Processors
             "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedtodelegateto",
             "msDS-allowedtoactonbehalfofotheridentity", "displayname",
             "sidhistory", "samaccountname", "samaccounttype", "objectsid", "objectguid", "objectclass",
-            "samaccountname", "msds-groupmsamembership",
+            "msds-groupmsamembership",
             "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector",
             "member", "whenCreated"
         };
@@ -225,6 +225,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add("unixpassword", entry.GetProperty(LDAPProperties.UnixUserPassword));
             props.Add("unicodepassword", entry.GetProperty(LDAPProperties.UnicodePassword));
             props.Add("sfupassword", entry.GetProperty(LDAPProperties.MsSFU30Password));
+            props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
 
             var ac = entry.GetProperty(LDAPProperties.AdminCount);
             if (ac != null)
@@ -387,7 +388,7 @@ namespace SharpHoundCommonLib.Processors
         ///     format using a best guess
         /// </summary>
         /// <param name="entry"></param>
-        private static Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
+        public Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
         {
             var flag = IsTextUnicodeFlags.IS_TEXT_UNICODE_STATISTICS;
             var props = new Dictionary<string, object>();

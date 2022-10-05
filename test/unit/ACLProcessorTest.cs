@@ -55,7 +55,7 @@ namespace CommonLibTest
         public void ACLProcessor_IsACLProtected_NullNTSD_ReturnsFalse()
         {
             var processor = new ACLProcessor(new MockLDAPUtils(), true);
-            var result = processor.IsACLProtected((byte[])null);
+            var result = processor.IsACLProtected((byte[]) null);
             Assert.False(result);
         }
 
@@ -206,7 +206,7 @@ namespace CommonLibTest
             var collection = new List<ActiveDirectoryRuleDescriptor>();
 
             mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-            mockRule.Setup(x => x.IdentityReference()).Returns((string)null);
+            mockRule.Setup(x => x.IdentityReference()).Returns((string) null);
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
@@ -267,7 +267,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -287,7 +287,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -309,7 +309,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -332,7 +332,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -351,12 +351,12 @@ namespace CommonLibTest
             var collection = new List<ActiveDirectoryRuleDescriptor>();
             mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
             mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-            mockRule.Setup(x => x.IdentityReference()).Returns((string)null);
+            mockRule.Setup(x => x.IdentityReference()).Returns((string) null);
             collection.Add(mockRule.Object);
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
@@ -386,7 +386,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -417,7 +417,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -454,7 +454,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -491,7 +491,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -528,7 +528,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -565,7 +565,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -597,7 +597,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -634,7 +634,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -671,7 +671,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -709,7 +709,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -741,7 +741,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -778,7 +778,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -815,7 +815,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -847,7 +847,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -889,7 +889,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -921,7 +921,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -958,7 +958,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
@@ -997,7 +997,7 @@ namespace CommonLibTest
 
             mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
                 .Returns(collection);
-            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+            mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string) null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));

@@ -5,7 +5,6 @@ namespace SharpHoundCommonLib.OutputTypes
 {
     public class LocalGroupAPIResult : APIResult
     {
-        public int GroupRID { get; set; }
         public string ObjectIdentifier { get; set; }
         public string Name { get; set; }
         public TypedPrincipal[] Results { get; set; } = Array.Empty<TypedPrincipal>();

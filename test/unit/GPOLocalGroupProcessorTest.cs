@@ -145,13 +145,13 @@ namespace CommonLibTest
             var mockSearchResults = new List<ISearchResultEntry>();
             mockSearchResults.Add(mockSearchResultEntry.Object);
             mockLDAPUtils.Setup(x => x.QueryLDAP(
-                new LDAPQueryOptions
-                {
-                    Filter = "(samaccounttype=805306369)",
-                    Scope = SearchScope.Subtree,
-                    Properties = CommonProperties.ObjectSID,
-                    AdsPath = null
-                }))
+                    new LDAPQueryOptions
+                    {
+                        Filter = "(samaccounttype=805306369)",
+                        Scope = SearchScope.Subtree,
+                        Properties = CommonProperties.ObjectSID,
+                        AdsPath = null
+                    }))
                 .Returns(mockSearchResults.ToArray());
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);

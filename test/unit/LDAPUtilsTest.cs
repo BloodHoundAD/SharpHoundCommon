@@ -1,11 +1,11 @@
 using System;
+using System.DirectoryServices.Protocols;
+using System.Threading;
 using CommonLibTest.Facades;
 using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.Exceptions;
-using System.DirectoryServices.Protocols;
-using System.Threading;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -120,10 +120,11 @@ namespace CommonLibTest
             Assert.Throws<LDAPQueryException>(
                 () =>
                 {
-                    foreach (var sre in _utils.QueryLDAP(null, new SearchScope(), null, new CancellationToken(), null, false, false, null, false, false, true))
+                    foreach (var sre in _utils.QueryLDAP(null, new SearchScope(), null, new CancellationToken(), null,
+                                 false, false, null, false, false, true))
                     {
                         // We shouldn't reach this anyway, and all we care about is if exceptions are bubbling
-                    };
+                    }
                 });
 
             Assert.Throws<LDAPQueryException>(
@@ -132,7 +133,7 @@ namespace CommonLibTest
                     foreach (var sre in _utils.QueryLDAP(options))
                     {
                         // We shouldn't reach this anyway, and all we care about is if exceptions are bubbling
-                    };
+                    }
                 });
         }
 
@@ -152,7 +153,7 @@ namespace CommonLibTest
                     foreach (var sre in _utils.QueryLDAP(null, new SearchScope(), null, new CancellationToken()))
                     {
                         // We shouldn't reach this anyway, and all we care about is if exceptions are bubbling
-                    };
+                    }
                 });
             Assert.Null(exception);
 
@@ -162,7 +163,7 @@ namespace CommonLibTest
                     foreach (var sre in _utils.QueryLDAP(options))
                     {
                         // We shouldn't reach this anyway, and all we care about is if exceptions are bubbling
-                    };
+                    }
                 });
             Assert.Null(exception);
         }

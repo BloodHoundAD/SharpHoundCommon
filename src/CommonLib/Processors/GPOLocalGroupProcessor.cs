@@ -604,5 +604,14 @@ namespace SharpHoundCommonLib.Processors
             RestrictedMember,
             LocalGroup
         }
+
+        internal enum LocalGroupRids
+        {
+            None = 0,
+            Administrators = 544,
+            RemoteDesktopUsers = 555,
+            DcomUsers = 562,
+            PSRemote = 580
+        }
     }
 }

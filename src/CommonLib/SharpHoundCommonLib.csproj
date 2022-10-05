@@ -28,4 +28,7 @@
     <ItemGroup>
         <Folder Include="Properties"/>
     </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SharpHoundRPC\SharpHoundRPC.csproj"/>
+    </ItemGroup>
 </Project>
