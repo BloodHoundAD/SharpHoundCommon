@@ -11,6 +11,8 @@
         GPO,
         Domain,
         OU,
-        Container
+        Container,
+        CertTemplate,
+        CertAuthority
     }
 }

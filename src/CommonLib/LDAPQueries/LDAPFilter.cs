@@ -156,6 +156,40 @@ namespace SharpHoundCommonLib.LDAPQueries
         }
 
         /// <summary>
+        ///     Add a filter that will include PKI Certificates
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddCertificates(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(objectclass=pKICertificateTemplate)", conditions));
+            return this;
+        }
+
+        /// <summary>
+        ///     Add a filter that will include Certificate Authorities
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddCertificateAuthorities(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(|(objectClass=certificationAuthority)(objectClass=pkiEnrollmentService))",
+                conditions));
+            return this;
+        }
+
+        /// <summary>
+        ///     Add a filter that will include Enterprise Certificate Authorities
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddEnterpriseCertificationAuthorities(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(objectCategory=pKIEnrollmentService)", conditions));
+            return this;
+        }
+
+        /// <summary>
         ///     Add a filter that will include schema items
         /// </summary>
         /// <param name="conditions"></param>
