@@ -222,7 +222,6 @@ namespace SharpHoundCommonLib
                 return type;
             
             var rDomain = GetDomainNameFromSid(sid) ?? domain;
-            _log.LogInformation("looking up sid {sid} in domain {domain}", sid, domain);
 
             var result =
                 QueryLDAP(CommonFilters.SpecificSID(sid), SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain)
