@@ -111,7 +111,8 @@ namespace SharpHoundCommonLib.Processors
 
                 foreach (var alias in getAliasesResult.Value)
                 {
-                    var resolvedName = ResolveGroupName(alias.Name, computerName, machineSid, computerDomain, alias.Rid, isDc,
+                    var resolvedName = ResolveGroupName(alias.Name, computerName, machineSid, computerDomain, alias.Rid,
+                        isDc,
                         domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase));
                     var ret = new LocalGroupAPIResult
                     {
@@ -130,6 +131,7 @@ namespace SharpHoundCommonLib.Processors
                         ret.Collected = false;
                         ret.FailureReason = $"SamOpenAliasInDomain failed with status {openAliasResult.Status}";
                         yield return ret;
+                        continue;
                     }
 
                     var results = new List<TypedPrincipal>();
@@ -148,7 +150,15 @@ namespace SharpHoundCommonLib.Processors
                         ret.Collected = false;
                         ret.FailureReason = $"SamGetMembersInAlias failed with status {getMembersResult.Status}";
                         yield return ret;
+                        continue;
                     }
+
+                    SendComputerStatus(new CSVComputerStatus
+                    {
+                        Task = $"GetMembersInAlias - {alias.Name}",
+                        ComputerName = computerName,
+                        Status = CSVComputerStatus.StatusSuccess
+                    });
 
                     foreach (var securityIdentifier in getMembersResult.Value)
                     {
@@ -245,7 +255,8 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        private NamedPrincipal ResolveGroupName(string baseName, string computerName, string machineSid, string domainName, int groupRid, bool isDc, bool isBuiltIn)
+        private NamedPrincipal ResolveGroupName(string baseName, string computerName, string machineSid,
+            string domainName, int groupRid, bool isDc, bool isBuiltIn)
         {
             if (isDc)
             {

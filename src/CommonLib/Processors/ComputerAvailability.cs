@@ -7,6 +7,8 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerAvailability
     {
+        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+
         private readonly int _computerExpiryDays;
         private readonly ILogger _log;
         private readonly PortScanner _scanner;
@@ -36,6 +38,8 @@ namespace SharpHoundCommonLib.Processors
             _computerExpiryDays = computerExpiryDays;
             _skipPasswordCheck = skipPasswordCheck;
         }
+
+        public event ComputerStatusDelegate ComputerStatusEvent;
 
         /// <summary>
         ///     Helper function to use commonlib types for IsComputerAvailable
@@ -67,8 +71,14 @@ namespace SharpHoundCommonLib.Processors
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
-                _log.LogTrace("{ComputerName} is not available because operating system {OperatingSystem} is not valid",
+                _log.LogDebug("{ComputerName} is not available because operating system {OperatingSystem} is not valid",
                     computerName, operatingSystem);
+                SendComputerStatus(new CSVComputerStatus
+                {
+                    Status = ComputerStatus.NonWindowsOS,
+                    Task = "ComputerAvailability",
+                    ComputerName = computerName
+                });
                 return new ComputerStatus
                 {
                     Connectable = false,
@@ -83,9 +93,15 @@ namespace SharpHoundCommonLib.Processors
 
                 if (passwordLastSet < threshold)
                 {
-                    _log.LogTrace(
+                    _log.LogDebug(
                         "{ComputerName} is not available because password last set {PwdLastSet} is out of range",
                         computerName, passwordLastSet);
+                    SendComputerStatus(new CSVComputerStatus
+                    {
+                        Status = ComputerStatus.OldPwd,
+                        Task = "ComputerAvailability",
+                        ComputerName = computerName
+                    });
                     return new ComputerStatus
                     {
                         Connectable = false,
@@ -104,7 +120,13 @@ namespace SharpHoundCommonLib.Processors
 
             if (!await _scanner.CheckPort(computerName, timeout: _scanTimeout))
             {
-                _log.LogTrace("{ComputerName} is not available because port 445 is unavailable", computerName);
+                _log.LogDebug("{ComputerName} is not available because port 445 is unavailable", computerName);
+                SendComputerStatus(new CSVComputerStatus
+                {
+                    Status = ComputerStatus.PortNotOpen,
+                    Task = "ComputerAvailability",
+                    ComputerName = computerName
+                });
                 return new ComputerStatus
                 {
                     Connectable = false,
@@ -112,12 +134,25 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
+            _log.LogDebug("{ComputerName} is available for enumeration", computerName);
+
+            SendComputerStatus(new CSVComputerStatus
+            {
+                Status = CSVComputerStatus.StatusSuccess,
+                Task = "ComputerAvailability",
+                ComputerName = computerName
+            });
 
             return new ComputerStatus
             {
                 Connectable = true,
                 Error = null
             };
+        }
+
+        private void SendComputerStatus(CSVComputerStatus status)
+        {
+            ComputerStatusEvent?.Invoke(status);
         }
     }
 }
