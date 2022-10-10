@@ -144,7 +144,17 @@ namespace SharpHoundCommonLib.Processors
             }
 
             var descriptor = _utils.MakeSecurityDescriptor();
-            descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
+            try
+            {
+                descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
+            }
+            catch (OverflowException)
+            {
+                _log.LogWarning(
+                    "Security descriptor on object {Name} exceeds maximum allowable length. Unable to process",
+                    objectName);
+                yield break;
+            }
 
             var ownerSid = PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
 
@@ -416,13 +426,21 @@ namespace SharpHoundCommonLib.Processors
         {
             if (groupMSAMembership == null)
             {
-                _log.LogTrace("GMSA bytes are null for {Name}", objectName);
+                _log.LogDebug("GMSA bytes are null for {Name}", objectName);
                 yield break;
             }
 
-
             var descriptor = _utils.MakeSecurityDescriptor();
-            descriptor.SetSecurityDescriptorBinaryForm(groupMSAMembership);
+            try
+            {
+                descriptor.SetSecurityDescriptorBinaryForm(groupMSAMembership);
+            }
+            catch (OverflowException)
+            {
+                _log.LogWarning("GMSA ACL length on object {Name} exceeds allowable length. Unable to process",
+                    objectName);
+            }
+
 
             foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {

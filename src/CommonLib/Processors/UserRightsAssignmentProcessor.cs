@@ -37,6 +37,8 @@ namespace SharpHoundCommonLib.Processors
             var policyOpenResult = LSAPolicy.OpenPolicy(computerName);
             if (policyOpenResult.IsFailed)
             {
+                _log.LogDebug("LSAOpenPolicy failed on {ComputerName} with status {Status}", computerName,
+                    policyOpenResult.Status);
                 SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "LSAOpenPolicy",
@@ -59,6 +61,9 @@ namespace SharpHoundCommonLib.Processors
                 var enumerateAccountsResult = server.GetResolvedPrincipalsWithPrivilege(privilege);
                 if (enumerateAccountsResult.IsFailed)
                 {
+                    _log.LogDebug(
+                        "LSAEnumerateAccountsWithUserRight failed on {ComputerName} with status {Status} for privilege {Privilege}",
+                        computerName, policyOpenResult.Status, privilege);
                     SendComputerStatus(new CSVComputerStatus
                     {
                         ComputerName = computerName,
@@ -70,6 +75,13 @@ namespace SharpHoundCommonLib.Processors
                     yield return result;
                     continue;
                 }
+
+                SendComputerStatus(new CSVComputerStatus
+                {
+                    ComputerName = computerName,
+                    Status = CSVComputerStatus.StatusSuccess,
+                    Task = "LSAEnumerateAccountsWithUserRight"
+                });
 
                 if (!Cache.GetMachineSid(computerDomainSid, out var machineSid))
                 {
