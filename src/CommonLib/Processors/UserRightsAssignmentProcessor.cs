@@ -170,6 +170,7 @@ namespace SharpHoundCommonLib.Processors
                     }
                 }
 
+                result.Collected = true;
                 result.LocalNames = names.ToArray();
                 result.Results = resolved.ToArray();
                 yield return result;

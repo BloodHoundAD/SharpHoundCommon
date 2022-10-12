@@ -248,6 +248,7 @@ namespace SharpHoundCommonLib.Processors
                         }
                     }
 
+                    ret.Collected = true;
                     ret.LocalNames = names.ToArray();
                     ret.Results = results.ToArray();
                     yield return ret;
