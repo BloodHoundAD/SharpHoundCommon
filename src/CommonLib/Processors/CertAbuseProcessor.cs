@@ -22,6 +22,13 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("CAProc");
         }
 
+        /// <summary>
+        /// This function should be called with the security data fetched from <see cref="GetCARegistryValues"/>.
+        /// The resulting ACEs will contain the owner of the CA as well as Management rights.
+        /// </summary>
+        /// <param name="security"></param>
+        /// <param name="objectDomain"></param>
+        /// <returns></returns>
         public IEnumerable<ACE> ProcessCAPermissions(byte[] security, string objectDomain)
         {
             if (security == null)
@@ -101,7 +108,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="caName"></param>
         /// <returns></returns>
         [ExcludeFromCodeCoverage]
-        public CARegistryValues GetCARegistryValues(string target, string caName)
+        public CARegistryValues GetCARegistryValues(string target, string caName) 
         {
             try
             {
