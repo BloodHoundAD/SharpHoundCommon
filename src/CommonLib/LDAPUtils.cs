@@ -813,9 +813,8 @@ namespace SharpHoundCommonLib
                 {
                     if (le.ErrorCode != 82)
                         if (throwException)
-                            throw new LDAPQueryException(string.Format(
-                                "LDAP Exception in Loop: {0}. {1}. {2}. Filter: {3}. Domain: {4}",
-                                le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName), le);
+                            throw new LDAPQueryException(
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}", le);
                         else
                             _log.LogWarning(le,
                                 "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
