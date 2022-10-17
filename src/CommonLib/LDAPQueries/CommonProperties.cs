@@ -60,7 +60,7 @@
             "gplink", "name"
         };
 
-        public static readonly string[] CAAProps =
+        public static readonly string[] CertAbuseProps =
         {
             "certificateTemplates", "flags", "dnshostname", "cacertificate", "mspki-certificate-name-flag",
             "mspki-enrollment-flag", "displayname", "name", "mspki-template-schema-version", "mspki-cert-template-oid",
