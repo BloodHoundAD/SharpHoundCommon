@@ -32,9 +32,10 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
-        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerDomainSid,
+        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerObjectId,
             string computerDomain)
         {
+            //Open a handle to the server
             var openServerResult = SAMServer.OpenServer(computerName);
             if (openServerResult.IsFailed)
             {
@@ -49,23 +50,25 @@ namespace SharpHoundCommonLib.Processors
 
             var server = openServerResult.Value;
             var typeCache = new ConcurrentDictionary<string, CachedLocalItem>();
-            var computerSid = new SecurityIdentifier(computerDomainSid);
+            var computerSid = new SecurityIdentifier(computerObjectId);
 
-            if (!Cache.GetMachineSid(computerDomainSid, out var machineSid))
+            //Try to get the machine sid for the computer if its not already cached
+            if (!Cache.GetMachineSid(computerObjectId, out var machineSid))
             {
                 var getMachineSidResult = server.GetMachineSid();
                 if (getMachineSidResult.IsFailed)
                 {
+                    _log.LogWarning("MachineSid for computer {ComputerName} is unknown", computerName);
                     machineSid = "UNKNOWN";
                 }
                 else
                 {
                     machineSid = getMachineSidResult.Value.Value;
-                    Cache.AddMachineSid(computerDomainSid, machineSid);
+                    Cache.AddMachineSid(computerObjectId, machineSid);
                 }
             }
-
-
+            
+            //Get all available domains in the server
             var getDomainsResult = server.GetDomains();
             if (getDomainsResult.IsFailed)
             {
@@ -78,10 +81,16 @@ namespace SharpHoundCommonLib.Processors
                 yield break;
             }
 
+            //Check if the server is a domain controller by comparing the computer's domain sid against its machine sid
             var isDc = server.IsDomainController(computerSid);
 
+            //Loop over each domain result and process its member groups
             foreach (var domainResult in getDomainsResult.Value)
             {
+                //Skip non-builtin domains on domain controllers
+                if (isDc && !domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                //Open a handle to the domain
                 var openDomainResult = server.OpenDomain(domainResult.Name);
                 if (openDomainResult.IsFailed)
                 {
@@ -96,6 +105,7 @@ namespace SharpHoundCommonLib.Processors
 
                 var domain = openDomainResult.Value;
 
+                //Open a handle to the available aliases
                 var getAliasesResult = domain.GetAliases();
 
                 if (getAliasesResult.IsFailed)
@@ -111,6 +121,7 @@ namespace SharpHoundCommonLib.Processors
 
                 foreach (var alias in getAliasesResult.Value)
                 {
+                    //Try and resolve the group name using several different criteria
                     var resolvedName = ResolveGroupName(alias.Name, computerName, machineSid, computerDomain, alias.Rid,
                         isDc,
                         domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase));
@@ -119,6 +130,8 @@ namespace SharpHoundCommonLib.Processors
                         Name = resolvedName.PrincipalName,
                         ObjectIdentifier = resolvedName.ObjectId
                     };
+                    
+                    //Open a handle to the alias
                     var openAliasResult = domain.OpenAlias(alias.Rid);
                     if (openAliasResult.IsFailed)
                     {
@@ -138,6 +151,7 @@ namespace SharpHoundCommonLib.Processors
                     var names = new List<NamedPrincipal>();
 
                     var localGroup = openAliasResult.Value;
+                    //Call GetMembersInAlias to get raw group members
                     var getMembersResult = localGroup.GetMembers();
                     if (getMembersResult.IsFailed)
                     {
@@ -162,22 +176,27 @@ namespace SharpHoundCommonLib.Processors
 
                     foreach (var securityIdentifier in getMembersResult.Value)
                     {
+                        //Check if the sid is one of our filtered ones
                         if (IsSidFiltered(securityIdentifier))
                             continue;
 
                         var sidValue = securityIdentifier.Value;
 
-                        if (server.IsDomainController(computerSid))
+                        if (isDc)
                         {
+                            //If the server is a domain controller and we have a well known group, use the domain value
                             if (_utils.GetWellKnownPrincipal(sidValue, computerDomain, out var wellKnown))
                                 results.Add(wellKnown);
+                            //Call ResolveIDAndType for non-well known principals
                             else
                                 results.Add(_utils.ResolveIDAndType(sidValue, computerDomain));
                         }
                         else
                         {
+                            //Use the non-utils call to ensure we dont cache this well known principal for later output
                             if (WellKnownPrincipal.GetWellKnownPrincipal(sidValue, out var wellKnown))
                             {
+                                //If we dont know our machine sid, we cant do much else
                                 if (machineSid == "UNKNOWN")
                                     continue;
                                 wellKnown.ObjectIdentifier = $"{machineSid}-{securityIdentifier.Rid()}";
@@ -263,6 +282,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 if (isBuiltIn)
                 {
+                    //If this is the builtin group on the DC, the groups correspond to the domain well known groups
                     _utils.GetWellKnownPrincipal($"S-1-5-32-{groupRid}".ToUpper(), domainName, out var principal);
                     return new NamedPrincipal
                     {
@@ -271,6 +291,7 @@ namespace SharpHoundCommonLib.Processors
                     };
                 }
 
+                //We shouldn't hit this provided our isDC logic is correct since we're skipping non-builtin groups
                 return new NamedPrincipal
                 {
                     ObjectId = $"{machineSid}-{groupRid}".ToUpper(),
@@ -278,6 +299,7 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
+            //Take the local machineSid, append the groupRid, and make a name from the group name + computername
             return new NamedPrincipal
             {
                 ObjectId = $"{machineSid}-{groupRid}",

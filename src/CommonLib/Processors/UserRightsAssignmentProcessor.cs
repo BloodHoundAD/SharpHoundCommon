@@ -31,9 +31,9 @@ namespace SharpHoundCommonLib.Processors
         public event ComputerStatusDelegate ComputerStatusEvent;
 
         public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
-            string computerDomainSid, string computerDomain, string[] desiredPrivileges = null)
+            string computerObjectId, string computerDomain, string[] desiredPrivileges = null)
         {
-            var computerSid = new SecurityIdentifier(computerDomainSid);
+            var computerSid = new SecurityIdentifier(computerObjectId);
             var policyOpenResult = LSAPolicy.OpenPolicy(computerName);
             if (policyOpenResult.IsFailed)
             {
@@ -83,7 +83,7 @@ namespace SharpHoundCommonLib.Processors
                     Task = "LSAEnumerateAccountsWithUserRight"
                 });
 
-                if (!Cache.GetMachineSid(computerDomainSid, out var machineSid))
+                if (!Cache.GetMachineSid(computerObjectId, out var machineSid))
                 {
                     var getMachineSidResult = server.GetLocalDomainInformation();
                     if (getMachineSidResult.IsFailed)
@@ -93,7 +93,7 @@ namespace SharpHoundCommonLib.Processors
                     else
                     {
                         machineSid = getMachineSidResult.Value.Sid;
-                        Cache.AddMachineSid(computerDomainSid, machineSid);
+                        Cache.AddMachineSid(computerObjectId, machineSid);
                     }
                 }
 
