@@ -32,6 +32,13 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
+        /// <summary>
+        /// Gets local groups from a computer
+        /// </summary>
+        /// <param name="computerName"></param>
+        /// <param name="computerObjectId">The objectsid of the computer in the domain</param>
+        /// <param name="computerDomain">The domain the computer belongs too</param>
+        /// <returns></returns>
         public IEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerObjectId,
             string computerDomain)
         {

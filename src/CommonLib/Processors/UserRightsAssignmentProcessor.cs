@@ -30,6 +30,14 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
+        /// <summary>
+        /// Gets principals with the requested privileges on the target computer
+        /// </summary>
+        /// <param name="computerName"></param>
+        /// <param name="computerObjectId">The objectid of the computer in the domain</param>
+        /// <param name="computerDomain"></param>
+        /// <param name="desiredPrivileges"></param>
+        /// <returns></returns>
         public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
             string computerObjectId, string computerDomain, string[] desiredPrivileges = null)
         {
