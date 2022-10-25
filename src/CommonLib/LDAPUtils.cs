@@ -1021,6 +1021,16 @@ namespace SharpHoundCommonLib
             return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
         }
 
+        public string BuildLdapPath(string dnPath, string domainName)
+        {
+            var domain = GetDomain(domainName)?.Name;
+            if (domain == null)
+                return null;
+
+            var adPath = $"{dnPath},DC={domain.Replace(".", ",DC=")}";
+            return adPath;
+        }
+
         /// <summary>
         ///     Tests the current LDAP config to ensure its valid by pulling a domain object
         /// </summary>

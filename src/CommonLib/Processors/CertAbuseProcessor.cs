@@ -28,8 +28,9 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="security"></param>
         /// <param name="objectDomain"></param>
+        /// <param name="computerName"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessCAPermissions(byte[] security, string objectDomain)
+        public IEnumerable<ACE> ProcessCAPermissions(byte[] security, string objectDomain, string computerName)
         {
             if (security == null)
                 yield break;
@@ -53,7 +54,7 @@ namespace SharpHoundCommonLib.Processors
             }
             else
             {
-                _log.LogDebug("Owner on CA is null");
+                _log.LogDebug("Owner on CA {Name} is null", computerName);
             }
 
             foreach (var rule in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
