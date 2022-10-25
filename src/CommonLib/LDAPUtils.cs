@@ -881,6 +881,16 @@ namespace SharpHoundCommonLib
             return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
         }
 
+        public string BuildLdapPath(string dnPath, string domainName)
+        {
+            var domain = GetDomain(domainName)?.Name;
+            if (domain == null)
+                return null;
+
+            var adPath = $"{dnPath},DC={domain.Replace(".", ",DC=")}";
+            return adPath;
+        }
+
         /// <summary>
         ///     Tests the current LDAP config to ensure its valid by pulling a domain object
         /// </summary>
@@ -907,7 +917,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
-        public Domain GetDomain(string domainName = null)
+        public virtual Domain GetDomain(string domainName = null)
         {
             var cacheKey = domainName ?? NullCacheKey;
             if (_domainCache.TryGetValue(cacheKey, out var domain)) return domain;

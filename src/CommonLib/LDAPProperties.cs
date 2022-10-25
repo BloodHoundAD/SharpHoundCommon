@@ -53,7 +53,9 @@
         public const string PKIEnrollmentFlag = "mspki-enrollment-flag";
         public const string PKINameFlag = "mspki-certificate-name-flag";
         public const string ExtendedKeyUsage = "pkiextendedkeyusage";
-        public const string RASignature = "mspki-ra-signature";
+        public const string NumSignaturesRequired = "mspki-ra-signature";
+        public const string ApplicationPolicy = "mspki-ra-application-policies";
+        public const string IssuancePolicies = "mspki-ra-policies";
         public const string CertificateApplicationPolicy = "mspki-certificate-application-policy";
     }
 }

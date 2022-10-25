@@ -402,7 +402,7 @@ namespace SharpHoundCommonLib.Processors
             }
 
             props.Add("ekus", entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage));
-            if (entry.GetIntProperty(LDAPProperties.RASignature, out var authorizedSignatures))
+            if (entry.GetIntProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
                 props.Add("authorizedsignatures", authorizedSignatures);
 
             return props;

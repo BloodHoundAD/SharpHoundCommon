@@ -1,4 +1,5 @@
 using System;
+using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
 using System.Threading;
 using CommonLibTest.Facades;
@@ -6,6 +7,7 @@ using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.Exceptions;
+using SharpHoundCommonLib.Processors;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -89,6 +91,29 @@ namespace CommonLibTest
             Assert.True(result);
             Assert.Equal($"{_testForestName}-S-1-5-9", typedPrincipal.ObjectIdentifier);
             Assert.Equal(Label.Group, typedPrincipal.ObjectType);
+        }
+
+        [Fact]
+        public void BuildLdapPath_BadDomain_ReturnsNull()
+        {
+            var mock = new Mock<LDAPUtils>();
+            //var mockDomain = MockableDomain.Construct("TESTLAB.LOCAL");
+            mock.Setup(x => x.GetDomain(It.IsAny<string>()))
+                .Returns((Domain) null);
+            var result = mock.Object.BuildLdapPath("TEST", "ABC");
+            Assert.Null(result);
+        }
+        
+        [Fact]
+        public void BuildLdapPath_HappyPath()
+        {
+            var mock = new Mock<LDAPUtils>();
+            var mockDomain = MockableDomain.Construct("TESTLAB.LOCAL");
+            mock.Setup(x => x.GetDomain(It.IsAny<string>()))
+                .Returns(mockDomain);
+            var result = mock.Object.BuildLdapPath(DirectoryPaths.PKILocation, "ABC");
+            Assert.NotNull(result);
+            Assert.Equal("CN=Public Key Services,CN=Services,CN=Configuration,DC=TESTLAB,DC=LOCAL", result);
         }
 
         [Fact]
