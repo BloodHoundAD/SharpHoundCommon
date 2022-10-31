@@ -31,15 +31,16 @@ namespace SharpHoundCommonLib.Processors
         public event ComputerStatusDelegate ComputerStatusEvent;
 
         /// <summary>
-        /// Gets principals with the requested privileges on the target computer
+        ///     Gets principals with the requested privileges on the target computer
         /// </summary>
         /// <param name="computerName"></param>
         /// <param name="computerObjectId">The objectid of the computer in the domain</param>
         /// <param name="computerDomain"></param>
+        /// <param name="isDomainController">Is the computer a domain controller</param>
         /// <param name="desiredPrivileges"></param>
         /// <returns></returns>
         public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
-            string computerObjectId, string computerDomain, string[] desiredPrivileges = null)
+            string computerObjectId, string computerDomain, bool isDomainController, string[] desiredPrivileges = null)
         {
             var computerSid = new SecurityIdentifier(computerObjectId);
             var policyOpenResult = LSAPolicy.OpenPolicy(computerName);
@@ -105,8 +106,6 @@ namespace SharpHoundCommonLib.Processors
                     }
                 }
 
-                var isDc = computerSid.IsEqualDomainSid(new SecurityIdentifier(machineSid));
-
                 var resolved = new List<TypedPrincipal>();
                 var names = new List<NamedPrincipal>();
 
@@ -116,7 +115,7 @@ namespace SharpHoundCommonLib.Processors
                     if (IsSidFiltered(sid))
                         continue;
 
-                    if (isDc)
+                    if (isDomainController)
                     {
                         if (_utils.GetWellKnownPrincipal(sid.Value, computerDomain, out var principal))
                         {

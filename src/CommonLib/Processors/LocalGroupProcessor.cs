@@ -33,14 +33,15 @@ namespace SharpHoundCommonLib.Processors
         public event ComputerStatusDelegate ComputerStatusEvent;
 
         /// <summary>
-        /// Gets local groups from a computer
+        ///     Gets local groups from a computer
         /// </summary>
         /// <param name="computerName"></param>
         /// <param name="computerObjectId">The objectsid of the computer in the domain</param>
         /// <param name="computerDomain">The domain the computer belongs too</param>
+        /// <param name="isDomainController">Is the computer a domain controller</param>
         /// <returns></returns>
         public IEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerObjectId,
-            string computerDomain)
+            string computerDomain, bool isDomainController)
         {
             //Open a handle to the server
             var openServerResult = SAMServer.OpenServer(computerName);
@@ -74,7 +75,7 @@ namespace SharpHoundCommonLib.Processors
                     Cache.AddMachineSid(computerObjectId, machineSid);
                 }
             }
-            
+
             //Get all available domains in the server
             var getDomainsResult = server.GetDomains();
             if (getDomainsResult.IsFailed)
@@ -88,14 +89,11 @@ namespace SharpHoundCommonLib.Processors
                 yield break;
             }
 
-            //Check if the server is a domain controller by comparing the computer's domain sid against its machine sid
-            var isDc = server.IsDomainController(computerSid);
-
             //Loop over each domain result and process its member groups
             foreach (var domainResult in getDomainsResult.Value)
             {
                 //Skip non-builtin domains on domain controllers
-                if (isDc && !domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase))
+                if (isDomainController && !domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase))
                     continue;
                 //Open a handle to the domain
                 var openDomainResult = server.OpenDomain(domainResult.Name);
@@ -130,14 +128,14 @@ namespace SharpHoundCommonLib.Processors
                 {
                     //Try and resolve the group name using several different criteria
                     var resolvedName = ResolveGroupName(alias.Name, computerName, machineSid, computerDomain, alias.Rid,
-                        isDc,
+                        isDomainController,
                         domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase));
                     var ret = new LocalGroupAPIResult
                     {
                         Name = resolvedName.PrincipalName,
                         ObjectIdentifier = resolvedName.ObjectId
                     };
-                    
+
                     //Open a handle to the alias
                     var openAliasResult = domain.OpenAlias(alias.Rid);
                     if (openAliasResult.IsFailed)
@@ -189,7 +187,7 @@ namespace SharpHoundCommonLib.Processors
 
                         var sidValue = securityIdentifier.Value;
 
-                        if (isDc)
+                        if (isDomainController)
                         {
                             //If the server is a domain controller and we have a well known group, use the domain value
                             if (_utils.GetWellKnownPrincipal(sidValue, computerDomain, out var wellKnown))

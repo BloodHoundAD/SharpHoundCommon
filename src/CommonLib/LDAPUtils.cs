@@ -220,11 +220,12 @@ namespace SharpHoundCommonLib
         {
             if (Cache.GetIDType(sid, out var type))
                 return type;
-            
+
             var rDomain = GetDomainNameFromSid(sid) ?? domain;
 
             var result =
-                QueryLDAP(CommonFilters.SpecificSID(sid), SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain)
+                QueryLDAP(CommonFilters.SpecificSID(sid), SearchScope.Subtree, CommonProperties.TypeResolutionProps,
+                        rDomain)
                     .DefaultIfEmpty(null).FirstOrDefault();
 
             type = result?.GetLabel() ?? Label.Base;
@@ -726,10 +727,8 @@ namespace SharpHoundCommonLib
                 catch (Exception e)
                 {
                     if (throwException)
-                    {
                         throw new LDAPQueryException(string.Format("Exception in LDAP loop for {0} and {1}",
                             ldapFilter, domainName));
-                    }
 
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
                     yield break;
@@ -825,10 +824,8 @@ namespace SharpHoundCommonLib
                 catch (Exception e)
                 {
                     if (throwException)
-                    {
                         throw new LDAPQueryException(string.Format(
                             "Exception in LDAP loop for {0} and {1}", ldapFilter, domainName ?? "Default Domain"), e);
-                    }
 
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter,
                         domainName ?? "Default Domain");
@@ -973,16 +970,16 @@ namespace SharpHoundCommonLib
             }
             catch (Exception e)
             {
-                var errorString = string.Format("Exception getting LDAP connection for {0} and domain {1}", ldapFilter,
-                    domainName ?? "Default Domain");
+                var errorString =
+                    $"Exception getting LDAP connection for {ldapFilter} and domain {domainName ?? "Default Domain"}";
                 return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
                     null, null, null, new LDAPQueryException(errorString, e));
             }
 
             if (conn == null)
             {
-                var errorString = string.Format("LDAP connection is null for filter {0} and domain {1}", ldapFilter,
-                    domainName ?? "Default Domain");
+                var errorString =
+                    $"LDAP connection is null for filter {ldapFilter} and domain {domainName ?? "Default Domain"}";
                 return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
                     null, null, null, new LDAPQueryException(errorString));
             }
