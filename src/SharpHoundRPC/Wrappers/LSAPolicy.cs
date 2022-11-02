@@ -83,7 +83,11 @@ namespace SharpHoundRPC.Wrappers
                     var sid = convertedSids[i];
                     var translatedName = translatedNames[i].Name.ToString();
                     var domainIndex = translatedNames[i].DomainIndex;
-                    var domain = domainIndex >= 0 ? domains[translatedNames[i].DomainIndex].Name.ToString() : null;
+                    //If use is WellKnownGroup, Name is valid, but domainindex is not
+                    //If there is no corresponding domain for an account, domainindex contains a negative value.
+                    var domain = use == SharedEnums.SidNameUse.WellKnownGroup || domainIndex < 0
+                        ? null
+                        : domains[translatedNames[i].DomainIndex].Name.ToString();
                     ret.Add((sid, translatedName, use, domain));
                 }
                 
