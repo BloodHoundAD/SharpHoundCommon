@@ -70,10 +70,23 @@ namespace SharpHoundRPC.Wrappers
                 var convertedSids = sids.GetEnumerable<SecurityIdentifier>(lookupCount).ToArray();
 
                 var ret = new List<(SecurityIdentifier sid, string Name, SharedEnums.SidNameUse Use, string Domain)>();
-                for (var i = 0; i < count; i++)
-                    ret.Add((convertedSids[i], translatedNames[i].Name.ToString(), translatedNames[i].Use,
-                        domains[translatedNames[i].DomainIndex].Name.ToString()));
 
+                for (var i = 0; i < count; i++)
+                {
+                    var use = translatedNames[i].Use;
+                    //Special LSALookupSids cases. If we hit any of these cases, we're missing important data, so dont return these objects
+                    //If use is Domain, The DomainIndex member is valid, but the Name member is not valid and must be ignored. 
+                    //If use is Unknown or Invalid, Both DomainIndex and Name are not valid and must be ignored. 
+                    if (use is SharedEnums.SidNameUse.Domain or SharedEnums.SidNameUse.Invalid or SharedEnums.SidNameUse.Unknown)
+                        continue;
+                    
+                    var sid = convertedSids[i];
+                    var translatedName = translatedNames[i].Name.ToString();
+                    var domainIndex = translatedNames[i].DomainIndex;
+                    var domain = domainIndex >= 0 ? domains[translatedNames[i].DomainIndex].Name.ToString() : null;
+                    ret.Add((sid, translatedName, use, domain));
+                }
+                
                 referencedDomains.Dispose();
                 names.Dispose();
                 safeDomains.Dispose();

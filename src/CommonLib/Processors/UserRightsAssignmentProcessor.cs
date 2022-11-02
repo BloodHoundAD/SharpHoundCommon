@@ -84,6 +84,7 @@ namespace SharpHoundCommonLib.Processors
                     Privilege = privilege
                 };
 
+                //Ask for all principals with the specified privilege. 
                 var enumerateAccountsResult = server.GetResolvedPrincipalsWithPrivilege(privilege);
                 if (enumerateAccountsResult.IsFailed)
                 {
@@ -114,10 +115,11 @@ namespace SharpHoundCommonLib.Processors
 
                 foreach (var value in enumerateAccountsResult.Value)
                 {
-                    var (sid, name, use, domain) = value;
+                    var (sid, name, use, _) = value;
+                    //Check if our sid is filtered
                     if (Helpers.IsSidFiltered(sid.Value))
                         continue;
-
+                    
                     if (isDomainController)
                     {
                         var result = ResolveDomainControllerPrincipal(sid.Value, computerDomain);
@@ -135,7 +137,7 @@ namespace SharpHoundCommonLib.Processors
                         continue;
                     }
 
-                    //If the security idenfitier starts with the machine sid, we need to resolve it as a local account
+                    //If the security identifier starts with the machine sid, we need to resolve it as a local account
                     if (sid.IsEqualDomainSid(machineSid))
                     {
                         var objectType = use switch
@@ -164,7 +166,7 @@ namespace SharpHoundCommonLib.Processors
                         continue;
                     }
                     
-                    //If we get here, we most likely have a domain principal in a local group
+                    //If we get here, we most likely have a domain principal in a local group. Do a lookup
                     var resolvedPrincipal = _utils.ResolveIDAndType(sid.Value, computerDomain);
                     if (resolvedPrincipal != null) resolved.Add(resolvedPrincipal);
                 }
@@ -181,6 +183,7 @@ namespace SharpHoundCommonLib.Processors
             //If the server is a domain controller and we have a well known group, use the domain value
             if (_utils.GetWellKnownPrincipal(sid, computerDomain, out var wellKnown))
                 return wellKnown;
+            //Otherwise, do a domain lookup
             return _utils.ResolveIDAndType(sid, computerDomain);
         }
         
@@ -188,6 +191,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
             {
+                //The everyone and auth users principals are special and will be converted to the domain equivalent
                 if (sid.Value is "S-1-1-0" or "S-1-5-11")
                 {
                     _utils.GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
@@ -200,6 +204,7 @@ namespace SharpHoundCommonLib.Processors
                     return true;
                 }
 
+                //Use the machinesid + the RID of the sid we looked up to create our new principal
                 principal = new TypedPrincipal
                 {
                     ObjectIdentifier = $"{machineSid}-{sid.Rid()}",
