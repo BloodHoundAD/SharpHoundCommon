@@ -18,6 +18,11 @@ namespace SharpHoundCommonLib
         private static readonly Regex DCReplaceRegex = new("DC=", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SPNRegex = new(@".*\/.*", RegexOptions.Compiled);
         private static readonly DateTime EpochDiff = new(1970, 1, 1);
+        private static readonly string[] FilteredSids =
+        {
+            "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
+            "S-1-5-19", "S-1-5-20", "S-1-0-0", "S-1-0", "S-1-2-1"
+        };
 
         /// <summary>
         ///     Splits a GPLink property into its representative parts
@@ -191,6 +196,18 @@ namespace SharpHoundCommonLib
 
             var time = long.Parse(ldapTime);
             return time;
+        }
+        
+        public static bool IsSidFiltered(string sid)
+        {
+            if (sid.StartsWith("S-1-5-80") || sid.StartsWith("S-1-5-82") ||
+                sid.StartsWith("S-1-5-90") || sid.StartsWith("S-1-5-96"))
+                return true;
+
+            if (FilteredSids.Contains(sid))
+                return true;
+
+            return false;
         }
     }
 

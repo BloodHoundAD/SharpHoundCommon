@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
@@ -55,7 +56,10 @@ namespace SharpHoundCommonLib.Processors
                             ObjectType = Label.Base
                         };
                     else
-                        yield return res;
+                    {
+                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier))
+                            yield return res;
+                    }
                 }
             }
             else
@@ -73,7 +77,10 @@ namespace SharpHoundCommonLib.Processors
                             ObjectType = Label.Base
                         };
                     else
-                        yield return res;
+                    {
+                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier))
+                            yield return res;
+                    }
                 }
             }
         }
