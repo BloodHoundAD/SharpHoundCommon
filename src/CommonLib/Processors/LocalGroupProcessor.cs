@@ -14,13 +14,6 @@ namespace SharpHoundCommonLib.Processors
     public class LocalGroupProcessor
     {
         public delegate void ComputerStatusDelegate(CSVComputerStatus status);
-
-        private readonly string[] _filteredSids =
-        {
-            "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
-            "S-1-5-19", "S-1-5-20"
-        };
-
         private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
@@ -61,19 +54,22 @@ namespace SharpHoundCommonLib.Processors
             var computerSid = new SecurityIdentifier(computerObjectId);
 
             //Try to get the machine sid for the computer if its not already cached
-            if (!Cache.GetMachineSid(computerObjectId, out var machineSid))
+            SecurityIdentifier machineSid;
+            if (!Cache.GetMachineSid(computerObjectId, out var tempMachineSid))
             {
                 var getMachineSidResult = server.GetMachineSid();
                 if (getMachineSidResult.IsFailed)
                 {
-                    _log.LogWarning("MachineSid for computer {ComputerName} is unknown", computerName);
-                    machineSid = "UNKNOWN";
+                    _log.LogWarning("Unable to get machineSid for {Computer}. Abandoning local group processing", computerName);
+                    yield break;
                 }
-                else
-                {
-                    machineSid = getMachineSidResult.Value.Value;
-                    Cache.AddMachineSid(computerObjectId, machineSid);
-                }
+
+                machineSid = getMachineSidResult.Value;
+                Cache.AddMachineSid(computerObjectId, machineSid.Value);
+            }
+            else
+            {
+                machineSid = new SecurityIdentifier(tempMachineSid);
             }
 
             //Get all available domains in the server
@@ -182,93 +178,89 @@ namespace SharpHoundCommonLib.Processors
                     foreach (var securityIdentifier in getMembersResult.Value)
                     {
                         //Check if the sid is one of our filtered ones
-                        if (IsSidFiltered(securityIdentifier))
+                        if (Helpers.IsSidFiltered(securityIdentifier.Value))
                             continue;
 
                         var sidValue = securityIdentifier.Value;
 
                         if (isDomainController)
                         {
-                            //If the server is a domain controller and we have a well known group, use the domain value
-                            if (_utils.GetWellKnownPrincipal(sidValue, computerDomain, out var wellKnown))
-                                results.Add(wellKnown);
-                            //Call ResolveIDAndType for non-well known principals
-                            else
-                                results.Add(_utils.ResolveIDAndType(sidValue, computerDomain));
+                            var result = ResolveDomainControllerPrincipal(sidValue, computerDomain);
+                            if (result != null) results.Add(result);
                         }
                         else
                         {
-                            //Use the non-utils call to ensure we dont cache this well known principal for later output
-                            if (WellKnownPrincipal.GetWellKnownPrincipal(sidValue, out var wellKnown))
+                            //If we get a local well known principal, we need to convert it using the machine sid
+                            if (ConvertLocalWellKnownPrincipal(securityIdentifier, machineSid.Value, computerDomain, out var principal))
                             {
-                                //If we dont know our machine sid, we cant do much else
-                                if (machineSid == "UNKNOWN")
+                                //If the principal is null, it means we hit a weird edge case, but this is a local well known principal 
+                                if (principal != null)
+                                    results.Add(principal);
+                                continue;
+                            }
+
+                            //If the security identifier starts with the machine sid, we need to resolve it as a local object
+                            if (securityIdentifier.IsEqualDomainSid(machineSid))
+                            {
+                                //Check if we've already previously resolved and cached this sid
+                                if (typeCache.TryGetValue(sidValue, out var cachedLocalItem))
+                                {
+                                    results.Add(new TypedPrincipal
+                                    {
+                                        ObjectIdentifier = sidValue,
+                                        ObjectType = cachedLocalItem.Type
+                                    });
+
+                                    names.Add(new NamedPrincipal
+                                    {
+                                        ObjectId = sidValue,
+                                        PrincipalName = cachedLocalItem.Name
+                                    });
+                                    //Move on
                                     continue;
-                                wellKnown.ObjectIdentifier = $"{machineSid}-{securityIdentifier.Rid()}";
-                                wellKnown.ObjectType = wellKnown.ObjectType switch
+                                }
+                                
+                                //Attempt to lookup the principal in the server directly
+                                var lookupUserResult = server.LookupPrincipalBySid(securityIdentifier);
+                                if (lookupUserResult.IsFailed)
                                 {
-                                    Label.User => Label.LocalUser,
-                                    Label.Group => Label.LocalGroup,
-                                    _ => wellKnown.ObjectType
+                                    _log.LogTrace("Unable to resolve local sid {SID}: {Error}", sidValue, lookupUserResult.Status);
+                                    continue;
+                                }
+
+                                var (name, use) = lookupUserResult.Value;
+                                var objectType = use switch
+                                {
+                                    SharedEnums.SidNameUse.User => Label.LocalUser,
+                                    SharedEnums.SidNameUse.Group => Label.LocalGroup,
+                                    SharedEnums.SidNameUse.Alias => Label.LocalGroup,
+                                    _ => Label.Base
                                 };
-                                results.Add(wellKnown);
-                            }
-                            else
-                            {
-                                if (securityIdentifier.IsEqualDomainSid(computerSid))
+
+                                // Cache whatever we looked up for future lookups
+                                typeCache.TryAdd(sidValue, new CachedLocalItem(name, objectType));
+                                
+                                // Throw out local users
+                                if (objectType == Label.LocalUser)
+                                    continue;
+                                
+                                results.Add(new TypedPrincipal
                                 {
-                                    results.Add(_utils.ResolveIDAndType(sidValue, computerDomain));
-                                }
-                                else
+                                    ObjectIdentifier = sidValue,
+                                    ObjectType = objectType
+                                });
+
+                                names.Add(new NamedPrincipal
                                 {
-                                    if (typeCache.TryGetValue(sidValue, out var item))
-                                    {
-                                        results.Add(new TypedPrincipal
-                                        {
-                                            ObjectIdentifier = sidValue,
-                                            ObjectType = item.Type
-                                        });
-
-                                        names.Add(new NamedPrincipal
-                                        {
-                                            ObjectId = sidValue,
-                                            PrincipalName = item.Name
-                                        });
-                                    }
-                                    else
-                                    {
-                                        var lookupUserResult = server.LookupPrincipalBySid(securityIdentifier);
-                                        if (lookupUserResult.IsFailed)
-                                        {
-                                            _log.LogTrace("Unable to resolve local sid {SID}", sidValue);
-                                            continue;
-                                        }
-
-                                        var (name, use) = lookupUserResult.Value;
-                                        var objectType = use switch
-                                        {
-                                            SharedEnums.SidNameUse.User => Label.LocalUser,
-                                            SharedEnums.SidNameUse.Group => Label.LocalGroup,
-                                            SharedEnums.SidNameUse.Alias => Label.LocalGroup,
-                                            _ => Label.Base
-                                        };
-
-                                        typeCache.TryAdd(sidValue, new CachedLocalItem(name, objectType));
-
-                                        results.Add(new TypedPrincipal
-                                        {
-                                            ObjectIdentifier = sidValue,
-                                            ObjectType = objectType
-                                        });
-
-                                        names.Add(new NamedPrincipal
-                                        {
-                                            PrincipalName = name,
-                                            ObjectId = sidValue
-                                        });
-                                    }
-                                }
+                                    PrincipalName = name,
+                                    ObjectId = sidValue
+                                });
+                                continue;
                             }
+                            
+                            //If we get here, we most likely have a domain principal in a local group
+                            var result = _utils.ResolveIDAndType(sidValue, computerDomain);
+                            if (result != null) results.Add(result);
                         }
                     }
 
@@ -280,7 +272,49 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        private NamedPrincipal ResolveGroupName(string baseName, string computerName, string machineSid,
+        private TypedPrincipal ResolveDomainControllerPrincipal(string sid, string computerDomain)
+        {
+            //If the server is a domain controller and we have a well known group, use the domain value
+            if (_utils.GetWellKnownPrincipal(sid, computerDomain, out var wellKnown))
+                return wellKnown;
+            return _utils.ResolveIDAndType(sid, computerDomain);
+        }
+
+        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string machineSid, string computerDomain, out TypedPrincipal principal)
+        {
+            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+            {
+                if (sid.Value is "S-1-1-0" or "S-1-5-11")
+                {
+                    _utils.GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
+                    return true;
+                }
+
+                if (machineSid == "UNKNOWN")
+                {
+                    principal = null;
+                    return true;
+                }
+
+                principal = new TypedPrincipal
+                {
+                    ObjectIdentifier = $"{machineSid}-{sid.Rid()}",
+                    ObjectType = common.ObjectType switch
+                    {
+                        Label.User => Label.LocalUser,
+                        Label.Group => Label.LocalGroup,
+                        _ => common.ObjectType
+                    }
+                };
+
+                return true;
+            }
+
+            principal = null;
+            return false;
+        }
+
+        private NamedPrincipal ResolveGroupName(string baseName, string computerName, SecurityIdentifier machineSid,
             string domainName, int groupRid, bool isDc, bool isBuiltIn)
         {
             if (isDc)
@@ -296,6 +330,8 @@ namespace SharpHoundCommonLib.Processors
                     };
                 }
 
+                if (machineSid == null)
+                    return null;
                 //We shouldn't hit this provided our isDC logic is correct since we're skipping non-builtin groups
                 return new NamedPrincipal
                 {
@@ -304,26 +340,14 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
+            if (machineSid == null)
+                return null;
             //Take the local machineSid, append the groupRid, and make a name from the group name + computername
             return new NamedPrincipal
             {
                 ObjectId = $"{machineSid}-{groupRid}",
                 PrincipalName = $"{baseName}@{computerName}".ToUpper()
             };
-        }
-
-        private bool IsSidFiltered(SecurityIdentifier identifier)
-        {
-            var value = identifier.Value;
-
-            if (value.StartsWith("S-1-5-80") || value.StartsWith("S-1-5-82") ||
-                value.StartsWith("S-1-5-90") || value.StartsWith("S-1-5-96"))
-                return true;
-
-            if (_filteredSids.Contains(value))
-                return true;
-
-            return false;
         }
 
         private void SendComputerStatus(CSVComputerStatus status)
