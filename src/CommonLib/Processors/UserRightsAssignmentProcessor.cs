@@ -12,13 +12,6 @@ namespace SharpHoundCommonLib.Processors
     public class UserRightsAssignmentProcessor
     {
         public delegate void ComputerStatusDelegate(CSVComputerStatus status);
-
-        private readonly string[] _filteredSids =
-        {
-            "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
-            "S-1-5-19", "S-1-5-20"
-        };
-
         private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
@@ -42,7 +35,6 @@ namespace SharpHoundCommonLib.Processors
         public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
             string computerObjectId, string computerDomain, bool isDomainController, string[] desiredPrivileges = null)
         {
-            var computerSid = new SecurityIdentifier(computerObjectId);
             var policyOpenResult = LSAPolicy.OpenPolicy(computerName);
             if (policyOpenResult.IsFailed)
             {
@@ -112,7 +104,7 @@ namespace SharpHoundCommonLib.Processors
                 foreach (var value in enumerateAccountsResult.Value)
                 {
                     var (sid, name, use, domain) = value;
-                    if (IsSidFiltered(sid))
+                    if (Helpers.IsSidFiltered(sid.Value))
                         continue;
 
                     if (isDomainController)
@@ -182,20 +174,6 @@ namespace SharpHoundCommonLib.Processors
                 result.Results = resolved.ToArray();
                 yield return result;
             }
-        }
-
-        private bool IsSidFiltered(SecurityIdentifier identifier)
-        {
-            var value = identifier.Value;
-
-            if (value.StartsWith("S-1-5-80") || value.StartsWith("S-1-5-82") ||
-                value.StartsWith("S-1-5-90") || value.StartsWith("S-1-5-96"))
-                return true;
-
-            if (_filteredSids.Contains(value))
-                return true;
-
-            return false;
         }
 
         private void SendComputerStatus(CSVComputerStatus status)
