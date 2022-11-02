@@ -51,9 +51,34 @@ namespace SharpHoundCommonLib.Processors
 
             var server = policyOpenResult.Value;
             desiredPrivileges ??= LSAPrivileges.DesiredPrivileges;
+
+            SecurityIdentifier machineSid;
+            if (!Cache.GetMachineSid(computerObjectId, out var temp))
+            {
+                var getMachineSidResult = server.GetLocalDomainInformation();
+                if (getMachineSidResult.IsFailed)
+                {
+                    _log.LogWarning("Failed to get machine sid for {Server}: {Status}. Abandoning URA collection", computerName, getMachineSidResult.Status);
+                    SendComputerStatus(new CSVComputerStatus
+                    {
+                        ComputerName = computerName,
+                        Status = getMachineSidResult.Status.ToString(),
+                        Task = "LSAGetMachineSID"
+                    });
+                    yield break;
+                }
+
+                machineSid = new SecurityIdentifier(getMachineSidResult.Value.Sid);
+                Cache.AddMachineSid(computerObjectId, getMachineSidResult.Value.Sid);
+            }
+            else
+            {
+                machineSid = new SecurityIdentifier(temp);
+            }
+            
             foreach (var privilege in desiredPrivileges)
             {
-                var result = new UserRightsAssignmentAPIResult
+                var ret = new UserRightsAssignmentAPIResult
                 {
                     Collected = false,
                     Privilege = privilege
@@ -71,9 +96,9 @@ namespace SharpHoundCommonLib.Processors
                         Status = enumerateAccountsResult.Status.ToString(),
                         Task = "LSAEnumerateAccountsWithUserRight"
                     });
-                    result.FailureReason =
+                    ret.FailureReason =
                         $"LSAEnumerateAccountsWithUserRights returned {enumerateAccountsResult.Status}";
-                    yield return result;
+                    yield return ret;
                     continue;
                 }
 
@@ -83,20 +108,6 @@ namespace SharpHoundCommonLib.Processors
                     Status = CSVComputerStatus.StatusSuccess,
                     Task = "LSAEnumerateAccountsWithUserRight"
                 });
-
-                if (!Cache.GetMachineSid(computerObjectId, out var machineSid))
-                {
-                    var getMachineSidResult = server.GetLocalDomainInformation();
-                    if (getMachineSidResult.IsFailed)
-                    {
-                        machineSid = "UNKNOWN";
-                    }
-                    else
-                    {
-                        machineSid = getMachineSidResult.Value.Sid;
-                        Cache.AddMachineSid(computerObjectId, machineSid);
-                    }
-                }
 
                 var resolved = new List<TypedPrincipal>();
                 var names = new List<NamedPrincipal>();
@@ -109,71 +120,102 @@ namespace SharpHoundCommonLib.Processors
 
                     if (isDomainController)
                     {
-                        if (_utils.GetWellKnownPrincipal(sid.Value, computerDomain, out var principal))
-                        {
-                            resolved.Add(principal);
-                        }
-                        else
-                        {
-                            var res = _utils.ResolveIDAndType(sid.Value, computerDomain);
-                            resolved.Add(res);
-                        }
+                        var result = ResolveDomainControllerPrincipal(sid.Value, computerDomain);
+                        if (result != null)
+                            resolved.Add(result);
+                        continue;
                     }
-                    else
+                    
+                    //If we get a local well known principal, we need to convert it using the machine sid
+                    if (ConvertLocalWellKnownPrincipal(sid, machineSid.Value, computerDomain, out var principal))
                     {
-                        if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
-                        {
-                            if (machineSid == "UNKNOWN")
-                                continue;
-                            var convertedId = $"{machineSid}-{sid.Rid()}";
-                            names.Add(new NamedPrincipal
-                            {
-                                ObjectId = convertedId,
-                                PrincipalName = common.ObjectIdentifier
-                            });
-
-                            var objectType = common.ObjectType switch
-                            {
-                                Label.User => Label.LocalUser,
-                                Label.Group => Label.LocalGroup,
-                                _ => common.ObjectType
-                            };
-                            resolved.Add(new TypedPrincipal
-                            {
-                                ObjectIdentifier = convertedId,
-                                ObjectType = objectType
-                            });
-                        }
-                        else
-                        {
-                            var objectType = use switch
-                            {
-                                SharedEnums.SidNameUse.User => Label.LocalUser,
-                                SharedEnums.SidNameUse.Group => Label.LocalGroup,
-                                SharedEnums.SidNameUse.Alias => Label.LocalGroup,
-                                _ => Label.Base
-                            };
-
-                            names.Add(new NamedPrincipal
-                            {
-                                ObjectId = sid.ToString(),
-                                PrincipalName = name
-                            });
-
-                            resolved.Add(new TypedPrincipal
-                            {
-                                ObjectIdentifier = sid.ToString(),
-                                ObjectType = objectType
-                            });
-                        }
+                        //If the principal is null, it means we hit a weird edge case, but this is a local well known principal 
+                        if (principal != null)
+                            resolved.Add(principal);
+                        continue;
                     }
+
+                    //If the security idenfitier starts with the machine sid, we need to resolve it as a local account
+                    if (sid.IsEqualDomainSid(machineSid))
+                    {
+                        var objectType = use switch
+                        {
+                            SharedEnums.SidNameUse.User => Label.LocalUser,
+                            SharedEnums.SidNameUse.Group => Label.LocalGroup,
+                            SharedEnums.SidNameUse.Alias => Label.LocalGroup,
+                            _ => Label.Base
+                        };
+                        
+                        //Throw out local user accounts
+                        if (objectType == Label.LocalUser)
+                            continue;
+
+                        names.Add(new NamedPrincipal
+                        {
+                            ObjectId = sid.ToString(),
+                            PrincipalName = name
+                        });
+
+                        resolved.Add(new TypedPrincipal
+                        {
+                            ObjectIdentifier = sid.ToString(),
+                            ObjectType = objectType
+                        });
+                        continue;
+                    }
+                    
+                    //If we get here, we most likely have a domain principal in a local group
+                    var resolvedPrincipal = _utils.ResolveIDAndType(sid.Value, computerDomain);
+                    if (resolvedPrincipal != null) resolved.Add(resolvedPrincipal);
                 }
 
-                result.Collected = true;
-                result.LocalNames = names.ToArray();
-                result.Results = resolved.ToArray();
-                yield return result;
+                ret.Collected = true;
+                ret.LocalNames = names.ToArray();
+                ret.Results = resolved.ToArray();
+                yield return ret;
             }
+        }
+        
+        private TypedPrincipal ResolveDomainControllerPrincipal(string sid, string computerDomain)
+        {
+            //If the server is a domain controller and we have a well known group, use the domain value
+            if (_utils.GetWellKnownPrincipal(sid, computerDomain, out var wellKnown))
+                return wellKnown;
+            return _utils.ResolveIDAndType(sid, computerDomain);
+        }
+        
+        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string machineSid, string computerDomain, out TypedPrincipal principal)
+        {
+            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+            {
+                if (sid.Value is "S-1-1-0" or "S-1-5-11")
+                {
+                    _utils.GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
+                    return true;
+                }
+
+                if (machineSid == "UNKNOWN")
+                {
+                    principal = null;
+                    return true;
+                }
+
+                principal = new TypedPrincipal
+                {
+                    ObjectIdentifier = $"{machineSid}-{sid.Rid()}",
+                    ObjectType = common.ObjectType switch
+                    {
+                        Label.User => Label.LocalUser,
+                        Label.Group => Label.LocalGroup,
+                        _ => common.ObjectType
+                    }
+                };
+
+                return true;
+            }
+
+            principal = null;
+            return false;
         }
 
         private void SendComputerStatus(CSVComputerStatus status)
