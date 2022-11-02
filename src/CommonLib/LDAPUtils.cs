@@ -714,9 +714,8 @@ namespace SharpHoundCommonLib
                 {
                     if (le.ErrorCode != 82)
                         if (throwException)
-                            throw new LDAPQueryException(string.Format(
-                                "LDAP Exception in Loop: {0}. {1}. {2}. Filter: {3}. Domain: {4}.",
-                                le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName), le);
+                            throw new LDAPQueryException(
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}.", le);
                         else
                             _log.LogWarning(le,
                                 "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
@@ -727,8 +726,7 @@ namespace SharpHoundCommonLib
                 catch (Exception e)
                 {
                     if (throwException)
-                        throw new LDAPQueryException(string.Format("Exception in LDAP loop for {0} and {1}",
-                            ldapFilter, domainName));
+                        throw new LDAPQueryException($"Exception in LDAP loop for {ldapFilter} and {domainName}");
 
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
                     yield break;
@@ -812,9 +810,8 @@ namespace SharpHoundCommonLib
                 {
                     if (le.ErrorCode != 82)
                         if (throwException)
-                            throw new LDAPQueryException(string.Format(
-                                "LDAP Exception in Loop: {0}. {1}. {2}. Filter: {3}. Domain: {4}",
-                                le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName), le);
+                            throw new LDAPQueryException(
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}", le);
                         else
                             _log.LogWarning(le,
                                 "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
@@ -824,8 +821,8 @@ namespace SharpHoundCommonLib
                 catch (Exception e)
                 {
                     if (throwException)
-                        throw new LDAPQueryException(string.Format(
-                            "Exception in LDAP loop for {0} and {1}", ldapFilter, domainName ?? "Default Domain"), e);
+                        throw new LDAPQueryException(
+                            $"Exception in LDAP loop for {ldapFilter} and {domainName ?? "Default Domain"}", e);
 
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter,
                         domainName ?? "Default Domain");
