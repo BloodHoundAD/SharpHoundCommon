@@ -152,11 +152,12 @@ namespace SharpHoundCommonLib.Processors
                         if (objectType == Label.LocalUser)
                             continue;
 
-                        names.Add(new NamedPrincipal
-                        {
-                            ObjectId = sid.ToString(),
-                            PrincipalName = name
-                        });
+                        if (name != null)
+                            names.Add(new NamedPrincipal
+                            {
+                                ObjectId = sid.ToString(),
+                                PrincipalName = name
+                            });
 
                         resolved.Add(new TypedPrincipal
                         {

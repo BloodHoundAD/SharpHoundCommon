@@ -74,13 +74,17 @@ namespace SharpHoundRPC.Wrappers
                 for (var i = 0; i < count; i++)
                 {
                     var use = translatedNames[i].Use;
+                    var sid = convertedSids[i];
                     //Special LSALookupSids cases. If we hit any of these cases, we're missing important data, so dont return these objects
                     //If use is Domain, The DomainIndex member is valid, but the Name member is not valid and must be ignored. 
                     //If use is Unknown or Invalid, Both DomainIndex and Name are not valid and must be ignored. 
-                    if (use is SharedEnums.SidNameUse.Domain or SharedEnums.SidNameUse.Invalid or SharedEnums.SidNameUse.Unknown)
+                    if (use is SharedEnums.SidNameUse.Domain or SharedEnums.SidNameUse.Invalid
+                        or SharedEnums.SidNameUse.Unknown)
+                    {
+                        ret.Add((sid, null, use, null));
                         continue;
-                    
-                    var sid = convertedSids[i];
+                    }
+
                     var translatedName = translatedNames[i].Name.ToString();
                     var domainIndex = translatedNames[i].DomainIndex;
                     //If use is WellKnownGroup, Name is valid, but domainindex is not
