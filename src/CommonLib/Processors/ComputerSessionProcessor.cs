@@ -228,7 +228,7 @@ namespace SharpHoundCommonLib.Processors
             return ret;
         }
 
-        public SessionAPIResult ReadUserSessionsRegistry(string computerName, string computerDomain,
+        public async Task<SessionAPIResult> ReadUserSessionsRegistry(string computerName, string computerDomain,
             string computerSid)
         {
             var ret = new SessionAPIResult();
@@ -237,7 +237,24 @@ namespace SharpHoundCommonLib.Processors
 
             try
             {
-                key = RegistryKey.OpenRemoteBaseKey(RegistryHive.Users, computerName);
+                var task = OpenRegistryKey(computerName, RegistryHive.Users);
+                
+                if (await Task.WhenAny(task, Task.Delay(10000)) != task)
+                {
+                    _log.LogDebug("Hit timeout on registry enum on {Server}. Abandoning registry enum", computerName);
+                    ret.Collected = false;
+                    ret.FailureReason = "Timeout";
+                    SendComputerStatus(new CSVComputerStatus
+                    {
+                        Status = "Timeout",
+                        Task = "RegistrySessionEnum",
+                        ComputerName = computerName
+                    });
+                    return ret;
+                }
+                
+                key = task.Result;
+
                 ret.Collected = true;
                 SendComputerStatus(new CSVComputerStatus
                 {
@@ -246,11 +263,17 @@ namespace SharpHoundCommonLib.Processors
                     ComputerName = computerName
                 });
                 _log.LogDebug("Registry session enum succeeded on {ComputerName}", computerName);
-                ret.Results = key.GetSubKeyNames().Where(subkey => SidRegex.IsMatch(subkey)).Select(x => new Session
-                {
-                    ComputerSID = computerSid,
-                    UserSID = x
-                }).ToArray();
+                ret.Results = key.GetSubKeyNames()
+                    .Where(subkey => SidRegex.IsMatch(subkey))
+                    .Select(x => _utils.ResolveIDAndType(x, computerDomain))
+                    .Where(x => x != null)
+                    .Select(x =>
+                        new Session
+                        {
+                            ComputerSID = computerSid,
+                            UserSID = x.ObjectIdentifier
+                        })
+                    .ToArray();
 
                 return ret;
             }
@@ -271,6 +294,11 @@ namespace SharpHoundCommonLib.Processors
             {
                 key?.Dispose();
             }
+        }
+
+        private Task<RegistryKey> OpenRegistryKey(string computerName, RegistryHive hive)
+        {
+            return Task.Run(() => RegistryKey.OpenRemoteBaseKey(hive, computerName));
         }
 
         private void SendComputerStatus(CSVComputerStatus status)
