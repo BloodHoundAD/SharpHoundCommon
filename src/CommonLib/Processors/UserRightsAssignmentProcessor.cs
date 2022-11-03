@@ -12,13 +12,6 @@ namespace SharpHoundCommonLib.Processors
     public class UserRightsAssignmentProcessor
     {
         public delegate void ComputerStatusDelegate(CSVComputerStatus status);
-
-        private readonly string[] _filteredSids =
-        {
-            "S-1-5-2", "S-1-5-2", "S-1-5-3", "S-1-5-4", "S-1-5-6", "S-1-5-7", "S-1-2", "S-1-2-0", "S-1-5-18",
-            "S-1-5-19", "S-1-5-20"
-        };
-
         private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
@@ -31,17 +24,17 @@ namespace SharpHoundCommonLib.Processors
         public event ComputerStatusDelegate ComputerStatusEvent;
 
         /// <summary>
-        /// Gets principals with the requested privileges on the target computer
+        ///     Gets principals with the requested privileges on the target computer
         /// </summary>
         /// <param name="computerName"></param>
         /// <param name="computerObjectId">The objectid of the computer in the domain</param>
         /// <param name="computerDomain"></param>
+        /// <param name="isDomainController">Is the computer a domain controller</param>
         /// <param name="desiredPrivileges"></param>
         /// <returns></returns>
         public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
-            string computerObjectId, string computerDomain, string[] desiredPrivileges = null)
+            string computerObjectId, string computerDomain, bool isDomainController, string[] desiredPrivileges = null)
         {
-            var computerSid = new SecurityIdentifier(computerObjectId);
             var policyOpenResult = LSAPolicy.OpenPolicy(computerName);
             if (policyOpenResult.IsFailed)
             {
@@ -58,14 +51,40 @@ namespace SharpHoundCommonLib.Processors
 
             var server = policyOpenResult.Value;
             desiredPrivileges ??= LSAPrivileges.DesiredPrivileges;
+
+            SecurityIdentifier machineSid;
+            if (!Cache.GetMachineSid(computerObjectId, out var temp))
+            {
+                var getMachineSidResult = server.GetLocalDomainInformation();
+                if (getMachineSidResult.IsFailed)
+                {
+                    _log.LogWarning("Failed to get machine sid for {Server}: {Status}. Abandoning URA collection", computerName, getMachineSidResult.Status);
+                    SendComputerStatus(new CSVComputerStatus
+                    {
+                        ComputerName = computerName,
+                        Status = getMachineSidResult.Status.ToString(),
+                        Task = "LSAGetMachineSID"
+                    });
+                    yield break;
+                }
+
+                machineSid = new SecurityIdentifier(getMachineSidResult.Value.Sid);
+                Cache.AddMachineSid(computerObjectId, getMachineSidResult.Value.Sid);
+            }
+            else
+            {
+                machineSid = new SecurityIdentifier(temp);
+            }
+            
             foreach (var privilege in desiredPrivileges)
             {
-                var result = new UserRightsAssignmentAPIResult
+                var ret = new UserRightsAssignmentAPIResult
                 {
                     Collected = false,
                     Privilege = privilege
                 };
 
+                //Ask for all principals with the specified privilege. 
                 var enumerateAccountsResult = server.GetResolvedPrincipalsWithPrivilege(privilege);
                 if (enumerateAccountsResult.IsFailed)
                 {
@@ -78,9 +97,9 @@ namespace SharpHoundCommonLib.Processors
                         Status = enumerateAccountsResult.Status.ToString(),
                         Task = "LSAEnumerateAccountsWithUserRight"
                     });
-                    result.FailureReason =
+                    ret.FailureReason =
                         $"LSAEnumerateAccountsWithUserRights returned {enumerateAccountsResult.Status}";
-                    yield return result;
+                    yield return ret;
                     continue;
                 }
 
@@ -91,111 +110,117 @@ namespace SharpHoundCommonLib.Processors
                     Task = "LSAEnumerateAccountsWithUserRight"
                 });
 
-                if (!Cache.GetMachineSid(computerObjectId, out var machineSid))
-                {
-                    var getMachineSidResult = server.GetLocalDomainInformation();
-                    if (getMachineSidResult.IsFailed)
-                    {
-                        machineSid = "UNKNOWN";
-                    }
-                    else
-                    {
-                        machineSid = getMachineSidResult.Value.Sid;
-                        Cache.AddMachineSid(computerObjectId, machineSid);
-                    }
-                }
-
-                var isDc = computerSid.IsEqualDomainSid(new SecurityIdentifier(machineSid));
-
                 var resolved = new List<TypedPrincipal>();
                 var names = new List<NamedPrincipal>();
 
                 foreach (var value in enumerateAccountsResult.Value)
                 {
-                    var (sid, name, use, domain) = value;
-                    if (IsSidFiltered(sid))
+                    var (sid, name, use, _) = value;
+                    //Check if our sid is filtered
+                    if (Helpers.IsSidFiltered(sid.Value))
                         continue;
-
-                    if (isDc)
+                    
+                    if (isDomainController)
                     {
-                        if (_utils.GetWellKnownPrincipal(sid.Value, computerDomain, out var principal))
-                        {
-                            resolved.Add(principal);
-                        }
-                        else
-                        {
-                            var res = _utils.ResolveIDAndType(sid.Value, computerDomain);
-                            resolved.Add(res);
-                        }
+                        var result = ResolveDomainControllerPrincipal(sid.Value, computerDomain);
+                        if (result != null)
+                            resolved.Add(result);
+                        continue;
                     }
-                    else
+                    
+                    //If we get a local well known principal, we need to convert it using the machine sid
+                    if (ConvertLocalWellKnownPrincipal(sid, machineSid.Value, computerDomain, out var principal))
                     {
-                        if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
-                        {
-                            if (machineSid == "UNKNOWN")
-                                continue;
-                            var convertedId = $"{machineSid}-{sid.Rid()}";
-                            names.Add(new NamedPrincipal
-                            {
-                                ObjectId = convertedId,
-                                PrincipalName = common.ObjectIdentifier
-                            });
+                        //If the principal is null, it means we hit a weird edge case, but this is a local well known principal 
+                        if (principal != null)
+                            resolved.Add(principal);
+                        continue;
+                    }
 
-                            var objectType = common.ObjectType switch
-                            {
-                                Label.User => Label.LocalUser,
-                                Label.Group => Label.LocalGroup,
-                                _ => common.ObjectType
-                            };
-                            resolved.Add(new TypedPrincipal
-                            {
-                                ObjectIdentifier = convertedId,
-                                ObjectType = objectType
-                            });
-                        }
-                        else
+                    //If the security identifier starts with the machine sid, we need to resolve it as a local account
+                    if (sid.IsEqualDomainSid(machineSid))
+                    {
+                        var objectType = use switch
                         {
-                            var objectType = use switch
-                            {
-                                SharedEnums.SidNameUse.User => Label.LocalUser,
-                                SharedEnums.SidNameUse.Group => Label.LocalGroup,
-                                SharedEnums.SidNameUse.Alias => Label.LocalGroup,
-                                _ => Label.Base
-                            };
+                            SharedEnums.SidNameUse.User => Label.LocalUser,
+                            SharedEnums.SidNameUse.Group => Label.LocalGroup,
+                            SharedEnums.SidNameUse.Alias => Label.LocalGroup,
+                            _ => Label.Base
+                        };
+                        
+                        //Throw out local user accounts
+                        if (objectType == Label.LocalUser)
+                            continue;
 
+                        if (name != null)
                             names.Add(new NamedPrincipal
                             {
                                 ObjectId = sid.ToString(),
                                 PrincipalName = name
                             });
 
-                            resolved.Add(new TypedPrincipal
-                            {
-                                ObjectIdentifier = sid.ToString(),
-                                ObjectType = objectType
-                            });
-                        }
+                        resolved.Add(new TypedPrincipal
+                        {
+                            ObjectIdentifier = sid.ToString(),
+                            ObjectType = objectType
+                        });
+                        continue;
                     }
+                    
+                    //If we get here, we most likely have a domain principal in a local group. Do a lookup
+                    var resolvedPrincipal = _utils.ResolveIDAndType(sid.Value, computerDomain);
+                    if (resolvedPrincipal != null) resolved.Add(resolvedPrincipal);
                 }
 
-                result.Collected = true;
-                result.LocalNames = names.ToArray();
-                result.Results = resolved.ToArray();
-                yield return result;
+                ret.Collected = true;
+                ret.LocalNames = names.ToArray();
+                ret.Results = resolved.ToArray();
+                yield return ret;
             }
         }
-
-        private bool IsSidFiltered(SecurityIdentifier identifier)
+        
+        private TypedPrincipal ResolveDomainControllerPrincipal(string sid, string computerDomain)
         {
-            var value = identifier.Value;
+            //If the server is a domain controller and we have a well known group, use the domain value
+            if (_utils.GetWellKnownPrincipal(sid, computerDomain, out var wellKnown))
+                return wellKnown;
+            //Otherwise, do a domain lookup
+            return _utils.ResolveIDAndType(sid, computerDomain);
+        }
+        
+        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string machineSid, string computerDomain, out TypedPrincipal principal)
+        {
+            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+            {
+                //The everyone and auth users principals are special and will be converted to the domain equivalent
+                if (sid.Value is "S-1-1-0" or "S-1-5-11")
+                {
+                    _utils.GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
+                    return true;
+                }
 
-            if (value.StartsWith("S-1-5-80") || value.StartsWith("S-1-5-82") ||
-                value.StartsWith("S-1-5-90") || value.StartsWith("S-1-5-96"))
+                if (machineSid == "UNKNOWN")
+                {
+                    principal = null;
+                    return true;
+                }
+
+                //Use the machinesid + the RID of the sid we looked up to create our new principal
+                principal = new TypedPrincipal
+                {
+                    ObjectIdentifier = $"{machineSid}-{sid.Rid()}",
+                    ObjectType = common.ObjectType switch
+                    {
+                        Label.User => Label.LocalUser,
+                        Label.Group => Label.LocalGroup,
+                        _ => common.ObjectType
+                    }
+                };
+
                 return true;
+            }
 
-            if (_filteredSids.Contains(value))
-                return true;
-
+            principal = null;
             return false;
         }
 
