@@ -200,6 +200,8 @@ namespace SharpHoundCommonLib
         
         public static bool IsSidFiltered(string sid)
         {
+            //Uppercase just in case we get a lowercase s
+            sid = sid.ToUpper();
             if (sid.StartsWith("S-1-5-80") || sid.StartsWith("S-1-5-82") ||
                 sid.StartsWith("S-1-5-90") || sid.StartsWith("S-1-5-96"))
                 return true;
