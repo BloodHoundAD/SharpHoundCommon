@@ -220,11 +220,12 @@ namespace SharpHoundCommonLib
         {
             if (Cache.GetIDType(sid, out var type))
                 return type;
-            
+
             var rDomain = GetDomainNameFromSid(sid) ?? domain;
 
             var result =
-                QueryLDAP(CommonFilters.SpecificSID(sid), SearchScope.Subtree, CommonProperties.TypeResolutionProps, rDomain)
+                QueryLDAP(CommonFilters.SpecificSID(sid), SearchScope.Subtree, CommonProperties.TypeResolutionProps,
+                        rDomain)
                     .DefaultIfEmpty(null).FirstOrDefault();
 
             type = result?.GetLabel() ?? Label.Base;
@@ -713,9 +714,8 @@ namespace SharpHoundCommonLib
                 {
                     if (le.ErrorCode != 82)
                         if (throwException)
-                            throw new LDAPQueryException(string.Format(
-                                "LDAP Exception in Loop: {0}. {1}. {2}. Filter: {3}. Domain: {4}.",
-                                le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName), le);
+                            throw new LDAPQueryException(
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}.", le);
                         else
                             _log.LogWarning(le,
                                 "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
@@ -726,10 +726,7 @@ namespace SharpHoundCommonLib
                 catch (Exception e)
                 {
                     if (throwException)
-                    {
-                        throw new LDAPQueryException(string.Format("Exception in LDAP loop for {0} and {1}",
-                            ldapFilter, domainName));
-                    }
+                        throw new LDAPQueryException($"Exception in LDAP loop for {ldapFilter} and {domainName}");
 
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
                     yield break;
@@ -824,10 +821,8 @@ namespace SharpHoundCommonLib
                 catch (Exception e)
                 {
                     if (throwException)
-                    {
-                        throw new LDAPQueryException(string.Format(
-                            "Exception in LDAP loop for {0} and {1}", ldapFilter, domainName ?? "Default Domain"), e);
-                    }
+                        throw new LDAPQueryException(
+                            $"Exception in LDAP loop for {ldapFilter} and {domainName ?? "Default Domain"}", e);
 
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter,
                         domainName ?? "Default Domain");
@@ -982,16 +977,16 @@ namespace SharpHoundCommonLib
             }
             catch (Exception e)
             {
-                var errorString = string.Format("Exception getting LDAP connection for {0} and domain {1}", ldapFilter,
-                    domainName ?? "Default Domain");
+                var errorString =
+                    $"Exception getting LDAP connection for {ldapFilter} and domain {domainName ?? "Default Domain"}";
                 return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
                     null, null, null, new LDAPQueryException(errorString, e));
             }
 
             if (conn == null)
             {
-                var errorString = string.Format("LDAP connection is null for filter {0} and domain {1}", ldapFilter,
-                    domainName ?? "Default Domain");
+                var errorString =
+                    $"LDAP connection is null for filter {ldapFilter} and domain {domainName ?? "Default Domain"}";
                 return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
                     null, null, null, new LDAPQueryException(errorString));
             }

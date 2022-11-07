@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -38,12 +37,10 @@ namespace SharpHoundRPC.Wrappers
         public Result<IEnumerable<(string Name, int Rid)>> GetDomains()
         {
             var (status, rids, count) = SAMMethods.SamEnumerateDomainsInSamServer(Handle);
-            if (status.IsError())
-            {
-                return status;
-            }
-            
-            var ret = Result<IEnumerable<(string Name, int Rid)>>.Ok(rids.GetEnumerable<SAMStructs.SamRidEnumeration>(count).Select(x => (x.Name.ToString(), x.Rid)));
+            if (status.IsError()) return status;
+
+            var ret = Result<IEnumerable<(string Name, int Rid)>>.Ok(rids
+                .GetEnumerable<SAMStructs.SamRidEnumeration>(count).Select(x => (x.Name.ToString(), x.Rid)));
             return ret;
         }
 
@@ -51,7 +48,9 @@ namespace SharpHoundRPC.Wrappers
         {
             var (status, sid) = SAMMethods.SamLookupDomainInSamServer(Handle, name);
             using (sid)
+            {
                 return status.IsError() ? status : sid.GetData<SecurityIdentifier>();
+            }
         }
 
         public Result<SecurityIdentifier> GetMachineSid(string testName = null)
@@ -80,11 +79,6 @@ namespace SharpHoundRPC.Wrappers
             if (sid == null) return "Unable to get machine sid";
             _cachedMachineSid = sid;
             return sid;
-        }
-
-        public bool IsDomainController(SecurityIdentifier domainMachineSid)
-        {
-            return domainMachineSid.AccountDomainSid.Equals(GetMachineSid().Value.AccountDomainSid);
         }
 
         public Result<(string Name, SharedEnums.SidNameUse Type)> LookupPrincipalBySid(
