@@ -103,6 +103,25 @@ namespace SharpHoundCommonLib.Processors
         }
         
         /// <summary>
+        /// This function should be called with the enrollment data fetched from <see cref="GetCARegistryValues"/>.
+        /// The resulting items will contain enrollment agent restrictions
+        /// </summary>
+        /// <param name="enrollmentAgentRestrictions"></param>
+        /// <returns></returns>
+        public IEnumerable<EnrollmentAgentRestriction> ProcessEAPermissions(byte[] enrollmentAgentRestrictions)
+        {
+            if (enrollmentAgentRestrictions == null)
+                yield break;
+
+            var descriptor = new RawSecurityDescriptor(enrollmentAgentRestrictions, 0);
+            foreach (var genericAce in descriptor.DiscretionaryAcl)
+            {
+                var ace = (QualifiedAce)genericAce;
+                yield return new EnrollmentAgentRestriction(ace);
+            }
+        }
+        
+        /// <summary>
         /// Gets 2 specific registry keys from the remote machine for processing security/enrollmentagentrights
         /// </summary>
         /// <param name="target"></param>
