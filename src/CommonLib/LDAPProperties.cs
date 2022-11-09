@@ -59,5 +59,6 @@
         public const string ApplicationPolicy = "mspki-ra-application-policies";
         public const string IssuancePolicies = "mspki-ra-policies";
         public const string CertificateApplicationPolicy = "mspki-certificate-application-policy";
+        public const string CACertificate = "cacertificate";
     }
 }
