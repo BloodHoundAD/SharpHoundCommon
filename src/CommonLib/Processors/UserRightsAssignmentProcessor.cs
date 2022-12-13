@@ -39,12 +39,12 @@ namespace SharpHoundCommonLib.Processors
             if (policyOpenResult.IsFailed)
             {
                 _log.LogDebug("LSAOpenPolicy failed on {ComputerName} with status {Status}", computerName,
-                    policyOpenResult.Status);
+                    policyOpenResult.SError);
                 SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "LSAOpenPolicy",
                     ComputerName = computerName,
-                    Status = policyOpenResult.Status.ToString()
+                    Status = policyOpenResult.SError
                 });
                 yield break;
             }
@@ -58,11 +58,11 @@ namespace SharpHoundCommonLib.Processors
                 var getMachineSidResult = server.GetLocalDomainInformation();
                 if (getMachineSidResult.IsFailed)
                 {
-                    _log.LogWarning("Failed to get machine sid for {Server}: {Status}. Abandoning URA collection", computerName, getMachineSidResult.Status);
+                    _log.LogWarning("Failed to get machine sid for {Server}: {Status}. Abandoning URA collection", computerName, getMachineSidResult.SError);
                     SendComputerStatus(new CSVComputerStatus
                     {
                         ComputerName = computerName,
-                        Status = getMachineSidResult.Status.ToString(),
+                        Status = getMachineSidResult.SError.ToString(),
                         Task = "LSAGetMachineSID"
                     });
                     yield break;
@@ -90,15 +90,15 @@ namespace SharpHoundCommonLib.Processors
                 {
                     _log.LogDebug(
                         "LSAEnumerateAccountsWithUserRight failed on {ComputerName} with status {Status} for privilege {Privilege}",
-                        computerName, policyOpenResult.Status, privilege);
+                        computerName, policyOpenResult.SError, privilege);
                     SendComputerStatus(new CSVComputerStatus
                     {
                         ComputerName = computerName,
-                        Status = enumerateAccountsResult.Status.ToString(),
+                        Status = enumerateAccountsResult.SError.ToString(),
                         Task = "LSAEnumerateAccountsWithUserRight"
                     });
                     ret.FailureReason =
-                        $"LSAEnumerateAccountsWithUserRights returned {enumerateAccountsResult.Status}";
+                        $"LSAEnumerateAccountsWithUserRights returned {enumerateAccountsResult.SError}";
                     yield return ret;
                     continue;
                 }

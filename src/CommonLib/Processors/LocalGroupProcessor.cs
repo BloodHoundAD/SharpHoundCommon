@@ -44,7 +44,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     Task = "SamConnect",
                     ComputerName = computerName,
-                    Status = openServerResult.Status.ToString()
+                    Status = openServerResult.SError
                 });
                 yield break;
             }
@@ -61,12 +61,12 @@ namespace SharpHoundCommonLib.Processors
                 {
                     SendComputerStatus(new CSVComputerStatus
                     {
-                        Status = getMachineSidResult.Status.ToString(),
+                        Status = getMachineSidResult.SError,
                         ComputerName = computerName,
                         Task = "GetMachineSid"
                     });
                     //If we can't get a machine sid, we wont be able to make local principals with unique object ids, or differentiate local/domain objects
-                    _log.LogWarning("Unable to get machineSid for {Computer}: {Status}. Abandoning local group processing", computerName, getMachineSidResult.Status);
+                    _log.LogWarning("Unable to get machineSid for {Computer}: {Status}. Abandoning local group processing", computerName, getMachineSidResult.SError);
                     yield break;
                 }
 
@@ -86,7 +86,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     Task = "GetDomains",
                     ComputerName = computerName,
-                    Status = getDomainsResult.Status.ToString()
+                    Status = getDomainsResult.SError
                 });
                 yield break;
             }
@@ -105,7 +105,7 @@ namespace SharpHoundCommonLib.Processors
                     {
                         Task = $"OpenDomain - {domainResult.Name}",
                         ComputerName = computerName,
-                        Status = openDomainResult.Status.ToString()
+                        Status = openDomainResult.SError
                     });
                     continue;
                 }
@@ -121,7 +121,7 @@ namespace SharpHoundCommonLib.Processors
                     {
                         Task = $"GetAliases - {domainResult.Name}",
                         ComputerName = computerName,
-                        Status = getAliasesResult.Status.ToString()
+                        Status = getAliasesResult.SError
                     });
                     continue;
                 }
@@ -146,10 +146,10 @@ namespace SharpHoundCommonLib.Processors
                         {
                             Task = $"OpenAlias - {alias.Name}",
                             ComputerName = computerName,
-                            Status = openAliasResult.Status.ToString()
+                            Status = openAliasResult.SError
                         });
                         ret.Collected = false;
-                        ret.FailureReason = $"SamOpenAliasInDomain failed with status {openAliasResult.Status}";
+                        ret.FailureReason = $"SamOpenAliasInDomain failed with status {openAliasResult.SError}";
                         yield return ret;
                         continue;
                     }
@@ -163,10 +163,10 @@ namespace SharpHoundCommonLib.Processors
                         {
                             Task = $"GetMembersInAlias - {alias.Name}",
                             ComputerName = computerName,
-                            Status = getMembersResult.Status.ToString()
+                            Status = getMembersResult.SError
                         });
                         ret.Collected = false;
-                        ret.FailureReason = $"SamGetMembersInAlias failed with status {getMembersResult.Status}";
+                        ret.FailureReason = $"SamGetMembersInAlias failed with status {getMembersResult.SError}";
                         yield return ret;
                         continue;
                     }
@@ -230,7 +230,7 @@ namespace SharpHoundCommonLib.Processors
                             var lookupUserResult = server.LookupPrincipalBySid(securityIdentifier);
                             if (lookupUserResult.IsFailed)
                             {
-                                _log.LogTrace("Unable to resolve local sid {SID}: {Error}", sidValue, lookupUserResult.Status);
+                                _log.LogTrace("Unable to resolve local sid {SID}: {Error}", sidValue, lookupUserResult.SError);
                                 continue;
                             }
 
