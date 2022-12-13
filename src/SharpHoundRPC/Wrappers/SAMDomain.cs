@@ -16,16 +16,11 @@ namespace SharpHoundRPC.Wrappers
         public Result<(string Name, SharedEnums.SidNameUse Type)> LookupPrincipalByRid(int rid)
         {
             var (status, namePointer, usePointer) = SAMMethods.SamLookupIdsInDomain(Handle, rid);
-            using (namePointer)
-            {
-                using (usePointer)
-                {
-                    if (status.IsError()) return status;
+            
+            if (status.IsError()) return status;
 
-                    return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(),
-                        (SharedEnums.SidNameUse) usePointer.GetData<int>());
-                }
-            }
+            return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(),
+                (SharedEnums.SidNameUse) usePointer.GetData<int>());
         }
 
         public Result<IEnumerable<(string Name, int Rid)>> GetAliases()
