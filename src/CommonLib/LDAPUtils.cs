@@ -468,7 +468,8 @@ namespace SharpHoundCommonLib
                     //Append the $ to indicate this is a computer
                     tempName = $"{tempName}$".ToUpper();
                     var principal = ResolveAccountName(tempName, tempDomain);
-                    if (principal != null)
+                    sid = principal?.ObjectIdentifier;
+                    if (sid != null)
                     {
                         _hostResolutionMap.TryAdd(strippedHost, sid);
                         return sid;
