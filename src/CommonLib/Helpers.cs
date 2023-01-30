@@ -107,8 +107,17 @@ namespace SharpHoundCommonLib
         /// <returns>String representing the domain name of this object</returns>
         public static string DistinguishedNameToDomain(string distinguishedName)
         {
-            var idx = distinguishedName.IndexOf("DC=",
-                StringComparison.CurrentCultureIgnoreCase);
+            int idx;
+            if (distinguishedName.ToUpper().Contains("DELETED OBJECTS"))
+            {
+                idx = distinguishedName.IndexOf("DC=", 3, StringComparison.Ordinal);
+            }
+            else
+            {
+                idx = distinguishedName.IndexOf("DC=",
+                    StringComparison.CurrentCultureIgnoreCase);    
+            }
+            
             if (idx < 0)
                 return null;
 
