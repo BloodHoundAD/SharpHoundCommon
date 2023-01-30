@@ -466,10 +466,11 @@ namespace SharpHoundCommonLib
                     //Append the $ to indicate this is a computer
                     tempName = $"{tempName}$".ToUpper();
                     var principal = ResolveAccountName(tempName, tempDomain);
-                    if (principal != null)
+                    sid = principal?.ObjectIdentifier;
+                    if (sid != null)
                     {
-                        _hostResolutionMap.TryAdd(strippedHost, principal.ObjectIdentifier);
-                        return principal.ObjectIdentifier;
+                        _hostResolutionMap.TryAdd(strippedHost, sid);
+                        return sid;
                     }
                 }
             }
@@ -559,8 +560,7 @@ namespace SharpHoundCommonLib
                 _log.LogDebug("ResolveAccountName - unable to get result for {Name}", name);
                 return null;
             }
-
-
+            
             type = result.GetLabel();
             id = result.GetObjectIdentifier();
 
@@ -985,8 +985,8 @@ namespace SharpHoundCommonLib
 
             if (request == null)
             {
-                var errorString = string.Format("Search request is null for filter {0} and domain {1}", ldapFilter,
-                    domainName ?? "Default Domain");
+                var errorString =
+                    $"Search request is null for filter {ldapFilter} and domain {domainName ?? "Default Domain"}";
                 return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
                     null, null, null, new LDAPQueryException(errorString));
             }
