@@ -284,6 +284,14 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.GetChangesAll
                             };
+                        else if (aceType == ACEGuids.DSReplicationGetChangesInFilteredSet)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.GetChangesInFilteredSet
+                            };
                         else if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE
                             {
@@ -366,6 +374,14 @@ namespace SharpHoundCommonLib.Processors
                             PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                             IsInherited = inherited,
                             RightName = EdgeNames.AddAllowedToAct
+                        };
+                    else if (objectType == Label.Computer && aceType == ACEGuids.UserAccountRestrictions && !resolvedPrincipal.ObjectIdentifier.EndsWith("-512"))
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.WriteAccountRestrictions
                         };
                     else if (objectType == Label.Group && aceType == ACEGuids.WriteMember)
                         yield return new ACE

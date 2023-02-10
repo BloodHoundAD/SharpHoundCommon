@@ -48,6 +48,7 @@ namespace SharpHoundCommonLib
 
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
         private readonly ConcurrentDictionary<string, string> _domainControllerCache = new();
+        private readonly ConcurrentDictionary<string, string> _gcControllerCache = new();
 
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
@@ -884,12 +885,14 @@ namespace SharpHoundCommonLib
         {
             var filter = new LDAPFilter();
             filter.AddDomains();
-
+            
             var resDomain = GetDomain(domain)?.Name ?? domain;
             _log.LogTrace("Testing LDAP connection for domain {Domain}", resDomain);
 
             var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID, resDomain)
                 .DefaultIfEmpty(null).FirstOrDefault();
+            
+            _log.LogTrace("Result object from LDAP connection test is {DN}", result?.DistinguishedName ?? "null");
 
             _log.LogTrace("Result object from LDAP connection test is {DN}", result?.DistinguishedName ?? "null");
 
@@ -1301,12 +1304,18 @@ namespace SharpHoundCommonLib
 
         private async Task<string> GetUsableDomainController(Domain domain, bool gc = false)
         {
+            if (gc && _gcControllerCache.TryGetValue(domain.Name.ToUpper(), out var dc))
+                return dc;
+
+            if (!gc && _domainControllerCache.TryGetValue(domain.Name.ToUpper(), out dc))
+                return dc;
+            
             var port = gc ? 3268 : _ldapConfig.GetPort();
             var pdc = domain.PdcRoleOwner.Name;
             if (await _portScanner.CheckPort(pdc, port))
             {
-                _domainControllerCache.TryAdd(domain.Name, pdc);
-                _log.LogDebug("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, pdc);
+                _domainControllerCache.TryAdd(domain.Name.ToUpper(), pdc);
+                _log.LogInformation("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, pdc);
                 return pdc;
             }
 
@@ -1315,14 +1324,14 @@ namespace SharpHoundCommonLib
             {
                 var name = domainController.Name;
                 if (!await _portScanner.CheckPort(name, port)) continue;
-                _log.LogDebug("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, name);
-                _domainControllerCache.TryAdd(domain.Name, name);
+                _log.LogInformation("Found usable Domain Controller for {Domain} : {PDC}", domain.Name, name);
+                _domainControllerCache.TryAdd(domain.Name.ToUpper(), name);
                 return name;
             }
 
             //If we get here, somehow we didn't get any usable DCs. Save it off as null
-            _domainControllerCache.TryAdd(domain.Name, null);
-            _log.LogDebug("Unable to find usable domain controller for {Domain}", domain.Name);
+            _domainControllerCache.TryAdd(domain.Name.ToUpper(), null);
+            _log.LogWarning("Unable to find usable domain controller for {Domain}", domain.Name);
             return null;
         }
 
