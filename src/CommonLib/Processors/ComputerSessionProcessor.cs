@@ -131,15 +131,26 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerSid"></param>
         /// <returns></returns>
-        public SessionAPIResult ReadUserSessionsPrivileged(string computerName,
-            string computerSamAccountName, string computerSid)
+        public SessionAPIResult ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerSid, string username, string password)
         {
             var ret = new SessionAPIResult();
             NativeMethods.WKSTA_USER_INFO_1[] apiResult;
+            Console.WriteLine("Setting local Username and Password");
+            string username = "Admin";
+            string password = "Password";
+
+            // Create a new WindowsIdentity object for the specified user
+            var newIdentity = new WindowsIdentity(username, password);
+            Console.WriteLine(newIdentity);
 
             try
             {
-                apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
+                // Impersonate the new identity
+                Console.WriteLine("Now impersonating local User");
+                using (var impersonatedContext = newIdentity.Impersonate())
+                {
+                    apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
+                }
             }
             catch (APIException e)
             {
@@ -147,7 +158,7 @@ namespace SharpHoundCommonLib.Processors
                 ret.Collected = false;
                 ret.FailureReason = e.Status;
                 return ret;
-            }
+            
 
             ret.Collected = true;
 
