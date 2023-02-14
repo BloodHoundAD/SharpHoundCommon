@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Impersonate;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using SharpHoundCommonLib.OutputTypes;
@@ -19,14 +20,19 @@ namespace SharpHoundCommonLib.Processors
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
         private readonly ILDAPUtils _utils;
+        private readonly bool _doLocalAdminSessionEnum;
+        private readonly string _localAdminUsername;
+        private readonly string _localAdminPassword;
 
-        public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null,
-            NativeMethods nativeMethods = null, ILogger log = null)
+        public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null, NativeMethods nativeMethods = null, ILogger log = null, bool doLocalAdminSessionEnum = false, string localAdminUsername = null, string localAdminPassword = null)
         {
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _currentUserName = currentUserName ?? WindowsIdentity.GetCurrent().Name.Split('\\')[1];
             _log = log ?? Logging.LogProvider.CreateLogger("CompSessions");
+            _doLocalAdminSessionEnum = doLocalAdminSessionEnum;
+            _localAdminUsername = localAdminUsername;
+            _localAdminPassword = localAdminPassword;
         }
 
         public event ComputerStatusDelegate ComputerStatusEvent;
@@ -43,8 +49,29 @@ namespace SharpHoundCommonLib.Processors
             string computerDomain)
         {
             var ret = new SessionAPIResult();
+            SharpHoundRPC.NetAPINative.NetAPIResult<IEnumerable<SharpHoundRPC.NetAPINative.NetSessionEnumResults>> result;
 
-            var result = _nativeMethods.NetSessionEnum(computerName);
+            if (_doLocalAdminSessionEnum)
+            {
+                // If we are authenticating using a local admin, we need to impersonate for this
+                Impersonator Impersonate;
+                using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                {
+                    result = _nativeMethods.NetSessionEnum(computerName);
+                }
+
+                if (result.IsFailed)
+                {
+                    // Fall back to default User
+                    _log.LogDebug("NetSessionEnum failed on {ComputerName} with local admin credentials: {Status}. Fallback to default user.", computerName, result.Status);
+                    result = _nativeMethods.NetSessionEnum(computerName);
+                }
+            }
+            else
+            {
+                result = _nativeMethods.NetSessionEnum(computerName);
+            }
+
             if (result.IsFailed)
             {
                 await SendComputerStatus(new CSVComputerStatus
@@ -148,7 +175,28 @@ namespace SharpHoundCommonLib.Processors
             string computerSamAccountName, string computerSid)
         {
             var ret = new SessionAPIResult();
-            var result = _nativeMethods.NetWkstaUserEnum(computerName);
+            SharpHoundRPC.NetAPINative.NetAPIResult<IEnumerable<SharpHoundRPC.NetAPINative.NetWkstaUserEnumResults>> result;
+
+            if (_doLocalAdminSessionEnum)
+            {
+                // If we are authenticating using a local admin, we need to impersonate for this
+                Impersonator Impersonate;
+                using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                {
+                    result = _nativeMethods.NetWkstaUserEnum(computerName);
+                }
+
+                if (result.IsFailed)
+                {
+                    // Fall back to default User
+                    _log.LogDebug("NetWkstaUserEnum failed on {ComputerName} with local admin credentials: {Status}. Fallback to default user.", computerName, result.Status);
+                    result = _nativeMethods.NetWkstaUserEnum(computerName);
+                }
+            }
+            else
+            {
+                result = _nativeMethods.NetWkstaUserEnum(computerName);
+            }
 
             if (result.IsFailed)
             {
