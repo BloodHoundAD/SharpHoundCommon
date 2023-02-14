@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
+using System.Drawing.Text;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Contexts;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Impersonate;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using SharpHoundCommonLib.OutputTypes;
 
+
 namespace SharpHoundCommonLib.Processors
 {
+    
     public class ComputerSessionProcessor
     {
         private static readonly Regex SidRegex = new(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
@@ -17,6 +24,9 @@ namespace SharpHoundCommonLib.Processors
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
         private readonly ILDAPUtils _utils;
+        private const string LOGIN = "Administrator";
+        private const string DOMAIN = ".";
+        private const string PASSWORD = "YourLameP@ssword!";
 
         public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null,
             NativeMethods nativeMethods = null, ILogger log = null)
@@ -131,23 +141,16 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerSid"></param>
         /// <returns></returns>
-        public SessionAPIResult ReadUserSessionsPrivileged(string computerName, string computerSamAccountName, string computerSid, string username, string password)
+        public SessionAPIResult ReadUserSessionsPrivileged(string computerName,
+            string computerSamAccountName, string computerSid)
         {
             var ret = new SessionAPIResult();
             NativeMethods.WKSTA_USER_INFO_1[] apiResult;
-            Console.WriteLine("Setting local Username and Password");
-            string username = "Admin";
-            string password = "Password";
-
-            // Create a new WindowsIdentity object for the specified user
-            var newIdentity = new WindowsIdentity(username, password);
-            Console.WriteLine(newIdentity);
 
             try
             {
-                // Impersonate the new identity
-                Console.WriteLine("Now impersonating local User");
-                using (var impersonatedContext = newIdentity.Impersonate())
+                Impersonator Impersonate;
+                using (Impersonate = new Impersonator(LOGIN, DOMAIN, PASSWORD, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
                 {
                     apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
                 }
@@ -158,7 +161,7 @@ namespace SharpHoundCommonLib.Processors
                 ret.Collected = false;
                 ret.FailureReason = e.Status;
                 return ret;
-            
+            }
 
             ret.Collected = true;
 
@@ -246,6 +249,6 @@ namespace SharpHoundCommonLib.Processors
             {
                 key?.Dispose();
             }
-        }
-    }
+        }  
+    }    
 }
