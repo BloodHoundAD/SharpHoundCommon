@@ -1,4 +1,5 @@
-﻿using System;
+//credit to Phillip Allan-Harding (Twitter @phillipharding) for this library.
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
