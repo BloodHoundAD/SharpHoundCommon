@@ -55,7 +55,27 @@ namespace SharpHoundCommonLib.Processors
 
             try
             {
-                apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
+                // If we are authenticating using a local admin, we need to impersonate for this
+                if (_doLocalAdminSessionEnum)
+                {
+                    try
+                    {
+                        Impersonator Impersonate;
+                        using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                        {
+                            apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
+                        }
+                    }
+                    catch
+                    {
+                        // Fall back to default User
+                        apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
+                    }
+                }
+                else
+                {
+                    apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
+                }
             }
             catch (APIException e)
             {
@@ -152,12 +172,19 @@ namespace SharpHoundCommonLib.Processors
             try
             {
                 // If we are authenticating using a local admin, we need to impersonate for this
-                // TODO: refactor to avoid code reusage
                 if (_doLocalAdminSessionEnum)
                 {
-                    Impersonator Impersonate;
-                    using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                    try
                     {
+                        Impersonator Impersonate;
+                        using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                        {
+                            apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
+                        }
+                    }
+                    catch
+                    {
+                        // Fall back to default User
                         apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
                     }
                 }
@@ -234,41 +261,19 @@ namespace SharpHoundCommonLib.Processors
             string computerSid)
         {
             var ret = new SessionAPIResult();
-
             RegistryKey key = null;
 
             try
             {
-                // If we are authenticating using a local admin, we need to impersonate for this
-                // TODO: refactor to avoid code reusage
-                if (_doLocalAdminSessionEnum)
+                key = RegistryKey.OpenRemoteBaseKey(RegistryHive.Users, computerName);
+                ret.Collected = true;
+                ret.Results = key.GetSubKeyNames().Where(subkey => SidRegex.IsMatch(subkey)).Select(x => new Session
                 {
-                    Impersonator Impersonate;
-                    using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
-                    {
-                        key = RegistryKey.OpenRemoteBaseKey(RegistryHive.Users, computerName);
-                        ret.Collected = true;
-                        ret.Results = key.GetSubKeyNames().Where(subkey => SidRegex.IsMatch(subkey)).Select(x => new Session
-                        {
-                            ComputerSID = computerSid,
-                            UserSID = x
-                        }).ToArray();
+                    ComputerSID = computerSid,
+                    UserSID = x
+                }).ToArray();
 
-                        return ret;
-                    }
-                }
-                else
-                {
-                    key = RegistryKey.OpenRemoteBaseKey(RegistryHive.Users, computerName);
-                    ret.Collected = true;
-                    ret.Results = key.GetSubKeyNames().Where(subkey => SidRegex.IsMatch(subkey)).Select(x => new Session
-                    {
-                        ComputerSID = computerSid,
-                        UserSID = x
-                    }).ToArray();
-
-                    return ret;
-                }
+                return ret;
             }
             catch (Exception e)
             {
