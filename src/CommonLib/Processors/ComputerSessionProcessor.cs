@@ -171,7 +171,6 @@ namespace SharpHoundCommonLib.Processors
 
             try
             {
-                //Proudly brought to you by @eversinc33 and LuemmelSec
                 // If we are authenticating using a local admin, we need to impersonate for this
                 if (_doLocalAdminSessionEnum)
                 {
