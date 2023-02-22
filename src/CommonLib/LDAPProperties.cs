@@ -46,5 +46,8 @@
         public const string UnicodePassword = "unicodepwd";
         public const string MsSFU30Password = "msSFU30Password";
         public const string ScriptPath = "scriptpath";
+        public const string ManagedBy = "managedby";
+        public const string RevealOnDemand = "msds-revealondemandgroup";
+        public const string NeverReveal = "msds-neverrevealgroup";
     }
 }

@@ -97,5 +97,10 @@ namespace CommonLibTest.Facades
         {
             throw new NotImplementedException();
         }
+
+        public bool IsRODC()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

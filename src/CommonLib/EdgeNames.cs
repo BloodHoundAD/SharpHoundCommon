@@ -21,5 +21,8 @@
         public const string AddKeyCredentialLink = "AddKeyCredentialLink";
         public const string SQLAdmin = "SQLAdmin";
         public const string WriteAccountRestrictions = "WriteAccountRestrictions";
+        public const string WriteManageRODC = "WriteManageRODC";
+        public const string WriteRevealOnDemand = "WriteRevealOnDemand";
+        public const string WriteNeverReveal = "WriteNeverReveal";
     }
 }

@@ -26,6 +26,7 @@ namespace SharpHoundCommonLib
         bool IsMSA();
         bool IsGMSA();
         bool HasLAPS();
+        bool IsRODC();
     }
 
     public class SearchResultEntryWrapper : ISearchResultEntry
@@ -248,6 +249,20 @@ namespace SharpHoundCommonLib
         public bool HasLAPS()
         {
             return GetProperty(LDAPProperties.LAPSExpirationTime) != null;
+        }
+
+        public bool IsRODC()
+        {
+            var uac = GetProperty(LDAPProperties.UserAccountControl);
+            if (int.TryParse(uac, out var flag))
+            {
+                var flags = (UacFlags)flag;
+                if ((flags & UacFlags.PartialSecretsAccount) != 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public SearchResultEntry GetEntry()

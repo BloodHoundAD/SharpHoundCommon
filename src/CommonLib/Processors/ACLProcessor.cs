@@ -118,9 +118,10 @@ namespace SharpHoundCommonLib.Processors
             var domain = result.Domain;
             var type = result.ObjectType;
             var hasLaps = searchResult.HasLAPS();
+            var isRodc = searchResult.IsRODC();
             var name = result.DisplayName;
 
-            return ProcessACL(descriptor, domain, type, hasLaps, name);
+            return ProcessACL(descriptor, domain, type, hasLaps, isRodc, name);
         }
 
         /// <summary>
@@ -132,10 +133,11 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectName"></param>
         /// <param name="objectType"></param>
         /// <param name="hasLaps"></param>
+        /// <param name="isRodc"></param>
         /// <returns></returns>
         public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain,
             Label objectType,
-            bool hasLaps, string objectName = "")
+            bool hasLaps, bool isRodc, string objectName = "")
         {
             if (ntSecurityDescriptor == null)
             {
@@ -389,6 +391,35 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddKeyCredentialLink
                         };
+
+                    //Attributes only relvant to RODCs
+                    if (isRodc)
+                    {
+                        if (aceType is ACEGuids.ManagedBy)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WriteManageRODC
+                            };
+                        else if (aceType is ACEGuids.RevealOnDemand)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WriteRevealOnDemand
+                            };
+                        else if (aceType is ACEGuids.NeverReveal)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WriteNeverReveal
+                            };
+                    }
                 }
             }
         }

@@ -11,6 +11,9 @@ namespace SharpHoundCommonLib.OutputTypes
         public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] HasSIDHistory { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] RevealOnDemand { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] NeverReveal { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal ManagedBy { get; set; } = new();
         public SessionAPIResult Sessions { get; set; } = new();
         public SessionAPIResult PrivilegedSessions { get; set; } = new();
         public SessionAPIResult RegistrySessions { get; set; } = new();
