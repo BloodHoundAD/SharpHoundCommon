@@ -12,6 +12,7 @@ namespace SharpHoundCommonLib
         public bool DisableSigning { get; set; } = false;
         public bool DisableCertVerification { get; set; } = false;
         public AuthType AuthType { get; set; } = AuthType.Kerberos;
+        public int MaximumBinds { get; set; } = 15;
 
         public int GetPort()
         {
