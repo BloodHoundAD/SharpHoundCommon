@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using Moq;
-using SharpHoundCommonLib;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using Xunit;
@@ -13,13 +12,15 @@ namespace CommonLibTest
 {
     public class LocalGroupProcessorTest : IDisposable
     {
-        private LocalGroupProcessor _baseProcessor;
         private readonly ITestOutputHelper _testOutputHelper;
 
         public LocalGroupProcessorTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _baseProcessor = new LocalGroupProcessor(new LDAPUtils());
+        }
+
+        public void Dispose()
+        {
         }
 
         [WindowsOnlyFact]
@@ -30,15 +31,16 @@ namespace CommonLibTest
             mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Returns(mockSamServer);
             var processor = mockProcessor.Object;
             var machineDomainSid = $"{Consts.MockWorkstationMachineSid}-1001";
-            var results = processor.GetLocalGroups("win10.testlab.local", machineDomainSid , "TESTLAB.LOCAL", false).ToArray();
-            
+            var results = processor.GetLocalGroups("win10.testlab.local", machineDomainSid, "TESTLAB.LOCAL", false)
+                .ToArray();
+
             Assert.Equal(3, results.Length);
             var adminGroup = results.First(x => x.ObjectIdentifier.EndsWith("-544"));
             Assert.Single(adminGroup.Results);
             Assert.Equal($"{machineDomainSid}-544", adminGroup.ObjectIdentifier);
             Assert.Equal("S-1-5-21-4243161961-3815211218-2888324771-512", adminGroup.Results[0].ObjectIdentifier);
         }
-        
+
         [WindowsOnlyFact]
         public void LocalGroupProcessor_TestDomainController()
         {
@@ -47,15 +49,16 @@ namespace CommonLibTest
             mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Returns(mockSamServer);
             var processor = mockProcessor.Object;
             var machineDomainSid = $"{Consts.MockWorkstationMachineSid}-1000";
-            var results = processor.GetLocalGroups("primary.testlab.local", machineDomainSid , "TESTLAB.LOCAL", true).ToArray();
-            
+            var results = processor.GetLocalGroups("primary.testlab.local", machineDomainSid, "TESTLAB.LOCAL", true)
+                .ToArray();
+
             Assert.Equal(2, results.Length);
             var adminGroup = results.First(x => x.ObjectIdentifier.EndsWith("-544"));
             Assert.Single(adminGroup.Results);
-            Assert.Equal($"TESTLAB.LOCAL-S-1-5-32-544", adminGroup.ObjectIdentifier);
+            Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", adminGroup.ObjectIdentifier);
             Assert.Equal("S-1-5-21-4243161961-3815211218-2888324771-512", adminGroup.Results[0].ObjectIdentifier);
         }
-        
+
         [Fact]
         public async Task LocalGroupProcessor_ResolveGroupName_NonDC()
         {
@@ -67,11 +70,12 @@ namespace CommonLibTest
                 {
                     "ADMINISTRATORS", "WIN10.TESTLAB.LOCAL", "S-1-5-32-123-123-500", "TESTLAB.LOCAL", 544, false, false
                 });
-            
-            Assert.Equal("ADMINISTRATORS@WIN10.TESTLAB.LOCAL", result.PrincipalName);;
+
+            Assert.Equal("ADMINISTRATORS@WIN10.TESTLAB.LOCAL", result.PrincipalName);
+            ;
             Assert.Equal("S-1-5-32-123-123-500-544", result.ObjectId);
         }
-        
+
         [Fact]
         public async Task LocalGroupProcessor_ResolveGroupName_DC()
         {
@@ -83,13 +87,10 @@ namespace CommonLibTest
                 {
                     "ADMINISTRATORS", "PRIMARY.TESTLAB.LOCAL", "S-1-5-32-123-123-1000", "TESTLAB.LOCAL", 544, true, true
                 });
-            
-            Assert.Equal("IGNOREME", result.PrincipalName);;
+
+            Assert.Equal("IGNOREME", result.PrincipalName);
+            ;
             Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", result.ObjectId);
-        }
-        
-        public void Dispose()
-        {
         }
     }
 }

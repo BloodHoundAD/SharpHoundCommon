@@ -7,22 +7,13 @@ using SharpHoundRPC.Shared;
 
 namespace SharpHoundRPC.Wrappers
 {
-    public class LSAPolicy : LSABase
+    public class LSAPolicy : LSABase, ILSAPolicy
     {
         private string _computerName;
 
         public LSAPolicy(string computerName, LSAHandle handle) : base(handle)
         {
             _computerName = computerName;
-        }
-
-        public static Result<LSAPolicy> OpenPolicy(string computerName, LSAEnums.LsaOpenMask desiredAccess =
-            LSAEnums.LsaOpenMask.LookupNames | LSAEnums.LsaOpenMask.ViewLocalInfo)
-        {
-            var (status, handle) = LSAMethods.LsaOpenPolicy(computerName, desiredAccess);
-            if (status.IsError()) return status;
-
-            return new LSAPolicy(computerName, handle);
         }
 
         public Result<(string Name, string Sid)> GetLocalDomainInformation()
@@ -40,7 +31,7 @@ namespace SharpHoundRPC.Wrappers
         public Result<IEnumerable<SecurityIdentifier>> GetPrincipalsWithPrivilege(string userRight)
         {
             var (status, sids, count) = LSAMethods.LsaEnumerateAccountsWithUserRight(Handle, userRight);
-            
+
             if (status.IsError()) return status;
 
             return Result<IEnumerable<SecurityIdentifier>>.Ok(sids.GetEnumerable<SecurityIdentifier>(count));
@@ -94,7 +85,7 @@ namespace SharpHoundRPC.Wrappers
                         : domains[translatedNames[i].DomainIndex].Name.ToString();
                     ret.Add((sid, translatedName, use, domain));
                 }
-                
+
                 referencedDomains.Dispose();
                 names.Dispose();
                 safeDomains.Dispose();
@@ -158,6 +149,15 @@ namespace SharpHoundRPC.Wrappers
             safeDomains.Dispose();
 
             return ret.ToArray();
+        }
+
+        public static Result<LSAPolicy> OpenPolicy(string computerName, LSAEnums.LsaOpenMask desiredAccess =
+            LSAEnums.LsaOpenMask.LookupNames | LSAEnums.LsaOpenMask.ViewLocalInfo)
+        {
+            var (status, handle) = LSAMethods.LsaOpenPolicy(computerName, desiredAccess);
+            if (status.IsError()) return status;
+
+            return new LSAPolicy(computerName, handle);
         }
     }
 }
