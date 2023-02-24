@@ -223,8 +223,8 @@ namespace SharpHoundCommonLib.Processors
                             continue;
                         }
                         
-                        //If we get a local well known principal, we need to convert it using the machine sid
-                        if (ConvertLocalWellKnownPrincipal(securityIdentifier, machineSid.Value, computerDomain, out var principal))
+                        //If we get a local well known principal, we need to convert it using the computer's objectid
+                        if (ConvertLocalWellKnownPrincipal(securityIdentifier, computerObjectId, computerDomain, out var principal))
                         {
                             //If the principal is null, it means we hit a weird edge case, but this is a local well known principal 
                             if (principal != null)
@@ -276,17 +276,19 @@ namespace SharpHoundCommonLib.Processors
                             // Throw out local users
                             if (objectType == Label.LocalUser)
                                 continue;
+
+                            var newSid = $"{computerObjectId}-{securityIdentifier.Rid()}";
                             
                             results.Add(new TypedPrincipal
                             {
-                                ObjectIdentifier = sidValue,
+                                ObjectIdentifier = newSid,
                                 ObjectType = objectType
                             });
 
                             names.Add(new NamedPrincipal
                             {
                                 PrincipalName = name,
-                                ObjectId = sidValue
+                                ObjectId = newSid
                             });
                             continue;
                         }
@@ -312,7 +314,7 @@ namespace SharpHoundCommonLib.Processors
             return _utils.ResolveIDAndType(sid, computerDomain);
         }
 
-        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string machineSid, string computerDomain, out TypedPrincipal principal)
+        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerObjectId, string computerDomain, out TypedPrincipal principal)
         {
             if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
             {
@@ -322,15 +324,9 @@ namespace SharpHoundCommonLib.Processors
                     return true;
                 }
 
-                if (machineSid == "UNKNOWN")
-                {
-                    principal = null;
-                    return true;
-                }
-
                 principal = new TypedPrincipal
                 {
-                    ObjectIdentifier = $"{machineSid}-{sid.Rid()}",
+                    ObjectIdentifier = $"{computerObjectId}-{sid.Rid()}",
                     ObjectType = common.ObjectType switch
                     {
                         Label.User => Label.LocalUser,

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using Moq;
+using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using Xunit;
@@ -39,6 +40,19 @@ namespace CommonLibTest
             Assert.Single(adminGroup.Results);
             Assert.Equal($"{machineDomainSid}-544", adminGroup.ObjectIdentifier);
             Assert.Equal("S-1-5-21-4243161961-3815211218-2888324771-512", adminGroup.Results[0].ObjectIdentifier);
+            var rdpGroup = results.First(x => x.ObjectIdentifier.EndsWith("-555"));
+            Assert.Equal(2, rdpGroup.Results.Length);
+            Assert.Collection(rdpGroup.Results, 
+                principal =>
+                {
+                    Assert.Equal($"{machineDomainSid}-1003", principal.ObjectIdentifier);
+                    Assert.Equal(Label.LocalGroup, principal.ObjectType);
+                    
+                }, principal =>
+                {
+                    Assert.Equal($"{machineDomainSid}-544", principal.ObjectIdentifier);
+                    Assert.Equal(Label.LocalGroup, principal.ObjectType);
+                });
         }
 
         [WindowsOnlyFact]

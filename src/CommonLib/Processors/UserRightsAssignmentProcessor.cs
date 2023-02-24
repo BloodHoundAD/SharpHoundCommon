@@ -95,6 +95,7 @@ namespace SharpHoundCommonLib.Processors
 
             foreach (var privilege in desiredPrivileges)
             {
+                _log.LogTrace("Getting principals for privilege {Priv} on computer {ComputerName}", privilege, computerName);
                 var ret = new UserRightsAssignmentAPIResult
                 {
                     Collected = false,
@@ -133,6 +134,7 @@ namespace SharpHoundCommonLib.Processors
                 foreach (var value in enumerateAccountsResult.Value)
                 {
                     var (sid, name, use, _) = value;
+                    _log.LogTrace("Got principal {Name} with sid {SID} and use {Use} for privilege {Priv} on computer {ComputerName}", name, sid.Value, use, privilege, computerName);
                     //Check if our sid is filtered
                     if (Helpers.IsSidFiltered(sid.Value))
                         continue;
@@ -148,15 +150,15 @@ namespace SharpHoundCommonLib.Processors
                     //If we get a local well known principal, we need to convert it using the computer's domain sid
                     if (ConvertLocalWellKnownPrincipal(sid, computerObjectId, computerDomain, out var principal))
                     {
-                        //If the principal is null, it means we hit a weird edge case, but this is a local well known principal 
-                        if (principal != null)
-                            resolved.Add(principal);
+                        _log.LogTrace("Got Well Known Principal {SID} on computer {Computer} for privilege {Privilege} and type {Type}", principal.ObjectIdentifier, computerName, privilege, principal.ObjectType);
+                        resolved.Add(principal);
                         continue;
                     }
 
                     //If the security identifier starts with the machine sid, we need to resolve it as a local account
                     if (sid.IsEqualDomainSid(machineSid))
                     {
+                        _log.LogTrace("Got local account {sid} on computer {Computer} for privilege {Privilege}", sid.Value, computerName, privilege);
                         var objectType = use switch
                         {
                             SharedEnums.SidNameUse.User => Label.LocalUser,
@@ -220,13 +222,7 @@ namespace SharpHoundCommonLib.Processors
                     return true;
                 }
 
-                if (computerDomainSid == "UNKNOWN")
-                {
-                    principal = null;
-                    return true;
-                }
-
-                //Use the machinesid + the RID of the sid we looked up to create our new principal
+                //Use the computer object id + the RID of the sid we looked up to create our new principal
                 principal = new TypedPrincipal
                 {
                     ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",

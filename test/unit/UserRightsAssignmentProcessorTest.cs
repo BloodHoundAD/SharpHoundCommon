@@ -34,7 +34,7 @@ namespace CommonLibTest
 
             var privilege = results[0];
             Assert.Equal(LSAPrivileges.RemoteInteractiveLogon, privilege.Privilege);
-            Assert.Equal(2, results[0].Results.Length);
+            Assert.Equal(3, results[0].Results.Length);
             var adminResult = privilege.Results.First(x => x.ObjectIdentifier.EndsWith("-544"));
             Assert.Equal($"{machineDomainSid}-544", adminResult.ObjectIdentifier);
             Assert.Equal(Label.LocalGroup, adminResult.ObjectType);

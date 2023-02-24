@@ -40,6 +40,8 @@ namespace CommonLibTest.Facades
                     return ("Administrator", SharedEnums.SidNameUse.User);
                 case "S-1-5-21-321011808-3761883066-353627080-1000":
                     return ("DefaultUser", SharedEnums.SidNameUse.User);
+                case "S-1-5-21-321011808-3761883066-353627080-1003":
+                    return ("TestGroup", SharedEnums.SidNameUse.Alias);
                 default:
                     throw new IndexOutOfRangeException();
             }
