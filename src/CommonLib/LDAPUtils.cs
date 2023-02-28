@@ -57,6 +57,7 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
+        private readonly Semaphore _searchQuerySemaphore;
 
         /// <summary>
         ///     Creates a new instance of LDAP Utils with defaults
@@ -66,6 +67,7 @@ namespace SharpHoundCommonLib
             _nativeMethods = new NativeMethods();
             _portScanner = new PortScanner();
             _log = Logging.LogProvider.CreateLogger("LDAPUtils");
+            _searchQuerySemaphore = new Semaphore(15, 15);
         }
 
         /// <summary>
@@ -74,11 +76,12 @@ namespace SharpHoundCommonLib
         /// <param name="nativeMethods"></param>
         /// <param name="scanner"></param>
         /// <param name="log"></param>
-        public LDAPUtils(NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null)
+        public LDAPUtils(int maxLdapQueries = 15, NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null)
         {
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _portScanner = scanner ?? new PortScanner();
             _log = log ?? Logging.LogProvider.CreateLogger("LDAPUtils");
+            _searchQuerySemaphore = new Semaphore(maxLdapQueries, maxLdapQueries);
         }
 
         /// <summary>
@@ -369,8 +372,16 @@ namespace SharpHoundCommonLib
             {
                 SearchResponse response;
 
-                response = (SearchResponse) conn.SendRequest(searchRequest);
-
+                try
+                {
+                    _searchQuerySemaphore.WaitOne();
+                    response = (SearchResponse) conn.SendRequest(searchRequest);
+                }
+                finally
+                {
+                    _searchQuerySemaphore.Release();
+                }
+                
                 //If we ever get more than one response from here, something is horribly wrong
                 if (response?.Entries.Count == 1)
                 {
@@ -690,6 +701,10 @@ namespace SharpHoundCommonLib
                 if (throwException) throw new LDAPQueryException("Failed to setup LDAP Query Filter", queryParams.Exception);
                 yield break;
             }
+            
+            var conn = queryParams.Connection;
+            var request = queryParams.SearchRequest;
+            var pageControl = queryParams.PageControl;
 
             PageResultResponseControl pageResponse = null;
             while (true)
@@ -700,6 +715,7 @@ namespace SharpHoundCommonLib
                 SearchResponse response;
                 try
                 {
+                    _searchQuerySemaphore.WaitOne();
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
                     response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
@@ -711,7 +727,8 @@ namespace SharpHoundCommonLib
                     if (le.ErrorCode != 82)
                         if (throwException)
                             throw new LDAPQueryException(
-                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}.", le);
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}.",
+                                le);
                         else
                             _log.LogWarning(le,
                                 "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
@@ -724,8 +741,12 @@ namespace SharpHoundCommonLib
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
                     if (throwException)
                         throw new LDAPQueryException($"Exception in LDAP loop for {ldapFilter} and {domainName}", e);
-                    
+
                     yield break;
+                }
+                finally
+                {
+                    _searchQuerySemaphore.Release();
                 }
 
                 if (cancellationToken.IsCancellationRequested)
@@ -785,13 +806,18 @@ namespace SharpHoundCommonLib
                 _log.LogWarning(queryParams.Exception, "Failed to setup LDAP Query Filter");
                 yield break;
             }
+            var conn = queryParams.Connection;
+            var request = queryParams.SearchRequest;
+            var pageControl = queryParams.PageControl;
 
             PageResultResponseControl pageResponse = null;
+            
             while (true)
             {
                 SearchResponse response;
                 try
                 {
+                    _searchQuerySemaphore.WaitOne();
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
                     response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
@@ -803,7 +829,8 @@ namespace SharpHoundCommonLib
                     if (le.ErrorCode != 82)
                         if (throwException)
                             throw new LDAPQueryException(
-                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}", le);
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}",
+                                le);
                         else
                             _log.LogWarning(le,
                                 "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
@@ -819,6 +846,10 @@ namespace SharpHoundCommonLib
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter,
                         domainName ?? "Default Domain");
                     yield break;
+                }
+                finally
+                {
+                    _searchQuerySemaphore.Release();
                 }
 
                 if (response == null || pageResponse == null) continue;
@@ -1279,7 +1310,7 @@ namespace SharpHoundCommonLib
 
             if (targetServer == null)
                 throw new LDAPQueryException($"No usable domain controller found for {domainName}");
-
+            
             if (!skipCache)
                 if (_ldapConnections.TryGetValue(targetServer, out var conn))
                     return conn;
