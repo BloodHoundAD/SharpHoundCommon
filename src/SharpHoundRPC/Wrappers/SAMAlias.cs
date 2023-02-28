@@ -5,7 +5,7 @@ using SharpHoundRPC.SAMRPCNative;
 
 namespace SharpHoundRPC.Wrappers
 {
-    public class SAMAlias : SAMBase
+    public class SAMAlias : SAMBase, ISAMAlias
     {
         public SAMAlias(SAMHandle handle) : base(handle)
         {
