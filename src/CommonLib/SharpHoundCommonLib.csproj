@@ -3,7 +3,7 @@
         <TargetFramework>net462</TargetFramework>
         <OutputType>library</OutputType>
         <PackageId>SharpHoundCommon</PackageId>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>9</LangVersion>
         <Authors>Rohan Vazarkar</Authors>
         <Company>SpecterOps</Company>
         <PackageDescription>Common library for C# BloodHound enumeration tasks</PackageDescription>
@@ -41,7 +41,7 @@
         </ItemGroup>
 
         <!-- Print batches for debug purposes -->
-        <Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''" />
+        <Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''"/>
 
         <ItemGroup>
             <!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->

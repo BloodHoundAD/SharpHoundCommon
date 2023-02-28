@@ -8,7 +8,7 @@ using SharpHoundRPC.Shared;
 
 namespace SharpHoundRPC.Wrappers
 {
-    public class SAMServer : SAMBase
+    public class SAMServer : SAMBase, ISAMServer
     {
         private readonly ConcurrentDictionary<string, SAMDomain> _domainHandleCache;
         private SecurityIdentifier _cachedMachineSid;
@@ -92,7 +92,7 @@ namespace SharpHoundRPC.Wrappers
             return domain.LookupPrincipalByRid(securityIdentifier.Rid());
         }
 
-        public Result<SAMDomain> OpenDomain(string domainName, SAMEnums.DomainAccessMask requestedDomainAccess =
+        public Result<ISAMDomain> OpenDomain(string domainName, SAMEnums.DomainAccessMask requestedDomainAccess =
             SAMEnums.DomainAccessMask.Lookup |
             SAMEnums.DomainAccessMask.ListAccounts)
         {
@@ -112,7 +112,7 @@ namespace SharpHoundRPC.Wrappers
             return domain;
         }
 
-        public Result<SAMDomain> OpenDomain(SecurityIdentifier securityIdentifier,
+        public Result<ISAMDomain> OpenDomain(SecurityIdentifier securityIdentifier,
             SAMEnums.DomainAccessMask requestedDomainAccess =
                 SAMEnums.DomainAccessMask.Lookup |
                 SAMEnums.DomainAccessMask.ListAccounts)

@@ -7,7 +7,7 @@ using SharpHoundRPC.Shared;
 
 namespace SharpHoundRPC.Wrappers
 {
-    public class SAMDomain : SAMBase
+    public class SAMDomain : SAMBase, ISAMDomain
     {
         public SAMDomain(SAMHandle handle) : base(handle)
         {
@@ -39,7 +39,7 @@ namespace SharpHoundRPC.Wrappers
             return ret;
         }
 
-        public Result<SAMAlias> OpenAlias(int rid,
+        public Result<ISAMAlias> OpenAlias(int rid,
             SAMEnums.AliasOpenFlags desiredAccess = SAMEnums.AliasOpenFlags.ListMembers)
         {
             var (status, aliasHandle) = SAMMethods.SamOpenAlias(Handle, desiredAccess, rid);
@@ -48,7 +48,7 @@ namespace SharpHoundRPC.Wrappers
             return new SAMAlias(aliasHandle);
         }
 
-        public Result<SAMAlias> OpenAlias(string name)
+        public Result<ISAMAlias> OpenAlias(string name)
         {
             var getAliasesResult = GetAliases();
             if (getAliasesResult.IsFailed) return getAliasesResult.Status;

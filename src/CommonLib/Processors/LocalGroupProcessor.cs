@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundRPC;
 using SharpHoundRPC.Shared;
 using SharpHoundRPC.Wrappers;
 
@@ -25,6 +25,22 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
+        public virtual Result<ISAMServer> OpenSamServer(string computerName)
+        {
+            var result = SAMServer.OpenServer(computerName);
+            if (result.IsFailed)
+            {
+                return Result<ISAMServer>.Fail(result.SError);
+            }
+
+            return Result<ISAMServer>.Ok(result.Value);
+        }
+
+        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(ResolvedSearchResult result)
+        {
+            return GetLocalGroups(result.DisplayName, result.ObjectId, result.Domain, result.IsDomainController);
+        }
+
         /// <summary>
         ///     Gets local groups from a computer
         /// </summary>
@@ -37,9 +53,10 @@ namespace SharpHoundCommonLib.Processors
             string computerDomain, bool isDomainController)
         {
             //Open a handle to the server
-            var openServerResult = SAMServer.OpenServer(computerName);
+            var openServerResult = OpenSamServer(computerName);
             if (openServerResult.IsFailed)
             {
+                _log.LogTrace("OpenServer failed on {ComputerName}: {Error}", computerName, openServerResult.SError);
                 SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "SamConnect",
@@ -59,6 +76,7 @@ namespace SharpHoundCommonLib.Processors
                 var getMachineSidResult = server.GetMachineSid();
                 if (getMachineSidResult.IsFailed)
                 {
+                    _log.LogTrace("GetMachineSid failed on {ComputerName}: {Error}", computerName, getMachineSidResult.SError);
                     SendComputerStatus(new CSVComputerStatus
                     {
                         Status = getMachineSidResult.SError,
@@ -82,6 +100,7 @@ namespace SharpHoundCommonLib.Processors
             var getDomainsResult = server.GetDomains();
             if (getDomainsResult.IsFailed)
             {
+                _log.LogTrace("GetDomains failed on {ComputerName}: {Error}", computerName, getDomainsResult.SError);
                 SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "GetDomains",
@@ -97,10 +116,12 @@ namespace SharpHoundCommonLib.Processors
                 //Skip non-builtin domains on domain controllers
                 if (isDomainController && !domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase))
                     continue;
+                
                 //Open a handle to the domain
                 var openDomainResult = server.OpenDomain(domainResult.Name);
                 if (openDomainResult.IsFailed)
                 {
+                    _log.LogTrace("Failed to open domain {Domain} on {ComputerName}: {Error}", domainResult.Name, computerName, openDomainResult.SError);
                     SendComputerStatus(new CSVComputerStatus
                     {
                         Task = $"OpenDomain - {domainResult.Name}",
@@ -117,6 +138,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (getAliasesResult.IsFailed)
                 {
+                    _log.LogTrace("Failed to open Aliases on Domain {Domain} on on {ComputerName}: {Error}", domainResult.Name, computerName, getAliasesResult.SError);
                     SendComputerStatus(new CSVComputerStatus
                     {
                         Task = $"GetAliases - {domainResult.Name}",
@@ -128,10 +150,12 @@ namespace SharpHoundCommonLib.Processors
 
                 foreach (var alias in getAliasesResult.Value)
                 {
+                    _log.LogTrace("Opening alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}", alias.Name, alias.Rid, domainResult.Name, computerName);
                     //Try and resolve the group name using several different criteria
-                    var resolvedName = ResolveGroupName(alias.Name, computerName, machineSid, computerDomain, alias.Rid,
+                    var resolvedName = ResolveGroupName(alias.Name, computerName, computerObjectId, computerDomain, alias.Rid,
                         isDomainController,
                         domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase));
+
                     var ret = new LocalGroupAPIResult
                     {
                         Name = resolvedName.PrincipalName,
@@ -142,6 +166,7 @@ namespace SharpHoundCommonLib.Processors
                     var openAliasResult = domain.OpenAlias(alias.Rid);
                     if (openAliasResult.IsFailed)
                     {
+                        _log.LogTrace("Failed to open alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}: {Error}", alias.Name, alias.Rid, domainResult.Name, computerName, openAliasResult.Error);
                         SendComputerStatus(new CSVComputerStatus
                         {
                             Task = $"OpenAlias - {alias.Name}",
@@ -159,6 +184,7 @@ namespace SharpHoundCommonLib.Processors
                     var getMembersResult = localGroup.GetMembers();
                     if (getMembersResult.IsFailed)
                     {
+                        _log.LogTrace("Failed to get members in alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}: {Error}", alias.Name, alias.Rid, domainResult.Name, computerName, openAliasResult.Error);
                         SendComputerStatus(new CSVComputerStatus
                         {
                             Task = $"GetMembersInAlias - {alias.Name}",
@@ -183,6 +209,7 @@ namespace SharpHoundCommonLib.Processors
 
                     foreach (var securityIdentifier in getMembersResult.Value)
                     {
+                        _log.LogTrace("Got member sid {Sid} in alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}", securityIdentifier.Value, alias.Name, alias.Rid, domainResult.Name, computerName);
                         //Check if the sid is one of our filtered ones. Throw it out if it is
                         if (Helpers.IsSidFiltered(securityIdentifier.Value))
                             continue;
@@ -196,8 +223,8 @@ namespace SharpHoundCommonLib.Processors
                             continue;
                         }
                         
-                        //If we get a local well known principal, we need to convert it using the machine sid
-                        if (ConvertLocalWellKnownPrincipal(securityIdentifier, machineSid.Value, computerDomain, out var principal))
+                        //If we get a local well known principal, we need to convert it using the computer's objectid
+                        if (ConvertLocalWellKnownPrincipal(securityIdentifier, computerObjectId, computerDomain, out var principal))
                         {
                             //If the principal is null, it means we hit a weird edge case, but this is a local well known principal 
                             if (principal != null)
@@ -249,17 +276,19 @@ namespace SharpHoundCommonLib.Processors
                             // Throw out local users
                             if (objectType == Label.LocalUser)
                                 continue;
+
+                            var newSid = $"{computerObjectId}-{securityIdentifier.Rid()}";
                             
                             results.Add(new TypedPrincipal
                             {
-                                ObjectIdentifier = sidValue,
+                                ObjectIdentifier = newSid,
                                 ObjectType = objectType
                             });
 
                             names.Add(new NamedPrincipal
                             {
                                 PrincipalName = name,
-                                ObjectId = sidValue
+                                ObjectId = newSid
                             });
                             continue;
                         }
@@ -285,7 +314,7 @@ namespace SharpHoundCommonLib.Processors
             return _utils.ResolveIDAndType(sid, computerDomain);
         }
 
-        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string machineSid, string computerDomain, out TypedPrincipal principal)
+        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerObjectId, string computerDomain, out TypedPrincipal principal)
         {
             if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
             {
@@ -295,15 +324,9 @@ namespace SharpHoundCommonLib.Processors
                     return true;
                 }
 
-                if (machineSid == "UNKNOWN")
-                {
-                    principal = null;
-                    return true;
-                }
-
                 principal = new TypedPrincipal
                 {
-                    ObjectIdentifier = $"{machineSid}-{sid.Rid()}",
+                    ObjectIdentifier = $"{computerObjectId}-{sid.Rid()}",
                     ObjectType = common.ObjectType switch
                     {
                         Label.User => Label.LocalUser,
@@ -319,7 +342,7 @@ namespace SharpHoundCommonLib.Processors
             return false;
         }
 
-        private NamedPrincipal ResolveGroupName(string baseName, string computerName, SecurityIdentifier machineSid,
+        private NamedPrincipal ResolveGroupName(string baseName, string computerName, string computerDomainSid,
             string domainName, int groupRid, bool isDc, bool isBuiltIn)
         {
             if (isDc)
@@ -335,22 +358,22 @@ namespace SharpHoundCommonLib.Processors
                     };
                 }
 
-                if (machineSid == null)
+                if (computerDomainSid == null)
                     return null;
                 //We shouldn't hit this provided our isDC logic is correct since we're skipping non-builtin groups
                 return new NamedPrincipal
                 {
-                    ObjectId = $"{machineSid}-{groupRid}".ToUpper(),
+                    ObjectId = $"{computerDomainSid}-{groupRid}".ToUpper(),
                     PrincipalName = "IGNOREME"
                 };
             }
 
-            if (machineSid == null)
+            if (computerDomainSid == null)
                 return null;
             //Take the local machineSid, append the groupRid, and make a name from the group name + computername
             return new NamedPrincipal
             {
-                ObjectId = $"{machineSid}-{groupRid}",
+                ObjectId = $"{computerDomainSid}-{groupRid}",
                 PrincipalName = $"{baseName}@{computerName}".ToUpper()
             };
         }

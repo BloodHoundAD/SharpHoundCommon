@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundRPC.Wrappers;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace SharpHoundCommonLib
