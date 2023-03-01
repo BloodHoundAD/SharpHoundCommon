@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
@@ -42,6 +43,8 @@ namespace SharpHoundCommonLib
             0x41, 0x41, 0x41, 0x41, 0x41, 0x00, 0x00, 0x21,
             0x00, 0x01
         };
+        
+        private const int SemaphoreTimeout = 10000;
 
         private static readonly ConcurrentDictionary<string, ResolvedWellKnownPrincipal>
             SeenWellKnownPrincipals = new();
@@ -50,7 +53,6 @@ namespace SharpHoundCommonLib
 
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
         private readonly ConcurrentDictionary<string, string> _domainControllerCache = new();
-        private readonly ConcurrentDictionary<string, string> _gcControllerCache = new();
 
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
@@ -60,6 +62,7 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
+        private readonly Semaphore _searchQuerySemaphore;
 
         /// <summary>
         ///     Creates a new instance of LDAP Utils with defaults
@@ -69,19 +72,22 @@ namespace SharpHoundCommonLib
             _nativeMethods = new NativeMethods();
             _portScanner = new PortScanner();
             _log = Logging.LogProvider.CreateLogger("LDAPUtils");
+            _searchQuerySemaphore = new Semaphore(15, 15);
         }
 
         /// <summary>
         ///     Creates a new instance of LDAP utils and allows overriding implementations
         /// </summary>
+        /// <param name="maxLdapQueries">Maximum number of concurrent LDAP queries. The default max on DCs is 20</param>
         /// <param name="nativeMethods"></param>
         /// <param name="scanner"></param>
         /// <param name="log"></param>
-        public LDAPUtils(NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null)
+        public LDAPUtils(int maxLdapQueries = 15, NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null)
         {
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _portScanner = scanner ?? new PortScanner();
             _log = log ?? Logging.LogProvider.CreateLogger("LDAPUtils");
+            _searchQuerySemaphore = new Semaphore(maxLdapQueries, maxLdapQueries);
         }
 
         /// <summary>
@@ -92,6 +98,17 @@ namespace SharpHoundCommonLib
         public void SetLDAPConfig(LDAPConfig config)
         {
             _ldapConfig = config ?? throw new Exception("LDAP Configuration can not be null");
+            _domainControllerCache.Clear();
+            foreach (var kv in _globalCatalogConnections)
+            {
+                kv.Value.Dispose();
+            }
+            _globalCatalogConnections.Clear();
+            foreach (var kv in _ldapConnections)
+            {
+                kv.Value.Dispose();
+            }
+            _ldapConnections.Clear();
         }
 
         /// <summary>
@@ -369,9 +386,33 @@ namespace SharpHoundCommonLib
             while (true)
             {
                 SearchResponse response;
+                var semaphoreLocked = false;
 
-                response = (SearchResponse) conn.SendRequest(searchRequest);
+                try
+                {
+                    semaphoreLocked = _searchQuerySemaphore.WaitOne(10000);
+                }
+                catch (Exception e)
+                {
+                    _log.LogError(e,"Error grabbing semaphore lock for ranged retrieval");
+                    break;
+                }
 
+                if (!semaphoreLocked)
+                {
+                    _log.LogWarning("Failed to acquire semaphore for ranged retrieval in {Timeout} ms, aborting", SemaphoreTimeout);
+                    yield break;
+                }
+
+                try
+                {
+                    response = (SearchResponse) conn.SendRequest(searchRequest);
+                }
+                finally
+                {
+                    _searchQuerySemaphore.Release();
+                }
+                
                 //If we ever get more than one response from here, something is horribly wrong
                 if (response?.Entries.Count == 1)
                 {
@@ -682,21 +723,19 @@ namespace SharpHoundCommonLib
             bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false,
             bool throwException = false)
         {
-            // TODO: Find a better abstraction than a tuple of results
-            var setupTuple = SetupLDAPQueryFilter(
+            var queryParams = SetupLDAPQueryFilter(
                 ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
-            var conn = setupTuple.Item1;
-            var request = setupTuple.Item2;
-            var pageControl = setupTuple.Item3;
-            var error = setupTuple.Item4;
-
-            if (error != null)
+            
+            if (queryParams.Exception != null)
             {
-                if (throwException) throw new LDAPQueryException("Failed to setup LDAP Query Filter", error);
-
-                _log.LogWarning(error, "Failed to setup LDAP Query Filter");
+                _log.LogWarning(queryParams.Exception, "Failed to setup LDAP Query Filter");
+                if (throwException) throw new LDAPQueryException("Failed to setup LDAP Query Filter", queryParams.Exception);
                 yield break;
             }
+            
+            var conn = queryParams.Connection;
+            var request = queryParams.SearchRequest;
+            var pageControl = queryParams.PageControl;
 
             PageResultResponseControl pageResponse = null;
             while (true)
@@ -704,6 +743,23 @@ namespace SharpHoundCommonLib
                 if (cancellationToken.IsCancellationRequested)
                     yield break;
 
+                bool semaphoreLocked;
+                try
+                {
+                    semaphoreLocked = _searchQuerySemaphore.WaitOne(SemaphoreTimeout);
+                }
+                catch (Exception e)
+                {
+                    _log.LogError(e, "Exception grabbing QueryLDAP semaphore");
+                    yield break;
+                }
+
+                if (!semaphoreLocked)
+                {
+                    _log.LogDebug("QueryLDAP semaphore failed to acquire after {Timeout} ms. Aborting", SemaphoreTimeout);
+                    yield break;
+                }
+                
                 SearchResponse response;
                 try
                 {
@@ -718,7 +774,8 @@ namespace SharpHoundCommonLib
                     if (le.ErrorCode != 82)
                         if (throwException)
                             throw new LDAPQueryException(
-                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}.", le);
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}.",
+                                le);
                         else
                             _log.LogWarning(le,
                                 "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
@@ -728,11 +785,15 @@ namespace SharpHoundCommonLib
                 }
                 catch (Exception e)
                 {
-                    if (throwException)
-                        throw new LDAPQueryException($"Exception in LDAP loop for {ldapFilter} and {domainName}");
-
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
+                    if (throwException)
+                        throw new LDAPQueryException($"Exception in LDAP loop for {ldapFilter} and {domainName}", e);
+
                     yield break;
+                }
+                finally
+                {
+                    _searchQuerySemaphore.Release();
                 }
 
                 if (cancellationToken.IsCancellationRequested)
@@ -782,25 +843,43 @@ namespace SharpHoundCommonLib
             string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false)
         {
             // TODO: Find a better abstraction than a tuple of results
-            var setupTuple = SetupLDAPQueryFilter(
+            var queryParams = SetupLDAPQueryFilter(
                 ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
-            var conn = setupTuple.Item1;
-            var request = setupTuple.Item2;
-            var pageControl = setupTuple.Item3;
-            var error = setupTuple.Item4;
 
-            if (error != null)
+            if (queryParams.Exception != null)
             {
-                if (throwException) throw new LDAPQueryException("Failed to setup LDAP Query Filter", error);
+                if (throwException) throw queryParams.Exception;
 
-                _log.LogWarning(error, "Failed to setup LDAP Query Filter");
+                _log.LogWarning(queryParams.Exception, "Failed to setup LDAP Query Filter");
                 yield break;
             }
+            var conn = queryParams.Connection;
+            var request = queryParams.SearchRequest;
+            var pageControl = queryParams.PageControl;
 
             PageResultResponseControl pageResponse = null;
+            
             while (true)
             {
                 SearchResponse response;
+                
+                bool semaphoreLocked;
+                try
+                {
+                    semaphoreLocked = _searchQuerySemaphore.WaitOne(SemaphoreTimeout);
+                }
+                catch (Exception e)
+                {
+                    _log.LogError(e, "Exception grabbing QueryLDAP semaphore");
+                    yield break;
+                }
+
+                if (!semaphoreLocked)
+                {
+                    _log.LogDebug("QueryLDAP semaphore failed to acquire after {Timeout} ms. Aborting", SemaphoreTimeout);
+                    yield break;
+                }
+                
                 try
                 {
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
@@ -814,7 +893,8 @@ namespace SharpHoundCommonLib
                     if (le.ErrorCode != 82)
                         if (throwException)
                             throw new LDAPQueryException(
-                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}", le);
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}",
+                                le);
                         else
                             _log.LogWarning(le,
                                 "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
@@ -830,6 +910,10 @@ namespace SharpHoundCommonLib
                     _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter,
                         domainName ?? "Default Domain");
                     yield break;
+                }
+                finally
+                {
+                    _searchQuerySemaphore.Release();
                 }
 
                 if (response == null || pageResponse == null) continue;
@@ -891,13 +975,10 @@ namespace SharpHoundCommonLib
             var resDomain = GetDomain(domain)?.Name ?? domain;
             _log.LogTrace("Testing LDAP connection for domain {Domain}", resDomain);
 
-            var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID, resDomain)
+            var result = QueryLDAP(filter.GetFilter(), SearchScope.Subtree, CommonProperties.ObjectID, resDomain,
+                    throwException: true)
                 .DefaultIfEmpty(null).FirstOrDefault();
-            
             _log.LogTrace("Result object from LDAP connection test is {DN}", result?.DistinguishedName ?? "null");
-
-            _log.LogTrace("Result object from LDAP connection test is {DN}", result?.DistinguishedName ?? "null");
-
             return result != null;
         }
 
@@ -928,8 +1009,9 @@ namespace SharpHoundCommonLib
 
                 domain = Domain.GetDomain(context);
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogDebug(e,"GetDomain call failed at {StackTrace}", new StackFrame());
                 domain = null;
             }
 
@@ -953,7 +1035,8 @@ namespace SharpHoundCommonLib
         ///     yourself.
         /// </param>
         /// <returns>Tuple of LdapConnection, SearchRequest, PageResultRequestControl and LDAPQueryException</returns>
-        public Tuple<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException> SetupLDAPQueryFilter(
+        // ReSharper disable once MemberCanBePrivate.Global
+        internal LDAPQueryParams SetupLDAPQueryFilter(
             string ldapFilter,
             SearchScope scope, string[] props, bool includeAcl = false, string domainName = null,
             bool showDeleted = false,
@@ -965,35 +1048,60 @@ namespace SharpHoundCommonLib
                 ? Task.Run(() => CreateGlobalCatalogConnection(domainName, _ldapConfig.AuthType))
                 : Task.Run(() => CreateLDAPConnection(domainName, skipCache, _ldapConfig.AuthType));
 
+            var queryParams = new LDAPQueryParams();
+
             LdapConnection conn;
             try
             {
                 conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
             }
+            catch (LdapException ldapException)
+            {
+                var errorString =
+                    $"LDAP Exception {ldapException.ErrorCode} when creating connection for {ldapFilter} and domain {domainName ?? "Default Domain"}: {ldapException.Message}";
+                queryParams.Exception = new LDAPQueryException(errorString, ldapException);
+                return queryParams;
+            }
+            catch (LDAPQueryException ldapQueryException)
+            {
+                queryParams.Exception = ldapQueryException;
+                return queryParams;
+            }
             catch (Exception e)
             {
                 var errorString =
                     $"Exception getting LDAP connection for {ldapFilter} and domain {domainName ?? "Default Domain"}";
-                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
-                    null, null, null, new LDAPQueryException(errorString, e));
+                queryParams.Exception = new LDAPQueryException(errorString, e);
+                return queryParams;
             }
 
+            //If we get a null connection, something went wrong, but we don't have an error to go with it for whatever reason
             if (conn == null)
             {
                 var errorString =
                     $"LDAP connection is null for filter {ldapFilter} and domain {domainName ?? "Default Domain"}";
-                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
-                    null, null, null, new LDAPQueryException(errorString));
+                queryParams.Exception = new LDAPQueryException(errorString);
+                return queryParams;
             }
 
-            var request = CreateSearchRequest(ldapFilter, scope, props, domainName, adsPath, showDeleted);
+            SearchRequest request;
+
+            try
+            {
+                request = CreateSearchRequest(ldapFilter, scope, props, domainName, adsPath, showDeleted);
+            }
+            catch (LDAPQueryException ldapQueryException)
+            {
+                queryParams.Exception = ldapQueryException;
+                return queryParams;
+            }
 
             if (request == null)
             {
                 var errorString =
                     $"Search request is null for filter {ldapFilter} and domain {domainName ?? "Default Domain"}";
-                return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(
-                    null, null, null, new LDAPQueryException(errorString));
+                queryParams.Exception = new LDAPQueryException(errorString);
+                return queryParams;
             }
 
             var pageControl = new PageResultRequestControl(500);
@@ -1005,8 +1113,11 @@ namespace SharpHoundCommonLib
                     SecurityMasks = SecurityMasks.Dacl | SecurityMasks.Owner
                 });
 
-            return Tuple.Create<LdapConnection, SearchRequest, PageResultRequestControl, LDAPQueryException>(conn,
-                request, pageControl, null);
+            queryParams.Connection = conn;
+            queryParams.SearchRequest = request;
+            queryParams.PageControl = pageControl;
+
+            return queryParams;
         }
 
         private Group GetBaseEnterpriseDC(string domain)
@@ -1169,7 +1280,7 @@ namespace SharpHoundCommonLib
             var domain = GetDomain(domainName)?.Name ?? domainName;
 
             if (domain == null)
-                return null;
+                throw new LDAPQueryException($"Unable to create search request: GetDomain call failed for {domainName}");
 
             var adPath = adsPath?.Replace("LDAP://", "") ?? $"DC={domain.Replace(".", ",DC=")}";
 
@@ -1200,8 +1311,8 @@ namespace SharpHoundCommonLib
                 var domain = GetDomain(domainName);
                 if (domain == null)
                 {
-                    _log.LogDebug("Unable to create global catalog connection for domain {DomainName}", domainName);
-                    return null;
+                    _log.LogDebug("Unable to create global catalog connection for domain {DomainName}: GetDomain failed", domainName);
+                    throw new LDAPQueryException($"GetDomain call failed for {domainName}");
                 }
 
                 if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
@@ -1209,7 +1320,7 @@ namespace SharpHoundCommonLib
             }
 
             if (targetServer == null)
-                return null;
+                throw new LDAPQueryException($"No usable global catalog found for {domainName}");
 
             if (_globalCatalogConnections.TryGetValue(targetServer, out var connection))
                 return connection;
@@ -1248,16 +1359,14 @@ namespace SharpHoundCommonLib
         {
             string targetServer;
             if (_ldapConfig.Server != null)
-            {
-                targetServer = _ldapConfig.Server;
-            }
+                targetServer = _ldapConfig.Server; 
             else
             {
                 var domain = GetDomain(domainName);
                 if (domain == null)
                 {
-                    _log.LogDebug("Unable to create ldap connection for domain {DomainName}", domainName);
-                    return null;
+                    _log.LogDebug("Unable to create ldap connection for domain {DomainName}: GetDomain failed", domainName);
+                    throw new LDAPQueryException($"Error creating LDAP connection: GetDomain call failed for {domainName}");
                 }
 
                 if (!_domainControllerCache.TryGetValue(domain.Name, out targetServer))
@@ -1265,8 +1374,8 @@ namespace SharpHoundCommonLib
             }
 
             if (targetServer == null)
-                return null;
-
+                throw new LDAPQueryException($"No usable domain controller found for {domainName}");
+            
             if (!skipCache)
                 if (_ldapConnections.TryGetValue(targetServer, out var conn))
                     return conn;
@@ -1306,10 +1415,7 @@ namespace SharpHoundCommonLib
 
         private async Task<string> GetUsableDomainController(Domain domain, bool gc = false)
         {
-            if (gc && _gcControllerCache.TryGetValue(domain.Name.ToUpper(), out var dc))
-                return dc;
-
-            if (!gc && _domainControllerCache.TryGetValue(domain.Name.ToUpper(), out dc))
+            if (!gc && _domainControllerCache.TryGetValue(domain.Name.ToUpper(), out var dc))
                 return dc;
             
             var port = gc ? 3268 : _ldapConfig.GetPort();
