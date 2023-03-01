@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
@@ -42,6 +43,8 @@ namespace SharpHoundCommonLib
             0x41, 0x41, 0x41, 0x41, 0x41, 0x00, 0x00, 0x21,
             0x00, 0x01
         };
+        
+        private const int SemaphoreTimeout = 10000;
 
         private static readonly ConcurrentDictionary<string, ResolvedWellKnownPrincipal>
             SeenWellKnownPrincipals = new();
@@ -75,6 +78,7 @@ namespace SharpHoundCommonLib
         /// <summary>
         ///     Creates a new instance of LDAP utils and allows overriding implementations
         /// </summary>
+        /// <param name="maxLdapQueries">Maximum number of concurrent LDAP queries. The default max on DCs is 20</param>
         /// <param name="nativeMethods"></param>
         /// <param name="scanner"></param>
         /// <param name="log"></param>
@@ -95,7 +99,16 @@ namespace SharpHoundCommonLib
         {
             _ldapConfig = config ?? throw new Exception("LDAP Configuration can not be null");
             _domainControllerCache.Clear();
+            foreach (var kv in _globalCatalogConnections)
+            {
+                kv.Value.Dispose();
+            }
             _globalCatalogConnections.Clear();
+            foreach (var kv in _ldapConnections)
+            {
+                kv.Value.Dispose();
+            }
+            _ldapConnections.Clear();
         }
 
         /// <summary>
@@ -373,10 +386,26 @@ namespace SharpHoundCommonLib
             while (true)
             {
                 SearchResponse response;
+                var semaphoreLocked = false;
 
                 try
                 {
-                    _searchQuerySemaphore.WaitOne();
+                    semaphoreLocked = _searchQuerySemaphore.WaitOne(10000);
+                }
+                catch (Exception e)
+                {
+                    _log.LogError(e,"Error grabbing semaphore lock for ranged retrieval");
+                    break;
+                }
+
+                if (!semaphoreLocked)
+                {
+                    _log.LogWarning("Failed to acquire semaphore for ranged retrieval in {Timeout} ms, aborting", SemaphoreTimeout);
+                    yield break;
+                }
+
+                try
+                {
                     response = (SearchResponse) conn.SendRequest(searchRequest);
                 }
                 finally
@@ -714,10 +743,26 @@ namespace SharpHoundCommonLib
                 if (cancellationToken.IsCancellationRequested)
                     yield break;
 
+                bool semaphoreLocked;
+                try
+                {
+                    semaphoreLocked = _searchQuerySemaphore.WaitOne(SemaphoreTimeout);
+                }
+                catch (Exception e)
+                {
+                    _log.LogError(e, "Exception grabbing QueryLDAP semaphore");
+                    yield break;
+                }
+
+                if (!semaphoreLocked)
+                {
+                    _log.LogDebug("QueryLDAP semaphore failed to acquire after {Timeout} ms. Aborting", SemaphoreTimeout);
+                    yield break;
+                }
+                
                 SearchResponse response;
                 try
                 {
-                    _searchQuerySemaphore.WaitOne();
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
                     response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
@@ -817,9 +862,26 @@ namespace SharpHoundCommonLib
             while (true)
             {
                 SearchResponse response;
+                
+                bool semaphoreLocked;
                 try
                 {
-                    _searchQuerySemaphore.WaitOne();
+                    semaphoreLocked = _searchQuerySemaphore.WaitOne(SemaphoreTimeout);
+                }
+                catch (Exception e)
+                {
+                    _log.LogError(e, "Exception grabbing QueryLDAP semaphore");
+                    yield break;
+                }
+
+                if (!semaphoreLocked)
+                {
+                    _log.LogDebug("QueryLDAP semaphore failed to acquire after {Timeout} ms. Aborting", SemaphoreTimeout);
+                    yield break;
+                }
+                
+                try
+                {
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
                     response = (SearchResponse) conn.SendRequest(request);
                     if (response != null)
@@ -947,8 +1009,9 @@ namespace SharpHoundCommonLib
 
                 domain = Domain.GetDomain(context);
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogDebug(e,"GetDomain call failed at {StackTrace}", new StackFrame());
                 domain = null;
             }
 

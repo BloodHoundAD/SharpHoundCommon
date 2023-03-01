@@ -8,7 +8,7 @@ namespace SharpHoundCommonLib
         public LdapConnection Connection { get; set; }
         public SearchRequest SearchRequest { get; set; }
         public PageResultRequestControl PageControl { get; set; }
-        public LDAPQueryException Exception { get; set; } = null;
+        public LDAPQueryException Exception { get; set; }
     }
 }
 
