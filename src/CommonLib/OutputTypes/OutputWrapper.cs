@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace SharpHoundCommonLib.OutputTypes
 {
+    [DataContract]
     public class OutputWrapper<T>
     {
         [DataMember(Name = "meta")] public MetaTag Meta { get; set; }
