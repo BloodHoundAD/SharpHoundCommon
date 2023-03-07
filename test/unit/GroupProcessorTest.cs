@@ -20,7 +20,8 @@ namespace CommonLibTest
             "CN=Domain Admins,CN=Users,DC=testlab,DC=local",
             "CN=Enterprise Admins,CN=Users,DC=testlab,DC=local",
             "CN=Administrator,CN=Users,DC=testlab,DC=local",
-            "CN=NonExistent,CN=Users,DC=testlab,DC=local"
+            "CN=NonExistent,CN=Users,DC=testlab,DC=local",
+            "CN=DistributionGroup,CN=Users,DC=testlab,DC=local"
         };
 
         private readonly ITestOutputHelper _testOutputHelper;

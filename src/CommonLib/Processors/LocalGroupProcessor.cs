@@ -357,9 +357,7 @@ namespace SharpHoundCommonLib.Processors
                         PrincipalName = "IGNOREME"
                     };
                 }
-
-                if (computerDomainSid == null)
-                    return null;
+                
                 //We shouldn't hit this provided our isDC logic is correct since we're skipping non-builtin groups
                 return new NamedPrincipal
                 {
@@ -367,9 +365,7 @@ namespace SharpHoundCommonLib.Processors
                     PrincipalName = "IGNOREME"
                 };
             }
-
-            if (computerDomainSid == null)
-                return null;
+            
             //Take the local machineSid, append the groupRid, and make a name from the group name + computername
             return new NamedPrincipal
             {

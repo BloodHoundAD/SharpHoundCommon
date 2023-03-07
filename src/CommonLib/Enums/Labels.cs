@@ -11,6 +11,7 @@
         Domain,
         OU,
         Container,
-        Base
+        Base,
+        DistributionGroup
     }
 }

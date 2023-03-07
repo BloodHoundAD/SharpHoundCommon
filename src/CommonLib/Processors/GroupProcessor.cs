@@ -57,7 +57,7 @@ namespace SharpHoundCommonLib.Processors
                         };
                     else
                     {
-                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier))
+                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier) && res.ObjectType != Label.DistributionGroup)
                             yield return res;
                     }
                 }
@@ -78,7 +78,7 @@ namespace SharpHoundCommonLib.Processors
                         };
                     else
                     {
-                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier))
+                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier) && res.ObjectType != Label.DistributionGroup)
                             yield return res;
                     }
                 }

@@ -76,7 +76,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         public LDAPFilter AddGroups(params string[] conditions)
         {
             _filterParts.Add(BuildString(
-                "(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))",
+                "(|(samaccounttype=268435456)(samaccounttype=536870912))",
                 conditions));
 
             return this;

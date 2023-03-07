@@ -69,9 +69,9 @@ namespace CommonLibTest
             var accountTypeLookup = new (string accountType, Label label)[]
             {
                 (accountType: "268435456", label: Label.Group),
-                (accountType: "268435457", label: Label.Group),
+                (accountType: "268435457", label: Label.DistributionGroup),
                 (accountType: "536870912", label: Label.Group),
-                (accountType: "536870913", label: Label.Group),
+                (accountType: "536870913", label: Label.DistributionGroup),
                 (accountType: "805306369", Label.Computer),
                 (accountType: "805306368", Label.User)
             };

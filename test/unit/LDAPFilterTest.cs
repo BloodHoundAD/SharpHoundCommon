@@ -40,7 +40,7 @@ namespace CommonLibTest
             var filter = test.GetFilter();
             _testOutputHelper.WriteLine(filter);
             Assert.Equal(
-                "(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))",
+                "(|(samaccounttype=268435456)(samaccounttype=536870912))",
                 filter);
         }
 
@@ -52,7 +52,7 @@ namespace CommonLibTest
             var filter = test.GetFilter();
             _testOutputHelper.WriteLine(filter);
             Assert.Equal(
-                "(&(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))(objectclass=*))",
+                "(&(|(samaccounttype=268435456)(samaccounttype=536870912))(objectclass=*))",
                 filter);
         }
 

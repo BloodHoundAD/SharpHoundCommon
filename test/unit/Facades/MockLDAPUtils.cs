@@ -1016,6 +1016,7 @@ namespace CommonLibTest.Facades
                     "S-1-5-21-3130019616-2776909439-2417379446-2106", Label.User),
                 "CN=KRBTGT,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-502", Label.User),
+                "CN=DISTRIBUTIONGROUP,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-2106", Label.DistributionGroup),
                 _ => null
             };
         }
