@@ -32,6 +32,48 @@ namespace SharpHoundCommonLib.Processors
         private static readonly Regex ExtractRid =
             new(@"S-1-5-32-([0-9]{3})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private static readonly Regex SystemAccessRegex =
+            new(@"\[System Access\](.*)((.[^\[])*)", RegexOptions.Compiled | RegexOptions.Singleline);
+
+        private static readonly Regex MinPassAgeRegex =
+            new(@"MinimumPasswordAge(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex MaxPassAgeRegex =
+            new(@"MaximumPasswordAge(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex MinPassLengthRegex =
+            new(@"MinimumPasswordLength(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex PassComplexityRegex =
+            new(@"PasswordComplexity(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex PassHistSizeRegex =
+            new(@"PasswordHistorySize(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex ClearTextPassRegex =
+            new(@"ClearTextPassword(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex RegistryRegex =
+            new(@"\[Registry Values\]((.[^\[])*)", RegexOptions.Compiled | RegexOptions.Singleline);
+
+        private static readonly Regex SMBEnableServerRegex =
+            new(@"LanmanServer.*\\EnableSecuritySignature *= *\d+ *, *(\d)", RegexOptions.Compiled);
+
+        private static readonly Regex SMBRequireServerRegex =
+            new(@"LanmanServer.*\\RequireSecuritySignature *= *\d+ *, *(\d)", RegexOptions.Compiled);
+
+        private static readonly Regex SMBEnableClientRegex =
+            new(@"LanmanWorkstation.*\\EnableSecuritySignature *= *\d+ *, *(\d)", RegexOptions.Compiled);
+
+        private static readonly Regex SMBRequireClientRegex =
+            new(@"LanmanWorkstation.*\\RequireSecuritySignature *= *\d+ *, *(\d)", RegexOptions.Compiled);
+
+        private static readonly Regex LDAPClientIntegrityRegex =
+            new(@"CurrentControlSet.*\\LDAPClientIntegrity *= *\d+ *, *(\d)", RegexOptions.Compiled);
+
+        private static readonly Regex LMLevelRegex =
+            new(@"\\LmCompatibilityLevel *= *\d+ *, *(\d)", RegexOptions.Compiled);
+
         private static readonly ConcurrentDictionary<string, List<GroupAction>> GpoActionCache = new();
 
         private static readonly Dictionary<string, LocalGroupRids> ValidGroupNames =
@@ -58,7 +100,7 @@ namespace SharpHoundCommonLib.Processors
             var dn = entry.DistinguishedName;
             return ReadGPOLocalGroups(links, dn);
         }
-        
+
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName)
         {
             var ret = new ResultingGPOChanges();
@@ -111,7 +153,7 @@ namespace SharpHoundCommonLib.Processors
             orderedLinks.AddRange(enforced);
 
             var data = new Dictionary<LocalGroupRids, GroupResults>();
-            foreach (var rid in Enum.GetValues(typeof(LocalGroupRids))) data[(LocalGroupRids) rid] = new GroupResults();
+            foreach (var rid in Enum.GetValues(typeof(LocalGroupRids))) data[(LocalGroupRids)rid] = new GroupResults();
 
             foreach (var linkDn in orderedLinks)
             {
@@ -139,9 +181,43 @@ namespace SharpHoundCommonLib.Processors
 
                     //Add the actions for each file. The GPO template file actions will override the XML file actions
                     actions.AddRange(ProcessGPOXmlFile(filePath, gpoDomain).ToList());
-                    await foreach (var item in ProcessGPOTemplateFile(filePath, gpoDomain))
+                    await foreach (GPOReturnTuple item in ProcessGPOTemplateFile(filePath, gpoDomain))
                     {
-                        actions.Add(item);
+                        // Add actions
+                        if (item.ContainsGroupAction())
+                        {
+                            actions.Add(item.GPOGroupAction);
+                        }
+
+                        // Add password policies
+                        if (item.ContainsPasswordPolicies())
+                        { // Only update the keys set in the GPO
+                            foreach (var i in item.passwordPolicies)
+                            {
+                                ret.PasswordPolicies[i.Key] = i.Value;
+                            }
+                        }
+
+                        // Add SMB properties
+                        if (item.ContainsSMBProps())
+                        { // Only update the keys set in the GPO
+                            foreach (var i in item.GPOSMBProps)
+                            {
+                                ret.SMBSigning[i.Key] = i.Value;
+                            }
+                        }
+
+                        // Add LM properties
+                        if (item.ContainsLMProps())
+                        { // Will override value depending on GPO link order, as GPOs are processed in link order
+                            ret.LMAuthenticationLevel = item.GPOLMProps;
+                        }
+
+                        // Add LDAP properties
+                        if (item.ContainsLDAPProps())
+                        {
+                            ret.LDAPSigning = item.GPOLDAPProps;
+                        }
                     }
                 }
 
@@ -254,7 +330,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
         /// <returns></returns>
-        internal async IAsyncEnumerable<GroupAction> ProcessGPOTemplateFile(string basePath, string gpoDomain)
+        internal async IAsyncEnumerable<GPOReturnTuple> ProcessGPOTemplateFile(string basePath, string gpoDomain)
         {
             var templatePath = Path.Combine(basePath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
 
@@ -273,81 +349,299 @@ namespace SharpHoundCommonLib.Processors
 
             using var reader = new StreamReader(fs);
             var content = await reader.ReadToEndAsync();
-            var memberMatch = MemberRegex.Match(content);
 
-            if (!memberMatch.Success)
-                yield break;
+            var ret = new GPOReturnTuple();
 
-            //We've got a match! Lets figure out whats going on
-            var memberText = memberMatch.Groups[1].Value.Trim();
-            //Split our text into individual lines
-            var memberLines = Regex.Split(memberText, @"\r\n|\r|\n");
+            // searching for password policies
+            ret.passwordPolicies = new Dictionary<string, int>();
+            var sysAccessMatch = SystemAccessRegex.Match(content);
+            if (sysAccessMatch.Success)
+            {// in section [System Access]
 
-            foreach (var memberLine in memberLines)
-            {
-                //Check if the Key regex matches (S-1-5.*_memberof=blah)
-                var keyMatch = KeyRegex.Match(memberLine);
+                // getting the text under this section and iterate through the lines
+                var sysAccessText = sysAccessMatch.Groups[1].Value.Trim();
+                var sysAccessLines = Regex.Split(sysAccessText, @"\r\n|\r|\n");
 
-                if (!keyMatch.Success)
-                    continue;
+                // more info about the registries: https://winprotocoldoc.blob.core.windows.net/productionwindowsarchives/MS-GPSB/%5bMS-GPSB%5d.pdf
+                string minPassAge = "1";
+                string maxPassAge = "42";
+                string minPassLength = "7";
+                string passComplexity = "1";
+                string passHistSize = "24";
+                string clearTextPass = "0";
 
-                var key = keyMatch.Groups[1].Value.Trim();
-                var val = keyMatch.Groups[2].Value.Trim();
-
-                var leftMatch = MemberLeftRegex.Match(key);
-                var rightMatches = MemberRightRegex.Matches(val);
-
-                //If leftmatch is a success, the members of a group are being explicitly set
-                if (leftMatch.Success)
+                foreach (var sysAccessLine in sysAccessLines)
                 {
-                    var extracted = ExtractRid.Match(leftMatch.Value);
-                    var rid = int.Parse(extracted.Groups[1].Value);
+                    // searching for password policies patterns
+                    var minPassAgeMatch = MinPassAgeRegex.Match(sysAccessLine);
+                    var maxPassAgeMatch = MaxPassAgeRegex.Match(sysAccessLine);
+                    var minPassLengthMatch = MinPassLengthRegex.Match(sysAccessLine);
+                    var passComplexityMatch = PassComplexityRegex.Match(sysAccessLine);
+                    var passHistSizeMatch = PassHistSizeRegex.Match(sysAccessLine);
+                    var clearTextPassMatch = ClearTextPassRegex.Match(sysAccessLine);
 
-                    if (Enum.IsDefined(typeof(LocalGroupRids), rid))
-                        //Loop over the members in the match, and try to convert them to SIDs
-                        foreach (var member in val.Split(','))
-                        {
-                            var res = GetSid(member.Trim('*'), gpoDomain);
-                            if (res == null)
-                                continue;
-                            yield return new GroupAction
-                            {
-                                Target = GroupActionTarget.RestrictedMember,
-                                Action = GroupActionOperation.Add,
-                                TargetSid = res.ObjectIdentifier,
-                                TargetType = res.ObjectType,
-                                TargetRid = (LocalGroupRids) rid
-                            };
-                        }
+                    // add to the returned tuple if pattern found
+                    if (minPassAgeMatch.Success)
+                    {
+                        minPassAge = sysAccessLine.Split('=')[1].Trim();
+                    }
+                    else if (maxPassAgeMatch.Success)
+                    {
+                        maxPassAge = sysAccessLine.Split('=')[1].Trim();
+                    }
+                    else if (minPassLengthMatch.Success)
+                    {
+                        minPassLength = sysAccessLine.Split('=')[1].Trim();
+                    }
+                    else if (passComplexityMatch.Success)
+                    {
+                        passComplexity = sysAccessLine.Split('=')[1].Trim();
+                    }
+                    else if (passHistSizeMatch.Success)
+                    {
+                        passHistSize = sysAccessLine.Split('=')[1].Trim();
+                    }
+                    else if (clearTextPassMatch.Success)
+                    {
+                        clearTextPass = sysAccessLine.Split('=')[1].Trim();
+                    }
                 }
 
-                //If right match is a success, a group has been set as a member of one of our local groups
-                var index = key.IndexOf("MemberOf", StringComparison.CurrentCultureIgnoreCase);
-                if (rightMatches.Count > 0 && index > 0)
+                ret.passwordPolicies.Add("MinimumPasswordAge", Int32.Parse(minPassAge));
+                ret.passwordPolicies.Add("MaximumPasswordAge", Int32.Parse(maxPassAge));
+                ret.passwordPolicies.Add("MinimumPasswordLength", Int32.Parse(minPassLength));
+                ret.passwordPolicies.Add("PasswordComplexity", Int32.Parse(passComplexity));
+                ret.passwordPolicies.Add("PasswordHistorySize", Int32.Parse(passHistSize));
+                ret.passwordPolicies.Add("ClearTextPassword", Int32.Parse(clearTextPass));
+
+            }
+
+            // searching for registry values
+            ret.GPOLDAPProps = new Dictionary<string, bool>();
+            ret.GPOSMBProps = new Dictionary<string, bool>();
+            ret.GPOLMProps = new Dictionary<string, object>();
+
+            // check for registries
+            var regMatch = RegistryRegex.Match(content);
+
+            // initialize individual registry checks
+            bool RequiresServerSMB = false;
+            bool EnablesServerSMB = false;
+            bool RequiresClientSMB = false;
+            bool EnablesClientSMB = false;
+
+            bool RequiresLDAPSigning = false;
+
+            int LmCompatibilityLevel = 42; // default value for W10 = 3 according to https://docs.microsoft.com/fr-fr/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level
+
+
+            // if registry section is found
+            if (regMatch.Success)
+            {// in section [Registry Values]
+
+                // get each line and iterate through
+                var regText = regMatch.Groups[1].Value.Trim();
+                var regLines = Regex.Split(regText, @"\r\n|\r|\n");
+                foreach (var regLine in regLines)
                 {
-                    var account = key.Trim('*').Substring(0, index - 3).ToUpper();
+                    // check for individual registries
+                    var smbRequireServerMatchLine = SMBRequireServerRegex.Match(regLine);
+                    var smbEnableServerMatchLine = SMBEnableServerRegex.Match(regLine);
+                    var smbRequireClientMatchLine = SMBRequireClientRegex.Match(regLine);
+                    var smbEnableClientMatchLine = SMBEnableClientRegex.Match(regLine);
 
-                    var res = GetSid(account, gpoDomain);
-                    if (res == null)
-                        continue;
+                    var ldapClientMatchLine = LDAPClientIntegrityRegex.Match(regLine);
 
-                    foreach (var match in rightMatches)
+                    var lmMatchLine = LMLevelRegex.Match(regLine);
+
+
+                    // if a match is found for this registry
+                    if (smbRequireServerMatchLine.Success)
                     {
-                        var rid = int.Parse(ExtractRid.Match(match.ToString()).Groups[1].Value);
-                        if (!Enum.IsDefined(typeof(LocalGroupRids), rid)) continue;
+                        var keyMatch = KeyRegex.Match(regLine);
+                        var key = keyMatch.Value.Split(',')[1];
 
-                        var targetGroup = (LocalGroupRids) rid;
-                        yield return new GroupAction
+                        switch (key)
                         {
-                            Target = GroupActionTarget.RestrictedMemberOf,
-                            Action = GroupActionOperation.Add,
-                            TargetRid = targetGroup,
-                            TargetSid = res.ObjectIdentifier,
-                            TargetType = res.ObjectType
-                        };
+                            case "1":
+                                RequiresServerSMB = true;
+                                break;
+                            case "0":
+                                RequiresServerSMB = false;
+                                break;
+                        }
+
+                        ret.GPOSMBProps.Add("RequiresServerSMBSigning", RequiresServerSMB);
+                    }
+                    else if (smbEnableServerMatchLine.Success)
+                    {
+                        var keyMatch = KeyRegex.Match(regLine);
+                        var key = keyMatch.Value.Split(',')[1];
+
+                        switch (key)
+                        {
+                            case "1":
+                                EnablesServerSMB = true;
+                                break;
+                            case "0":
+                                EnablesServerSMB = false;
+                                break;
+                        }
+
+                        ret.GPOSMBProps.Add("EnablesServerSMBSigning", EnablesServerSMB);
+                    }
+                    else if (smbRequireClientMatchLine.Success)
+                    {
+                        var keyMatch = KeyRegex.Match(regLine);
+                        var key = keyMatch.Value.Split(',')[1];
+
+                        switch (key)
+                        {
+                            case "1":
+                                RequiresClientSMB = true;
+                                break;
+                            case "0":
+                                RequiresClientSMB = false;
+                                break;
+                        }
+
+                        ret.GPOSMBProps.Add("RequiresClientSMBSigning", RequiresClientSMB);
+                    }
+                    else if (smbEnableClientMatchLine.Success)
+                    {
+                        var keyMatch = KeyRegex.Match(regLine);
+                        var key = keyMatch.Value.Split(',')[1];
+
+                        switch (key)
+                        {
+                            case "1":
+                                EnablesClientSMB = true;
+                                break;
+                            case "0":
+                                EnablesClientSMB = false;
+                                break;
+                        }
+
+                        ret.GPOSMBProps.Add("EnablesClientSMBSigning", EnablesClientSMB);
+                    }
+                    else if (lmMatchLine.Success)
+                    {
+                        var keyMatch = KeyRegex.Match(regLine);
+                        var key = keyMatch.Value.Split(',')[1];
+
+                        LmCompatibilityLevel = Int32.Parse(key);
+
+                        ret.GPOLMProps.Add("LmCompatibilityLevel", LmCompatibilityLevel); // not a list of registries because only one of them can be present
+                    }
+                    else if (ldapClientMatchLine.Success)
+                    {
+                        var keyMatch = KeyRegex.Match(regLine);
+                        var key = keyMatch.Value.Split(',')[1];
+
+                        switch (key)
+                        {
+                            case "2": // Required
+                                RequiresLDAPSigning = true;
+                                break;
+                            case "1": // Negotiated
+                                RequiresLDAPSigning = false;
+                                break;
+                            case "0": // None
+                                RequiresLDAPSigning = false;
+                                break;
+                        }
+
+                        ret.GPOLDAPProps.Add("RequiresLDAPClientSigning", RequiresLDAPSigning);
                     }
                 }
             }
+
+            // searching for members
+            var memberMatch = MemberRegex.Match(content);
+
+            if (memberMatch.Success)
+            {
+                //We've got a match! Lets figure out whats going on
+                var memberText = memberMatch.Groups[1].Value.Trim();
+                //Split our text into individual lines
+                var memberLines = Regex.Split(memberText, @"\r\n|\r|\n");
+
+                foreach (var memberLine in memberLines)
+                {
+                    //Check if the Key regex matches (S-1-5.*_memberof=blah)
+                    var keyMatch = KeyRegex.Match(memberLine);
+
+                    if (!keyMatch.Success)
+                        continue;
+
+                    var key = keyMatch.Groups[1].Value.Trim();
+                    var val = keyMatch.Groups[2].Value.Trim();
+
+                    var leftMatch = MemberLeftRegex.Match(key);
+                    var rightMatches = MemberRightRegex.Matches(val);
+
+                    //If leftmatch is a success, the members of a group are being explicitly set
+                    if (leftMatch.Success)
+                    {
+                        var extracted = ExtractRid.Match(leftMatch.Value);
+                        var rid = int.Parse(extracted.Groups[1].Value);
+
+                        if (Enum.IsDefined(typeof(LocalGroupRids), rid))
+                            //Loop over the members in the match, and try to convert them to SIDs
+                            foreach (var member in val.Split(','))
+                            {
+                                var res = GetSid(member.Trim('*'), gpoDomain);
+                                if (res == null)
+                                    continue;
+                                ret.GPOGroupAction = new()
+                                {
+                                    Target = GroupActionTarget.RestrictedMember,
+                                    Action = GroupActionOperation.Add,
+                                    TargetSid = res.ObjectIdentifier,
+                                    TargetType = res.ObjectType,
+                                    TargetRid = (LocalGroupRids)rid
+                                };
+                                yield return ret;
+                            }
+                    }
+
+                    //If right match is a success, a group has been set as a member of one of our local groups
+                    var index = key.IndexOf("MemberOf", StringComparison.CurrentCultureIgnoreCase);
+                    if (rightMatches.Count > 0 && index > 0)
+                    {
+                        var account = key.Trim('*').Substring(0, index - 3).ToUpper();
+
+                        var res = GetSid(account, gpoDomain);
+                        if (res == null)
+                            continue;
+
+                        foreach (var match in rightMatches)
+                        {
+                            var rid = int.Parse(ExtractRid.Match(match.ToString()).Groups[1].Value);
+                            if (!Enum.IsDefined(typeof(LocalGroupRids), rid)) continue;
+
+                            var targetGroup = (LocalGroupRids)rid;
+                            ret.GPOGroupAction = new()
+                            {
+                                Target = GroupActionTarget.RestrictedMemberOf,
+                                Action = GroupActionOperation.Add,
+                                TargetRid = targetGroup,
+                                TargetSid = res.ObjectIdentifier,
+                                TargetType = res.ObjectType
+                            };
+                            yield return ret;
+                        }
+                    }
+                }
+            }
+            else if (!ret.ContainsPasswordPolicies() && !ret.ContainsSMBProps() && !ret.ContainsLMProps() && !ret.ContainsLDAPProps())
+            {
+                // if nothing has been read in the file, return nothing
+                yield break;
+            }
+
+            yield return ret;
+
         }
 
         /// <summary>
@@ -421,7 +715,7 @@ namespace SharpHoundCommonLib.Processors
                 _log.LogError(e, "error reading GPO XML file {File}", xmlPath);
                 yield break;
             }
-             
+
             var navigator = doc.CreateNavigator();
             //Grab all the Groups nodes
             var groupsNodes = navigator.Select("/Groups");
@@ -461,7 +755,7 @@ namespace SharpHoundCommonLib.Processors
                             {
                                 var rid = int.Parse(s.Groups[1].Value);
                                 if (Enum.IsDefined(typeof(LocalGroupRids), rid))
-                                    targetGroup = (LocalGroupRids) rid;
+                                    targetGroup = (LocalGroupRids)rid;
                             }
                         }
 
@@ -604,6 +898,62 @@ namespace SharpHoundCommonLib.Processors
             RestrictedMemberOf,
             RestrictedMember,
             LocalGroup
+        }
+
+        internal class GPOReturnTuple
+        {
+            public Dictionary<string, int> passwordPolicies = new();
+            public Dictionary<string, bool> GPOLDAPProps = new();
+            public Dictionary<string, bool> GPOSMBProps = new();
+            public Dictionary<string, object> GPOLMProps = new();
+            public GroupAction GPOGroupAction = new();
+
+            public bool ContainsPasswordPolicies()
+            {
+                return !(passwordPolicies.Count == 0);
+            }
+            public bool ContainsSMBProps()
+            {
+                return !(GPOSMBProps.Count == 0);
+            }
+            public bool ContainsLMProps()
+            {
+                return !(GPOLMProps.Count == 0);
+            }
+            public bool ContainsLDAPProps()
+            {
+                return !(GPOLDAPProps.Count == 0);
+            }
+            public bool ContainsGroupAction()
+            {
+                return !(GPOGroupAction == null);
+            }
+            public override string ToString()
+            {
+                string GPOGroupActionStr = GPOGroupAction == null ? "" : GPOGroupAction.ToString();
+                string passwordPoliciesStr = "";
+                string GPOSMBPropsStr = "";
+                string GPOLMPropsStr = "";
+                string GPOLDAPPropsStr = "";
+                foreach (var key in passwordPolicies.Keys)
+                {
+                    passwordPoliciesStr += key + ": " + passwordPolicies[key] + ", ";
+                }
+                foreach (var key in GPOSMBProps.Keys)
+                {
+                    GPOSMBPropsStr += key + ": " + GPOSMBProps[key] + ", ";
+                }
+                foreach (var key in GPOLMProps.Keys)
+                {
+                    GPOLMPropsStr += key + ": " + GPOLMProps[key] + ", ";
+                }
+                foreach (var key in GPOLDAPProps.Keys)
+                {
+                    GPOLDAPPropsStr += key + ": " + GPOLDAPProps[key] + ", ";
+                }
+
+                return $"{nameof(GPOGroupAction)}: {GPOGroupActionStr}, {nameof(passwordPolicies)}: {passwordPoliciesStr}{nameof(GPOSMBProps)}: {GPOSMBPropsStr}{nameof(GPOLMProps)}: {GPOLMPropsStr}{nameof(GPOLDAPProps)}: {GPOLDAPPropsStr}";
+            }
         }
     }
 }
