@@ -26,6 +26,21 @@ namespace CommonLibTest
         *S-1-5-21-3130019616-2776909439-2417379446-514__Memberof = *S-1-5-32-544
         *S-1-5-21-3130019616-2776909439-2417379446-514__Members =
         *S-1-5-32-544__Members = 
+        [System Access]
+        MinimumPasswordAge = 1
+        MaximumPasswordAge = 37201
+        MinimumPasswordLength = 5
+        PasswordComplexity = 0
+        PasswordHistorySize = 24
+        RequireLogonToChangePassword = 0
+        ClearTextPassword = 0
+        [Registry Values]
+        MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters\RequireSecuritySignature=4,0
+        MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters\EnableSecuritySignature=4,0
+        HKLM\System\CurrentControlSet\Services\LanmanWorkstation\Parameters\RequireSecuritySignature=4,0
+        HKLM\System\CurrentControlSet\Services\LanmanWorkstation\Parameters\EnableSecuritySignature=4,0
+        MACHINE\System\CurrentControlSet\Control\Lsa\LmCompatibilityLevel=4,5
+        MACHINE\System\CurrentControlSet\Services\LDAP\LDAPClientIntegrity=4,1
         ";
 
         private readonly string GpttmplInfContentNoMatch = @"[Unicode]
@@ -186,14 +201,24 @@ namespace CommonLibTest
             var mockGCPFileSysPathResults = new List<ISearchResultEntry>();
             mockGCPFileSysPathResults.Add(mockGCPFileSysPathEntry.Object);
 
+            mockLDAPUtils.Setup(x => x.GetDomainNameFromSid(It.IsAny<string>()))
+                .Returns("yetanotherdomain");
+
+            mockLDAPUtils.Setup(x => x.LookupSidType(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Label.User);
+
+            mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
+
             mockLDAPUtils.SetupSequence(x => x.QueryLDAP(It.IsAny<LDAPQueryOptions>()))
                 .Returns(mockComputerResults.ToArray())
+                .Returns(mockGCPFileSysPathResults.ToArray())
                 .Returns(mockGCPFileSysPathResults.ToArray());
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
             var testGPLinkProperty =
-                "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123/dc=somedomain;0;][LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123/dc=someotherdomain;2;]";
+                "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foobaruser (blah)123/dc=yetanotherdomain;0;][LDAP:/o=foo/ou=foo Group (ABC123)/cn=foobaruser (blah)123/dc=yetanotherdomain;2;]";
             var result = await processor.ReadGPOLocalGroups(testGPLinkProperty, null);
 
             mockLDAPUtils.VerifyAll();
@@ -329,6 +354,16 @@ namespace CommonLibTest
             Assert.NotNull(str);
             Assert.Equal("Action: Add, Target: RestrictedMemberOf, TargetSid: , TargetType: User, TargetRid: None",
                 str);
+        }
+
+        [Fact]
+        public void GPOLocalGroupProcess_GPOReturnTuple_Empty()
+        {
+            var grt = new GPOLocalGroupProcessor.GPOReturnTuple();
+            var str = grt.ToString();
+
+            Assert.NotNull(str);
+            Assert.Equal("GPOGroupAction: Action: Add, Target: RestrictedMemberOf, TargetSid: , TargetType: User, TargetRid: None, passwordPolicies: GPOSMBProps: GPOLMProps: GPOLDAPProps: ", str);
         }
     }
 }
