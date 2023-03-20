@@ -213,12 +213,14 @@ namespace CommonLibTest
             mockLDAPUtils.SetupSequence(x => x.QueryLDAP(It.IsAny<LDAPQueryOptions>()))
                 .Returns(mockComputerResults.ToArray())
                 .Returns(mockGCPFileSysPathResults.ToArray())
+                .Returns(mockGCPFileSysPathResults.ToArray())
                 .Returns(mockGCPFileSysPathResults.ToArray());
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
             var testGPLinkProperty =
                 "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foobaruser (blah)123/dc=yetanotherdomain;0;][LDAP:/o=foo/ou=foo Group (ABC123)/cn=foobaruser (blah)123/dc=yetanotherdomain;2;]";
+
             var result = await processor.ReadGPOLocalGroups(testGPLinkProperty, null);
 
             mockLDAPUtils.VerifyAll();
@@ -227,6 +229,10 @@ namespace CommonLibTest
             var actual = result.AffectedComputers.First();
             Assert.Equal(Label.Computer, actual.ObjectType);
             Assert.Equal("teapot", actual.ObjectIdentifier);
+            Assert.Equal(6, result.PasswordPolicies.Count);
+            Assert.Single(result.LDAPSigning);
+            Assert.Single(result.LMAuthenticationLevel);
+            Assert.Equal(4, result.SMBSigning.Count);
         }
 
         [Fact]
