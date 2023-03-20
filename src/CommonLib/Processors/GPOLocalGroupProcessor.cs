@@ -170,6 +170,7 @@ namespace SharpHoundCommonLib.Processors
                         Properties = CommonProperties.GPCFileSysPath,
                         AdsPath = linkDn
                     };
+
                     var filePath = _utils.QueryLDAP(opts).FirstOrDefault()?
                         .GetProperty(LDAPProperties.GPCFileSYSPath);
 
@@ -325,7 +326,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        ///     Parses a GPO GptTmpl.inf file and pulls group membership changes out
+        ///     Parses a GPO GptTmpl.inf file and pulls group membership, password policies and registry values changes out
         /// </summary>
         /// <param name="basePath"></param>
         /// <param name="gpoDomain"></param>
