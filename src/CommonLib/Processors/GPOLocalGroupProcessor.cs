@@ -387,36 +387,35 @@ namespace SharpHoundCommonLib.Processors
                     if (minPassAgeMatch.Success)
                     {
                         minPassAge = sysAccessLine.Split('=')[1].Trim();
+                        ret.passwordPolicies.Add("MinimumPasswordAge", Int32.Parse(minPassAge));
                     }
                     else if (maxPassAgeMatch.Success)
                     {
                         maxPassAge = sysAccessLine.Split('=')[1].Trim();
+                        ret.passwordPolicies.Add("MaximumPasswordAge", Int32.Parse(maxPassAge));
                     }
                     else if (minPassLengthMatch.Success)
                     {
                         minPassLength = sysAccessLine.Split('=')[1].Trim();
+                        ret.passwordPolicies.Add("MinimumPasswordLength", Int32.Parse(minPassLength));
                     }
                     else if (passComplexityMatch.Success)
                     {
                         passComplexity = sysAccessLine.Split('=')[1].Trim();
+                        ret.passwordPolicies.Add("PasswordComplexity", Int32.Parse(passComplexity));
                     }
                     else if (passHistSizeMatch.Success)
                     {
                         passHistSize = sysAccessLine.Split('=')[1].Trim();
+                        ret.passwordPolicies.Add("PasswordHistorySize", Int32.Parse(passHistSize));
                     }
                     else if (clearTextPassMatch.Success)
                     {
                         clearTextPass = sysAccessLine.Split('=')[1].Trim();
+                        ret.passwordPolicies.Add("ClearTextPassword", Int32.Parse(clearTextPass));
                     }
                 }
             }
-
-            ret.passwordPolicies.Add("MinimumPasswordAge", Int32.Parse(minPassAge));
-            ret.passwordPolicies.Add("MaximumPasswordAge", Int32.Parse(maxPassAge));
-            ret.passwordPolicies.Add("MinimumPasswordLength", Int32.Parse(minPassLength));
-            ret.passwordPolicies.Add("PasswordComplexity", Int32.Parse(passComplexity));
-            ret.passwordPolicies.Add("PasswordHistorySize", Int32.Parse(passHistSize));
-            ret.passwordPolicies.Add("ClearTextPassword", Int32.Parse(clearTextPass));
 
             // searching for registry values
             ret.GPOLDAPProps = new Dictionary<string, bool>();
@@ -434,7 +433,7 @@ namespace SharpHoundCommonLib.Processors
 
             bool RequiresLDAPSigning = false;
 
-            int LmCompatibilityLevel = 42; // default value for W10 = 3 according to https://docs.microsoft.com/fr-fr/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level
+            int LmCompatibilityLevel = 3; // default value for W10 = 3 according to https://docs.microsoft.com/fr-fr/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level
 
 
             // if registry section is found
@@ -472,6 +471,8 @@ namespace SharpHoundCommonLib.Processors
                                 RequiresServerSMB = false;
                                 break;
                         }
+
+                        ret.GPOSMBProps.Add("RequiresServerSMBSigning", RequiresServerSMB);
                     }
                     else if (smbEnableServerMatchLine.Success)
                     {
@@ -487,6 +488,8 @@ namespace SharpHoundCommonLib.Processors
                                 EnablesServerSMB = false;
                                 break;
                         }
+
+                        ret.GPOSMBProps.Add("EnablesServerSMBSigning", EnablesServerSMB);
                     }
                     else if (smbRequireClientMatchLine.Success)
                     {
@@ -502,6 +505,8 @@ namespace SharpHoundCommonLib.Processors
                                 RequiresClientSMB = false;
                                 break;
                         }
+
+                        ret.GPOSMBProps.Add("RequiresClientSMBSigning", RequiresClientSMB);
                     }
                     else if (smbEnableClientMatchLine.Success)
                     {
@@ -517,6 +522,8 @@ namespace SharpHoundCommonLib.Processors
                                 EnablesClientSMB = false;
                                 break;
                         }
+
+                        ret.GPOSMBProps.Add("EnablesClientSMBSigning", EnablesClientSMB);
                     }
                     else if (lmMatchLine.Success)
                     {
@@ -524,6 +531,8 @@ namespace SharpHoundCommonLib.Processors
                         var key = keyMatch.Value.Split(',')[1];
 
                         LmCompatibilityLevel = Int32.Parse(key);
+
+                        ret.GPOLMProps.Add("LmCompatibilityLevel", LmCompatibilityLevel);
                     }
                     else if (ldapClientMatchLine.Success)
                     {
@@ -542,17 +551,10 @@ namespace SharpHoundCommonLib.Processors
                                 RequiresLDAPSigning = false;
                                 break;
                         }
+
+                        ret.GPOLDAPProps.Add("RequiresLDAPClientSigning", RequiresLDAPSigning);
                     }
                 }
-
-                // add default or modified values
-                ret.GPOSMBProps.Add("RequiresServerSMBSigning", RequiresServerSMB);
-                ret.GPOSMBProps.Add("EnablesServerSMBSigning", EnablesServerSMB);
-                ret.GPOSMBProps.Add("RequiresClientSMBSigning", RequiresClientSMB);
-                ret.GPOSMBProps.Add("EnablesClientSMBSigning", EnablesClientSMB);
-                ret.GPOLMProps.Add("LmCompatibilityLevel", LmCompatibilityLevel);
-                ret.GPOLDAPProps.Add("RequiresLDAPClientSigning", RequiresLDAPSigning);
-
             }
 
             // searching for members
