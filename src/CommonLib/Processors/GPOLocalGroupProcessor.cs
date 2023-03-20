@@ -225,62 +225,63 @@ namespace SharpHoundCommonLib.Processors
                 //Cache the actions for this GPO for later
                 GpoActionCache.TryAdd(linkDn.ToLower(), actions);
 
-                //If there are no actions, then we can move on from this GPO
-                if (actions.Count == 0)
-                    continue;
-
-                //First lets process restricted members
-                var restrictedMemberSets = actions.Where(x => x.Target == GroupActionTarget.RestrictedMember)
-                    .GroupBy(x => x.TargetRid);
-
-                foreach (var set in restrictedMemberSets)
+                //If there are no actions, then we can skip some instructions
+                if (actions.Count != 0)
                 {
-                    var results = data[set.Key];
-                    var members = set.Select(x => x.ToTypedPrincipal()).ToList();
-                    results.RestrictedMember = members;
-                    data[set.Key] = results;
-                }
 
-                //Next add in our restricted MemberOf sets
-                var restrictedMemberOfSets = actions.Where(x => x.Target == GroupActionTarget.RestrictedMemberOf)
-                    .GroupBy(x => x.TargetRid);
+                    //First lets process restricted members
+                    var restrictedMemberSets = actions.Where(x => x.Target == GroupActionTarget.RestrictedMember)
+                        .GroupBy(x => x.TargetRid);
 
-                foreach (var set in restrictedMemberOfSets)
-                {
-                    var results = data[set.Key];
-                    var members = set.Select(x => x.ToTypedPrincipal()).ToList();
-                    results.RestrictedMemberOf = members;
-                    data[set.Key] = results;
-                }
-
-                // Now work through the LocalGroup targets
-                var localGroupSets = actions.Where(x => x.Target == GroupActionTarget.LocalGroup)
-                    .GroupBy(x => x.TargetRid);
-
-                foreach (var set in localGroupSets)
-                {
-                    var results = data[set.Key];
-                    foreach (var temp in set)
+                    foreach (var set in restrictedMemberSets)
                     {
-                        var res = temp.ToTypedPrincipal();
-                        var newMembers = results.LocalGroups;
-                        switch (temp.Action)
-                        {
-                            case GroupActionOperation.Add:
-                                newMembers.Add(res);
-                                break;
-                            case GroupActionOperation.Delete:
-                                newMembers.RemoveAll(x => x.ObjectIdentifier == res.ObjectIdentifier);
-                                break;
-                            case GroupActionOperation.DeleteUsers:
-                                newMembers.RemoveAll(x => x.ObjectType == Label.User);
-                                break;
-                            case GroupActionOperation.DeleteGroups:
-                                newMembers.RemoveAll(x => x.ObjectType == Label.Group);
-                                break;
-                        }
+                        var results = data[set.Key];
+                        var members = set.Select(x => x.ToTypedPrincipal()).ToList();
+                        results.RestrictedMember = members;
+                        data[set.Key] = results;
+                    }
 
-                        data[set.Key].LocalGroups = newMembers;
+                    //Next add in our restricted MemberOf sets
+                    var restrictedMemberOfSets = actions.Where(x => x.Target == GroupActionTarget.RestrictedMemberOf)
+                        .GroupBy(x => x.TargetRid);
+
+                    foreach (var set in restrictedMemberOfSets)
+                    {
+                        var results = data[set.Key];
+                        var members = set.Select(x => x.ToTypedPrincipal()).ToList();
+                        results.RestrictedMemberOf = members;
+                        data[set.Key] = results;
+                    }
+
+                    // Now work through the LocalGroup targets
+                    var localGroupSets = actions.Where(x => x.Target == GroupActionTarget.LocalGroup)
+                        .GroupBy(x => x.TargetRid);
+
+                    foreach (var set in localGroupSets)
+                    {
+                        var results = data[set.Key];
+                        foreach (var temp in set)
+                        {
+                            var res = temp.ToTypedPrincipal();
+                            var newMembers = results.LocalGroups;
+                            switch (temp.Action)
+                            {
+                                case GroupActionOperation.Add:
+                                    newMembers.Add(res);
+                                    break;
+                                case GroupActionOperation.Delete:
+                                    newMembers.RemoveAll(x => x.ObjectIdentifier == res.ObjectIdentifier);
+                                    break;
+                                case GroupActionOperation.DeleteUsers:
+                                    newMembers.RemoveAll(x => x.ObjectType == Label.User);
+                                    break;
+                                case GroupActionOperation.DeleteGroups:
+                                    newMembers.RemoveAll(x => x.ObjectType == Label.Group);
+                                    break;
+                            }
+
+                            data[set.Key].LocalGroups = newMembers;
+                        }
                     }
                 }
             }
@@ -356,20 +357,21 @@ namespace SharpHoundCommonLib.Processors
             // searching for password policies
             ret.passwordPolicies = new Dictionary<string, int>();
             var sysAccessMatch = SystemAccessRegex.Match(content);
+
+            // more info about the registries: https://winprotocoldoc.blob.core.windows.net/productionwindowsarchives/MS-GPSB/%5bMS-GPSB%5d.pdf
+            string minPassAge = "1";
+            string maxPassAge = "42";
+            string minPassLength = "7";
+            string passComplexity = "1";
+            string passHistSize = "24";
+            string clearTextPass = "0";
+
             if (sysAccessMatch.Success)
             {// in section [System Access]
 
                 // getting the text under this section and iterate through the lines
                 var sysAccessText = sysAccessMatch.Groups[1].Value.Trim();
                 var sysAccessLines = Regex.Split(sysAccessText, @"\r\n|\r|\n");
-
-                // more info about the registries: https://winprotocoldoc.blob.core.windows.net/productionwindowsarchives/MS-GPSB/%5bMS-GPSB%5d.pdf
-                string minPassAge = "1";
-                string maxPassAge = "42";
-                string minPassLength = "7";
-                string passComplexity = "1";
-                string passHistSize = "24";
-                string clearTextPass = "0";
 
                 foreach (var sysAccessLine in sysAccessLines)
                 {
@@ -407,15 +409,14 @@ namespace SharpHoundCommonLib.Processors
                         clearTextPass = sysAccessLine.Split('=')[1].Trim();
                     }
                 }
-
-                ret.passwordPolicies.Add("MinimumPasswordAge", Int32.Parse(minPassAge));
-                ret.passwordPolicies.Add("MaximumPasswordAge", Int32.Parse(maxPassAge));
-                ret.passwordPolicies.Add("MinimumPasswordLength", Int32.Parse(minPassLength));
-                ret.passwordPolicies.Add("PasswordComplexity", Int32.Parse(passComplexity));
-                ret.passwordPolicies.Add("PasswordHistorySize", Int32.Parse(passHistSize));
-                ret.passwordPolicies.Add("ClearTextPassword", Int32.Parse(clearTextPass));
-
             }
+
+            ret.passwordPolicies.Add("MinimumPasswordAge", Int32.Parse(minPassAge));
+            ret.passwordPolicies.Add("MaximumPasswordAge", Int32.Parse(maxPassAge));
+            ret.passwordPolicies.Add("MinimumPasswordLength", Int32.Parse(minPassLength));
+            ret.passwordPolicies.Add("PasswordComplexity", Int32.Parse(passComplexity));
+            ret.passwordPolicies.Add("PasswordHistorySize", Int32.Parse(passHistSize));
+            ret.passwordPolicies.Add("ClearTextPassword", Int32.Parse(clearTextPass));
 
             // searching for registry values
             ret.GPOLDAPProps = new Dictionary<string, bool>();
@@ -471,8 +472,6 @@ namespace SharpHoundCommonLib.Processors
                                 RequiresServerSMB = false;
                                 break;
                         }
-
-                        ret.GPOSMBProps.Add("RequiresServerSMBSigning", RequiresServerSMB);
                     }
                     else if (smbEnableServerMatchLine.Success)
                     {
@@ -488,8 +487,6 @@ namespace SharpHoundCommonLib.Processors
                                 EnablesServerSMB = false;
                                 break;
                         }
-
-                        ret.GPOSMBProps.Add("EnablesServerSMBSigning", EnablesServerSMB);
                     }
                     else if (smbRequireClientMatchLine.Success)
                     {
@@ -505,8 +502,6 @@ namespace SharpHoundCommonLib.Processors
                                 RequiresClientSMB = false;
                                 break;
                         }
-
-                        ret.GPOSMBProps.Add("RequiresClientSMBSigning", RequiresClientSMB);
                     }
                     else if (smbEnableClientMatchLine.Success)
                     {
@@ -522,8 +517,6 @@ namespace SharpHoundCommonLib.Processors
                                 EnablesClientSMB = false;
                                 break;
                         }
-
-                        ret.GPOSMBProps.Add("EnablesClientSMBSigning", EnablesClientSMB);
                     }
                     else if (lmMatchLine.Success)
                     {
@@ -531,8 +524,6 @@ namespace SharpHoundCommonLib.Processors
                         var key = keyMatch.Value.Split(',')[1];
 
                         LmCompatibilityLevel = Int32.Parse(key);
-
-                        ret.GPOLMProps.Add("LmCompatibilityLevel", LmCompatibilityLevel); // not a list of registries because only one of them can be present
                     }
                     else if (ldapClientMatchLine.Success)
                     {
@@ -551,10 +542,17 @@ namespace SharpHoundCommonLib.Processors
                                 RequiresLDAPSigning = false;
                                 break;
                         }
-
-                        ret.GPOLDAPProps.Add("RequiresLDAPClientSigning", RequiresLDAPSigning);
                     }
                 }
+
+                // add default or modified values
+                ret.GPOSMBProps.Add("RequiresServerSMBSigning", RequiresServerSMB);
+                ret.GPOSMBProps.Add("EnablesServerSMBSigning", EnablesServerSMB);
+                ret.GPOSMBProps.Add("RequiresClientSMBSigning", RequiresClientSMB);
+                ret.GPOSMBProps.Add("EnablesClientSMBSigning", EnablesClientSMB);
+                ret.GPOLMProps.Add("LmCompatibilityLevel", LmCompatibilityLevel);
+                ret.GPOLDAPProps.Add("RequiresLDAPClientSigning", RequiresLDAPSigning);
+
             }
 
             // searching for members
@@ -634,11 +632,6 @@ namespace SharpHoundCommonLib.Processors
                         }
                     }
                 }
-            }
-            else if (!ret.ContainsPasswordPolicies() && !ret.ContainsSMBProps() && !ret.ContainsLMProps() && !ret.ContainsLDAPProps())
-            {
-                // if nothing has been read in the file, return nothing
-                yield break;
             }
 
             yield return ret;
