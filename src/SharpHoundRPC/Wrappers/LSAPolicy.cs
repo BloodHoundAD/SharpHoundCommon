@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using SharpHoundRPC.Handles;
@@ -24,8 +25,15 @@ namespace SharpHoundRPC.Wrappers
             if (result.status.IsError()) return result.status;
 
             var domainInfo = result.pointer.GetData<LSAStructs.PolicyAccountDomainInfo>();
-            var domainSid = new SecurityIdentifier(domainInfo.DomainSid);
-            return (domainInfo.DomainName.ToString(), domainSid.Value.ToUpper());
+            try
+            {
+                var domainSid = new SecurityIdentifier(domainInfo.DomainSid);
+                return (domainInfo.DomainName.ToString(), domainSid.Value.ToUpper());
+            }
+            catch (ArgumentException)
+            {
+                return "Invalid DomainSID returned by LSA";
+            }
         }
 
         public Result<IEnumerable<SecurityIdentifier>> GetPrincipalsWithPrivilege(string userRight)
