@@ -52,10 +52,15 @@ namespace SharpHoundCommonLib
 
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
         private readonly ConcurrentDictionary<string, string> _domainControllerCache = new();
+        private static readonly TimeSpan MinBackoffDelay = TimeSpan.FromSeconds(2);
+        private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(10);
+        private static readonly TimeSpan BackoffDelayMultiplier = TimeSpan.FromSeconds(2);
+        private const int MaxRetries = 3;
 
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
         private readonly ConcurrentDictionary<string, LdapConnection> _ldapConnections = new();
+        private readonly ConcurrentDictionary<string, int> _ldapRangeSizeCache = new();
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
@@ -338,6 +343,95 @@ namespace SharpHoundCommonLib
             return sid;
         }
 
+        // Saving this code for an eventual async implementation
+        // public async IAsyncEnumerable<string> DoRangedRetrievalAsync(string distinguishedName, string attributeName)
+        // {
+        //     var domainName = Helpers.DistinguishedNameToDomain(distinguishedName);
+        //     LdapConnection conn;
+        //     try
+        //     {
+        //         conn = await CreateLDAPConnection(domainName, authType: _ldapConfig.AuthType);
+        //     }
+        //     catch
+        //     {
+        //         yield break;
+        //     }
+        //
+        //     if (conn == null)
+        //         yield break;
+        //
+        //     var index = 0;
+        //     var step = 0;
+        //     var currentRange = $"{attributeName};range={index}-*";
+        //     var complete = false;
+        //     
+        //     var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] {currentRange},
+        //         domainName, distinguishedName);
+        //
+        //     var backoffDelay = MinBackoffDelay;
+        //     var retryCount = 0;
+        //
+        //     while (true)
+        //     {
+        //         DirectoryResponse searchResult;
+        //         try
+        //         {
+        //             searchResult = await Task.Factory.FromAsync(conn.BeginSendRequest, conn.EndSendRequest,
+        //                 searchRequest,
+        //                 PartialResultProcessing.NoPartialResultSupport, null);
+        //         }
+        //         catch (LdapException le) when (le.ErrorCode == 51 && retryCount < MaxRetries)
+        //         {
+        //             //Allow three retries with a backoff on each one if we get a "Server is Busy" error
+        //             retryCount++;
+        //             await Task.Delay(backoffDelay);
+        //             backoffDelay = TimeSpan.FromSeconds(Math.Min(
+        //                 backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+        //             continue;
+        //         }
+        //         catch (Exception e)
+        //         {
+        //             _log.LogWarning(e,"Caught exception during ranged retrieval for {DN}", distinguishedName);
+        //             yield break;
+        //         }
+        //         
+        //         if (searchResult is SearchResponse response && response.Entries.Count == 1)
+        //         {
+        //             var entry = response.Entries[0];
+        //             var attributeNames = entry?.Attributes?.AttributeNames;
+        //             if (attributeNames != null)
+        //             {
+        //                 foreach (string attr in attributeNames)
+        //                 {
+        //                     //Set our current range to the name of the attribute, which will tell us how far we are in "paging"
+        //                     currentRange = attr;
+        //                     //Check if the string has the * character in it. If it does, we've reached the end of this search 
+        //                     complete = currentRange.IndexOf("*", 0, StringComparison.Ordinal) > 0;
+        //                     //Set our step to the number of attributes that came back.
+        //                     step = entry.Attributes[currentRange].Count;
+        //                 }
+        //             }
+        //
+        //
+        //             foreach (string val in entry.Attributes[currentRange].GetValues(typeof(string)))
+        //             {
+        //                 yield return val;
+        //                 index++;
+        //             }
+        //         
+        //             if (complete) yield break;
+        //
+        //             currentRange = $"{attributeName};range={index}-{index + step}";
+        //             searchRequest.Attributes.Clear();
+        //             searchRequest.Attributes.Add(currentRange);
+        //         }
+        //         else
+        //         {
+        //             yield break;
+        //         }
+        //     }
+        // }
+
         /// <summary>
         ///     Performs Attribute Ranged Retrieval
         ///     https://docs.microsoft.com/en-us/windows/win32/adsi/attribute-range-retrieval
@@ -378,12 +472,24 @@ namespace SharpHoundCommonLib
             if (searchRequest == null)
                 yield break;
 
+            var backoffDelay = MinBackoffDelay;
+            var retryCount = 0;
+            
             while (true)
             {
                 SearchResponse response;
                 try
                 {
                     response = (SearchResponse) conn.SendRequest(searchRequest);
+                }
+                catch (LdapException le) when (le.ErrorCode == 51 && retryCount < MaxRetries)
+                {
+                    //Allow three retries with a backoff on each one if we get a "Server is Busy" error
+                    retryCount++;
+                    Thread.Sleep(backoffDelay);
+                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
+                    backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+                    continue;
                 }
                 catch (Exception e)
                 {
@@ -716,6 +822,8 @@ namespace SharpHoundCommonLib
             var pageControl = queryParams.PageControl;
 
             PageResultResponseControl pageResponse = null;
+            var backoffDelay = MinBackoffDelay;
+            var retryCount = 0;
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -729,9 +837,13 @@ namespace SharpHoundCommonLib
                     if (response != null)
                         pageResponse = (PageResultResponseControl) response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
-                }
-                catch (LdapException le)
-                {
+                }catch (LdapException le) when (le.ErrorCode == 51 && retryCount < MaxRetries) {
+                    retryCount++;
+                    Thread.Sleep(backoffDelay);
+                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
+                        backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+                    continue;
+                } catch (LdapException le) {
                     if (le.ErrorCode != 82)
                         if (throwException)
                             throw new LDAPQueryException(
@@ -815,10 +927,13 @@ namespace SharpHoundCommonLib
 
             PageResultResponseControl pageResponse = null;
             
+            var backoffDelay = MinBackoffDelay;
+            var retryCount = 0;
+            
             while (true)
             {
                 SearchResponse response;
-                
+
                 try
                 {
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
@@ -826,6 +941,14 @@ namespace SharpHoundCommonLib
                     if (response != null)
                         pageResponse = (PageResultResponseControl) response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
+                }
+                catch (LdapException le) when (le.ErrorCode == 51 && retryCount < MaxRetries)
+                {
+                    retryCount++;
+                    Thread.Sleep(backoffDelay);
+                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
+                        backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+                    continue;
                 }
                 catch (LdapException le)
                 {
@@ -1427,6 +1550,55 @@ namespace SharpHoundCommonLib
             }
 
             return domainName.ToUpper();
+        }
+        
+        /// <summary>
+        /// Gets the range retrieval limit for a domain
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
+        public int GetDomainRangeSize(string domainName = null)
+        {
+            var domainPath = DomainNameToDistinguishedName(domainName);
+            //Default to a page size of 750 for safety
+            if (domainPath == null)
+            {
+                _log.LogDebug("Unable to resolve domain {Domain} to distinguishedname to get page size", domainName ?? "current domain");
+                return 750;
+            }
+
+            if (_ldapRangeSizeCache.TryGetValue(domainPath.ToUpper(), out var parsedPageSize))
+            {
+                return parsedPageSize;
+            }
+
+            var configPath = CommonPaths.CreateDNPath(CommonPaths.QueryPolicyPath, domainPath);
+            var config = (SearchResultEntryWrapper) QueryLDAP("(objectclass=*)", SearchScope.Base, null, adsPath: configPath).DefaultIfEmpty(null).FirstOrDefault();
+            var pageSize = config?.GetArrayProperty(LDAPProperties.LdapAdminLimits).FirstOrDefault(x => x.StartsWith("MaxPageSize", StringComparison.OrdinalIgnoreCase));
+            if (pageSize == null)
+            {
+                _log.LogDebug("No LDAPAdminLimits object found for {Domain}", domainName);
+                _ldapRangeSizeCache.TryAdd(domainPath.ToUpper(), 750);
+                return 750;
+            }
+
+            if (int.TryParse(pageSize.Split('=').Last(), out parsedPageSize))
+            {
+                _ldapRangeSizeCache.TryAdd(domainPath.ToUpper(), parsedPageSize);
+                _log.LogInformation("Found page size {PageSize} for {Domain}", parsedPageSize, domainName ?? "current domain");
+                return parsedPageSize;
+            }
+            
+            _log.LogDebug("Failed to parse pagesize for {Domain}, returning default", domainName ?? "current domain");
+
+            _ldapRangeSizeCache.TryAdd(domainPath.ToUpper(), 750);
+            return 750;
+        }
+        
+        private string DomainNameToDistinguishedName(string domain)
+        {
+            var resolvedDomain = GetDomain(domain)?.Name ?? domain;
+            return resolvedDomain == null ? null : $"DC={resolvedDomain.Replace(".", ",DC=")}";
         }
 
         private class ResolvedWellKnownPrincipal
