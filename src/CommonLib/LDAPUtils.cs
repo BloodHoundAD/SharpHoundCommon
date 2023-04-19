@@ -482,7 +482,7 @@ namespace SharpHoundCommonLib
                 {
                     response = (SearchResponse) conn.SendRequest(searchRequest);
                 }
-                catch (LdapException le) when (le.ErrorCode == 51 && retryCount < MaxRetries)
+                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries)
                 {
                     //Allow three retries with a backoff on each one if we get a "Server is Busy" error
                     retryCount++;
@@ -837,7 +837,7 @@ namespace SharpHoundCommonLib
                     if (response != null)
                         pageResponse = (PageResultResponseControl) response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
-                }catch (LdapException le) when (le.ErrorCode == 51 && retryCount < MaxRetries) {
+                }catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries) {
                     retryCount++;
                     Thread.Sleep(backoffDelay);
                     backoffDelay = TimeSpan.FromSeconds(Math.Min(
@@ -942,7 +942,7 @@ namespace SharpHoundCommonLib
                         pageResponse = (PageResultResponseControl) response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
                 }
-                catch (LdapException le) when (le.ErrorCode == 51 && retryCount < MaxRetries)
+                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries)
                 {
                     retryCount++;
                     Thread.Sleep(backoffDelay);
@@ -1551,20 +1551,21 @@ namespace SharpHoundCommonLib
 
             return domainName.ToUpper();
         }
-        
+
         /// <summary>
         /// Gets the range retrieval limit for a domain
         /// </summary>
         /// <param name="domainName"></param>
+        /// <param name="defaultRangeSize"></param>
         /// <returns></returns>
-        public int GetDomainRangeSize(string domainName = null)
+        public int GetDomainRangeSize(string domainName = null, int defaultRangeSize = 750)
         {
             var domainPath = DomainNameToDistinguishedName(domainName);
             //Default to a page size of 750 for safety
             if (domainPath == null)
             {
                 _log.LogDebug("Unable to resolve domain {Domain} to distinguishedname to get page size", domainName ?? "current domain");
-                return 750;
+                return defaultRangeSize;
             }
 
             if (_ldapRangeSizeCache.TryGetValue(domainPath.ToUpper(), out var parsedPageSize))
@@ -1578,8 +1579,8 @@ namespace SharpHoundCommonLib
             if (pageSize == null)
             {
                 _log.LogDebug("No LDAPAdminLimits object found for {Domain}", domainName);
-                _ldapRangeSizeCache.TryAdd(domainPath.ToUpper(), 750);
-                return 750;
+                _ldapRangeSizeCache.TryAdd(domainPath.ToUpper(), defaultRangeSize);
+                return defaultRangeSize;
             }
 
             if (int.TryParse(pageSize.Split('=').Last(), out parsedPageSize))
@@ -1591,8 +1592,8 @@ namespace SharpHoundCommonLib
             
             _log.LogDebug("Failed to parse pagesize for {Domain}, returning default", domainName ?? "current domain");
 
-            _ldapRangeSizeCache.TryAdd(domainPath.ToUpper(), 750);
-            return 750;
+            _ldapRangeSizeCache.TryAdd(domainPath.ToUpper(), defaultRangeSize);
+            return defaultRangeSize;
         }
         
         private string DomainNameToDistinguishedName(string domain)
