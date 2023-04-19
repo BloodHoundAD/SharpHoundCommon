@@ -907,7 +907,7 @@ namespace SharpHoundCommonLib
         /// <exception cref="LDAPQueryException">
         ///     Thrown when an error occurs during LDAP query (only when throwException = true)
         /// </exception>
-        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false,
             string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false)
         {
@@ -1046,7 +1046,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="domainName"></param>
         /// <returns></returns>
-        public Domain GetDomain(string domainName = null)
+        public virtual Domain GetDomain(string domainName = null)
         {
             var cacheKey = domainName ?? NullCacheKey;
             if (_domainCache.TryGetValue(cacheKey, out var domain)) return domain;
@@ -1574,7 +1574,8 @@ namespace SharpHoundCommonLib
             }
 
             var configPath = CommonPaths.CreateDNPath(CommonPaths.QueryPolicyPath, domainPath);
-            var config = (SearchResultEntryWrapper) QueryLDAP("(objectclass=*)", SearchScope.Base, null, adsPath: configPath).DefaultIfEmpty(null).FirstOrDefault();
+            var enumerable = QueryLDAP("(objectclass=*)", SearchScope.Base, null, adsPath: configPath);
+            var config =  enumerable.DefaultIfEmpty(null).FirstOrDefault();
             var pageSize = config?.GetArrayProperty(LDAPProperties.LdapAdminLimits).FirstOrDefault(x => x.StartsWith("MaxPageSize", StringComparison.OrdinalIgnoreCase));
             if (pageSize == null)
             {

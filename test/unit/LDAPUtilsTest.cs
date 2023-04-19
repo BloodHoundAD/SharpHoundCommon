@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
+using System.Linq;
 using System.Threading;
 using CommonLibTest.Facades;
 using Moq;
@@ -118,6 +121,60 @@ namespace CommonLibTest
 
             result = SharpHoundCommonLib.Helpers.DistinguishedNameToDomain("DC=testlab,DC=local");
             Assert.Equal("TESTLAB.LOCAL", result);
+        }
+
+        [Fact]
+        public void GetDomainRangeSize_BadDomain_ReturnsDefault()
+        {
+            var mock = new Mock<LDAPUtils>();
+            mock.Setup(x => x.GetDomain(It.IsAny<string>())).Returns((Domain) null);
+            var result = mock.Object.GetDomainRangeSize();
+            Assert.Equal(750, result);
+        }
+
+        [Fact]
+        public void GetDomainRangeSize_RespectsDefaultParam()
+        {
+            var mock = new Mock<LDAPUtils>();
+            mock.Setup(x => x.GetDomain(It.IsAny<string>())).Returns((Domain) null);
+
+            var result = mock.Object.GetDomainRangeSize(null, 1000);
+            Assert.Equal(1000, result);
+        }
+
+        [Fact]
+        public void GetDomainRangeSize_NoLdapEntry_ReturnsDefault()
+        {
+            var mock = new Mock<LDAPUtils>();
+            var mockDomain = MockableDomain.Construct("testlab.local");
+            mock.Setup(x => x.GetDomain(It.IsAny<string>())).Returns(mockDomain);
+            mock.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
+                It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
+                It.IsAny<bool>(), It.IsAny<bool>())).Returns(new List<ISearchResultEntry>());
+
+            var result = mock.Object.GetDomainRangeSize();
+            Assert.Equal(750, result);
+        }
+
+        [Fact]
+        public void GetDomainRangeSize_ExpectedResults()
+        {
+            var mock = new Mock<LDAPUtils>();
+            var mockDomain = MockableDomain.Construct("testlab.local");
+            mock.Setup(x => x.GetDomain(It.IsAny<string>())).Returns(mockDomain);
+            var searchResult = new MockSearchResultEntry("CN=Default Query Policy,CN=Query-Policies,CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,DC=testlab,DC=local", new Dictionary<string, object>
+            {
+                {"ldapadminlimits", new[]
+                {
+                    "MaxPageSize=1250"
+                }},
+            }, "abc123", Label.Base);
+            
+            mock.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), null,
+                It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
+                It.IsAny<bool>(), It.IsAny<bool>())).Returns(new List<ISearchResultEntry> {searchResult});
+            var result = mock.Object.GetDomainRangeSize();
+            Assert.Equal(1250, result);
         }
 
         [Fact]
