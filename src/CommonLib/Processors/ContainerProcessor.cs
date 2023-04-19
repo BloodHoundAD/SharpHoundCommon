@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.LDAPQueries;
@@ -25,6 +26,21 @@ namespace SharpHoundCommonLib.Processors
             if (dn.Contains("CN=SYSTEM,DC=")) return true;
 
             return false;
+        }
+
+        public TypedPrincipal GetContainingObject(ISearchResultEntry entry)
+        {
+            return GetContainingObject(entry.DistinguishedName);
+        }
+
+        public TypedPrincipal GetContainingObject(string distinguishedName)
+        {
+            var containerDn = Helpers.RemoveDistinguishedNamePrefix(distinguishedName);
+
+            if (string.IsNullOrEmpty(containerDn))
+                return null;
+
+            return _utils.ResolveDistinguishedName(containerDn);
         }
 
         /// <summary>

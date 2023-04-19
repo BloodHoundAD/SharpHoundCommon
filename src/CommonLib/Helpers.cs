@@ -24,6 +24,39 @@ namespace SharpHoundCommonLib
             "S-1-5-19", "S-1-5-20", "S-1-0-0", "S-1-0", "S-1-2-1"
         };
 
+        public static string RemoveDistinguishedNamePrefix(string distinguishedName)
+        {
+            if (!distinguishedName.Contains(","))
+            {
+                return "";
+            }
+            if (distinguishedName.IndexOf("DC=", StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                return "";
+            }
+
+            for (var i = distinguishedName.IndexOf(','); i > -1; i = distinguishedName.IndexOf(',', i + 1))
+            {
+                //If theres a comma at the beginning of the DN, something screwy is going on. Just ignore it
+                if (i == 0)
+                {
+                    continue;
+                }
+
+                //This indicates an escaped comma
+                if (distinguishedName[i-1] == '\\')
+                {
+                    Console.WriteLine(distinguishedName[i-1]);
+                    continue;
+                }
+                
+                //This is an unescaped comma
+                return distinguishedName.Substring(i + 1);    
+            }
+
+            return "";
+        }
+
         /// <summary>
         ///     Splits a GPLink property into its representative parts
         ///     Filters disabled links by default
