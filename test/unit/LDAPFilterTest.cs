@@ -61,7 +61,6 @@ namespace CommonLibTest
         public void LDAPFilter_GetFilterList()
         {
             var test = new LDAPFilter().AddUsers().AddComputers();
-
             IEnumerable<string> filters = test.GetFilterList();
 
             int i = 0;
