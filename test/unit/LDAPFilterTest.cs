@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SharpHoundCommonLib.LDAPQueries;
 using Xunit;
 using Xunit.Abstractions;
@@ -54,6 +55,23 @@ namespace CommonLibTest
             Assert.Equal(
                 "(&(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))(objectclass=*))",
                 filter);
+        }
+
+        [Fact]
+        public void LDAPFilter_GetFilterList()
+        {
+            var test = new LDAPFilter().AddUsers().AddComputers();
+            IEnumerable<string> filters = test.GetFilterList();
+
+            int i = 0;
+            string userFilter = "(samaccounttype=805306368)";
+            string computerFilter = "(samaccounttype=805306369)";
+            string[] expected = {userFilter, computerFilter};
+
+            foreach (var filter in filters) {
+                 Assert.Equal(expected[i], filter);
+                 i++;
+            }
         }
 
         #endregion
