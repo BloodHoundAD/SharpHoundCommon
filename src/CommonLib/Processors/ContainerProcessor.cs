@@ -28,11 +28,22 @@ namespace SharpHoundCommonLib.Processors
             return false;
         }
 
+        /// <summary>
+        /// Helper function to pass commonlib types to GetContainingObject
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public TypedPrincipal GetContainingObject(ISearchResultEntry entry)
         {
             return GetContainingObject(entry.DistinguishedName);
         }
 
+        /// <summary>
+        /// Uses the distinguishedname of an object to get its containing object by stripping the first part and using the remainder to find the container object
+        /// Saves lots of LDAP calls compared to enumerating container info directly
+        /// </summary>
+        /// <param name="distinguishedName"></param>
+        /// <returns></returns>
         public TypedPrincipal GetContainingObject(string distinguishedName)
         {
             var containerDn = Helpers.RemoveDistinguishedNamePrefix(distinguishedName);
