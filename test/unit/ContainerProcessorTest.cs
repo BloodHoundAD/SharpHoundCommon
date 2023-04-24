@@ -129,5 +129,30 @@ namespace CommonLibTest
             Assert.False(test2);
             Assert.True(test3);
         }
+
+        [Fact]
+        public void ContainerProcessor_GetContainingObject_ExpectedResult()
+        {
+            var utils = new MockLDAPUtils();
+            var proc = new ContainerProcessor(utils);
+
+            var result = proc.GetContainingObject("OU=TESTOU,DC=TESTLAB,DC=LOCAL");
+            Assert.Equal(Label.Domain, result.ObjectType);
+            Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.ObjectIdentifier);
+
+            result = proc.GetContainingObject("CN=PRIMARY,OU=DOMAIN CONTROLLERS,DC=TESTLAB,DC=LOCAL");
+            Assert.Equal(Label.OU, result.ObjectType);
+            Assert.Equal("0DE400CD-2FF3-46E0-8A26-2C917B403C65", result.ObjectIdentifier);
+        }
+
+        [Fact]
+        public void ContainerProcessor_GetContainingObject_BadDN_ReturnsNull()
+        {
+            var utils = new MockLDAPUtils();
+            var proc = new ContainerProcessor(utils);
+
+            var result = proc.GetContainingObject("abc123");
+            Assert.Equal(null, result);
+        }
     }
 }

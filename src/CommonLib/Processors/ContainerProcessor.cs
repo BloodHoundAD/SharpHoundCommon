@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.LDAPQueries;
@@ -25,6 +26,32 @@ namespace SharpHoundCommonLib.Processors
             if (dn.Contains("CN=SYSTEM,DC=")) return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Helper function to pass commonlib types to GetContainingObject
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public TypedPrincipal GetContainingObject(ISearchResultEntry entry)
+        {
+            return GetContainingObject(entry.DistinguishedName);
+        }
+
+        /// <summary>
+        /// Uses the distinguishedname of an object to get its containing object by stripping the first part and using the remainder to find the container object
+        /// Saves lots of LDAP calls compared to enumerating container info directly
+        /// </summary>
+        /// <param name="distinguishedName"></param>
+        /// <returns></returns>
+        public TypedPrincipal GetContainingObject(string distinguishedName)
+        {
+            var containerDn = Helpers.RemoveDistinguishedNamePrefix(distinguishedName);
+
+            if (string.IsNullOrEmpty(containerDn))
+                return null;
+
+            return _utils.ResolveDistinguishedName(containerDn);
         }
 
         /// <summary>
