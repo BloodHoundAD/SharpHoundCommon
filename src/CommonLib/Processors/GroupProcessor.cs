@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
@@ -17,7 +18,7 @@ namespace SharpHoundCommonLib.Processors
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("GroupProc");
         }
-
+        
         public IEnumerable<TypedPrincipal> ReadGroupMembers(ResolvedSearchResult result, ISearchResultEntry entry)
         {
             var members = entry.GetArrayProperty(LDAPProperties.Members);
