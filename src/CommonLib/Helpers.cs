@@ -36,7 +36,7 @@ namespace SharpHoundCommonLib
             }
 
             //Start at the first instance of a comma, and continue to loop while we still have commas. If we get -1, it means we ran out of commas.
-            //This allows us to cleanly iterate over all indexes of commas in our DNs
+            //This allows us to cleanly iterate over all indexes of commas in our DNs and find the first non-escaped one
             for (var i = distinguishedName.IndexOf(','); i > -1; i = distinguishedName.IndexOf(',', i + 1))
             {
                 //If theres a comma at the beginning of the DN, something screwy is going on. Just ignore it
@@ -45,13 +45,13 @@ namespace SharpHoundCommonLib
                     continue;
                 }
 
-                //This indicates an escaped comma
+                //This indicates an escaped comma, which we should not use to split a DN
                 if (distinguishedName[i-1] == '\\')
                 {
                     continue;
                 }
                 
-                //This is an unescaped comma
+                //This is an unescaped comma, so snip our DN from this comma onwards and return this as the cleaned distinguished name
                 return distinguishedName.Substring(i + 1);    
             }
 
