@@ -39,7 +39,7 @@
             "operatingsystemservicepack", "serviceprincipalname", "displayname", "mail", "title",
             "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
             "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedToDelegateTo",
-            "msDS-AllowedToActOnBehalfOfOtherIdentity", "whenCreated"
+            "msDS-AllowedToActOnBehalfOfOtherIdentity", "whenCreated", "msds-hostserviceaccount"
         };
 
         public static readonly string[] ContainerProps =

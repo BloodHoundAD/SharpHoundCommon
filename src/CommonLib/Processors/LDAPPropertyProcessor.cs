@@ -378,6 +378,20 @@ namespace SharpHoundCommonLib.Processors
 
             props.Add("sidhistory", sidHistoryList.ToArray());
 
+            var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);
+            var smsaPrincipals = new List<TypedPrincipal>();
+            if (hsa != null) {
+                foreach (var dn in hsa)
+                {
+                    var resolvedPrincipal = _utils.ResolveDistinguishedName(dn);
+
+                    if (resolvedPrincipal != null)
+                        smsaPrincipals.Add(resolvedPrincipal);
+                }
+            }
+
+            compProps.DumpSMSAPassword = smsaPrincipals.ToArray();
+
             compProps.Props = props;
 
             return compProps;
@@ -496,5 +510,6 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
     }
 }

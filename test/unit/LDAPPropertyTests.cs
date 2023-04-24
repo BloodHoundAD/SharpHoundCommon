@@ -531,6 +531,77 @@ namespace CommonLibTest
             Assert.Empty(props["sidhistory"] as string[]);
         }
 
-        //TODO: Add coverage for ParseAllProperties
+        [Fact]
+        public async Task LDAPPropertyProcessor_ReadComputerProperties_TestDumpSMSAPassword()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {"description", "Test"},
+                    {"useraccountcontrol", 0x1001000.ToString()},
+                    {"lastlogon", "132673011142753043"},
+                    {"lastlogontimestamp", "132670318095676525"},
+                    {"operatingsystem", "Windows 10 Enterprise"},
+                    {"operatingsystemservicepack", "1607"},
+                    {"admincount", "c"},
+                    {
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
+                    {
+                        "msds-allowedtodelegateto", new[]
+                        {
+                            "ldap/PRIMARY.testlab.local/testlab.local",
+                            "ldap/PRIMARY.testlab.local",
+                            "ldap/PRIMARY"
+                        }
+                    },
+                    {"pwdlastset", "132131667346106691"},
+                    {
+                        "serviceprincipalname", new[]
+                        {
+                            "WSMAN/WIN10",
+                            "WSMAN/WIN10.testlab.local",
+                            "RestrictedKrbHost/WIN10",
+                            "HOST/WIN10",
+                            "RestrictedKrbHost/WIN10.testlab.local",
+                            "HOST/WIN10.testlab.local"
+                        }
+                    },
+                    {
+                        "msds-hostserviceaccount", new[]
+                        {
+                            "CN=dfm,CN=Users,DC=testlab,DC=local",
+                            "CN=krbtgt,CN=Users,DC=testlab,DC=local"
+                        }
+                    }
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var test = await processor.ReadComputerProperties(mock);
+
+            var expected = new TypedPrincipal[]
+            {
+                new()
+                {
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-1105",
+                    ObjectType = Label.User
+                },
+                new()
+                {
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-502",
+                    ObjectType = Label.User
+                }
+            };
+
+            var testDumpSMSAPassword = test.DumpSMSAPassword;
+            Assert.Equal(2, testDumpSMSAPassword.Length);
+            Assert.Equal(expected, testDumpSMSAPassword);
+
+        }
+
+        // //TODO: Add coverage for ParseAllProperties
     }
 }
