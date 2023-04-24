@@ -35,6 +35,8 @@ namespace SharpHoundCommonLib
                 return "";
             }
 
+            //Start at the first instance of a comma, and continue to loop while we still have commas. If we get -1, it means we ran out of commas.
+            //This allows us to cleanly iterate over all indexes of commas in our DNs
             for (var i = distinguishedName.IndexOf(','); i > -1; i = distinguishedName.IndexOf(',', i + 1))
             {
                 //If theres a comma at the beginning of the DN, something screwy is going on. Just ignore it
@@ -46,7 +48,6 @@ namespace SharpHoundCommonLib
                 //This indicates an escaped comma
                 if (distinguishedName[i-1] == '\\')
                 {
-                    Console.WriteLine(distinguishedName[i-1]);
                     continue;
                 }
                 
