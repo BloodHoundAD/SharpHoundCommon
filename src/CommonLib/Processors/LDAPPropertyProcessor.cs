@@ -378,12 +378,15 @@ namespace SharpHoundCommonLib.Processors
 
             var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);
             var smsaPrincipals = new List<TypedPrincipal>();
-            foreach (var dn in hsa)
+            if (hsa != null)
             {
-                var resolvedPrincipal = _utils.ResolveDistinguishedName(dn);
+                foreach (var dn in hsa)
+                {
+                    var resolvedPrincipal = _utils.ResolveDistinguishedName(dn);
 
-                if (resolvedPrincipal != null)
-                    smsaPrincipals.Add(resolvedPrincipal);
+                    if (resolvedPrincipal != null)
+                        smsaPrincipals.Add(resolvedPrincipal);
+                }
             }
 
             compProps.DumpSMSAPassword = smsaPrincipals.ToArray();
