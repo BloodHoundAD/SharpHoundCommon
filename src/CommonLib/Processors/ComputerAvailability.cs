@@ -7,7 +7,7 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerAvailability
     {
-        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+        public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
 
         private readonly int _computerExpiryDays;
         private readonly ILogger _log;
@@ -73,7 +73,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 _log.LogDebug("{ComputerName} is not available because operating system {OperatingSystem} is not valid",
                     computerName, operatingSystem);
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Status = ComputerStatus.NonWindowsOS,
                     Task = "ComputerAvailability",
@@ -96,7 +96,7 @@ namespace SharpHoundCommonLib.Processors
                     _log.LogDebug(
                         "{ComputerName} is not available because password last set {PwdLastSet} is out of range",
                         computerName, passwordLastSet);
-                    SendComputerStatus(new CSVComputerStatus
+                    await SendComputerStatus(new CSVComputerStatus
                     {
                         Status = ComputerStatus.OldPwd,
                         Task = "ComputerAvailability",
@@ -121,7 +121,7 @@ namespace SharpHoundCommonLib.Processors
             if (!await _scanner.CheckPort(computerName, timeout: _scanTimeout))
             {
                 _log.LogDebug("{ComputerName} is not available because port 445 is unavailable", computerName);
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Status = ComputerStatus.PortNotOpen,
                     Task = "ComputerAvailability",
@@ -136,7 +136,7 @@ namespace SharpHoundCommonLib.Processors
 
             _log.LogDebug("{ComputerName} is available for enumeration", computerName);
 
-            SendComputerStatus(new CSVComputerStatus
+            await SendComputerStatus(new CSVComputerStatus
             {
                 Status = CSVComputerStatus.StatusSuccess,
                 Task = "ComputerAvailability",
@@ -150,9 +150,9 @@ namespace SharpHoundCommonLib.Processors
             };
         }
 
-        private void SendComputerStatus(CSVComputerStatus status)
+        private async Task SendComputerStatus(CSVComputerStatus status)
         {
-            ComputerStatusEvent?.Invoke(status);
+            if (ComputerStatusEvent is not null) await ComputerStatusEvent.Invoke(status);
         }
     }
 }

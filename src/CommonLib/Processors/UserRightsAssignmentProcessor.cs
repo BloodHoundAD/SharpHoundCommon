@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
@@ -11,7 +12,7 @@ namespace SharpHoundCommonLib.Processors
 {
     public class UserRightsAssignmentProcessor
     {
-        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+        public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
 
         private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
@@ -32,7 +33,7 @@ namespace SharpHoundCommonLib.Processors
             return Result<ILSAPolicy>.Ok(result.Value);
         }
 
-        public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(ResolvedSearchResult result,
+        public IAsyncEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(ResolvedSearchResult result,
             string[] desiredPrivileges = null)
         {
             return GetUserRightsAssignments(result.DisplayName, result.ObjectId, result.Domain,
@@ -48,7 +49,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="isDomainController">Is the computer a domain controller</param>
         /// <param name="desiredPrivileges"></param>
         /// <returns></returns>
-        public IEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
+        public async IAsyncEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
             string computerObjectId, string computerDomain, bool isDomainController, string[] desiredPrivileges = null)
         {
             var policyOpenResult = OpenLSAPolicy(computerName);
@@ -56,7 +57,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 _log.LogDebug("LSAOpenPolicy failed on {ComputerName} with status {Status}", computerName,
                     policyOpenResult.SError);
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "LSAOpenPolicy",
                     ComputerName = computerName,
@@ -76,7 +77,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     _log.LogWarning("Failed to get machine sid for {Server}: {Status}. Abandoning URA collection",
                         computerName, getMachineSidResult.SError);
-                    SendComputerStatus(new CSVComputerStatus
+                    await SendComputerStatus(new CSVComputerStatus
                     {
                         ComputerName = computerName,
                         Status = getMachineSidResult.SError,
@@ -109,7 +110,7 @@ namespace SharpHoundCommonLib.Processors
                     _log.LogDebug(
                         "LSAEnumerateAccountsWithUserRight failed on {ComputerName} with status {Status} for privilege {Privilege}",
                         computerName, policyOpenResult.SError, privilege);
-                    SendComputerStatus(new CSVComputerStatus
+                    await SendComputerStatus(new CSVComputerStatus
                     {
                         ComputerName = computerName,
                         Status = enumerateAccountsResult.SError,
@@ -121,7 +122,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     ComputerName = computerName,
                     Status = CSVComputerStatus.StatusSuccess,
@@ -241,9 +242,9 @@ namespace SharpHoundCommonLib.Processors
             return false;
         }
 
-        private void SendComputerStatus(CSVComputerStatus status)
+        private async Task SendComputerStatus(CSVComputerStatus status)
         {
-            ComputerStatusEvent?.Invoke(status);
+            if (ComputerStatusEvent is not null) await ComputerStatusEvent.Invoke(status);
         }
     }
 }
