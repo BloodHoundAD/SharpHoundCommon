@@ -70,7 +70,7 @@ namespace SharpHoundCommonLib.Processors
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
             var options = new LDAPQueryOptions
             {
-                Filter = new LDAPFilter().AddComputers().GetFilter(),
+                Filter = new LDAPFilter().AddComputersWoutMSAs().GetFilter(),
                 Scope = SearchScope.Subtree,
                 Properties = CommonProperties.ObjectSID,
                 AdsPath = distinguishedName

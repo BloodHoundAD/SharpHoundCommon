@@ -145,7 +145,7 @@ namespace CommonLibTest
             mockSearchResults.Add(mockSearchResultEntry.Object);
             mockLDAPUtils.Setup(x => x.QueryLDAP(new LDAPQueryOptions
                 {
-                    Filter = "(samaccounttype=805306369)",
+                    Filter = "(&(samaccounttype=805306369)(!(objectclass=msDS-GroupManagedServiceAccount))(!(objectclass=msDS-ManagedServiceAccount)))",
                     Scope = SearchScope.Subtree,
                     Properties = CommonProperties.ObjectSID,
                     AdsPath = null
