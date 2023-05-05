@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
@@ -13,7 +14,7 @@ namespace SharpHoundCommonLib.Processors
 {
     public class LocalGroupProcessor
     {
-        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+        public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
         private readonly ILogger _log;
         private readonly ILDAPUtils _utils;
 
@@ -36,7 +37,7 @@ namespace SharpHoundCommonLib.Processors
             return Result<ISAMServer>.Ok(result.Value);
         }
 
-        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(ResolvedSearchResult result)
+        public IAsyncEnumerable<LocalGroupAPIResult> GetLocalGroups(ResolvedSearchResult result)
         {
             return GetLocalGroups(result.DisplayName, result.ObjectId, result.Domain, result.IsDomainController);
         }
@@ -49,7 +50,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerDomain">The domain the computer belongs too</param>
         /// <param name="isDomainController">Is the computer a domain controller</param>
         /// <returns></returns>
-        public IEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerObjectId,
+        public async IAsyncEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerObjectId,
             string computerDomain, bool isDomainController)
         {
             //Open a handle to the server
@@ -57,7 +58,7 @@ namespace SharpHoundCommonLib.Processors
             if (openServerResult.IsFailed)
             {
                 _log.LogTrace("OpenServer failed on {ComputerName}: {Error}", computerName, openServerResult.SError);
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "SamConnect",
                     ComputerName = computerName,
@@ -77,7 +78,7 @@ namespace SharpHoundCommonLib.Processors
                 if (getMachineSidResult.IsFailed)
                 {
                     _log.LogTrace("GetMachineSid failed on {ComputerName}: {Error}", computerName, getMachineSidResult.SError);
-                    SendComputerStatus(new CSVComputerStatus
+                    await SendComputerStatus(new CSVComputerStatus
                     {
                         Status = getMachineSidResult.SError,
                         ComputerName = computerName,
@@ -101,7 +102,7 @@ namespace SharpHoundCommonLib.Processors
             if (getDomainsResult.IsFailed)
             {
                 _log.LogTrace("GetDomains failed on {ComputerName}: {Error}", computerName, getDomainsResult.SError);
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "GetDomains",
                     ComputerName = computerName,
@@ -122,7 +123,7 @@ namespace SharpHoundCommonLib.Processors
                 if (openDomainResult.IsFailed)
                 {
                     _log.LogTrace("Failed to open domain {Domain} on {ComputerName}: {Error}", domainResult.Name, computerName, openDomainResult.SError);
-                    SendComputerStatus(new CSVComputerStatus
+                    await SendComputerStatus(new CSVComputerStatus
                     {
                         Task = $"OpenDomain - {domainResult.Name}",
                         ComputerName = computerName,
@@ -139,7 +140,7 @@ namespace SharpHoundCommonLib.Processors
                 if (getAliasesResult.IsFailed)
                 {
                     _log.LogTrace("Failed to open Aliases on Domain {Domain} on on {ComputerName}: {Error}", domainResult.Name, computerName, getAliasesResult.SError);
-                    SendComputerStatus(new CSVComputerStatus
+                    await SendComputerStatus(new CSVComputerStatus
                     {
                         Task = $"GetAliases - {domainResult.Name}",
                         ComputerName = computerName,
@@ -167,7 +168,7 @@ namespace SharpHoundCommonLib.Processors
                     if (openAliasResult.IsFailed)
                     {
                         _log.LogTrace("Failed to open alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}: {Error}", alias.Name, alias.Rid, domainResult.Name, computerName, openAliasResult.Error);
-                        SendComputerStatus(new CSVComputerStatus
+                        await SendComputerStatus(new CSVComputerStatus
                         {
                             Task = $"OpenAlias - {alias.Name}",
                             ComputerName = computerName,
@@ -185,7 +186,7 @@ namespace SharpHoundCommonLib.Processors
                     if (getMembersResult.IsFailed)
                     {
                         _log.LogTrace("Failed to get members in alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}: {Error}", alias.Name, alias.Rid, domainResult.Name, computerName, openAliasResult.Error);
-                        SendComputerStatus(new CSVComputerStatus
+                        await SendComputerStatus(new CSVComputerStatus
                         {
                             Task = $"GetMembersInAlias - {alias.Name}",
                             ComputerName = computerName,
@@ -197,7 +198,7 @@ namespace SharpHoundCommonLib.Processors
                         continue;
                     }
 
-                    SendComputerStatus(new CSVComputerStatus
+                    await SendComputerStatus(new CSVComputerStatus
                     {
                         Task = $"GetMembersInAlias - {alias.Name}",
                         ComputerName = computerName,
@@ -378,9 +379,9 @@ namespace SharpHoundCommonLib.Processors
             };
         }
 
-        private void SendComputerStatus(CSVComputerStatus status)
+        private async Task SendComputerStatus(CSVComputerStatus status)
         {
-            ComputerStatusEvent?.Invoke(status);
+            if (ComputerStatusEvent is not null) await ComputerStatusEvent(status);
         }
     }
 }

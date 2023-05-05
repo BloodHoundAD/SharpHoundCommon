@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using CommonLibTest.Facades.LSAMocks.DCMocks;
 using CommonLibTest.Facades.LSAMocks.WorkstationMocks;
@@ -21,16 +22,15 @@ namespace CommonLibTest
         }
 
         [WindowsOnlyFact]
-        public void UserRightsAssignmentProcessor_TestWorkstation()
+        public async Task UserRightsAssignmentProcessor_TestWorkstation()
         {
             var mockProcessor = new Mock<UserRightsAssignmentProcessor>(new MockLDAPUtils(), null);
             var mockLSAPolicy = new MockWorkstationLSAPolicy();
             mockProcessor.Setup(x => x.OpenLSAPolicy(It.IsAny<string>())).Returns(mockLSAPolicy);
             var processor = mockProcessor.Object;
             var machineDomainSid = $"{Consts.MockDomainSid}-1001";
-            var results =
-                processor.GetUserRightsAssignments("win10.testlab.local", machineDomainSid, "testlab.local", false)
-                    .ToArray();
+            var results = await processor.GetUserRightsAssignments("win10.testlab.local", machineDomainSid, "testlab.local", false)
+                    .ToArrayAsync();
 
             var privilege = results[0];
             Assert.Equal(LSAPrivileges.RemoteInteractiveLogon, privilege.Privilege);
@@ -44,16 +44,15 @@ namespace CommonLibTest
         }
 
         [WindowsOnlyFact]
-        public void UserRightsAssignmentProcessor_TestDC()
+        public async Task UserRightsAssignmentProcessor_TestDC()
         {
             var mockProcessor = new Mock<UserRightsAssignmentProcessor>(new MockLDAPUtils(), null);
             var mockLSAPolicy = new MockDCLSAPolicy();
             mockProcessor.Setup(x => x.OpenLSAPolicy(It.IsAny<string>())).Returns(mockLSAPolicy);
             var processor = mockProcessor.Object;
             var machineDomainSid = $"{Consts.MockDomainSid}-1000";
-            var results =
-                processor.GetUserRightsAssignments("primary.testlab.local", machineDomainSid, "testlab.local", true)
-                    .ToArray();
+            var results = await processor.GetUserRightsAssignments("primary.testlab.local", machineDomainSid, "testlab.local", true)
+                    .ToArrayAsync();
 
             var privilege = results[0];
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(privilege));
