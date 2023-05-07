@@ -7,14 +7,14 @@ namespace SharpHoundCommonLib.Processors
 {
     public class PortScanner
     {
-        private readonly ILogger _log;
         private static readonly ConcurrentDictionary<PingCacheKey, bool> PortScanCache = new();
+        private readonly ILogger _log;
 
         public PortScanner()
         {
             _log = Logging.LogProvider.CreateLogger("PortScanner");
         }
-        
+
         public PortScanner(ILogger log = null)
         {
             _log = log ?? Logging.LogProvider.CreateLogger("PortScanner");
@@ -40,7 +40,7 @@ namespace SharpHoundCommonLib.Processors
                 _log.LogTrace("Ping cache hit for {HostName} on {Port}: {Status}", hostname, port, status);
                 return status;
             }
-            
+
             try
             {
                 using var client = new TcpClient();
@@ -52,7 +52,7 @@ namespace SharpHoundCommonLib.Processors
                     PortScanCache.TryAdd(key, true);
                     return true;
                 }
-                
+
                 _log.LogDebug("{Hostname} did not respond to scan on port {Port}", hostname, port);
                 PortScanCache.TryAdd(key, false);
                 return false;
@@ -68,7 +68,7 @@ namespace SharpHoundCommonLib.Processors
         {
             PortScanCache.Clear();
         }
-        
+
         private class PingCacheKey
         {
             internal string HostName { get; set; }
@@ -83,8 +83,8 @@ namespace SharpHoundCommonLib.Processors
             {
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
-                return Equals((PingCacheKey)obj);
+                if (obj.GetType() != GetType()) return false;
+                return Equals((PingCacheKey) obj);
             }
 
             public override int GetHashCode()

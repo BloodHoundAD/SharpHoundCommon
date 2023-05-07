@@ -9,7 +9,7 @@ namespace SharpHoundCommonLib
 
         public string DisplayName
         {
-            get => _displayName.ToUpper();
+            get => _displayName?.ToUpper();
             set => _displayName = value;
         }
 

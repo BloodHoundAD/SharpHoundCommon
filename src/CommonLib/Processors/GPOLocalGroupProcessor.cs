@@ -43,8 +43,9 @@ namespace SharpHoundCommonLib.Processors
                 {"Distributed COM Users", LocalGroupRids.DcomUsers}
             };
 
-        private readonly ILDAPUtils _utils;
         private readonly ILogger _log;
+
+        private readonly ILDAPUtils _utils;
 
         public GPOLocalGroupProcessor(ILDAPUtils utils, ILogger log = null)
         {
@@ -58,7 +59,7 @@ namespace SharpHoundCommonLib.Processors
             var dn = entry.DistinguishedName;
             return ReadGPOLocalGroups(links, dn);
         }
-        
+
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName)
         {
             var ret = new ResultingGPOChanges();
@@ -139,10 +140,7 @@ namespace SharpHoundCommonLib.Processors
 
                     //Add the actions for each file. The GPO template file actions will override the XML file actions
                     actions.AddRange(ProcessGPOXmlFile(filePath, gpoDomain).ToList());
-                    await foreach (var item in ProcessGPOTemplateFile(filePath, gpoDomain))
-                    {
-                        actions.Add(item);
-                    }
+                    await foreach (var item in ProcessGPOTemplateFile(filePath, gpoDomain)) actions.Add(item);
                 }
 
                 //Cache the actions for this GPO for later
@@ -421,7 +419,7 @@ namespace SharpHoundCommonLib.Processors
                 _log.LogError(e, "error reading GPO XML file {File}", xmlPath);
                 yield break;
             }
-             
+
             var navigator = doc.CreateNavigator();
             //Grab all the Groups nodes
             var groupsNodes = navigator.Select("/Groups");
@@ -511,7 +509,8 @@ namespace SharpHoundCommonLib.Processors
                             //If we have a memberSid, this is the best case scenario
                             if (!string.IsNullOrWhiteSpace(memberSid))
                             {
-                                var memberType = _utils.LookupSidType(memberSid, _utils.GetDomainNameFromSid(memberSid));
+                                var memberType =
+                                    _utils.LookupSidType(memberSid, _utils.GetDomainNameFromSid(memberSid));
                                 ga.Target = GroupActionTarget.LocalGroup;
                                 ga.TargetSid = memberSid;
                                 ga.TargetType = memberType;
@@ -567,7 +566,7 @@ namespace SharpHoundCommonLib.Processors
 
             public TypedPrincipal ToTypedPrincipal()
             {
-                return new()
+                return new TypedPrincipal
                 {
                     ObjectIdentifier = TargetSid,
                     ObjectType = TargetType
@@ -604,6 +603,15 @@ namespace SharpHoundCommonLib.Processors
             RestrictedMemberOf,
             RestrictedMember,
             LocalGroup
+        }
+
+        internal enum LocalGroupRids
+        {
+            None = 0,
+            Administrators = 544,
+            RemoteDesktopUsers = 555,
+            DcomUsers = 562,
+            PSRemote = 580
         }
     }
 }

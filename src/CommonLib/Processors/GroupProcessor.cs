@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
@@ -16,7 +18,7 @@ namespace SharpHoundCommonLib.Processors
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("GroupProc");
         }
-
+        
         public IEnumerable<TypedPrincipal> ReadGroupMembers(ResolvedSearchResult result, ISearchResultEntry entry)
         {
             var members = entry.GetArrayProperty(LDAPProperties.Members);
@@ -55,7 +57,10 @@ namespace SharpHoundCommonLib.Processors
                             ObjectType = Label.Base
                         };
                     else
-                        yield return res;
+                    {
+                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier))
+                            yield return res;
+                    }
                 }
             }
             else
@@ -73,7 +78,10 @@ namespace SharpHoundCommonLib.Processors
                             ObjectType = Label.Base
                         };
                     else
-                        yield return res;
+                    {
+                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier))
+                            yield return res;
+                    }
                 }
             }
         }

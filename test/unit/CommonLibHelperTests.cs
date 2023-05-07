@@ -8,6 +8,23 @@ namespace CommonLibTest
     public class CommonLibHelperTest
     {
         [Fact]
+        public void RemoveDistinguishedNamePrefix_ExpectedResult()
+        {
+            var dn = "CN=Jeff Smith,OU=Sales,DC=Fabrikam,DC=COM";
+            var result = SharpHoundCommonLib.Helpers.RemoveDistinguishedNamePrefix(dn);
+            Assert.Equal("OU=Sales,DC=Fabrikam,DC=COM", result);
+            result = SharpHoundCommonLib.Helpers.RemoveDistinguishedNamePrefix(
+                "CN=Administrator,CN=Users,DC=testlab,DC=local");
+            Assert.Equal("CN=Users,DC=testlab,DC=local", result);
+            result = SharpHoundCommonLib.Helpers.RemoveDistinguishedNamePrefix(
+                "CN=Litware,OU=Docs\\, Adatum,DC=Fabrikam,DC=COM");
+            Assert.Equal("OU=Docs\\, Adatum,DC=Fabrikam,DC=COM", result);
+            result = SharpHoundCommonLib.Helpers.RemoveDistinguishedNamePrefix(
+                "OU=Test\\, OU,OU=Test,DC=Fabrikam,DC=COM");
+            Assert.Equal("OU=Test,DC=Fabrikam,DC=COM", result);
+        }
+        
+        [Fact]
         public void SplitGPLinkProperty_ValidPropFilterEnabled_ExpectedResult()
         {
             var isPropFilterEnabled = false;

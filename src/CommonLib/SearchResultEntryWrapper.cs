@@ -60,7 +60,7 @@ namespace SharpHoundCommonLib
             var uac = _entry.GetProperty(LDAPProperties.UserAccountControl);
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UacFlags)flag;
+                var flags = (UacFlags) flag;
                 if ((flags & UacFlags.ServerTrustAccount) != 0)
                 {
                     _log.LogTrace("Marked {SID} as a domain controller", objectId);
@@ -68,15 +68,7 @@ namespace SharpHoundCommonLib
                     _utils.AddDomainController(objectId);
                 }
             }
-
-            res.ObjectId = objectId;
-            if (IsDeleted())
-            {
-                res.Deleted = IsDeleted();
-                _log.LogTrace("{SID} is tombstoned, skipping rest of resolution", objectId);
-                return res;
-            }
-
+            
             //Try to resolve the domain
             var distinguishedName = DistinguishedName;
             string itemDomain;
@@ -96,11 +88,18 @@ namespace SharpHoundCommonLib
             {
                 itemDomain = Helpers.DistinguishedNameToDomain(distinguishedName);
             }
-
+            
             _log.LogTrace("Resolved domain for {SID} to {Domain}", objectId, itemDomain);
 
+            res.ObjectId = objectId;
             res.Domain = itemDomain;
-
+            if (IsDeleted())
+            {
+                res.Deleted = IsDeleted();
+                _log.LogTrace("{SID} is tombstoned, skipping rest of resolution", objectId);
+                return res;
+            }
+            
             if (WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var wkPrincipal))
             {
                 res.DomainSid = _utils.GetSidFromDomainName(itemDomain);

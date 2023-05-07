@@ -22,7 +22,7 @@ namespace SharpHoundCommonLib.Processors
             "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedtodelegateto",
             "msDS-allowedtoactonbehalfofotheridentity", "displayname",
             "sidhistory", "samaccountname", "samaccounttype", "objectsid", "objectguid", "objectclass",
-            "samaccountname", "msds-groupmsamembership",
+            "msds-groupmsamembership",
             "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector",
             "member", "whenCreated"
         };
@@ -133,7 +133,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads specific LDAP properties related to containers
+        ///     Reads specific LDAP properties related to containers
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -198,7 +198,7 @@ namespace SharpHoundCommonLib.Processors
                         continue;
 
                     var resolvedHost = await _utils.ResolveHostToSid(d, domain);
-                    if (resolvedHost != null && (resolvedHost.Contains(".") || resolvedHost.Contains("S-1")))
+                    if (resolvedHost != null && resolvedHost.Contains("S-1"))
                         comps.Add(new TypedPrincipal
                         {
                             ObjectIdentifier = resolvedHost,
@@ -212,7 +212,8 @@ namespace SharpHoundCommonLib.Processors
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
-            props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
+            props.Add("pwdlastset",
+                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
             var spn = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
             props.Add("serviceprincipalnames", spn);
             props.Add("hasspn", spn.Length > 0);
@@ -386,7 +387,8 @@ namespace SharpHoundCommonLib.Processors
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
-            props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
+            props.Add("pwdlastset",
+                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
             props.Add("serviceprincipalnames", entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames));
             var os = entry.GetProperty(LDAPProperties.OperatingSystem);
             var sp = entry.GetProperty(LDAPProperties.ServicePack);
@@ -420,6 +422,20 @@ namespace SharpHoundCommonLib.Processors
             compProps.SidHistory = sidHistoryPrincipals.ToArray();
 
             props.Add("sidhistory", sidHistoryList.ToArray());
+
+            var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);
+            var smsaPrincipals = new List<TypedPrincipal>();
+            if (hsa != null) {
+                foreach (var dn in hsa)
+                {
+                    var resolvedPrincipal = _utils.ResolveDistinguishedName(dn);
+
+                    if (resolvedPrincipal != null)
+                        smsaPrincipals.Add(resolvedPrincipal);
+                }
+            }
+
+            compProps.DumpSMSAPassword = smsaPrincipals.ToArray();
 
             compProps.Props = props;
 
@@ -528,19 +544,20 @@ namespace SharpHoundCommonLib.Processors
 
     public class UserProperties
     {
-        public Dictionary<string, object> Props { get; set; }
-        public TypedPrincipal[] AllowedToDelegate { get; set; }
-        public TypedPrincipal[] SidHistory { get; set; }
+        public Dictionary<string, object> Props { get; set; } = new();
+        public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
     }
 
     public class ComputerProperties
     {
-        public Dictionary<string, object> Props { get; set; }
-        public TypedPrincipal[] AllowedToDelegate { get; set; }
-        public TypedPrincipal[] AllowedToAct { get; set; }
-        public TypedPrincipal[] SidHistory { get; set; }
-        public TypedPrincipal[] RevealOnDemand { get; set; }
-        public TypedPrincipal[] NeverReveal { get; set; }
-        public TypedPrincipal ManagedBy { get; set; }
+        public Dictionary<string, object> Props { get; set; } = new();
+        public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] RevealOnDemand { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] NeverReveal { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal ManagedBy { get; set; } = new();
     }
 }

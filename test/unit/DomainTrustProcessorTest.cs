@@ -39,7 +39,7 @@ namespace CommonLibTest
 
             mockUtils.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
-                It.IsAny<bool>())).Returns(searchResults);
+                It.IsAny<bool>(), It.IsAny<bool>())).Returns(searchResults);
             var processor = new DomainTrustProcessor(mockUtils.Object);
             var test = processor.EnumerateDomainTrusts("testlab.local").ToArray();
             Assert.Single(test);
@@ -96,7 +96,7 @@ namespace CommonLibTest
 
             mockUtils.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
-                It.IsAny<bool>())).Returns(searchResults);
+                It.IsAny<bool>(), It.IsAny<bool>())).Returns(searchResults);
             var processor = new DomainTrustProcessor(mockUtils.Object);
             var test = processor.EnumerateDomainTrusts("testlab.local");
             Assert.Empty(test);
@@ -123,7 +123,7 @@ namespace CommonLibTest
 
             attrib = TrustAttributes.FilterSids;
             test = DomainTrustProcessor.TrustAttributesToType(attrib);
-            Assert.Equal(TrustType.Unknown, test);
+            Assert.Equal(TrustType.External, test);
         }
     }
 }

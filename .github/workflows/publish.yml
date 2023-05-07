@@ -38,7 +38,7 @@ jobs:
           path: docfx/coverage/report/
 
       - name: Pack
-        run: dotnet pack --include-symbols --no-restore -c Release -p:PackageVersion=${{ steps.version.outputs.result }} -o .
+        run: dotnet pack --no-restore -c Release -p:PackageVersion=${{ steps.version.outputs.result }} -o .
 
       - name: Publish NuGet
         run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }}

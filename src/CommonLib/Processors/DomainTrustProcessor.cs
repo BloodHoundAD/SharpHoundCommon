@@ -28,7 +28,7 @@ namespace SharpHoundCommonLib.Processors
         {
             var query = CommonFilters.TrustedDomains;
             foreach (var result in _utils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps,
-                domain))
+                         domain))
             {
                 var trust = new DomainTrust();
                 var targetSidBytes = result.GetByteProperty(LDAPProperties.SecurityIdentifier);
@@ -53,7 +53,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (int.TryParse(result.GetProperty(LDAPProperties.TrustDirection), out var td))
                 {
-                    trust.TrustDirection = (TrustDirection)td;
+                    trust.TrustDirection = (TrustDirection) td;
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace SharpHoundCommonLib.Processors
 
                 if (int.TryParse(result.GetProperty(LDAPProperties.TrustAttributes), out var ta))
                 {
-                    attributes = (TrustAttributes)ta;
+                    attributes = (TrustAttributes) ta;
                 }
                 else
                 {
@@ -94,8 +94,8 @@ namespace SharpHoundCommonLib.Processors
                 trustType = TrustType.ParentChild;
             else if ((attributes & TrustAttributes.ForestTransitive) != 0)
                 trustType = TrustType.Forest;
-            else if ((attributes & TrustAttributes.TreatAsExternal) != 0 ||
-                     (attributes & TrustAttributes.CrossOrganization) != 0)
+            else if ((attributes & TrustAttributes.WithinForest) == 0 &&
+                     (attributes & TrustAttributes.ForestTransitive) == 0)
                 trustType = TrustType.External;
             else
                 trustType = TrustType.Unknown;

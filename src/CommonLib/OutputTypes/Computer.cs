@@ -13,14 +13,13 @@ namespace SharpHoundCommonLib.OutputTypes
         public TypedPrincipal[] HasSIDHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] RevealOnDemand { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] NeverReveal { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal ManagedBy { get; set; } = new();
         public SessionAPIResult Sessions { get; set; } = new();
         public SessionAPIResult PrivilegedSessions { get; set; } = new();
         public SessionAPIResult RegistrySessions { get; set; } = new();
-        public LocalGroupAPIResult LocalAdmins { get; set; } = new();
-        public LocalGroupAPIResult RemoteDesktopUsers { get; set; } = new();
-        public LocalGroupAPIResult DcomUsers { get; set; } = new();
-        public LocalGroupAPIResult PSRemoteUsers { get; set; } = new();
+        public LocalGroupAPIResult[] LocalGroups { get; set; } = Array.Empty<LocalGroupAPIResult>();
+        public UserRightsAssignmentAPIResult[] UserRights { get; set; } = Array.Empty<UserRightsAssignmentAPIResult>();
         public ComputerStatus Status { get; set; }
     }
 
@@ -32,6 +31,7 @@ namespace SharpHoundCommonLib.OutputTypes
         public static string NonWindowsOS => "NonWindowsOS";
         public static string OldPwd => "PwdLastSetOutOfRange";
         public static string PortNotOpen => "PortNotOpen";
+        public static string Success => "Success";
 
         public CSVComputerStatus GetCSVStatus(string computerName)
         {

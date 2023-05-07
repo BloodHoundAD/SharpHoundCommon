@@ -49,5 +49,7 @@
         public const string ManagedBy = "managedby";
         public const string RevealOnDemand = "msds-revealondemandgroup";
         public const string NeverReveal = "msds-neverrevealgroup";
+        public const string LdapAdminLimits = "ldapadminlimits";
+        public const string HostServiceAccount = "msds-hostserviceaccount";
     }
 }

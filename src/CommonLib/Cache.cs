@@ -7,6 +7,17 @@ namespace SharpHoundCommonLib
     [DataContract]
     public class Cache
     {
+        //Leave these here until we switch back to Newtonsoft which doesn't suck
+        // [DataMember]private ConcurrentDictionary<string, string[]> _globalCatalogCache;
+        //
+        // [DataMember]private ConcurrentDictionary<string, Label> _idToTypeCache;
+        //
+        // [DataMember]private ConcurrentDictionary<string, string> _machineSidCache;
+        //
+        // [DataMember]private ConcurrentDictionary<string, string> _sidToDomainCache;
+        //
+        // [DataMember]private ConcurrentDictionary<string, string> _valueToIDCache;
+
         private Cache()
         {
             ValueToIdCache = new ConcurrentDictionary<string, string>();

@@ -7,8 +7,8 @@ namespace SharpHoundCommonLib
         private static bool _initialized;
 
         /// <summary>
-        /// Initializes the common library with a log and cache instance.
-        /// If log/cache aren't provided, will use defaults
+        ///     Initializes the common library with a log and cache instance.
+        ///     If log/cache aren't provided, will use defaults
         /// </summary>
         /// <param name="log"></param>
         /// <param name="cache"></param>
@@ -36,7 +36,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Replaces the current logging instance with a new one
+        ///     Replaces the current logging instance with a new one
         /// </summary>
         /// <param name="log"></param>
         public static void ReconfigureLogging(ILogger log)

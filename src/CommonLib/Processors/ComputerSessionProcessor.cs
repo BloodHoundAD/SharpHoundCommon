@@ -12,6 +12,8 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
+        public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
+
         private static readonly Regex SidRegex = new(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
         private readonly string _currentUserName;
         private readonly ILogger _log;
@@ -27,6 +29,8 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("CompSessions");
         }
 
+        public event ComputerStatusDelegate ComputerStatusEvent;
+
         /// <summary>
         ///     Uses the NetSessionEnum Win32 API call to get network sessions from a remote computer.
         ///     These are usually from SMB share accesses or other network sessions of the sort
@@ -39,27 +43,37 @@ namespace SharpHoundCommonLib.Processors
             string computerDomain)
         {
             var ret = new SessionAPIResult();
-            NativeMethods.SESSION_INFO_10[] apiResult;
 
-            try
+            var result = _nativeMethods.NetSessionEnum(computerName);
+            if (result.IsFailed)
             {
-                apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
-            }
-            catch (APIException e)
-            {
-                _log.LogDebug("NetSessionEnum failed on {ComputerName}: {Status}", computerName, e.Status);
+                await SendComputerStatus(new CSVComputerStatus
+                {
+                    Status = result.Status.ToString(),
+                    Task = "NetSessionEnum",
+                    ComputerName = computerName
+                });
+                _log.LogDebug("NetSessionEnum failed on {ComputerName}: {Status}", computerName, result.Status);
                 ret.Collected = false;
-                ret.FailureReason = e.Status;
+                ret.FailureReason = result.Status.ToString();
                 return ret;
             }
+
+            _log.LogDebug("NetSessionEnum succeeded on {ComputerName}", computerName);
+            await SendComputerStatus(new CSVComputerStatus
+            {
+                Status = CSVComputerStatus.StatusSuccess,
+                Task = "NetSessionEnum",
+                ComputerName = computerName
+            });
 
             ret.Collected = true;
             var results = new List<Session>();
 
-            foreach (var sesInfo in apiResult)
+            foreach (var sesInfo in result.Value)
             {
-                var username = sesInfo.sesi10_username;
-                var computerSessionName = sesInfo.sesi10_cname;
+                var username = sesInfo.Username;
+                var computerSessionName = sesInfo.ComputerName;
 
                 _log.LogTrace("NetSessionEnum Entry: {Username}@{ComputerSessionName} from {ComputerName}", username,
                     computerSessionName, computerName);
@@ -67,17 +81,16 @@ namespace SharpHoundCommonLib.Processors
                 //Filter out blank/null cnames/usernames
                 if (string.IsNullOrWhiteSpace(computerSessionName) || string.IsNullOrWhiteSpace(username))
                 {
-                    _log.LogTrace("Skipping session entry with null session/user");
+                    _log.LogTrace("Skipping NetSessionEnum entry with null session/user");
                     continue;
                 }
-
 
                 //Filter out blank usernames, computer accounts, the user we're doing enumeration with, and anonymous logons
                 if (username.EndsWith("$") ||
                     username.Equals(_currentUserName, StringComparison.CurrentCultureIgnoreCase) ||
                     username.Equals("anonymous logon", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    _log.LogTrace("Skipping session for {Username}", username);
+                    _log.LogTrace("Skipping NetSessionEnum entry for {Username}", username);
                     continue;
                 }
 
@@ -104,7 +117,7 @@ namespace SharpHoundCommonLib.Processors
                 if (matches.Length > 0)
                 {
                     results.AddRange(
-                        matches.Select(s => new Session { ComputerSID = resolvedComputerSID, UserSID = s }));
+                        matches.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
                 }
                 else
                 {
@@ -131,31 +144,41 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerSid"></param>
         /// <returns></returns>
-        public SessionAPIResult ReadUserSessionsPrivileged(string computerName,
+        public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName,
             string computerSamAccountName, string computerSid)
         {
             var ret = new SessionAPIResult();
-            NativeMethods.WKSTA_USER_INFO_1[] apiResult;
+            var result = _nativeMethods.NetWkstaUserEnum(computerName);
 
-            try
+            if (result.IsFailed)
             {
-                apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
-            }
-            catch (APIException e)
-            {
-                _log.LogTrace("NetWkstaUserEnum failed on {ComputerName}: {Status}", computerName, e.Status);
+                await SendComputerStatus(new CSVComputerStatus
+                {
+                    Status = result.Status.ToString(),
+                    Task = "NetWkstaUserEnum",
+                    ComputerName = computerName
+                });
+                _log.LogDebug("NetWkstaUserEnum failed on {ComputerName}: {Status}", computerName, result.Status);
                 ret.Collected = false;
-                ret.FailureReason = e.Status;
+                ret.FailureReason = result.Status.ToString();
                 return ret;
             }
+
+            _log.LogDebug("NetWkstaUserEnum succeeded on {ComputerName}", computerName);
+            await SendComputerStatus(new CSVComputerStatus
+            {
+                Status = result.Status.ToString(),
+                Task = "NetWkstaUserEnum",
+                ComputerName = computerName
+            });
 
             ret.Collected = true;
 
             var results = new List<TypedPrincipal>();
-            foreach (var wkstaUserInfo in apiResult)
+            foreach (var wkstaUserInfo in result.Value)
             {
-                var domain = wkstaUserInfo.wkui1_logon_domain;
-                var username = wkstaUserInfo.wkui1_username;
+                var domain = wkstaUserInfo.LogonDomain;
+                var username = wkstaUserInfo.Username;
 
                 _log.LogTrace("NetWkstaUserEnum entry: {Username}@{Domain} from {ComputerName}", username, domain,
                     computerName);
@@ -205,7 +228,7 @@ namespace SharpHoundCommonLib.Processors
             return ret;
         }
 
-        public SessionAPIResult ReadUserSessionsRegistry(string computerName, string computerDomain,
+        public async Task<SessionAPIResult> ReadUserSessionsRegistry(string computerName, string computerDomain,
             string computerSid)
         {
             var ret = new SessionAPIResult();
@@ -214,19 +237,55 @@ namespace SharpHoundCommonLib.Processors
 
             try
             {
-                key = RegistryKey.OpenRemoteBaseKey(RegistryHive.Users, computerName);
-                ret.Collected = true;
-                ret.Results = key.GetSubKeyNames().Where(subkey => SidRegex.IsMatch(subkey)).Select(x => new Session
+                var task = OpenRegistryKey(computerName, RegistryHive.Users);
+                
+                if (await Task.WhenAny(task, Task.Delay(10000)) != task)
                 {
-                    ComputerSID = computerSid,
-                    UserSID = x
-                }).ToArray();
+                    _log.LogDebug("Hit timeout on registry enum on {Server}. Abandoning registry enum", computerName);
+                    ret.Collected = false;
+                    ret.FailureReason = "Timeout";
+                    await SendComputerStatus(new CSVComputerStatus
+                    {
+                        Status = "Timeout",
+                        Task = "RegistrySessionEnum",
+                        ComputerName = computerName
+                    });
+                    return ret;
+                }
+                
+                key = task.Result;
+
+                ret.Collected = true;
+                await SendComputerStatus(new CSVComputerStatus
+                {
+                    Status = CSVComputerStatus.StatusSuccess,
+                    Task = "RegistrySessionEnum",
+                    ComputerName = computerName
+                });
+                _log.LogDebug("Registry session enum succeeded on {ComputerName}", computerName);
+                ret.Results = key.GetSubKeyNames()
+                    .Where(subkey => SidRegex.IsMatch(subkey))
+                    .Select(x => _utils.ResolveIDAndType(x, computerDomain))
+                    .Where(x => x != null)
+                    .Select(x =>
+                        new Session
+                        {
+                            ComputerSID = computerSid,
+                            UserSID = x.ObjectIdentifier
+                        })
+                    .ToArray();
 
                 return ret;
             }
             catch (Exception e)
             {
-                _log.LogTrace("Failed to open remote registry on {ComputerName}: {Status}", computerName, e.Message);
+                _log.LogDebug("Registry session enum failed on {ComputerName}: {Status}", computerName, e.Message);
+                await SendComputerStatus(new CSVComputerStatus
+                {
+                    Status = e.Message,
+                    Task = "RegistrySessionEnum",
+                    ComputerName = computerName
+                });
                 ret.Collected = false;
                 ret.FailureReason = e.Message;
                 return ret;
@@ -235,6 +294,16 @@ namespace SharpHoundCommonLib.Processors
             {
                 key?.Dispose();
             }
+        }
+
+        private Task<RegistryKey> OpenRegistryKey(string computerName, RegistryHive hive)
+        {
+            return Task.Run(() => RegistryKey.OpenRemoteBaseKey(hive, computerName));
+        }
+
+        private async Task SendComputerStatus(CSVComputerStatus status)
+        {
+            if (ComputerStatusEvent is not null) await ComputerStatusEvent.Invoke(status);
         }
     }
 }
