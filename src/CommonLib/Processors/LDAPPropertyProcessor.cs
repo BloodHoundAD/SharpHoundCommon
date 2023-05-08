@@ -339,46 +339,47 @@ namespace SharpHoundCommonLib.Processors
             compProps.AllowedToAct = allowedToActPrincipals.ToArray();
 
             var revealOnDemandPrincipals = new List<TypedPrincipal>();
-            var rawRevealOnDemand = entry.GetArrayProperty(LDAPProperties.RevealOnDemand);
-            if (rawRevealOnDemand != null)
+            var neverRevealPrincipals = new List<TypedPrincipal>();
+            var managedByPrincipal = new TypedPrincipal();
+
+            if (isRodc)
             {
-                foreach (var dn in rawRevealOnDemand)
+                var rawRevealOnDemand = entry.GetArrayProperty(LDAPProperties.RevealOnDemand);
+                if (rawRevealOnDemand != null)
                 {
-                    var res = _utils.ResolveDistinguishedName(dn);
-                    if (res != null)
+                    foreach (var dn in rawRevealOnDemand)
                     {
-                        revealOnDemandPrincipals.Add(res);
+                        var res = _utils.ResolveDistinguishedName(dn);
+                        if (res != null)
+                        {
+                            revealOnDemandPrincipals.Add(res);
+                        }
                     }
+                }
+
+                var rawNeverReveal = entry.GetArrayProperty(LDAPProperties.NeverReveal);
+                if (rawNeverReveal != null)
+                {
+                    foreach (var dn in rawNeverReveal)
+                    {
+                        var res = _utils.ResolveDistinguishedName(dn);
+                        if (res != null)
+                        {
+                            neverRevealPrincipals.Add(res);
+                        }
+                    }
+                }
+
+                var rawManagedBy = entry.GetProperty(LDAPProperties.ManagedBy);
+                if (rawManagedBy != null)
+                {
+                    managedByPrincipal = _utils.ResolveDistinguishedName(rawManagedBy);
                 }
             }
 
             compProps.RevealOnDemand = revealOnDemandPrincipals.ToArray();
-
-            var neverRevealPrincipals = new List<TypedPrincipal>();
-            var rawNeverReveal = entry.GetArrayProperty(LDAPProperties.NeverReveal);
-            if (rawNeverReveal != null)
-            {
-                foreach (var dn in rawNeverReveal)
-                {
-                    var res = _utils.ResolveDistinguishedName(dn);
-                    if (res != null)
-                    {
-                        neverRevealPrincipals.Add(res);
-                    }
-                }
-            }
-
             compProps.NeverReveal = neverRevealPrincipals.ToArray();
-
-            var rawManagedBy = entry.GetProperty(LDAPProperties.ManagedBy);
-            if (rawManagedBy != null)
-            {
-                var managedByPrincipal = _utils.ResolveDistinguishedName(rawManagedBy);
-                if (managedByPrincipal != null)
-                {
-                    compProps.ManagedBy = managedByPrincipal;
-                }
-            }
+            compProps.ManagedBy = managedByPrincipal;
 
             props.Add("enabled", enabled);
             props.Add("unconstraineddelegation", unconstrained);
