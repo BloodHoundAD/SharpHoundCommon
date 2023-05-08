@@ -137,7 +137,7 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain,
             Label objectType,
-            bool hasLaps, bool isRodc, string objectName = "")
+            bool hasLaps, bool isRodc = false, string objectName = "")
         {
             if (ntSecurityDescriptor == null)
             {
