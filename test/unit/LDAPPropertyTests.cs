@@ -602,6 +602,156 @@ namespace CommonLibTest
 
         }
 
+        [Fact]
+        public async Task LDAPPropertyProcessor_ReadComputerProperties_TestRODC()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {"description", "Test"},
+                    {"useraccountcontrol", 0x5001000.ToString()},
+                    {"lastlogon", "132673011142753043"},
+                    {"lastlogontimestamp", "132670318095676525"},
+                    {"operatingsystem", "Windows 10 Enterprise"},
+                    {"operatingsystemservicepack", "1607"},
+                    {"admincount", "c"},
+                    {
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
+                    {
+                        "msds-allowedtodelegateto", new[]
+                        {
+                            "ldap/PRIMARY.testlab.local/testlab.local",
+                            "ldap/PRIMARY.testlab.local",
+                            "ldap/PRIMARY"
+                        }
+                    },
+                    {"pwdlastset", "132131667346106691"},
+                    {
+                        "msds-revealondemandgroup", new[]
+                        {
+                            "CN=dfm,CN=Users,DC=testlab,DC=local",
+                            "CN=krbtgt,CN=Users,DC=testlab,DC=local"
+                        }
+                    },
+                    {
+                        "msds-neverrevealgroup", new[]
+                        {
+                            "CN=Domain Users,CN=Users,DC=testlab,DC=local"
+                        }
+                    },
+                    {"managedby", "CN=Domain Users,CN=Users,DC=testlab,DC=local"}
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var test = await processor.ReadComputerProperties(mock);
+            var props = test.Props;
+            var keys = props.Keys;
+
+            // Testing isrodc
+            Assert.Contains("isrodc", keys);
+            Assert.True((bool) props["isrodc"]);
+
+            // Testing RevealOnDemand
+            var expectedRevealOnDemand = new TypedPrincipal[]
+            {
+                new()
+                {
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-1105",
+                    ObjectType = Label.User
+                },
+                new()
+                {
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-502",
+                    ObjectType = Label.User
+                }
+            };
+            var testRevealOnDemand = test.RevealOnDemand;
+            Assert.Equal(2, testRevealOnDemand.Length);
+            Assert.Equal(expectedRevealOnDemand, testRevealOnDemand);
+
+            // Testing NeverReveal
+            var expectedNeverReveal = new TypedPrincipal[]
+            {
+                new()
+                {
+                    ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-513",
+                    ObjectType = Label.Group
+                }
+            };
+            var testNeverReveal = test.NeverReveal;
+            Assert.Equal(1, testNeverReveal.Length);
+            Assert.Equal(expectedNeverReveal, testNeverReveal);
+
+            // Testing ManagedBy
+            var expectedManagedBy = new TypedPrincipal
+            {
+                ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-513",
+                ObjectType = Label.Group
+            };
+            var testManagedBy = test.ManagedBy;
+            Assert.Equal(expectedManagedBy, testManagedBy);
+        }
+
+        [Fact]
+        public async Task LDAPPropertyProcessor_ReadComputerProperties_TestNotRODC()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {"description", "Test"},
+                    {"useraccountcontrol", 0x1001000.ToString()},
+                    {"lastlogon", "132673011142753043"},
+                    {"lastlogontimestamp", "132670318095676525"},
+                    {"operatingsystem", "Windows 10 Enterprise"},
+                    {"operatingsystemservicepack", "1607"},
+                    {"admincount", "c"},
+                    {
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
+                    {
+                        "msds-allowedtodelegateto", new[]
+                        {
+                            "ldap/PRIMARY.testlab.local/testlab.local",
+                            "ldap/PRIMARY.testlab.local",
+                            "ldap/PRIMARY"
+                        }
+                    },
+                    {"pwdlastset", "132131667346106691"},
+                    {"managedby", "CN=Domain Users,CN=Users,DC=testlab,DC=local"}
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var test = await processor.ReadComputerProperties(mock);
+            var props = test.Props;
+            var keys = props.Keys;
+
+            // Testing isrodc
+            Assert.Contains("isrodc", keys);
+            Assert.False((bool) props["isrodc"]);
+
+            // Testing RevealOnDemand
+            var expectedRevealOnDemand = new List<TypedPrincipal>();
+            var testRevealOnDemand = test.RevealOnDemand;
+            Assert.Equal(0, testRevealOnDemand.Length);
+
+            // Testing NeverReveal
+            var expectedNeverReveal = new List<TypedPrincipal>();
+            var testNeverReveal = test.NeverReveal;
+            Assert.Equal(0, testNeverReveal.Length);
+
+            // Testing ManagedBy
+            var expectedManagedBy = new TypedPrincipal();
+            var testManagedBy = test.ManagedBy;
+            Assert.Equal(expectedManagedBy, testManagedBy);
+        }
+
         // //TODO: Add coverage for ParseAllProperties
     }
 }
