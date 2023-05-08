@@ -71,7 +71,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockUtils.Object, true);
             var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, "TESTLAB.LOCAL", Label.Group, false);
+            var result = processor.ProcessACL(bytes, "TESTLAB.LOCAL", Label.Group, hasLaps: false, isRodc: false);
 
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
 
@@ -224,7 +224,7 @@ namespace CommonLibTest
         public void ACLProcessor_ProcessACL_Null_NTSecurityDescriptor()
         {
             var processor = new ACLProcessor(new MockLDAPUtils(), true);
-            var result = processor.ProcessACL(null, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(null, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -248,7 +248,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -272,7 +272,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -292,7 +292,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -314,7 +314,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -337,7 +337,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -361,7 +361,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -393,7 +393,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -424,7 +424,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -461,7 +461,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -498,7 +498,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -535,7 +535,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Group, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Group, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -572,7 +572,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -604,7 +604,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -641,7 +641,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -678,7 +678,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -716,7 +716,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -748,7 +748,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -785,7 +785,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -822,7 +822,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, false).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -854,7 +854,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, true).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, hasLaps: true, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -896,7 +896,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Container, true).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Container, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Empty(result);
         }
@@ -928,7 +928,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, true).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.User, hasLaps: false, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
@@ -965,7 +965,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Group, true).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Group, hasLaps: false, isRodc: false).ToArray();
 
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
 
@@ -1004,7 +1004,7 @@ namespace CommonLibTest
 
             var processor = new ACLProcessor(mockLDAPUtils.Object, true);
             var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-            var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, true).ToArray();
+            var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, hasLaps: true, isRodc: false).ToArray();
 
             Assert.Single(result);
             var actual = result.First();
