@@ -110,13 +110,18 @@ namespace SharpHoundCommonLib.Processors
         {
             var links = entry.GetProperty(LDAPProperties.GPLink);
             var dn = entry.DistinguishedName;
-            return ReadGPOLocalGroups(links, dn);
+            var blockInheritance = entry.GetProperty("gpoptions") == "1";
+            return ReadGPOLocalGroups(links, dn, blockInheritance);
         }
 
-        public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName)
+        public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName, bool blockInheritance = false)
         {
-            var ret = new ResultingGPOChanges();
-
+            var ret = new ResultingGPOChanges
+            {
+                BlockInheritance = blockInheritance,
+                Enforced = new GPOChanges(),
+                Unenforced = new GPOChanges()
+            };
             //If the gplink property is null, we don't need to process anything
             if (gpLink == null)
                 return ret;
@@ -208,7 +213,7 @@ namespace SharpHoundCommonLib.Processors
                         { // Only update the keys set in the GPO
                             foreach (var i in item.passwordPolicies)
                             {
-                                ret.PasswordPolicies[i.Key] = i.Value;
+                                _ = enforced.Contains(linkDn) ? (ret.Enforced.PasswordPolicies[i.Key] = i.Value) : (ret.Unenforced.PasswordPolicies[i.Key] = i.Value);
                             }
                         }
 
@@ -217,7 +222,7 @@ namespace SharpHoundCommonLib.Processors
                         { // Only update the keys set in the GPO
                             foreach (var i in item.lockoutPolicies)
                             {
-                                ret.LockoutPolicies[i.Key] = i.Value;
+                                _ = enforced.Contains(linkDn) ? (ret.Enforced.LockoutPolicies[i.Key] = i.Value) : (ret.Unenforced.LockoutPolicies[i.Key] = i.Value);
                             }
                         }
 
@@ -226,20 +231,20 @@ namespace SharpHoundCommonLib.Processors
                         { // Only update the keys set in the GPO
                             foreach (var i in item.GPOSMBProps)
                             {
-                                ret.SMBSigning[i.Key] = i.Value;
+                                _ = enforced.Contains(linkDn) ? (ret.Enforced.SMBSigning[i.Key] = i.Value) : (ret.Unenforced.SMBSigning[i.Key] = i.Value);
                             }
                         }
 
                         // Add LM properties
                         if (item.ContainsLMProps())
-                        { // Will override value depending on GPO link order, as GPOs are processed in link order
-                            ret.LMAuthenticationLevel = item.GPOLMProps;
+                        {
+                            _ = enforced.Contains(linkDn) ? (ret.Enforced.LMAuthenticationLevel = item.GPOLMProps) : (ret.Unenforced.LMAuthenticationLevel = item.GPOLMProps);
                         }
 
                         // Add LDAP properties
                         if (item.ContainsLDAPProps())
                         {
-                            ret.LDAPSigning = item.GPOLDAPProps;
+                            _ = enforced.Contains(linkDn) ? (ret.Enforced.LDAPSigning = item.GPOLDAPProps) : (ret.Unenforced.LDAPSigning = item.GPOLDAPProps);
                         }
                     }
                 }
@@ -985,32 +990,6 @@ namespace SharpHoundCommonLib.Processors
             public bool ContainsGroupAction()
             {
                 return !(GPOGroupAction == null);
-            }
-            public override string ToString()
-            {
-                string GPOGroupActionStr = GPOGroupAction == null ? "" : GPOGroupAction.ToString();
-                string passwordPoliciesStr = "";
-                string GPOSMBPropsStr = "";
-                string GPOLMPropsStr = "";
-                string GPOLDAPPropsStr = "";
-                foreach (var key in passwordPolicies.Keys)
-                {
-                    passwordPoliciesStr += key + ": " + passwordPolicies[key] + ", ";
-                }
-                foreach (var key in GPOSMBProps.Keys)
-                {
-                    GPOSMBPropsStr += key + ": " + GPOSMBProps[key] + ", ";
-                }
-                foreach (var key in GPOLMProps.Keys)
-                {
-                    GPOLMPropsStr += key + ": " + GPOLMProps[key] + ", ";
-                }
-                foreach (var key in GPOLDAPProps.Keys)
-                {
-                    GPOLDAPPropsStr += key + ": " + GPOLDAPProps[key] + ", ";
-                }
-
-                return $"{nameof(GPOGroupAction)}: {GPOGroupActionStr}, {nameof(passwordPolicies)}: {passwordPoliciesStr}{nameof(GPOSMBProps)}: {GPOSMBPropsStr}{nameof(GPOLMProps)}: {GPOLMPropsStr}{nameof(GPOLDAPProps)}: {GPOLDAPPropsStr}";
             }
         }
     }
