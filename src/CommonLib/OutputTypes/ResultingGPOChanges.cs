@@ -6,6 +6,7 @@ namespace SharpHoundCommonLib.OutputTypes
     public class ResultingGPOChanges
     {
         public Dictionary<string, int> PasswordPolicies = new();
+        public Dictionary<string, int> LockoutPolicies = new();
         public Dictionary<string, bool> SMBSigning = new();
         public Dictionary<string, bool> LDAPSigning = new();
         public Dictionary<string, object> LMAuthenticationLevel = new();

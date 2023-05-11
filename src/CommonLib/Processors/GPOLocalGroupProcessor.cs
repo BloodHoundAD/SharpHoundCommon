@@ -53,6 +53,18 @@ namespace SharpHoundCommonLib.Processors
         private static readonly Regex ClearTextPassRegex =
             new(@"ClearTextPassword(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
 
+        private static readonly Regex LockoutDurationRegex =
+            new(@"LockoutDuration(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex LockoutBadCountRegex =
+            new(@"LockoutBadCount(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex ResetLockoutCountRegex =
+            new(@"ResetLockoutCount(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
+        private static readonly Regex ForceLogoffWhenHourExpireRegex =
+            new(@"ForceLogoffWhenHourExpire(\s)*=(\s)*(\d)+", RegexOptions.Compiled);
+
         private static readonly Regex RegistryRegex =
             new(@"\[Registry Values\]((.[^\[])*)", RegexOptions.Compiled | RegexOptions.Singleline);
 
@@ -104,6 +116,7 @@ namespace SharpHoundCommonLib.Processors
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName)
         {
             var ret = new ResultingGPOChanges();
+
             //If the gplink property is null, we don't need to process anything
             if (gpLink == null)
                 return ret;
@@ -196,6 +209,15 @@ namespace SharpHoundCommonLib.Processors
                             foreach (var i in item.passwordPolicies)
                             {
                                 ret.PasswordPolicies[i.Key] = i.Value;
+                            }
+                        }
+
+                        // Add lockout policies
+                        if (item.ContainsLockoutPolicies())
+                        { // Only update the keys set in the GPO
+                            foreach (var i in item.lockoutPolicies)
+                            {
+                                ret.LockoutPolicies[i.Key] = i.Value;
                             }
                         }
 
@@ -351,13 +373,15 @@ namespace SharpHoundCommonLib.Processors
 
             using var reader = new StreamReader(fs);
             var content = await reader.ReadToEndAsync();
-
-            var ret = new GPOReturnTuple();
-
-            // searching for password policies
-            ret.passwordPolicies = new Dictionary<string, int>();
             var sysAccessMatch = SystemAccessRegex.Match(content);
 
+            var ret = new GPOReturnTuple
+            {
+                passwordPolicies = new Dictionary<string, int>(),
+                lockoutPolicies = new Dictionary<string, int>()
+            };
+
+            // searching for password policies
             // more info about the registries: https://winprotocoldoc.blob.core.windows.net/productionwindowsarchives/MS-GPSB/%5bMS-GPSB%5d.pdf
             string minPassAge = "1";
             string maxPassAge = "42";
@@ -365,6 +389,12 @@ namespace SharpHoundCommonLib.Processors
             string passComplexity = "1";
             string passHistSize = "24";
             string clearTextPass = "0";
+
+            // searching for lockout policies
+            string lockoutDuration = "";
+            string lockoutBadCount = "";
+            string resetLockoutCount = "";
+            string forceLogoffWhenHourExpire = "";
 
             if (sysAccessMatch.Success)
             {// in section [System Access]
@@ -382,6 +412,12 @@ namespace SharpHoundCommonLib.Processors
                     var passComplexityMatch = PassComplexityRegex.Match(sysAccessLine);
                     var passHistSizeMatch = PassHistSizeRegex.Match(sysAccessLine);
                     var clearTextPassMatch = ClearTextPassRegex.Match(sysAccessLine);
+
+                    // searching for lockout policies
+                    var lockoutDurationMatch = LockoutDurationRegex.Match(sysAccessLine);
+                    var lockoutBadCountMatch = LockoutBadCountRegex.Match(sysAccessLine);
+                    var resetLockoutCountMatch = ResetLockoutCountRegex.Match(sysAccessLine);
+                    var forceLogoffWhenHourExpireMatch = ForceLogoffWhenHourExpireRegex.Match(sysAccessLine);
 
                     // add to the returned tuple if pattern found
                     if (minPassAgeMatch.Success)
@@ -414,6 +450,27 @@ namespace SharpHoundCommonLib.Processors
                         clearTextPass = sysAccessLine.Split('=')[1].Trim();
                         ret.passwordPolicies.Add("ClearTextPassword", Int32.Parse(clearTextPass));
                     }
+                    else if (lockoutDurationMatch.Success)
+                    {
+                        lockoutDuration = sysAccessLine.Split('=')[1].Trim();
+                        ret.lockoutPolicies.Add("LockoutDuration", Int32.Parse(lockoutDuration));
+                    }
+                    else if (lockoutBadCountMatch.Success)
+                    {
+                        lockoutBadCount = sysAccessLine.Split('=')[1].Trim();
+                        ret.lockoutPolicies.Add("LockoutBadCount", Int32.Parse(lockoutBadCount));
+                    }
+                    else if (resetLockoutCountMatch.Success)
+                    {
+                        resetLockoutCount = sysAccessLine.Split('=')[1].Trim();
+                        ret.lockoutPolicies.Add("ResetLockoutCount", Int32.Parse(resetLockoutCount));
+                    }
+                    else if (forceLogoffWhenHourExpireMatch.Success)
+                    {
+                        forceLogoffWhenHourExpire = sysAccessLine.Split('=')[1].Trim();
+                        ret.lockoutPolicies.Add("ForceLogoffWhenHourExpire", Int32.Parse(forceLogoffWhenHourExpire));
+                    }
+
                 }
             }
 
@@ -899,6 +956,7 @@ namespace SharpHoundCommonLib.Processors
         internal class GPOReturnTuple
         {
             public Dictionary<string, int> passwordPolicies = new();
+            public Dictionary<string, int> lockoutPolicies = new();
             public Dictionary<string, bool> GPOLDAPProps = new();
             public Dictionary<string, bool> GPOSMBProps = new();
             public Dictionary<string, object> GPOLMProps = new();
@@ -907,6 +965,10 @@ namespace SharpHoundCommonLib.Processors
             public bool ContainsPasswordPolicies()
             {
                 return !(passwordPolicies.Count == 0);
+            }
+            public bool ContainsLockoutPolicies()
+            {
+                return !(lockoutPolicies.Count == 0);
             }
             public bool ContainsSMBProps()
             {
