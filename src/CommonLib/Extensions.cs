@@ -395,7 +395,7 @@ namespace SharpHoundCommonLib
         private const string ContainerClass = "container";
         private const string CertTemplateClass = "pKICertificateTemplate";
         private const string EnrollmentServiceClass = "pKIEnrollmentService";
-        private const string CertAuthorityClass = "certificateAuthority";
+        private const string CertAuthorityClass = "certificationAuthority";
 
         #endregion
     }
