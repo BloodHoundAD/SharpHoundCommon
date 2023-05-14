@@ -156,11 +156,11 @@ namespace SharpHoundCommonLib.LDAPQueries
         }
 
         /// <summary>
-        ///     Add a filter that will include PKI Certificates
+        ///     Add a filter that will include PKI Certificate templates
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddCertificates(params string[] conditions)
+        public LDAPFilter AddCertificateTemplates(params string[] conditions)
         {
             _filterParts.Add(BuildString("(objectclass=pKICertificateTemplate)", conditions));
             return this;
