@@ -78,6 +78,7 @@ namespace SharpHoundCommonLib.Processors
         public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName = "")
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
+            filter.AddCertificateAuthorities().AddCertificateTemplates().AddEnterpriseCertificationAuthorities();
             foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
                          CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName),
                          adsPath: distinguishedName))
