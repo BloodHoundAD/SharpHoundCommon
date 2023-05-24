@@ -2,7 +2,7 @@
 {
     public class CertAuthority : OutputBase
     {
-        public TypedPrincipal[] Templates { get; set; }
+        public TypedPrincipal[] EnabledCertTemplates { get; set; }
         public string HostingComputer { get; set; }
         public ACE[] CASecurity { get; set; }
         public Certificate Certificate { get; set; }

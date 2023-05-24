@@ -121,6 +121,22 @@ namespace SharpHoundCommonLib.Processors
             }
         }
         
+        public IEnumerable<TypedPrincipal> ProcessCertTemplates(string[] templates, string certTemplateContainerDN)
+        {
+            foreach (string templateCN in templates)
+            {
+                
+                var res = _utils.ResolveCertTemplateByCN(templateCN, certTemplateContainerDN);
+                if (res == null)
+                {
+                    _log.LogTrace("Failed to resolve certificate template {cn}", templateCN);
+                    continue;
+                }
+
+                yield return res;
+            }
+        }
+
         /// <summary>
         /// Get CA security regitry value from the remote machine for processing security/enrollmentagentrights
         /// </summary>

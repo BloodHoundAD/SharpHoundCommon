@@ -230,6 +230,35 @@ namespace SharpHoundCommonLib
             return new TypedPrincipal(id, type);
         }
 
+        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN)
+        {
+            var filter = new LDAPFilter().AddCertificateTemplates().AddFilter("cn=" + cn, true);
+            var res = QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
+                         CommonProperties.TypeResolutionProps, adsPath: containerDN);
+
+            if (res == null)
+            {
+                _log.LogError("Could not find certificate template '{cn}' under {containerDN}", cn, containerDN);
+                return null;
+            }
+
+            List<ISearchResultEntry> resList = new List<ISearchResultEntry>(res);
+            if (resList.Count == 0)
+            {
+                _log.LogError("Could not find certificate template '{cn}' under {containerDN}", cn, containerDN);
+                return null;
+            }
+
+            if (resList.Count > 1)
+            {
+                _log.LogError("Found more than one certificate template with CN '{cn}' under {containerDN}", cn, containerDN);
+                return null;
+            }
+
+            ISearchResultEntry searchResultEntry = resList.FirstOrDefault();
+            return new TypedPrincipal(searchResultEntry.GetGuid(), Label.CertTemplate);
+        }
+
         /// <summary>
         ///     Attempts to lookup the Label for a sid
         /// </summary>
