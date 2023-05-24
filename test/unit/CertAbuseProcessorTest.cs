@@ -79,7 +79,7 @@ namespace CommonLibTest
             var mockUtils = new Mock<MockLDAPUtils>();
             var processor = new CertAbuseProcessor(mockUtils.Object);
 
-            var results = processor.ProcessCAPermissions(null, null, "test");
+            var results = processor.ProcessCAPermissions(null, null, "test", false);
 
             Assert.Empty(results);
         }
@@ -93,7 +93,7 @@ namespace CommonLibTest
             var processor = new CertAbuseProcessor(mockUtils.Object);
             var bytes = Helpers.B64ToBytes(CASecurityFixture);
 
-            var results = processor.ProcessCAPermissions(bytes, "TESTLAB.LOCAL", "test");
+            var results = processor.ProcessCAPermissions(bytes, "TESTLAB.LOCAL", "test", false);
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(results, Formatting.Indented));
             Assert.Contains(results,
                 x => x.RightName == EdgeNames.Owns && x.PrincipalSID == "TESTLAB.LOCAL-S-1-5-32-544" &&

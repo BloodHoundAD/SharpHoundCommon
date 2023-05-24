@@ -30,7 +30,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectDomain"></param>
         /// <param name="computerName"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessCAPermissions(byte[] security, string objectDomain, string computerName)
+        public IEnumerable<ACE> ProcessCAPermissions(byte[] security, string objectDomain, string computerName, bool fromRegistry)
         {
             if (security == null)
                 yield break;
@@ -42,7 +42,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (ownerSid != null)
             {
-                var resolvedOwner = _utils.ResolveIDAndType(ownerSid, objectDomain);
+                var resolvedOwner = fromRegistry ? GetRegistryPrincipal(new SecurityIdentifier(ownerSid), objectDomain, computerName) : _utils.ResolveIDAndType(ownerSid, objectDomain);
                 if (resolvedOwner != null)
                     yield return new ACE
                     {
@@ -70,7 +70,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
 
                 var principalDomain = _utils.GetDomainNameFromSid(principalSid) ?? objectDomain;
-                var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, principalDomain);
+                var resolvedPrincipal = fromRegistry ? GetRegistryPrincipal(new SecurityIdentifier(principalSid), objectDomain, computerName) : _utils.ResolveIDAndType(principalSid, principalDomain);
 
                 var rights = (CertificationAuthorityRights)rule.ActiveDirectoryRights();
 
@@ -122,33 +122,53 @@ namespace SharpHoundCommonLib.Processors
         }
         
         /// <summary>
-        /// Gets 2 specific registry keys from the remote machine for processing security/enrollmentagentrights
+        /// Get CA security regitry value from the remote machine for processing security/enrollmentagentrights
         /// </summary>
         /// <param name="target"></param>
         /// <param name="caName"></param>
         /// <returns></returns>
         [ExcludeFromCodeCoverage]
-        public CARegistryValues GetCARegistryValues(string target, string caName) 
+        public byte[] GetCASecurity(string target, string caName)
         {
+            var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
+            var regValue = "Security";
             try
             {
                 var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
-                var key = baseKey.OpenSubKey($"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}");
-                var values = new CARegistryValues
-                {
-                    CASecurity = (byte[])key?.GetValue("Security"),
-                    EASecurity = (byte[])key?.GetValue("EnrollmentAgentRights")
-                };
-
-                return values;
+                var key = baseKey.OpenSubKey(regSubKey);
+                return (byte[])key?.GetValue(regValue);
             }
             catch (Exception e)
             {
-                _log.LogError(e, "Error getting data from registry for {CA} on {Target}", caName, target);
+                _log.LogError(e, "Error getting data from registry for {CA} on {Target}: {RegSubKey}:{RegValue}", caName, target, regSubKey, regValue);
                 return null;
             }
         }
-        
+
+        /// <summary>
+        /// Get EnrollmentAgentRights regitry value from the remote machine for processing security/enrollmentagentrights
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="caName"></param>
+        /// <returns></returns>
+        [ExcludeFromCodeCoverage]
+        public byte[] GetEnrollmentAgentRights(string target, string caName)
+        {
+            var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
+            var regValue = "EnrollmentAgentRights";
+            try
+            {
+                var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
+                var key = baseKey.OpenSubKey(regSubKey);
+                return (byte[])key?.GetValue(regValue);
+            }
+            catch (Exception e)
+            {
+                _log.LogError(e, "Error getting data from registry for {CA} on {Target}: {RegSubKey}:{RegValue}", caName, target, regSubKey, regValue);
+                return null;
+            }
+        }
+
         /// <summary>
         /// This function checks a registry setting on the target host for the specified CA to see if a requesting user can specify any SAN they want, which overrides template settings.
         /// The ManageCA permission allows you to flip this bit as well. This appears to usually work, even if admin rights aren't available on the remote CA server
@@ -180,6 +200,24 @@ namespace SharpHoundCommonLib.Processors
                 _log.LogError(e, "Error getting IsUserSpecifiesSanEnabled from {CA} on {Target}", caName, target);
                 return false;
             }
+        }
+
+        private TypedPrincipal GetRegistryPrincipal(SecurityIdentifier securityIdentifier, string computerDomain, string computerName)
+        {
+            // Check if the sid is one of our filtered ones. Throw it out if it is
+            if (Helpers.IsSidFiltered(securityIdentifier.Value))
+                return null;
+
+            // Check if domain sid and attempt to resolve
+            if (securityIdentifier.Value.StartsWith("S-1-5-21-"))
+                return _utils.ResolveIDAndType(securityIdentifier.Value, computerDomain);
+
+            // At this point, the sid is local principal on the CA server. If the CA is also a DC, the local principal is should be converted to a domain principal by post processing.
+            return new TypedPrincipal
+            {
+                ObjectIdentifier = $"{computerName}-{securityIdentifier.Value}",
+                ObjectType = Label.Base
+            };
         }
     }
     
@@ -213,11 +251,5 @@ namespace SharpHoundCommonLib.Processors
         public string Agent { get; set; }
         public string Template { get; set; }
         public string[] Targets { get; set; }
-    }
-        
-    public class CARegistryValues
-    {
-        public byte[] CASecurity { get; set; }
-        public byte[] EASecurity { get; set; }
     }
 }
