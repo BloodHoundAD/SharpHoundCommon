@@ -209,43 +209,28 @@ namespace SharpHoundCommonLib.Processors
                         }
 
                         // Add password policies
-                        if (item.ContainsPasswordPolicies())
-                        { // Only update the keys set in the GPO
-                            foreach (var i in item.passwordPolicies)
-                            {
-                                _ = enforced.Contains(linkDn) ? (ret.Enforced.PasswordPolicies[i.Key] = i.Value) : (ret.Unenforced.PasswordPolicies[i.Key] = i.Value);
-                            }
+                        foreach (var i in item.passwordPolicies)
+                        {
+                            _ = enforced.Contains(linkDn) ? (ret.Enforced.PasswordPolicies[i.Key] = i.Value) : (ret.Unenforced.PasswordPolicies[i.Key] = i.Value);
                         }
 
                         // Add lockout policies
-                        if (item.ContainsLockoutPolicies())
-                        { // Only update the keys set in the GPO
-                            foreach (var i in item.lockoutPolicies)
-                            {
-                                _ = enforced.Contains(linkDn) ? (ret.Enforced.LockoutPolicies[i.Key] = i.Value) : (ret.Unenforced.LockoutPolicies[i.Key] = i.Value);
-                            }
+                        foreach (var i in item.lockoutPolicies)
+                        {
+                            _ = enforced.Contains(linkDn) ? (ret.Enforced.LockoutPolicies[i.Key] = i.Value) : (ret.Unenforced.LockoutPolicies[i.Key] = i.Value);
                         }
 
                         // Add SMB properties
-                        if (item.ContainsSMBProps())
-                        { // Only update the keys set in the GPO
-                            foreach (var i in item.GPOSMBProps)
-                            {
-                                _ = enforced.Contains(linkDn) ? (ret.Enforced.SMBSigning[i.Key] = i.Value) : (ret.Unenforced.SMBSigning[i.Key] = i.Value);
-                            }
+                        foreach (var i in item.GPOSMBProps)
+                        {
+                            _ = enforced.Contains(linkDn) ? (ret.Enforced.SMBSigning[i.Key] = i.Value) : (ret.Unenforced.SMBSigning[i.Key] = i.Value);
                         }
 
                         // Add LM properties
-                        if (item.ContainsLMProps())
-                        {
-                            _ = enforced.Contains(linkDn) ? (ret.Enforced.LMAuthenticationLevel = item.GPOLMProps) : (ret.Unenforced.LMAuthenticationLevel = item.GPOLMProps);
-                        }
+                        _ = enforced.Contains(linkDn) ? (ret.Enforced.LMAuthenticationLevel = item.GPOLMProps) : (ret.Unenforced.LMAuthenticationLevel = item.GPOLMProps);
 
                         // Add LDAP properties
-                        if (item.ContainsLDAPProps())
-                        {
-                            _ = enforced.Contains(linkDn) ? (ret.Enforced.LDAPSigning = item.GPOLDAPProps) : (ret.Unenforced.LDAPSigning = item.GPOLDAPProps);
-                        }
+                        _ = enforced.Contains(linkDn) ? (ret.Enforced.LDAPSigning = item.GPOLDAPProps) : (ret.Unenforced.LDAPSigning = item.GPOLDAPProps);
                     }
                 }
 
@@ -387,13 +372,12 @@ namespace SharpHoundCommonLib.Processors
             };
 
             // searching for password policies
-            // more info about the registries: https://winprotocoldoc.blob.core.windows.net/productionwindowsarchives/MS-GPSB/%5bMS-GPSB%5d.pdf
-            string minPassAge = "1";
-            string maxPassAge = "42";
-            string minPassLength = "7";
-            string passComplexity = "1";
-            string passHistSize = "24";
-            string clearTextPass = "0";
+            string minPassAge = "";
+            string maxPassAge = "";
+            string minPassLength = "";
+            string passComplexity = "";
+            string passHistSize = "";
+            string clearTextPass = "";
 
             // searching for lockout policies
             string lockoutDuration = "";
@@ -967,26 +951,6 @@ namespace SharpHoundCommonLib.Processors
             public Dictionary<string, object> GPOLMProps = new();
             public GroupAction GPOGroupAction = new();
 
-            public bool ContainsPasswordPolicies()
-            {
-                return !(passwordPolicies.Count == 0);
-            }
-            public bool ContainsLockoutPolicies()
-            {
-                return !(lockoutPolicies.Count == 0);
-            }
-            public bool ContainsSMBProps()
-            {
-                return !(GPOSMBProps.Count == 0);
-            }
-            public bool ContainsLMProps()
-            {
-                return !(GPOLMProps.Count == 0);
-            }
-            public bool ContainsLDAPProps()
-            {
-                return !(GPOLDAPProps.Count == 0);
-            }
             public bool ContainsGroupAction()
             {
                 return !(GPOGroupAction == null);
