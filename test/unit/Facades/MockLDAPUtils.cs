@@ -1068,5 +1068,15 @@ namespace CommonLibTest.Facades
         {
             throw new NotImplementedException();
         }
+
+        public string GetConfigurationPath(string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetSchemaPath(string domainName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

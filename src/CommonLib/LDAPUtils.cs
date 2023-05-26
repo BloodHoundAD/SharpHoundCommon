@@ -1647,5 +1647,23 @@ namespace SharpHoundCommonLib
             public string DomainName { get; set; }
             public string WkpId { get; set; }
         }
+
+        public string GetConfigurationPath(string domainName = null)
+        {
+            var rootDse = domainName == null
+                ? new DirectoryEntry("LDAP://RootDSE")
+                : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
+
+            return $"{rootDse.Properties["configurationNamingContext"]?[0]}";
+        }
+
+        public string GetSchemaPath(string domainName)
+        {
+            var rootDse = domainName == null
+                ? new DirectoryEntry("LDAP://RootDSE")
+                : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
+
+            return $"{rootDse.Properties["schemaNamingContext"]?[0]}";
+        }
     }
 }

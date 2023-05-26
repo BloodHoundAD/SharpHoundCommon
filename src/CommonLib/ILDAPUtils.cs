@@ -130,6 +130,8 @@ namespace SharpHoundCommonLib
             string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false);
 
         Forest GetForest(string domainName = null);
+        string GetConfigurationPath(string domainName);
+        string GetSchemaPath(string domainName);
 
         ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
         string BuildLdapPath(string dnPath, string domain);
