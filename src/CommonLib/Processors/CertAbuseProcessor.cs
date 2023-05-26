@@ -235,6 +235,16 @@ namespace SharpHoundCommonLib.Processors
                 ObjectType = Label.Base
             };
         }
+
+        public bool IsEnterpriseCA(string dn)
+        {
+            return dn.Contains(DirectoryPaths.EnterpriseCALocation);
+        }
+
+        public bool IsRootCA(string dn)
+        {
+            return dn.Contains(DirectoryPaths.RootCALocation);
+        }
     }
     
     public class EnrollmentAgentRestriction
