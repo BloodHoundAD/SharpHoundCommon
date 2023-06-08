@@ -416,8 +416,15 @@ namespace SharpHoundCommonLib.Processors
             }
 
             props.Add("ekus", entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage));
+
             if (entry.GetIntProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
+            {
                 props.Add("authorizedsignatures", authorizedSignatures);
+                props.Add("applicationpolicies", entry.GetProperty(LDAPProperties.ApplicationPolicies));
+                props.Add("issuancepolicies", entry.GetProperty(LDAPProperties.IssuancePolicies));
+            }
+
+            props.Add("certificateapplicationpolicy", entry.GetArrayProperty(LDAPProperties.CertificateApplicationPolicy));
 
             return props;
         }
