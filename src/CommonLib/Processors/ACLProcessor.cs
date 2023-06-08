@@ -265,7 +265,7 @@ namespace SharpHoundCommonLib.Processors
                         RightName = EdgeNames.AddSelf
                     };
 
-                //Process object type specific ACEs. Extended rights apply to users, domains, and computers
+                //Process object type specific ACEs. Extended rights apply to users, domains, computers, and cert templates
                 if (aceRights.HasFlag(ActiveDirectoryRights.ExtendedRight))
                 {
                     if (objectType == Label.Domain)
@@ -354,7 +354,7 @@ namespace SharpHoundCommonLib.Processors
                                 IsInherited = inherited,
                                 RightName = EdgeNames.AllExtendedRights
                             };
-                        else if (mappedGuid is ACEGuids.Enroll)
+                        else if (aceType is ACEGuids.Enroll)
                             yield return new ACE
                             {
                                 PrincipalType = resolvedPrincipal.ObjectType,
