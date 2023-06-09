@@ -9,5 +9,7 @@
         public const string GPOs = "gpos";
         public const string OUs = "ous";
         public const string Containers = "containers";
+        public const string CertAuthorities = "certauthorities";
+        public const string CertTemplates = "certtemplates";
     }
 }
