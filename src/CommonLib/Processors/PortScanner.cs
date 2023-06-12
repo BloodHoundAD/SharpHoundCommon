@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -37,7 +38,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (PortScanCache.TryGetValue(key, out var status))
             {
-                _log.LogTrace("Ping cache hit for {HostName} on {Port}: {Status}", hostname, port, status);
+                _log.LogTrace("Port scan cache hit for {HostName}:{Port}: {Status}", hostname, port, status);
                 return status;
             }
 
@@ -45,20 +46,19 @@ namespace SharpHoundCommonLib.Processors
             {
                 using var client = new TcpClient();
                 var ca = client.ConnectAsync(hostname, port);
-                await Task.WhenAny(ca, Task.Delay(timeout));
-                client.Close();
-                if (!ca.IsFaulted && ca.IsCompleted)
+                if (await Task.WhenAny(ca, Task.Delay(timeout)) == ca)
                 {
                     PortScanCache.TryAdd(key, true);
                     return true;
                 }
 
-                _log.LogDebug("{Hostname} did not respond to scan on port {Port}", hostname, port);
+                _log.LogDebug("{HostName} did not respond to scan on port {Port} within {Timeout}ms", hostname, port, timeout);
                 PortScanCache.TryAdd(key, false);
                 return false;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogDebug(e, "Exception checking {Hostname}:{Port}", hostname, port);
                 PortScanCache.TryAdd(key, false);
                 return false;
             }
