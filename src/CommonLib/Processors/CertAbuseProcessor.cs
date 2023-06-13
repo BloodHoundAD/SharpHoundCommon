@@ -30,7 +30,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectDomain"></param>
         /// <param name="computerName"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessEnrollmentServicePermissions(byte[] security, string objectDomain, string computerName, bool fromRegistry)
+        public IEnumerable<ACE> ProcessRegistryEnrollmentPermissions(byte[] security, string objectDomain, string computerName)
         {
             if (security == null)
                 yield break;
@@ -42,7 +42,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (ownerSid != null)
             {
-                var resolvedOwner = fromRegistry ? GetRegistryPrincipal(new SecurityIdentifier(ownerSid), objectDomain, computerName) : _utils.ResolveIDAndType(ownerSid, objectDomain);
+                var resolvedOwner = GetRegistryPrincipal(new SecurityIdentifier(ownerSid), objectDomain, computerName);
                 if (resolvedOwner != null)
                     yield return new ACE
                     {
@@ -70,33 +70,35 @@ namespace SharpHoundCommonLib.Processors
                     continue;
 
                 var principalDomain = _utils.GetDomainNameFromSid(principalSid) ?? objectDomain;
-                var resolvedPrincipal = fromRegistry ? GetRegistryPrincipal(new SecurityIdentifier(principalSid), objectDomain, computerName) : _utils.ResolveIDAndType(principalSid, principalDomain);
+                var resolvedPrincipal = GetRegistryPrincipal(new SecurityIdentifier(principalSid), objectDomain, computerName);
+                var isInherited = rule.IsInherited();
 
-                var rights = (CertificationAuthorityRights)rule.ActiveDirectoryRights();
+                var cARights = (CertificationAuthorityRights)rule.ActiveDirectoryRights();
 
-                if ((rights & CertificationAuthorityRights.ManageCA) != 0)
+                // TODO: These if statements are also present in ProcessACL. Move to shared location.               
+                if ((cARights & CertificationAuthorityRights.ManageCA) != 0)
                     yield return new ACE
                     {
-                        IsInherited = false,
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        IsInherited = isInherited,
                         RightName = EdgeNames.ManageCA
                     };
-                if ((rights & CertificationAuthorityRights.ManageCertificates) != 0)
+                if ((cARights & CertificationAuthorityRights.ManageCertificates) != 0)
                     yield return new ACE
                     {
-                        IsInherited = false,
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        IsInherited = isInherited,
                         RightName = EdgeNames.ManageCertificates
                     };
 
-                if ((rights & CertificationAuthorityRights.Enroll) != 0)
+                if ((cARights & CertificationAuthorityRights.Enroll) != 0)
                     yield return new ACE
                     {
-                        IsInherited = false,
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                        IsInherited = isInherited,
                         RightName = EdgeNames.Enroll
                     };
             }

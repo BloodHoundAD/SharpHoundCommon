@@ -347,7 +347,8 @@ namespace SharpHoundCommonLib.Processors
                                     RightName = EdgeNames.ReadLAPSPassword
                                 };
                         }
-                    } else if (objectType == Label.CertTemplate)
+                    }
+                    else if (objectType == Label.CertTemplate)
                     {
                         if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE
@@ -441,6 +442,40 @@ namespace SharpHoundCommonLib.Processors
                                 RightName = EdgeNames.WritePKINameFlag
                             };
                     }
+                }
+
+                // Enrollment service rights
+                if (objectType == Label.EnrollmentService)
+                {
+
+                    var cARights = (CertificationAuthorityRights)aceRights;
+
+                    // TODO: These if statements are also present in ProcessRegistryEnrollmentPermissions. Move to shared location.               
+                    if ((cARights & CertificationAuthorityRights.ManageCA) != 0)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.ManageCA
+                        };
+                    if ((cARights & CertificationAuthorityRights.ManageCertificates) != 0)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.ManageCertificates
+                        };
+
+                    if ((cARights & CertificationAuthorityRights.Enroll) != 0)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.Enroll
+                        };
                 }
             }
         }

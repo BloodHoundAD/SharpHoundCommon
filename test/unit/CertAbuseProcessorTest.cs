@@ -79,7 +79,7 @@ namespace CommonLibTest
             var mockUtils = new Mock<MockLDAPUtils>();
             var processor = new CertAbuseProcessor(mockUtils.Object);
 
-            var results = processor.ProcessEnrollmentServicePermissions(null, null, "test", false);
+            var results = processor.ProcessRegistryEnrollmentPermissions(null, null, "test");
 
             Assert.Empty(results);
         }
