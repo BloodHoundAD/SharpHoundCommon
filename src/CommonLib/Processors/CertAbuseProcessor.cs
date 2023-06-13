@@ -30,7 +30,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectDomain"></param>
         /// <param name="computerName"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessCAPermissions(byte[] security, string objectDomain, string computerName, bool fromRegistry)
+        public IEnumerable<ACE> ProcessEnrollmentServicePermissions(byte[] security, string objectDomain, string computerName, bool fromRegistry)
         {
             if (security == null)
                 yield break;
@@ -234,16 +234,6 @@ namespace SharpHoundCommonLib.Processors
                 ObjectIdentifier = $"{computerName}-{securityIdentifier.Value}",
                 ObjectType = Label.Base
             };
-        }
-
-        public bool IsEnterpriseCA(string dn)
-        {
-            return dn.Contains(DirectoryPaths.EnterpriseCALocation);
-        }
-
-        public bool IsRootCA(string dn)
-        {
-            return dn.Contains(DirectoryPaths.RootCALocation);
         }
     }
     

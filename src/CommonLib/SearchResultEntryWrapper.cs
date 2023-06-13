@@ -168,7 +168,10 @@ namespace SharpHoundCommonLib
                     break;
                 case Label.OU:
                 case Label.Container:
-                case Label.CertAuthority:
+                case Label.RootCA:
+                case Label.AIACA:
+                case Label.NTAuthCert:
+                case Label.EnrollmentService:
                 case Label.CertTemplate:
                     res.DisplayName = $"{GetProperty(LDAPProperties.Name)}@{itemDomain}";
                     break;

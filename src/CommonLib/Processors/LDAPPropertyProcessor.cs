@@ -385,11 +385,28 @@ namespace SharpHoundCommonLib.Processors
             return compProps;
         }
 
-        public static Dictionary<string, object> ReadCAProperties(ISearchResultEntry entry)
+        public static Dictionary<string, object> ReadRootCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKICertificateAuthorityFlags) flags);
+            return props;
+        }
 
+        public static Dictionary<string, object> ReadAIACAProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            return props;
+        }
+
+        public static Dictionary<string, object> ReadEnrollmentServiceProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentServiceFlags) flags);
+
+            return props;
+        }
+        public static Dictionary<string, object> ReadNTAuthCertProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
             return props;
         }
 
