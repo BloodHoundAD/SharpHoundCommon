@@ -28,6 +28,6 @@
         public const string ManageCA = "ManageCA";
         public const string ManageCertificates = "ManageCertificates";
         public const string Enroll = "Enroll";
-        public const string EnrollOther = "EnrollAsOther";
+        public const string EnrollAsOther = "EnrollAsOther";
     }
 }
