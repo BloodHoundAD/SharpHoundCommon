@@ -4,9 +4,9 @@ namespace SharpHoundCommonLib.OutputTypes
 {
     public class CARegistryData
     {
-        public CARegistryData()
-        {
-        }
+        public ACE[] CASecurity { get; set; }
+        public EnrollmentAgentRestriction[] EnrollmentAgentRestrictions { get; set; }
+        public bool IsUserSpecifiesSanEnabled { get; set; }
 
         public CARegistryData(ACE[] cASecurity, EnrollmentAgentRestriction[] enrollmentAgentRestrictions, bool isUserSpecifiesSanEnabled)
         {
@@ -15,8 +15,5 @@ namespace SharpHoundCommonLib.OutputTypes
             this.IsUserSpecifiesSanEnabled = isUserSpecifiesSanEnabled;
         }
 
-        public ACE[] CASecurity { get; set; }
-        public EnrollmentAgentRestriction[] EnrollmentAgentRestrictions { get; set; }
-        public bool IsUserSpecifiesSanEnabled { get; set; }
     }
 }
