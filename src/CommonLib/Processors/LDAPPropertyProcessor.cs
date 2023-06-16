@@ -394,6 +394,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadAIACAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
+            props.Add("crosscertificatepair", entry.GetByteArrayProperty(LDAPProperties.CrossCertificatePair));
             return props;
         }
 

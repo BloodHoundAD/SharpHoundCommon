@@ -65,7 +65,7 @@
             "certificateTemplates", "flags", "dnshostname", "cacertificate", "mspki-certificate-name-flag",
             "mspki-enrollment-flag", "displayname", "name", "mspki-template-schema-version", "mspki-cert-template-oid",
             "pKIOverlapPeriod", "pKIExpirationPeriod", "pkiextendedkeyusage", "mspki-ra-signature",
-            "mspki-ra-application-policies", "mspki-ra-policies"
+            "mspki-ra-application-policies", "mspki-ra-policies", "crosscertificatepair"
         };
     }
 }
