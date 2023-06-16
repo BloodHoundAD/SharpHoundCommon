@@ -2,6 +2,6 @@
 {
     public class AIACA : OutputBase
     {
-        public Certificate Certificate { get; set; }
+        public string CertThumbprint { get; set; }
     }
 }

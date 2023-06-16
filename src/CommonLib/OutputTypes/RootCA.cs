@@ -2,6 +2,6 @@
 {
     public class RootCA : OutputBase
     {
-        public Certificate Certificate { get; set; }
+        public string CertThumbprint { get; set; }
     }
 }

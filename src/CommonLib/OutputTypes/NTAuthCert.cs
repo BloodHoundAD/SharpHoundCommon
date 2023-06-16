@@ -2,6 +2,6 @@
 {
     public class NTAuthCert : OutputBase
     {
-        public Certificate[] Certificates { get; set; }
+        public string[] CertThumbprints { get; set; }
     }
 }

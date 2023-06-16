@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.AccessControl;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using Microsoft.Extensions.Logging;
@@ -137,6 +138,12 @@ namespace SharpHoundCommonLib.Processors
 
                 yield return res;
             }
+        }
+
+        public string GetCertThumbprint(byte[] rawCert)
+        {
+            var parsedCertificate = new X509Certificate2(rawCert);
+            return parsedCertificate.Thumbprint;
         }
 
         /// <summary>
