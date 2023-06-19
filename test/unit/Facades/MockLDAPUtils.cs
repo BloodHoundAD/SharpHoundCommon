@@ -1064,7 +1064,7 @@ namespace CommonLibTest.Facades
             return g;
         }
 
-        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN)
+        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN, string domainName)
         {
             throw new NotImplementedException();
         }

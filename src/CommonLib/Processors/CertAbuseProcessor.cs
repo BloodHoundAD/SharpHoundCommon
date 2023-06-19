@@ -15,7 +15,7 @@ namespace SharpHoundCommonLib.Processors
     public class CertAbuseProcessor
     {
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        public readonly ILDAPUtils _utils;
         
         public CertAbuseProcessor(ILDAPUtils utils, ILogger log = null)
         {
@@ -111,31 +111,26 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="enrollmentAgentRestrictions"></param>
         /// <returns></returns>
-        public IEnumerable<EnrollmentAgentRestriction> ProcessEAPermissions(byte[] enrollmentAgentRestrictions)
+        public IEnumerable<EnrollmentAgentRestriction> ProcessEAPermissions(byte[] enrollmentAgentRestrictions, string computerDomain, string computerName)
         {
             if (enrollmentAgentRestrictions == null)
                 yield break;
 
+            string certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, computerDomain);
             var descriptor = new RawSecurityDescriptor(enrollmentAgentRestrictions, 0);
             foreach (var genericAce in descriptor.DiscretionaryAcl)
             {
                 var ace = (QualifiedAce)genericAce;
-                yield return new EnrollmentAgentRestriction(ace);
+                yield return new EnrollmentAgentRestriction(ace, computerDomain, certTemplatesLocation, this);
             }
         }
         
-        public IEnumerable<TypedPrincipal> ProcessCertTemplates(string[] templates, string certTemplateContainerDN)
+        public IEnumerable<TypedPrincipal> ProcessCertTemplates(string[] templates, string domainName)
         {
+            string certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, domainName);
             foreach (string templateCN in templates)
             {
-                
-                var res = _utils.ResolveCertTemplateByCN(templateCN, certTemplateContainerDN);
-                if (res == null)
-                {
-                    _log.LogTrace("Failed to resolve certificate template {cn}", templateCN);
-                    continue;
-                }
-
+                var res = _utils.ResolveCertTemplateByCN(templateCN, certTemplatesLocation, domainName);
                 yield return res;
             }
         }
@@ -227,7 +222,7 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        private TypedPrincipal GetRegistryPrincipal(SecurityIdentifier securityIdentifier, string computerDomain, string computerName)
+        public TypedPrincipal GetRegistryPrincipal(SecurityIdentifier securityIdentifier, string computerDomain, string computerName)
         {
             // Check if the sid is one of our filtered ones. Throw it out if it is
             if (Helpers.IsSidFiltered(securityIdentifier.Value))
@@ -248,33 +243,46 @@ namespace SharpHoundCommonLib.Processors
     
     public class EnrollmentAgentRestriction
     {
-        public EnrollmentAgentRestriction(QualifiedAce ace)
+        public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor)
         {
-            var targets = new List<string>();
+            var targets = new List<TypedPrincipal>();
             var index = 0;
-            Agent = ace.SecurityIdentifier.ToString().ToUpper();
+
+            // Access type (Allow/Deny)
+            AccessType = ace.AceType.ToString();
+
+            // Agent
+            Agent = certAbuseProcessor._utils.ResolveIDAndType(ace.SecurityIdentifier.Value, computerDomain);
+
+            // Targets
             var opaque = ace.GetOpaque();
             var sidCount = BitConverter.ToUInt32(opaque, 0);
             index += 4;
-
             for (var i = 0; i < sidCount; i++)
             {
                 var sid = new SecurityIdentifier(opaque, index);
-                targets.Add(sid.ToString().ToUpper());
+                targets.Add(certAbuseProcessor._utils.ResolveIDAndType(sid.Value, computerDomain));
                 index += sid.BinaryLength;
             }
-
-            if (index < opaque.Length)
-                Template = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2)
-                    .Replace("\u0000", string.Empty);
-            else
-                Template = "<All>";
-
             Targets = targets.ToArray();
+
+            // Template
+            if (index < opaque.Length)
+            {
+                AllTemplates = false;
+                var templateCN = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2).Replace("\u0000", string.Empty);
+                Template = certAbuseProcessor._utils.ResolveCertTemplateByCN(templateCN, certTemplatesLocation, computerDomain);
+            }
+            else
+            {
+                AllTemplates = true;
+            }
         }
 
-        public string Agent { get; set; }
-        public string Template { get; set; }
-        public string[] Targets { get; set; }
+        public string AccessType { get; set; }
+        public TypedPrincipal Agent { get; set; }
+        public TypedPrincipal[] Targets { get; set; }
+        public TypedPrincipal Template { get; set; }
+        public bool AllTemplates { get; set; } = false;
     }
 }

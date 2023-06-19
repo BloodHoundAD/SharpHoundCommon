@@ -230,11 +230,11 @@ namespace SharpHoundCommonLib
             return new TypedPrincipal(id, type);
         }
 
-        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN)
+        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN, string domainName)
         {
             var filter = new LDAPFilter().AddCertificateTemplates().AddFilter("cn=" + cn, true);
             var res = QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
-                         CommonProperties.TypeResolutionProps, adsPath: containerDN);
+                         CommonProperties.TypeResolutionProps, adsPath: containerDN, domainName: domainName);
 
             if (res == null)
             {
