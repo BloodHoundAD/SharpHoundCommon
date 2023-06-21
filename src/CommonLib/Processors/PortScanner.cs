@@ -48,6 +48,12 @@ namespace SharpHoundCommonLib.Processors
                 var ca = client.ConnectAsync(hostname, port);
                 if (await Task.WhenAny(ca, Task.Delay(timeout)) == ca)
                 {
+                    if (ca.IsFaulted)
+                    {
+                        _log.LogDebug("PortScan faulted on {Hostname}:{Port} with error {Error}", hostname, port, ca.Exception);
+                        PortScanCache.TryAdd(key, false);
+                        return false;
+                    }
                     PortScanCache.TryAdd(key, true);
                     return true;
                 }
