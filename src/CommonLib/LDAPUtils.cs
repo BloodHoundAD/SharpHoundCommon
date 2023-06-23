@@ -230,28 +230,28 @@ namespace SharpHoundCommonLib
             return new TypedPrincipal(id, type);
         }
 
-        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN, string domainName)
+        public TypedPrincipal ResolveCertTemplateByProperty(string propValue, string propertyName, string containerDN, string domainName)
         {
-            var filter = new LDAPFilter().AddCertificateTemplates().AddFilter("cn=" + cn, true);
+            var filter = new LDAPFilter().AddCertificateTemplates().AddFilter(propertyName + "=" + propValue, true);
             var res = QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
                          CommonProperties.TypeResolutionProps, adsPath: containerDN, domainName: domainName);
 
             if (res == null)
             {
-                _log.LogError("Could not find certificate template '{cn}' under {containerDN}", cn, containerDN);
+                _log.LogWarning("Could not find certificate template with '{propertyName}:{propValue}' under {containerDN}", propertyName, propValue, containerDN);
                 return null;
             }
 
             List<ISearchResultEntry> resList = new List<ISearchResultEntry>(res);
             if (resList.Count == 0)
             {
-                _log.LogError("Could not find certificate template '{cn}' under {containerDN}", cn, containerDN);
+                _log.LogWarning("Could not find certificate template with '{propertyName}:{propValue}' under {containerDN}", propertyName, propValue, containerDN);
                 return null;
             }
 
             if (resList.Count > 1)
             {
-                _log.LogError("Found more than one certificate template with CN '{cn}' under {containerDN}", cn, containerDN);
+                _log.LogWarning("Found more than one certificate template with '{propertyName}:{propValue}' under {containerDN}", propertyName, propValue, containerDN);
                 return null;
             }
 

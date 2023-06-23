@@ -130,7 +130,7 @@ namespace SharpHoundCommonLib.Processors
             string certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, domainName);
             foreach (string templateCN in templates)
             {
-                var res = _utils.ResolveCertTemplateByCN(templateCN, certTemplatesLocation, domainName);
+                var res = _utils.ResolveCertTemplateByProperty(templateCN, LDAPProperties.CanonicalName, certTemplatesLocation, domainName);
                 yield return res;
             }
         }
@@ -284,8 +284,16 @@ namespace SharpHoundCommonLib.Processors
             if (index < opaque.Length)
             {
                 AllTemplates = false;
-                var templateCN = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2).Replace("\u0000", string.Empty);
-                Template = certAbuseProcessor._utils.ResolveCertTemplateByCN(templateCN, certTemplatesLocation, computerDomain);
+                var template = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2).Replace("\u0000", string.Empty);
+
+                // Attempt to resolve the cert template by CN
+                Template = certAbuseProcessor._utils.ResolveCertTemplateByProperty(template, LDAPProperties.CanonicalName, certTemplatesLocation, computerDomain);
+
+                // Attempt to resolve the cert template by OID
+                if (Template == null)
+                {
+                    Template = certAbuseProcessor._utils.ResolveCertTemplateByProperty(template, LDAPProperties.CertTemplateOID, certTemplatesLocation, computerDomain);
+                }
             }
             else
             {

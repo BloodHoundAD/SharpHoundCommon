@@ -1078,5 +1078,10 @@ namespace CommonLibTest.Facades
         {
             throw new NotImplementedException();
         }
+
+        TypedPrincipal ILDAPUtils.ResolveCertTemplateByProperty(string propValue, string propName, string containerDN, string domainName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
