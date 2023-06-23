@@ -148,21 +148,24 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="caName"></param>
         /// <returns></returns>
         [ExcludeFromCodeCoverage]
-        public byte[] GetCASecurity(string target, string caName)
+        public (bool collected, byte[] value) GetCASecurity(string target, string caName)
         {
+            bool collected = false;
+            byte[] value = null;
             var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
             var regValue = "Security";
             try
             {
                 var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
                 var key = baseKey.OpenSubKey(regSubKey);
-                return (byte[])key?.GetValue(regValue);
+                value = (byte[])key?.GetValue(regValue);
+                collected = true;
             }
             catch (Exception e)
             {
                 _log.LogError(e, "Error getting data from registry for {CA} on {Target}: {RegSubKey}:{RegValue}", caName, target, regSubKey, regValue);
-                return null;
             }
+            return (collected, value);
         }
 
         /// <summary>
@@ -172,21 +175,25 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="caName"></param>
         /// <returns></returns>
         [ExcludeFromCodeCoverage]
-        public byte[] GetEnrollmentAgentRights(string target, string caName)
+        public (bool collected, byte[] value) GetEnrollmentAgentRights(string target, string caName)
         {
+            bool collected = false;
+            byte[] value = null;
             var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
             var regValue = "EnrollmentAgentRights";
+
             try
             {
                 var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
                 var key = baseKey.OpenSubKey(regSubKey);
-                return (byte[])key?.GetValue(regValue);
+                value = (byte[])key?.GetValue(regValue);
+                collected = true;
             }
             catch (Exception e)
             {
                 _log.LogError(e, "Error getting data from registry for {CA} on {Target}: {RegSubKey}:{RegValue}", caName, target, regSubKey, regValue);
-                return null;
             }
+            return (collected, value);
         }
 
         /// <summary>
@@ -199,8 +206,11 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [ExcludeFromCodeCoverage]
-        public bool IsUserSpecifiesSanEnabled(string target, string caName)
+        public (bool collected, bool value) IsUserSpecifiesSanEnabled(string target, string caName)
         {
+            bool collected = false;
+            bool value = false;
+
             try
             {
                 var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
@@ -209,17 +219,21 @@ namespace SharpHoundCommonLib.Processors
                 if (key == null)
                 {
                     _log.LogError("Registry key for IsUserSpecifiesSanEnabled is null from {CA} on {Target}", caName, target);
-                    return false;
                 }
-                var editFlags = (int)key.GetValue("EditFlags");
-                // 0x00040000 -> EDITF_ATTRIBUTESUBJECTALTNAME2
-                return (editFlags & 0x00040000) == 0x00040000;
+                else
+                {
+                    var editFlags = (int)key.GetValue("EditFlags");
+                    // 0x00040000 -> EDITF_ATTRIBUTESUBJECTALTNAME2
+                    value = (editFlags & 0x00040000) == 0x00040000;
+                    collected = true;
+                }
             }
             catch (Exception e)
             {
                 _log.LogError(e, "Error getting IsUserSpecifiesSanEnabled from {CA} on {Target}", caName, target);
-                return false;
             }
+
+            return (collected, value);
         }
 
         public TypedPrincipal GetRegistryPrincipal(SecurityIdentifier securityIdentifier, string computerDomain, string computerName)
@@ -240,7 +254,7 @@ namespace SharpHoundCommonLib.Processors
             };
         }
     }
-    
+
     public class EnrollmentAgentRestriction
     {
         public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor)
