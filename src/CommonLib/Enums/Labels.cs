@@ -2,6 +2,7 @@
 {
     public enum Label
     {
+        Base = 0,
         User,
         Computer,
         Group,
@@ -10,7 +11,6 @@
         GPO,
         Domain,
         OU,
-        Container,
-        Base
+        Container
     }
 }
