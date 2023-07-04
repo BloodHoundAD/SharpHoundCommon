@@ -86,11 +86,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public static bool IsComputerCollectionSet(this ResolvedCollectionMethod methods)
         {
-            return (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
-                   (methods & ResolvedCollectionMethod.DCOM) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0 ||
-                   (methods & ResolvedCollectionMethod.PSRemote) != 0 ||
-                   (methods & ResolvedCollectionMethod.Session) != 0 ||
-                   (methods & ResolvedCollectionMethod.LoggedOn) != 0;
+            return (methods & ResolvedCollectionMethod.ComputerOnly) != 0;
         }
 
         /// <summary>
@@ -100,9 +96,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public static bool IsLocalGroupCollectionSet(this ResolvedCollectionMethod methods)
         {
-            return (methods & ResolvedCollectionMethod.DCOM) != 0 ||
-                   (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
-                   (methods & ResolvedCollectionMethod.PSRemote) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0;
+            return (methods & ResolvedCollectionMethod.LocalGroups) != 0;
         }
 
         /// <summary>
