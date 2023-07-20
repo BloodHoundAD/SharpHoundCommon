@@ -17,6 +17,6 @@
         RootCA,
         AIACA,
         EnrollmentService,
-        NTAuthCert
+        NTAuthStore
     }
 }

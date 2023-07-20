@@ -11,7 +11,7 @@
         public const string Containers = "containers";
         public const string RootCAs = "rootcas";
         public const string AIACAs = "aiacas";
-        public const string NTAuthCerts = "ntauthcerts";
+        public const string NTAuthStores = "ntauthstores";
         public const string EnrollmentServices = "enrollmentservices";
         public const string CertTemplates = "certtemplates";
     }

@@ -405,7 +405,7 @@ namespace SharpHoundCommonLib.Processors
 
             return props;
         }
-        public static Dictionary<string, object> ReadNTAuthCertProperties(ISearchResultEntry entry)
+        public static Dictionary<string, object> ReadNTAuthStoreProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
             return props;

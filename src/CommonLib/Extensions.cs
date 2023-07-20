@@ -379,8 +379,8 @@ namespace SharpHoundCommonLib
                         objectType = Label.RootCA;
                     else if (entry.DistinguishedName.Contains(DirectoryPaths.AIACALocation))
                         objectType = Label.AIACA;
-                    else if (entry.DistinguishedName.Contains(DirectoryPaths.NTAuthCertLocation))
-                        objectType = Label.NTAuthCert;
+                    else if (entry.DistinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
+                        objectType = Label.NTAuthStore;
                 }
             }
 

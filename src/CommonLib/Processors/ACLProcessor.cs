@@ -34,7 +34,7 @@ namespace SharpHoundCommonLib.Processors
                 {Label.RootCA, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
                 {Label.AIACA, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
                 {Label.EnrollmentService, "ee4aa692-3bba-11d2-90cc-00c04fd91ab1"},
-                {Label.NTAuthCert, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
+                {Label.NTAuthStore, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
                 {Label.CertTemplate, "e5209ca2-3bba-11d2-90cc-00c04fd91ab1"}
             };
         }
