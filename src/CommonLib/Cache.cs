@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 using SharpHoundCommonLib.Enums;
 
@@ -18,6 +20,8 @@ namespace SharpHoundCommonLib
         //
         // [DataMember]private ConcurrentDictionary<string, string> _valueToIDCache;
 
+        private static Version defaultVersion = new Version(1, 0, 0);
+        
         private Cache()
         {
             ValueToIdCache = new ConcurrentDictionary<string, string>();
@@ -36,6 +40,8 @@ namespace SharpHoundCommonLib
         [DataMember] public ConcurrentDictionary<string, string> SIDToDomainCache { get; private set; }
 
         [DataMember] public ConcurrentDictionary<string, string> ValueToIdCache { get; private set; }
+        [DataMember] public DateTime CacheCreationDate { get; set; }
+        [DataMember] public Version CacheCreationVersion { get; set; }
 
         [IgnoreDataMember] private static Cache CacheInstance { get; set; }
 
@@ -137,9 +143,17 @@ namespace SharpHoundCommonLib
         ///     Creates a new empty cache instance
         /// </summary>
         /// <returns></returns>
-        public static Cache CreateNewCache()
+        public static Cache CreateNewCache(Version version = null)
         {
-            return new Cache();
+            if (version == null)
+            {
+                version = new Version(1, 0, 0);
+            }
+            return new Cache
+            {
+                CacheCreationVersion = version,
+                CacheCreationDate = DateTime.Now.Date
+            };
         }
 
         /// <summary>
@@ -150,6 +164,22 @@ namespace SharpHoundCommonLib
         {
             CacheInstance = cache;
             CreateMissingDictionaries();
+        }
+
+        public static bool CacheNeedsInvalidation(Cache cache, Version version)
+        {
+            var threshold = DateTime.Now.Subtract(TimeSpan.FromDays(30));
+            if (cache.CacheCreationDate < threshold)
+            {
+                return true;
+            }
+
+            if (cache.CacheCreationVersion == null || version > cache.CacheCreationVersion)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
