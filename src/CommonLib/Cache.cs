@@ -20,7 +20,7 @@ namespace SharpHoundCommonLib
         //
         // [DataMember]private ConcurrentDictionary<string, string> _valueToIDCache;
 
-        private static Version defaultVersion = new Version(1, 0, 0);
+        private static Version defaultVersion = new(1, 0, 0);
         
         private Cache()
         {
@@ -147,7 +147,7 @@ namespace SharpHoundCommonLib
         {
             if (version == null)
             {
-                version = new Version(1, 0, 0);
+                version = defaultVersion;
             }
             return new Cache
             {
