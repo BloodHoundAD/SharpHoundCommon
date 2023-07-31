@@ -46,7 +46,7 @@ namespace CommonLibTest
         [Fact]
         public void Cache_OldCacheWillInvalidate()
         {
-            const string json = """{"GlobalCatalogCache": {}, "IdToTypeCache": {}, "MachineSidCache": {}, SIDToDomainCache: {}, "ValueToIdCache": {}}""";
+            const string json = "{\"GlobalCatalogCache\": {}, \"IdToTypeCache\": {}, \"MachineSidCache\": {}, \"SIDToDomainCache\": {}, \"ValueToIdCache\": {}}";
             var cache = JsonConvert.DeserializeObject<Cache>(json);
             Assert.Null(cache.CacheCreationVersion);
             Assert.True(Cache.CacheNeedsInvalidation(cache, new Version(1,0,0)));
