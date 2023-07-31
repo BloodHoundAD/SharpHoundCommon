@@ -166,22 +166,6 @@ namespace SharpHoundCommonLib
             CreateMissingDictionaries();
         }
 
-        public static bool CacheNeedsInvalidation(Cache cache, Version version)
-        {
-            var threshold = DateTime.Now.Subtract(TimeSpan.FromDays(30));
-            if (cache.CacheCreationDate < threshold)
-            {
-                return true;
-            }
-
-            if (cache.CacheCreationVersion == null || version > cache.CacheCreationVersion)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         /// <summary>
         ///     Gets stats from the currently loaded cache
         /// </summary>
