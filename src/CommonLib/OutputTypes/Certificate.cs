@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using SharpHoundCommonLib.Enums;
+
 
 namespace SharpHoundCommonLib.OutputTypes
 {
@@ -13,7 +15,7 @@ namespace SharpHoundCommonLib.OutputTypes
         public string[] Chain { get; set; } = Array.Empty<string>();
         public bool HasBasicConstraints { get; set; } = false;
         public int BasicConstraintPathLength { get; set; }
-        public CertOid[] EnhancedKeyUsageOids { get; set; }
+        public Oid[] EnhancedKeyUsageOids { get; set; }
 
         public CertificateExtension[] CertificateExtensions { get; set; }
 
@@ -49,9 +51,9 @@ namespace SharpHoundCommonLib.OutputTypes
 
                     case CAExtensionTypes.EnhancedKeyUsage:
                         X509EnhancedKeyUsageExtension extEKU = (X509EnhancedKeyUsageExtension) extension;
-                        List<CertOid> enhancedKeyUsageOids = new List<CertOid>();
+                        List<Oid> enhancedKeyUsageOids = new List<Oid>();
                         foreach (var oid in extEKU.EnhancedKeyUsages){
-                            enhancedKeyUsageOids.Add(new CertOid(oid));
+                            enhancedKeyUsageOids.Add(new Oid(oid));
                         }
                         EnhancedKeyUsageOids = enhancedKeyUsageOids.ToArray();
                         break;
