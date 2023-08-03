@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
-using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
@@ -419,7 +418,7 @@ namespace SharpHoundCommonLib.Processors
             if (entry.GetIntProperty(LDAPProperties.TemplateSchemaVersion, out var schemaVersion))
                 props.Add("schemaversion", schemaVersion);
             props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
-            props.Add("oid", new Oid(entry.GetProperty(LDAPProperties.CertTemplateOID)));
+            props.Add("oid", entry.GetProperty(LDAPProperties.CertTemplateOID));
             if (entry.GetIntProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw))
             {
                 var enrollmentFlags = (PKIEnrollmentFlag) enrollmentFlagsRaw;
