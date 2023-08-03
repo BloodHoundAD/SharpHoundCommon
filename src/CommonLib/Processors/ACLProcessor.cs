@@ -447,6 +447,14 @@ namespace SharpHoundCommonLib.Processors
                 // Enrollment service rights
                 if (objectType == Label.EnrollmentService)
                 {
+                    if (aceType is ACEGuids.Enroll)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.Enroll
+                        };
 
                     var cARights = (CertificationAuthorityRights)aceRights;
 
