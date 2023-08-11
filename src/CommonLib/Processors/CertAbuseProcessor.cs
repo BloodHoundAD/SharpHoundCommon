@@ -5,10 +5,13 @@ using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundRPC;
+using SharpHoundRPC.Wrappers;
 
 namespace SharpHoundCommonLib.Processors
 {
@@ -16,6 +19,9 @@ namespace SharpHoundCommonLib.Processors
     {
         private readonly ILogger _log;
         public readonly ILDAPUtils _utils;
+        public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
+        public event ComputerStatusDelegate ComputerStatusEvent;
+
         
         public CertAbuseProcessor(ILDAPUtils utils, ILogger log = null)
         {
@@ -31,7 +37,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectDomain"></param>
         /// <param name="computerName"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessRegistryEnrollmentPermissions(byte[] security, string objectDomain, string computerName)
+        public async IAsyncEnumerable<ACE> ProcessRegistryEnrollmentPermissions(byte[] security, string objectDomain, string computerName, string computerObjectId)
         {
             if (security == null)
                 yield break;
@@ -41,9 +47,14 @@ namespace SharpHoundCommonLib.Processors
 
             var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
 
+            string computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
+            bool isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
+            _log.LogDebug("!!!! {Name} is {Dc}", computerObjectId, isDomainController);
+            SecurityIdentifier machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
+
             if (ownerSid != null)
             {
-                var resolvedOwner = GetRegistryPrincipal(new SecurityIdentifier(ownerSid), objectDomain, computerName);
+                var resolvedOwner = GetRegistryPrincipal(new SecurityIdentifier(ownerSid), computerDomain, computerName, isDomainController, computerObjectId, machineSid);
                 if (resolvedOwner != null)
                     yield return new ACE
                     {
@@ -71,7 +82,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
 
                 var principalDomain = _utils.GetDomainNameFromSid(principalSid) ?? objectDomain;
-                var resolvedPrincipal = GetRegistryPrincipal(new SecurityIdentifier(principalSid), objectDomain, computerName);
+                var resolvedPrincipal = GetRegistryPrincipal(new SecurityIdentifier(principalSid), principalDomain, computerName, isDomainController, computerObjectId, machineSid);
                 var isInherited = rule.IsInherited();
 
                 var cARights = (CertificationAuthorityRights)rule.ActiveDirectoryRights();
@@ -111,17 +122,20 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="enrollmentAgentRestrictions"></param>
         /// <returns></returns>
-        public IEnumerable<EnrollmentAgentRestriction> ProcessEAPermissions(byte[] enrollmentAgentRestrictions, string computerDomain, string computerName)
+        public async IAsyncEnumerable<EnrollmentAgentRestriction> ProcessEAPermissions(byte[] enrollmentAgentRestrictions, string objectDomain, string computerName, string computerObjectId)
         {
             if (enrollmentAgentRestrictions == null)
                 yield break;
 
+            string computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
+            bool isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
+            SecurityIdentifier machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
             string certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, computerDomain);
             var descriptor = new RawSecurityDescriptor(enrollmentAgentRestrictions, 0);
             foreach (var genericAce in descriptor.DiscretionaryAcl)
             {
                 var ace = (QualifiedAce)genericAce;
-                yield return new EnrollmentAgentRestriction(ace, computerDomain, certTemplatesLocation, this);
+                yield return new EnrollmentAgentRestriction(ace, computerDomain, certTemplatesLocation, this, computerName, isDomainController, computerObjectId, machineSid);
             }
         }
         
@@ -236,28 +250,161 @@ namespace SharpHoundCommonLib.Processors
             return (collected, value);
         }
 
-        public TypedPrincipal GetRegistryPrincipal(SecurityIdentifier securityIdentifier, string computerDomain, string computerName)
+        public TypedPrincipal GetRegistryPrincipal(SecurityIdentifier sid, string computerDomain, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
         {
-            // Check if the sid is one of our filtered ones. Throw it out if it is
-            if (Helpers.IsSidFiltered(securityIdentifier.Value))
+            _log.LogTrace("Got principal with sid {SID} on computer {ComputerName}", sid.Value, computerName);
+
+            //Check if our sid is filtered
+            if (Helpers.IsSidFiltered(sid.Value))
                 return null;
 
-            // Check if domain sid and attempt to resolve
-            if (securityIdentifier.Value.StartsWith("S-1-5-21-"))
-                return _utils.ResolveIDAndType(securityIdentifier.Value, computerDomain);
-
-            // At this point, the sid is local principal on the CA server. If the CA is also a DC, the local principal is should be converted to a domain principal by post processing.
-            return new TypedPrincipal
+            if (isDomainController)
             {
-                ObjectIdentifier = $"{computerName}-{securityIdentifier.Value}",
-                ObjectType = Label.Base
-            };
+                var result = ResolveDomainControllerPrincipal(sid.Value, computerDomain);
+                if (result != null)
+                    return result;
+            }
+
+            //If we get a local well known principal, we need to convert it using the computer's domain sid
+            if (ConvertLocalWellKnownPrincipal(sid, computerObjectId, computerDomain, out var principal))
+            {
+                _log.LogTrace("Got Well Known Principal {SID} on computer {Computer} with type {Type}", principal.ObjectIdentifier, computerName, principal.ObjectType);
+                return principal;
+            }
+
+            //If the security identifier starts with the machine sid, we need to resolve it as a local principal
+            if (machineSid != null && sid.IsEqualDomainSid(machineSid))
+            {
+                _log.LogTrace("Got local principal {sid} on computer {Computer}", sid.Value, computerName);
+                
+                // Set label to be local group. It could be a local user or alias but I'm not sure how we can confirm. Besides, it will not have any effect on the end result
+                var objectType = Label.LocalGroup;
+
+                // The local group sid is computer machine sid - group rid.
+                var groupRid = sid.Rid();
+                var newSid = $"{computerObjectId}-{groupRid}";
+                return (new TypedPrincipal
+                {
+                    ObjectIdentifier = newSid,
+                    ObjectType = objectType
+                });
+            }
+
+            //If we get here, we most likely have a domain principal. Do a lookup
+            return _utils.ResolveIDAndType(sid.Value, computerDomain);
         }
+
+        private async Task<SecurityIdentifier> GetMachineSid(string computerName, string computerObjectId, string computerDomain, bool isDomainController)
+        {
+            SecurityIdentifier machineSid = null;
+
+            //Try to get the machine sid for the computer if its not already cached
+            if (!Cache.GetMachineSid(computerObjectId, out var tempMachineSid))
+            {
+                // Open a handle to the server
+                var openServerResult = OpenSamServer(computerName);
+                if (openServerResult.IsFailed)
+                {
+                    _log.LogTrace("OpenServer failed on {ComputerName}: {Error}", computerName, openServerResult.SError);
+                    await SendComputerStatus(new CSVComputerStatus
+                    {
+                        Task = "SamConnect",
+                        ComputerName = computerName,
+                        Status = openServerResult.SError
+                    });
+                    return null;
+                }
+
+                var server = openServerResult.Value;
+                var getMachineSidResult = server.GetMachineSid();
+                if (getMachineSidResult.IsFailed)
+                {
+                    _log.LogTrace("GetMachineSid failed on {ComputerName}: {Error}", computerName, getMachineSidResult.SError);
+                    await SendComputerStatus(new CSVComputerStatus
+                    {
+                        Status = getMachineSidResult.SError,
+                        ComputerName = computerName,
+                        Task = "GetMachineSid"
+                    });
+                    //If we can't get a machine sid, we wont be able to make local principals with unique object ids, or differentiate local/domain objects
+                    _log.LogWarning("Unable to get machineSid for {Computer}: {Status}", computerName, getMachineSidResult.SError);
+                    return null;
+                }
+
+                machineSid = getMachineSidResult.Value;
+                Cache.AddMachineSid(computerObjectId, machineSid.Value);
+            }
+            else
+            {
+                machineSid = new SecurityIdentifier(tempMachineSid);
+            }
+
+            return machineSid;
+        }
+
+        // TODO: Copied from URA processor. Find a way to have this function in a shared spot
+        private TypedPrincipal ResolveDomainControllerPrincipal(string sid, string computerDomain)
+        {
+            //If the server is a domain controller and we have a well known group, use the domain value
+            if (_utils.GetWellKnownPrincipal(sid, computerDomain, out var wellKnown))
+                return wellKnown;
+            //Otherwise, do a domain lookup
+            return _utils.ResolveIDAndType(sid, computerDomain);
+        }
+
+        // TODO: Copied from URA processor. Find a way to have this function in a shared spot
+        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid,
+            string computerDomain, out TypedPrincipal principal)
+        {
+            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+            {
+                //The everyone and auth users principals are special and will be converted to the domain equivalent
+                if (sid.Value is "S-1-1-0" or "S-1-5-11")
+                {
+                    _utils.GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
+                    return true;
+                }
+
+                //Use the computer object id + the RID of the sid we looked up to create our new principal
+                principal = new TypedPrincipal
+                {
+                    ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
+                    ObjectType = common.ObjectType switch
+                    {
+                        Label.User => Label.LocalUser,
+                        Label.Group => Label.LocalGroup,
+                        _ => common.ObjectType
+                    }
+                };
+
+                return true;
+            }
+
+            principal = null;
+            return false;
+        }
+
+        public virtual Result<ISAMServer> OpenSamServer(string computerName)
+        {
+            var result = SAMServer.OpenServer(computerName);
+            if (result.IsFailed)
+            {
+                return Result<ISAMServer>.Fail(result.SError);
+            }
+
+            return Result<ISAMServer>.Ok(result.Value);
+        }
+
+        private async Task SendComputerStatus(CSVComputerStatus status)
+        {
+            if (ComputerStatusEvent is not null) await ComputerStatusEvent(status);
+        }
+
     }
 
     public class EnrollmentAgentRestriction
     {
-        public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor)
+        public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
         {
             var targets = new List<TypedPrincipal>();
             var index = 0;
@@ -266,7 +413,7 @@ namespace SharpHoundCommonLib.Processors
             AccessType = ace.AceType.ToString();
 
             // Agent
-            Agent = certAbuseProcessor._utils.ResolveIDAndType(ace.SecurityIdentifier.Value, computerDomain);
+            Agent = certAbuseProcessor.GetRegistryPrincipal(ace.SecurityIdentifier, computerDomain, computerName, isDomainController, computerObjectId, machineSid);
 
             // Targets
             var opaque = ace.GetOpaque();
@@ -275,7 +422,7 @@ namespace SharpHoundCommonLib.Processors
             for (var i = 0; i < sidCount; i++)
             {
                 var sid = new SecurityIdentifier(opaque, index);
-                targets.Add(certAbuseProcessor._utils.ResolveIDAndType(sid.Value, computerDomain));
+                targets.Add(certAbuseProcessor.GetRegistryPrincipal(ace.SecurityIdentifier, computerDomain, computerName, isDomainController, computerObjectId, machineSid));
                 index += sid.BinaryLength;
             }
             Targets = targets.ToArray();

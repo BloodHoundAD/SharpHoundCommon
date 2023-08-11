@@ -234,7 +234,10 @@ namespace SharpHoundCommonLib.LDAPQueries
         public string GetFilter()
         {
             var temp = string.Join("", _filterParts.ToArray());
-            temp = _filterParts.Count == 1 ? _filterParts[0] : $"(|{temp})";
+            if (_filterParts.Count == 1)
+                temp = _filterParts[0];
+            else if (_filterParts.Count > 1)
+                 temp = $"(|{temp})";
 
             var mandatory = string.Join("", _mandatory.ToArray());
             temp = _mandatory.Count > 0 ? $"(&{temp}{mandatory})" : temp;

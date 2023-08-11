@@ -135,5 +135,6 @@ namespace SharpHoundCommonLib
 
         ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
         string BuildLdapPath(string dnPath, string domain);
+        bool IsDomainController(string computerObjectId, string domainName);
     }
 }

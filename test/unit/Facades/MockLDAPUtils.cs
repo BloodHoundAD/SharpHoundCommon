@@ -1083,5 +1083,10 @@ namespace CommonLibTest.Facades
         {
             throw new NotImplementedException();
         }
+
+        public bool IsDomainController(string computerObjectId, string domainName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

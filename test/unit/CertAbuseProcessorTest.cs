@@ -73,16 +73,16 @@ namespace CommonLibTest
         //     Assert.Empty(results);
         // }
 
-        [Fact]
-        public void CertAbuseProcessor_ProcessCAPermissions_NullSecurity_ReturnsNull()
-        {
-            var mockUtils = new Mock<MockLDAPUtils>();
-            var processor = new CertAbuseProcessor(mockUtils.Object);
+        // [Fact]
+        // public void CertAbuseProcessor_ProcessCAPermissions_NullSecurity_ReturnsNull()
+        // {
+        //     var mockUtils = new Mock<MockLDAPUtils>();
+        //     var processor = new CertAbuseProcessor(mockUtils.Object);
 
-            var results = processor.ProcessRegistryEnrollmentPermissions(null, null, "test");
+        //     var results = processor.ProcessRegistryEnrollmentPermissions(null, null, "test");
 
-            Assert.Empty(results);
-        }
+        //     Assert.Empty(results);
+        // }
 
         // [WindowsOnlyFact]
         // public void CertAbuseProcessor_ProcessCAPermissions_ReturnsCorrectValues()

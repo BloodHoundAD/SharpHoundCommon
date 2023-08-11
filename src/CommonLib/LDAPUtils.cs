@@ -1665,5 +1665,15 @@ namespace SharpHoundCommonLib
 
             return $"{rootDse.Properties["schemaNamingContext"]?[0]}";
         }
+
+        public bool IsDomainController(string computerObjectId, string domainName)
+        {
+            var filter = new LDAPFilter().AddFilter(LDAPProperties.ObjectSID + "=" + computerObjectId, true).AddFilter(CommonFilters.DomainControllers, true);
+            var res = QueryLDAP(filter.GetFilter(), SearchScope.Subtree,
+                         CommonProperties.ObjectID, domainName: domainName);
+            if (res.Count() > 0)
+                return true;
+            return false;
+        }
     }
 }
