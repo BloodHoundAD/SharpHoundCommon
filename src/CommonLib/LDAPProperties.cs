@@ -34,7 +34,8 @@
         public const string OperatingSystem = "operatingsystem";
         public const string ServicePack = "operatingsystemservicepack";
         public const string DNSHostName = "dnshostname";
-        public const string LAPSExpirationTime = "ms-mcs-admpwdexpirationtime";
+        public const string LAPSExpirationTime = "mslaps-passwordexpirationtime";
+        public const string LegacyLAPSExpirationTime = "ms-mcs-admpwdexpirationtime";
         public const string Members = "member";
         public const string SecurityDescriptor = "ntsecuritydescriptor";
         public const string SecurityIdentifier = "securityidentifier";
