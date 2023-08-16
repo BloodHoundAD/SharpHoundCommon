@@ -44,7 +44,7 @@ jobs:
         run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }}
 
       - name: Prep Packages
-        run: dotnet nuget add source --username {{github.actor}} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/SpecterOps/index.json"
+        run: dotnet nuget add source --username {{github.actor}} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/BloodHoundAD/index.json"
 
       - name: Publish to GitHub Packages
         run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
