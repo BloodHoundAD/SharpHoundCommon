@@ -41,7 +41,7 @@ jobs:
         run: dotnet pack --no-restore -c Release -p:PackageVersion=${{ steps.version.outputs.result }} -o .
         
       - name: Prep Packages
-        run: dotnet nuget add source --username {{github.actor}} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/BloodHoundAD/index.json"
+        run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/BloodHoundAD/index.json"
 
       - name: Publish to GitHub Packages
         run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
