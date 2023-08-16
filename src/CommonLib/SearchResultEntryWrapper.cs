@@ -247,7 +247,7 @@ namespace SharpHoundCommonLib
 
         public bool HasLAPS()
         {
-            return GetProperty(LDAPProperties.LAPSExpirationTime) != null;
+            return GetProperty(LDAPProperties.LAPSExpirationTime) != null || GetProperty(LDAPProperties.LegacyLAPSExpirationTime) != null;
         }
 
         public SearchResultEntry GetEntry()
