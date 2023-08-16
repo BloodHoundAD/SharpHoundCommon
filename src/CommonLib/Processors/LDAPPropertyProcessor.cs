@@ -7,25 +7,19 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class LDAPPropertyProcessor
     {
-        private static readonly string[] ReservedAttributes =
-        {
-            "pwdlastset", "lastlogon", "lastlogontimestamp", "objectsid",
-            "sidhistory", "useraccountcontrol", "operatingsystem",
-            "operatingsystemservicepack", "serviceprincipalname", "displayname", "mail", "title",
-            "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
-            "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedtodelegateto",
-            "msDS-allowedtoactonbehalfofotheridentity", "displayname",
-            "sidhistory", "samaccountname", "samaccounttype", "objectsid", "objectguid", "objectclass",
-            "msds-groupmsamembership",
-            "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector",
-            "member", "whenCreated"
-        };
+        private static readonly string[] ReservedAttributes = CommonProperties.TypeResolutionProps
+            .Concat(CommonProperties.BaseQueryProps).Concat(CommonProperties.GroupResolutionProps)
+            .Concat(CommonProperties.ComputerMethodProps).Concat(CommonProperties.ACLProps)
+            .Concat(CommonProperties.ObjectPropsProps).Concat(CommonProperties.ContainerProps)
+            .Concat(CommonProperties.SPNTargetProps).Concat(CommonProperties.DomainTrustProps)
+            .Concat(CommonProperties.GPOLocalGroupProps).ToArray();
 
         private readonly ILDAPUtils _utils;
 
@@ -404,12 +398,11 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="entry"></param>
         public Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
         {
-            var flag = IsTextUnicodeFlags.IS_TEXT_UNICODE_STATISTICS;
             var props = new Dictionary<string, object>();
 
             foreach (var property in entry.PropertyNames())
             {
-                if (ReservedAttributes.Contains(property))
+                if (ReservedAttributes.Contains(property, StringComparer.OrdinalIgnoreCase))
                     continue;
 
                 var collCount = entry.PropCount(property);
@@ -420,8 +413,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     var testBytes = entry.GetByteProperty(property);
 
-                    if (testBytes == null || testBytes.Length == 0 ||
-                        !IsTextUnicode(testBytes, testBytes.Length, ref flag)) continue;
+                    if (testBytes == null || testBytes.Length == 0) continue;
 
                     var testString = entry.GetProperty(property);
 
@@ -434,7 +426,7 @@ namespace SharpHoundCommonLib.Processors
                 else
                 {
                     var arrBytes = entry.GetByteArrayProperty(property);
-                    if (arrBytes.Length == 0 || !IsTextUnicode(arrBytes[0], arrBytes[0].Length, ref flag))
+                    if (arrBytes.Length == 0)
                         continue;
 
                     var arr = entry.GetArrayProperty(property);
@@ -461,6 +453,10 @@ namespace SharpHoundCommonLib.Processors
             //This string corresponds to the max int, and is usually set in accountexpires
             if (property == "9223372036854775807") return -1;
 
+            //Try parsing as an int
+            if (int.TryParse(property, out var num)) return num;
+
+            //Just return the property as a string
             return property;
         }
 
