@@ -276,19 +276,21 @@ namespace SharpHoundCommonLib.Processors
             var props = GetCommonProps(entry);
 
             var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
-            bool enabled, unconstrained, trustedToAuth;
+            bool enabled, unconstrained, trustedToAuth, isRodc;
             if (int.TryParse(uac, out var flag))
             {
                 var flags = (UacFlags) flag;
                 enabled = (flags & UacFlags.AccountDisable) == 0;
                 unconstrained = (flags & UacFlags.TrustedForDelegation) == UacFlags.TrustedForDelegation;
                 trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
+                isRodc = (flags & UacFlags.PartialSecretsAccount) != 0;
             }
             else
             {
                 unconstrained = false;
                 enabled = true;
                 trustedToAuth = false;
+                isRodc = false;
             }
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
@@ -330,9 +332,53 @@ namespace SharpHoundCommonLib.Processors
 
             compProps.AllowedToAct = allowedToActPrincipals.ToArray();
 
+            var revealOnDemandPrincipals = new List<TypedPrincipal>();
+            var neverRevealPrincipals = new List<TypedPrincipal>();
+            var managedByPrincipal = new TypedPrincipal();
+
+            if (isRodc)
+            {
+                var rawRevealOnDemand = entry.GetArrayProperty(LDAPProperties.RevealOnDemand);
+                if (rawRevealOnDemand != null)
+                {
+                    foreach (var dn in rawRevealOnDemand)
+                    {
+                        var res = _utils.ResolveDistinguishedName(dn);
+                        if (res != null)
+                        {
+                            revealOnDemandPrincipals.Add(res);
+                        }
+                    }
+                }
+
+                var rawNeverReveal = entry.GetArrayProperty(LDAPProperties.NeverReveal);
+                if (rawNeverReveal != null)
+                {
+                    foreach (var dn in rawNeverReveal)
+                    {
+                        var res = _utils.ResolveDistinguishedName(dn);
+                        if (res != null)
+                        {
+                            neverRevealPrincipals.Add(res);
+                        }
+                    }
+                }
+
+                var rawManagedBy = entry.GetProperty(LDAPProperties.ManagedBy);
+                if (rawManagedBy != null)
+                {
+                    managedByPrincipal = _utils.ResolveDistinguishedName(rawManagedBy);
+                }
+            }
+
+            compProps.RevealOnDemand = revealOnDemandPrincipals.ToArray();
+            compProps.NeverReveal = neverRevealPrincipals.ToArray();
+            compProps.ManagedBy = managedByPrincipal;
+
             props.Add("enabled", enabled);
             props.Add("unconstraineddelegation", unconstrained);
             props.Add("trustedtoauth", trustedToAuth);
+            props.Add("isrodc", isRodc);
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
@@ -507,5 +553,8 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] RevealOnDemand { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] NeverReveal { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal ManagedBy { get; set; } = new();
     }
 }

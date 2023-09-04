@@ -39,7 +39,8 @@
             "operatingsystemservicepack", "serviceprincipalname", "displayname", "mail", "title",
             "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
             "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedToDelegateTo",
-            "msDS-AllowedToActOnBehalfOfOtherIdentity", "whenCreated", "msds-hostserviceaccount"
+            "msDS-AllowedToActOnBehalfOfOtherIdentity", "whenCreated", "managedby", "msds-revealondemandgroup",
+            "msds-neverrevealgroup", "msds-hostserviceaccount"
         };
 
         public static readonly string[] ContainerProps =
