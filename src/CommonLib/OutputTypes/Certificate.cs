@@ -27,10 +27,11 @@ namespace SharpHoundCommonLib.OutputTypes
             Name = string.IsNullOrEmpty(name) ? Thumbprint : name;
 
             // Chain
-            var chain = new X509Chain();
-            if (!chain.Build(parsedCertificate)) return;
+            X509Chain chain = new X509Chain();
+            chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+            chain.Build(parsedCertificate);
             var temp = new List<string>();
-            foreach (var cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
+            foreach (X509ChainElement cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
             Chain = temp.ToArray();
 
             // Extensions
