@@ -422,14 +422,18 @@ namespace SharpHoundCommonLib.Processors
             if (entry.GetIntProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw))
             {
                 var enrollmentFlags = (PKIEnrollmentFlag) enrollmentFlagsRaw;
+                props.Add("enrollmentflag", enrollmentFlags);
                 props.Add("requiresmanagerapproval", enrollmentFlags.HasFlag(PKIEnrollmentFlag.PEND_ALL_REQUESTS));
             }
 
             if (entry.GetIntProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw))
             {
                 var nameFlags = (PKICertificateNameFlag) nameFlagsRaw;
+                props.Add("certificatenameflag", nameFlags);
                 props.Add("enrolleesuppliessubject",
                     nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
+                props.Add("subjectaltrequireupn",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN));
             }
 
             props.Add("ekus", entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage));
