@@ -15,9 +15,6 @@ namespace SharpHoundCommonLib.OutputTypes
         public string[] Chain { get; set; } = Array.Empty<string>();
         public bool HasBasicConstraints { get; set; } = false;
         public int BasicConstraintPathLength { get; set; }
-        public Oid[] EnhancedKeyUsageOids { get; set; }
-
-        public CertificateExtension[] CertificateExtensions { get; set; }
 
         public Certificate(byte[] rawCertificate)
         {
@@ -40,8 +37,6 @@ namespace SharpHoundCommonLib.OutputTypes
             foreach (X509Extension extension in extensions)
             {
                 CertificateExtension certificateExtension = new CertificateExtension(extension);
-                certificateExtensions.Add(certificateExtension);
-
                 switch (certificateExtension.Oid.Value)
                 {
                     case CAExtensionTypes.BasicConstraints:
@@ -49,21 +44,8 @@ namespace SharpHoundCommonLib.OutputTypes
                         HasBasicConstraints = ext.HasPathLengthConstraint;
                         BasicConstraintPathLength = ext.PathLengthConstraint;
                         break;
-
-                    case CAExtensionTypes.EnhancedKeyUsage:
-                        X509EnhancedKeyUsageExtension extEKU = (X509EnhancedKeyUsageExtension) extension;
-                        List<Oid> enhancedKeyUsageOids = new List<Oid>();
-                        foreach (var oid in extEKU.EnhancedKeyUsages){
-                            enhancedKeyUsageOids.Add(new Oid(oid));
-                        }
-                        EnhancedKeyUsageOids = enhancedKeyUsageOids.ToArray();
-                        break;
-
                 }
             }
-
-            CertificateExtensions = certificateExtensions.ToArray();
         }
-
     }
 }
