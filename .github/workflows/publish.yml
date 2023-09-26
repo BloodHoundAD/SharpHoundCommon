@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Parse Version
         uses: web3j/substr-action@v1.2
@@ -21,9 +21,11 @@ jobs:
           start: 1
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: |
+              7.0.x
+              5.0.x
 
       - name: Restore Dependencies
         run: dotnet restore
