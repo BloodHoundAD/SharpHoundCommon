@@ -49,6 +49,14 @@ jobs:
       - name: Publish NuGet
         run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_TOKEN }} --skip-duplicate
         
+      - name: Publish to SpecterOps Packages
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        run: |
+          dotnet tool install -g sleet
+          sleet push *.nupkg --skip-existing
+        
   ghpages:
     name: ghpages
     needs: nuget
