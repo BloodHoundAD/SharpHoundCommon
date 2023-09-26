@@ -13,6 +13,7 @@
         public const string GPLink = "gplink";
         public const string TrustDirection = "trustdirection";
         public const string TrustAttributes = "trustattributes";
+        public const string TrustType = "trusttype";
         public const string CanonicalName = "cn";
         public const string GPCFileSYSPath = "gpcfilesyspath";
         public const string Description = "description";
@@ -41,6 +42,7 @@
         public const string SecurityIdentifier = "securityidentifier";
         public const string ObjectSID = "objectsid";
         public const string ObjectGUID = "objectguid";
+        public const string DistinguishedName = "distinguishedname";
         public const string PrimaryGroupID = "primarygroupid";
         public const string GroupPolicyOptions = "gpoptions";
         public const string UnixUserPassword = "unixuserpassword";
