@@ -12,7 +12,7 @@ namespace SharpHoundCommonLib.Processors
 {
     public class ComputerSessionProcessor
     {
-        public delegate void ComputerStatusDelegate(CSVComputerStatus status);
+        public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
 
         private static readonly Regex SidRegex = new(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
         private readonly string _currentUserName;
@@ -47,7 +47,7 @@ namespace SharpHoundCommonLib.Processors
             var result = _nativeMethods.NetSessionEnum(computerName);
             if (result.IsFailed)
             {
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Status = result.Status.ToString(),
                     Task = "NetSessionEnum",
@@ -60,7 +60,7 @@ namespace SharpHoundCommonLib.Processors
             }
 
             _log.LogDebug("NetSessionEnum succeeded on {ComputerName}", computerName);
-            SendComputerStatus(new CSVComputerStatus
+            await SendComputerStatus(new CSVComputerStatus
             {
                 Status = CSVComputerStatus.StatusSuccess,
                 Task = "NetSessionEnum",
@@ -144,7 +144,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerSid"></param>
         /// <returns></returns>
-        public SessionAPIResult ReadUserSessionsPrivileged(string computerName,
+        public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName,
             string computerSamAccountName, string computerSid)
         {
             var ret = new SessionAPIResult();
@@ -152,7 +152,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (result.IsFailed)
             {
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Status = result.Status.ToString(),
                     Task = "NetWkstaUserEnum",
@@ -165,7 +165,7 @@ namespace SharpHoundCommonLib.Processors
             }
 
             _log.LogDebug("NetWkstaUserEnum succeeded on {ComputerName}", computerName);
-            SendComputerStatus(new CSVComputerStatus
+            await SendComputerStatus(new CSVComputerStatus
             {
                 Status = result.Status.ToString(),
                 Task = "NetWkstaUserEnum",
@@ -244,7 +244,7 @@ namespace SharpHoundCommonLib.Processors
                     _log.LogDebug("Hit timeout on registry enum on {Server}. Abandoning registry enum", computerName);
                     ret.Collected = false;
                     ret.FailureReason = "Timeout";
-                    SendComputerStatus(new CSVComputerStatus
+                    await SendComputerStatus(new CSVComputerStatus
                     {
                         Status = "Timeout",
                         Task = "RegistrySessionEnum",
@@ -256,7 +256,7 @@ namespace SharpHoundCommonLib.Processors
                 key = task.Result;
 
                 ret.Collected = true;
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Status = CSVComputerStatus.StatusSuccess,
                     Task = "RegistrySessionEnum",
@@ -280,7 +280,7 @@ namespace SharpHoundCommonLib.Processors
             catch (Exception e)
             {
                 _log.LogDebug("Registry session enum failed on {ComputerName}: {Status}", computerName, e.Message);
-                SendComputerStatus(new CSVComputerStatus
+                await SendComputerStatus(new CSVComputerStatus
                 {
                     Status = e.Message,
                     Task = "RegistrySessionEnum",
@@ -301,9 +301,9 @@ namespace SharpHoundCommonLib.Processors
             return Task.Run(() => RegistryKey.OpenRemoteBaseKey(hive, computerName));
         }
 
-        private void SendComputerStatus(CSVComputerStatus status)
+        private async Task SendComputerStatus(CSVComputerStatus status)
         {
-            ComputerStatusEvent?.Invoke(status);
+            if (ComputerStatusEvent is not null) await ComputerStatusEvent.Invoke(status);
         }
     }
 }

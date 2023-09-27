@@ -23,6 +23,19 @@
             return new() {Error = error};
         }
 
+        public string SError
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Error))
+                {
+                    return Error;
+                }
+
+                return Status.ToString();
+            }
+        }
+
         public static implicit operator Result<T>(T input)
         {
             return Ok(input);

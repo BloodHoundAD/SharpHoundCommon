@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.LDAPQueries;
@@ -28,6 +29,32 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
+        /// Helper function to pass commonlib types to GetContainingObject
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public TypedPrincipal GetContainingObject(ISearchResultEntry entry)
+        {
+            return GetContainingObject(entry.DistinguishedName);
+        }
+
+        /// <summary>
+        /// Uses the distinguishedname of an object to get its containing object by stripping the first part and using the remainder to find the container object
+        /// Saves lots of LDAP calls compared to enumerating container info directly
+        /// </summary>
+        /// <param name="distinguishedName"></param>
+        /// <returns></returns>
+        public TypedPrincipal GetContainingObject(string distinguishedName)
+        {
+            var containerDn = Helpers.RemoveDistinguishedNamePrefix(distinguishedName);
+
+            if (string.IsNullOrEmpty(containerDn))
+                return null;
+
+            return _utils.ResolveDistinguishedName(containerDn);
+        }
+
+        /// <summary>
         ///     Helper function using commonlib types to pass to GetContainerChildObjects
         /// </summary>
         /// <param name="result"></param>
@@ -51,6 +78,7 @@ namespace SharpHoundCommonLib.Processors
         public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName = "")
         {
             var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
+            filter.AddCertificateAuthorities().AddCertificateTemplates().AddEnterpriseCertificationAuthorities();
             foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
                          CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName),
                          adsPath: distinguishedName))

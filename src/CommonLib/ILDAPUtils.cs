@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundRPC.Wrappers;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace SharpHoundCommonLib
@@ -33,6 +34,7 @@ namespace SharpHoundCommonLib
         bool TestLDAPConfig(string domain);
         string[] GetUserGlobalCatalogMatches(string name);
         TypedPrincipal ResolveIDAndType(string id, string fallbackDomain);
+        TypedPrincipal ResolveCertTemplateByProperty(string propValue, string propName, string containerDN, string domainName);
         Label LookupSidType(string sid, string domain);
         Label LookupGuidType(string guid, string domain);
         string GetDomainNameFromSid(string sid);
@@ -128,8 +130,11 @@ namespace SharpHoundCommonLib
             string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false);
 
         Forest GetForest(string domainName = null);
+        string GetConfigurationPath(string domainName);
+        string GetSchemaPath(string domainName);
 
         ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
         string BuildLdapPath(string dnPath, string domain);
+        bool IsDomainController(string computerObjectId, string domainName);
     }
 }

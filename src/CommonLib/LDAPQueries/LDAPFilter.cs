@@ -144,6 +144,8 @@ namespace SharpHoundCommonLib.LDAPQueries
 
         /// <summary>
         ///     Add a filter that will include Computer objects
+        ///
+        ///     Note that gMSAs and sMSAs have this samaccounttype as well
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
@@ -154,11 +156,11 @@ namespace SharpHoundCommonLib.LDAPQueries
         }
 
         /// <summary>
-        ///     Add a filter that will include PKI Certificates
+        ///     Add a filter that will include PKI Certificate templates
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddCertificates(params string[] conditions)
+        public LDAPFilter AddCertificateTemplates(params string[] conditions)
         {
             _filterParts.Add(BuildString("(objectclass=pKICertificateTemplate)", conditions));
             return this;
@@ -199,6 +201,17 @@ namespace SharpHoundCommonLib.LDAPQueries
         }
 
         /// <summary>
+        ///     Add a filter that will include Computer objects but exclude gMSA and sMSA objects
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddComputersNoMSAs(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(&(samaccounttype=805306369)(!(objectclass=msDS-GroupManagedServiceAccount))(!(objectclass=msDS-ManagedServiceAccount)))", conditions));
+            return this;
+        }
+
+        /// <summary>
         ///     Adds a generic user specified filter
         /// </summary>
         /// <param name="filter">LDAP Filter to add to query</param>
@@ -221,12 +234,20 @@ namespace SharpHoundCommonLib.LDAPQueries
         public string GetFilter()
         {
             var temp = string.Join("", _filterParts.ToArray());
-            temp = _filterParts.Count == 1 ? _filterParts[0] : $"(|{temp})";
+            if (_filterParts.Count == 1)
+                temp = _filterParts[0];
+            else if (_filterParts.Count > 1)
+                 temp = $"(|{temp})";
 
             var mandatory = string.Join("", _mandatory.ToArray());
             temp = _mandatory.Count > 0 ? $"(&{temp}{mandatory})" : temp;
 
             return temp;
+        }
+
+        public IEnumerable<string> GetFilterList()
+        {
+            return _filterParts;
         }
     }
 }

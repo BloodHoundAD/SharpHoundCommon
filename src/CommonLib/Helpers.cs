@@ -24,6 +24,40 @@ namespace SharpHoundCommonLib
             "S-1-5-19", "S-1-5-20", "S-1-0-0", "S-1-0", "S-1-2-1"
         };
 
+        public static string RemoveDistinguishedNamePrefix(string distinguishedName)
+        {
+            if (!distinguishedName.Contains(","))
+            {
+                return "";
+            }
+            if (distinguishedName.IndexOf("DC=", StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                return "";
+            }
+
+            //Start at the first instance of a comma, and continue to loop while we still have commas. If we get -1, it means we ran out of commas.
+            //This allows us to cleanly iterate over all indexes of commas in our DNs and find the first non-escaped one
+            for (var i = distinguishedName.IndexOf(','); i > -1; i = distinguishedName.IndexOf(',', i + 1))
+            {
+                //If theres a comma at the beginning of the DN, something screwy is going on. Just ignore it
+                if (i == 0)
+                {
+                    continue;
+                }
+
+                //This indicates an escaped comma, which we should not use to split a DN
+                if (distinguishedName[i-1] == '\\')
+                {
+                    continue;
+                }
+                
+                //This is an unescaped comma, so snip our DN from this comma onwards and return this as the cleaned distinguished name
+                return distinguishedName.Substring(i + 1);    
+            }
+
+            return "";
+        }
+
         /// <summary>
         ///     Splits a GPLink property into its representative parts
         ///     Filters disabled links by default
@@ -107,8 +141,17 @@ namespace SharpHoundCommonLib
         /// <returns>String representing the domain name of this object</returns>
         public static string DistinguishedNameToDomain(string distinguishedName)
         {
-            var idx = distinguishedName.IndexOf("DC=",
-                StringComparison.CurrentCultureIgnoreCase);
+            int idx;
+            if (distinguishedName.ToUpper().Contains("DELETED OBJECTS"))
+            {
+                idx = distinguishedName.IndexOf("DC=", 3, StringComparison.Ordinal);
+            }
+            else
+            {
+                idx = distinguishedName.IndexOf("DC=",
+                    StringComparison.CurrentCultureIgnoreCase);    
+            }
+            
             if (idx < 0)
                 return null;
 
@@ -225,6 +268,21 @@ namespace SharpHoundCommonLib
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        ///     Removes some commonly seen SIDs that have no use in the schema
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <returns></returns>
+        internal static string PreProcessSID(string sid)
+        {
+            sid = sid?.ToUpper();
+            if (sid != null)
+                //Ignore Local System/Creator Owner/Principal Self
+                return sid is "S-1-5-18" or "S-1-3-0" or "S-1-5-10" ? null : sid;
+
+            return null;
         }
     }
 

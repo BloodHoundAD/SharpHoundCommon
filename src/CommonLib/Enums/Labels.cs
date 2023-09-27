@@ -2,6 +2,7 @@
 {
     public enum Label
     {
+        Base = 0,
         User,
         Computer,
         Group,
@@ -13,6 +14,9 @@
         Container,
         CertTemplate,
         CertAuthority,
-        Base
+        RootCA,
+        AIACA,
+        EnrollmentService,
+        NTAuthStore
     }
 }

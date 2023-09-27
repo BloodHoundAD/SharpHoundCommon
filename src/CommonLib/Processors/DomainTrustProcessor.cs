@@ -94,8 +94,8 @@ namespace SharpHoundCommonLib.Processors
                 trustType = TrustType.ParentChild;
             else if ((attributes & TrustAttributes.ForestTransitive) != 0)
                 trustType = TrustType.Forest;
-            else if ((attributes & TrustAttributes.TreatAsExternal) != 0 ||
-                     (attributes & TrustAttributes.CrossOrganization) != 0)
+            else if ((attributes & TrustAttributes.WithinForest) == 0 &&
+                     (attributes & TrustAttributes.ForestTransitive) == 0)
                 trustType = TrustType.External;
             else
                 trustType = TrustType.Unknown;

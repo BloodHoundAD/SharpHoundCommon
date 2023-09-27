@@ -10,6 +10,7 @@ using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundRPC.Wrappers;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace CommonLibTest.Facades
@@ -660,6 +661,10 @@ namespace CommonLibTest.Facades
                     "S-1-5-21-3130019616-2776909439-2417379446-2106", Label.User),
                 "CN=KRBTGT,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-502", Label.User),
+                "S-1-5-21-4243161961-3815211218-2888324771-1103" => new TypedPrincipal(
+                    "S-1-5-21-4243161961-3815211218-2888324771-1103", Label.User),
+                "S-1-5-21-4243161961-3815211218-2888324771-512" => new TypedPrincipal(
+                    "S-1-5-21-4243161961-3815211218-2888324771-512", Label.Group),
                 _ => null
             };
 
@@ -1057,6 +1062,31 @@ namespace CommonLibTest.Facades
             var g = new Group {ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper()};
             g.Properties.Add("name", "ENTERPRISE DOMAIN CONTROLLERS@TESTLAB.LOCAL".ToUpper());
             return g;
+        }
+
+        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN, string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetConfigurationPath(string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetSchemaPath(string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        TypedPrincipal ILDAPUtils.ResolveCertTemplateByProperty(string propValue, string propName, string containerDN, string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDomainController(string computerObjectId, string domainName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

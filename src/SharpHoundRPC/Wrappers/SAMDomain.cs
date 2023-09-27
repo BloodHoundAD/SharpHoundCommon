@@ -7,7 +7,7 @@ using SharpHoundRPC.Shared;
 
 namespace SharpHoundRPC.Wrappers
 {
-    public class SAMDomain : SAMBase
+    public class SAMDomain : SAMBase, ISAMDomain
     {
         public SAMDomain(SAMHandle handle) : base(handle)
         {
@@ -16,16 +16,11 @@ namespace SharpHoundRPC.Wrappers
         public Result<(string Name, SharedEnums.SidNameUse Type)> LookupPrincipalByRid(int rid)
         {
             var (status, namePointer, usePointer) = SAMMethods.SamLookupIdsInDomain(Handle, rid);
-            using (namePointer)
-            {
-                using (usePointer)
-                {
-                    if (status.IsError()) return status;
+            
+            if (status.IsError()) return status;
 
-                    return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(),
-                        (SharedEnums.SidNameUse) usePointer.GetData<int>());
-                }
-            }
+            return (namePointer.GetData<SharedStructs.UnicodeString>().ToString(),
+                (SharedEnums.SidNameUse) usePointer.GetData<int>());
         }
 
         public Result<IEnumerable<(string Name, int Rid)>> GetAliases()
@@ -44,7 +39,7 @@ namespace SharpHoundRPC.Wrappers
             return ret;
         }
 
-        public Result<SAMAlias> OpenAlias(int rid,
+        public Result<ISAMAlias> OpenAlias(int rid,
             SAMEnums.AliasOpenFlags desiredAccess = SAMEnums.AliasOpenFlags.ListMembers)
         {
             var (status, aliasHandle) = SAMMethods.SamOpenAlias(Handle, desiredAccess, rid);
@@ -53,7 +48,7 @@ namespace SharpHoundRPC.Wrappers
             return new SAMAlias(aliasHandle);
         }
 
-        public Result<SAMAlias> OpenAlias(string name)
+        public Result<ISAMAlias> OpenAlias(string name)
         {
             var getAliasesResult = GetAliases();
             if (getAliasesResult.IsFailed) return getAliasesResult.Status;

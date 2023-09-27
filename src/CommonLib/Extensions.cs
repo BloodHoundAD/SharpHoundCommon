@@ -86,11 +86,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public static bool IsComputerCollectionSet(this ResolvedCollectionMethod methods)
         {
-            return (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
-                   (methods & ResolvedCollectionMethod.DCOM) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0 ||
-                   (methods & ResolvedCollectionMethod.PSRemote) != 0 ||
-                   (methods & ResolvedCollectionMethod.Session) != 0 ||
-                   (methods & ResolvedCollectionMethod.LoggedOn) != 0;
+            return (methods & ResolvedCollectionMethod.ComputerOnly) != 0;
         }
 
         /// <summary>
@@ -100,9 +96,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public static bool IsLocalGroupCollectionSet(this ResolvedCollectionMethod methods)
         {
-            return (methods & ResolvedCollectionMethod.DCOM) != 0 ||
-                   (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
-                   (methods & ResolvedCollectionMethod.PSRemote) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0;
+            return (methods & ResolvedCollectionMethod.LocalGroups) != 0;
         }
 
         /// <summary>
@@ -375,11 +369,19 @@ namespace SharpHoundCommonLib
                     objectType = Label.Domain;
                 else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.Container;
-                else if (objectClasses.Contains(CertTemplateClass, StringComparer.InvariantCultureIgnoreCase))
+                else if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.CertTemplate;
-                else if (objectClasses.Contains(EnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase) ||
-                         objectClasses.Contains(CertAuthorityClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.CertAuthority;
+                else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
+                    objectType = Label.EnrollmentService;
+                else if (objectClasses.Contains(CertificationAutorityClass, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    if (entry.DistinguishedName.Contains(DirectoryPaths.RootCALocation))
+                        objectType = Label.RootCA;
+                    else if (entry.DistinguishedName.Contains(DirectoryPaths.AIACALocation))
+                        objectType = Label.AIACA;
+                    else if (entry.DistinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
+                        objectType = Label.NTAuthStore;
+                }
             }
 
             Log.LogDebug("GetLabel - Final label for {ObjectID}: {Label}", objectId, objectType);
@@ -393,9 +395,9 @@ namespace SharpHoundCommonLib
         private const string OrganizationalUnitClass = "organizationalUnit";
         private const string DomainClass = "domain";
         private const string ContainerClass = "container";
-        private const string CertTemplateClass = "pKICertificateTemplate";
-        private const string EnrollmentServiceClass = "pKIEnrollmentService";
-        private const string CertAuthorityClass = "certificateAuthority";
+        private const string PKICertificateTemplateClass = "pKICertificateTemplate";
+        private const string PKIEnrollmentServiceClass = "pKIEnrollmentService";
+        private const string CertificationAutorityClass = "certificationAuthority";
 
         #endregion
     }

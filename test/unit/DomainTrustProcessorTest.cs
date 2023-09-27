@@ -123,7 +123,7 @@ namespace CommonLibTest
 
             attrib = TrustAttributes.FilterSids;
             test = DomainTrustProcessor.TrustAttributesToType(attrib);
-            Assert.Equal(TrustType.Unknown, test);
+            Assert.Equal(TrustType.External, test);
         }
     }
 }

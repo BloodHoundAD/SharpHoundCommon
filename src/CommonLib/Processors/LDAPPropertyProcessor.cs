@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
-using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
@@ -366,16 +365,48 @@ namespace SharpHoundCommonLib.Processors
 
             props.Add("sidhistory", sidHistoryList.ToArray());
 
+            var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);
+            var smsaPrincipals = new List<TypedPrincipal>();
+            if (hsa != null) {
+                foreach (var dn in hsa)
+                {
+                    var resolvedPrincipal = _utils.ResolveDistinguishedName(dn);
+
+                    if (resolvedPrincipal != null)
+                        smsaPrincipals.Add(resolvedPrincipal);
+                }
+            }
+
+            compProps.DumpSMSAPassword = smsaPrincipals.ToArray();
+
             compProps.Props = props;
 
             return compProps;
         }
 
-        public static Dictionary<string, object> ReadCAProperties(ISearchResultEntry entry)
+        public static Dictionary<string, object> ReadRootCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKICertificateAuthorityFlags) flags);
+            return props;
+        }
 
+        public static Dictionary<string, object> ReadAIACAProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            props.Add("crosscertificatepair", entry.GetByteArrayProperty(LDAPProperties.CrossCertificatePair));
+            return props;
+        }
+
+        public static Dictionary<string, object> ReadEnrollmentServiceProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
+            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentServiceFlags) flags);
+
+            return props;
+        }
+        public static Dictionary<string, object> ReadNTAuthStoreProperties(ISearchResultEntry entry)
+        {
+            var props = GetCommonProps(entry);
             return props;
         }
 
@@ -387,23 +418,33 @@ namespace SharpHoundCommonLib.Processors
             if (entry.GetIntProperty(LDAPProperties.TemplateSchemaVersion, out var schemaVersion))
                 props.Add("schemaversion", schemaVersion);
             props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
-            props.Add("oid", new Oid(entry.GetProperty(LDAPProperties.CertTemplateOID)));
+            props.Add("oid", entry.GetProperty(LDAPProperties.CertTemplateOID));
             if (entry.GetIntProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw))
             {
                 var enrollmentFlags = (PKIEnrollmentFlag) enrollmentFlagsRaw;
+                props.Add("enrollmentflag", enrollmentFlags);
                 props.Add("requiresmanagerapproval", enrollmentFlags.HasFlag(PKIEnrollmentFlag.PEND_ALL_REQUESTS));
             }
 
             if (entry.GetIntProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw))
             {
                 var nameFlags = (PKICertificateNameFlag) nameFlagsRaw;
+                props.Add("certificatenameflag", nameFlags);
                 props.Add("enrolleesuppliessubject",
                     nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
+                props.Add("subjectaltrequireupn",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN));
             }
 
             props.Add("ekus", entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage));
+            props.Add("certificateapplicationpolicy", entry.GetArrayProperty(LDAPProperties.CertificateApplicationPolicy));
+
             if (entry.GetIntProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
+            {
                 props.Add("authorizedsignatures", authorizedSignatures);
+            }
+            props.Add("applicationpolicies", entry.GetArrayProperty(LDAPProperties.ApplicationPolicies));
+            props.Add("issuancepolicies", entry.GetArrayProperty(LDAPProperties.IssuancePolicies));
 
             return props;
         }
@@ -584,5 +625,6 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
     }
 }

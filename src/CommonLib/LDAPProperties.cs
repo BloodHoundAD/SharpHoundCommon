@@ -46,6 +46,8 @@
         public const string UnicodePassword = "unicodepwd";
         public const string MsSFU30Password = "msSFU30Password";
         public const string ScriptPath = "scriptpath";
+        public const string LdapAdminLimits = "ldapadminlimits";
+        public const string HostServiceAccount = "msds-hostserviceaccount";
         public const string PKIExpirationPeriod = "pkiexpirationperiod";
         public const string PKIOverlappedPeriod = "pkioverlapperiod";
         public const string TemplateSchemaVersion = "mspki-template-schema-version";
@@ -54,9 +56,11 @@
         public const string PKINameFlag = "mspki-certificate-name-flag";
         public const string ExtendedKeyUsage = "pkiextendedkeyusage";
         public const string NumSignaturesRequired = "mspki-ra-signature";
-        public const string ApplicationPolicy = "mspki-ra-application-policies";
+        public const string ApplicationPolicies = "mspki-ra-application-policies";
         public const string IssuancePolicies = "mspki-ra-policies";
         public const string CertificateApplicationPolicy = "mspki-certificate-application-policy";
         public const string CACertificate = "cacertificate";
+        public const string CertificateTemplates = "certificatetemplates";
+        public const string CrossCertificatePair = "crosscertificatepair";
     }
 }
