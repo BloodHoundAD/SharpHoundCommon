@@ -1,0 +1,11 @@
+{
+  "sources": [
+    {
+      "name": "feed",
+      "type": "s3",
+      "path": "https://s3.amazonaws.com/bloodhound-ad",
+      "region": "us-east-1",
+      "bucketName": "bloodhound-ad"
+    }
+  ]
+}
