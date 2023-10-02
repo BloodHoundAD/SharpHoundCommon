@@ -60,10 +60,8 @@ namespace SharpHoundCommonLib.Processors
             descriptor.SetSecurityDescriptorBinaryForm(aceData.Value as byte[], AccessControlSections.All);
 
             var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
-
             var computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
             var isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
-            _log.LogDebug("!!!! {Name} is {Dc}", computerObjectId, isDomainController);
             var machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
 
             var aces = new List<ACE>();
