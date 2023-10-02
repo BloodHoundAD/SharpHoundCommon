@@ -120,7 +120,7 @@ namespace CommonLibTest
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
-            Assert.True((bool) test["admincount"]);
+            Assert.True((bool)test["admincount"]);
         }
 
         [Fact]
@@ -137,7 +137,7 @@ namespace CommonLibTest
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
-            Assert.False((bool) test["admincount"]);
+            Assert.False((bool)test["admincount"]);
         }
 
         [Fact]
@@ -153,7 +153,7 @@ namespace CommonLibTest
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
-            Assert.False((bool) test["admincount"]);
+            Assert.False((bool)test["admincount"]);
         }
 
         [Fact]
@@ -250,7 +250,7 @@ namespace CommonLibTest
             var props = test.Props;
             var keys = props.Keys;
             Assert.Contains("admincount", keys);
-            Assert.False((bool) props["admincount"]);
+            Assert.False((bool)props["admincount"]);
         }
 
         [WindowsOnlyFact]
@@ -289,33 +289,33 @@ namespace CommonLibTest
             Assert.Contains("description", keys);
             Assert.Equal("Test", props["description"] as string);
             Assert.Contains("admincount", keys);
-            Assert.True((bool) props["admincount"]);
+            Assert.True((bool)props["admincount"]);
             Assert.Contains("lastlogon", keys);
-            Assert.Equal(1622827514, (long) props["lastlogon"]);
+            Assert.Equal(1622827514, (long)props["lastlogon"]);
             Assert.Contains("lastlogontimestamp", keys);
-            Assert.Equal(1622558209, (long) props["lastlogontimestamp"]);
+            Assert.Equal(1622558209, (long)props["lastlogontimestamp"]);
             Assert.Contains("pwdlastset", keys);
-            Assert.Equal(1568693134, (long) props["pwdlastset"]);
+            Assert.Equal(1568693134, (long)props["pwdlastset"]);
             Assert.Contains("homedirectory", keys);
             Assert.Equal(@"\\win10\testdir", props["homedirectory"] as string);
 
             //UAC stuff
             Assert.Contains("sensitive", keys);
-            Assert.False((bool) props["sensitive"]);
+            Assert.False((bool)props["sensitive"]);
             Assert.Contains("dontreqpreauth", keys);
-            Assert.False((bool) props["dontreqpreauth"]);
+            Assert.False((bool)props["dontreqpreauth"]);
             Assert.Contains("passwordnotreqd", keys);
-            Assert.False((bool) props["passwordnotreqd"]);
+            Assert.False((bool)props["passwordnotreqd"]);
             Assert.Contains("unconstraineddelegation", keys);
-            Assert.False((bool) props["unconstraineddelegation"]);
+            Assert.False((bool)props["unconstraineddelegation"]);
             Assert.Contains("enabled", keys);
-            Assert.True((bool) props["enabled"]);
+            Assert.True((bool)props["enabled"]);
             Assert.Contains("trustedtoauth", keys);
-            Assert.False((bool) props["trustedtoauth"]);
+            Assert.False((bool)props["trustedtoauth"]);
 
             //SPN
             Assert.Contains("hasspn", keys);
-            Assert.True((bool) props["hasspn"]);
+            Assert.True((bool)props["hasspn"]);
             Assert.Contains("serviceprincipalnames", keys);
             Assert.Contains("MSSQLSVC/win10", props["serviceprincipalnames"] as string[]);
 
@@ -367,7 +367,7 @@ namespace CommonLibTest
             Assert.Contains("sidhistory", keys);
             Assert.Empty(props["sidhistory"] as string[]);
             Assert.Contains("admincount", keys);
-            Assert.False((bool) props["admincount"]);
+            Assert.False((bool)props["admincount"]);
             Assert.Contains("sensitive", keys);
             Assert.Contains("dontreqpreauth", keys);
             Assert.Contains("passwordnotreqd", keys);
@@ -375,13 +375,13 @@ namespace CommonLibTest
             Assert.Contains("pwdneverexpires", keys);
             Assert.Contains("enabled", keys);
             Assert.Contains("trustedtoauth", keys);
-            Assert.False((bool) props["trustedtoauth"]);
-            Assert.False((bool) props["sensitive"]);
-            Assert.False((bool) props["dontreqpreauth"]);
-            Assert.False((bool) props["passwordnotreqd"]);
-            Assert.False((bool) props["unconstraineddelegation"]);
-            Assert.False((bool) props["pwdneverexpires"]);
-            Assert.True((bool) props["enabled"]);
+            Assert.False((bool)props["trustedtoauth"]);
+            Assert.False((bool)props["sensitive"]);
+            Assert.False((bool)props["dontreqpreauth"]);
+            Assert.False((bool)props["passwordnotreqd"]);
+            Assert.False((bool)props["unconstraineddelegation"]);
+            Assert.False((bool)props["pwdneverexpires"]);
+            Assert.True((bool)props["enabled"]);
         }
 
         [WindowsOnlyFact]
@@ -437,15 +437,15 @@ namespace CommonLibTest
             Assert.Contains("lastlogon", keys);
             Assert.Contains("lastlogontimestamp", keys);
             Assert.Contains("pwdlastset", keys);
-            Assert.True((bool) props["enabled"]);
-            Assert.False((bool) props["unconstraineddelegation"]);
+            Assert.True((bool)props["enabled"]);
+            Assert.False((bool)props["unconstraineddelegation"]);
 
             Assert.Contains("lastlogon", keys);
-            Assert.Equal(1622827514, (long) props["lastlogon"]);
+            Assert.Equal(1622827514, (long)props["lastlogon"]);
             Assert.Contains("lastlogontimestamp", keys);
-            Assert.Equal(1622558209, (long) props["lastlogontimestamp"]);
+            Assert.Equal(1622558209, (long)props["lastlogontimestamp"]);
             Assert.Contains("pwdlastset", keys);
-            Assert.Equal(1568693134, (long) props["pwdlastset"]);
+            Assert.Equal(1568693134, (long)props["pwdlastset"]);
 
             //AllowedToDelegate
             Assert.Single(test.AllowedToDelegate);
@@ -524,12 +524,13 @@ namespace CommonLibTest
             Assert.Contains("unconstraineddelegation", keys);
             Assert.Contains("enabled", keys);
             Assert.Contains("trustedtoauth", keys);
-            Assert.False((bool) props["unconstraineddelegation"]);
-            Assert.True((bool) props["enabled"]);
-            Assert.False((bool) props["trustedtoauth"]);
+            Assert.False((bool)props["unconstraineddelegation"]);
+            Assert.True((bool)props["enabled"]);
+            Assert.False((bool)props["trustedtoauth"]);
             Assert.Contains("sidhistory", keys);
             Assert.Empty(props["sidhistory"] as string[]);
         }
+
 
         [Fact]
         public async Task LDAPPropertyProcessor_ReadComputerProperties_TestDumpSMSAPassword()
@@ -602,6 +603,114 @@ namespace CommonLibTest
 
         }
 
-        // //TODO: Add coverage for ParseAllProperties
+
+        [Fact]
+        public void LDAPPropertyProcessor_ReadNTAuthStoreProperties()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                {
+                    {"description", null},
+                    {"domain", "DUMPSTER.FIRE"},
+                    {"name", "NTAUTHCERTIFICATES@DUMPSTER.FIRE"},
+                    {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
+                    {"whencreated", 1683986131},
+                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var props = processor.ReadNTAuthStoreProperties(mock);
+            var keys = props.Keys;
+
+            Assert.Contains("description", keys);
+            Assert.Contains("whencreated", keys);
+        }
+
+        // ReservedAttributes
+
+        [Fact]
+        public void LDAPPropertyProcessor_ParseAllProperties()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                {
+                    {"description", null},
+                    {"domain", "DUMPSTER.FIRE"},
+                    {"name", "NTAUTHCERTIFICATES@DUMPSTER.FIRE"},
+                    {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
+                    {"whencreated", 1683986131},
+                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var props = processor.ParseAllProperties(mock);
+            var keys = props.Keys;
+
+            //These are reserved properties and so they should be filtered out
+            Assert.DoesNotContain("description", keys);
+            Assert.DoesNotContain("whencreated", keys);
+            Assert.DoesNotContain("name", keys);
+
+            Assert.Contains("domainsid", keys);
+            Assert.Contains("domain", keys);
+        }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ParseAllProperties_NoProperties()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                { }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var props = processor.ParseAllProperties(mock);
+            var keys = props.Keys;
+
+            Assert.Empty(keys);
+
+        }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_NullString()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                {{"domainsid", null} }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var props = processor.ParseAllProperties(mock);
+            var keys = props.Keys;
+
+            Assert.Empty(keys);
+        }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_BadPasswordTime()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                {{"badpasswordtime", "130435290000000000"} }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var props = processor.ParseAllProperties(mock);
+            var keys = props.Keys;
+
+            Assert.Contains("badpasswordtime", keys);
+            Assert.Single(keys);
+        }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_NotBadPasswordTime()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                {{"domainsid", "S-1-5-21-2697957641-2271029196-387917394"}}, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var props = processor.ParseAllProperties(mock);
+            var keys = props.Keys;
+
+            Assert.Contains("domainsid", keys);
+            Assert.Single(keys);
+        }
+
     }
 }

@@ -37,22 +37,40 @@ namespace CommonLibTest.Facades
 
         public byte[] GetByteProperty(string propertyName)
         {
+            //returning something not null specifically for these properties for the parseAllProperties tests
+            if (propertyName == "badpasswordtime" || propertyName == "domainsid") return new byte[] { 0x20 };
             return _properties[propertyName] as byte[];
         }
 
         public string[] GetArrayProperty(string propertyName)
         {
-            return _properties[propertyName] as string[];
+            if (!_properties.Contains(propertyName))
+                return Array.Empty<string>();
+
+            var value = _properties[propertyName];
+            Type valueType = value.GetType();
+
+            if (valueType.IsArray)
+                return value as string[];
+            else
+                return new string[1] { (value ?? "").ToString() };
         }
 
         public byte[][] GetByteArrayProperty(string propertyName)
         {
-            return _properties[propertyName] as byte[][];
+
+            if (!_properties.Contains(propertyName))
+                return Array.Empty<byte[]>();
+
+            var byteArray = new byte[] { 0x20 };
+            var byteArrayArray = new byte[][] { byteArray };
+
+            return byteArrayArray;
         }
 
         public bool GetIntProperty(string propertyName, out int value)
         {
-            value = _properties[propertyName] is int ? (int) _properties[propertyName] : 0;
+            value = _properties[propertyName] is int ? (int)_properties[propertyName] : 0;
             return true;
         }
 
@@ -88,12 +106,16 @@ namespace CommonLibTest.Facades
 
         public int PropCount(string prop)
         {
-            throw new NotImplementedException();
+            var count = 0;
+
+            foreach (var property in _properties) count++;
+
+            return count;
         }
 
         public IEnumerable<string> PropertyNames()
         {
-            throw new NotImplementedException();
+            foreach (var property in _properties.Keys) yield return property.ToString().ToLower();
         }
 
         public bool IsMSA()

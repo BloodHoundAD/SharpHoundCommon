@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
-using System.Linq;
 using System.Threading;
 using CommonLibTest.Facades;
 using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.Exceptions;
-using SharpHoundCommonLib.Processors;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -101,11 +99,11 @@ namespace CommonLibTest
             var mock = new Mock<LDAPUtils>();
             //var mockDomain = MockableDomain.Construct("TESTLAB.LOCAL");
             mock.Setup(x => x.GetDomain(It.IsAny<string>()))
-                .Returns((Domain) null);
+                .Returns((Domain)null);
             var result = mock.Object.BuildLdapPath("TEST", "ABC");
             Assert.Null(result);
         }
-        
+
         [Fact]
         public void BuildLdapPath_HappyPath()
         {
@@ -135,7 +133,7 @@ namespace CommonLibTest
             Assert.Equal(Label.Group, typedPrincipal.ObjectType);
             Assert.Equal($"{_testDomainName}-S-1-5-32-544", typedPrincipal.ObjectIdentifier);
         }
-        
+
         [Fact]
         public void DistinguishedNameToDomain_RegularObject_CorrectDomain()
         {
@@ -151,7 +149,7 @@ namespace CommonLibTest
         public void GetDomainRangeSize_BadDomain_ReturnsDefault()
         {
             var mock = new Mock<LDAPUtils>();
-            mock.Setup(x => x.GetDomain(It.IsAny<string>())).Returns((Domain) null);
+            mock.Setup(x => x.GetDomain(It.IsAny<string>())).Returns((Domain)null);
             var result = mock.Object.GetDomainRangeSize();
             Assert.Equal(750, result);
         }
@@ -160,13 +158,13 @@ namespace CommonLibTest
         public void GetDomainRangeSize_RespectsDefaultParam()
         {
             var mock = new Mock<LDAPUtils>();
-            mock.Setup(x => x.GetDomain(It.IsAny<string>())).Returns((Domain) null);
+            mock.Setup(x => x.GetDomain(It.IsAny<string>())).Returns((Domain)null);
 
             var result = mock.Object.GetDomainRangeSize(null, 1000);
             Assert.Equal(1000, result);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void GetDomainRangeSize_NoLdapEntry_ReturnsDefault()
         {
             var mock = new Mock<LDAPUtils>();
@@ -180,7 +178,7 @@ namespace CommonLibTest
             Assert.Equal(750, result);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void GetDomainRangeSize_ExpectedResults()
         {
             var mock = new Mock<LDAPUtils>();
@@ -193,10 +191,10 @@ namespace CommonLibTest
                     "MaxPageSize=1250"
                 }},
             }, "abc123", Label.Base);
-            
+
             mock.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), null,
                 It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
-                It.IsAny<bool>(), It.IsAny<bool>())).Returns(new List<ISearchResultEntry> {searchResult});
+                It.IsAny<bool>(), It.IsAny<bool>())).Returns(new List<ISearchResultEntry> { searchResult });
             var result = mock.Object.GetDomainRangeSize();
             Assert.Equal(1250, result);
         }
