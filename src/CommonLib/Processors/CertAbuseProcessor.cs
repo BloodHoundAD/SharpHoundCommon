@@ -183,12 +183,6 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        public string GetCertThumbprint(byte[] rawCert)
-        {
-            var parsedCertificate = new X509Certificate2(rawCert);
-            return parsedCertificate.Thumbprint;
-        }
-
         /// <summary>
         /// Get CA security registry value from the remote machine for processing security/enrollmentagentrights
         /// </summary>
