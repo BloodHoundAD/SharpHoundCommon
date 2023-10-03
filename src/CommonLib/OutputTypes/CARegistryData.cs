@@ -1,6 +1,4 @@
-﻿using SharpHoundCommonLib.Processors;
-
-namespace SharpHoundCommonLib.OutputTypes
+﻿namespace SharpHoundCommonLib.OutputTypes
 {
     public class CARegistryData
     {
