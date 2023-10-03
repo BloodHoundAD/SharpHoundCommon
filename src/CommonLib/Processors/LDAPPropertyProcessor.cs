@@ -413,7 +413,7 @@ namespace SharpHoundCommonLib.Processors
 
             return props;
         }
-        public Dictionary<string, object> ReadNTAuthStoreProperties(ISearchResultEntry entry)
+        public static Dictionary<string, object> ReadNTAuthStoreProperties(ISearchResultEntry entry)
         {
             var ntAuthStoreProps = new NTAuthStoreProperties
             {

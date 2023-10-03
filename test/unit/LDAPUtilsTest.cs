@@ -104,7 +104,7 @@ namespace CommonLibTest
             Assert.Null(result);
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void BuildLdapPath_HappyPath()
         {
             var mock = new Mock<LDAPUtils>();

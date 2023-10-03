@@ -617,9 +617,8 @@ namespace CommonLibTest
                     {"whencreated", 1683986131},
                 }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
-            var props = processor.ReadNTAuthStoreProperties(mock);
-            var keys = props.Keys;
+            var test = LDAPPropertyProcessor.ReadNTAuthStoreProperties(mock);
+            var keys = test.Keys;
 
             Assert.Contains("description", keys);
             Assert.Contains("whencreated", keys);
