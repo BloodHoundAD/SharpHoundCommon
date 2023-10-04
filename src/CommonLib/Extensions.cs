@@ -372,7 +372,7 @@ namespace SharpHoundCommonLib
                 else if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.CertTemplate;
                 else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.EnrollmentService;
+                    objectType = Label.EnterpriseCA;
                 else if (objectClasses.Contains(CertificationAutorityClass, StringComparer.InvariantCultureIgnoreCase))
                 {
                     if (entry.DistinguishedName.Contains(DirectoryPaths.RootCALocation))

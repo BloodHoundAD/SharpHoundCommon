@@ -3,7 +3,7 @@
 namespace SharpHoundCommonLib.Enums
 {
     [Flags]
-    public enum PKIEnrollmentServiceFlags
+    public enum PKIEnterpriseCAFlags
     {
         NO_TEMPLATE_SUPPORT = 0x00000001,
         SUPPORTS_NT_AUTHENTICATION = 0x00000002,
