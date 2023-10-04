@@ -415,8 +415,12 @@ namespace SharpHoundCommonLib.Processors
         }
         public static Dictionary<string, object> ReadNTAuthStoreProperties(ISearchResultEntry entry)
         {
-            var props = GetCommonProps(entry);
-            return props;
+            var ntAuthStoreProps = new NTAuthStoreProperties
+            {
+                Props = GetCommonProps(entry)
+            };
+
+            return ntAuthStoreProps.Props;
         }
 
         public static Dictionary<string, object> ReadCertTemplateProperties(ISearchResultEntry entry)
@@ -637,5 +641,11 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
+    }
+
+    public class NTAuthStoreProperties
+    {
+        public Dictionary<string, object> Props { get; set; } = new();
+        public TypedPrincipal[] CertThumbprints { get; set; } = Array.Empty<TypedPrincipal>();
     }
 }

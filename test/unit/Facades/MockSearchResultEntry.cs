@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 
@@ -37,22 +38,41 @@ namespace CommonLibTest.Facades
 
         public byte[] GetByteProperty(string propertyName)
         {
+            if (!_properties.Contains(propertyName))
+                return null;
+
+            if (_properties[propertyName] is string prop)
+            {
+                return Encoding.ASCII.GetBytes(prop);
+            }
+
             return _properties[propertyName] as byte[];
         }
 
         public string[] GetArrayProperty(string propertyName)
         {
-            return _properties[propertyName] as string[];
+            if (!_properties.Contains(propertyName))
+                return Array.Empty<string>();
+
+            var value = _properties[propertyName];
+            if (value.IsArray())
+                return value as string[];
+            
+            return new [] { (value ?? "").ToString() };
         }
 
         public byte[][] GetByteArrayProperty(string propertyName)
         {
-            return _properties[propertyName] as byte[][];
+            if (!_properties.Contains(propertyName))
+                return Array.Empty<byte[]>();
+            
+            var property = _properties[propertyName] as byte[][];
+            return property;
         }
 
         public bool GetIntProperty(string propertyName, out int value)
         {
-            value = _properties[propertyName] is int ? (int) _properties[propertyName] : 0;
+            value = _properties[propertyName] is int ? (int)_properties[propertyName] : 0;
             return true;
         }
 
@@ -88,12 +108,19 @@ namespace CommonLibTest.Facades
 
         public int PropCount(string prop)
         {
-            throw new NotImplementedException();
+            var property = _properties[prop];
+            if (property.IsArray())
+            {
+                var cast = property as string[];
+                return cast?.Length ?? 0;
+            }
+
+            return 1;
         }
 
         public IEnumerable<string> PropertyNames()
         {
-            throw new NotImplementedException();
+            foreach (var property in _properties.Keys) yield return property.ToString().ToLower();
         }
 
         public bool IsMSA()
