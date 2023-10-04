@@ -8,7 +8,7 @@
 
 ## Build
 
-``` powershell
+```powershell
 dotnet build
 ```
 
@@ -17,31 +17,30 @@ dotnet build
 This project is configured to generate test coverage every time tests are run and produces a HTML report at
 [./docfx/coverage/report](./docfx/coverage/report).
 
-
-``` powershell
+```powershell
 dotnet test
 ```
 
 ## Documentation
 
-Documentation is generated into Html from Markdown using [docfx](https://https://dotnet.github.io/docfx/).
+Documentation is generated into HTML from Markdown using [docfx](https://dotnet.github.io/docfx/).
 
 To build the docs:
 
-``` powershell
+```powershell
 dotnet build docfx
 ```
 
 To preview the docs:
 
-``` powershell
+```powershell
 dotnet build docfx
 dotnet build docfx -t:Serve
 ```
 
 To preview the docs with test coverage:
 
-``` powershell
+```powershell
 dotnet test
 dotnet build docfx
 dotnet build docfx -t:Serve
