@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Security;
 using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
@@ -37,32 +39,46 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectDomain"></param>
         /// <param name="computerName"></param>
         /// <returns></returns>
-        public async IAsyncEnumerable<ACE> ProcessRegistryEnrollmentPermissions(byte[] security, string objectDomain, string computerName, string computerObjectId)
+        public async Task<AceRegistryAPIResult> ProcessRegistryEnrollmentPermissions(string caName, string objectDomain, string computerName, string computerObjectId)
         {
-            if (security == null)
-                yield break;
+            var data = new AceRegistryAPIResult();
+
+            var aceData = GetCASecurity(computerName, caName);
+            data.Collected = aceData.Collected;
+            if (!aceData.Collected)
+            {
+                data.FailureReason = aceData.FailureReason;
+                return data;
+            }
+
+            if (aceData.Value == null)
+            {
+                return data;
+            }
 
             var descriptor = _utils.MakeSecurityDescriptor();
-            descriptor.SetSecurityDescriptorBinaryForm(security, AccessControlSections.All);
+            descriptor.SetSecurityDescriptorBinaryForm(aceData.Value as byte[], AccessControlSections.All);
 
             var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
 
-            string computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
-            bool isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
+            var computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
+            var isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
             _log.LogDebug("!!!! {Name} is {Dc}", computerObjectId, isDomainController);
-            SecurityIdentifier machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
+            var machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
+
+            var aces = new List<ACE>();
 
             if (ownerSid != null)
             {
                 var resolvedOwner = GetRegistryPrincipal(new SecurityIdentifier(ownerSid), computerDomain, computerName, isDomainController, computerObjectId, machineSid);
                 if (resolvedOwner != null)
-                    yield return new ACE
+                    aces.Add(new ACE
                     {
                         PrincipalType = resolvedOwner.ObjectType,
                         PrincipalSID = resolvedOwner.ObjectIdentifier,
                         RightName = EdgeNames.Owns,
                         IsInherited = false
-                    };
+                    }); 
             }
             else
             {
@@ -89,31 +105,34 @@ namespace SharpHoundCommonLib.Processors
 
                 // TODO: These if statements are also present in ProcessACL. Move to shared location.               
                 if ((cARights & CertificationAuthorityRights.ManageCA) != 0)
-                    yield return new ACE
+                    aces.Add(new ACE
                     {
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         IsInherited = isInherited,
                         RightName = EdgeNames.ManageCA
-                    };
+                    });
                 if ((cARights & CertificationAuthorityRights.ManageCertificates) != 0)
-                    yield return new ACE
+                    aces.Add(new ACE
                     {
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         IsInherited = isInherited,
                         RightName = EdgeNames.ManageCertificates
-                    };
+                    });
 
                 if ((cARights & CertificationAuthorityRights.Enroll) != 0)
-                    yield return new ACE
+                    aces.Add(new ACE
                     {
                         PrincipalType = resolvedPrincipal.ObjectType,
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         IsInherited = isInherited,
                         RightName = EdgeNames.Enroll
-                    };
+                    });
             }
+
+            data.Data = aces.ToArray();
+            return data;
         }
         
         /// <summary>
@@ -122,27 +141,44 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="enrollmentAgentRestrictions"></param>
         /// <returns></returns>
-        public async IAsyncEnumerable<EnrollmentAgentRestriction> ProcessEAPermissions(byte[] enrollmentAgentRestrictions, string objectDomain, string computerName, string computerObjectId)
+        public async Task<EnrollmentAgentRegistryAPIResult> ProcessEAPermissions(string caName, string objectDomain, string computerName, string computerObjectId)
         {
-            if (enrollmentAgentRestrictions == null)
-                yield break;
+            var ret = new EnrollmentAgentRegistryAPIResult();
+            var regData = GetEnrollmentAgentRights(computerName, caName);
 
-            string computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
-            bool isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
-            SecurityIdentifier machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
-            string certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, computerDomain);
-            var descriptor = new RawSecurityDescriptor(enrollmentAgentRestrictions, 0);
+            ret.Collected = regData.Collected;
+            if (!ret.Collected)
+            {
+                ret.FailureReason = regData.FailureReason;
+                return ret;
+            }
+
+            if (regData.Value == null)
+            {
+                return ret;
+            }
+            
+            var computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
+            var isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
+            var machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
+            var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, computerDomain);
+            var descriptor = new RawSecurityDescriptor(regData.Value as byte[], 0);
+            var enrollmentAgentRestrictions = new List<EnrollmentAgentRestriction>();
             foreach (var genericAce in descriptor.DiscretionaryAcl)
             {
                 var ace = (QualifiedAce)genericAce;
-                yield return new EnrollmentAgentRestriction(ace, computerDomain, certTemplatesLocation, this, computerName, isDomainController, computerObjectId, machineSid);
+                enrollmentAgentRestrictions.Add(new EnrollmentAgentRestriction(ace, computerDomain, certTemplatesLocation, this, computerName, isDomainController, computerObjectId, machineSid));
             }
+
+            ret.Restrictions = enrollmentAgentRestrictions.ToArray();
+
+            return ret;
         }
         
         public IEnumerable<TypedPrincipal> ProcessCertTemplates(string[] templates, string domainName)
         {
-            string certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, domainName);
-            foreach (string templateCN in templates)
+            var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, domainName);
+            foreach (var templateCN in templates)
             {
                 var res = _utils.ResolveCertTemplateByProperty(templateCN, LDAPProperties.CanonicalName, certTemplatesLocation, domainName);
                 yield return res;
@@ -156,58 +192,79 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Get CA security regitry value from the remote machine for processing security/enrollmentagentrights
+        /// Get CA security registry value from the remote machine for processing security/enrollmentagentrights
         /// </summary>
         /// <param name="target"></param>
         /// <param name="caName"></param>
         /// <returns></returns>
         [ExcludeFromCodeCoverage]
-        public (bool collected, byte[] value) GetCASecurity(string target, string caName)
+        private RegistryResult GetCASecurity(string target, string caName)
         {
-            bool collected = false;
-            byte[] value = null;
             var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
-            var regValue = "Security";
+            const string regValue = "Security";
+        
+            return GetRegistryKeyData(target, regSubKey, regValue);
+        }
+
+        public virtual IRegistryKey OpenRemoteRegistry(string target)
+        {
+            var key = new SHRegistryKey(RegistryHive.LocalMachine, target);
+            return key;
+        }
+
+        public RegistryResult GetRegistryKeyData(string target, string subkey, string subvalue)
+        {
+            var data = new RegistryResult();
+            
             try
             {
-                var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
-                var key = baseKey.OpenSubKey(regSubKey);
-                value = (byte[])key?.GetValue(regValue);
-                collected = true;
+                var baseKey = OpenRemoteRegistry(target);
+                var value = baseKey.GetValue(subkey, subvalue);
+                data.Value = value;
+
+                data.Collected = true;
+            }
+            catch (IOException e)
+            {
+                _log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                    target, subkey, subvalue);
+                data.FailureReason = "Target machine was not found or not connectable";
+            }
+            catch (SecurityException e)
+            {
+                _log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                    target, subkey, subvalue);
+                data.FailureReason = "User does not have the proper permissions to perform this operation";
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                _log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                    target, subkey, subvalue);
+                data.FailureReason = "User does not have the necessary registry rights";
             }
             catch (Exception e)
             {
-                _log.LogError(e, "Error getting data from registry for {CA} on {Target}: {RegSubKey}:{RegValue}", caName, target, regSubKey, regValue);
+                _log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                    target, subkey, subvalue);
+                data.FailureReason = e.Message;
             }
-            return (collected, value);
+
+            return data;
         }
 
         /// <summary>
-        /// Get EnrollmentAgentRights regitry value from the remote machine for processing security/enrollmentagentrights
+        /// Get EnrollmentAgentRights registry value from the remote machine for processing security/enrollmentagentrights
         /// </summary>
         /// <param name="target"></param>
         /// <param name="caName"></param>
         /// <returns></returns>
         [ExcludeFromCodeCoverage]
-        public (bool collected, byte[] value) GetEnrollmentAgentRights(string target, string caName)
+        private RegistryResult GetEnrollmentAgentRights(string target, string caName)
         {
-            bool collected = false;
-            byte[] value = null;
             var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
             var regValue = "EnrollmentAgentRights";
 
-            try
-            {
-                var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
-                var key = baseKey.OpenSubKey(regSubKey);
-                value = (byte[])key?.GetValue(regValue);
-                collected = true;
-            }
-            catch (Exception e)
-            {
-                _log.LogError(e, "Error getting data from registry for {CA} on {Target}: {RegSubKey}:{RegValue}", caName, target, regSubKey, regValue);
-            }
-            return (collected, value);
+            return GetRegistryKeyData(target, regSubKey, regValue);
         }
 
         /// <summary>
@@ -220,34 +277,30 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [ExcludeFromCodeCoverage]
-        public (bool collected, bool value) IsUserSpecifiesSanEnabled(string target, string caName)
+        public BoolRegistryAPIResult IsUserSpecifiesSanEnabled(string target, string caName)
         {
-            bool collected = false;
-            bool value = false;
+            var ret = new BoolRegistryAPIResult();
+            var subKey =
+                $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}\\PolicyModules\\CertificateAuthority_MicrosoftDefault.Policy";
+            const string subValue = "EditFlags";
+            var data = GetRegistryKeyData(target, subKey, subValue);
 
-            try
+            ret.Collected = data.Collected;
+            if (!data.Collected)
             {
-                var baseKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, target);
-                var key = baseKey.OpenSubKey(
-                    $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}\\PolicyModules\\CertificateAuthority_MicrosoftDefault.Policy");
-                if (key == null)
-                {
-                    _log.LogError("Registry key for IsUserSpecifiesSanEnabled is null from {CA} on {Target}", caName, target);
-                }
-                else
-                {
-                    var editFlags = (int)key.GetValue("EditFlags");
-                    // 0x00040000 -> EDITF_ATTRIBUTESUBJECTALTNAME2
-                    value = (editFlags & 0x00040000) == 0x00040000;
-                    collected = true;
-                }
-            }
-            catch (Exception e)
-            {
-                _log.LogError(e, "Error getting IsUserSpecifiesSanEnabled from {CA} on {Target}", caName, target);
+                ret.FailureReason = data.FailureReason;
+                return ret;
             }
 
-            return (collected, value);
+            if (data.Value == null)
+            {
+                return ret;
+            }
+
+            var editFlags = (int)data.Value;
+            ret.Value = (editFlags & 0x00040000) == 0x00040000;
+
+            return ret;
         }
 
         public TypedPrincipal GetRegistryPrincipal(SecurityIdentifier sid, string computerDomain, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
@@ -453,5 +506,12 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] Targets { get; set; }
         public TypedPrincipal Template { get; set; }
         public bool AllTemplates { get; set; } = false;
+    }
+
+    public class CertRegistryResult
+    {
+        public bool Collected { get; set; } = false;
+        public byte[] Value { get; set; }
+        public string FailureReason { get; set; }
     }
 }

@@ -28,6 +28,21 @@ namespace CommonLibTest
         }
 
         // [Fact]
+        // public void CertAbuseProcessor_GetCASecurity_HappyPath()
+        // {
+        //     var mockProcessor = new Mock<CertAbuseProcessor>(new MockLDAPUtils(), null);
+        //     
+        //     var mockRegistryKey = new Mock<IRegistryKey>();
+        //     mockRegistryKey.Setup(x => x.GetValue(It.IsAny<string>(), It.IsAny<string>()))
+        //         .Returns(new byte[] { 0x20, 0x20 });
+        //     mockProcessor.Setup(x => x.OpenRemoteRegistry(It.IsAny<string>())).Returns(mockRegistryKey.Object);
+        //
+        //     var processor = mockProcessor.Object;
+        //     var results = processor.GetCASecurity("testlab.local", "blah");
+        //     Assert.True(results.Collected);
+        // }
+
+        // [Fact]
         // public void CertAbuseProcessor_GetTrustedCerts_EmptyForNonRoot()
         // {
         //     var mockUtils = new Mock<MockLDAPUtils>();

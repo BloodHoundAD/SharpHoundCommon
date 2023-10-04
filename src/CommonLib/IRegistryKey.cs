@@ -4,8 +4,7 @@ namespace SharpHoundCommonLib
 {
     public interface IRegistryKey
     {
-        public void OpenSubKey(string subKey);
-        public object GetValue(string name);
+        public object GetValue(string subkey, string name);
     }
 
     public class SHRegistryKey : IRegistryKey
@@ -18,14 +17,18 @@ namespace SharpHoundCommonLib
             _currentKey = remoteKey;
         }
 
-        public void OpenSubKey(string subKey)
+        public object GetValue(string subkey, string name)
         {
-            _currentKey = _currentKey.OpenSubKey(subKey);
+            var key = _currentKey.OpenSubKey(subkey);
+            return key?.GetValue(name);
         }
+    }
 
-        public object GetValue(string name)
+    public class MockRegistryKey : IRegistryKey
+    {
+        public virtual object GetValue(string subkey, string name)
         {
-            return _currentKey.GetValue(name);
+            throw new System.NotImplementedException();
         }
     }
 }

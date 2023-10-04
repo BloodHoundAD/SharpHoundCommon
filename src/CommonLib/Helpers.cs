@@ -269,21 +269,6 @@ namespace SharpHoundCommonLib
 
             return false;
         }
-
-        /// <summary>
-        ///     Removes some commonly seen SIDs that have no use in the schema
-        /// </summary>
-        /// <param name="sid"></param>
-        /// <returns></returns>
-        internal static string PreProcessSID(string sid)
-        {
-            sid = sid?.ToUpper();
-            if (sid != null)
-                //Ignore Local System/Creator Owner/Principal Self
-                return sid is "S-1-5-18" or "S-1-3-0" or "S-1-5-10" ? null : sid;
-
-            return null;
-        }
     }
 
     public class ParsedGPLink
