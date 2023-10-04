@@ -393,12 +393,22 @@ namespace SharpHoundCommonLib.Processors
             return compProps;
         }
 
+        /// <summary>
+        /// Returns the properties associated with the RootCA
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns>Returns a dictionary with the common properties of the RootCA</returns>
         public static Dictionary<string, object> ReadRootCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
             return props;
         }
 
+        /// <summary>
+        /// Returns the properties associated with the AIACA
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns>Returns a dictionary with the common properties and the crosscertificatepair property of the AICA</returns>
         public static Dictionary<string, object> ReadAIACAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
@@ -413,28 +423,40 @@ namespace SharpHoundCommonLib.Processors
 
             return props;
         }
+
+        /// <summary>
+        /// Returns the properties associated with the NTAuthStore. These properties will only contain common properties
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns>Returns a dictionary with the common properties of the NTAuthStore</returns>
         public static Dictionary<string, object> ReadNTAuthStoreProperties(ISearchResultEntry entry)
         {
-            var ntAuthStoreProps = new NTAuthStoreProperties
-            {
-                Props = GetCommonProps(entry)
-            };
-
-            return ntAuthStoreProps.Props;
+            var props = GetCommonProps(entry);
+            return props;
         }
 
+        /// <summary>
+        /// Reads specific LDAP properties related to CertTemplates
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns>Returns a dictionary associated with the CertTemplate properties that were read</returns>
         public static Dictionary<string, object> ReadCertTemplateProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
+
             props.Add("validityperiod", ConvertPKIPeriod(entry.GetByteProperty(LDAPProperties.PKIExpirationPeriod)));
             props.Add("renewalperiod", ConvertPKIPeriod(entry.GetByteProperty(LDAPProperties.PKIOverlappedPeriod)));
+
             if (entry.GetIntProperty(LDAPProperties.TemplateSchemaVersion, out var schemaVersion))
                 props.Add("schemaversion", schemaVersion);
+
             props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
             props.Add("oid", entry.GetProperty(LDAPProperties.CertTemplateOID));
+
             if (entry.GetIntProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw))
             {
                 var enrollmentFlags = (PKIEnrollmentFlag)enrollmentFlagsRaw;
+
                 props.Add("enrollmentflag", enrollmentFlags);
                 props.Add("requiresmanagerapproval", enrollmentFlags.HasFlag(PKIEnrollmentFlag.PEND_ALL_REQUESTS));
             }
@@ -442,6 +464,7 @@ namespace SharpHoundCommonLib.Processors
             if (entry.GetIntProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw))
             {
                 var nameFlags = (PKICertificateNameFlag)nameFlagsRaw;
+
                 props.Add("certificatenameflag", nameFlags);
                 props.Add("enrolleesuppliessubject",
                     nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
@@ -453,9 +476,8 @@ namespace SharpHoundCommonLib.Processors
             props.Add("certificateapplicationpolicy", entry.GetArrayProperty(LDAPProperties.CertificateApplicationPolicy));
 
             if (entry.GetIntProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
-            {
                 props.Add("authorizedsignatures", authorizedSignatures);
-            }
+
             props.Add("applicationpolicies", entry.GetArrayProperty(LDAPProperties.ApplicationPolicies));
             props.Add("issuancepolicies", entry.GetArrayProperty(LDAPProperties.IssuancePolicies));
 
@@ -539,7 +561,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <remarks>https://www.sysadmins.lv/blog-en/how-to-convert-pkiexirationperiod-and-pkioverlapperiod-active-directory-attributes.aspx</remarks>
         /// <param name="bytes"></param>
-        /// <returns></returns>
+        /// <returns>Returns a string representing the time period associated with the input byte array in a human readable form</returns>
         private static string ConvertPKIPeriod(byte[] bytes)
         {
             if (bytes == null || bytes.Length == 0)
@@ -641,11 +663,5 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
-    }
-
-    public class NTAuthStoreProperties
-    {
-        public Dictionary<string, object> Props { get; set; } = new();
-        public TypedPrincipal[] CertThumbprints { get; set; } = Array.Empty<TypedPrincipal>();
     }
 }
