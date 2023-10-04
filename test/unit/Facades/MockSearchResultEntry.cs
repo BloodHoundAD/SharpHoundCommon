@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 
@@ -37,8 +38,14 @@ namespace CommonLibTest.Facades
 
         public byte[] GetByteProperty(string propertyName)
         {
-            //returning something not null specifically for these properties for the parseAllProperties tests
-            if (propertyName == "badpasswordtime" || propertyName == "domainsid") return new byte[] { 0x20 };
+            if (!_properties.Contains(propertyName))
+                return null;
+
+            if (_properties[propertyName] is string prop)
+            {
+                return Encoding.ASCII.GetBytes(prop);
+            }
+
             return _properties[propertyName] as byte[];
         }
 
@@ -48,24 +55,19 @@ namespace CommonLibTest.Facades
                 return Array.Empty<string>();
 
             var value = _properties[propertyName];
-            Type valueType = value.GetType();
-
-            if (valueType.IsArray)
+            if (value.IsArray())
                 return value as string[];
-            else
-                return new string[1] { (value ?? "").ToString() };
+            
+            return new [] { (value ?? "").ToString() };
         }
 
         public byte[][] GetByteArrayProperty(string propertyName)
         {
-
             if (!_properties.Contains(propertyName))
                 return Array.Empty<byte[]>();
-
-            var byteArray = new byte[] { 0x20 };
-            var byteArrayArray = new byte[][] { byteArray };
-
-            return byteArrayArray;
+            
+            var property = _properties[propertyName] as byte[][];
+            return property;
         }
 
         public bool GetIntProperty(string propertyName, out int value)
@@ -106,11 +108,14 @@ namespace CommonLibTest.Facades
 
         public int PropCount(string prop)
         {
-            var count = 0;
+            var property = _properties[prop];
+            if (property.IsArray())
+            {
+                var cast = property as string[];
+                return cast?.Length ?? 0;
+            }
 
-            foreach (var property in _properties) count++;
-
-            return count;
+            return 1;
         }
 
         public IEnumerable<string> PropertyNames()

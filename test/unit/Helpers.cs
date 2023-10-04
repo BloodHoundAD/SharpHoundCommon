@@ -33,6 +33,14 @@ namespace CommonLibTest
                 results.Add(item);
             return results.ToArray();
         }
+
+        internal static bool IsArray(this object obj)
+        {
+            var valueType = obj?.GetType();
+            if (valueType == null)
+                return false;
+            return valueType.IsArray;
+        }
     }
 
     public sealed class WindowsOnlyFact : FactAttribute
