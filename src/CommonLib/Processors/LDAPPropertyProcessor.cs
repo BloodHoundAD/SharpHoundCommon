@@ -406,10 +406,10 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
-        public static Dictionary<string, object> ReadEnrollmentServiceProperties(ISearchResultEntry entry)
+        public static Dictionary<string, object> ReadEnterpriseCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentServiceFlags)flags);
+            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnterpriseCAFlags)flags);
 
             return props;
         }
