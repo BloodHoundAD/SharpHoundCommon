@@ -8,12 +8,20 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class LDAPPropertyProcessor
     {
+        private static readonly string[] ReservedAttributes = CommonProperties.TypeResolutionProps
+            .Concat(CommonProperties.BaseQueryProps).Concat(CommonProperties.GroupResolutionProps)
+            .Concat(CommonProperties.ComputerMethodProps).Concat(CommonProperties.ACLProps)
+            .Concat(CommonProperties.ObjectPropsProps).Concat(CommonProperties.ContainerProps)
+            .Concat(CommonProperties.SPNTargetProps).Concat(CommonProperties.DomainTrustProps)
+            .Concat(CommonProperties.GPOLocalGroupProps).ToArray();
+
         private readonly ILDAPUtils _utils;
 
         public LDAPPropertyProcessor(ILDAPUtils utils)
@@ -144,7 +152,7 @@ namespace SharpHoundCommonLib.Processors
             bool enabled, trustedToAuth, sensitive, dontReqPreAuth, passwdNotReq, unconstrained, pwdNeverExpires;
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UacFlags) flag;
+                var flags = (UacFlags)flag;
                 enabled = (flags & UacFlags.AccountDisable) == 0;
                 trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
                 sensitive = (flags & UacFlags.NotDelegated) != 0;
@@ -272,7 +280,7 @@ namespace SharpHoundCommonLib.Processors
             bool enabled, unconstrained, trustedToAuth;
             if (int.TryParse(uac, out var flag))
             {
-                var flags = (UacFlags) flag;
+                var flags = (UacFlags)flag;
                 enabled = (flags & UacFlags.AccountDisable) == 0;
                 unconstrained = (flags & UacFlags.TrustedForDelegation) == UacFlags.TrustedForDelegation;
                 trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
@@ -367,7 +375,8 @@ namespace SharpHoundCommonLib.Processors
 
             var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);
             var smsaPrincipals = new List<TypedPrincipal>();
-            if (hsa != null) {
+            if (hsa != null)
+            {
                 foreach (var dn in hsa)
                 {
                     var resolvedPrincipal = _utils.ResolveDistinguishedName(dn);
@@ -400,7 +409,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadEnrollmentServiceProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentServiceFlags) flags);
+            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentServiceFlags)flags);
 
             return props;
         }
@@ -421,14 +430,14 @@ namespace SharpHoundCommonLib.Processors
             props.Add("oid", entry.GetProperty(LDAPProperties.CertTemplateOID));
             if (entry.GetIntProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw))
             {
-                var enrollmentFlags = (PKIEnrollmentFlag) enrollmentFlagsRaw;
+                var enrollmentFlags = (PKIEnrollmentFlag)enrollmentFlagsRaw;
                 props.Add("enrollmentflag", enrollmentFlags);
                 props.Add("requiresmanagerapproval", enrollmentFlags.HasFlag(PKIEnrollmentFlag.PEND_ALL_REQUESTS));
             }
 
             if (entry.GetIntProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw))
             {
-                var nameFlags = (PKICertificateNameFlag) nameFlagsRaw;
+                var nameFlags = (PKICertificateNameFlag)nameFlagsRaw;
                 props.Add("certificatenameflag", nameFlags);
                 props.Add("enrolleesuppliessubject",
                     nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
@@ -456,7 +465,6 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="entry"></param>
         public Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
         {
-            var flag = IsTextUnicodeFlags.IS_TEXT_UNICODE_STATISTICS;
             var props = new Dictionary<string, object>();
 
             var type = typeof(LDAPProperties);
@@ -464,7 +472,7 @@ namespace SharpHoundCommonLib.Processors
 
             foreach (var property in entry.PropertyNames())
             {
-                if (reserved.Contains(property, StringComparer.InvariantCultureIgnoreCase))
+                if (ReservedAttributes.Contains(property, StringComparer.OrdinalIgnoreCase))
                     continue;
 
                 var collCount = entry.PropCount(property);
@@ -475,8 +483,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     var testBytes = entry.GetByteProperty(property);
 
-                    if (testBytes == null || testBytes.Length == 0 ||
-                        !IsTextUnicode(testBytes, testBytes.Length, ref flag)) continue;
+                    if (testBytes == null || testBytes.Length == 0) continue;
 
                     var testString = entry.GetProperty(property);
 
@@ -489,7 +496,7 @@ namespace SharpHoundCommonLib.Processors
                 else
                 {
                     var arrBytes = entry.GetByteArrayProperty(property);
-                    if (arrBytes.Length == 0 || !IsTextUnicode(arrBytes[0], arrBytes[0].Length, ref flag))
+                    if (arrBytes.Length == 0)
                         continue;
 
                     var arr = entry.GetArrayProperty(property);
@@ -516,6 +523,10 @@ namespace SharpHoundCommonLib.Processors
             //This string corresponds to the max int, and is usually set in accountexpires
             if (property == "9223372036854775807") return -1;
 
+            //Try parsing as an int
+            if (int.TryParse(property, out var num)) return num;
+
+            //Just return the property as a string
             return property;
         }
 
