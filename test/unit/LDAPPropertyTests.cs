@@ -603,6 +603,60 @@ namespace CommonLibTest
 
         }
 
+        [Fact]
+        public void LDAPPropertyProcessor_ReadRootCAProperties()
+        {
+            var mock = new MockSearchResultEntry(
+                "CN\u003dDUMPSTER-DC01-CA,CN\u003dCERTIFICATION AUTHORITIES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                {
+                    {"description", null},
+                    {"domain", "DUMPSTER.FIRE"},
+                    {"name", "DUMPSTER-DC01-CA@DUMPSTER.FIRE"},
+                    {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
+                    {"whencreated", 1683986131},
+                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.RootCA);
+
+            var test = LDAPPropertyProcessor.ReadRootCAProperties(mock);
+            var keys = test.Keys;
+
+            //These are not common properties
+            Assert.DoesNotContain("domain", keys);
+            Assert.DoesNotContain("name", keys);
+            Assert.DoesNotContain("domainsid", keys);
+
+            Assert.Contains("description", keys);
+            Assert.Contains("whencreated", keys);
+        }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ReadAIACAProperties()
+        {
+            var mock = new MockSearchResultEntry(
+                "CN\u003dDUMPSTER-DC01-CA,CN\u003dAIA,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                {
+                    {"description", null},
+                    {"domain", "DUMPSTER.FIRE"},
+                    {"name", "DUMPSTER-DC01-CA@DUMPSTER.FIRE"},
+                    {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
+                    {"whencreated", 1683986131},
+                    {"crosscertificatepair", new[]
+                    {"AQIDBAUGBwg="}}
+                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.AIACA);
+
+            var test = LDAPPropertyProcessor.ReadAIACAProperties(mock);
+            var keys = test.Keys;
+
+            //These are not common properties
+            Assert.DoesNotContain("domain", keys);
+            Assert.DoesNotContain("name", keys);
+            Assert.DoesNotContain("domainsid", keys);
+
+            Assert.Contains("description", keys);
+            Assert.Contains("whencreated", keys);
+            Assert.Contains("crosscertificatepair", keys);
+        }
 
         [Fact]
         public void LDAPPropertyProcessor_ReadNTAuthStoreProperties()
@@ -620,11 +674,79 @@ namespace CommonLibTest
             var test = LDAPPropertyProcessor.ReadNTAuthStoreProperties(mock);
             var keys = test.Keys;
 
+            //These are not common properties
+            Assert.DoesNotContain("domain", keys);
+            Assert.DoesNotContain("name", keys);
+            Assert.DoesNotContain("domainsid", keys);
+
             Assert.Contains("description", keys);
             Assert.Contains("whencreated", keys);
         }
 
-        // ReservedAttributes
+        [Fact]
+        public void LDAPPropertyProcessor_ReadCertTemplateProperties()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWORKSTATION,CN\u003dCERTIFICATE TEMPLATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dEXTERNAL,DC\u003dLOCAL",
+                new Dictionary<string, object>
+                {
+                    {"domain", "EXTERNAL.LOCAL"},
+                    {"name", "WORKSTATION@EXTERNAL.LOCAL"},
+                    {"domainsid", "S-1-5-21-3702535222-3822678775-2090119576"},
+                    {"description", null},
+                    {"whencreated", 1683986183},
+                    {"validityperiod", 31536000},
+                    {"renewalperiod", 3628800},
+                    {"schemaversion", 2},
+                    {"displayname", "Workstation Authentication"},
+                    {"oid", "1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.30"},
+                    {"enrollmentflag", 32},
+                    {"requiresmanagerapproval", false},
+                    {"certificatenameflag", 134217728},
+                    {"enrolleesuppliessubject", false},
+                    {"subjectaltrequireupn", false},
+                    {"ekus", new[]
+                    {"1.3.6.1.5.5.7.3.2"}
+                    },
+                    {"certificateapplicationpolicy", new[]
+                    {"1.3.6.1.5.5.7.3.2"}
+                    },
+                    {"authorizedsignatures", 1},
+                    {"applicationpolicies", new[]
+                    {  "1.3.6.1.4.1.311.20.2.1"}
+                    },
+                    {"issuancepolicies", new[]
+                    {"1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.400",
+                    "1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.402"}
+                    },
+                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.CertTemplate);
+
+            var test = LDAPPropertyProcessor.ReadCertTemplateProperties(mock);
+            var keys = test.Keys;
+
+            //These are not common properties
+            Assert.DoesNotContain("domain", keys);
+            Assert.DoesNotContain("name", keys);
+            Assert.DoesNotContain("domainsid", keys);
+
+            Assert.Contains("description", keys);
+            Assert.Contains("whencreated", keys);
+            Assert.Contains("validityperiod", keys);
+            Assert.Contains("renewalperiod", keys);
+            Assert.Contains("schemaversion", keys);
+            Assert.Contains("displayname", keys);
+            Assert.Contains("oid", keys);
+            Assert.Contains("enrollmentflag", keys);
+            Assert.Contains("requiresmanagerapproval", keys);
+            Assert.Contains("certificatenameflag", keys);
+            Assert.Contains("enrolleesuppliessubject", keys);
+            Assert.Contains("subjectaltrequireupn", keys);
+            Assert.Contains("ekus", keys);
+            Assert.Contains("certificateapplicationpolicy", keys);
+            Assert.Contains("authorizedsignatures", keys);
+            Assert.Contains("applicationpolicies", keys);
+            Assert.Contains("issuancepolicies", keys);
+
+        }
 
         [Fact]
         public void LDAPPropertyProcessor_ParseAllProperties()
