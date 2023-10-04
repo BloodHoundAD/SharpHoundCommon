@@ -16,7 +16,7 @@
         CertAuthority,
         RootCA,
         AIACA,
-        EnrollmentService,
+        EnterpriseCA,
         NTAuthStore
     }
 }

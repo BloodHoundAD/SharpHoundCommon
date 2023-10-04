@@ -12,7 +12,7 @@
         public const string RootCAs = "rootcas";
         public const string AIACAs = "aiacas";
         public const string NTAuthStores = "ntauthstores";
-        public const string EnrollmentServices = "enrollmentservices";
+        public const string EnterpriseCAs = "enterprisecas";
         public const string CertTemplates = "certtemplates";
     }
 }
