@@ -80,11 +80,11 @@
 
         public static readonly string[] CertAbuseProps =
         {
-            "certificateTemplates", "flags", "dnshostname", "cacertificate", "mspki-certificate-name-flag",
-            "mspki-enrollment-flag", "displayname", "name", "mspki-template-schema-version", "mspki-cert-template-oid",
-            "pKIOverlapPeriod", "pKIExpirationPeriod", "pkiextendedkeyusage", "mspki-ra-signature",
-            "mspki-ra-application-policies", "mspki-ra-policies", "crosscertificatepair",
-            "mspki-certificate-application-policy"
+            LDAPProperties.CertificateTemplates, LDAPProperties.Flags, LDAPProperties.DNSHostName, LDAPProperties.CACertificate, LDAPProperties.PKINameFlag,
+            LDAPProperties.PKIEnrollmentFlag, LDAPProperties.DisplayName, LDAPProperties.Name, LDAPProperties.TemplateSchemaVersion, LDAPProperties.CertTemplateOID,
+            LDAPProperties.PKIOverlappedPeriod, LDAPProperties.PKIExpirationPeriod, LDAPProperties.ExtendedKeyUsage, LDAPProperties.NumSignaturesRequired,
+            LDAPProperties.CertificateApplicationPolicy, LDAPProperties.IssuancePolicies, LDAPProperties.CrossCertificatePair,
+            LDAPProperties.ApplicationPolicies
         };
     }
 }
