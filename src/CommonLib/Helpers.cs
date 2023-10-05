@@ -6,6 +6,11 @@ using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using SharpHoundCommonLib.Enums;
+using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Security;
+using SharpHoundCommonLib.Processors;
+using Microsoft.Win32;
 
 namespace SharpHoundCommonLib
 {
@@ -268,6 +273,52 @@ namespace SharpHoundCommonLib
                 return true;
 
             return false;
+        }
+
+        public static RegistryResult GetRegistryKeyData(string target, string subkey, string subvalue, ILogger log)
+        {
+            var data = new RegistryResult();
+            
+            try
+            {
+                var baseKey = OpenRemoteRegistry(target);
+                var value = baseKey.GetValue(subkey, subvalue);
+                data.Value = value;
+
+                data.Collected = true;
+            }
+            catch (IOException e)
+            {
+                log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                    target, subkey, subvalue);
+                data.FailureReason = "Target machine was not found or not connectable";
+            }
+            catch (SecurityException e)
+            {
+                log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                    target, subkey, subvalue);
+                data.FailureReason = "User does not have the proper permissions to perform this operation";
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                    target, subkey, subvalue);
+                data.FailureReason = "User does not have the necessary registry rights";
+            }
+            catch (Exception e)
+            {
+                log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                    target, subkey, subvalue);
+                data.FailureReason = e.Message;
+            }
+
+            return data;
+        }
+        
+        public static IRegistryKey OpenRemoteRegistry(string target)
+        {
+            var key = new SHRegistryKey(RegistryHive.LocalMachine, target);
+            return key;
         }
     }
 

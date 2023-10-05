@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Security;
 using System.Security.AccessControl;
-using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Win32;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundRPC;
@@ -60,10 +56,8 @@ namespace SharpHoundCommonLib.Processors
             descriptor.SetSecurityDescriptorBinaryForm(aceData.Value as byte[], AccessControlSections.All);
 
             var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
-
             var computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
             var isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
-            _log.LogDebug("!!!! {Name} is {Dc}", computerObjectId, isDomainController);
             var machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
 
             var aces = new List<ACE>();
@@ -185,12 +179,6 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        public string GetCertThumbprint(byte[] rawCert)
-        {
-            var parsedCertificate = new X509Certificate2(rawCert);
-            return parsedCertificate.Thumbprint;
-        }
-
         /// <summary>
         /// Get CA security registry value from the remote machine for processing security/enrollmentagentrights
         /// </summary>
@@ -203,53 +191,7 @@ namespace SharpHoundCommonLib.Processors
             var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
             const string regValue = "Security";
         
-            return GetRegistryKeyData(target, regSubKey, regValue);
-        }
-
-        public virtual IRegistryKey OpenRemoteRegistry(string target)
-        {
-            var key = new SHRegistryKey(RegistryHive.LocalMachine, target);
-            return key;
-        }
-
-        public RegistryResult GetRegistryKeyData(string target, string subkey, string subvalue)
-        {
-            var data = new RegistryResult();
-            
-            try
-            {
-                var baseKey = OpenRemoteRegistry(target);
-                var value = baseKey.GetValue(subkey, subvalue);
-                data.Value = value;
-
-                data.Collected = true;
-            }
-            catch (IOException e)
-            {
-                _log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
-                    target, subkey, subvalue);
-                data.FailureReason = "Target machine was not found or not connectable";
-            }
-            catch (SecurityException e)
-            {
-                _log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
-                    target, subkey, subvalue);
-                data.FailureReason = "User does not have the proper permissions to perform this operation";
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                _log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
-                    target, subkey, subvalue);
-                data.FailureReason = "User does not have the necessary registry rights";
-            }
-            catch (Exception e)
-            {
-                _log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
-                    target, subkey, subvalue);
-                data.FailureReason = e.Message;
-            }
-
-            return data;
+            return Helpers.GetRegistryKeyData(target, regSubKey, regValue, _log);
         }
 
         /// <summary>
@@ -264,7 +206,7 @@ namespace SharpHoundCommonLib.Processors
             var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
             var regValue = "EnrollmentAgentRights";
 
-            return GetRegistryKeyData(target, regSubKey, regValue);
+            return Helpers.GetRegistryKeyData(target, regSubKey, regValue, _log);
         }
 
         /// <summary>
@@ -283,7 +225,7 @@ namespace SharpHoundCommonLib.Processors
             var subKey =
                 $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}\\PolicyModules\\CertificateAuthority_MicrosoftDefault.Policy";
             const string subValue = "EditFlags";
-            var data = GetRegistryKeyData(target, subKey, subValue);
+            var data = Helpers.GetRegistryKeyData(target, subKey, subValue, _log);
 
             ret.Collected = data.Collected;
             if (!data.Collected)

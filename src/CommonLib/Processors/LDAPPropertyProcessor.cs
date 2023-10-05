@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
@@ -401,6 +402,19 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadRootCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
+
+            // Certificate
+            var rawCertificate = entry.GetByteProperty(LDAPProperties.CACertificate);
+            if (rawCertificate != null)
+            {
+                ParsedCertificate cert = new ParsedCertificate(rawCertificate);
+                props.Add("certthumbprint", cert.Thumbprint);
+                props.Add("certname", cert.Name);
+                props.Add("certchain", cert.Chain);
+                props.Add("hasbasicconstraints", cert.HasBasicConstraints);
+                props.Add("basicconstraintpathlength", cert.BasicConstraintPathLength);
+            }
+
             return props;
         }
 
@@ -413,13 +427,40 @@ namespace SharpHoundCommonLib.Processors
         {
             var props = GetCommonProps(entry);
             props.Add("crosscertificatepair", entry.GetByteArrayProperty(LDAPProperties.CrossCertificatePair));
+            
+            // Certificate
+            var rawCertificate = entry.GetByteProperty(LDAPProperties.CACertificate);
+            if (rawCertificate != null)
+            {
+                ParsedCertificate cert = new ParsedCertificate(rawCertificate);
+                props.Add("certthumbprint", cert.Thumbprint);
+                props.Add("certname", cert.Name);
+                props.Add("certchain", cert.Chain);
+                props.Add("hasbasicconstraints", cert.HasBasicConstraints);
+                props.Add("basicconstraintpathlength", cert.BasicConstraintPathLength);
+            }
+
             return props;
         }
 
         public static Dictionary<string, object> ReadEnterpriseCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnterpriseCAFlags)flags);
+            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentFlag) flags);
+            props.Add("caname", entry.GetProperty(LDAPProperties.Name));
+            props.Add("dnshostname", entry.GetProperty(LDAPProperties.DNSHostName));
+            
+            // Certificate
+            var rawCertificate = entry.GetByteProperty(LDAPProperties.CACertificate);
+            if (rawCertificate != null)
+            {
+                ParsedCertificate cert = new ParsedCertificate(rawCertificate);
+                props.Add("certthumbprint", cert.Thumbprint);
+                props.Add("certname", cert.Name);
+                props.Add("certchain", cert.Chain);
+                props.Add("hasbasicconstraints", cert.HasBasicConstraints);
+                props.Add("basicconstraintpathlength", cert.BasicConstraintPathLength);
+            }
 
             return props;
         }
@@ -648,6 +689,46 @@ namespace SharpHoundCommonLib.Processors
         }
     }
 
+    public class ParsedCertificate
+    {
+        public string Thumbprint { get; set; }
+        public string Name { get; set; }
+        public string[] Chain { get; set; } = Array.Empty<string>();
+        public bool HasBasicConstraints { get; set; } = false;
+        public int BasicConstraintPathLength { get; set; }
+
+        public ParsedCertificate(byte[] rawCertificate)
+        {
+            var parsedCertificate = new X509Certificate2(rawCertificate);
+            Thumbprint = parsedCertificate.Thumbprint;
+            var name = parsedCertificate.FriendlyName;
+            Name = string.IsNullOrEmpty(name) ? Thumbprint : name;
+
+            // Chain
+            X509Chain chain = new X509Chain();
+            chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+            chain.Build(parsedCertificate);
+            var temp = new List<string>();
+            foreach (X509ChainElement cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
+            Chain = temp.ToArray();
+
+            // Extensions
+            X509ExtensionCollection extensions = parsedCertificate.Extensions;
+            List<CertificateExtension> certificateExtensions = new List<CertificateExtension>();
+            foreach (X509Extension extension in extensions)
+            {
+                CertificateExtension certificateExtension = new CertificateExtension(extension);
+                switch (certificateExtension.Oid.Value)
+                {
+                    case CAExtensionTypes.BasicConstraints:
+                        X509BasicConstraintsExtension ext = (X509BasicConstraintsExtension) extension;
+                        HasBasicConstraints = ext.HasPathLengthConstraint;
+                        BasicConstraintPathLength = ext.PathLengthConstraint;
+                        break;
+                }
+            }
+        }
+    }
 
     public class UserProperties
     {
