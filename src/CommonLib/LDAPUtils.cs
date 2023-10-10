@@ -837,6 +837,22 @@ namespace SharpHoundCommonLib
                     if (response != null)
                         pageResponse = (PageResultResponseControl) response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
+                }catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
+                                                retryCount < MaxRetries)
+                {
+                    retryCount++;
+                    Thread.Sleep(backoffDelay);
+                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
+                        backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+                    conn = CreateNewConnection(domainName, globalCatalog, skipCache);
+                    if (conn == null)
+                    {
+                        _log.LogError("Unable to create replacement ldap connection for ServerDown exception. Breaking loop");
+                        yield break;
+                    }
+                    
+                    _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
+                    continue;
                 }catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries) {
                     retryCount++;
                     Thread.Sleep(backoffDelay);
@@ -884,6 +900,22 @@ namespace SharpHoundCommonLib
                     yield break;
 
                 pageControl.Cookie = pageResponse.Cookie;
+            }
+        }
+
+        private LdapConnection CreateNewConnection(string domainName = null, bool globalCatalog = false, bool skipCache = false)
+        {
+            var task = globalCatalog
+                ? Task.Run(() => CreateGlobalCatalogConnection(domainName, _ldapConfig.AuthType))
+                : Task.Run(() => CreateLDAPConnection(domainName, skipCache, _ldapConfig.AuthType));
+
+            try
+            {
+                return task.ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch
+            {
+                return null;
             }
         }
 
@@ -937,9 +969,9 @@ namespace SharpHoundCommonLib
                 try
                 {
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
-                    response = (SearchResponse) conn.SendRequest(request);
+                    response = (SearchResponse)conn.SendRequest(request);
                     if (response != null)
-                        pageResponse = (PageResultResponseControl) response.Controls
+                        pageResponse = (PageResultResponseControl)response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
                 }
                 catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries)
@@ -948,6 +980,23 @@ namespace SharpHoundCommonLib
                     Thread.Sleep(backoffDelay);
                     backoffDelay = TimeSpan.FromSeconds(Math.Min(
                         backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+                    continue;
+                }
+                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
+                                               retryCount < MaxRetries)
+                {
+                    retryCount++;
+                    Thread.Sleep(backoffDelay);
+                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
+                        backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+                    conn = CreateNewConnection(domainName, globalCatalog, skipCache);
+                    if (conn == null)
+                    {
+                        _log.LogError("Unable to create replacement ldap connection for ServerDown exception. Breaking loop");
+                        yield break;
+                    }
+                    
+                    _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
                     continue;
                 }
                 catch (LdapException le)
