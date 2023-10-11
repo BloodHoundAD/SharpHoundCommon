@@ -426,8 +426,12 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadAIACAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            props.Add("crosscertificatepair", entry.GetByteArrayProperty(LDAPProperties.CrossCertificatePair));
-            
+            var crossCertificatePair = entry.GetByteArrayProperty((LDAPProperties.CrossCertificatePair));
+            var hasCrossCertificatePair = crossCertificatePair.Length > 0;
+
+            props.Add("crosscertificatepair", crossCertificatePair);
+            props.Add("hascrosscertificatepair", hasCrossCertificatePair)
+
             // Certificate
             var rawCertificate = entry.GetByteProperty(LDAPProperties.CACertificate);
             if (rawCertificate != null)
@@ -446,10 +450,10 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadEnterpriseCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentFlag) flags);
+            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentFlag)flags);
             props.Add("caname", entry.GetProperty(LDAPProperties.Name));
             props.Add("dnshostname", entry.GetProperty(LDAPProperties.DNSHostName));
-            
+
             // Certificate
             var rawCertificate = entry.GetByteProperty(LDAPProperties.CACertificate);
             if (rawCertificate != null)
@@ -721,7 +725,7 @@ namespace SharpHoundCommonLib.Processors
                 switch (certificateExtension.Oid.Value)
                 {
                     case CAExtensionTypes.BasicConstraints:
-                        X509BasicConstraintsExtension ext = (X509BasicConstraintsExtension) extension;
+                        X509BasicConstraintsExtension ext = (X509BasicConstraintsExtension)extension;
                         HasBasicConstraints = ext.HasPathLengthConstraint;
                         BasicConstraintPathLength = ext.PathLengthConstraint;
                         break;
