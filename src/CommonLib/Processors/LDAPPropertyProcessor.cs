@@ -430,7 +430,7 @@ namespace SharpHoundCommonLib.Processors
             var hasCrossCertificatePair = crossCertificatePair.Length > 0;
 
             props.Add("crosscertificatepair", crossCertificatePair);
-            props.Add("hascrosscertificatepair", hasCrossCertificatePair)
+            props.Add("hascrosscertificatepair", hasCrossCertificatePair);
 
             // Certificate
             var rawCertificate = entry.GetByteProperty(LDAPProperties.CACertificate);
