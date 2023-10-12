@@ -726,6 +726,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.LdapErrorCodes.Busy
   fullName: SharpHoundCommonLib.Enums.LdapErrorCodes.Busy
   nameWithType: LdapErrorCodes.Busy
+- uid: SharpHoundCommonLib.Enums.LdapErrorCodes.ServerDown
+  name: ServerDown
+  href: api/SharpHoundCommonLib.Enums.LdapErrorCodes.html#SharpHoundCommonLib_Enums_LdapErrorCodes_ServerDown
+  commentId: F:SharpHoundCommonLib.Enums.LdapErrorCodes.ServerDown
+  fullName: SharpHoundCommonLib.Enums.LdapErrorCodes.ServerDown
+  nameWithType: LdapErrorCodes.ServerDown
 - uid: SharpHoundCommonLib.Enums.LdapErrorCodes.Success
   name: Success
   href: api/SharpHoundCommonLib.Enums.LdapErrorCodes.html#SharpHoundCommonLib_Enums_LdapErrorCodes_Success

@@ -239,7 +239,7 @@ var assemblies = [
       { "name": "SharpHoundCommonLib.LDAPQueries.CommonProperties", "rp": "SharpHoundCommonLib_CommonProperties.html", "cl": 65, "ucl": 0, "cal": 65, "tl": 81, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.LDAPQueries.LDAPFilter", "rp": "SharpHoundCommonLib_LDAPFilter.html", "cl": 54, "ucl": 22, "cal": 76, "tl": 216, "ct": "LineCoverage", "mc": "-", "cb": 9, "tb": 12, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.LDAPQueryParams", "rp": "SharpHoundCommonLib_LDAPQueryParams.html", "cl": 1, "ucl": 3, "cal": 4, "tl": 14, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "SharpHoundCommonLib.LDAPUtils", "rp": "SharpHoundCommonLib_LDAPUtils.html", "cl": 177, "ucl": 693, "cal": 870, "tl": 1612, "ct": "LineCoverage", "mc": "-", "cb": 56, "tb": 382, "lch": [], "bch": [], "hc": [] },
+      { "name": "SharpHoundCommonLib.LDAPUtils", "rp": "SharpHoundCommonLib_LDAPUtils.html", "cl": 177, "ucl": 731, "cal": 908, "tl": 1661, "ct": "LineCoverage", "mc": "-", "cb": 56, "tb": 388, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.Logging", "rp": "SharpHoundCommonLib_Logging.html", "cl": 2, "ucl": 3, "cal": 5, "tl": 36, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.LogProvider", "rp": "SharpHoundCommonLib_LogProvider.html", "cl": 4, "ucl": 3, "cal": 7, "tl": 36, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SharpHoundCommonLib.NoOpLogger", "rp": "SharpHoundCommonLib_NoOpLogger.html", "cl": 2, "ucl": 6, "cal": 8, "tl": 26, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -386,6 +386,12 @@ var riskHotspots = [
     "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.Processors.ComputerSessionProcessor", "reportPath": "SharpHoundCommonLib_ComputerSessionProcessor.html", "methodName": "ReadUserSessions()", "methodShortName": "ReadUserSessions()", "fileIndex": 0, "line": 44,
     "metrics": [
       { "value": 34, "exceeded": true },
+      { "value": 0, "exceeded": false },
+    ]},
+  {
+    "assembly": "SharpHoundCommonLib", "class": "SharpHoundCommonLib.LDAPUtils", "reportPath": "SharpHoundCommonLib_LDAPUtils.html", "methodName": "QueryLDAP()", "methodShortName": "QueryLDAP()", "fileIndex": 0, "line": 809,
+    "metrics": [
+      { "value": 32, "exceeded": true },
       { "value": 0, "exceeded": false },
     ]},
 ];
