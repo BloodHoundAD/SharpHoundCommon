@@ -518,14 +518,25 @@ namespace SharpHoundCommonLib.Processors
                     nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN));
             }
 
-            props.Add("ekus", entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage));
-            props.Add("certificateapplicationpolicy", entry.GetArrayProperty(LDAPProperties.CertificateApplicationPolicy));
+            string[] ekus = entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage);
+            props.Add("ekus", ekus);
+            string[] certificateapplicationpolicy = entry.GetArrayProperty(LDAPProperties.CertificateApplicationPolicy);
+            props.Add("certificateapplicationpolicy", certificateapplicationpolicy);
 
             if (entry.GetIntProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
                 props.Add("authorizedsignatures", authorizedSignatures);
 
             props.Add("applicationpolicies", entry.GetArrayProperty(LDAPProperties.ApplicationPolicies));
             props.Add("issuancepolicies", entry.GetArrayProperty(LDAPProperties.IssuancePolicies));
+
+
+            // Construct effectiveekus
+            string[] effectiveekus = schemaVersion == 1 & ekus.Length > 0 ? ekus : certificateapplicationpolicy;
+            props.Add("effectiveekus", effectiveekus);
+
+            // Construct authenticationenabled
+            bool authenticationenabled = effectiveekus.Intersect(Helpers.AuthenticationOIDs).Any() | effectiveekus.Length == 0;
+            props.Add("authenticationenabled", authenticationenabled);
 
             return props;
         }
