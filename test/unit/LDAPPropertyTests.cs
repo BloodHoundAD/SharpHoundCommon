@@ -641,8 +641,7 @@ namespace CommonLibTest
                     {"name", "DUMPSTER-DC01-CA@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                    {"crosscertificatepair", new[]
-                    {"AQIDBAUGBwg="}}
+                    {"hascrosscertificatepair", true},
                 }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.AIACA);
 
             var test = LDAPPropertyProcessor.ReadAIACAProperties(mock);
