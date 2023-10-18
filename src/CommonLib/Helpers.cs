@@ -320,6 +320,13 @@ namespace SharpHoundCommonLib
             var key = new SHRegistryKey(RegistryHive.LocalMachine, target);
             return key;
         }
+
+        public static string[] AuthenticationOIDs = new string[] {
+            CommonOids.ClientAuthentication,
+            CommonOids.PKINITClientAuthentication,
+            CommonOids.SmartcardLogon,
+            CommonOids.AnyPurpose
+        };
     }
 
     public class ParsedGPLink
