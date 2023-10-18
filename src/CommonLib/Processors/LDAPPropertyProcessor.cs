@@ -504,6 +504,7 @@ namespace SharpHoundCommonLib.Processors
 
                 props.Add("enrollmentflag", enrollmentFlags);
                 props.Add("requiresmanagerapproval", enrollmentFlags.HasFlag(PKIEnrollmentFlag.PEND_ALL_REQUESTS));
+                props.Add("nosecurityextension", enrollmentFlags.HasFlag(PKIEnrollmentFlag.NO_SECURITY_EXTENSION));
             }
 
             if (entry.GetIntProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw))

@@ -2,6 +2,8 @@
 
 namespace SharpHoundCommonLib.Enums
 {
+    // from https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-crtd/ec71fd43-61c2-407b-83c9-b52272dec8a1
+    // and from certutil.exe -v -dstemplate
     [Flags]
     public enum PKIEnrollmentFlag : uint
     {
@@ -24,6 +26,7 @@ namespace SharpHoundCommonLib.Enums
         INCLUDE_BASIC_CONSTRAINTS_FOR_EE_CERTS = 0x00008000,
         ALLOW_PREVIOUS_APPROVAL_KEYBASEDRENEWAL_VALIDATE_REENROLLMENT = 0x00010000,
         ISSUANCE_POLICIES_FROM_REQUEST = 0x00020000,
-        SKIP_AUTO_RENEWAL = 0x00040000
+        SKIP_AUTO_RENEWAL = 0x00040000,
+        NO_SECURITY_EXTENSION = 0x00080000
     }
 }
