@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -7,14 +8,14 @@ namespace SharpHoundCommonLib.Processors
 {
     public class PortScanner
     {
-        private readonly ILogger _log;
         private static readonly ConcurrentDictionary<PingCacheKey, bool> PortScanCache = new();
+        private readonly ILogger _log;
 
         public PortScanner()
         {
             _log = Logging.LogProvider.CreateLogger("PortScanner");
         }
-        
+
         public PortScanner(ILogger log = null)
         {
             _log = log ?? Logging.LogProvider.CreateLogger("PortScanner");
@@ -37,28 +38,33 @@ namespace SharpHoundCommonLib.Processors
 
             if (PortScanCache.TryGetValue(key, out var status))
             {
-                _log.LogTrace("Ping cache hit for {HostName} on {Port}: {Status}", hostname, port, status);
+                _log.LogTrace("Port scan cache hit for {HostName}:{Port}: {Status}", hostname, port, status);
                 return status;
             }
-            
+
             try
             {
                 using var client = new TcpClient();
                 var ca = client.ConnectAsync(hostname, port);
-                await Task.WhenAny(ca, Task.Delay(timeout));
-                client.Close();
-                if (!ca.IsFaulted && ca.IsCompleted)
+                if (await Task.WhenAny(ca, Task.Delay(timeout)) == ca)
                 {
+                    if (ca.IsFaulted)
+                    {
+                        _log.LogDebug("PortScan faulted on {Hostname}:{Port} with error {Error}", hostname, port, ca.Exception);
+                        PortScanCache.TryAdd(key, false);
+                        return false;
+                    }
                     PortScanCache.TryAdd(key, true);
                     return true;
                 }
-                
-                _log.LogDebug("{Hostname} did not respond to scan on port {Port}", hostname, port);
+
+                _log.LogDebug("{HostName} did not respond to scan on port {Port} within {Timeout}ms", hostname, port, timeout);
                 PortScanCache.TryAdd(key, false);
                 return false;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogDebug(e, "Exception checking {Hostname}:{Port}", hostname, port);
                 PortScanCache.TryAdd(key, false);
                 return false;
             }
@@ -68,7 +74,7 @@ namespace SharpHoundCommonLib.Processors
         {
             PortScanCache.Clear();
         }
-        
+
         private class PingCacheKey
         {
             internal string HostName { get; set; }
@@ -83,8 +89,8 @@ namespace SharpHoundCommonLib.Processors
             {
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
-                return Equals((PingCacheKey)obj);
+                if (obj.GetType() != GetType()) return false;
+                return Equals((PingCacheKey) obj);
             }
 
             public override int GetHashCode()

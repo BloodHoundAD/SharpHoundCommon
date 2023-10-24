@@ -24,13 +24,13 @@ namespace SharpHoundCommonLib.Processors
             //Create a dictionary with the base GUIDs of each object type
             BaseGuids = new Dictionary<Label, string>
             {
-                { Label.User, "bf967aba-0de6-11d0-a285-00aa003049e2" },
-                { Label.Computer, "bf967a86-0de6-11d0-a285-00aa003049e2" },
-                { Label.Group, "bf967a9c-0de6-11d0-a285-00aa003049e2" },
-                { Label.Domain, "19195a5a-6da0-11d0-afd3-00c04fd930c9" },
-                { Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1" },
-                { Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2" },
-                { Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2" }
+                {Label.User, "bf967aba-0de6-11d0-a285-00aa003049e2"},
+                {Label.Computer, "bf967a86-0de6-11d0-a285-00aa003049e2"},
+                {Label.Group, "bf967a9c-0de6-11d0-a285-00aa003049e2"},
+                {Label.Domain, "19195a5a-6da0-11d0-afd3-00c04fd930c9"},
+                {Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1"},
+                {Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2"},
+                {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"}
             };
         }
 
@@ -67,7 +67,7 @@ namespace SharpHoundCommonLib.Processors
 
             _log.LogTrace("Requesting schema from {Schema}", schema);
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
-                         new[] { LDAPProperties.SchemaIDGUID, LDAPProperties.Name }, adsPath: schema))
+                         new[] {LDAPProperties.SchemaIDGUID, LDAPProperties.Name}, adsPath: schema))
             {
                 var name = entry.GetProperty(LDAPProperties.Name)?.ToLower();
                 var guid = new Guid(entry.GetByteProperty(LDAPProperties.SchemaIDGUID)).ToString();
@@ -144,7 +144,17 @@ namespace SharpHoundCommonLib.Processors
             }
 
             var descriptor = _utils.MakeSecurityDescriptor();
-            descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
+            try
+            {
+                descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
+            }
+            catch (OverflowException)
+            {
+                _log.LogWarning(
+                    "Security descriptor on object {Name} exceeds maximum allowable length. Unable to process",
+                    objectName);
+                yield break;
+            }
 
             var ownerSid = PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
 
@@ -432,13 +442,21 @@ namespace SharpHoundCommonLib.Processors
         {
             if (groupMSAMembership == null)
             {
-                _log.LogTrace("GMSA bytes are null for {Name}", objectName);
+                _log.LogDebug("GMSA bytes are null for {Name}", objectName);
                 yield break;
             }
 
-
             var descriptor = _utils.MakeSecurityDescriptor();
-            descriptor.SetSecurityDescriptorBinaryForm(groupMSAMembership);
+            try
+            {
+                descriptor.SetSecurityDescriptorBinaryForm(groupMSAMembership);
+            }
+            catch (OverflowException)
+            {
+                _log.LogWarning("GMSA ACL length on object {Name} exceeds allowable length. Unable to process",
+                    objectName);
+            }
+
 
             foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier)))
             {

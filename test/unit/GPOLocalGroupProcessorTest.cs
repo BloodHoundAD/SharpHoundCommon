@@ -137,6 +137,7 @@ namespace CommonLibTest
                 It.IsAny<bool>(),
                 It.IsAny<string>(),
                 It.IsAny<bool>(),
+                It.IsAny<bool>(),
                 It.IsAny<bool>()
             )).Returns(new List<ISearchResultEntry>());
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
@@ -160,7 +161,7 @@ namespace CommonLibTest
             mockSearchResults.Add(mockSearchResultEntry.Object);
             mockLDAPUtils.Setup(x => x.QueryLDAP(new LDAPQueryOptions
                 {
-                    Filter = "(samaccounttype=805306369)",
+                    Filter = "(&(samaccounttype=805306369)(!(objectclass=msDS-GroupManagedServiceAccount))(!(objectclass=msDS-ManagedServiceAccount)))",
                     Scope = SearchScope.Subtree,
                     Properties = CommonProperties.ObjectSID,
                     AdsPath = null
@@ -361,7 +362,7 @@ namespace CommonLibTest
             Assert.NotNull(tp);
             Assert.Equal(new TypedPrincipal(), tp);
             Assert.NotNull(str);
-            Assert.Equal("Action: Add, Target: RestrictedMemberOf, TargetSid: , TargetType: User, TargetRid: None",
+            Assert.Equal("Action: Add, Target: RestrictedMemberOf, TargetSid: , TargetType: Base, TargetRid: None",
                 str);
         }
     }

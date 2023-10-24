@@ -97,8 +97,9 @@ namespace SharpHoundCommonLib.Processors
                 {"Distributed COM Users", LocalGroupRids.DcomUsers}
             };
 
-        private readonly ILDAPUtils _utils;
         private readonly ILogger _log;
+
+        private readonly ILDAPUtils _utils;
 
         public GPOLocalGroupProcessor(ILDAPUtils utils, ILogger log = null)
         {
@@ -130,7 +131,7 @@ namespace SharpHoundCommonLib.Processors
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks 
             var options = new LDAPQueryOptions
             {
-                Filter = new LDAPFilter().AddComputers().GetFilter(),
+                Filter = new LDAPFilter().AddComputersNoMSAs().GetFilter(),
                 Scope = SearchScope.Subtree,
                 Properties = CommonProperties.ObjectSID,
                 AdsPath = distinguishedName
@@ -847,7 +848,8 @@ namespace SharpHoundCommonLib.Processors
                             //If we have a memberSid, this is the best case scenario
                             if (!string.IsNullOrWhiteSpace(memberSid))
                             {
-                                var memberType = _utils.LookupSidType(memberSid, _utils.GetDomainNameFromSid(memberSid));
+                                var memberType =
+                                    _utils.LookupSidType(memberSid, _utils.GetDomainNameFromSid(memberSid));
                                 ga.Target = GroupActionTarget.LocalGroup;
                                 ga.TargetSid = memberSid;
                                 ga.TargetType = memberType;
@@ -903,7 +905,7 @@ namespace SharpHoundCommonLib.Processors
 
             public TypedPrincipal ToTypedPrincipal()
             {
-                return new()
+                return new TypedPrincipal
                 {
                     ObjectIdentifier = TargetSid,
                     ObjectType = TargetType
@@ -940,6 +942,15 @@ namespace SharpHoundCommonLib.Processors
             RestrictedMemberOf,
             RestrictedMember,
             LocalGroup
+        }
+
+        internal enum LocalGroupRids
+        {
+            None = 0,
+            Administrators = 544,
+            RemoteDesktopUsers = 555,
+            DcomUsers = 562,
+            PSRemote = 580
         }
 
         internal class GPOReturnTuple

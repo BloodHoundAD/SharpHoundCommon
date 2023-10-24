@@ -18,7 +18,7 @@ namespace SharpHoundCommonLib
             Logger = logger;
         }
     }
-    
+
     internal class LogProvider : ILoggerProvider
     {
         private readonly ConcurrentDictionary<string, PassThroughLogger> _loggers = new();

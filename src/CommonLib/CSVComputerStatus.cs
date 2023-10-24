@@ -5,6 +5,7 @@ namespace SharpHoundCommonLib
 {
     public class CSVComputerStatus
     {
+        public const string StatusSuccess = "Success";
         public string ComputerName { get; set; }
         public string Task { get; set; }
         public string Status { get; set; }

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
+using SharpHoundRPC.NetAPINative;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -37,25 +38,14 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_ReadUserSessions_FilteringWorks()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
-            var apiResult = new NativeMethods.SESSION_INFO_10[]
+
+            var apiResult = new NetSessionEnumResults[]
             {
-                new()
-                {
-                    sesi10_username = "dfm",
-                    sesi10_cname = "\\\\192.168.92.110"
-                },
-                new()
-                {
-                    sesi10_cname = "",
-                    sesi10_username = "admin"
-                },
-                new()
-                {
-                    sesi10_username = "admin",
-                    sesi10_cname = "\\\\192.168.92.110"
-                }
+                new("dfm", "\\\\192.168.92.110"),
+                new("admin", ""),
+                new("admin", "\\\\192.168.92.110")
             };
-            mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
+            mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
             var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
@@ -67,15 +57,11 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_ReadUserSessions_ResolvesHost()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
-            var apiResult = new NativeMethods.SESSION_INFO_10[]
+            var apiResult = new NetSessionEnumResults[]
             {
-                new()
-                {
-                    sesi10_username = "admin",
-                    sesi10_cname = "\\\\192.168.1.1"
-                }
+                new("admin", "\\\\192.168.1.1")
             };
-            mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
+            mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
             var expected = new Session[]
             {
@@ -96,15 +82,11 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_ReadUserSessions_ResolvesLocalHostEquivalent()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
-            var apiResult = new NativeMethods.SESSION_INFO_10[]
+            var apiResult = new NetSessionEnumResults[]
             {
-                new()
-                {
-                    sesi10_username = "admin",
-                    sesi10_cname = "\\\\127.0.0.1"
-                }
+                new("admin", "\\\\127.0.0.1")
             };
-            mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
+            mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
             var expected = new Session[]
             {
@@ -125,15 +107,11 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_ReadUserSessions_MultipleMatches_AddsAll()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
-            var apiResult = new NativeMethods.SESSION_INFO_10[]
+            var apiResult = new NetSessionEnumResults[]
             {
-                new()
-                {
-                    sesi10_username = "administrator",
-                    sesi10_cname = "\\\\127.0.0.1"
-                }
+                new("administrator", "\\\\127.0.0.1")
             };
-            mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
+            mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
             var expected = new Session[]
             {
@@ -159,15 +137,11 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_ReadUserSessions_NoGCMatch_TriesResolve()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
-            var apiResult = new NativeMethods.SESSION_INFO_10[]
+            var apiResult = new NetSessionEnumResults[]
             {
-                new()
-                {
-                    sesi10_username = "test",
-                    sesi10_cname = "\\\\127.0.0.1"
-                }
+                new("test", "\\\\127.0.0.1")
             };
-            mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Returns(apiResult);
+            mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
             var expected = new Session[]
             {
@@ -185,19 +159,16 @@ namespace CommonLibTest
         }
 
         [WindowsOnlyFact]
-        public async Task ComputerSessionProcessor_ReadUserSessions_ComputerAccessDenied_ExceptionCaught()
+        public async Task ComputerSessionProcessor_ReadUserSessions_ComputerAccessDenied_Handled()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
-            var ex = new APIException
-            {
-                Status = NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString()
-            };
-            mockNativeMethods.Setup(x => x.CallNetSessionEnum(It.IsAny<string>())).Throws(ex);
+            mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>()))
+                .Returns(NetAPIEnums.NetAPIStatus.ErrorAccessDenied);
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
             var test = await processor.ReadUserSessions("test", "test", "test");
             Assert.False(test.Collected);
-            Assert.Equal(NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString(), test.FailureReason);
+            Assert.Equal(NetAPIEnums.NetAPIStatus.ErrorAccessDenied.ToString(), test.FailureReason);
         }
 
         [WindowsOnlyFact]
@@ -205,15 +176,12 @@ namespace CommonLibTest
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
-            var ex = new APIException
-            {
-                Status = NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString()
-            };
-            mockNativeMethods.Setup(x => x.CallNetWkstaUserEnum(It.IsAny<string>())).Throws(ex);
+            mockNativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>()))
+                .Returns(NetAPIEnums.NetAPIStatus.ErrorAccessDenied);
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
-            var test = processor.ReadUserSessionsPrivileged("test", "test", "test");
+            var test = await processor.ReadUserSessionsPrivileged("test", "test", "test");
             Assert.False(test.Collected);
-            Assert.Equal(NativeMethods.NERR.ERROR_ACCESS_DENIED.ToString(), test.FailureReason);
+            Assert.Equal(NetAPIEnums.NetAPIStatus.ErrorAccessDenied.ToString(), test.FailureReason);
         }
 
         [WindowsOnlyFact]
@@ -223,80 +191,20 @@ namespace CommonLibTest
             const string samAccountName = "WIN10";
 
             //This is a sample response from a computer in a test environment. The duplicates are intentional
-            var apiResults = new NativeMethods.WKSTA_USER_INFO_1[]
+            var apiResults = new NetWkstaUserEnumResults[]
             {
-                new()
-                {
-                    wkui1_logon_domain = "TESTLAB",
-                    wkui1_logon_server = "PRIMARY",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "dfm"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "PRIMARY",
-                    wkui1_logon_server = "",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "Administrator"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "",
-                    wkui1_logon_server = "PRIMARY",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "Administrator"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "TESTLAB",
-                    wkui1_logon_server = "",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "WIN10$"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "TESTLAB",
-                    wkui1_logon_server = "",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "WIN10$"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "TESTLAB",
-                    wkui1_logon_server = "",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "WIN10$"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "TESTLAB",
-                    wkui1_logon_server = "",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "WIN10$"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "WIN10",
-                    wkui1_logon_server = "",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "JOHN"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "NT AUTHORITY",
-                    wkui1_logon_server = "",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "SYSTEM"
-                },
-                new()
-                {
-                    wkui1_logon_domain = "TESTLAB",
-                    wkui1_logon_server = "",
-                    wkui1_oth_domains = "",
-                    wkui1_username = "ABC"
-                }
+                new("dfm", "TESTLAB"),
+                new("Administrator", "PRIMARY"),
+                new("Administrator", ""),
+                new("WIN10$", "TESTLAB"),
+                new("WIN10$", "TESTLAB"),
+                new("WIN10$", "TESTLAB"),
+                new("WIN10$", "TESTLAB"),
+                new("JOHN", "WIN10"),
+                new("SYSTEM", "NT AUTHORITY"),
+                new("ABC", "TESTLAB")
             };
-            mockNativeMethods.Setup(x => x.CallNetWkstaUserEnum(It.IsAny<string>())).Returns(apiResults);
+            mockNativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>())).Returns(apiResults);
 
             var expected = new Session[]
             {
@@ -313,7 +221,7 @@ namespace CommonLibTest
             };
 
             var processor = new ComputerSessionProcessor(new MockLDAPUtils(), nativeMethods: mockNativeMethods.Object);
-            var test = processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName, _computerSid);
+            var test = await processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName, _computerSid);
             Assert.True(test.Collected);
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(test.Results));
             Assert.Equal(2, test.Results.Length);

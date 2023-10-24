@@ -7,25 +7,19 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
     public class LDAPPropertyProcessor
     {
-        private static readonly string[] ReservedAttributes =
-        {
-            "pwdlastset", "lastlogon", "lastlogontimestamp", "objectsid",
-            "sidhistory", "useraccountcontrol", "operatingsystem",
-            "operatingsystemservicepack", "serviceprincipalname", "displayname", "mail", "title",
-            "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
-            "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedtodelegateto",
-            "msDS-allowedtoactonbehalfofotheridentity", "displayname",
-            "sidhistory", "samaccountname", "samaccounttype", "objectsid", "objectguid", "objectclass",
-            "samaccountname", "msds-groupmsamembership",
-            "distinguishedname", "memberof", "logonhours", "ntsecuritydescriptor", "dsasignature", "repluptodatevector",
-            "member", "whenCreated"
-        };
+        private static readonly string[] ReservedAttributes = CommonProperties.TypeResolutionProps
+            .Concat(CommonProperties.BaseQueryProps).Concat(CommonProperties.GroupResolutionProps)
+            .Concat(CommonProperties.ComputerMethodProps).Concat(CommonProperties.ACLProps)
+            .Concat(CommonProperties.ObjectPropsProps).Concat(CommonProperties.ContainerProps)
+            .Concat(CommonProperties.SPNTargetProps).Concat(CommonProperties.DomainTrustProps)
+            .Concat(CommonProperties.GPOLocalGroupProps).ToArray();
 
         private readonly ILDAPUtils _utils;
 
@@ -133,7 +127,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads specific LDAP properties related to containers
+        ///     Reads specific LDAP properties related to containers
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
@@ -198,7 +192,7 @@ namespace SharpHoundCommonLib.Processors
                         continue;
 
                     var resolvedHost = await _utils.ResolveHostToSid(d, domain);
-                    if (resolvedHost != null && (resolvedHost.Contains(".") || resolvedHost.Contains("S-1")))
+                    if (resolvedHost != null && resolvedHost.Contains("S-1"))
                         comps.Add(new TypedPrincipal
                         {
                             ObjectIdentifier = resolvedHost,
@@ -212,7 +206,8 @@ namespace SharpHoundCommonLib.Processors
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
-            props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
+            props.Add("pwdlastset",
+                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
             var spn = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
             props.Add("serviceprincipalnames", spn);
             props.Add("hasspn", spn.Length > 0);
@@ -341,7 +336,8 @@ namespace SharpHoundCommonLib.Processors
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
-            props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
+            props.Add("pwdlastset",
+                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
             props.Add("serviceprincipalnames", entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames));
             var os = entry.GetProperty(LDAPProperties.OperatingSystem);
             var sp = entry.GetProperty(LDAPProperties.ServicePack);
@@ -376,6 +372,20 @@ namespace SharpHoundCommonLib.Processors
 
             props.Add("sidhistory", sidHistoryList.ToArray());
 
+            var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);
+            var smsaPrincipals = new List<TypedPrincipal>();
+            if (hsa != null) {
+                foreach (var dn in hsa)
+                {
+                    var resolvedPrincipal = _utils.ResolveDistinguishedName(dn);
+
+                    if (resolvedPrincipal != null)
+                        smsaPrincipals.Add(resolvedPrincipal);
+                }
+            }
+
+            compProps.DumpSMSAPassword = smsaPrincipals.ToArray();
+
             compProps.Props = props;
 
             return compProps;
@@ -388,12 +398,11 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="entry"></param>
         public Dictionary<string, object> ParseAllProperties(ISearchResultEntry entry)
         {
-            var flag = IsTextUnicodeFlags.IS_TEXT_UNICODE_STATISTICS;
             var props = new Dictionary<string, object>();
 
             foreach (var property in entry.PropertyNames())
             {
-                if (ReservedAttributes.Contains(property))
+                if (ReservedAttributes.Contains(property, StringComparer.OrdinalIgnoreCase))
                     continue;
 
                 var collCount = entry.PropCount(property);
@@ -404,8 +413,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     var testBytes = entry.GetByteProperty(property);
 
-                    if (testBytes == null || testBytes.Length == 0 ||
-                        !IsTextUnicode(testBytes, testBytes.Length, ref flag)) continue;
+                    if (testBytes == null || testBytes.Length == 0) continue;
 
                     var testString = entry.GetProperty(property);
 
@@ -418,7 +426,7 @@ namespace SharpHoundCommonLib.Processors
                 else
                 {
                     var arrBytes = entry.GetByteArrayProperty(property);
-                    if (arrBytes.Length == 0 || !IsTextUnicode(arrBytes[0], arrBytes[0].Length, ref flag))
+                    if (arrBytes.Length == 0)
                         continue;
 
                     var arr = entry.GetArrayProperty(property);
@@ -445,6 +453,10 @@ namespace SharpHoundCommonLib.Processors
             //This string corresponds to the max int, and is usually set in accountexpires
             if (property == "9223372036854775807") return -1;
 
+            //Try parsing as an int
+            if (int.TryParse(property, out var num)) return num;
+
+            //Just return the property as a string
             return property;
         }
 
@@ -483,16 +495,17 @@ namespace SharpHoundCommonLib.Processors
 
     public class UserProperties
     {
-        public Dictionary<string, object> Props { get; set; }
-        public TypedPrincipal[] AllowedToDelegate { get; set; }
-        public TypedPrincipal[] SidHistory { get; set; }
+        public Dictionary<string, object> Props { get; set; } = new();
+        public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
     }
 
     public class ComputerProperties
     {
-        public Dictionary<string, object> Props { get; set; }
-        public TypedPrincipal[] AllowedToDelegate { get; set; }
-        public TypedPrincipal[] AllowedToAct { get; set; }
-        public TypedPrincipal[] SidHistory { get; set; }
+        public Dictionary<string, object> Props { get; set; } = new();
+        public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
+        public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
     }
 }

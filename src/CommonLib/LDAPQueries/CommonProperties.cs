@@ -3,61 +3,79 @@
     public static class CommonProperties
     {
         public static readonly string[] TypeResolutionProps =
-            { "samaccounttype", "objectsid", "objectguid", "objectclass", "samaccountname", "msds-groupmsamembership" };
+        {
+            LDAPProperties.SAMAccountType, LDAPProperties.ObjectSID, LDAPProperties.ObjectGUID,
+            LDAPProperties.ObjectClass, LDAPProperties.SAMAccountName, LDAPProperties.GroupMSAMembership
+        };
 
-        public static readonly string[] ObjectID = { "objectsid", "objectguid" };
-        public static readonly string[] ObjectSID = { "objectsid" };
-        public static readonly string[] GPCFileSysPath = { "gpcfilesyspath" };
+        public static readonly string[] ObjectID = { LDAPProperties.ObjectSID, LDAPProperties.ObjectGUID };
+        public static readonly string[] ObjectSID = { LDAPProperties.ObjectSID };
+        public static readonly string[] GPCFileSysPath = { LDAPProperties.GPCFileSYSPath };
 
         public static readonly string[] BaseQueryProps =
         {
-            "objectsid", "distiguishedname", "objectguid", "ms-mcs-admpwdexpirationtime", "isDeleted",
-            "useraccountcontrol"
+            LDAPProperties.ObjectSID, LDAPProperties.DistinguishedName, LDAPProperties.ObjectGUID,
+            LDAPProperties.LegacyLAPSExpirationTime, LDAPProperties.LAPSExpirationTime, LDAPProperties.IsDeleted,
+            LDAPProperties.UserAccountControl
         };
 
         public static readonly string[] GroupResolutionProps =
         {
-            "samaccountname", "distinguishedname", "samaccounttype", "member", "cn", "primarygroupid", "dnshostname"
+            LDAPProperties.SAMAccountName, LDAPProperties.DistinguishedName, LDAPProperties.SAMAccountType,
+            LDAPProperties.Members, LDAPProperties.CanonicalName, LDAPProperties.PrimaryGroupID,
+            LDAPProperties.DNSHostName
         };
 
         public static readonly string[] ComputerMethodProps =
         {
-            "samaccountname", "distinguishedname", "dnshostname", "samaccounttype", "operatingsystem", "pwdlastset"
+            LDAPProperties.SAMAccountName, LDAPProperties.DistinguishedName, LDAPProperties.DNSHostName,
+            LDAPProperties.SAMAccountType, LDAPProperties.OperatingSystem, LDAPProperties.PasswordLastSet
         };
 
         public static readonly string[] ACLProps =
         {
-            "samaccountname", "distinguishedname", "dnshostname", "samaccounttype", "ntsecuritydescriptor",
-            "displayname", "objectclass", "objectsid", "name"
+            LDAPProperties.SAMAccountName, LDAPProperties.DistinguishedName, LDAPProperties.DNSHostName,
+            LDAPProperties.SAMAccountType, LDAPProperties.SecurityDescriptor,
+            LDAPProperties.DisplayName, LDAPProperties.ObjectClass, LDAPProperties.ObjectSID, LDAPProperties.Name
         };
 
         public static readonly string[] ObjectPropsProps =
         {
-            "samaccountname", "distinguishedname", "samaccounttype", "pwdlastset", "lastlogon", "lastlogontimestamp",
-            "objectsid",
-            "sidhistory", "dnshostname", "operatingsystem",
-            "operatingsystemservicepack", "serviceprincipalname", "displayname", "mail", "title",
-            "homedirectory", "description", "admincount", "userpassword", "gpcfilesyspath", "objectclass",
-            "msds-behavior-version", "objectguid", "name", "gpoptions", "msds-allowedToDelegateTo",
-            "msDS-AllowedToActOnBehalfOfOtherIdentity", "whenCreated"
+            LDAPProperties.SAMAccountName, LDAPProperties.DistinguishedName, LDAPProperties.SAMAccountType,
+            LDAPProperties.PasswordLastSet, LDAPProperties.LastLogon, LDAPProperties.LastLogonTimestamp,
+            LDAPProperties.ObjectSID,
+            LDAPProperties.SIDHistory, LDAPProperties.DNSHostName, LDAPProperties.OperatingSystem,
+            LDAPProperties.ServicePack, LDAPProperties.ServicePrincipalNames, LDAPProperties.DisplayName,
+            LDAPProperties.Email, LDAPProperties.Title,
+            LDAPProperties.HomeDirectory, LDAPProperties.Description, LDAPProperties.AdminCount,
+            LDAPProperties.UserPassword, LDAPProperties.GPCFileSYSPath, LDAPProperties.ObjectClass,
+            LDAPProperties.DomainFunctionalLevel, LDAPProperties.ObjectGUID, LDAPProperties.Name,
+            LDAPProperties.GroupPolicyOptions, LDAPProperties.AllowedToDelegateTo,
+            LDAPProperties.AllowedToActOnBehalfOfOtherIdentity, LDAPProperties.WhenCreated,
+            LDAPProperties.HostServiceAccount, LDAPProperties.UnixUserPassword, LDAPProperties.MsSFU30Password,
+            LDAPProperties.UnicodePassword
         };
 
         public static readonly string[] ContainerProps =
         {
-            "displayname", "name", "objectguid", "gplink", "gpoptions", "objectclass"
+            LDAPProperties.DisplayName, LDAPProperties.Name, LDAPProperties.ObjectGUID, LDAPProperties.GPLink,
+            LDAPProperties.GroupPolicyOptions, LDAPProperties.ObjectClass
         };
 
         public static readonly string[] SPNTargetProps =
         {
-            "serviceprincipalname", "samaccountname", "samaccounttype"
+            LDAPProperties.ServicePrincipalNames, LDAPProperties.SAMAccountName, LDAPProperties.SAMAccountType
         };
 
         public static readonly string[] DomainTrustProps =
-            { "trustattributes", "securityidentifier", "trustdirection", "trusttype", "cn" };
+        {
+            LDAPProperties.TrustAttributes, LDAPProperties.SecurityIdentifier, LDAPProperties.TrustDirection,
+            LDAPProperties.TrustType, LDAPProperties.CanonicalName
+        };
 
         public static readonly string[] GPOLocalGroupProps =
         {
-            "gplink", "name"
+            LDAPProperties.GPLink, LDAPProperties.Name
         };
     }
 }

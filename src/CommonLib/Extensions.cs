@@ -13,9 +13,9 @@ namespace SharpHoundCommonLib
 {
     public static class Extensions
     {
-        private static readonly ILogger Log;
         private const string GMSAClass = "msds-groupmanagedserviceaccount";
         private const string MSAClass = "msds-managedserviceaccount";
+        private static readonly ILogger Log;
 
         static Extensions()
         {
@@ -26,7 +26,7 @@ namespace SharpHoundCommonLib
         {
             var results = new List<T>();
             await foreach (var item in items
-                .ConfigureAwait(false))
+                               .ConfigureAwait(false))
                 results.Add(item);
             return results;
         }
@@ -79,7 +79,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Returns true if any computer collection methods are set
+        ///     Returns true if any computer collection methods are set
         /// </summary>
         /// <param name="methods"></param>
         /// <returns></returns>
@@ -93,7 +93,7 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Returns true if any local group collections are set
+        ///     Returns true if any local group collections are set
         /// </summary>
         /// <param name="methods"></param>
         /// <returns></returns>
@@ -102,6 +102,18 @@ namespace SharpHoundCommonLib
             return (methods & ResolvedCollectionMethod.DCOM) != 0 ||
                    (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
                    (methods & ResolvedCollectionMethod.PSRemote) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0;
+        }
+
+        /// <summary>
+        ///     Gets the relative identifier for a SID
+        /// </summary>
+        /// <param name="securityIdentifier"></param>
+        /// <returns></returns>
+        public static int Rid(this SecurityIdentifier securityIdentifier)
+        {
+            var value = securityIdentifier.Value;
+            var rid = int.Parse(value.Substring(value.LastIndexOf("-", StringComparison.Ordinal) + 1));
+            return rid;
         }
 
         #region SearchResultEntry
@@ -281,10 +293,11 @@ namespace SharpHoundCommonLib
             if (objectId.StartsWith("S-1") &&
                 WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
             {
-                Log.LogDebug("GetLabel - {ObjectID} is a WellKnownPrincipal with {Type}", objectId, commonPrincipal.ObjectType);
+                Log.LogDebug("GetLabel - {ObjectID} is a WellKnownPrincipal with {Type}", objectId,
+                    commonPrincipal.ObjectType);
                 return commonPrincipal.ObjectType;
             }
-                
+
 
             var objectType = Label.Base;
             var samAccountType = entry.GetProperty(LDAPProperties.SAMAccountType);
@@ -299,8 +312,8 @@ namespace SharpHoundCommonLib
                 Cache.AddType(objectId, objectType);
                 return Label.User;
             }
-                
-            
+
+
             //Its not a common principal. Lets use properties to figure out what it actually is
             if (samAccountType != null) objectType = Helpers.SamAccountTypeToType(samAccountType);
 
@@ -311,8 +324,7 @@ namespace SharpHoundCommonLib
                 Cache.AddType(objectId, objectType);
                 return objectType;
             }
-            
-            
+
 
             if (objectClasses == null)
             {
@@ -321,7 +333,8 @@ namespace SharpHoundCommonLib
             }
             else
             {
-                Log.LogDebug("GetLabel - ObjectClasses for {ObjectID}: {Classes}", objectId, string.Join(", ", objectClasses));
+                Log.LogDebug("GetLabel - ObjectClasses for {ObjectID}: {Classes}", objectId,
+                    string.Join(", ", objectClasses));
                 if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.GPO;
                 else if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
@@ -331,7 +344,7 @@ namespace SharpHoundCommonLib
                 else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.Container;
             }
-            
+
             Log.LogDebug("GetLabel - Final label for {ObjectID}: {Label}", objectId, objectType);
 
             Cache.AddConvertedValue(entry.DistinguishedName, objectId);
