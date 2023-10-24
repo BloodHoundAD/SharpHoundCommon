@@ -86,6 +86,12 @@ namespace SharpHoundCommonLib.Processors
         private static readonly Regex LMLevelRegex =
             new(@"\\LmCompatibilityLevel *= *\d+ *, *(\d)", RegexOptions.Compiled);
 
+        private static readonly Regex CachedLogonsCountRegex =
+            new(@"\\CachedLogonsCount *= *\d+ *, *\x22(\d+)\x22", RegexOptions.Compiled);
+
+        private static readonly Regex LDAPEnforceChannelBindingRegex =
+            new(@"\\LdapEnforceChannelBinding *= *\d+ *, *(\d)", RegexOptions.Compiled);
+
         private static readonly ConcurrentDictionary<string, List<GroupAction>> GpoActionCache = new();
 
         private static readonly Dictionary<string, LocalGroupRids> ValidGroupNames =
@@ -228,10 +234,22 @@ namespace SharpHoundCommonLib.Processors
                         }
 
                         // Add LM properties
-                        _ = enforced.Contains(linkDn) ? (ret.Enforced.LMAuthenticationLevel = item.GPOLMProps) : (ret.Unenforced.LMAuthenticationLevel = item.GPOLMProps);
+                        foreach (var i in item.GPOLMProps)
+                        {
+                            _ = enforced.Contains(linkDn) ? (ret.Enforced.LMAuthenticationLevel = item.GPOLMProps) : (ret.Unenforced.LMAuthenticationLevel = item.GPOLMProps);
+                        }
 
                         // Add LDAP properties
-                        _ = enforced.Contains(linkDn) ? (ret.Enforced.LDAPSigning = item.GPOLDAPProps) : (ret.Unenforced.LDAPSigning = item.GPOLDAPProps);
+                        foreach (var i in item.GPOLDAPProps)
+                        {
+                            _ = enforced.Contains(linkDn) ? (ret.Enforced.LDAPSigning[i.Key] = i.Value) : (ret.Unenforced.LDAPSigning[i.Key] = i.Value);
+                        }
+
+                        // Add MSCache properties
+                        foreach (var i in item.GPOMSCache)
+                        {
+                            _ = enforced.Contains(linkDn) ? (ret.Enforced.MSCache = item.GPOMSCache) : (ret.Unenforced.MSCache = item.GPOMSCache);
+                        }
                     }
                 }
 
@@ -241,7 +259,6 @@ namespace SharpHoundCommonLib.Processors
                 //If there are no actions, then we can skip some instructions
                 if (actions.Count != 0)
                 {
-
                     //First lets process restricted members
                     var restrictedMemberSets = actions.Where(x => x.Target == GroupActionTarget.RestrictedMember)
                         .GroupBy(x => x.TargetRid);
@@ -468,6 +485,7 @@ namespace SharpHoundCommonLib.Processors
             ret.GPOLDAPProps = new Dictionary<string, bool>();
             ret.GPOSMBProps = new Dictionary<string, bool>();
             ret.GPOLMProps = new Dictionary<string, object>();
+            ret.GPOMSCache = new Dictionary<string, int>();
 
             // check for registries
             var regMatch = RegistryRegex.Match(content);
@@ -479,9 +497,11 @@ namespace SharpHoundCommonLib.Processors
             bool EnablesClientSMB = false;
 
             bool RequiresLDAPSigning = false;
+            bool LDAPEnforceChannelBinding = false;
 
-            int LmCompatibilityLevel = 3; // default value for W10 = 3 according to https://docs.microsoft.com/fr-fr/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level
+            int LmCompatibilityLevel = 3;
 
+            int CachedLogonsCount = 0;
 
             // if registry section is found
             if (regMatch.Success)
@@ -499,9 +519,11 @@ namespace SharpHoundCommonLib.Processors
                     var smbEnableClientMatchLine = SMBEnableClientRegex.Match(regLine);
 
                     var ldapClientMatchLine = LDAPClientIntegrityRegex.Match(regLine);
+                    var ldapChannelBindingLine = LDAPEnforceChannelBindingRegex.Match(regLine);
 
                     var lmMatchLine = LMLevelRegex.Match(regLine);
 
+                    var cachedLogonsLine = CachedLogonsCountRegex.Match(regLine);
 
                     // if a match is found for this registry
                     if (smbRequireServerMatchLine.Success)
@@ -600,6 +622,35 @@ namespace SharpHoundCommonLib.Processors
                         }
 
                         ret.GPOLDAPProps.Add("RequiresLDAPClientSigning", RequiresLDAPSigning);
+                    }
+                    else if (ldapChannelBindingLine.Success)
+                    {
+                        var keyMatch = KeyRegex.Match(regLine);
+                        var key = keyMatch.Value.Split(',')[1];
+
+                        switch (key)
+                        {
+                            case "2": // Always enabled
+                                LDAPEnforceChannelBinding = true;
+                                break;
+                            case "1": // Enabled, if supported
+                                LDAPEnforceChannelBinding = false;
+                                break;
+                            case "0": // Disabled
+                                LDAPEnforceChannelBinding = false;
+                                break;
+                        }
+
+                        ret.GPOLDAPProps.Add("LDAPEnforceChannelBinding", LDAPEnforceChannelBinding);
+                    }
+                    else if (cachedLogonsLine.Success)
+                    {
+                        var keyMatch = KeyRegex.Match(regLine);
+                        var key = keyMatch.Value.Split(',')[1];
+                        CachedLogonsCount = Int32.Parse(key.Substring(1, key.Length - 2));
+
+                        ret.GPOMSCache.Add("CachedLogonsCount", CachedLogonsCount);
+
                     }
                 }
             }
@@ -960,6 +1011,7 @@ namespace SharpHoundCommonLib.Processors
             public Dictionary<string, bool> GPOLDAPProps = new();
             public Dictionary<string, bool> GPOSMBProps = new();
             public Dictionary<string, object> GPOLMProps = new();
+            public Dictionary<string, int> GPOMSCache = new();
             public GroupAction GPOGroupAction = new();
 
             public bool ContainsGroupAction()
