@@ -22,5 +22,6 @@ namespace SharpHoundCommonLib.OutputTypes
         public Dictionary<string, bool> SMBSigning = new();
         public Dictionary<string, bool> LDAPSigning = new();
         public Dictionary<string, object> LMAuthenticationLevel = new();
+        public Dictionary<string, int> MSCache = new();
     }
 }
