@@ -143,6 +143,18 @@ namespace SharpHoundCommonLib.LDAPQueries
         }
 
         /// <summary>
+        ///     Add a filter that will include Configuration objects
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddConfiguration(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(objectClass=configuration)", conditions));
+
+            return this;
+        }
+
+        /// <summary>
         ///     Add a filter that will include Computer objects
         ///
         ///     Note that gMSAs and sMSAs have this samaccounttype as well

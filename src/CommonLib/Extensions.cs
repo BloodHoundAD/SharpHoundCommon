@@ -369,6 +369,8 @@ namespace SharpHoundCommonLib
                     objectType = Label.Domain;
                 else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.Container;
+                else if (objectClasses.Contains(ConfigurationClass, StringComparer.InvariantCultureIgnoreCase))
+                    objectType = Label.Configuration;
                 else if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.CertTemplate;
                 else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
@@ -395,6 +397,7 @@ namespace SharpHoundCommonLib
         private const string OrganizationalUnitClass = "organizationalUnit";
         private const string DomainClass = "domain";
         private const string ContainerClass = "container";
+        private const string ConfigurationClass = "configuration";
         private const string PKICertificateTemplateClass = "pKICertificateTemplate";
         private const string PKIEnrollmentServiceClass = "pKIEnrollmentService";
         private const string CertificationAutorityClass = "certificationAuthority";

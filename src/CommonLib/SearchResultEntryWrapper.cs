@@ -168,6 +168,7 @@ namespace SharpHoundCommonLib
                     break;
                 case Label.OU:
                 case Label.Container:
+                case Label.Configuration:
                 case Label.RootCA:
                 case Label.AIACA:
                 case Label.NTAuthStore:

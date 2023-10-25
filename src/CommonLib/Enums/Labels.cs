@@ -12,6 +12,7 @@
         Domain,
         OU,
         Container,
+        Configuration,
         CertTemplate,
         CertAuthority,
         RootCA,
