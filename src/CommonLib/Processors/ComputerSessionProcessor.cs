@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
+using System.Drawing.Text;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Contexts;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Impersonate;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using SharpHoundCommonLib.OutputTypes;
 
+
 namespace SharpHoundCommonLib.Processors
 {
+    
     public class ComputerSessionProcessor
     {
         private static readonly Regex SidRegex = new(@"S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$", RegexOptions.Compiled);
@@ -17,14 +24,19 @@ namespace SharpHoundCommonLib.Processors
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
         private readonly ILDAPUtils _utils;
+        private readonly bool _doLocalAdminSessionEnum;
+        private readonly string _localAdminUsername;
+        private readonly string _localAdminPassword;
 
-        public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null,
-            NativeMethods nativeMethods = null, ILogger log = null)
+        public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null, NativeMethods nativeMethods = null, ILogger log = null, bool doLocalAdminSessionEnum = false, string localAdminUsername = null, string localAdminPassword = null)
         {
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _currentUserName = currentUserName ?? WindowsIdentity.GetCurrent().Name.Split('\\')[1];
             _log = log ?? Logging.LogProvider.CreateLogger("CompSessions");
+            _doLocalAdminSessionEnum = doLocalAdminSessionEnum;
+            _localAdminUsername = localAdminUsername;
+            _localAdminPassword = localAdminPassword;
         }
 
         /// <summary>
@@ -43,7 +55,27 @@ namespace SharpHoundCommonLib.Processors
 
             try
             {
-                apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
+                // If we are authenticating using a local admin, we need to impersonate for this
+                if (_doLocalAdminSessionEnum)
+                {
+                    try
+                    {
+                        Impersonator Impersonate;
+                        using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                        {
+                            apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
+                        }
+                    }
+                    catch
+                    {
+                        // Fall back to default User
+                        apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
+                    }
+                }
+                else
+                {
+                    apiResult = _nativeMethods.CallNetSessionEnum(computerName).ToArray();
+                }
             }
             catch (APIException e)
             {
@@ -139,7 +171,27 @@ namespace SharpHoundCommonLib.Processors
 
             try
             {
-                apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
+                // If we are authenticating using a local admin, we need to impersonate for this
+                if (_doLocalAdminSessionEnum)
+                {
+                    try
+                    {
+                        Impersonator Impersonate;
+                        using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                        {
+                            apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
+                        }
+                    }
+                    catch
+                    {
+                        // Fall back to default User
+                        apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
+                    }
+                }
+                else
+                {
+                    apiResult = _nativeMethods.CallNetWkstaUserEnum(computerName).ToArray();
+                }
             }
             catch (APIException e)
             {
@@ -209,7 +261,6 @@ namespace SharpHoundCommonLib.Processors
             string computerSid)
         {
             var ret = new SessionAPIResult();
-
             RegistryKey key = null;
 
             try
@@ -235,6 +286,6 @@ namespace SharpHoundCommonLib.Processors
             {
                 key?.Dispose();
             }
-        }
-    }
+        }  
+    }    
 }
