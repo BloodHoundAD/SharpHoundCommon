@@ -159,6 +159,7 @@ namespace SharpHoundCommonLib
                     Label.Domain => new OutputTypes.Domain(),
                     Label.OU => new OU(),
                     Label.Container => new Container(),
+                    Label.Configuration => new Container(),
                     _ => throw new ArgumentOutOfRangeException()
                 };
 

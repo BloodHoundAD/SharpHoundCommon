@@ -31,6 +31,7 @@ namespace SharpHoundCommonLib.Processors
                 {Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1"},
                 {Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2"},
                 {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"},
+                {Label.Configuration, "bf967a87-0de6-11d0-a285-00aa003049e2"},
                 {Label.RootCA, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
                 {Label.AIACA, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
                 {Label.EnterpriseCA, "ee4aa692-3bba-11d2-90cc-00c04fd91ab1"},
