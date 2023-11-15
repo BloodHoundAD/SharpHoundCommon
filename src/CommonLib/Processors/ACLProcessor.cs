@@ -243,8 +243,7 @@ namespace SharpHoundCommonLib.Processors
                 //Cool ACE courtesy of @rookuu. Allows a principal to add itself to a group and no one else
                 if (aceRights.HasFlag(ActiveDirectoryRights.Self) &&
                     !aceRights.HasFlag(ActiveDirectoryRights.WriteProperty) &&
-                    !aceRights.HasFlag(ActiveDirectoryRights.GenericWrite) && objectType == Label.Group &&
-                    aceType == ACEGuids.WriteMember)
+                    !aceRights.HasFlag(ActiveDirectoryRights.GenericWrite) && objectType == Label.Group)
                     yield return new ACE
                     {
                         PrincipalType = resolvedPrincipal.ObjectType,
