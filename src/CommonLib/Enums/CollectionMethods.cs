@@ -24,6 +24,7 @@ namespace SharpHoundCommonLib.Enums
         UserRights = 1 << 15,
         CARegistry = 1 << 16,
         DCRegistry = 1 << 17,
+        CertServices = 1 << 18,
         LocalGroups = DCOM | RDP | LocalAdmin | PSRemote,
         ComputerOnly = LocalGroups | Session | UserRights | CARegistry | DCRegistry,
         DCOnly = ACL | Container | Group | ObjectProps | Trusts | GPOLocalGroup,
