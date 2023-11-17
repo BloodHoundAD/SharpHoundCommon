@@ -245,16 +245,23 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// <returns></returns>
         public string GetFilter()
         {
-            var temp = string.Join("", _filterParts.ToArray());
-            if (_filterParts.Count == 1)
-                temp = _filterParts[0];
-            else if (_filterParts.Count > 1)
-                 temp = $"(|{temp})";
 
-            var mandatory = string.Join("", _mandatory.ToArray());
-            temp = _mandatory.Count > 0 ? $"(&{temp}{mandatory})" : temp;
+            var filterPartList = _filterParts.ToArray().Distinct();
+            var mandatoryList = _mandatory.ToArray().Distinct();
 
-            return temp;
+            var filterPartsExceptMandatory = filterPartList.Except(mandatoryList).ToList();
+
+            var filterPartsDistinct = string.Join("", filterPartsExceptMandatory);
+            var mandatoryDistinct = string.Join("", mandatoryList);
+
+            if (filterPartsExceptMandatory.Count == 1)
+                filterPartsDistinct = filterPartsExceptMandatory[0];
+            else if (filterPartsExceptMandatory.Count > 1)
+                filterPartsDistinct = $"(|{filterPartsDistinct})";
+
+            filterPartsDistinct = _mandatory.Count > 0 ? $"(&{filterPartsDistinct}{mandatoryDistinct})" : filterPartsDistinct;
+
+            return filterPartsDistinct;
         }
 
         public IEnumerable<string> GetFilterList()
