@@ -1,6 +1,183 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
+- uid: Impersonate
+  name: Impersonate
+  href: api/Impersonate.html
+  commentId: N:Impersonate
+  fullName: Impersonate
+  nameWithType: Impersonate
+- uid: Impersonate.ImpersonationLevel
+  name: ImpersonationLevel
+  href: api/Impersonate.ImpersonationLevel.html
+  commentId: T:Impersonate.ImpersonationLevel
+  fullName: Impersonate.ImpersonationLevel
+  nameWithType: ImpersonationLevel
+- uid: Impersonate.ImpersonationLevel.SecurityAnonymous
+  name: SecurityAnonymous
+  href: api/Impersonate.ImpersonationLevel.html#Impersonate_ImpersonationLevel_SecurityAnonymous
+  commentId: F:Impersonate.ImpersonationLevel.SecurityAnonymous
+  fullName: Impersonate.ImpersonationLevel.SecurityAnonymous
+  nameWithType: ImpersonationLevel.SecurityAnonymous
+- uid: Impersonate.ImpersonationLevel.SecurityDelegation
+  name: SecurityDelegation
+  href: api/Impersonate.ImpersonationLevel.html#Impersonate_ImpersonationLevel_SecurityDelegation
+  commentId: F:Impersonate.ImpersonationLevel.SecurityDelegation
+  fullName: Impersonate.ImpersonationLevel.SecurityDelegation
+  nameWithType: ImpersonationLevel.SecurityDelegation
+- uid: Impersonate.ImpersonationLevel.SecurityIdentification
+  name: SecurityIdentification
+  href: api/Impersonate.ImpersonationLevel.html#Impersonate_ImpersonationLevel_SecurityIdentification
+  commentId: F:Impersonate.ImpersonationLevel.SecurityIdentification
+  fullName: Impersonate.ImpersonationLevel.SecurityIdentification
+  nameWithType: ImpersonationLevel.SecurityIdentification
+- uid: Impersonate.ImpersonationLevel.SecurityImpersonation
+  name: SecurityImpersonation
+  href: api/Impersonate.ImpersonationLevel.html#Impersonate_ImpersonationLevel_SecurityImpersonation
+  commentId: F:Impersonate.ImpersonationLevel.SecurityImpersonation
+  fullName: Impersonate.ImpersonationLevel.SecurityImpersonation
+  nameWithType: ImpersonationLevel.SecurityImpersonation
+- uid: Impersonate.Impersonator
+  name: Impersonator
+  href: api/Impersonate.Impersonator.html
+  commentId: T:Impersonate.Impersonator
+  fullName: Impersonate.Impersonator
+  nameWithType: Impersonator
+- uid: Impersonate.Impersonator.#ctor
+  name: Impersonator()
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator__ctor
+  commentId: M:Impersonate.Impersonator.#ctor
+  fullName: Impersonate.Impersonator.Impersonator()
+  nameWithType: Impersonator.Impersonator()
+- uid: Impersonate.Impersonator.#ctor(System.String,System.String,System.String)
+  name: Impersonator(String, String, String)
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator__ctor_System_String_System_String_System_String_
+  commentId: M:Impersonate.Impersonator.#ctor(System.String,System.String,System.String)
+  fullName: Impersonate.Impersonator.Impersonator(System.String, System.String, System.String)
+  nameWithType: Impersonator.Impersonator(String, String, String)
+- uid: Impersonate.Impersonator.#ctor(System.String,System.String,System.String,Impersonate.LogonType,Impersonate.LogonProvider)
+  name: Impersonator(String, String, String, LogonType, LogonProvider)
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator__ctor_System_String_System_String_System_String_Impersonate_LogonType_Impersonate_LogonProvider_
+  commentId: M:Impersonate.Impersonator.#ctor(System.String,System.String,System.String,Impersonate.LogonType,Impersonate.LogonProvider)
+  fullName: Impersonate.Impersonator.Impersonator(System.String, System.String, System.String, Impersonate.LogonType, Impersonate.LogonProvider)
+  nameWithType: Impersonator.Impersonator(String, String, String, LogonType, LogonProvider)
+- uid: Impersonate.Impersonator.#ctor*
+  name: Impersonator
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator__ctor_
+  commentId: Overload:Impersonate.Impersonator.#ctor
+  isSpec: "True"
+  fullName: Impersonate.Impersonator.Impersonator
+  nameWithType: Impersonator.Impersonator
+- uid: Impersonate.Impersonator.Dispose
+  name: Dispose()
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator_Dispose
+  commentId: M:Impersonate.Impersonator.Dispose
+  fullName: Impersonate.Impersonator.Dispose()
+  nameWithType: Impersonator.Dispose()
+- uid: Impersonate.Impersonator.Dispose*
+  name: Dispose
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator_Dispose_
+  commentId: Overload:Impersonate.Impersonator.Dispose
+  isSpec: "True"
+  fullName: Impersonate.Impersonator.Dispose
+  nameWithType: Impersonator.Dispose
+- uid: Impersonate.Impersonator.Impersonate(System.String,System.String,System.String)
+  name: Impersonate(String, String, String)
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator_Impersonate_System_String_System_String_System_String_
+  commentId: M:Impersonate.Impersonator.Impersonate(System.String,System.String,System.String)
+  fullName: Impersonate.Impersonator.Impersonate(System.String, System.String, System.String)
+  nameWithType: Impersonator.Impersonate(String, String, String)
+- uid: Impersonate.Impersonator.Impersonate(System.String,System.String,System.String,Impersonate.LogonType,Impersonate.LogonProvider)
+  name: Impersonate(String, String, String, LogonType, LogonProvider)
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator_Impersonate_System_String_System_String_System_String_Impersonate_LogonType_Impersonate_LogonProvider_
+  commentId: M:Impersonate.Impersonator.Impersonate(System.String,System.String,System.String,Impersonate.LogonType,Impersonate.LogonProvider)
+  fullName: Impersonate.Impersonator.Impersonate(System.String, System.String, System.String, Impersonate.LogonType, Impersonate.LogonProvider)
+  nameWithType: Impersonator.Impersonate(String, String, String, LogonType, LogonProvider)
+- uid: Impersonate.Impersonator.Impersonate*
+  name: Impersonate
+  href: api/Impersonate.Impersonator.html#Impersonate_Impersonator_Impersonate_
+  commentId: Overload:Impersonate.Impersonator.Impersonate
+  isSpec: "True"
+  fullName: Impersonate.Impersonator.Impersonate
+  nameWithType: Impersonator.Impersonate
+- uid: Impersonate.LogonProvider
+  name: LogonProvider
+  href: api/Impersonate.LogonProvider.html
+  commentId: T:Impersonate.LogonProvider
+  fullName: Impersonate.LogonProvider
+  nameWithType: LogonProvider
+- uid: Impersonate.LogonProvider.LOGON32_PROVIDER_DEFAULT
+  name: LOGON32_PROVIDER_DEFAULT
+  href: api/Impersonate.LogonProvider.html#Impersonate_LogonProvider_LOGON32_PROVIDER_DEFAULT
+  commentId: F:Impersonate.LogonProvider.LOGON32_PROVIDER_DEFAULT
+  fullName: Impersonate.LogonProvider.LOGON32_PROVIDER_DEFAULT
+  nameWithType: LogonProvider.LOGON32_PROVIDER_DEFAULT
+- uid: Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT35
+  name: LOGON32_PROVIDER_WINNT35
+  href: api/Impersonate.LogonProvider.html#Impersonate_LogonProvider_LOGON32_PROVIDER_WINNT35
+  commentId: F:Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT35
+  fullName: Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT35
+  nameWithType: LogonProvider.LOGON32_PROVIDER_WINNT35
+- uid: Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT40
+  name: LOGON32_PROVIDER_WINNT40
+  href: api/Impersonate.LogonProvider.html#Impersonate_LogonProvider_LOGON32_PROVIDER_WINNT40
+  commentId: F:Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT40
+  fullName: Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT40
+  nameWithType: LogonProvider.LOGON32_PROVIDER_WINNT40
+- uid: Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT50
+  name: LOGON32_PROVIDER_WINNT50
+  href: api/Impersonate.LogonProvider.html#Impersonate_LogonProvider_LOGON32_PROVIDER_WINNT50
+  commentId: F:Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT50
+  fullName: Impersonate.LogonProvider.LOGON32_PROVIDER_WINNT50
+  nameWithType: LogonProvider.LOGON32_PROVIDER_WINNT50
+- uid: Impersonate.LogonType
+  name: LogonType
+  href: api/Impersonate.LogonType.html
+  commentId: T:Impersonate.LogonType
+  fullName: Impersonate.LogonType
+  nameWithType: LogonType
+- uid: Impersonate.LogonType.LOGON32_LOGON_BATCH
+  name: LOGON32_LOGON_BATCH
+  href: api/Impersonate.LogonType.html#Impersonate_LogonType_LOGON32_LOGON_BATCH
+  commentId: F:Impersonate.LogonType.LOGON32_LOGON_BATCH
+  fullName: Impersonate.LogonType.LOGON32_LOGON_BATCH
+  nameWithType: LogonType.LOGON32_LOGON_BATCH
+- uid: Impersonate.LogonType.LOGON32_LOGON_INTERACTIVE
+  name: LOGON32_LOGON_INTERACTIVE
+  href: api/Impersonate.LogonType.html#Impersonate_LogonType_LOGON32_LOGON_INTERACTIVE
+  commentId: F:Impersonate.LogonType.LOGON32_LOGON_INTERACTIVE
+  fullName: Impersonate.LogonType.LOGON32_LOGON_INTERACTIVE
+  nameWithType: LogonType.LOGON32_LOGON_INTERACTIVE
+- uid: Impersonate.LogonType.LOGON32_LOGON_NETWORK
+  name: LOGON32_LOGON_NETWORK
+  href: api/Impersonate.LogonType.html#Impersonate_LogonType_LOGON32_LOGON_NETWORK
+  commentId: F:Impersonate.LogonType.LOGON32_LOGON_NETWORK
+  fullName: Impersonate.LogonType.LOGON32_LOGON_NETWORK
+  nameWithType: LogonType.LOGON32_LOGON_NETWORK
+- uid: Impersonate.LogonType.LOGON32_LOGON_NETWORK_CLEARTEXT
+  name: LOGON32_LOGON_NETWORK_CLEARTEXT
+  href: api/Impersonate.LogonType.html#Impersonate_LogonType_LOGON32_LOGON_NETWORK_CLEARTEXT
+  commentId: F:Impersonate.LogonType.LOGON32_LOGON_NETWORK_CLEARTEXT
+  fullName: Impersonate.LogonType.LOGON32_LOGON_NETWORK_CLEARTEXT
+  nameWithType: LogonType.LOGON32_LOGON_NETWORK_CLEARTEXT
+- uid: Impersonate.LogonType.LOGON32_LOGON_NEW_CREDENTIALS
+  name: LOGON32_LOGON_NEW_CREDENTIALS
+  href: api/Impersonate.LogonType.html#Impersonate_LogonType_LOGON32_LOGON_NEW_CREDENTIALS
+  commentId: F:Impersonate.LogonType.LOGON32_LOGON_NEW_CREDENTIALS
+  fullName: Impersonate.LogonType.LOGON32_LOGON_NEW_CREDENTIALS
+  nameWithType: LogonType.LOGON32_LOGON_NEW_CREDENTIALS
+- uid: Impersonate.LogonType.LOGON32_LOGON_SERVICE
+  name: LOGON32_LOGON_SERVICE
+  href: api/Impersonate.LogonType.html#Impersonate_LogonType_LOGON32_LOGON_SERVICE
+  commentId: F:Impersonate.LogonType.LOGON32_LOGON_SERVICE
+  fullName: Impersonate.LogonType.LOGON32_LOGON_SERVICE
+  nameWithType: LogonType.LOGON32_LOGON_SERVICE
+- uid: Impersonate.LogonType.LOGON32_LOGON_UNLOCK
+  name: LOGON32_LOGON_UNLOCK
+  href: api/Impersonate.LogonType.html#Impersonate_LogonType_LOGON32_LOGON_UNLOCK
+  commentId: F:Impersonate.LogonType.LOGON32_LOGON_UNLOCK
+  fullName: Impersonate.LogonType.LOGON32_LOGON_UNLOCK
+  nameWithType: LogonType.LOGON32_LOGON_UNLOCK
 - uid: SharpHoundCommonLib
   name: SharpHoundCommonLib
   href: api/SharpHoundCommonLib.html
@@ -468,6 +645,12 @@ references:
   commentId: F:SharpHoundCommonLib.EdgeNames.AllExtendedRights
   fullName: SharpHoundCommonLib.EdgeNames.AllExtendedRights
   nameWithType: EdgeNames.AllExtendedRights
+- uid: SharpHoundCommonLib.EdgeNames.Enroll
+  name: Enroll
+  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_Enroll
+  commentId: F:SharpHoundCommonLib.EdgeNames.Enroll
+  fullName: SharpHoundCommonLib.EdgeNames.Enroll
+  nameWithType: EdgeNames.Enroll
 - uid: SharpHoundCommonLib.EdgeNames.ForceChangePassword
   name: ForceChangePassword
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ForceChangePassword
@@ -504,6 +687,18 @@ references:
   commentId: F:SharpHoundCommonLib.EdgeNames.GetChangesInFilteredSet
   fullName: SharpHoundCommonLib.EdgeNames.GetChangesInFilteredSet
   nameWithType: EdgeNames.GetChangesInFilteredSet
+- uid: SharpHoundCommonLib.EdgeNames.ManageCA
+  name: ManageCA
+  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ManageCA
+  commentId: F:SharpHoundCommonLib.EdgeNames.ManageCA
+  fullName: SharpHoundCommonLib.EdgeNames.ManageCA
+  nameWithType: EdgeNames.ManageCA
+- uid: SharpHoundCommonLib.EdgeNames.ManageCertificates
+  name: ManageCertificates
+  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_ManageCertificates
+  commentId: F:SharpHoundCommonLib.EdgeNames.ManageCertificates
+  fullName: SharpHoundCommonLib.EdgeNames.ManageCertificates
+  nameWithType: EdgeNames.ManageCertificates
 - uid: SharpHoundCommonLib.EdgeNames.Owns
   name: Owns
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_Owns
@@ -546,6 +741,18 @@ references:
   commentId: F:SharpHoundCommonLib.EdgeNames.WriteOwner
   fullName: SharpHoundCommonLib.EdgeNames.WriteOwner
   nameWithType: EdgeNames.WriteOwner
+- uid: SharpHoundCommonLib.EdgeNames.WritePKIEnrollmentFlag
+  name: WritePKIEnrollmentFlag
+  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WritePKIEnrollmentFlag
+  commentId: F:SharpHoundCommonLib.EdgeNames.WritePKIEnrollmentFlag
+  fullName: SharpHoundCommonLib.EdgeNames.WritePKIEnrollmentFlag
+  nameWithType: EdgeNames.WritePKIEnrollmentFlag
+- uid: SharpHoundCommonLib.EdgeNames.WritePKINameFlag
+  name: WritePKINameFlag
+  href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WritePKINameFlag
+  commentId: F:SharpHoundCommonLib.EdgeNames.WritePKINameFlag
+  fullName: SharpHoundCommonLib.EdgeNames.WritePKINameFlag
+  nameWithType: EdgeNames.WritePKINameFlag
 - uid: SharpHoundCommonLib.EdgeNames.WriteSPN
   name: WriteSPN
   href: api/SharpHoundCommonLib.EdgeNames.html#SharpHoundCommonLib_EdgeNames_WriteSPN
@@ -558,12 +765,162 @@ references:
   commentId: N:SharpHoundCommonLib.Enums
   fullName: SharpHoundCommonLib.Enums
   nameWithType: SharpHoundCommonLib.Enums
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes
+  name: CAExtensionTypes
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html
+  commentId: T:SharpHoundCommonLib.Enums.CAExtensionTypes
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes
+  nameWithType: CAExtensionTypes
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes.AuthorityInformationAccess
+  name: AuthorityInformationAccess
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html#SharpHoundCommonLib_Enums_CAExtensionTypes_AuthorityInformationAccess
+  commentId: F:SharpHoundCommonLib.Enums.CAExtensionTypes.AuthorityInformationAccess
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes.AuthorityInformationAccess
+  nameWithType: CAExtensionTypes.AuthorityInformationAccess
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes.AuthorityKeyIdentifier
+  name: AuthorityKeyIdentifier
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html#SharpHoundCommonLib_Enums_CAExtensionTypes_AuthorityKeyIdentifier
+  commentId: F:SharpHoundCommonLib.Enums.CAExtensionTypes.AuthorityKeyIdentifier
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes.AuthorityKeyIdentifier
+  nameWithType: CAExtensionTypes.AuthorityKeyIdentifier
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes.BasicConstraints
+  name: BasicConstraints
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html#SharpHoundCommonLib_Enums_CAExtensionTypes_BasicConstraints
+  commentId: F:SharpHoundCommonLib.Enums.CAExtensionTypes.BasicConstraints
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes.BasicConstraints
+  nameWithType: CAExtensionTypes.BasicConstraints
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes.EnhancedKeyUsage
+  name: EnhancedKeyUsage
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html#SharpHoundCommonLib_Enums_CAExtensionTypes_EnhancedKeyUsage
+  commentId: F:SharpHoundCommonLib.Enums.CAExtensionTypes.EnhancedKeyUsage
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes.EnhancedKeyUsage
+  nameWithType: CAExtensionTypes.EnhancedKeyUsage
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes.KeyUsage
+  name: KeyUsage
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html#SharpHoundCommonLib_Enums_CAExtensionTypes_KeyUsage
+  commentId: F:SharpHoundCommonLib.Enums.CAExtensionTypes.KeyUsage
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes.KeyUsage
+  nameWithType: CAExtensionTypes.KeyUsage
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes.NameConstraints
+  name: NameConstraints
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html#SharpHoundCommonLib_Enums_CAExtensionTypes_NameConstraints
+  commentId: F:SharpHoundCommonLib.Enums.CAExtensionTypes.NameConstraints
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes.NameConstraints
+  nameWithType: CAExtensionTypes.NameConstraints
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes.SubjectAlternativeNames
+  name: SubjectAlternativeNames
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html#SharpHoundCommonLib_Enums_CAExtensionTypes_SubjectAlternativeNames
+  commentId: F:SharpHoundCommonLib.Enums.CAExtensionTypes.SubjectAlternativeNames
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes.SubjectAlternativeNames
+  nameWithType: CAExtensionTypes.SubjectAlternativeNames
+- uid: SharpHoundCommonLib.Enums.CAExtensionTypes.SubjectKeyIdentifier
+  name: SubjectKeyIdentifier
+  href: api/SharpHoundCommonLib.Enums.CAExtensionTypes.html#SharpHoundCommonLib_Enums_CAExtensionTypes_SubjectKeyIdentifier
+  commentId: F:SharpHoundCommonLib.Enums.CAExtensionTypes.SubjectKeyIdentifier
+  fullName: SharpHoundCommonLib.Enums.CAExtensionTypes.SubjectKeyIdentifier
+  nameWithType: CAExtensionTypes.SubjectKeyIdentifier
+- uid: SharpHoundCommonLib.Enums.CertificationAuthorityRights
+  name: CertificationAuthorityRights
+  href: api/SharpHoundCommonLib.Enums.CertificationAuthorityRights.html
+  commentId: T:SharpHoundCommonLib.Enums.CertificationAuthorityRights
+  fullName: SharpHoundCommonLib.Enums.CertificationAuthorityRights
+  nameWithType: CertificationAuthorityRights
+- uid: SharpHoundCommonLib.Enums.CertificationAuthorityRights.Auditor
+  name: Auditor
+  href: api/SharpHoundCommonLib.Enums.CertificationAuthorityRights.html#SharpHoundCommonLib_Enums_CertificationAuthorityRights_Auditor
+  commentId: F:SharpHoundCommonLib.Enums.CertificationAuthorityRights.Auditor
+  fullName: SharpHoundCommonLib.Enums.CertificationAuthorityRights.Auditor
+  nameWithType: CertificationAuthorityRights.Auditor
+- uid: SharpHoundCommonLib.Enums.CertificationAuthorityRights.Enroll
+  name: Enroll
+  href: api/SharpHoundCommonLib.Enums.CertificationAuthorityRights.html#SharpHoundCommonLib_Enums_CertificationAuthorityRights_Enroll
+  commentId: F:SharpHoundCommonLib.Enums.CertificationAuthorityRights.Enroll
+  fullName: SharpHoundCommonLib.Enums.CertificationAuthorityRights.Enroll
+  nameWithType: CertificationAuthorityRights.Enroll
+- uid: SharpHoundCommonLib.Enums.CertificationAuthorityRights.ManageCA
+  name: ManageCA
+  href: api/SharpHoundCommonLib.Enums.CertificationAuthorityRights.html#SharpHoundCommonLib_Enums_CertificationAuthorityRights_ManageCA
+  commentId: F:SharpHoundCommonLib.Enums.CertificationAuthorityRights.ManageCA
+  fullName: SharpHoundCommonLib.Enums.CertificationAuthorityRights.ManageCA
+  nameWithType: CertificationAuthorityRights.ManageCA
+- uid: SharpHoundCommonLib.Enums.CertificationAuthorityRights.ManageCertificates
+  name: ManageCertificates
+  href: api/SharpHoundCommonLib.Enums.CertificationAuthorityRights.html#SharpHoundCommonLib_Enums_CertificationAuthorityRights_ManageCertificates
+  commentId: F:SharpHoundCommonLib.Enums.CertificationAuthorityRights.ManageCertificates
+  fullName: SharpHoundCommonLib.Enums.CertificationAuthorityRights.ManageCertificates
+  nameWithType: CertificationAuthorityRights.ManageCertificates
+- uid: SharpHoundCommonLib.Enums.CertificationAuthorityRights.Operator
+  name: Operator
+  href: api/SharpHoundCommonLib.Enums.CertificationAuthorityRights.html#SharpHoundCommonLib_Enums_CertificationAuthorityRights_Operator
+  commentId: F:SharpHoundCommonLib.Enums.CertificationAuthorityRights.Operator
+  fullName: SharpHoundCommonLib.Enums.CertificationAuthorityRights.Operator
+  nameWithType: CertificationAuthorityRights.Operator
+- uid: SharpHoundCommonLib.Enums.CertificationAuthorityRights.Read
+  name: Read
+  href: api/SharpHoundCommonLib.Enums.CertificationAuthorityRights.html#SharpHoundCommonLib_Enums_CertificationAuthorityRights_Read
+  commentId: F:SharpHoundCommonLib.Enums.CertificationAuthorityRights.Read
+  fullName: SharpHoundCommonLib.Enums.CertificationAuthorityRights.Read
+  nameWithType: CertificationAuthorityRights.Read
+- uid: SharpHoundCommonLib.Enums.CommonOids
+  name: CommonOids
+  href: api/SharpHoundCommonLib.Enums.CommonOids.html
+  commentId: T:SharpHoundCommonLib.Enums.CommonOids
+  fullName: SharpHoundCommonLib.Enums.CommonOids
+  nameWithType: CommonOids
+- uid: SharpHoundCommonLib.Enums.CommonOids.AnyPurpose
+  name: AnyPurpose
+  href: api/SharpHoundCommonLib.Enums.CommonOids.html#SharpHoundCommonLib_Enums_CommonOids_AnyPurpose
+  commentId: F:SharpHoundCommonLib.Enums.CommonOids.AnyPurpose
+  fullName: SharpHoundCommonLib.Enums.CommonOids.AnyPurpose
+  nameWithType: CommonOids.AnyPurpose
+- uid: SharpHoundCommonLib.Enums.CommonOids.CertificateRequestAgent
+  name: CertificateRequestAgent
+  href: api/SharpHoundCommonLib.Enums.CommonOids.html#SharpHoundCommonLib_Enums_CommonOids_CertificateRequestAgent
+  commentId: F:SharpHoundCommonLib.Enums.CommonOids.CertificateRequestAgent
+  fullName: SharpHoundCommonLib.Enums.CommonOids.CertificateRequestAgent
+  nameWithType: CommonOids.CertificateRequestAgent
+- uid: SharpHoundCommonLib.Enums.CommonOids.CertificateRequestAgentPolicy
+  name: CertificateRequestAgentPolicy
+  href: api/SharpHoundCommonLib.Enums.CommonOids.html#SharpHoundCommonLib_Enums_CommonOids_CertificateRequestAgentPolicy
+  commentId: F:SharpHoundCommonLib.Enums.CommonOids.CertificateRequestAgentPolicy
+  fullName: SharpHoundCommonLib.Enums.CommonOids.CertificateRequestAgentPolicy
+  nameWithType: CommonOids.CertificateRequestAgentPolicy
+- uid: SharpHoundCommonLib.Enums.CommonOids.ClientAuthentication
+  name: ClientAuthentication
+  href: api/SharpHoundCommonLib.Enums.CommonOids.html#SharpHoundCommonLib_Enums_CommonOids_ClientAuthentication
+  commentId: F:SharpHoundCommonLib.Enums.CommonOids.ClientAuthentication
+  fullName: SharpHoundCommonLib.Enums.CommonOids.ClientAuthentication
+  nameWithType: CommonOids.ClientAuthentication
+- uid: SharpHoundCommonLib.Enums.CommonOids.PKINITClientAuthentication
+  name: PKINITClientAuthentication
+  href: api/SharpHoundCommonLib.Enums.CommonOids.html#SharpHoundCommonLib_Enums_CommonOids_PKINITClientAuthentication
+  commentId: F:SharpHoundCommonLib.Enums.CommonOids.PKINITClientAuthentication
+  fullName: SharpHoundCommonLib.Enums.CommonOids.PKINITClientAuthentication
+  nameWithType: CommonOids.PKINITClientAuthentication
+- uid: SharpHoundCommonLib.Enums.CommonOids.SmartcardLogon
+  name: SmartcardLogon
+  href: api/SharpHoundCommonLib.Enums.CommonOids.html#SharpHoundCommonLib_Enums_CommonOids_SmartcardLogon
+  commentId: F:SharpHoundCommonLib.Enums.CommonOids.SmartcardLogon
+  fullName: SharpHoundCommonLib.Enums.CommonOids.SmartcardLogon
+  nameWithType: CommonOids.SmartcardLogon
 - uid: SharpHoundCommonLib.Enums.DataType
   name: DataType
   href: api/SharpHoundCommonLib.Enums.DataType.html
   commentId: T:SharpHoundCommonLib.Enums.DataType
   fullName: SharpHoundCommonLib.Enums.DataType
   nameWithType: DataType
+- uid: SharpHoundCommonLib.Enums.DataType.AIACAs
+  name: AIACAs
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_AIACAs
+  commentId: F:SharpHoundCommonLib.Enums.DataType.AIACAs
+  fullName: SharpHoundCommonLib.Enums.DataType.AIACAs
+  nameWithType: DataType.AIACAs
+- uid: SharpHoundCommonLib.Enums.DataType.CertTemplates
+  name: CertTemplates
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_CertTemplates
+  commentId: F:SharpHoundCommonLib.Enums.DataType.CertTemplates
+  fullName: SharpHoundCommonLib.Enums.DataType.CertTemplates
+  nameWithType: DataType.CertTemplates
 - uid: SharpHoundCommonLib.Enums.DataType.Computers
   name: Computers
   href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_Computers
@@ -582,6 +939,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.DataType.Domains
   fullName: SharpHoundCommonLib.Enums.DataType.Domains
   nameWithType: DataType.Domains
+- uid: SharpHoundCommonLib.Enums.DataType.EnterpriseCAs
+  name: EnterpriseCAs
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_EnterpriseCAs
+  commentId: F:SharpHoundCommonLib.Enums.DataType.EnterpriseCAs
+  fullName: SharpHoundCommonLib.Enums.DataType.EnterpriseCAs
+  nameWithType: DataType.EnterpriseCAs
 - uid: SharpHoundCommonLib.Enums.DataType.GPOs
   name: GPOs
   href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_GPOs
@@ -594,12 +957,24 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.DataType.Groups
   fullName: SharpHoundCommonLib.Enums.DataType.Groups
   nameWithType: DataType.Groups
+- uid: SharpHoundCommonLib.Enums.DataType.NTAuthStores
+  name: NTAuthStores
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_NTAuthStores
+  commentId: F:SharpHoundCommonLib.Enums.DataType.NTAuthStores
+  fullName: SharpHoundCommonLib.Enums.DataType.NTAuthStores
+  nameWithType: DataType.NTAuthStores
 - uid: SharpHoundCommonLib.Enums.DataType.OUs
   name: OUs
   href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_OUs
   commentId: F:SharpHoundCommonLib.Enums.DataType.OUs
   fullName: SharpHoundCommonLib.Enums.DataType.OUs
   nameWithType: DataType.OUs
+- uid: SharpHoundCommonLib.Enums.DataType.RootCAs
+  name: RootCAs
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_RootCAs
+  commentId: F:SharpHoundCommonLib.Enums.DataType.RootCAs
+  fullName: SharpHoundCommonLib.Enums.DataType.RootCAs
+  nameWithType: DataType.RootCAs
 - uid: SharpHoundCommonLib.Enums.DataType.Users
   name: Users
   href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_Users
@@ -648,24 +1023,96 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.DataTypes.Users
   fullName: SharpHoundCommonLib.Enums.DataTypes.Users
   nameWithType: DataTypes.Users
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths
+  name: DirectoryPaths
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html
+  commentId: T:SharpHoundCommonLib.Enums.DirectoryPaths
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths
+  nameWithType: DirectoryPaths
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths.AIACALocation
+  name: AIACALocation
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_AIACALocation
+  commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.AIACALocation
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths.AIACALocation
+  nameWithType: DirectoryPaths.AIACALocation
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths.CertTemplateLocation
+  name: CertTemplateLocation
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_CertTemplateLocation
+  commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.CertTemplateLocation
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths.CertTemplateLocation
+  nameWithType: DirectoryPaths.CertTemplateLocation
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths.ConfigLocation
+  name: ConfigLocation
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_ConfigLocation
+  commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.ConfigLocation
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths.ConfigLocation
+  nameWithType: DirectoryPaths.ConfigLocation
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths.EnterpriseCALocation
+  name: EnterpriseCALocation
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_EnterpriseCALocation
+  commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.EnterpriseCALocation
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths.EnterpriseCALocation
+  nameWithType: DirectoryPaths.EnterpriseCALocation
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths.NTAuthStoreLocation
+  name: NTAuthStoreLocation
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_NTAuthStoreLocation
+  commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.NTAuthStoreLocation
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths.NTAuthStoreLocation
+  nameWithType: DirectoryPaths.NTAuthStoreLocation
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths.PKILocation
+  name: PKILocation
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_PKILocation
+  commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.PKILocation
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths.PKILocation
+  nameWithType: DirectoryPaths.PKILocation
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths.RootCALocation
+  name: RootCALocation
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_RootCALocation
+  commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.RootCALocation
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths.RootCALocation
+  nameWithType: DirectoryPaths.RootCALocation
 - uid: SharpHoundCommonLib.Enums.Label
   name: Label
   href: api/SharpHoundCommonLib.Enums.Label.html
   commentId: T:SharpHoundCommonLib.Enums.Label
   fullName: SharpHoundCommonLib.Enums.Label
   nameWithType: Label
+- uid: SharpHoundCommonLib.Enums.Label.AIACA
+  name: AIACA
+  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_AIACA
+  commentId: F:SharpHoundCommonLib.Enums.Label.AIACA
+  fullName: SharpHoundCommonLib.Enums.Label.AIACA
+  nameWithType: Label.AIACA
 - uid: SharpHoundCommonLib.Enums.Label.Base
   name: Base
   href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_Base
   commentId: F:SharpHoundCommonLib.Enums.Label.Base
   fullName: SharpHoundCommonLib.Enums.Label.Base
   nameWithType: Label.Base
+- uid: SharpHoundCommonLib.Enums.Label.CertAuthority
+  name: CertAuthority
+  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_CertAuthority
+  commentId: F:SharpHoundCommonLib.Enums.Label.CertAuthority
+  fullName: SharpHoundCommonLib.Enums.Label.CertAuthority
+  nameWithType: Label.CertAuthority
+- uid: SharpHoundCommonLib.Enums.Label.CertTemplate
+  name: CertTemplate
+  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_CertTemplate
+  commentId: F:SharpHoundCommonLib.Enums.Label.CertTemplate
+  fullName: SharpHoundCommonLib.Enums.Label.CertTemplate
+  nameWithType: Label.CertTemplate
 - uid: SharpHoundCommonLib.Enums.Label.Computer
   name: Computer
   href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_Computer
   commentId: F:SharpHoundCommonLib.Enums.Label.Computer
   fullName: SharpHoundCommonLib.Enums.Label.Computer
   nameWithType: Label.Computer
+- uid: SharpHoundCommonLib.Enums.Label.Configuration
+  name: Configuration
+  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_Configuration
+  commentId: F:SharpHoundCommonLib.Enums.Label.Configuration
+  fullName: SharpHoundCommonLib.Enums.Label.Configuration
+  nameWithType: Label.Configuration
 - uid: SharpHoundCommonLib.Enums.Label.Container
   name: Container
   href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_Container
@@ -678,6 +1125,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.Label.Domain
   fullName: SharpHoundCommonLib.Enums.Label.Domain
   nameWithType: Label.Domain
+- uid: SharpHoundCommonLib.Enums.Label.EnterpriseCA
+  name: EnterpriseCA
+  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_EnterpriseCA
+  commentId: F:SharpHoundCommonLib.Enums.Label.EnterpriseCA
+  fullName: SharpHoundCommonLib.Enums.Label.EnterpriseCA
+  nameWithType: Label.EnterpriseCA
 - uid: SharpHoundCommonLib.Enums.Label.GPO
   name: GPO
   href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_GPO
@@ -702,12 +1155,24 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.Label.LocalUser
   fullName: SharpHoundCommonLib.Enums.Label.LocalUser
   nameWithType: Label.LocalUser
+- uid: SharpHoundCommonLib.Enums.Label.NTAuthStore
+  name: NTAuthStore
+  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_NTAuthStore
+  commentId: F:SharpHoundCommonLib.Enums.Label.NTAuthStore
+  fullName: SharpHoundCommonLib.Enums.Label.NTAuthStore
+  nameWithType: Label.NTAuthStore
 - uid: SharpHoundCommonLib.Enums.Label.OU
   name: OU
   href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_OU
   commentId: F:SharpHoundCommonLib.Enums.Label.OU
   fullName: SharpHoundCommonLib.Enums.Label.OU
   nameWithType: Label.OU
+- uid: SharpHoundCommonLib.Enums.Label.RootCA
+  name: RootCA
+  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_RootCA
+  commentId: F:SharpHoundCommonLib.Enums.Label.RootCA
+  fullName: SharpHoundCommonLib.Enums.Label.RootCA
+  nameWithType: Label.RootCA
 - uid: SharpHoundCommonLib.Enums.Label.User
   name: User
   href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_User
@@ -1014,6 +1479,270 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.LSAPrivileges.Undock
   fullName: SharpHoundCommonLib.Enums.LSAPrivileges.Undock
   nameWithType: LSAPrivileges.Undock
+- uid: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags
+  name: PKICertificateAuthorityFlags
+  href: api/SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.html
+  commentId: T:SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags
+  fullName: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags
+  nameWithType: PKICertificateAuthorityFlags
+- uid: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.CA_SERVERTYPE_ADVANCED
+  name: CA_SERVERTYPE_ADVANCED
+  href: api/SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.html#SharpHoundCommonLib_Enums_PKICertificateAuthorityFlags_CA_SERVERTYPE_ADVANCED
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.CA_SERVERTYPE_ADVANCED
+  fullName: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.CA_SERVERTYPE_ADVANCED
+  nameWithType: PKICertificateAuthorityFlags.CA_SERVERTYPE_ADVANCED
+- uid: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.CA_SUPPORTS_MANUAL_AUTHENTICATION
+  name: CA_SUPPORTS_MANUAL_AUTHENTICATION
+  href: api/SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.html#SharpHoundCommonLib_Enums_PKICertificateAuthorityFlags_CA_SUPPORTS_MANUAL_AUTHENTICATION
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.CA_SUPPORTS_MANUAL_AUTHENTICATION
+  fullName: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.CA_SUPPORTS_MANUAL_AUTHENTICATION
+  nameWithType: PKICertificateAuthorityFlags.CA_SUPPORTS_MANUAL_AUTHENTICATION
+- uid: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.NO_TEMPLATE_SUPPORT
+  name: NO_TEMPLATE_SUPPORT
+  href: api/SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.html#SharpHoundCommonLib_Enums_PKICertificateAuthorityFlags_NO_TEMPLATE_SUPPORT
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.NO_TEMPLATE_SUPPORT
+  fullName: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.NO_TEMPLATE_SUPPORT
+  nameWithType: PKICertificateAuthorityFlags.NO_TEMPLATE_SUPPORT
+- uid: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.SUPPORTS_NT_AUTHENTICATION
+  name: SUPPORTS_NT_AUTHENTICATION
+  href: api/SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.html#SharpHoundCommonLib_Enums_PKICertificateAuthorityFlags_SUPPORTS_NT_AUTHENTICATION
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.SUPPORTS_NT_AUTHENTICATION
+  fullName: SharpHoundCommonLib.Enums.PKICertificateAuthorityFlags.SUPPORTS_NT_AUTHENTICATION
+  nameWithType: PKICertificateAuthorityFlags.SUPPORTS_NT_AUTHENTICATION
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag
+  name: PKICertificateNameFlag
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html
+  commentId: T:SharpHoundCommonLib.Enums.PKICertificateNameFlag
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag
+  nameWithType: PKICertificateNameFlag
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_DIRECTORY_PATH
+  name: ADD_DIRECTORY_PATH
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_ADD_DIRECTORY_PATH
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_DIRECTORY_PATH
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_DIRECTORY_PATH
+  nameWithType: PKICertificateNameFlag.ADD_DIRECTORY_PATH
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_EMAIL
+  name: ADD_EMAIL
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_ADD_EMAIL
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_EMAIL
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_EMAIL
+  nameWithType: PKICertificateNameFlag.ADD_EMAIL
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_OBJ_GUID
+  name: ADD_OBJ_GUID
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_ADD_OBJ_GUID
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_OBJ_GUID
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ADD_OBJ_GUID
+  nameWithType: PKICertificateNameFlag.ADD_OBJ_GUID
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT
+  name: ENROLLEE_SUPPLIES_SUBJECT
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_ENROLLEE_SUPPLIES_SUBJECT
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT
+  nameWithType: PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT_ALT_NAME
+  name: ENROLLEE_SUPPLIES_SUBJECT_ALT_NAME
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_ENROLLEE_SUPPLIES_SUBJECT_ALT_NAME
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT_ALT_NAME
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT_ALT_NAME
+  nameWithType: PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT_ALT_NAME
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.OLD_CERT_SUPPLIES_SUBJECT_AND_ALT_NAME
+  name: OLD_CERT_SUPPLIES_SUBJECT_AND_ALT_NAME
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_OLD_CERT_SUPPLIES_SUBJECT_AND_ALT_NAME
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.OLD_CERT_SUPPLIES_SUBJECT_AND_ALT_NAME
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.OLD_CERT_SUPPLIES_SUBJECT_AND_ALT_NAME
+  nameWithType: PKICertificateNameFlag.OLD_CERT_SUPPLIES_SUBJECT_AND_ALT_NAME
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DIRECTORY_GUID
+  name: SUBJECT_ALT_REQUIRE_DIRECTORY_GUID
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_ALT_REQUIRE_DIRECTORY_GUID
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DIRECTORY_GUID
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DIRECTORY_GUID
+  nameWithType: PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DIRECTORY_GUID
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DNS
+  name: SUBJECT_ALT_REQUIRE_DNS
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_ALT_REQUIRE_DNS
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DNS
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DNS
+  nameWithType: PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DNS
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DOMAIN_DNS
+  name: SUBJECT_ALT_REQUIRE_DOMAIN_DNS
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_ALT_REQUIRE_DOMAIN_DNS
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DOMAIN_DNS
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DOMAIN_DNS
+  nameWithType: PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DOMAIN_DNS
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_EMAIL
+  name: SUBJECT_ALT_REQUIRE_EMAIL
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_ALT_REQUIRE_EMAIL
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_EMAIL
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_EMAIL
+  nameWithType: PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_EMAIL
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_SPN
+  name: SUBJECT_ALT_REQUIRE_SPN
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_ALT_REQUIRE_SPN
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_SPN
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_SPN
+  nameWithType: PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_SPN
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN
+  name: SUBJECT_ALT_REQUIRE_UPN
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_ALT_REQUIRE_UPN
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN
+  nameWithType: PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_COMMON_NAME
+  name: SUBJECT_REQUIRE_COMMON_NAME
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_REQUIRE_COMMON_NAME
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_COMMON_NAME
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_COMMON_NAME
+  nameWithType: PKICertificateNameFlag.SUBJECT_REQUIRE_COMMON_NAME
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_DIRECTORY_PATH
+  name: SUBJECT_REQUIRE_DIRECTORY_PATH
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_REQUIRE_DIRECTORY_PATH
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_DIRECTORY_PATH
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_DIRECTORY_PATH
+  nameWithType: PKICertificateNameFlag.SUBJECT_REQUIRE_DIRECTORY_PATH
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_DNS_AS_CN
+  name: SUBJECT_REQUIRE_DNS_AS_CN
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_REQUIRE_DNS_AS_CN
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_DNS_AS_CN
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_DNS_AS_CN
+  nameWithType: PKICertificateNameFlag.SUBJECT_REQUIRE_DNS_AS_CN
+- uid: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_EMAIL
+  name: SUBJECT_REQUIRE_EMAIL
+  href: api/SharpHoundCommonLib.Enums.PKICertificateNameFlag.html#SharpHoundCommonLib_Enums_PKICertificateNameFlag_SUBJECT_REQUIRE_EMAIL
+  commentId: F:SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_EMAIL
+  fullName: SharpHoundCommonLib.Enums.PKICertificateNameFlag.SUBJECT_REQUIRE_EMAIL
+  nameWithType: PKICertificateNameFlag.SUBJECT_REQUIRE_EMAIL
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag
+  name: PKIEnrollmentFlag
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html
+  commentId: T:SharpHoundCommonLib.Enums.PKIEnrollmentFlag
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag
+  nameWithType: PKIEnrollmentFlag
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ADD_OCSP_NOCHECK
+  name: ADD_OCSP_NOCHECK
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_ADD_OCSP_NOCHECK
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ADD_OCSP_NOCHECK
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ADD_OCSP_NOCHECK
+  nameWithType: PKIEnrollmentFlag.ADD_OCSP_NOCHECK
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ADD_TEMPLATE_NAME
+  name: ADD_TEMPLATE_NAME
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_ADD_TEMPLATE_NAME
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ADD_TEMPLATE_NAME
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ADD_TEMPLATE_NAME
+  nameWithType: PKIEnrollmentFlag.ADD_TEMPLATE_NAME
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ALLOW_ENROLL_ON_BEHALF_OF
+  name: ALLOW_ENROLL_ON_BEHALF_OF
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_ALLOW_ENROLL_ON_BEHALF_OF
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ALLOW_ENROLL_ON_BEHALF_OF
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ALLOW_ENROLL_ON_BEHALF_OF
+  nameWithType: PKIEnrollmentFlag.ALLOW_ENROLL_ON_BEHALF_OF
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ALLOW_PREVIOUS_APPROVAL_KEYBASEDRENEWAL_VALIDATE_REENROLLMENT
+  name: ALLOW_PREVIOUS_APPROVAL_KEYBASEDRENEWAL_VALIDATE_REENROLLMENT
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_ALLOW_PREVIOUS_APPROVAL_KEYBASEDRENEWAL_VALIDATE_REENROLLMENT
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ALLOW_PREVIOUS_APPROVAL_KEYBASEDRENEWAL_VALIDATE_REENROLLMENT
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ALLOW_PREVIOUS_APPROVAL_KEYBASEDRENEWAL_VALIDATE_REENROLLMENT
+  nameWithType: PKIEnrollmentFlag.ALLOW_PREVIOUS_APPROVAL_KEYBASEDRENEWAL_VALIDATE_REENROLLMENT
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.AUTO_ENROLLMENT
+  name: AUTO_ENROLLMENT
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_AUTO_ENROLLMENT
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.AUTO_ENROLLMENT
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.AUTO_ENROLLMENT
+  nameWithType: PKIEnrollmentFlag.AUTO_ENROLLMENT
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.AUTO_ENROLLMENT_CHECK_USER_DS_CERTIFICATE
+  name: AUTO_ENROLLMENT_CHECK_USER_DS_CERTIFICATE
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_AUTO_ENROLLMENT_CHECK_USER_DS_CERTIFICATE
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.AUTO_ENROLLMENT_CHECK_USER_DS_CERTIFICATE
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.AUTO_ENROLLMENT_CHECK_USER_DS_CERTIFICATE
+  nameWithType: PKIEnrollmentFlag.AUTO_ENROLLMENT_CHECK_USER_DS_CERTIFICATE
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.CT_FLAG_DOMAIN_AUTHENTICATION_NOT_REQUIRED
+  name: CT_FLAG_DOMAIN_AUTHENTICATION_NOT_REQUIRED
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_CT_FLAG_DOMAIN_AUTHENTICATION_NOT_REQUIRED
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.CT_FLAG_DOMAIN_AUTHENTICATION_NOT_REQUIRED
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.CT_FLAG_DOMAIN_AUTHENTICATION_NOT_REQUIRED
+  nameWithType: PKIEnrollmentFlag.CT_FLAG_DOMAIN_AUTHENTICATION_NOT_REQUIRED
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ENABLE_KEY_REUSE_ON_NT_TOKEN_KEYSET_STORAGE_FULL
+  name: ENABLE_KEY_REUSE_ON_NT_TOKEN_KEYSET_STORAGE_FULL
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_ENABLE_KEY_REUSE_ON_NT_TOKEN_KEYSET_STORAGE_FULL
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ENABLE_KEY_REUSE_ON_NT_TOKEN_KEYSET_STORAGE_FULL
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ENABLE_KEY_REUSE_ON_NT_TOKEN_KEYSET_STORAGE_FULL
+  nameWithType: PKIEnrollmentFlag.ENABLE_KEY_REUSE_ON_NT_TOKEN_KEYSET_STORAGE_FULL
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.INCLUDE_BASIC_CONSTRAINTS_FOR_EE_CERTS
+  name: INCLUDE_BASIC_CONSTRAINTS_FOR_EE_CERTS
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_INCLUDE_BASIC_CONSTRAINTS_FOR_EE_CERTS
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.INCLUDE_BASIC_CONSTRAINTS_FOR_EE_CERTS
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.INCLUDE_BASIC_CONSTRAINTS_FOR_EE_CERTS
+  nameWithType: PKIEnrollmentFlag.INCLUDE_BASIC_CONSTRAINTS_FOR_EE_CERTS
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.INCLUDE_SYMMETRIC_ALGORITHMS
+  name: INCLUDE_SYMMETRIC_ALGORITHMS
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_INCLUDE_SYMMETRIC_ALGORITHMS
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.INCLUDE_SYMMETRIC_ALGORITHMS
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.INCLUDE_SYMMETRIC_ALGORITHMS
+  nameWithType: PKIEnrollmentFlag.INCLUDE_SYMMETRIC_ALGORITHMS
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ISSUANCE_POLICIES_FROM_REQUEST
+  name: ISSUANCE_POLICIES_FROM_REQUEST
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_ISSUANCE_POLICIES_FROM_REQUEST
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ISSUANCE_POLICIES_FROM_REQUEST
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.ISSUANCE_POLICIES_FROM_REQUEST
+  nameWithType: PKIEnrollmentFlag.ISSUANCE_POLICIES_FROM_REQUEST
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NO_SECURITY_EXTENSION
+  name: NO_SECURITY_EXTENSION
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_NO_SECURITY_EXTENSION
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NO_SECURITY_EXTENSION
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NO_SECURITY_EXTENSION
+  nameWithType: PKIEnrollmentFlag.NO_SECURITY_EXTENSION
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NONE
+  name: NONE
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_NONE
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NONE
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NONE
+  nameWithType: PKIEnrollmentFlag.NONE
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NOREVOCATIONINFOINISSUEDCERTS
+  name: NOREVOCATIONINFOINISSUEDCERTS
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_NOREVOCATIONINFOINISSUEDCERTS
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NOREVOCATIONINFOINISSUEDCERTS
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.NOREVOCATIONINFOINISSUEDCERTS
+  nameWithType: PKIEnrollmentFlag.NOREVOCATIONINFOINISSUEDCERTS
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PEND_ALL_REQUESTS
+  name: PEND_ALL_REQUESTS
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_PEND_ALL_REQUESTS
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PEND_ALL_REQUESTS
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PEND_ALL_REQUESTS
+  nameWithType: PKIEnrollmentFlag.PEND_ALL_REQUESTS
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PREVIOUS_APPROVAL_VALIDATE_REENROLLMENT
+  name: PREVIOUS_APPROVAL_VALIDATE_REENROLLMENT
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_PREVIOUS_APPROVAL_VALIDATE_REENROLLMENT
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PREVIOUS_APPROVAL_VALIDATE_REENROLLMENT
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PREVIOUS_APPROVAL_VALIDATE_REENROLLMENT
+  nameWithType: PKIEnrollmentFlag.PREVIOUS_APPROVAL_VALIDATE_REENROLLMENT
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PUBLISH_TO_DS
+  name: PUBLISH_TO_DS
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_PUBLISH_TO_DS
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PUBLISH_TO_DS
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PUBLISH_TO_DS
+  nameWithType: PKIEnrollmentFlag.PUBLISH_TO_DS
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PUBLISH_TO_KRA_CONTAINER
+  name: PUBLISH_TO_KRA_CONTAINER
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_PUBLISH_TO_KRA_CONTAINER
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PUBLISH_TO_KRA_CONTAINER
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.PUBLISH_TO_KRA_CONTAINER
+  nameWithType: PKIEnrollmentFlag.PUBLISH_TO_KRA_CONTAINER
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.REMOVE_INVALID_CERTIFICATE_FROM_PERSONAL_STORE
+  name: REMOVE_INVALID_CERTIFICATE_FROM_PERSONAL_STORE
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_REMOVE_INVALID_CERTIFICATE_FROM_PERSONAL_STORE
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.REMOVE_INVALID_CERTIFICATE_FROM_PERSONAL_STORE
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.REMOVE_INVALID_CERTIFICATE_FROM_PERSONAL_STORE
+  nameWithType: PKIEnrollmentFlag.REMOVE_INVALID_CERTIFICATE_FROM_PERSONAL_STORE
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.SKIP_AUTO_RENEWAL
+  name: SKIP_AUTO_RENEWAL
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_SKIP_AUTO_RENEWAL
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.SKIP_AUTO_RENEWAL
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.SKIP_AUTO_RENEWAL
+  nameWithType: PKIEnrollmentFlag.SKIP_AUTO_RENEWAL
+- uid: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.USER_INTERACTION_REQUIRED
+  name: USER_INTERACTION_REQUIRED
+  href: api/SharpHoundCommonLib.Enums.PKIEnrollmentFlag.html#SharpHoundCommonLib_Enums_PKIEnrollmentFlag_USER_INTERACTION_REQUIRED
+  commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.USER_INTERACTION_REQUIRED
+  fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.USER_INTERACTION_REQUIRED
+  nameWithType: PKIEnrollmentFlag.USER_INTERACTION_REQUIRED
 - uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod
   name: ResolvedCollectionMethod
   href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html
@@ -1032,6 +1761,18 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.All
   fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.All
   nameWithType: ResolvedCollectionMethod.All
+- uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.CARegistry
+  name: CARegistry
+  href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_CARegistry
+  commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.CARegistry
+  fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.CARegistry
+  nameWithType: ResolvedCollectionMethod.CARegistry
+- uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.CertServices
+  name: CertServices
+  href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_CertServices
+  commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.CertServices
+  fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.CertServices
+  nameWithType: ResolvedCollectionMethod.CertServices
 - uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.ComputerOnly
   name: ComputerOnly
   href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_ComputerOnly
@@ -1056,6 +1797,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnly
   fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCOnly
   nameWithType: ResolvedCollectionMethod.DCOnly
+- uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCRegistry
+  name: DCRegistry
+  href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_DCRegistry
+  commentId: F:SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCRegistry
+  fullName: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.DCRegistry
+  nameWithType: ResolvedCollectionMethod.DCRegistry
 - uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod.Default
   name: Default
   href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html#SharpHoundCommonLib_Enums_ResolvedCollectionMethod_Default
@@ -1549,6 +2296,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfBytes
   nameWithType: Extensions.GetPropertyAsArrayOfBytes
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfCertificates(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  name: GetPropertyAsArrayOfCertificates(SearchResultEntry, String)
+  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_GetPropertyAsArrayOfCertificates_System_DirectoryServices_Protocols_SearchResultEntry_System_String_
+  commentId: M:SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfCertificates(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfCertificates(System.DirectoryServices.Protocols.SearchResultEntry, System.String)
+  nameWithType: Extensions.GetPropertyAsArrayOfCertificates(SearchResultEntry, String)
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfCertificates*
+  name: GetPropertyAsArrayOfCertificates
+  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_GetPropertyAsArrayOfCertificates_
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfCertificates
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsArrayOfCertificates
+  nameWithType: Extensions.GetPropertyAsArrayOfCertificates
 - uid: SharpHoundCommonLib.Extensions.GetPropertyAsBytes(System.DirectoryServices.Protocols.SearchResultEntry,System.String)
   name: GetPropertyAsBytes(SearchResultEntry, String)
   href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_GetPropertyAsBytes_System_DirectoryServices_Protocols_SearchResultEntry_System_String_
@@ -1562,6 +2322,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Extensions.GetPropertyAsBytes
   nameWithType: Extensions.GetPropertyAsBytes
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsInt(System.DirectoryServices.Protocols.SearchResultEntry,System.String,System.Int32@)
+  name: GetPropertyAsInt(SearchResultEntry, String, out Int32)
+  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_GetPropertyAsInt_System_DirectoryServices_Protocols_SearchResultEntry_System_String_System_Int32__
+  commentId: M:SharpHoundCommonLib.Extensions.GetPropertyAsInt(System.DirectoryServices.Protocols.SearchResultEntry,System.String,System.Int32@)
+  name.vb: GetPropertyAsInt(SearchResultEntry, String, ByRef Int32)
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsInt(System.DirectoryServices.Protocols.SearchResultEntry, System.String, out System.Int32)
+  fullName.vb: SharpHoundCommonLib.Extensions.GetPropertyAsInt(System.DirectoryServices.Protocols.SearchResultEntry, System.String, ByRef System.Int32)
+  nameWithType: Extensions.GetPropertyAsInt(SearchResultEntry, String, out Int32)
+  nameWithType.vb: Extensions.GetPropertyAsInt(SearchResultEntry, String, ByRef Int32)
+- uid: SharpHoundCommonLib.Extensions.GetPropertyAsInt*
+  name: GetPropertyAsInt
+  href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_GetPropertyAsInt_
+  commentId: Overload:SharpHoundCommonLib.Extensions.GetPropertyAsInt
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Extensions.GetPropertyAsInt
+  nameWithType: Extensions.GetPropertyAsInt
 - uid: SharpHoundCommonLib.Extensions.GetSid(System.DirectoryServices.DirectoryEntry)
   name: GetSid(DirectoryEntry)
   href: api/SharpHoundCommonLib.Extensions.html#SharpHoundCommonLib_Extensions_GetSid_System_DirectoryServices_DirectoryEntry_
@@ -1671,6 +2447,12 @@ references:
   commentId: T:SharpHoundCommonLib.Helpers
   fullName: SharpHoundCommonLib.Helpers
   nameWithType: Helpers
+- uid: SharpHoundCommonLib.Helpers.AuthenticationOIDs
+  name: AuthenticationOIDs
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_AuthenticationOIDs
+  commentId: F:SharpHoundCommonLib.Helpers.AuthenticationOIDs
+  fullName: SharpHoundCommonLib.Helpers.AuthenticationOIDs
+  nameWithType: Helpers.AuthenticationOIDs
 - uid: SharpHoundCommonLib.Helpers.Base64(System.String)
   name: Base64(String)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_Base64_System_String_
@@ -1762,6 +2544,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Helpers.DistinguishedNameToDomain
   nameWithType: Helpers.DistinguishedNameToDomain
+- uid: SharpHoundCommonLib.Helpers.GetRegistryKeyData(System.String,System.String,System.String,ILogger)
+  name: GetRegistryKeyData(String, String, String, ILogger)
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_GetRegistryKeyData_System_String_System_String_System_String_ILogger_
+  commentId: M:SharpHoundCommonLib.Helpers.GetRegistryKeyData(System.String,System.String,System.String,ILogger)
+  fullName: SharpHoundCommonLib.Helpers.GetRegistryKeyData(System.String, System.String, System.String, ILogger)
+  nameWithType: Helpers.GetRegistryKeyData(String, String, String, ILogger)
+- uid: SharpHoundCommonLib.Helpers.GetRegistryKeyData*
+  name: GetRegistryKeyData
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_GetRegistryKeyData_
+  commentId: Overload:SharpHoundCommonLib.Helpers.GetRegistryKeyData
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Helpers.GetRegistryKeyData
+  nameWithType: Helpers.GetRegistryKeyData
 - uid: SharpHoundCommonLib.Helpers.IsSidFiltered(System.String)
   name: IsSidFiltered(String)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_IsSidFiltered_System_String_
@@ -1775,6 +2570,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Helpers.IsSidFiltered
   nameWithType: Helpers.IsSidFiltered
+- uid: SharpHoundCommonLib.Helpers.OpenRemoteRegistry(System.String)
+  name: OpenRemoteRegistry(String)
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_OpenRemoteRegistry_System_String_
+  commentId: M:SharpHoundCommonLib.Helpers.OpenRemoteRegistry(System.String)
+  fullName: SharpHoundCommonLib.Helpers.OpenRemoteRegistry(System.String)
+  nameWithType: Helpers.OpenRemoteRegistry(String)
+- uid: SharpHoundCommonLib.Helpers.OpenRemoteRegistry*
+  name: OpenRemoteRegistry
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_OpenRemoteRegistry_
+  commentId: Overload:SharpHoundCommonLib.Helpers.OpenRemoteRegistry
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Helpers.OpenRemoteRegistry
+  nameWithType: Helpers.OpenRemoteRegistry
 - uid: SharpHoundCommonLib.Helpers.RemoveDistinguishedNamePrefix(System.String)
   name: RemoveDistinguishedNamePrefix(String)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_RemoveDistinguishedNamePrefix_System_String_
@@ -1846,6 +2654,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.AddDomainController
   nameWithType: ILDAPUtils.AddDomainController
+- uid: SharpHoundCommonLib.ILDAPUtils.BuildLdapPath(System.String,System.String)
+  name: BuildLdapPath(String, String)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_BuildLdapPath_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.BuildLdapPath(System.String,System.String)
+  fullName: SharpHoundCommonLib.ILDAPUtils.BuildLdapPath(System.String, System.String)
+  nameWithType: ILDAPUtils.BuildLdapPath(String, String)
+- uid: SharpHoundCommonLib.ILDAPUtils.BuildLdapPath*
+  name: BuildLdapPath
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_BuildLdapPath_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.BuildLdapPath
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.BuildLdapPath
+  nameWithType: ILDAPUtils.BuildLdapPath
 - uid: SharpHoundCommonLib.ILDAPUtils.ConvertWellKnownPrincipal(System.String,System.String)
   name: ConvertWellKnownPrincipal(String, String)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_ConvertWellKnownPrincipal_System_String_System_String_
@@ -1872,6 +2693,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.DoRangedRetrieval
   nameWithType: ILDAPUtils.DoRangedRetrieval
+- uid: SharpHoundCommonLib.ILDAPUtils.GetConfigurationPath(System.String)
+  name: GetConfigurationPath(String)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetConfigurationPath_System_String_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.GetConfigurationPath(System.String)
+  fullName: SharpHoundCommonLib.ILDAPUtils.GetConfigurationPath(System.String)
+  nameWithType: ILDAPUtils.GetConfigurationPath(String)
+- uid: SharpHoundCommonLib.ILDAPUtils.GetConfigurationPath*
+  name: GetConfigurationPath
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetConfigurationPath_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.GetConfigurationPath
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.GetConfigurationPath
+  nameWithType: ILDAPUtils.GetConfigurationPath
 - uid: SharpHoundCommonLib.ILDAPUtils.GetDomain(System.String)
   name: GetDomain(String)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetDomain_System_String_
@@ -1911,6 +2745,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.GetForest
   nameWithType: ILDAPUtils.GetForest
+- uid: SharpHoundCommonLib.ILDAPUtils.GetSchemaPath(System.String)
+  name: GetSchemaPath(String)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetSchemaPath_System_String_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.GetSchemaPath(System.String)
+  fullName: SharpHoundCommonLib.ILDAPUtils.GetSchemaPath(System.String)
+  nameWithType: ILDAPUtils.GetSchemaPath(String)
+- uid: SharpHoundCommonLib.ILDAPUtils.GetSchemaPath*
+  name: GetSchemaPath
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetSchemaPath_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.GetSchemaPath
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.GetSchemaPath
+  nameWithType: ILDAPUtils.GetSchemaPath
 - uid: SharpHoundCommonLib.ILDAPUtils.GetSidFromDomainName(System.String)
   name: GetSidFromDomainName(String)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_GetSidFromDomainName_System_String_
@@ -1966,6 +2813,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.GetWellKnownPrincipalOutput
   nameWithType: ILDAPUtils.GetWellKnownPrincipalOutput
+- uid: SharpHoundCommonLib.ILDAPUtils.IsDomainController(System.String,System.String)
+  name: IsDomainController(String, String)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_IsDomainController_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.IsDomainController(System.String,System.String)
+  fullName: SharpHoundCommonLib.ILDAPUtils.IsDomainController(System.String, System.String)
+  nameWithType: ILDAPUtils.IsDomainController(String, String)
+- uid: SharpHoundCommonLib.ILDAPUtils.IsDomainController*
+  name: IsDomainController
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_IsDomainController_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.IsDomainController
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.IsDomainController
+  nameWithType: ILDAPUtils.IsDomainController
 - uid: SharpHoundCommonLib.ILDAPUtils.LookupGuidType(System.String,System.String)
   name: LookupGuidType(String, String)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_LookupGuidType_System_String_System_String_
@@ -2049,6 +2909,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.ResolveAccountName
   nameWithType: ILDAPUtils.ResolveAccountName
+- uid: SharpHoundCommonLib.ILDAPUtils.ResolveCertTemplateByProperty(System.String,System.String,System.String,System.String)
+  name: ResolveCertTemplateByProperty(String, String, String, String)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_ResolveCertTemplateByProperty_System_String_System_String_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.ResolveCertTemplateByProperty(System.String,System.String,System.String,System.String)
+  fullName: SharpHoundCommonLib.ILDAPUtils.ResolveCertTemplateByProperty(System.String, System.String, System.String, System.String)
+  nameWithType: ILDAPUtils.ResolveCertTemplateByProperty(String, String, String, String)
+- uid: SharpHoundCommonLib.ILDAPUtils.ResolveCertTemplateByProperty*
+  name: ResolveCertTemplateByProperty
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_ResolveCertTemplateByProperty_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.ResolveCertTemplateByProperty
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.ResolveCertTemplateByProperty
+  nameWithType: ILDAPUtils.ResolveCertTemplateByProperty
 - uid: SharpHoundCommonLib.ILDAPUtils.ResolveDistinguishedName(System.String)
   name: ResolveDistinguishedName(String)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_ResolveDistinguishedName_System_String_
@@ -2114,6 +2987,25 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.TestLDAPConfig
   nameWithType: ILDAPUtils.TestLDAPConfig
+- uid: SharpHoundCommonLib.IRegistryKey
+  name: IRegistryKey
+  href: api/SharpHoundCommonLib.IRegistryKey.html
+  commentId: T:SharpHoundCommonLib.IRegistryKey
+  fullName: SharpHoundCommonLib.IRegistryKey
+  nameWithType: IRegistryKey
+- uid: SharpHoundCommonLib.IRegistryKey.GetValue(System.String,System.String)
+  name: GetValue(String, String)
+  href: api/SharpHoundCommonLib.IRegistryKey.html#SharpHoundCommonLib_IRegistryKey_GetValue_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.IRegistryKey.GetValue(System.String,System.String)
+  fullName: SharpHoundCommonLib.IRegistryKey.GetValue(System.String, System.String)
+  nameWithType: IRegistryKey.GetValue(String, String)
+- uid: SharpHoundCommonLib.IRegistryKey.GetValue*
+  name: GetValue
+  href: api/SharpHoundCommonLib.IRegistryKey.html#SharpHoundCommonLib_IRegistryKey_GetValue_
+  commentId: Overload:SharpHoundCommonLib.IRegistryKey.GetValue
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.IRegistryKey.GetValue
+  nameWithType: IRegistryKey.GetValue
 - uid: SharpHoundCommonLib.ISearchResultEntry
   name: ISearchResultEntry
   href: api/SharpHoundCommonLib.ISearchResultEntry.html
@@ -2172,6 +3064,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ISearchResultEntry.GetByteProperty
   nameWithType: ISearchResultEntry.GetByteProperty
+- uid: SharpHoundCommonLib.ISearchResultEntry.GetCertificateArrayProperty(System.String)
+  name: GetCertificateArrayProperty(String)
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_GetCertificateArrayProperty_System_String_
+  commentId: M:SharpHoundCommonLib.ISearchResultEntry.GetCertificateArrayProperty(System.String)
+  fullName: SharpHoundCommonLib.ISearchResultEntry.GetCertificateArrayProperty(System.String)
+  nameWithType: ISearchResultEntry.GetCertificateArrayProperty(String)
+- uid: SharpHoundCommonLib.ISearchResultEntry.GetCertificateArrayProperty*
+  name: GetCertificateArrayProperty
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_GetCertificateArrayProperty_
+  commentId: Overload:SharpHoundCommonLib.ISearchResultEntry.GetCertificateArrayProperty
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ISearchResultEntry.GetCertificateArrayProperty
+  nameWithType: ISearchResultEntry.GetCertificateArrayProperty
 - uid: SharpHoundCommonLib.ISearchResultEntry.GetGuid
   name: GetGuid()
   href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_GetGuid
@@ -2185,6 +3090,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ISearchResultEntry.GetGuid
   nameWithType: ISearchResultEntry.GetGuid
+- uid: SharpHoundCommonLib.ISearchResultEntry.GetIntProperty(System.String,System.Int32@)
+  name: GetIntProperty(String, out Int32)
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_GetIntProperty_System_String_System_Int32__
+  commentId: M:SharpHoundCommonLib.ISearchResultEntry.GetIntProperty(System.String,System.Int32@)
+  name.vb: GetIntProperty(String, ByRef Int32)
+  fullName: SharpHoundCommonLib.ISearchResultEntry.GetIntProperty(System.String, out System.Int32)
+  fullName.vb: SharpHoundCommonLib.ISearchResultEntry.GetIntProperty(System.String, ByRef System.Int32)
+  nameWithType: ISearchResultEntry.GetIntProperty(String, out Int32)
+  nameWithType.vb: ISearchResultEntry.GetIntProperty(String, ByRef Int32)
+- uid: SharpHoundCommonLib.ISearchResultEntry.GetIntProperty*
+  name: GetIntProperty
+  href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_GetIntProperty_
+  commentId: Overload:SharpHoundCommonLib.ISearchResultEntry.GetIntProperty
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ISearchResultEntry.GetIntProperty
+  nameWithType: ISearchResultEntry.GetIntProperty
 - uid: SharpHoundCommonLib.ISearchResultEntry.GetLabel
   name: GetLabel()
   href: api/SharpHoundCommonLib.ISearchResultEntry.html#SharpHoundCommonLib_ISearchResultEntry_GetLabel
@@ -2475,12 +3396,48 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.AllowedToDelegateTo
   fullName: SharpHoundCommonLib.LDAPProperties.AllowedToDelegateTo
   nameWithType: LDAPProperties.AllowedToDelegateTo
+- uid: SharpHoundCommonLib.LDAPProperties.ApplicationPolicies
+  name: ApplicationPolicies
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ApplicationPolicies
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ApplicationPolicies
+  fullName: SharpHoundCommonLib.LDAPProperties.ApplicationPolicies
+  nameWithType: LDAPProperties.ApplicationPolicies
+- uid: SharpHoundCommonLib.LDAPProperties.CACertificate
+  name: CACertificate
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CACertificate
+  commentId: F:SharpHoundCommonLib.LDAPProperties.CACertificate
+  fullName: SharpHoundCommonLib.LDAPProperties.CACertificate
+  nameWithType: LDAPProperties.CACertificate
 - uid: SharpHoundCommonLib.LDAPProperties.CanonicalName
   name: CanonicalName
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CanonicalName
   commentId: F:SharpHoundCommonLib.LDAPProperties.CanonicalName
   fullName: SharpHoundCommonLib.LDAPProperties.CanonicalName
   nameWithType: LDAPProperties.CanonicalName
+- uid: SharpHoundCommonLib.LDAPProperties.CertificateApplicationPolicy
+  name: CertificateApplicationPolicy
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CertificateApplicationPolicy
+  commentId: F:SharpHoundCommonLib.LDAPProperties.CertificateApplicationPolicy
+  fullName: SharpHoundCommonLib.LDAPProperties.CertificateApplicationPolicy
+  nameWithType: LDAPProperties.CertificateApplicationPolicy
+- uid: SharpHoundCommonLib.LDAPProperties.CertificateTemplates
+  name: CertificateTemplates
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CertificateTemplates
+  commentId: F:SharpHoundCommonLib.LDAPProperties.CertificateTemplates
+  fullName: SharpHoundCommonLib.LDAPProperties.CertificateTemplates
+  nameWithType: LDAPProperties.CertificateTemplates
+- uid: SharpHoundCommonLib.LDAPProperties.CertTemplateOID
+  name: CertTemplateOID
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CertTemplateOID
+  commentId: F:SharpHoundCommonLib.LDAPProperties.CertTemplateOID
+  fullName: SharpHoundCommonLib.LDAPProperties.CertTemplateOID
+  nameWithType: LDAPProperties.CertTemplateOID
+- uid: SharpHoundCommonLib.LDAPProperties.CrossCertificatePair
+  name: CrossCertificatePair
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CrossCertificatePair
+  commentId: F:SharpHoundCommonLib.LDAPProperties.CrossCertificatePair
+  fullName: SharpHoundCommonLib.LDAPProperties.CrossCertificatePair
+  nameWithType: LDAPProperties.CrossCertificatePair
 - uid: SharpHoundCommonLib.LDAPProperties.Description
   name: Description
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Description
@@ -2517,6 +3474,18 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.Email
   fullName: SharpHoundCommonLib.LDAPProperties.Email
   nameWithType: LDAPProperties.Email
+- uid: SharpHoundCommonLib.LDAPProperties.ExtendedKeyUsage
+  name: ExtendedKeyUsage
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ExtendedKeyUsage
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ExtendedKeyUsage
+  fullName: SharpHoundCommonLib.LDAPProperties.ExtendedKeyUsage
+  nameWithType: LDAPProperties.ExtendedKeyUsage
+- uid: SharpHoundCommonLib.LDAPProperties.Flags
+  name: Flags
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Flags
+  commentId: F:SharpHoundCommonLib.LDAPProperties.Flags
+  fullName: SharpHoundCommonLib.LDAPProperties.Flags
+  nameWithType: LDAPProperties.Flags
 - uid: SharpHoundCommonLib.LDAPProperties.GPCFileSYSPath
   name: GPCFileSYSPath
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_GPCFileSYSPath
@@ -2559,6 +3528,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.IsDeleted
   fullName: SharpHoundCommonLib.LDAPProperties.IsDeleted
   nameWithType: LDAPProperties.IsDeleted
+- uid: SharpHoundCommonLib.LDAPProperties.IssuancePolicies
+  name: IssuancePolicies
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_IssuancePolicies
+  commentId: F:SharpHoundCommonLib.LDAPProperties.IssuancePolicies
+  fullName: SharpHoundCommonLib.LDAPProperties.IssuancePolicies
+  nameWithType: LDAPProperties.IssuancePolicies
 - uid: SharpHoundCommonLib.LDAPProperties.LAPSExpirationTime
   name: LAPSExpirationTime
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LAPSExpirationTime
@@ -2607,6 +3582,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.Name
   fullName: SharpHoundCommonLib.LDAPProperties.Name
   nameWithType: LDAPProperties.Name
+- uid: SharpHoundCommonLib.LDAPProperties.NumSignaturesRequired
+  name: NumSignaturesRequired
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_NumSignaturesRequired
+  commentId: F:SharpHoundCommonLib.LDAPProperties.NumSignaturesRequired
+  fullName: SharpHoundCommonLib.LDAPProperties.NumSignaturesRequired
+  nameWithType: LDAPProperties.NumSignaturesRequired
 - uid: SharpHoundCommonLib.LDAPProperties.ObjectClass
   name: ObjectClass
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ObjectClass
@@ -2637,6 +3618,30 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.PasswordLastSet
   fullName: SharpHoundCommonLib.LDAPProperties.PasswordLastSet
   nameWithType: LDAPProperties.PasswordLastSet
+- uid: SharpHoundCommonLib.LDAPProperties.PKIEnrollmentFlag
+  name: PKIEnrollmentFlag
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PKIEnrollmentFlag
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PKIEnrollmentFlag
+  fullName: SharpHoundCommonLib.LDAPProperties.PKIEnrollmentFlag
+  nameWithType: LDAPProperties.PKIEnrollmentFlag
+- uid: SharpHoundCommonLib.LDAPProperties.PKIExpirationPeriod
+  name: PKIExpirationPeriod
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PKIExpirationPeriod
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PKIExpirationPeriod
+  fullName: SharpHoundCommonLib.LDAPProperties.PKIExpirationPeriod
+  nameWithType: LDAPProperties.PKIExpirationPeriod
+- uid: SharpHoundCommonLib.LDAPProperties.PKINameFlag
+  name: PKINameFlag
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PKINameFlag
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PKINameFlag
+  fullName: SharpHoundCommonLib.LDAPProperties.PKINameFlag
+  nameWithType: LDAPProperties.PKINameFlag
+- uid: SharpHoundCommonLib.LDAPProperties.PKIOverlappedPeriod
+  name: PKIOverlappedPeriod
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PKIOverlappedPeriod
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PKIOverlappedPeriod
+  fullName: SharpHoundCommonLib.LDAPProperties.PKIOverlappedPeriod
+  nameWithType: LDAPProperties.PKIOverlappedPeriod
 - uid: SharpHoundCommonLib.LDAPProperties.PrimaryGroupID
   name: PrimaryGroupID
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PrimaryGroupID
@@ -2697,6 +3702,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.SIDHistory
   fullName: SharpHoundCommonLib.LDAPProperties.SIDHistory
   nameWithType: LDAPProperties.SIDHistory
+- uid: SharpHoundCommonLib.LDAPProperties.TemplateSchemaVersion
+  name: TemplateSchemaVersion
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_TemplateSchemaVersion
+  commentId: F:SharpHoundCommonLib.LDAPProperties.TemplateSchemaVersion
+  fullName: SharpHoundCommonLib.LDAPProperties.TemplateSchemaVersion
+  nameWithType: LDAPProperties.TemplateSchemaVersion
 - uid: SharpHoundCommonLib.LDAPProperties.Title
   name: Title
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Title
@@ -2916,6 +3927,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPQueries.CommonProperties.BaseQueryProps
   fullName: SharpHoundCommonLib.LDAPQueries.CommonProperties.BaseQueryProps
   nameWithType: CommonProperties.BaseQueryProps
+- uid: SharpHoundCommonLib.LDAPQueries.CommonProperties.CertAbuseProps
+  name: CertAbuseProps
+  href: api/SharpHoundCommonLib.LDAPQueries.CommonProperties.html#SharpHoundCommonLib_LDAPQueries_CommonProperties_CertAbuseProps
+  commentId: F:SharpHoundCommonLib.LDAPQueries.CommonProperties.CertAbuseProps
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonProperties.CertAbuseProps
+  nameWithType: CommonProperties.CertAbuseProps
 - uid: SharpHoundCommonLib.LDAPQueries.CommonProperties.ComputerMethodProps
   name: ComputerMethodProps
   href: api/SharpHoundCommonLib.LDAPQueries.CommonProperties.html#SharpHoundCommonLib_LDAPQueries_CommonProperties_ComputerMethodProps
@@ -3004,6 +4021,38 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddAllObjects
   nameWithType: LDAPFilter.AddAllObjects
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateAuthorities(System.String[])
+  name: AddCertificateAuthorities(String[])
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddCertificateAuthorities_System_String___
+  commentId: M:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateAuthorities(System.String[])
+  name.vb: AddCertificateAuthorities(String())
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateAuthorities(System.String[])
+  fullName.vb: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateAuthorities(System.String())
+  nameWithType: LDAPFilter.AddCertificateAuthorities(String[])
+  nameWithType.vb: LDAPFilter.AddCertificateAuthorities(String())
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateAuthorities*
+  name: AddCertificateAuthorities
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddCertificateAuthorities_
+  commentId: Overload:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateAuthorities
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateAuthorities
+  nameWithType: LDAPFilter.AddCertificateAuthorities
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateTemplates(System.String[])
+  name: AddCertificateTemplates(String[])
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddCertificateTemplates_System_String___
+  commentId: M:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateTemplates(System.String[])
+  name.vb: AddCertificateTemplates(String())
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateTemplates(System.String[])
+  fullName.vb: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateTemplates(System.String())
+  nameWithType: LDAPFilter.AddCertificateTemplates(String[])
+  nameWithType.vb: LDAPFilter.AddCertificateTemplates(String())
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateTemplates*
+  name: AddCertificateTemplates
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddCertificateTemplates_
+  commentId: Overload:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateTemplates
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddCertificateTemplates
+  nameWithType: LDAPFilter.AddCertificateTemplates
 - uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddComputers(System.String[])
   name: AddComputers(String[])
   href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddComputers_System_String___
@@ -3036,6 +4085,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddComputersNoMSAs
   nameWithType: LDAPFilter.AddComputersNoMSAs
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddConfiguration(System.String[])
+  name: AddConfiguration(String[])
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddConfiguration_System_String___
+  commentId: M:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddConfiguration(System.String[])
+  name.vb: AddConfiguration(String())
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddConfiguration(System.String[])
+  fullName.vb: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddConfiguration(System.String())
+  nameWithType: LDAPFilter.AddConfiguration(String[])
+  nameWithType.vb: LDAPFilter.AddConfiguration(String())
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddConfiguration*
+  name: AddConfiguration
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddConfiguration_
+  commentId: Overload:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddConfiguration
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddConfiguration
+  nameWithType: LDAPFilter.AddConfiguration
 - uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddContainers(System.String[])
   name: AddContainers(String[])
   href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddContainers_System_String___
@@ -3068,6 +4133,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddDomains
   nameWithType: LDAPFilter.AddDomains
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddEnterpriseCertificationAuthorities(System.String[])
+  name: AddEnterpriseCertificationAuthorities(String[])
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddEnterpriseCertificationAuthorities_System_String___
+  commentId: M:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddEnterpriseCertificationAuthorities(System.String[])
+  name.vb: AddEnterpriseCertificationAuthorities(String())
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddEnterpriseCertificationAuthorities(System.String[])
+  fullName.vb: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddEnterpriseCertificationAuthorities(System.String())
+  nameWithType: LDAPFilter.AddEnterpriseCertificationAuthorities(String[])
+  nameWithType.vb: LDAPFilter.AddEnterpriseCertificationAuthorities(String())
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddEnterpriseCertificationAuthorities*
+  name: AddEnterpriseCertificationAuthorities
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddEnterpriseCertificationAuthorities_
+  commentId: Overload:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddEnterpriseCertificationAuthorities
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddEnterpriseCertificationAuthorities
+  nameWithType: LDAPFilter.AddEnterpriseCertificationAuthorities
 - uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddFilter(System.String,System.Boolean)
   name: AddFilter(String, Boolean)
   href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddFilter_System_String_System_Boolean_
@@ -3313,6 +4394,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.AddDomainController
   nameWithType: LDAPUtils.AddDomainController
+- uid: SharpHoundCommonLib.LDAPUtils.BuildLdapPath(System.String,System.String)
+  name: BuildLdapPath(String, String)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_BuildLdapPath_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.BuildLdapPath(System.String,System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.BuildLdapPath(System.String, System.String)
+  nameWithType: LDAPUtils.BuildLdapPath(String, String)
+- uid: SharpHoundCommonLib.LDAPUtils.BuildLdapPath*
+  name: BuildLdapPath
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_BuildLdapPath_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.BuildLdapPath
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.BuildLdapPath
+  nameWithType: LDAPUtils.BuildLdapPath
 - uid: SharpHoundCommonLib.LDAPUtils.ConvertWellKnownPrincipal(System.String,System.String)
   name: ConvertWellKnownPrincipal(String, String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_ConvertWellKnownPrincipal_System_String_System_String_
@@ -3339,6 +4433,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.DoRangedRetrieval
   nameWithType: LDAPUtils.DoRangedRetrieval
+- uid: SharpHoundCommonLib.LDAPUtils.GetConfigurationPath(System.String)
+  name: GetConfigurationPath(String)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetConfigurationPath_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.GetConfigurationPath(System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.GetConfigurationPath(System.String)
+  nameWithType: LDAPUtils.GetConfigurationPath(String)
+- uid: SharpHoundCommonLib.LDAPUtils.GetConfigurationPath*
+  name: GetConfigurationPath
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetConfigurationPath_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.GetConfigurationPath
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.GetConfigurationPath
+  nameWithType: LDAPUtils.GetConfigurationPath
 - uid: SharpHoundCommonLib.LDAPUtils.GetDomain(System.String)
   name: GetDomain(String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetDomain_System_String_
@@ -3391,6 +4498,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.GetForest
   nameWithType: LDAPUtils.GetForest
+- uid: SharpHoundCommonLib.LDAPUtils.GetSchemaPath(System.String)
+  name: GetSchemaPath(String)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetSchemaPath_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.GetSchemaPath(System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.GetSchemaPath(System.String)
+  nameWithType: LDAPUtils.GetSchemaPath(String)
+- uid: SharpHoundCommonLib.LDAPUtils.GetSchemaPath*
+  name: GetSchemaPath
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetSchemaPath_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.GetSchemaPath
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.GetSchemaPath
+  nameWithType: LDAPUtils.GetSchemaPath
 - uid: SharpHoundCommonLib.LDAPUtils.GetSidFromDomainName(System.String)
   name: GetSidFromDomainName(String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_GetSidFromDomainName_System_String_
@@ -3446,6 +4566,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.GetWellKnownPrincipalOutput
   nameWithType: LDAPUtils.GetWellKnownPrincipalOutput
+- uid: SharpHoundCommonLib.LDAPUtils.IsDomainController(System.String,System.String)
+  name: IsDomainController(String, String)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_IsDomainController_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.IsDomainController(System.String,System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.IsDomainController(System.String, System.String)
+  nameWithType: LDAPUtils.IsDomainController(String, String)
+- uid: SharpHoundCommonLib.LDAPUtils.IsDomainController*
+  name: IsDomainController
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_IsDomainController_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.IsDomainController
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.IsDomainController
+  nameWithType: LDAPUtils.IsDomainController
 - uid: SharpHoundCommonLib.LDAPUtils.LookupGuidType(System.String,System.String)
   name: LookupGuidType(String, String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_LookupGuidType_System_String_System_String_
@@ -3529,6 +4662,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.ResolveAccountName
   nameWithType: LDAPUtils.ResolveAccountName
+- uid: SharpHoundCommonLib.LDAPUtils.ResolveCertTemplateByProperty(System.String,System.String,System.String,System.String)
+  name: ResolveCertTemplateByProperty(String, String, String, String)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_ResolveCertTemplateByProperty_System_String_System_String_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.ResolveCertTemplateByProperty(System.String,System.String,System.String,System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.ResolveCertTemplateByProperty(System.String, System.String, System.String, System.String)
+  nameWithType: LDAPUtils.ResolveCertTemplateByProperty(String, String, String, String)
+- uid: SharpHoundCommonLib.LDAPUtils.ResolveCertTemplateByProperty*
+  name: ResolveCertTemplateByProperty
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_ResolveCertTemplateByProperty_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.ResolveCertTemplateByProperty
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.ResolveCertTemplateByProperty
+  nameWithType: LDAPUtils.ResolveCertTemplateByProperty
 - uid: SharpHoundCommonLib.LDAPUtils.ResolveDistinguishedName(System.String)
   name: ResolveDistinguishedName(String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_ResolveDistinguishedName_System_String_
@@ -3607,6 +4753,25 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.UpdateLDAPConfig
   nameWithType: LDAPUtils.UpdateLDAPConfig
+- uid: SharpHoundCommonLib.MockRegistryKey
+  name: MockRegistryKey
+  href: api/SharpHoundCommonLib.MockRegistryKey.html
+  commentId: T:SharpHoundCommonLib.MockRegistryKey
+  fullName: SharpHoundCommonLib.MockRegistryKey
+  nameWithType: MockRegistryKey
+- uid: SharpHoundCommonLib.MockRegistryKey.GetValue(System.String,System.String)
+  name: GetValue(String, String)
+  href: api/SharpHoundCommonLib.MockRegistryKey.html#SharpHoundCommonLib_MockRegistryKey_GetValue_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.MockRegistryKey.GetValue(System.String,System.String)
+  fullName: SharpHoundCommonLib.MockRegistryKey.GetValue(System.String, System.String)
+  nameWithType: MockRegistryKey.GetValue(String, String)
+- uid: SharpHoundCommonLib.MockRegistryKey.GetValue*
+  name: GetValue
+  href: api/SharpHoundCommonLib.MockRegistryKey.html#SharpHoundCommonLib_MockRegistryKey_GetValue_
+  commentId: Overload:SharpHoundCommonLib.MockRegistryKey.GetValue
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.MockRegistryKey.GetValue
+  nameWithType: MockRegistryKey.GetValue
 - uid: SharpHoundCommonLib.NativeMethods
   name: NativeMethods
   href: api/SharpHoundCommonLib.NativeMethods.html
@@ -3831,6 +4996,31 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.ACE.ToString
   nameWithType: ACE.ToString
+- uid: SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult
+  name: AceRegistryAPIResult
+  href: api/SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult
+  fullName: SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult
+  nameWithType: AceRegistryAPIResult
+- uid: SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.Data
+  name: Data
+  href: api/SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.html#SharpHoundCommonLib_OutputTypes_AceRegistryAPIResult_Data
+  commentId: P:SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.Data
+  fullName: SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.Data
+  nameWithType: AceRegistryAPIResult.Data
+- uid: SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.Data*
+  name: Data
+  href: api/SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.html#SharpHoundCommonLib_OutputTypes_AceRegistryAPIResult_Data_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.Data
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.Data
+  nameWithType: AceRegistryAPIResult.Data
+- uid: SharpHoundCommonLib.OutputTypes.AIACA
+  name: AIACA
+  href: api/SharpHoundCommonLib.OutputTypes.AIACA.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.AIACA
+  fullName: SharpHoundCommonLib.OutputTypes.AIACA
+  nameWithType: AIACA
 - uid: SharpHoundCommonLib.OutputTypes.APIResult
   name: APIResult
   href: api/SharpHoundCommonLib.OutputTypes.APIResult.html
@@ -3863,6 +5053,121 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.APIResult.FailureReason
   nameWithType: APIResult.FailureReason
+- uid: SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult
+  name: BoolRegistryAPIResult
+  href: api/SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult
+  fullName: SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult
+  nameWithType: BoolRegistryAPIResult
+- uid: SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.Value
+  name: Value
+  href: api/SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.html#SharpHoundCommonLib_OutputTypes_BoolRegistryAPIResult_Value
+  commentId: P:SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.Value
+  fullName: SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.Value
+  nameWithType: BoolRegistryAPIResult.Value
+- uid: SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.Value*
+  name: Value
+  href: api/SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.html#SharpHoundCommonLib_OutputTypes_BoolRegistryAPIResult_Value_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.Value
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.Value
+  nameWithType: BoolRegistryAPIResult.Value
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData
+  name: CARegistryData
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.CARegistryData
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData
+  nameWithType: CARegistryData
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData.CASecurity
+  name: CASecurity
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html#SharpHoundCommonLib_OutputTypes_CARegistryData_CASecurity
+  commentId: P:SharpHoundCommonLib.OutputTypes.CARegistryData.CASecurity
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.CASecurity
+  nameWithType: CARegistryData.CASecurity
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData.CASecurity*
+  name: CASecurity
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html#SharpHoundCommonLib_OutputTypes_CARegistryData_CASecurity_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.CARegistryData.CASecurity
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.CASecurity
+  nameWithType: CARegistryData.CASecurity
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData.EnrollmentAgentRestrictions
+  name: EnrollmentAgentRestrictions
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html#SharpHoundCommonLib_OutputTypes_CARegistryData_EnrollmentAgentRestrictions
+  commentId: P:SharpHoundCommonLib.OutputTypes.CARegistryData.EnrollmentAgentRestrictions
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.EnrollmentAgentRestrictions
+  nameWithType: CARegistryData.EnrollmentAgentRestrictions
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData.EnrollmentAgentRestrictions*
+  name: EnrollmentAgentRestrictions
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html#SharpHoundCommonLib_OutputTypes_CARegistryData_EnrollmentAgentRestrictions_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.CARegistryData.EnrollmentAgentRestrictions
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.EnrollmentAgentRestrictions
+  nameWithType: CARegistryData.EnrollmentAgentRestrictions
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData.IsUserSpecifiesSanEnabled
+  name: IsUserSpecifiesSanEnabled
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html#SharpHoundCommonLib_OutputTypes_CARegistryData_IsUserSpecifiesSanEnabled
+  commentId: P:SharpHoundCommonLib.OutputTypes.CARegistryData.IsUserSpecifiesSanEnabled
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.IsUserSpecifiesSanEnabled
+  nameWithType: CARegistryData.IsUserSpecifiesSanEnabled
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData.IsUserSpecifiesSanEnabled*
+  name: IsUserSpecifiesSanEnabled
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html#SharpHoundCommonLib_OutputTypes_CARegistryData_IsUserSpecifiesSanEnabled_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.CARegistryData.IsUserSpecifiesSanEnabled
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.IsUserSpecifiesSanEnabled
+  nameWithType: CARegistryData.IsUserSpecifiesSanEnabled
+- uid: SharpHoundCommonLib.OutputTypes.CertificateExtension
+  name: CertificateExtension
+  href: api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.CertificateExtension
+  fullName: SharpHoundCommonLib.OutputTypes.CertificateExtension
+  nameWithType: CertificateExtension
+- uid: SharpHoundCommonLib.OutputTypes.CertificateExtension.#ctor(System.Security.Cryptography.X509Certificates.X509Extension)
+  name: CertificateExtension(X509Extension)
+  href: api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html#SharpHoundCommonLib_OutputTypes_CertificateExtension__ctor_System_Security_Cryptography_X509Certificates_X509Extension_
+  commentId: M:SharpHoundCommonLib.OutputTypes.CertificateExtension.#ctor(System.Security.Cryptography.X509Certificates.X509Extension)
+  fullName: SharpHoundCommonLib.OutputTypes.CertificateExtension.CertificateExtension(System.Security.Cryptography.X509Certificates.X509Extension)
+  nameWithType: CertificateExtension.CertificateExtension(X509Extension)
+- uid: SharpHoundCommonLib.OutputTypes.CertificateExtension.#ctor*
+  name: CertificateExtension
+  href: api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html#SharpHoundCommonLib_OutputTypes_CertificateExtension__ctor_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.CertificateExtension.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.CertificateExtension.CertificateExtension
+  nameWithType: CertificateExtension.CertificateExtension
+- uid: SharpHoundCommonLib.OutputTypes.CertificateExtension.Critical
+  name: Critical
+  href: api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html#SharpHoundCommonLib_OutputTypes_CertificateExtension_Critical
+  commentId: P:SharpHoundCommonLib.OutputTypes.CertificateExtension.Critical
+  fullName: SharpHoundCommonLib.OutputTypes.CertificateExtension.Critical
+  nameWithType: CertificateExtension.Critical
+- uid: SharpHoundCommonLib.OutputTypes.CertificateExtension.Critical*
+  name: Critical
+  href: api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html#SharpHoundCommonLib_OutputTypes_CertificateExtension_Critical_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.CertificateExtension.Critical
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.CertificateExtension.Critical
+  nameWithType: CertificateExtension.Critical
+- uid: SharpHoundCommonLib.OutputTypes.CertificateExtension.Oid
+  name: Oid
+  href: api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html#SharpHoundCommonLib_OutputTypes_CertificateExtension_Oid
+  commentId: P:SharpHoundCommonLib.OutputTypes.CertificateExtension.Oid
+  fullName: SharpHoundCommonLib.OutputTypes.CertificateExtension.Oid
+  nameWithType: CertificateExtension.Oid
+- uid: SharpHoundCommonLib.OutputTypes.CertificateExtension.Oid*
+  name: Oid
+  href: api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html#SharpHoundCommonLib_OutputTypes_CertificateExtension_Oid_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.CertificateExtension.Oid
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.CertificateExtension.Oid
+  nameWithType: CertificateExtension.Oid
+- uid: SharpHoundCommonLib.OutputTypes.CertTemplate
+  name: CertTemplate
+  href: api/SharpHoundCommonLib.OutputTypes.CertTemplate.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.CertTemplate
+  fullName: SharpHoundCommonLib.OutputTypes.CertTemplate
+  nameWithType: CertTemplate
 - uid: SharpHoundCommonLib.OutputTypes.Computer
   name: Computer
   href: api/SharpHoundCommonLib.OutputTypes.Computer.html
@@ -3895,6 +5200,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Computer.AllowedToDelegate
   nameWithType: Computer.AllowedToDelegate
+- uid: SharpHoundCommonLib.OutputTypes.Computer.DCRegistryData
+  name: DCRegistryData
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_DCRegistryData
+  commentId: P:SharpHoundCommonLib.OutputTypes.Computer.DCRegistryData
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.DCRegistryData
+  nameWithType: Computer.DCRegistryData
+- uid: SharpHoundCommonLib.OutputTypes.Computer.DCRegistryData*
+  name: DCRegistryData
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_DCRegistryData_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.Computer.DCRegistryData
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.DCRegistryData
+  nameWithType: Computer.DCRegistryData
 - uid: SharpHoundCommonLib.OutputTypes.Computer.DumpSMSAPassword
   name: DumpSMSAPassword
   href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_DumpSMSAPassword
@@ -4128,6 +5446,38 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Container.ChildObjects
   nameWithType: Container.ChildObjects
+- uid: SharpHoundCommonLib.OutputTypes.DCRegistryData
+  name: DCRegistryData
+  href: api/SharpHoundCommonLib.OutputTypes.DCRegistryData.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.DCRegistryData
+  fullName: SharpHoundCommonLib.OutputTypes.DCRegistryData
+  nameWithType: DCRegistryData
+- uid: SharpHoundCommonLib.OutputTypes.DCRegistryData.CertificateMappingMethods
+  name: CertificateMappingMethods
+  href: api/SharpHoundCommonLib.OutputTypes.DCRegistryData.html#SharpHoundCommonLib_OutputTypes_DCRegistryData_CertificateMappingMethods
+  commentId: P:SharpHoundCommonLib.OutputTypes.DCRegistryData.CertificateMappingMethods
+  fullName: SharpHoundCommonLib.OutputTypes.DCRegistryData.CertificateMappingMethods
+  nameWithType: DCRegistryData.CertificateMappingMethods
+- uid: SharpHoundCommonLib.OutputTypes.DCRegistryData.CertificateMappingMethods*
+  name: CertificateMappingMethods
+  href: api/SharpHoundCommonLib.OutputTypes.DCRegistryData.html#SharpHoundCommonLib_OutputTypes_DCRegistryData_CertificateMappingMethods_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DCRegistryData.CertificateMappingMethods
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.DCRegistryData.CertificateMappingMethods
+  nameWithType: DCRegistryData.CertificateMappingMethods
+- uid: SharpHoundCommonLib.OutputTypes.DCRegistryData.StrongCertificateBindingEnforcement
+  name: StrongCertificateBindingEnforcement
+  href: api/SharpHoundCommonLib.OutputTypes.DCRegistryData.html#SharpHoundCommonLib_OutputTypes_DCRegistryData_StrongCertificateBindingEnforcement
+  commentId: P:SharpHoundCommonLib.OutputTypes.DCRegistryData.StrongCertificateBindingEnforcement
+  fullName: SharpHoundCommonLib.OutputTypes.DCRegistryData.StrongCertificateBindingEnforcement
+  nameWithType: DCRegistryData.StrongCertificateBindingEnforcement
+- uid: SharpHoundCommonLib.OutputTypes.DCRegistryData.StrongCertificateBindingEnforcement*
+  name: StrongCertificateBindingEnforcement
+  href: api/SharpHoundCommonLib.OutputTypes.DCRegistryData.html#SharpHoundCommonLib_OutputTypes_DCRegistryData_StrongCertificateBindingEnforcement_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DCRegistryData.StrongCertificateBindingEnforcement
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.DCRegistryData.StrongCertificateBindingEnforcement
+  nameWithType: DCRegistryData.StrongCertificateBindingEnforcement
 - uid: SharpHoundCommonLib.OutputTypes.Domain
   name: Domain
   href: api/SharpHoundCommonLib.OutputTypes.Domain.html
@@ -4263,6 +5613,70 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustType
   nameWithType: DomainTrust.TrustType
+- uid: SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult
+  name: EnrollmentAgentRegistryAPIResult
+  href: api/SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult
+  fullName: SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult
+  nameWithType: EnrollmentAgentRegistryAPIResult
+- uid: SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.Restrictions
+  name: Restrictions
+  href: api/SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.html#SharpHoundCommonLib_OutputTypes_EnrollmentAgentRegistryAPIResult_Restrictions
+  commentId: P:SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.Restrictions
+  fullName: SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.Restrictions
+  nameWithType: EnrollmentAgentRegistryAPIResult.Restrictions
+- uid: SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.Restrictions*
+  name: Restrictions
+  href: api/SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.html#SharpHoundCommonLib_OutputTypes_EnrollmentAgentRegistryAPIResult_Restrictions_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.Restrictions
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.Restrictions
+  nameWithType: EnrollmentAgentRegistryAPIResult.Restrictions
+- uid: SharpHoundCommonLib.OutputTypes.EnterpriseCA
+  name: EnterpriseCA
+  href: api/SharpHoundCommonLib.OutputTypes.EnterpriseCA.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.EnterpriseCA
+  fullName: SharpHoundCommonLib.OutputTypes.EnterpriseCA
+  nameWithType: EnterpriseCA
+- uid: SharpHoundCommonLib.OutputTypes.EnterpriseCA.CARegistryData
+  name: CARegistryData
+  href: api/SharpHoundCommonLib.OutputTypes.EnterpriseCA.html#SharpHoundCommonLib_OutputTypes_EnterpriseCA_CARegistryData
+  commentId: P:SharpHoundCommonLib.OutputTypes.EnterpriseCA.CARegistryData
+  fullName: SharpHoundCommonLib.OutputTypes.EnterpriseCA.CARegistryData
+  nameWithType: EnterpriseCA.CARegistryData
+- uid: SharpHoundCommonLib.OutputTypes.EnterpriseCA.CARegistryData*
+  name: CARegistryData
+  href: api/SharpHoundCommonLib.OutputTypes.EnterpriseCA.html#SharpHoundCommonLib_OutputTypes_EnterpriseCA_CARegistryData_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.EnterpriseCA.CARegistryData
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.EnterpriseCA.CARegistryData
+  nameWithType: EnterpriseCA.CARegistryData
+- uid: SharpHoundCommonLib.OutputTypes.EnterpriseCA.EnabledCertTemplates
+  name: EnabledCertTemplates
+  href: api/SharpHoundCommonLib.OutputTypes.EnterpriseCA.html#SharpHoundCommonLib_OutputTypes_EnterpriseCA_EnabledCertTemplates
+  commentId: P:SharpHoundCommonLib.OutputTypes.EnterpriseCA.EnabledCertTemplates
+  fullName: SharpHoundCommonLib.OutputTypes.EnterpriseCA.EnabledCertTemplates
+  nameWithType: EnterpriseCA.EnabledCertTemplates
+- uid: SharpHoundCommonLib.OutputTypes.EnterpriseCA.EnabledCertTemplates*
+  name: EnabledCertTemplates
+  href: api/SharpHoundCommonLib.OutputTypes.EnterpriseCA.html#SharpHoundCommonLib_OutputTypes_EnterpriseCA_EnabledCertTemplates_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.EnterpriseCA.EnabledCertTemplates
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.EnterpriseCA.EnabledCertTemplates
+  nameWithType: EnterpriseCA.EnabledCertTemplates
+- uid: SharpHoundCommonLib.OutputTypes.EnterpriseCA.HostingComputer
+  name: HostingComputer
+  href: api/SharpHoundCommonLib.OutputTypes.EnterpriseCA.html#SharpHoundCommonLib_OutputTypes_EnterpriseCA_HostingComputer
+  commentId: P:SharpHoundCommonLib.OutputTypes.EnterpriseCA.HostingComputer
+  fullName: SharpHoundCommonLib.OutputTypes.EnterpriseCA.HostingComputer
+  nameWithType: EnterpriseCA.HostingComputer
+- uid: SharpHoundCommonLib.OutputTypes.EnterpriseCA.HostingComputer*
+  name: HostingComputer
+  href: api/SharpHoundCommonLib.OutputTypes.EnterpriseCA.html#SharpHoundCommonLib_OutputTypes_EnterpriseCA_HostingComputer_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.EnterpriseCA.HostingComputer
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.EnterpriseCA.HostingComputer
+  nameWithType: EnterpriseCA.HostingComputer
 - uid: SharpHoundCommonLib.OutputTypes.GPLink
   name: GPLink
   href: api/SharpHoundCommonLib.OutputTypes.GPLink.html
@@ -4352,6 +5766,25 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Group.Members
   nameWithType: Group.Members
+- uid: SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult
+  name: IntRegistryAPIResult
+  href: api/SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult
+  fullName: SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult
+  nameWithType: IntRegistryAPIResult
+- uid: SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.Value
+  name: Value
+  href: api/SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.html#SharpHoundCommonLib_OutputTypes_IntRegistryAPIResult_Value
+  commentId: P:SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.Value
+  fullName: SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.Value
+  nameWithType: IntRegistryAPIResult.Value
+- uid: SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.Value*
+  name: Value
+  href: api/SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.html#SharpHoundCommonLib_OutputTypes_IntRegistryAPIResult_Value_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.Value
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.Value
+  nameWithType: IntRegistryAPIResult.Value
 - uid: SharpHoundCommonLib.OutputTypes.LocalGroup
   name: LocalGroup
   href: api/SharpHoundCommonLib.OutputTypes.LocalGroup.html
@@ -4609,6 +6042,25 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.NamedPrincipal.ToString
   nameWithType: NamedPrincipal.ToString
+- uid: SharpHoundCommonLib.OutputTypes.NTAuthStore
+  name: NTAuthStore
+  href: api/SharpHoundCommonLib.OutputTypes.NTAuthStore.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.NTAuthStore
+  fullName: SharpHoundCommonLib.OutputTypes.NTAuthStore
+  nameWithType: NTAuthStore
+- uid: SharpHoundCommonLib.OutputTypes.NTAuthStore.DomainSID
+  name: DomainSID
+  href: api/SharpHoundCommonLib.OutputTypes.NTAuthStore.html#SharpHoundCommonLib_OutputTypes_NTAuthStore_DomainSID
+  commentId: P:SharpHoundCommonLib.OutputTypes.NTAuthStore.DomainSID
+  fullName: SharpHoundCommonLib.OutputTypes.NTAuthStore.DomainSID
+  nameWithType: NTAuthStore.DomainSID
+- uid: SharpHoundCommonLib.OutputTypes.NTAuthStore.DomainSID*
+  name: DomainSID
+  href: api/SharpHoundCommonLib.OutputTypes.NTAuthStore.html#SharpHoundCommonLib_OutputTypes_NTAuthStore_DomainSID_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.NTAuthStore.DomainSID
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.NTAuthStore.DomainSID
+  nameWithType: NTAuthStore.DomainSID
 - uid: SharpHoundCommonLib.OutputTypes.OU
   name: OU
   href: api/SharpHoundCommonLib.OutputTypes.OU.html
@@ -4838,6 +6290,25 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.RemoteDesktopUsers
   nameWithType: ResultingGPOChanges.RemoteDesktopUsers
+- uid: SharpHoundCommonLib.OutputTypes.RootCA
+  name: RootCA
+  href: api/SharpHoundCommonLib.OutputTypes.RootCA.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.RootCA
+  fullName: SharpHoundCommonLib.OutputTypes.RootCA
+  nameWithType: RootCA
+- uid: SharpHoundCommonLib.OutputTypes.RootCA.DomainSID
+  name: DomainSID
+  href: api/SharpHoundCommonLib.OutputTypes.RootCA.html#SharpHoundCommonLib_OutputTypes_RootCA_DomainSID
+  commentId: P:SharpHoundCommonLib.OutputTypes.RootCA.DomainSID
+  fullName: SharpHoundCommonLib.OutputTypes.RootCA.DomainSID
+  nameWithType: RootCA.DomainSID
+- uid: SharpHoundCommonLib.OutputTypes.RootCA.DomainSID*
+  name: DomainSID
+  href: api/SharpHoundCommonLib.OutputTypes.RootCA.html#SharpHoundCommonLib_OutputTypes_RootCA_DomainSID_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.RootCA.DomainSID
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.RootCA.DomainSID
+  nameWithType: RootCA.DomainSID
 - uid: SharpHoundCommonLib.OutputTypes.Session
   name: Session
   href: api/SharpHoundCommonLib.OutputTypes.Session.html
@@ -5234,6 +6705,12 @@ references:
   commentId: F:SharpHoundCommonLib.Processors.ACEGuids.AllGuid
   fullName: SharpHoundCommonLib.Processors.ACEGuids.AllGuid
   nameWithType: ACEGuids.AllGuid
+- uid: SharpHoundCommonLib.Processors.ACEGuids.AutoEnroll
+  name: AutoEnroll
+  href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_AutoEnroll
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.AutoEnroll
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.AutoEnroll
+  nameWithType: ACEGuids.AutoEnroll
 - uid: SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChanges
   name: DSReplicationGetChanges
   href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_DSReplicationGetChanges
@@ -5252,6 +6729,24 @@ references:
   commentId: F:SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChangesInFilteredSet
   fullName: SharpHoundCommonLib.Processors.ACEGuids.DSReplicationGetChangesInFilteredSet
   nameWithType: ACEGuids.DSReplicationGetChangesInFilteredSet
+- uid: SharpHoundCommonLib.Processors.ACEGuids.Enroll
+  name: Enroll
+  href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_Enroll
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.Enroll
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.Enroll
+  nameWithType: ACEGuids.Enroll
+- uid: SharpHoundCommonLib.Processors.ACEGuids.PKIEnrollmentFlag
+  name: PKIEnrollmentFlag
+  href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_PKIEnrollmentFlag
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.PKIEnrollmentFlag
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.PKIEnrollmentFlag
+  nameWithType: ACEGuids.PKIEnrollmentFlag
+- uid: SharpHoundCommonLib.Processors.ACEGuids.PKINameFlag
+  name: PKINameFlag
+  href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_PKINameFlag
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.PKINameFlag
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.PKINameFlag
+  nameWithType: ACEGuids.PKINameFlag
 - uid: SharpHoundCommonLib.Processors.ACEGuids.UserAccountRestrictions
   name: UserAccountRestrictions
   href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_UserAccountRestrictions
@@ -5376,6 +6871,169 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ACLProcessor.ProcessGMSAReaders
   nameWithType: ACLProcessor.ProcessGMSAReaders
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor
+  name: CertAbuseProcessor
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html
+  commentId: T:SharpHoundCommonLib.Processors.CertAbuseProcessor
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor
+  nameWithType: CertAbuseProcessor
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  name: CertAbuseProcessor(ILDAPUtils, ILogger)
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.CertAbuseProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.CertAbuseProcessor(SharpHoundCommonLib.ILDAPUtils, ILogger)
+  nameWithType: CertAbuseProcessor.CertAbuseProcessor(ILDAPUtils, ILogger)
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.#ctor*
+  name: CertAbuseProcessor
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor__ctor_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertAbuseProcessor.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.CertAbuseProcessor
+  nameWithType: CertAbuseProcessor.CertAbuseProcessor
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor._utils
+  name: _utils
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor__utils
+  commentId: F:SharpHoundCommonLib.Processors.CertAbuseProcessor._utils
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor._utils
+  nameWithType: CertAbuseProcessor._utils
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.ComputerStatusDelegate
+  name: CertAbuseProcessor.ComputerStatusDelegate
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.ComputerStatusDelegate.html
+  commentId: T:SharpHoundCommonLib.Processors.CertAbuseProcessor.ComputerStatusDelegate
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ComputerStatusDelegate
+  nameWithType: CertAbuseProcessor.ComputerStatusDelegate
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.ComputerStatusEvent
+  name: ComputerStatusEvent
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_ComputerStatusEvent
+  commentId: E:SharpHoundCommonLib.Processors.CertAbuseProcessor.ComputerStatusEvent
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ComputerStatusEvent
+  nameWithType: CertAbuseProcessor.ComputerStatusEvent
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.GetRegistryPrincipal(System.Security.Principal.SecurityIdentifier,System.String,System.String,System.Boolean,System.String,System.Security.Principal.SecurityIdentifier)
+  name: GetRegistryPrincipal(SecurityIdentifier, String, String, Boolean, String, SecurityIdentifier)
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_GetRegistryPrincipal_System_Security_Principal_SecurityIdentifier_System_String_System_String_System_Boolean_System_String_System_Security_Principal_SecurityIdentifier_
+  commentId: M:SharpHoundCommonLib.Processors.CertAbuseProcessor.GetRegistryPrincipal(System.Security.Principal.SecurityIdentifier,System.String,System.String,System.Boolean,System.String,System.Security.Principal.SecurityIdentifier)
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.GetRegistryPrincipal(System.Security.Principal.SecurityIdentifier, System.String, System.String, System.Boolean, System.String, System.Security.Principal.SecurityIdentifier)
+  nameWithType: CertAbuseProcessor.GetRegistryPrincipal(SecurityIdentifier, String, String, Boolean, String, SecurityIdentifier)
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.GetRegistryPrincipal*
+  name: GetRegistryPrincipal
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_GetRegistryPrincipal_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertAbuseProcessor.GetRegistryPrincipal
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.GetRegistryPrincipal
+  nameWithType: CertAbuseProcessor.GetRegistryPrincipal
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.IsUserSpecifiesSanEnabled(System.String,System.String)
+  name: IsUserSpecifiesSanEnabled(String, String)
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_IsUserSpecifiesSanEnabled_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.CertAbuseProcessor.IsUserSpecifiesSanEnabled(System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.IsUserSpecifiesSanEnabled(System.String, System.String)
+  nameWithType: CertAbuseProcessor.IsUserSpecifiesSanEnabled(String, String)
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.IsUserSpecifiesSanEnabled*
+  name: IsUserSpecifiesSanEnabled
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_IsUserSpecifiesSanEnabled_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertAbuseProcessor.IsUserSpecifiesSanEnabled
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.IsUserSpecifiesSanEnabled
+  nameWithType: CertAbuseProcessor.IsUserSpecifiesSanEnabled
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.OpenSamServer(System.String)
+  name: OpenSamServer(String)
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_OpenSamServer_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.CertAbuseProcessor.OpenSamServer(System.String)
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.OpenSamServer(System.String)
+  nameWithType: CertAbuseProcessor.OpenSamServer(String)
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.OpenSamServer*
+  name: OpenSamServer
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_OpenSamServer_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertAbuseProcessor.OpenSamServer
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.OpenSamServer
+  nameWithType: CertAbuseProcessor.OpenSamServer
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessCertTemplates(System.String[],System.String)
+  name: ProcessCertTemplates(String[], String)
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_ProcessCertTemplates_System_String___System_String_
+  commentId: M:SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessCertTemplates(System.String[],System.String)
+  name.vb: ProcessCertTemplates(String(), String)
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessCertTemplates(System.String[], System.String)
+  fullName.vb: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessCertTemplates(System.String(), System.String)
+  nameWithType: CertAbuseProcessor.ProcessCertTemplates(String[], String)
+  nameWithType.vb: CertAbuseProcessor.ProcessCertTemplates(String(), String)
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessCertTemplates*
+  name: ProcessCertTemplates
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_ProcessCertTemplates_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessCertTemplates
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessCertTemplates
+  nameWithType: CertAbuseProcessor.ProcessCertTemplates
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessEAPermissions(System.String,System.String,System.String,System.String)
+  name: ProcessEAPermissions(String, String, String, String)
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_ProcessEAPermissions_System_String_System_String_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessEAPermissions(System.String,System.String,System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessEAPermissions(System.String, System.String, System.String, System.String)
+  nameWithType: CertAbuseProcessor.ProcessEAPermissions(String, String, String, String)
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessEAPermissions*
+  name: ProcessEAPermissions
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_ProcessEAPermissions_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessEAPermissions
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessEAPermissions
+  nameWithType: CertAbuseProcessor.ProcessEAPermissions
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessRegistryEnrollmentPermissions(System.String,System.String,System.String,System.String)
+  name: ProcessRegistryEnrollmentPermissions(String, String, String, String)
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_ProcessRegistryEnrollmentPermissions_System_String_System_String_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessRegistryEnrollmentPermissions(System.String,System.String,System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessRegistryEnrollmentPermissions(System.String, System.String, System.String, System.String)
+  nameWithType: CertAbuseProcessor.ProcessRegistryEnrollmentPermissions(String, String, String, String)
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessRegistryEnrollmentPermissions*
+  name: ProcessRegistryEnrollmentPermissions
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_ProcessRegistryEnrollmentPermissions_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessRegistryEnrollmentPermissions
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessRegistryEnrollmentPermissions
+  nameWithType: CertAbuseProcessor.ProcessRegistryEnrollmentPermissions
+- uid: SharpHoundCommonLib.Processors.CertRegistryResult
+  name: CertRegistryResult
+  href: api/SharpHoundCommonLib.Processors.CertRegistryResult.html
+  commentId: T:SharpHoundCommonLib.Processors.CertRegistryResult
+  fullName: SharpHoundCommonLib.Processors.CertRegistryResult
+  nameWithType: CertRegistryResult
+- uid: SharpHoundCommonLib.Processors.CertRegistryResult.Collected
+  name: Collected
+  href: api/SharpHoundCommonLib.Processors.CertRegistryResult.html#SharpHoundCommonLib_Processors_CertRegistryResult_Collected
+  commentId: P:SharpHoundCommonLib.Processors.CertRegistryResult.Collected
+  fullName: SharpHoundCommonLib.Processors.CertRegistryResult.Collected
+  nameWithType: CertRegistryResult.Collected
+- uid: SharpHoundCommonLib.Processors.CertRegistryResult.Collected*
+  name: Collected
+  href: api/SharpHoundCommonLib.Processors.CertRegistryResult.html#SharpHoundCommonLib_Processors_CertRegistryResult_Collected_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertRegistryResult.Collected
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertRegistryResult.Collected
+  nameWithType: CertRegistryResult.Collected
+- uid: SharpHoundCommonLib.Processors.CertRegistryResult.FailureReason
+  name: FailureReason
+  href: api/SharpHoundCommonLib.Processors.CertRegistryResult.html#SharpHoundCommonLib_Processors_CertRegistryResult_FailureReason
+  commentId: P:SharpHoundCommonLib.Processors.CertRegistryResult.FailureReason
+  fullName: SharpHoundCommonLib.Processors.CertRegistryResult.FailureReason
+  nameWithType: CertRegistryResult.FailureReason
+- uid: SharpHoundCommonLib.Processors.CertRegistryResult.FailureReason*
+  name: FailureReason
+  href: api/SharpHoundCommonLib.Processors.CertRegistryResult.html#SharpHoundCommonLib_Processors_CertRegistryResult_FailureReason_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertRegistryResult.FailureReason
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertRegistryResult.FailureReason
+  nameWithType: CertRegistryResult.FailureReason
+- uid: SharpHoundCommonLib.Processors.CertRegistryResult.Value
+  name: Value
+  href: api/SharpHoundCommonLib.Processors.CertRegistryResult.html#SharpHoundCommonLib_Processors_CertRegistryResult_Value
+  commentId: P:SharpHoundCommonLib.Processors.CertRegistryResult.Value
+  fullName: SharpHoundCommonLib.Processors.CertRegistryResult.Value
+  nameWithType: CertRegistryResult.Value
+- uid: SharpHoundCommonLib.Processors.CertRegistryResult.Value*
+  name: Value
+  href: api/SharpHoundCommonLib.Processors.CertRegistryResult.html#SharpHoundCommonLib_Processors_CertRegistryResult_Value_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertRegistryResult.Value
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertRegistryResult.Value
+  nameWithType: CertRegistryResult.Value
 - uid: SharpHoundCommonLib.Processors.ComputerAvailability
   name: ComputerAvailability
   href: api/SharpHoundCommonLib.Processors.ComputerAvailability.html
@@ -5509,12 +7167,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ComputerSessionProcessor
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor
   nameWithType: ComputerSessionProcessor
-- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods,ILogger)
-  name: ComputerSessionProcessor(ILDAPUtils, String, NativeMethods, ILogger)
-  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_String_SharpHoundCommonLib_NativeMethods_ILogger_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods,ILogger)
-  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor(SharpHoundCommonLib.ILDAPUtils, System.String, SharpHoundCommonLib.NativeMethods, ILogger)
-  nameWithType: ComputerSessionProcessor.ComputerSessionProcessor(ILDAPUtils, String, NativeMethods, ILogger)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods,ILogger,System.Boolean,System.String,System.String)
+  name: ComputerSessionProcessor(ILDAPUtils, String, NativeMethods, ILogger, Boolean, String, String)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_System_String_SharpHoundCommonLib_NativeMethods_ILogger_System_Boolean_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,System.String,SharpHoundCommonLib.NativeMethods,ILogger,System.Boolean,System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor(SharpHoundCommonLib.ILDAPUtils, System.String, SharpHoundCommonLib.NativeMethods, ILogger, System.Boolean, System.String, System.String)
+  nameWithType: ComputerSessionProcessor.ComputerSessionProcessor(ILDAPUtils, String, NativeMethods, ILogger, Boolean, String, String)
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor*
   name: ComputerSessionProcessor
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_
@@ -5662,6 +7320,63 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ContainerProcessor.ReadContainerGPLinks
   nameWithType: ContainerProcessor.ReadContainerGPLinks
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor
+  name: DCRegistryProcessor
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html
+  commentId: T:SharpHoundCommonLib.Processors.DCRegistryProcessor
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor
+  nameWithType: DCRegistryProcessor
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  name: DCRegistryProcessor(ILDAPUtils, ILogger)
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html#SharpHoundCommonLib_Processors_DCRegistryProcessor__ctor_SharpHoundCommonLib_ILDAPUtils_ILogger_
+  commentId: M:SharpHoundCommonLib.Processors.DCRegistryProcessor.#ctor(SharpHoundCommonLib.ILDAPUtils,ILogger)
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor.DCRegistryProcessor(SharpHoundCommonLib.ILDAPUtils, ILogger)
+  nameWithType: DCRegistryProcessor.DCRegistryProcessor(ILDAPUtils, ILogger)
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor.#ctor*
+  name: DCRegistryProcessor
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html#SharpHoundCommonLib_Processors_DCRegistryProcessor__ctor_
+  commentId: Overload:SharpHoundCommonLib.Processors.DCRegistryProcessor.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor.DCRegistryProcessor
+  nameWithType: DCRegistryProcessor.DCRegistryProcessor
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor._utils
+  name: _utils
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html#SharpHoundCommonLib_Processors_DCRegistryProcessor__utils
+  commentId: F:SharpHoundCommonLib.Processors.DCRegistryProcessor._utils
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor._utils
+  nameWithType: DCRegistryProcessor._utils
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor.ComputerStatusDelegate
+  name: DCRegistryProcessor.ComputerStatusDelegate
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.ComputerStatusDelegate.html
+  commentId: T:SharpHoundCommonLib.Processors.DCRegistryProcessor.ComputerStatusDelegate
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor.ComputerStatusDelegate
+  nameWithType: DCRegistryProcessor.ComputerStatusDelegate
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor.GetCertificateMappingMethods(System.String)
+  name: GetCertificateMappingMethods(String)
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html#SharpHoundCommonLib_Processors_DCRegistryProcessor_GetCertificateMappingMethods_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.DCRegistryProcessor.GetCertificateMappingMethods(System.String)
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor.GetCertificateMappingMethods(System.String)
+  nameWithType: DCRegistryProcessor.GetCertificateMappingMethods(String)
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor.GetCertificateMappingMethods*
+  name: GetCertificateMappingMethods
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html#SharpHoundCommonLib_Processors_DCRegistryProcessor_GetCertificateMappingMethods_
+  commentId: Overload:SharpHoundCommonLib.Processors.DCRegistryProcessor.GetCertificateMappingMethods
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor.GetCertificateMappingMethods
+  nameWithType: DCRegistryProcessor.GetCertificateMappingMethods
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor.GetStrongCertificateBindingEnforcement(System.String)
+  name: GetStrongCertificateBindingEnforcement(String)
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html#SharpHoundCommonLib_Processors_DCRegistryProcessor_GetStrongCertificateBindingEnforcement_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.DCRegistryProcessor.GetStrongCertificateBindingEnforcement(System.String)
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor.GetStrongCertificateBindingEnforcement(System.String)
+  nameWithType: DCRegistryProcessor.GetStrongCertificateBindingEnforcement(String)
+- uid: SharpHoundCommonLib.Processors.DCRegistryProcessor.GetStrongCertificateBindingEnforcement*
+  name: GetStrongCertificateBindingEnforcement
+  href: api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html#SharpHoundCommonLib_Processors_DCRegistryProcessor_GetStrongCertificateBindingEnforcement_
+  commentId: Overload:SharpHoundCommonLib.Processors.DCRegistryProcessor.GetStrongCertificateBindingEnforcement
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.DCRegistryProcessor.GetStrongCertificateBindingEnforcement
+  nameWithType: DCRegistryProcessor.GetStrongCertificateBindingEnforcement
 - uid: SharpHoundCommonLib.Processors.DomainTrustProcessor
   name: DomainTrustProcessor
   href: api/SharpHoundCommonLib.Processors.DomainTrustProcessor.html
@@ -5707,6 +7422,90 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.DomainTrustProcessor.TrustAttributesToType
   nameWithType: DomainTrustProcessor.TrustAttributesToType
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction
+  name: EnrollmentAgentRestriction
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html
+  commentId: T:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction
+  nameWithType: EnrollmentAgentRestriction
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.#ctor(System.Security.AccessControl.QualifiedAce,System.String,System.String,SharpHoundCommonLib.Processors.CertAbuseProcessor,System.String,System.Boolean,System.String,System.Security.Principal.SecurityIdentifier)
+  name: EnrollmentAgentRestriction(QualifiedAce, String, String, CertAbuseProcessor, String, Boolean, String, SecurityIdentifier)
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction__ctor_System_Security_AccessControl_QualifiedAce_System_String_System_String_SharpHoundCommonLib_Processors_CertAbuseProcessor_System_String_System_Boolean_System_String_System_Security_Principal_SecurityIdentifier_
+  commentId: M:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.#ctor(System.Security.AccessControl.QualifiedAce,System.String,System.String,SharpHoundCommonLib.Processors.CertAbuseProcessor,System.String,System.Boolean,System.String,System.Security.Principal.SecurityIdentifier)
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.EnrollmentAgentRestriction(System.Security.AccessControl.QualifiedAce, System.String, System.String, SharpHoundCommonLib.Processors.CertAbuseProcessor, System.String, System.Boolean, System.String, System.Security.Principal.SecurityIdentifier)
+  nameWithType: EnrollmentAgentRestriction.EnrollmentAgentRestriction(QualifiedAce, String, String, CertAbuseProcessor, String, Boolean, String, SecurityIdentifier)
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.#ctor*
+  name: EnrollmentAgentRestriction
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction__ctor_
+  commentId: Overload:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.EnrollmentAgentRestriction
+  nameWithType: EnrollmentAgentRestriction.EnrollmentAgentRestriction
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AccessType
+  name: AccessType
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_AccessType
+  commentId: P:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AccessType
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AccessType
+  nameWithType: EnrollmentAgentRestriction.AccessType
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AccessType*
+  name: AccessType
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_AccessType_
+  commentId: Overload:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AccessType
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AccessType
+  nameWithType: EnrollmentAgentRestriction.AccessType
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Agent
+  name: Agent
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_Agent
+  commentId: P:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Agent
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Agent
+  nameWithType: EnrollmentAgentRestriction.Agent
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Agent*
+  name: Agent
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_Agent_
+  commentId: Overload:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Agent
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Agent
+  nameWithType: EnrollmentAgentRestriction.Agent
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AllTemplates
+  name: AllTemplates
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_AllTemplates
+  commentId: P:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AllTemplates
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AllTemplates
+  nameWithType: EnrollmentAgentRestriction.AllTemplates
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AllTemplates*
+  name: AllTemplates
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_AllTemplates_
+  commentId: Overload:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AllTemplates
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.AllTemplates
+  nameWithType: EnrollmentAgentRestriction.AllTemplates
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Targets
+  name: Targets
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_Targets
+  commentId: P:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Targets
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Targets
+  nameWithType: EnrollmentAgentRestriction.Targets
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Targets*
+  name: Targets
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_Targets_
+  commentId: Overload:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Targets
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Targets
+  nameWithType: EnrollmentAgentRestriction.Targets
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Template
+  name: Template
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_Template
+  commentId: P:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Template
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Template
+  nameWithType: EnrollmentAgentRestriction.Template
+- uid: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Template*
+  name: Template
+  href: api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html#SharpHoundCommonLib_Processors_EnrollmentAgentRestriction_Template_
+  commentId: Overload:SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Template
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.Template
+  nameWithType: EnrollmentAgentRestriction.Template
 - uid: SharpHoundCommonLib.Processors.GPOLocalGroupProcessor
   name: GPOLocalGroupProcessor
   href: api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html
@@ -5868,6 +7667,32 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ParseAllProperties
   nameWithType: LDAPPropertyProcessor.ParseAllProperties
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadAIACAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadAIACAProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadAIACAProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadAIACAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadAIACAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadAIACAProperties(ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadAIACAProperties*
+  name: ReadAIACAProperties
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadAIACAProperties_
+  commentId: Overload:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadAIACAProperties
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadAIACAProperties
+  nameWithType: LDAPPropertyProcessor.ReadAIACAProperties
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadCertTemplateProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadCertTemplateProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadCertTemplateProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadCertTemplateProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadCertTemplateProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadCertTemplateProperties(ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadCertTemplateProperties*
+  name: ReadCertTemplateProperties
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadCertTemplateProperties_
+  commentId: Overload:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadCertTemplateProperties
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadCertTemplateProperties
+  nameWithType: LDAPPropertyProcessor.ReadCertTemplateProperties
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadComputerProperties(SharpHoundCommonLib.ISearchResultEntry)
   name: ReadComputerProperties(ISearchResultEntry)
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadComputerProperties_SharpHoundCommonLib_ISearchResultEntry_
@@ -5907,6 +7732,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadDomainProperties
   nameWithType: LDAPPropertyProcessor.ReadDomainProperties
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadEnterpriseCAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadEnterpriseCAProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadEnterpriseCAProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadEnterpriseCAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadEnterpriseCAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadEnterpriseCAProperties(ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadEnterpriseCAProperties*
+  name: ReadEnterpriseCAProperties
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadEnterpriseCAProperties_
+  commentId: Overload:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadEnterpriseCAProperties
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadEnterpriseCAProperties
+  nameWithType: LDAPPropertyProcessor.ReadEnterpriseCAProperties
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGPOProperties(SharpHoundCommonLib.ISearchResultEntry)
   name: ReadGPOProperties(ISearchResultEntry)
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadGPOProperties_SharpHoundCommonLib_ISearchResultEntry_
@@ -5933,6 +7771,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties
   nameWithType: LDAPPropertyProcessor.ReadGroupProperties
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadNTAuthStoreProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadNTAuthStoreProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadNTAuthStoreProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadNTAuthStoreProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadNTAuthStoreProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadNTAuthStoreProperties(ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadNTAuthStoreProperties*
+  name: ReadNTAuthStoreProperties
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadNTAuthStoreProperties_
+  commentId: Overload:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadNTAuthStoreProperties
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadNTAuthStoreProperties
+  nameWithType: LDAPPropertyProcessor.ReadNTAuthStoreProperties
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties(SharpHoundCommonLib.ISearchResultEntry)
   name: ReadOUProperties(ISearchResultEntry)
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadOUProperties_SharpHoundCommonLib_ISearchResultEntry_
@@ -5946,6 +7797,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadOUProperties
   nameWithType: LDAPPropertyProcessor.ReadOUProperties
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadRootCAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadRootCAProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadRootCAProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadRootCAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadRootCAProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadRootCAProperties(ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadRootCAProperties*
+  name: ReadRootCAProperties
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadRootCAProperties_
+  commentId: Overload:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadRootCAProperties
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadRootCAProperties
+  nameWithType: LDAPPropertyProcessor.ReadRootCAProperties
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadUserProperties(SharpHoundCommonLib.ISearchResultEntry)
   name: ReadUserProperties(ISearchResultEntry)
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadUserProperties_SharpHoundCommonLib_ISearchResultEntry_
@@ -6022,6 +7886,93 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LocalGroupProcessor.OpenSamServer
   nameWithType: LocalGroupProcessor.OpenSamServer
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate
+  name: ParsedCertificate
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html
+  commentId: T:SharpHoundCommonLib.Processors.ParsedCertificate
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate
+  nameWithType: ParsedCertificate
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.#ctor(System.Byte[])
+  name: ParsedCertificate(Byte[])
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate__ctor_System_Byte___
+  commentId: M:SharpHoundCommonLib.Processors.ParsedCertificate.#ctor(System.Byte[])
+  name.vb: ParsedCertificate(Byte())
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.ParsedCertificate(System.Byte[])
+  fullName.vb: SharpHoundCommonLib.Processors.ParsedCertificate.ParsedCertificate(System.Byte())
+  nameWithType: ParsedCertificate.ParsedCertificate(Byte[])
+  nameWithType.vb: ParsedCertificate.ParsedCertificate(Byte())
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.#ctor*
+  name: ParsedCertificate
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate__ctor_
+  commentId: Overload:SharpHoundCommonLib.Processors.ParsedCertificate.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.ParsedCertificate
+  nameWithType: ParsedCertificate.ParsedCertificate
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.BasicConstraintPathLength
+  name: BasicConstraintPathLength
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_BasicConstraintPathLength
+  commentId: P:SharpHoundCommonLib.Processors.ParsedCertificate.BasicConstraintPathLength
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.BasicConstraintPathLength
+  nameWithType: ParsedCertificate.BasicConstraintPathLength
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.BasicConstraintPathLength*
+  name: BasicConstraintPathLength
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_BasicConstraintPathLength_
+  commentId: Overload:SharpHoundCommonLib.Processors.ParsedCertificate.BasicConstraintPathLength
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.BasicConstraintPathLength
+  nameWithType: ParsedCertificate.BasicConstraintPathLength
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.Chain
+  name: Chain
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_Chain
+  commentId: P:SharpHoundCommonLib.Processors.ParsedCertificate.Chain
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.Chain
+  nameWithType: ParsedCertificate.Chain
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.Chain*
+  name: Chain
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_Chain_
+  commentId: Overload:SharpHoundCommonLib.Processors.ParsedCertificate.Chain
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.Chain
+  nameWithType: ParsedCertificate.Chain
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.HasBasicConstraints
+  name: HasBasicConstraints
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_HasBasicConstraints
+  commentId: P:SharpHoundCommonLib.Processors.ParsedCertificate.HasBasicConstraints
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.HasBasicConstraints
+  nameWithType: ParsedCertificate.HasBasicConstraints
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.HasBasicConstraints*
+  name: HasBasicConstraints
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_HasBasicConstraints_
+  commentId: Overload:SharpHoundCommonLib.Processors.ParsedCertificate.HasBasicConstraints
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.HasBasicConstraints
+  nameWithType: ParsedCertificate.HasBasicConstraints
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.Name
+  name: Name
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_Name
+  commentId: P:SharpHoundCommonLib.Processors.ParsedCertificate.Name
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.Name
+  nameWithType: ParsedCertificate.Name
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.Name*
+  name: Name
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_Name_
+  commentId: Overload:SharpHoundCommonLib.Processors.ParsedCertificate.Name
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.Name
+  nameWithType: ParsedCertificate.Name
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.Thumbprint
+  name: Thumbprint
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_Thumbprint
+  commentId: P:SharpHoundCommonLib.Processors.ParsedCertificate.Thumbprint
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.Thumbprint
+  nameWithType: ParsedCertificate.Thumbprint
+- uid: SharpHoundCommonLib.Processors.ParsedCertificate.Thumbprint*
+  name: Thumbprint
+  href: api/SharpHoundCommonLib.Processors.ParsedCertificate.html#SharpHoundCommonLib_Processors_ParsedCertificate_Thumbprint_
+  commentId: Overload:SharpHoundCommonLib.Processors.ParsedCertificate.Thumbprint
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ParsedCertificate.Thumbprint
+  nameWithType: ParsedCertificate.Thumbprint
 - uid: SharpHoundCommonLib.Processors.PortScanner
   name: PortScanner
   href: api/SharpHoundCommonLib.Processors.PortScanner.html
@@ -6073,6 +8024,25 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.PortScanner.ClearCache
   nameWithType: PortScanner.ClearCache
+- uid: SharpHoundCommonLib.Processors.RegistryResult
+  name: RegistryResult
+  href: api/SharpHoundCommonLib.Processors.RegistryResult.html
+  commentId: T:SharpHoundCommonLib.Processors.RegistryResult
+  fullName: SharpHoundCommonLib.Processors.RegistryResult
+  nameWithType: RegistryResult
+- uid: SharpHoundCommonLib.Processors.RegistryResult.Value
+  name: Value
+  href: api/SharpHoundCommonLib.Processors.RegistryResult.html#SharpHoundCommonLib_Processors_RegistryResult_Value
+  commentId: P:SharpHoundCommonLib.Processors.RegistryResult.Value
+  fullName: SharpHoundCommonLib.Processors.RegistryResult.Value
+  nameWithType: RegistryResult.Value
+- uid: SharpHoundCommonLib.Processors.RegistryResult.Value*
+  name: Value
+  href: api/SharpHoundCommonLib.Processors.RegistryResult.html#SharpHoundCommonLib_Processors_RegistryResult_Value_
+  commentId: Overload:SharpHoundCommonLib.Processors.RegistryResult.Value
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.RegistryResult.Value
+  nameWithType: RegistryResult.Value
 - uid: SharpHoundCommonLib.Processors.SPNProcessors
   name: SPNProcessors
   href: api/SharpHoundCommonLib.Processors.SPNProcessors.html
@@ -6409,6 +8379,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.GetByteProperty
   nameWithType: SearchResultEntryWrapper.GetByteProperty
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty(System.String)
+  name: GetCertificateArrayProperty(String)
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_GetCertificateArrayProperty_System_String_
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty(System.String)
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty(System.String)
+  nameWithType: SearchResultEntryWrapper.GetCertificateArrayProperty(String)
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty*
+  name: GetCertificateArrayProperty
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_GetCertificateArrayProperty_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty
+  nameWithType: SearchResultEntryWrapper.GetCertificateArrayProperty
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.GetEntry
   name: GetEntry()
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_GetEntry
@@ -6435,6 +8418,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.GetGuid
   nameWithType: SearchResultEntryWrapper.GetGuid
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty(System.String,System.Int32@)
+  name: GetIntProperty(String, out Int32)
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_GetIntProperty_System_String_System_Int32__
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty(System.String,System.Int32@)
+  name.vb: GetIntProperty(String, ByRef Int32)
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty(System.String, out System.Int32)
+  fullName.vb: SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty(System.String, ByRef System.Int32)
+  nameWithType: SearchResultEntryWrapper.GetIntProperty(String, out Int32)
+  nameWithType.vb: SearchResultEntryWrapper.GetIntProperty(String, ByRef Int32)
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty*
+  name: GetIntProperty
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_GetIntProperty_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty
+  nameWithType: SearchResultEntryWrapper.GetIntProperty
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.GetLabel
   name: GetLabel()
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_GetLabel
@@ -6578,6 +8577,38 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo
   nameWithType: SearchResultEntryWrapper.ResolveBloodHoundInfo
+- uid: SharpHoundCommonLib.SHRegistryKey
+  name: SHRegistryKey
+  href: api/SharpHoundCommonLib.SHRegistryKey.html
+  commentId: T:SharpHoundCommonLib.SHRegistryKey
+  fullName: SharpHoundCommonLib.SHRegistryKey
+  nameWithType: SHRegistryKey
+- uid: SharpHoundCommonLib.SHRegistryKey.#ctor(Microsoft.Win32.RegistryHive,System.String)
+  name: SHRegistryKey(RegistryHive, String)
+  href: api/SharpHoundCommonLib.SHRegistryKey.html#SharpHoundCommonLib_SHRegistryKey__ctor_Microsoft_Win32_RegistryHive_System_String_
+  commentId: M:SharpHoundCommonLib.SHRegistryKey.#ctor(Microsoft.Win32.RegistryHive,System.String)
+  fullName: SharpHoundCommonLib.SHRegistryKey.SHRegistryKey(Microsoft.Win32.RegistryHive, System.String)
+  nameWithType: SHRegistryKey.SHRegistryKey(RegistryHive, String)
+- uid: SharpHoundCommonLib.SHRegistryKey.#ctor*
+  name: SHRegistryKey
+  href: api/SharpHoundCommonLib.SHRegistryKey.html#SharpHoundCommonLib_SHRegistryKey__ctor_
+  commentId: Overload:SharpHoundCommonLib.SHRegistryKey.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SHRegistryKey.SHRegistryKey
+  nameWithType: SHRegistryKey.SHRegistryKey
+- uid: SharpHoundCommonLib.SHRegistryKey.GetValue(System.String,System.String)
+  name: GetValue(String, String)
+  href: api/SharpHoundCommonLib.SHRegistryKey.html#SharpHoundCommonLib_SHRegistryKey_GetValue_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.SHRegistryKey.GetValue(System.String,System.String)
+  fullName: SharpHoundCommonLib.SHRegistryKey.GetValue(System.String, System.String)
+  nameWithType: SHRegistryKey.GetValue(String, String)
+- uid: SharpHoundCommonLib.SHRegistryKey.GetValue*
+  name: GetValue
+  href: api/SharpHoundCommonLib.SHRegistryKey.html#SharpHoundCommonLib_SHRegistryKey_GetValue_
+  commentId: Overload:SharpHoundCommonLib.SHRegistryKey.GetValue
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.SHRegistryKey.GetValue
+  nameWithType: SHRegistryKey.GetValue
 - uid: SharpHoundCommonLib.WellKnownPrincipal
   name: WellKnownPrincipal
   href: api/SharpHoundCommonLib.WellKnownPrincipal.html
