@@ -30,7 +30,13 @@ namespace SharpHoundCommonLib.Processors
                 {Label.Domain, "19195a5a-6da0-11d0-afd3-00c04fd930c9"},
                 {Label.GPO, "f30e3bc2-9ff0-11d1-b603-0000f80367c1"},
                 {Label.OU, "bf967aa5-0de6-11d0-a285-00aa003049e2"},
-                {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"}
+                {Label.Container, "bf967a8b-0de6-11d0-a285-00aa003049e2"},
+                {Label.Configuration, "bf967a87-0de6-11d0-a285-00aa003049e2"},
+                {Label.RootCA, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
+                {Label.AIACA, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
+                {Label.EnterpriseCA, "ee4aa692-3bba-11d2-90cc-00c04fd91ab1"},
+                {Label.NTAuthStore, "3fdfee50-47f4-11d1-a9c3-0000f80367c1"},
+                {Label.CertTemplate, "e5209ca2-3bba-11d2-90cc-00c04fd91ab1"}
             };
         }
 
@@ -156,7 +162,7 @@ namespace SharpHoundCommonLib.Processors
                 yield break;
             }
 
-            var ownerSid = PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
+            var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
 
             if (ownerSid != null)
             {
@@ -196,7 +202,7 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 var ir = ace.IdentityReference();
-                var principalSid = PreProcessSID(ir);
+                var principalSid = Helpers.PreProcessSID(ir);
 
                 if (principalSid == null)
                 {
@@ -263,7 +269,7 @@ namespace SharpHoundCommonLib.Processors
                         RightName = EdgeNames.AddSelf
                     };
 
-                //Process object type specific ACEs. Extended rights apply to users, domains, and computers
+                //Process object type specific ACEs. Extended rights apply to users, domains, computers, and cert templates
                 if (aceRights.HasFlag(ActiveDirectoryRights.ExtendedRight))
                 {
                     if (objectType == Label.Domain)
@@ -343,6 +349,25 @@ namespace SharpHoundCommonLib.Processors
                                 };
                         }
                     }
+                    else if (objectType == Label.CertTemplate)
+                    {
+                        if (aceType is ACEGuids.AllGuid or "")
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.AllExtendedRights
+                            };
+                        else if (aceType is ACEGuids.Enroll)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.Enroll
+                            };
+                    }
                 }
 
                 //GenericWrite encapsulates WriteProperty, so process them in tandem to avoid duplicate edges
@@ -398,6 +423,67 @@ namespace SharpHoundCommonLib.Processors
                             PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                             IsInherited = inherited,
                             RightName = EdgeNames.AddKeyCredentialLink
+                        };
+                    else if (objectType is Label.CertTemplate)
+                    {
+                        if (aceType == ACEGuids.PKIEnrollmentFlag)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WritePKIEnrollmentFlag
+                            };
+                        else if (aceType == ACEGuids.PKINameFlag)
+                            yield return new ACE
+                            {
+                                PrincipalType = resolvedPrincipal.ObjectType,
+                                PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                IsInherited = inherited,
+                                RightName = EdgeNames.WritePKINameFlag
+                            };
+                    }
+                }
+
+                // EnterpriseCA rights
+                if (objectType == Label.EnterpriseCA)
+                {
+                    if (aceType is ACEGuids.Enroll)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.Enroll
+                        };
+
+                    var cARights = (CertificationAuthorityRights)aceRights;
+
+                    // TODO: These if statements are also present in ProcessRegistryEnrollmentPermissions. Move to shared location.               
+                    if ((cARights & CertificationAuthorityRights.ManageCA) != 0)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.ManageCA
+                        };
+                    if ((cARights & CertificationAuthorityRights.ManageCertificates) != 0)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.ManageCertificates
+                        };
+
+                    if ((cARights & CertificationAuthorityRights.Enroll) != 0)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.Enroll
                         };
                 }
             }
@@ -473,7 +559,7 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 var ir = ace.IdentityReference();
-                var principalSid = PreProcessSID(ir);
+                var principalSid = Helpers.PreProcessSID(ir);
 
                 if (principalSid == null)
                 {
@@ -494,21 +580,6 @@ namespace SharpHoundCommonLib.Processors
                         IsInherited = ace.IsInherited()
                     };
             }
-        }
-
-        /// <summary>
-        ///     Removes some commonly seen SIDs that have no use in the schema
-        /// </summary>
-        /// <param name="sid"></param>
-        /// <returns></returns>
-        private static string PreProcessSID(string sid)
-        {
-            sid = sid?.ToUpper();
-            if (sid != null)
-                //Ignore Local System/Creator Owner/Principal Self
-                return sid is "S-1-5-18" or "S-1-3-0" or "S-1-5-10" ? null : sid;
-
-            return null;
         }
     }
 }

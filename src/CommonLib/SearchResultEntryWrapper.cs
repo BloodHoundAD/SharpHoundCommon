@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
@@ -16,6 +17,8 @@ namespace SharpHoundCommonLib
         byte[] GetByteProperty(string propertyName);
         string[] GetArrayProperty(string propertyName);
         byte[][] GetByteArrayProperty(string propertyName);
+        bool GetIntProperty(string propertyName, out int value);
+        X509Certificate2[] GetCertificateArrayProperty(string propertyName);
         string GetObjectIdentifier();
         bool IsDeleted();
         Label GetLabel();
@@ -139,6 +142,7 @@ namespace SharpHoundCommonLib
             {
                 case Label.User:
                 case Label.Group:
+                case Label.Base:
                     res.DisplayName = $"{samAccountName}@{itemDomain}";
                     break;
                 case Label.Computer:
@@ -164,10 +168,13 @@ namespace SharpHoundCommonLib
                     break;
                 case Label.OU:
                 case Label.Container:
+                case Label.Configuration:
+                case Label.RootCA:
+                case Label.AIACA:
+                case Label.NTAuthStore:
+                case Label.EnterpriseCA:
+                case Label.CertTemplate:
                     res.DisplayName = $"{GetProperty(LDAPProperties.Name)}@{itemDomain}";
-                    break;
-                case Label.Base:
-                    res.DisplayName = $"{samAccountName}@{itemDomain}";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -194,6 +201,16 @@ namespace SharpHoundCommonLib
         public byte[][] GetByteArrayProperty(string propertyName)
         {
             return _entry.GetPropertyAsArrayOfBytes(propertyName);
+        }
+
+        public bool GetIntProperty(string propertyName, out int value)
+        {
+            return _entry.GetPropertyAsInt(propertyName, out value);
+        }
+
+        public X509Certificate2[] GetCertificateArrayProperty(string propertyName)
+        {
+            return _entry.GetPropertyAsArrayOfCertificates(propertyName);
         }
 
         public string GetObjectIdentifier()

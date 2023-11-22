@@ -11,6 +11,13 @@
         GPO,
         Domain,
         OU,
-        Container
+        Container,
+        Configuration,
+        CertTemplate,
+        CertAuthority,
+        RootCA,
+        AIACA,
+        EnterpriseCA,
+        NTAuthStore
     }
 }

@@ -9,5 +9,10 @@
         public const string GPOs = "gpos";
         public const string OUs = "ous";
         public const string Containers = "containers";
+        public const string RootCAs = "rootcas";
+        public const string AIACAs = "aiacas";
+        public const string NTAuthStores = "ntauthstores";
+        public const string EnterpriseCAs = "enterprisecas";
+        public const string CertTemplates = "certtemplates";
     }
 }

@@ -1052,11 +1052,41 @@ namespace CommonLibTest.Facades
             return mockSecurityDescriptor.Object;
         }
 
+        public string BuildLdapPath(string dnPath, string domain)
+        {
+            throw new NotImplementedException();
+        }
+
         private Group GetBaseEnterpriseDC()
         {
             var g = new Group {ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper()};
             g.Properties.Add("name", "ENTERPRISE DOMAIN CONTROLLERS@TESTLAB.LOCAL".ToUpper());
             return g;
+        }
+
+        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN, string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetConfigurationPath(string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetSchemaPath(string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        TypedPrincipal ILDAPUtils.ResolveCertTemplateByProperty(string propValue, string propName, string containerDN, string domainName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDomainController(string computerObjectId, string domainName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

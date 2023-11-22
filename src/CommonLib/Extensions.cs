@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,11 +86,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public static bool IsComputerCollectionSet(this ResolvedCollectionMethod methods)
         {
-            return (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
-                   (methods & ResolvedCollectionMethod.DCOM) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0 ||
-                   (methods & ResolvedCollectionMethod.PSRemote) != 0 ||
-                   (methods & ResolvedCollectionMethod.Session) != 0 ||
-                   (methods & ResolvedCollectionMethod.LoggedOn) != 0;
+            return (methods & ResolvedCollectionMethod.ComputerOnly) != 0;
         }
 
         /// <summary>
@@ -99,9 +96,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public static bool IsLocalGroupCollectionSet(this ResolvedCollectionMethod methods)
         {
-            return (methods & ResolvedCollectionMethod.DCOM) != 0 ||
-                   (methods & ResolvedCollectionMethod.LocalAdmin) != 0 ||
-                   (methods & ResolvedCollectionMethod.PSRemote) != 0 || (methods & ResolvedCollectionMethod.RDP) != 0;
+            return (methods & ResolvedCollectionMethod.LocalGroups) != 0;
         }
 
         /// <summary>
@@ -253,6 +248,37 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
+        ///     Gets the specified property as an int
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="property"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool GetPropertyAsInt(this SearchResultEntry entry, string property, out int value)
+        {
+            var prop = entry.GetProperty(property);
+            if (prop != null) return int.TryParse(prop, out value);
+            value = 0;
+            return false;
+        }
+
+        /// <summary>
+        ///     Gets the specified property as an array of X509 certificates.
+        /// </summary>
+        /// <param name="searchResultEntry"></param>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public static X509Certificate2[] GetPropertyAsArrayOfCertificates(this SearchResultEntry searchResultEntry,
+            string property)
+        {
+            if (!searchResultEntry.Attributes.Contains(property))
+                return null;
+
+            return searchResultEntry.GetPropertyAsArrayOfBytes(property).Select(x => new X509Certificate2(x)).ToArray();
+        }
+
+
+        /// <summary>
         ///     Attempts to get the unique object identifier as used by BloodHound for the Search Result Entry. Tries to get
         ///     objectsid first, and then objectguid next.
         /// </summary>
@@ -343,6 +369,21 @@ namespace SharpHoundCommonLib
                     objectType = Label.Domain;
                 else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.Container;
+                else if (objectClasses.Contains(ConfigurationClass, StringComparer.InvariantCultureIgnoreCase))
+                    objectType = Label.Configuration;
+                else if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
+                    objectType = Label.CertTemplate;
+                else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
+                    objectType = Label.EnterpriseCA;
+                else if (objectClasses.Contains(CertificationAutorityClass, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    if (entry.DistinguishedName.Contains(DirectoryPaths.RootCALocation))
+                        objectType = Label.RootCA;
+                    else if (entry.DistinguishedName.Contains(DirectoryPaths.AIACALocation))
+                        objectType = Label.AIACA;
+                    else if (entry.DistinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
+                        objectType = Label.NTAuthStore;
+                }
             }
 
             Log.LogDebug("GetLabel - Final label for {ObjectID}: {Label}", objectId, objectType);
@@ -356,6 +397,10 @@ namespace SharpHoundCommonLib
         private const string OrganizationalUnitClass = "organizationalUnit";
         private const string DomainClass = "domain";
         private const string ContainerClass = "container";
+        private const string ConfigurationClass = "configuration";
+        private const string PKICertificateTemplateClass = "pKICertificateTemplate";
+        private const string PKIEnrollmentServiceClass = "pKIEnrollmentService";
+        private const string CertificationAutorityClass = "certificationAuthority";
 
         #endregion
     }

@@ -143,6 +143,18 @@ namespace SharpHoundCommonLib.LDAPQueries
         }
 
         /// <summary>
+        ///     Add a filter that will include Configuration objects
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddConfiguration(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(objectClass=configuration)", conditions));
+
+            return this;
+        }
+
+        /// <summary>
         ///     Add a filter that will include Computer objects
         ///
         ///     Note that gMSAs and sMSAs have this samaccounttype as well
@@ -152,6 +164,40 @@ namespace SharpHoundCommonLib.LDAPQueries
         public LDAPFilter AddComputers(params string[] conditions)
         {
             _filterParts.Add(BuildString("(samaccounttype=805306369)", conditions));
+            return this;
+        }
+
+        /// <summary>
+        ///     Add a filter that will include PKI Certificate templates
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddCertificateTemplates(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(objectclass=pKICertificateTemplate)", conditions));
+            return this;
+        }
+
+        /// <summary>
+        ///     Add a filter that will include Certificate Authorities
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddCertificateAuthorities(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(|(objectClass=certificationAuthority)(objectClass=pkiEnrollmentService))",
+                conditions));
+            return this;
+        }
+
+        /// <summary>
+        ///     Add a filter that will include Enterprise Certificate Authorities
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddEnterpriseCertificationAuthorities(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(objectCategory=pKIEnrollmentService)", conditions));
             return this;
         }
 
@@ -199,13 +245,23 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// <returns></returns>
         public string GetFilter()
         {
-            var temp = string.Join("", _filterParts.ToArray());
-            temp = _filterParts.Count == 1 ? _filterParts[0] : $"(|{temp})";
 
-            var mandatory = string.Join("", _mandatory.ToArray());
-            temp = _mandatory.Count > 0 ? $"(&{temp}{mandatory})" : temp;
+            var filterPartList = _filterParts.ToArray().Distinct();
+            var mandatoryList = _mandatory.ToArray().Distinct();
 
-            return temp;
+            var filterPartsExceptMandatory = filterPartList.Except(mandatoryList).ToList();
+
+            var filterPartsDistinct = string.Join("", filterPartsExceptMandatory);
+            var mandatoryDistinct = string.Join("", mandatoryList);
+
+            if (filterPartsExceptMandatory.Count == 1)
+                filterPartsDistinct = filterPartsExceptMandatory[0];
+            else if (filterPartsExceptMandatory.Count > 1)
+                filterPartsDistinct = $"(|{filterPartsDistinct})";
+
+            filterPartsDistinct = _mandatory.Count > 0 ? $"(&{filterPartsDistinct}{mandatoryDistinct})" : filterPartsDistinct;
+
+            return filterPartsDistinct;
         }
 
         public IEnumerable<string> GetFilterList()

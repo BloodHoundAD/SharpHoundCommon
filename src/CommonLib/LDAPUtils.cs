@@ -43,7 +43,7 @@ namespace SharpHoundCommonLib
             0x41, 0x41, 0x41, 0x41, 0x41, 0x00, 0x00, 0x21,
             0x00, 0x01
         };
-        
+
 
         private static readonly ConcurrentDictionary<string, ResolvedWellKnownPrincipal>
             SeenWellKnownPrincipals = new();
@@ -159,6 +159,7 @@ namespace SharpHoundCommonLib
                     Label.Domain => new OutputTypes.Domain(),
                     Label.OU => new OU(),
                     Label.Container => new Container(),
+                    Label.Configuration => new Container(),
                     _ => throw new ArgumentOutOfRangeException()
                 };
 
@@ -204,7 +205,7 @@ namespace SharpHoundCommonLib
                 return sids;
 
             var query = new LDAPFilter().AddUsers($"samaccountname={tempName}").GetFilter();
-            var results = QueryLDAP(query, SearchScope.Subtree, new[] {"objectsid"}, globalCatalog: true)
+            var results = QueryLDAP(query, SearchScope.Subtree, new[] { "objectsid" }, globalCatalog: true)
                 .Select(x => x.GetSid()).Where(x => x != null).ToArray();
             Cache.AddGCCache(tempName, results);
             return results;
@@ -228,6 +229,35 @@ namespace SharpHoundCommonLib
 
             var type = id.StartsWith("S-") ? LookupSidType(id, fallbackDomain) : LookupGuidType(id, fallbackDomain);
             return new TypedPrincipal(id, type);
+        }
+
+        public TypedPrincipal ResolveCertTemplateByProperty(string propValue, string propertyName, string containerDN, string domainName)
+        {
+            var filter = new LDAPFilter().AddCertificateTemplates().AddFilter(propertyName + "=" + propValue, true);
+            var res = QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
+                         CommonProperties.TypeResolutionProps, adsPath: containerDN, domainName: domainName);
+
+            if (res == null)
+            {
+                _log.LogWarning("Could not find certificate template with '{propertyName}:{propValue}' under {containerDN}; null result", propertyName, propValue, containerDN);
+                return null;
+            }
+
+            List<ISearchResultEntry> resList = new List<ISearchResultEntry>(res);
+            if (resList.Count == 0)
+            {
+                _log.LogWarning("Could not find certificate template with '{propertyName}:{propValue}' under {containerDN}; empty list", propertyName, propValue, containerDN);
+                return null;
+            }
+
+            if (resList.Count > 1)
+            {
+                _log.LogWarning("Found more than one certificate template with '{propertyName}:{propValue}' under {containerDN}", propertyName, propValue, containerDN);
+                return null;
+            }
+
+            ISearchResultEntry searchResultEntry = resList.FirstOrDefault();
+            return new TypedPrincipal(searchResultEntry.GetGuid(), Label.CertTemplate);
         }
 
         /// <summary>
@@ -466,7 +496,7 @@ namespace SharpHoundCommonLib
             var currentRange = $"{baseString};range={index}-*";
             var complete = false;
 
-            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] {currentRange},
+            var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] { currentRange },
                 domainName, distinguishedName);
 
             if (searchRequest == null)
@@ -474,13 +504,13 @@ namespace SharpHoundCommonLib
 
             var backoffDelay = MinBackoffDelay;
             var retryCount = 0;
-            
+
             while (true)
             {
                 SearchResponse response;
                 try
                 {
-                    response = (SearchResponse) conn.SendRequest(searchRequest);
+                    response = (SearchResponse)conn.SendRequest(searchRequest);
                 }
                 catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries)
                 {
@@ -688,7 +718,7 @@ namespace SharpHoundCommonLib
                 _log.LogDebug("ResolveAccountName - unable to get result for {Name}", name);
                 return null;
             }
-            
+
             type = result.GetLabel();
             id = result.GetObjectIdentifier();
 
@@ -809,14 +839,14 @@ namespace SharpHoundCommonLib
         {
             var queryParams = SetupLDAPQueryFilter(
                 ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
-            
+
             if (queryParams.Exception != null)
             {
                 _log.LogWarning("Failed to setup LDAP Query Filter: {Message}", queryParams.Exception.Message);
                 if (throwException) throw new LDAPQueryException("Failed to setup LDAP Query Filter", queryParams.Exception);
                 yield break;
             }
-            
+
             var conn = queryParams.Connection;
             var request = queryParams.SearchRequest;
             var pageControl = queryParams.PageControl;
@@ -833,9 +863,9 @@ namespace SharpHoundCommonLib
                 try
                 {
                     _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
-                    response = (SearchResponse) conn.SendRequest(request);
+                    response = (SearchResponse)conn.SendRequest(request);
                     if (response != null)
-                        pageResponse = (PageResultResponseControl) response.Controls
+                        pageResponse = (PageResultResponseControl)response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
                 }catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
                                                 retryCount < MaxRetries)
@@ -859,7 +889,9 @@ namespace SharpHoundCommonLib
                     backoffDelay = TimeSpan.FromSeconds(Math.Min(
                         backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
                     continue;
-                } catch (LdapException le) {
+                }
+                catch (LdapException le)
+                {
                     if (le.ErrorCode != 82)
                         if (throwException)
                             throw new LDAPQueryException(
@@ -958,10 +990,10 @@ namespace SharpHoundCommonLib
             var pageControl = queryParams.PageControl;
 
             PageResultResponseControl pageResponse = null;
-            
+
             var backoffDelay = MinBackoffDelay;
             var retryCount = 0;
-            
+
             while (true)
             {
                 SearchResponse response;
@@ -1070,6 +1102,16 @@ namespace SharpHoundCommonLib
             return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
         }
 
+        public string BuildLdapPath(string dnPath, string domainName)
+        {
+            var domain = GetDomain(domainName)?.Name;
+            if (domain == null)
+                return null;
+
+            var adPath = $"{dnPath},DC={domain.Replace(".", ",DC=")}";
+            return adPath;
+        }
+
         /// <summary>
         ///     Tests the current LDAP config to ensure its valid by pulling a domain object
         /// </summary>
@@ -1078,7 +1120,7 @@ namespace SharpHoundCommonLib
         {
             var filter = new LDAPFilter();
             filter.AddDomains();
-            
+
             var resDomain = GetDomain(domain)?.Name ?? domain;
             _log.LogTrace("Testing LDAP connection for domain {Domain}", resDomain);
 
@@ -1118,7 +1160,7 @@ namespace SharpHoundCommonLib
             }
             catch (Exception e)
             {
-                _log.LogDebug(e,"GetDomain call failed at {StackTrace}", new StackFrame());
+                _log.LogDebug(e, "GetDomain call failed at {StackTrace}", new StackFrame());
                 domain = null;
             }
 
@@ -1231,7 +1273,7 @@ namespace SharpHoundCommonLib
         {
             var forest = GetForest(domain)?.Name;
             if (forest == null) _log.LogWarning("Error getting forest, ENTDC sid is likely incorrect");
-            var g = new Group {ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper()};
+            var g = new Group { ObjectIdentifier = $"{forest}-S-1-5-9".ToUpper() };
             g.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forest ?? "UNKNOWN"}".ToUpper());
             g.Properties.Add("domainsid", GetSidFromDomainName(forest));
             g.Properties.Add("domain", forest);
@@ -1257,7 +1299,7 @@ namespace SharpHoundCommonLib
             //Search using objectsid first
             var result =
                 QueryLDAP($"(&(objectclass=domain)(objectsid={hexSid}))", SearchScope.Subtree,
-                    new[] {"distinguishedname"}, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+                    new[] { "distinguishedname" }, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result != null)
             {
@@ -1268,7 +1310,7 @@ namespace SharpHoundCommonLib
             //Try trusteddomain objects with the securityidentifier attribute
             result =
                 QueryLDAP($"(&(objectclass=trusteddomain)(securityidentifier={sid}))", SearchScope.Subtree,
-                    new[] {"cn"}, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+                    new[] { "cn" }, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result != null)
             {
@@ -1466,7 +1508,7 @@ namespace SharpHoundCommonLib
         {
             string targetServer;
             if (_ldapConfig.Server != null)
-                targetServer = _ldapConfig.Server; 
+                targetServer = _ldapConfig.Server;
             else
             {
                 var domain = GetDomain(domainName);
@@ -1482,14 +1524,14 @@ namespace SharpHoundCommonLib
 
             if (targetServer == null)
                 throw new LDAPQueryException($"No usable domain controller found for {domainName}");
-            
+
             if (!skipCache)
                 if (_ldapConnections.TryGetValue(targetServer, out var conn))
                     return conn;
 
             var port = _ldapConfig.GetPort();
             var ident = new LdapDirectoryIdentifier(targetServer, port, false, false);
-            var connection = new LdapConnection(ident) {Timeout = new TimeSpan(0, 0, 5, 0)};
+            var connection = new LdapConnection(ident) { Timeout = new TimeSpan(0, 0, 5, 0) };
             if (_ldapConfig.Username != null)
             {
                 var cred = new NetworkCredential(_ldapConfig.Username, _ldapConfig.Password);
@@ -1524,7 +1566,7 @@ namespace SharpHoundCommonLib
         {
             if (!gc && _domainControllerCache.TryGetValue(domain.Name.ToUpper(), out var dc))
                 return dc;
-            
+
             var port = gc ? 3268 : _ldapConfig.GetPort();
             var pdc = domain.PdcRoleOwner.Name;
             if (await _portScanner.CheckPort(pdc, port))
@@ -1624,7 +1666,7 @@ namespace SharpHoundCommonLib
 
             var configPath = CommonPaths.CreateDNPath(CommonPaths.QueryPolicyPath, domainPath);
             var enumerable = QueryLDAP("(objectclass=*)", SearchScope.Base, null, adsPath: configPath);
-            var config =  enumerable.DefaultIfEmpty(null).FirstOrDefault();
+            var config = enumerable.DefaultIfEmpty(null).FirstOrDefault();
             var pageSize = config?.GetArrayProperty(LDAPProperties.LdapAdminLimits).FirstOrDefault(x => x.StartsWith("MaxPageSize", StringComparison.OrdinalIgnoreCase));
             if (pageSize == null)
             {
@@ -1639,13 +1681,13 @@ namespace SharpHoundCommonLib
                 _log.LogInformation("Found page size {PageSize} for {Domain}", parsedPageSize, domainName ?? "current domain");
                 return parsedPageSize;
             }
-            
+
             _log.LogDebug("Failed to parse pagesize for {Domain}, returning default", domainName ?? "current domain");
 
             _ldapRangeSizeCache.TryAdd(domainPath.ToUpper(), defaultRangeSize);
             return defaultRangeSize;
         }
-        
+
         private string DomainNameToDistinguishedName(string domain)
         {
             var resolvedDomain = GetDomain(domain)?.Name ?? domain;
@@ -1656,6 +1698,34 @@ namespace SharpHoundCommonLib
         {
             public string DomainName { get; set; }
             public string WkpId { get; set; }
+        }
+
+        public string GetConfigurationPath(string domainName = null)
+        {
+            var rootDse = domainName == null
+                ? new DirectoryEntry("LDAP://RootDSE")
+                : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
+
+            return $"{rootDse.Properties["configurationNamingContext"]?[0]}";
+        }
+
+        public string GetSchemaPath(string domainName)
+        {
+            var rootDse = domainName == null
+                ? new DirectoryEntry("LDAP://RootDSE")
+                : new DirectoryEntry($"LDAP://{NormalizeDomainName(domainName)}/RootDSE");
+
+            return $"{rootDse.Properties["schemaNamingContext"]?[0]}";
+        }
+
+        public bool IsDomainController(string computerObjectId, string domainName)
+        {
+            var filter = new LDAPFilter().AddFilter(LDAPProperties.ObjectSID + "=" + computerObjectId, true).AddFilter(CommonFilters.DomainControllers, true);
+            var res = QueryLDAP(filter.GetFilter(), SearchScope.Subtree,
+                         CommonProperties.ObjectID, domainName: domainName);
+            if (res.Count() > 0)
+                return true;
+            return false;
         }
     }
 }
