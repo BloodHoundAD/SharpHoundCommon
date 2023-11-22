@@ -24,10 +24,11 @@ namespace SharpHoundCommonLib.Enums
         UserRights = 1 << 15,
         CARegistry = 1 << 16,
         DCRegistry = 1 << 17,
+        CertServices = 1 << 18,
         LocalGroups = DCOM | RDP | LocalAdmin | PSRemote,
         ComputerOnly = LocalGroups | Session | UserRights | CARegistry | DCRegistry,
-        DCOnly = ACL | Container | Group | ObjectProps | Trusts | GPOLocalGroup,
-        Default = Group | Session | Trusts | ACL | ObjectProps | LocalGroups | SPNTargets | Container,
+        DCOnly = ACL | Container | Group | ObjectProps | Trusts | GPOLocalGroup | CertServices,
+        Default = Group | Session | Trusts | ACL | ObjectProps | LocalGroups | SPNTargets | Container | CertServices,
         All = Default | LoggedOn | GPOLocalGroup | UserRights | CARegistry | DCRegistry
     }
 }
