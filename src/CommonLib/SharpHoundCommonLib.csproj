@@ -18,6 +18,7 @@
         <DebugType>full</DebugType>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="AntiXSS" Version="4.3.0" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     </ItemGroup>
