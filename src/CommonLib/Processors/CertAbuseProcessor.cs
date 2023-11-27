@@ -10,6 +10,7 @@ using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundRPC;
 using SharpHoundRPC.Wrappers;
+using Encoder = Microsoft.Security.Application.Encoder;
 
 namespace SharpHoundCommonLib.Processors
 {
@@ -174,7 +175,7 @@ namespace SharpHoundCommonLib.Processors
             var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, domainName);
             foreach (var templateCN in templates)
             {
-                var res = _utils.ResolveCertTemplateByProperty(templateCN, LDAPProperties.CanonicalName, certTemplatesLocation, domainName);
+                var res = _utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(templateCN), LDAPProperties.CanonicalName, certTemplatesLocation, domainName);
                 yield return res;
             }
         }
@@ -429,7 +430,7 @@ namespace SharpHoundCommonLib.Processors
                 var template = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2).Replace("\u0000", string.Empty);
 
                 // Attempt to resolve the cert template by CN
-                Template = certAbuseProcessor._utils.ResolveCertTemplateByProperty(template, LDAPProperties.CanonicalName, certTemplatesLocation, computerDomain);
+                Template = certAbuseProcessor._utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(template), LDAPProperties.CanonicalName, certTemplatesLocation, computerDomain);
 
                 // Attempt to resolve the cert template by OID
                 if (Template == null)
