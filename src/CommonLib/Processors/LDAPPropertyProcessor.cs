@@ -450,7 +450,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadEnterpriseCAProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKIEnrollmentFlag)flags);
+            if (entry.GetIntProperty("flags", out var flags)) props.Add("flags", (PKICertificateAuthorityFlags)flags);
             props.Add("caname", entry.GetProperty(LDAPProperties.Name));
             props.Add("dnshostname", entry.GetProperty(LDAPProperties.DNSHostName));
 
