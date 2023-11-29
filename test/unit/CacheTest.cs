@@ -18,7 +18,7 @@ namespace CommonLibTest
         public void Cache_TestNewCache()
         {
             var cache = Cache.CreateNewCache();
-            Assert.Equal(cache.CacheCreationVersion, new Version(1,0,0));
+            Assert.Equal(cache.CacheCreationVersion, new Version(1,0,0, 0));
             var version = new Version(1, 0, 1);
             cache = Cache.CreateNewCache(version);
             var time = DateTime.Now.Date;

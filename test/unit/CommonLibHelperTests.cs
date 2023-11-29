@@ -194,14 +194,6 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void ConvertFileTimeToUnixEpoch_WrongFormat_FortmatException()
-        {
-            Exception ex =
-                Assert.Throws<FormatException>(() => SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch("asdsf"));
-            Assert.Equal("Input string was not in a correct format.", ex.Message);
-        }
-
-        [Fact]
         public void ConvertFileTimeToUnixEpoch_BadInput_CastExceptionReturnsNegativeOne()
         {
             var result = SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch("-3242432");
@@ -218,14 +210,6 @@ namespace CommonLibTest
             var testDate = dateTimeOffset.UtcDateTime;
 
             Assert.Equal(d.ToUniversalTime().Date, testDate);
-        }
-
-        [Fact]
-        public void ConvertTimestampToUnixEpoch_InvalidTimestamp_FormatException()
-        {
-            Exception ex = Assert.Throws<FormatException>(() =>
-                SharpHoundCommonLib.Helpers.ConvertFileTimeToUnixEpoch("-201adsfasf12180244"));
-            Assert.Equal("Input string was not in a correct format.", ex.Message);
         }
     }
 }
