@@ -36,7 +36,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Impersonate.Impersonator.html",
-          "hash": "9b9IRdByWtfpam33XqH0mg=="
+          "hash": "iqNJa1dZGbA3Kaky18S+gw=="
         }
       },
       "is_incremental": false,
@@ -84,7 +84,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ActiveDirectoryRuleDescriptor.html",
-          "hash": "OerGEIv/iX3RX4gYJwR2hw=="
+          "hash": "G1nL7kwaYI2F7T8rBGqBHA=="
         }
       },
       "is_incremental": false,
@@ -96,7 +96,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html",
-          "hash": "AqvL1SgHjDfpJ9TxPIvL+w=="
+          "hash": "zeGqeek3uflKicq/RNbKBA=="
         }
       },
       "is_incremental": false,
@@ -108,7 +108,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.CSVComputerStatus.html",
-          "hash": "S2W/VXyzmxFLe371pg0syA=="
+          "hash": "Um01Lr9CZL8xhGZNlDjCVA=="
         }
       },
       "is_incremental": false,
@@ -120,7 +120,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Cache.html",
-          "hash": "l33Ma3tanCtD9LGZtZEJMQ=="
+          "hash": "X8wwGYH5Jcm0+Hp/TBiKFg=="
         }
       },
       "is_incremental": false,
@@ -132,7 +132,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.CommonLib.html",
-          "hash": "tMbRuFZOjtJfnqsfRFhxLA=="
+          "hash": "hjcIsEaESgHdPxmlqJMQIA=="
         }
       },
       "is_incremental": false,
@@ -144,7 +144,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.EdgeNames.html",
-          "hash": "pKt9cOh7w23k84B/KL52Kg=="
+          "hash": "/JOfaH6SPCGy/pBdYCIymg=="
         }
       },
       "is_incremental": false,
@@ -156,7 +156,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Enums.CAExtensionTypes.html",
-          "hash": "KReTYVj+kmaauegr0XNHrw=="
+          "hash": "0j9I6Rd/LxNG0c5q3/38mA=="
         }
       },
       "is_incremental": false,
@@ -180,7 +180,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Enums.CommonOids.html",
-          "hash": "8WRSQkiXnQjWwVwlsnjW2g=="
+          "hash": "Y7/L8xsz6JvlwI5ee35TXA=="
         }
       },
       "is_incremental": false,
@@ -192,7 +192,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Enums.DataType.html",
-          "hash": "5KfE4jvSUbNrg5vvwjCbdg=="
+          "hash": "DTK5tSgbZqjaPHAdcleKug=="
         }
       },
       "is_incremental": false,
@@ -204,7 +204,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Enums.DataTypes.html",
-          "hash": "mISC12iUhi0dWVjvpG5fQQ=="
+          "hash": "dr0eo7j9C1EtFS/28wFHng=="
         }
       },
       "is_incremental": false,
@@ -216,7 +216,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Enums.DirectoryPaths.html",
-          "hash": "X9rSM1kscjswgoAMGQnH4A=="
+          "hash": "+PqaYmUJsJ5cF9kxCpApbQ=="
         }
       },
       "is_incremental": false,
@@ -228,7 +228,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Enums.LSAPrivileges.html",
-          "hash": "BvG1DKVSOSyBNGginEukfQ=="
+          "hash": "YE9zmcR40UdcJm6V6DvF6g=="
         }
       },
       "is_incremental": false,
@@ -372,7 +372,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Exceptions.LDAPQueryException.html",
-          "hash": "Y7O9rfG5Uj3Ok3rVPZthjA=="
+          "hash": "NeLQ20vwPNgsUJ/S+P2c3Q=="
         }
       },
       "is_incremental": false,
@@ -396,7 +396,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Extensions.html",
-          "hash": "ExykIbJw9PxMfQm6K/eCNw=="
+          "hash": "namfZYfG7AGAlj5Psgoavg=="
         }
       },
       "is_incremental": false,
@@ -408,7 +408,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Helpers.html",
-          "hash": "4Oge7DxAf/wQtDvhSrz2MA=="
+          "hash": "H6JeIX/I46hDRBxsFnPAzQ=="
         }
       },
       "is_incremental": false,
@@ -420,7 +420,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ILDAPUtils.html",
-          "hash": "IVq6+m5tBlNNKoihP37mZg=="
+          "hash": "68zaPWEmB048wo7+gueqAg=="
         }
       },
       "is_incremental": false,
@@ -432,7 +432,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.IRegistryKey.html",
-          "hash": "mv/WsUMfAloq/eT0obATpw=="
+          "hash": "4To1PnaKWwbuE73z5Dukjw=="
         }
       },
       "is_incremental": false,
@@ -444,7 +444,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ISearchResultEntry.html",
-          "hash": "JQAz/wh7J9sv6gy6lrQr/Q=="
+          "hash": "j/7j578SVzg6kDV4iXjryw=="
         }
       },
       "is_incremental": false,
@@ -456,7 +456,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPConfig.html",
-          "hash": "jIkEiRylWeMF1U4nA9j7Kw=="
+          "hash": "VNq68XUALaQaSvlbeBJ11A=="
         }
       },
       "is_incremental": false,
@@ -468,7 +468,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPProperties.html",
-          "hash": "3KuaV4F/RsLfkMG/XTghzg=="
+          "hash": "zjakqVfJ+/XbjKSqphlPRg=="
         }
       },
       "is_incremental": false,
@@ -480,7 +480,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPQueries.CommonFilters.html",
-          "hash": "xLbFTkIynzINqzcU63ecmw=="
+          "hash": "FBkAY7xY58JZaIBJoaXcFw=="
         }
       },
       "is_incremental": false,
@@ -492,7 +492,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPQueries.CommonPaths.html",
-          "hash": "HEpjZX6xM09Nn096IqVtFg=="
+          "hash": "A0PEp8NlfLwkQODSBiTUkw=="
         }
       },
       "is_incremental": false,
@@ -504,7 +504,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPQueries.CommonProperties.html",
-          "hash": "LkaQVVayNk1+Mzhd3BHBYA=="
+          "hash": "gqt9NaEK8Ff6efDtiZGDGA=="
         }
       },
       "is_incremental": false,
@@ -516,7 +516,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html",
-          "hash": "ZuRjZ60f8Exq7JU7T/Hryw=="
+          "hash": "xZUh6zysDlpErahPUxn6Pw=="
         }
       },
       "is_incremental": false,
@@ -540,7 +540,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPQueryOptions.html",
-          "hash": "l13EpvCONQ2cJjFxvGYGVQ=="
+          "hash": "dby+hhooe9fUytcfM+ga9g=="
         }
       },
       "is_incremental": false,
@@ -552,7 +552,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.LDAPUtils.html",
-          "hash": "gA0KdEsC5gvsh5cjaX6W1Q=="
+          "hash": "qqPcitNXK6Haw46U8z9G4w=="
         }
       },
       "is_incremental": false,
@@ -564,7 +564,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.MockRegistryKey.html",
-          "hash": "5Ig4du960g0Z4FBF4PyKNg=="
+          "hash": "8PpmQxIzHU8KPmuTSvP60Q=="
         }
       },
       "is_incremental": false,
@@ -576,7 +576,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NativeMethods.html",
-          "hash": "0pmawPmE3qKNJsy3uiMrlA=="
+          "hash": "NgOInsHvPjOUj7d2StYm0A=="
         }
       },
       "is_incremental": false,
@@ -588,7 +588,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.NoOpLogger.html",
-          "hash": "QY9avuQXxG7BEcCnS9iSLg=="
+          "hash": "l7W/VWRr+2UwBE3ePBGThA=="
         }
       },
       "is_incremental": false,
@@ -600,7 +600,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.ACE.html",
-          "hash": "lIC1BOtkEa1k190FCLqKrg=="
+          "hash": "mdqZMDC5Kf/5ePVhdPkLsg=="
         }
       },
       "is_incremental": false,
@@ -624,7 +624,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.APIResult.html",
-          "hash": "qUVhK8IS/cd1S9nCY9tecw=="
+          "hash": "idjoxD5NpycwiW7O5mrvGw=="
         }
       },
       "is_incremental": false,
@@ -636,7 +636,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.AceRegistryAPIResult.html",
-          "hash": "CT3CkKIiu09U+qKPw0ngKA=="
+          "hash": "6hhEYd4hmbJ6NNhVXoLUDw=="
         }
       },
       "is_incremental": false,
@@ -648,7 +648,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.BoolRegistryAPIResult.html",
-          "hash": "57pX+8mp9Ilnkcscip7CBg=="
+          "hash": "ohRfemZGCP1WuZxdUpZqdA=="
         }
       },
       "is_incremental": false,
@@ -660,7 +660,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.CARegistryData.html",
-          "hash": "MtRrd+vlm9Bl8dQAWfHY9w=="
+          "hash": "9N5/MDlcYrtD5/qd7gCang=="
         }
       },
       "is_incremental": false,
@@ -684,7 +684,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html",
-          "hash": "TiiOYaJJVpToVAPNQEx4Vg=="
+          "hash": "5aURngoCpmwfLOmWQGA6zA=="
         }
       },
       "is_incremental": false,
@@ -696,7 +696,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.Computer.html",
-          "hash": "i14khaN5P6lO80Flmoe2pQ=="
+          "hash": "a1tKnHpZTmxkyuSCNqJULg=="
         }
       },
       "is_incremental": false,
@@ -708,7 +708,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.ComputerStatus.html",
-          "hash": "XpDi0ydvbt2/ijoDtr0LZA=="
+          "hash": "NWBvyfy1XpwbOhnaJX5R3w=="
         }
       },
       "is_incremental": false,
@@ -720,7 +720,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.Container.html",
-          "hash": "Cp9hUKESSW94NegKb0YdUg=="
+          "hash": "hfXnneWAmkSii9zoeBHrBg=="
         }
       },
       "is_incremental": false,
@@ -732,7 +732,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.DCRegistryData.html",
-          "hash": "1lz/OWvEY89oPcYSBd+aUQ=="
+          "hash": "tDUgRl7Rrd0p/OJA3HCF8g=="
         }
       },
       "is_incremental": false,
@@ -744,7 +744,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.Domain.html",
-          "hash": "NNVCgANCeYDbSpb/f1oxXg=="
+          "hash": "h/HcLhwarKfi/L8nVY+6+Q=="
         }
       },
       "is_incremental": false,
@@ -756,7 +756,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.DomainTrust.html",
-          "hash": "BbUPfPtoXoCzJ6Q2XAyJXg=="
+          "hash": "bIH22a03/kkFaEBbedf7Bw=="
         }
       },
       "is_incremental": false,
@@ -768,7 +768,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.EnrollmentAgentRegistryAPIResult.html",
-          "hash": "sR7uXs5jtLwH8Qt7oztPCA=="
+          "hash": "w+t9p3fBDBw7OSls7L/6+g=="
         }
       },
       "is_incremental": false,
@@ -780,7 +780,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.EnterpriseCA.html",
-          "hash": "gdF7XwhvuZDKjz5AxTGJxg=="
+          "hash": "wRsOET6+T2TsnUvmiROpeA=="
         }
       },
       "is_incremental": false,
@@ -792,7 +792,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.GPLink.html",
-          "hash": "wh9BxIV2UmawG/LDNZ/tsA=="
+          "hash": "FjTx97t9fqVWhw5iSDmeAQ=="
         }
       },
       "is_incremental": false,
@@ -816,7 +816,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.Group.html",
-          "hash": "cZc4hBSXdp/LP9h4yBHI0A=="
+          "hash": "U4Wx1DJjGSnSr3PmPeg5/g=="
         }
       },
       "is_incremental": false,
@@ -828,7 +828,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.html",
-          "hash": "pl4YQ01vY9WZxHJlCnn+Gw=="
+          "hash": "OxMXlFENRSwsz7FSuIvvGw=="
         }
       },
       "is_incremental": false,
@@ -840,7 +840,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.LSAPrivilegeAPIResult.html",
-          "hash": "6w6a/9BKIBYWYbaRu3XRwQ=="
+          "hash": "nBH7bYE/sqbCLxfVGpPSmg=="
         }
       },
       "is_incremental": false,
@@ -852,7 +852,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.LocalGroup.html",
-          "hash": "gmpQtV0fu4Qxvssub1+mCQ=="
+          "hash": "qYuay1hWogJN/f58jb7gQg=="
         }
       },
       "is_incremental": false,
@@ -864,7 +864,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.LocalGroupAPIResult.html",
-          "hash": "goUIzg21ZzbuDxaH+cRZtg=="
+          "hash": "x8up09sU6jvFaCmiNYVDeQ=="
         }
       },
       "is_incremental": false,
@@ -876,7 +876,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.MetaTag.html",
-          "hash": "119/dqGrTQnXCpG6OkSoBQ=="
+          "hash": "WU0ikl/dYN+fYu1HG9A+YQ=="
         }
       },
       "is_incremental": false,
@@ -888,7 +888,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.NTAuthStore.html",
-          "hash": "J4Mm4ndcri6PW9MYjnf7zg=="
+          "hash": "BybdeUGN5FivPmj1BWlXUQ=="
         }
       },
       "is_incremental": false,
@@ -900,7 +900,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.NamedPrincipal.html",
-          "hash": "v+LjCGkJvtYwLzg6r1DjRg=="
+          "hash": "0AwCOd9U2ruwZlFW8wjafQ=="
         }
       },
       "is_incremental": false,
@@ -912,7 +912,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.OU.html",
-          "hash": "aDtbg5yR1DAFdmpCRWTkAw=="
+          "hash": "Q0ms8gCY+0+tS+DOFIocWA=="
         }
       },
       "is_incremental": false,
@@ -924,7 +924,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.OutputBase.html",
-          "hash": "bTvX1zRptQU7w1Kp1+V2YA=="
+          "hash": "SXIQel1E0C/YYP7s/6URtg=="
         }
       },
       "is_incremental": false,
@@ -936,7 +936,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.OutputWrapper-1.html",
-          "hash": "QqXeQL4YTnFKisOPSTjr1A=="
+          "hash": "mOUwq94Pdt4/68YjkN6YUQ=="
         }
       },
       "is_incremental": false,
@@ -948,7 +948,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.ResultingGPOChanges.html",
-          "hash": "q8I28gpP9OkZc+1YRlsfEA=="
+          "hash": "Czj7tLlS46g4pvJWcmbRHA=="
         }
       },
       "is_incremental": false,
@@ -960,7 +960,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.RootCA.html",
-          "hash": "lqQ7DNMMATtPXTCE8HljnQ=="
+          "hash": "FyFp/F5Vpd90ylNnwojaGg=="
         }
       },
       "is_incremental": false,
@@ -972,7 +972,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.SPNPrivilege.html",
-          "hash": "teUf7yYNboiGEm7oe08kUA=="
+          "hash": "9+WbHW1Mco2849HPZ29+bQ=="
         }
       },
       "is_incremental": false,
@@ -984,7 +984,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.Session.html",
-          "hash": "4au4XG2UQTzXPe0CcR2keQ=="
+          "hash": "s09ihRVPcnzXhEQYUND7Bg=="
         }
       },
       "is_incremental": false,
@@ -996,7 +996,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.SessionAPIResult.html",
-          "hash": "6cpfyQhD74nQHdHTEXbI3g=="
+          "hash": "Wxd1bYt2eGvOIGr8cgXeQQ=="
         }
       },
       "is_incremental": false,
@@ -1008,7 +1008,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.TypedPrincipal.html",
-          "hash": "XE56iMkA6mPZ2xX5MyYYvw=="
+          "hash": "HC5QmKpwlefOtMlwDXUmSw=="
         }
       },
       "is_incremental": false,
@@ -1020,7 +1020,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.User.html",
-          "hash": "93uS6MI8dtxGWFtOd5xgig=="
+          "hash": "/moiiMvsz5bx4QA2v2Ejsw=="
         }
       },
       "is_incremental": false,
@@ -1032,7 +1032,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.OutputTypes.UserRightsAssignmentAPIResult.html",
-          "hash": "el0QrrPWDC/AB3EQd6GprQ=="
+          "hash": "lL/1qU0HoJBHEzwsPNAECw=="
         }
       },
       "is_incremental": false,
@@ -1056,7 +1056,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ParsedGPLink.html",
-          "hash": "sFF2d8K+ySuyFTtpVjod+w=="
+          "hash": "H0YnvKMGlfGO5iuAm3T6yw=="
         }
       },
       "is_incremental": false,
@@ -1068,7 +1068,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ACEGuids.html",
-          "hash": "YWGTcMT5zeglm+RXEQ+p9g=="
+          "hash": "Rn9Dn2dMev1Gh0V9pACsTg=="
         }
       },
       "is_incremental": false,
@@ -1080,7 +1080,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ACLProcessor.html",
-          "hash": "al3llPJ+e5WQNbqINk/aYQ=="
+          "hash": "oxKCc0sUVMFdLGYjAlvHWQ=="
         }
       },
       "is_incremental": false,
@@ -1104,7 +1104,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html",
-          "hash": "6uj7IifCY1Bs6wklE+UKOw=="
+          "hash": "yLZO+RhGuZUVf1q6ZGRBsQ=="
         }
       },
       "is_incremental": false,
@@ -1116,7 +1116,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.CertRegistryResult.html",
-          "hash": "iOQkfur9xUdsQWt6bWlzlA=="
+          "hash": "B1L7jQvw4OI5g0wgnNckkg=="
         }
       },
       "is_incremental": false,
@@ -1140,7 +1140,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ComputerAvailability.html",
-          "hash": "cd4sUMs5QE1/WjUPuYGEBQ=="
+          "hash": "90qtG6P/aOkDjhHpMnJSUQ=="
         }
       },
       "is_incremental": false,
@@ -1152,7 +1152,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ComputerProperties.html",
-          "hash": "Qc+FjAY407lkSaJ3EoX20w=="
+          "hash": "FE/R3VQi5jtXjPvU/7Z3Qw=="
         }
       },
       "is_incremental": false,
@@ -1176,7 +1176,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html",
-          "hash": "6PcAhISaUzcOfJKQjX6fNw=="
+          "hash": "vAriPs+/oVrsw1qAFjHuOg=="
         }
       },
       "is_incremental": false,
@@ -1188,7 +1188,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ContainerProcessor.html",
-          "hash": "IVxYCgxB/MB1h3D5jwfVkw=="
+          "hash": "z/fj8/tHs0zWmn8G9gTUKg=="
         }
       },
       "is_incremental": false,
@@ -1212,7 +1212,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.DCRegistryProcessor.html",
-          "hash": "cKCDJnePTxfb8wLfwQD4Ew=="
+          "hash": "a6LbvIq4DAQ5kBAl5P0UqA=="
         }
       },
       "is_incremental": false,
@@ -1224,7 +1224,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.DomainTrustProcessor.html",
-          "hash": "8eC3BgDF3qfJbOR5DRSLGg=="
+          "hash": "FLZNahM24OofwH58QfjNhQ=="
         }
       },
       "is_incremental": false,
@@ -1236,7 +1236,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.EnrollmentAgentRestriction.html",
-          "hash": "1/aKPBDTPb3mWKq+SB/DwQ=="
+          "hash": "sPmJd6uPBjPHlWxR111fBQ=="
         }
       },
       "is_incremental": false,
@@ -1248,7 +1248,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.GroupResults.html",
-          "hash": "SuqxeL25Pr3Fl/nd5nZSag=="
+          "hash": "ur8N6um3o0xA6TAKge/tHg=="
         }
       },
       "is_incremental": false,
@@ -1260,7 +1260,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.GPOLocalGroupProcessor.html",
-          "hash": "g3xNeKyK1Hgr0FL8FxJdeQ=="
+          "hash": "eMEg8knClbVPHvDDmvSX1w=="
         }
       },
       "is_incremental": false,
@@ -1272,7 +1272,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.GroupProcessor.html",
-          "hash": "e0yMhHJc9wwU2DxbgKNBmQ=="
+          "hash": "TtS9YVzp3+hmEZ4sPy7SZg=="
         }
       },
       "is_incremental": false,
@@ -1284,7 +1284,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html",
-          "hash": "GS+Lf2rhWdvIDnjbt3qn4Q=="
+          "hash": "o88lfzQaiYTlaP0vkGm65Q=="
         }
       },
       "is_incremental": false,
@@ -1308,7 +1308,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.LocalGroupProcessor.html",
-          "hash": "L1n/KVR+fEMSH2oZDbJYxQ=="
+          "hash": "jLkoDeC7er5D5SIy7gLwyA=="
         }
       },
       "is_incremental": false,
@@ -1320,7 +1320,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.ParsedCertificate.html",
-          "hash": "s3NfCjnJ9ftcRPFOzVzKDg=="
+          "hash": "hwsQG5g0Lc1jfhU5RQULXQ=="
         }
       },
       "is_incremental": false,
@@ -1332,7 +1332,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.PortScanner.html",
-          "hash": "SkBBhQNjkJl6clnFPmRHyw=="
+          "hash": "JfggI+9+9cZlLpexxNwNQg=="
         }
       },
       "is_incremental": false,
@@ -1344,7 +1344,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.RegistryResult.html",
-          "hash": "J0vwpQLXdaaSSqAHWlZ2EA=="
+          "hash": "8H1xpq/VNxXTYDiiukB/zg=="
         }
       },
       "is_incremental": false,
@@ -1356,7 +1356,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.SPNProcessors.html",
-          "hash": "7pn5NeEBZznLxSnm3bb+PA=="
+          "hash": "1GTZEYMvR5Xno+3ZcDCKRw=="
         }
       },
       "is_incremental": false,
@@ -1368,7 +1368,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.UserProperties.html",
-          "hash": "DQdCTc7tVrDm7gr9VBYl+A=="
+          "hash": "3NkihTYrumNKZUUdP7X80w=="
         }
       },
       "is_incremental": false,
@@ -1392,7 +1392,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.html",
-          "hash": "gM7fWxnp6S/KmgW/5sN3OQ=="
+          "hash": "rkvoSX6Pykr14UoJARZdcA=="
         }
       },
       "is_incremental": false,
@@ -1416,7 +1416,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.ResolvedSearchResult.html",
-          "hash": "c67108NO0t/WX1BsXYO6xg=="
+          "hash": "JX2NAwtFhT9DUUVUzNlB6Q=="
         }
       },
       "is_incremental": false,
@@ -1428,7 +1428,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.SHRegistryKey.html",
-          "hash": "jRTpH0Kk0ekyHVFqtNsSoA=="
+          "hash": "hKa1r8TSdb/MJjxmF+GuNg=="
         }
       },
       "is_incremental": false,
@@ -1440,7 +1440,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.SearchResultEntryWrapper.html",
-          "hash": "3rtOFFSbtaaAyHNr8XQA3g=="
+          "hash": "jpHaJAjv9uiD6NISNtmpTQ=="
         }
       },
       "is_incremental": false,
@@ -1452,7 +1452,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundCommonLib.WellKnownPrincipal.html",
-          "hash": "TkJ6j7XBDk0+oa5Yk+4XiA=="
+          "hash": "PbiVk5H/MyoAFSLN/+X/jA=="
         }
       },
       "is_incremental": false,
@@ -1476,7 +1476,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Extensions.html",
-          "hash": "o11LsUtPyVHha1igHlxVFw=="
+          "hash": "GvzqEtRjgqInHH6mx3fMrw=="
         }
       },
       "is_incremental": false,
@@ -1488,7 +1488,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Handles.BasePointer.html",
-          "hash": "cre6Ulz4Q1kf4sftYG0QCA=="
+          "hash": "9Px758GU3LVF69Lowluo8A=="
         }
       },
       "is_incremental": false,
@@ -1500,7 +1500,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Handles.LSAHandle.html",
-          "hash": "nSX8PLqaXPK+ScLtV+zcMg=="
+          "hash": "oVVB/kjTYf9URixHiPfTKw=="
         }
       },
       "is_incremental": false,
@@ -1512,7 +1512,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Handles.LSAPointer.html",
-          "hash": "oWLkoARK2g06CDhEwY5LSA=="
+          "hash": "LbxlVyzqEuTfNS0NkSfMrw=="
         }
       },
       "is_incremental": false,
@@ -1524,7 +1524,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Handles.NetAPIPointer.html",
-          "hash": "vG/pXZIs9gJyLVPSwIoZFg=="
+          "hash": "0+05VsuBUR5wfJ70nsOlZw=="
         }
       },
       "is_incremental": false,
@@ -1536,7 +1536,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Handles.SAMHandle.html",
-          "hash": "g3TSrHRQrooyJpvk+opUXA=="
+          "hash": "kuoaLrJCXdZPjSCWhlHqFw=="
         }
       },
       "is_incremental": false,
@@ -1548,7 +1548,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Handles.SAMPointer.html",
-          "hash": "Xjs5u9s6c1CCoxvryEGQ5w=="
+          "hash": "VAwhQf3/hmVnWCUZZ0LO5w=="
         }
       },
       "is_incremental": false,
@@ -1560,7 +1560,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Handles.SAMSidArray.html",
-          "hash": "AjUrglGiprGJMThVViyJwA=="
+          "hash": "4mkI7vkuGci1v+g5f2jepw=="
         }
       },
       "is_incremental": false,
@@ -1632,7 +1632,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.LSANative.LSAStructs.LSAReferencedDomains.html",
-          "hash": "vLuu4vbyQGFg8tBX96VF6Q=="
+          "hash": "gfTGGVNxuhXotNeanU7ecA=="
         }
       },
       "is_incremental": false,
@@ -1644,7 +1644,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.LSANative.LSAStructs.LSATranslatedNames.html",
-          "hash": "e+7Q5/d9Jr6IFM2Fvr3Obg=="
+          "hash": "8OxOjJJYQv/LgUe0UcOfsQ=="
         }
       },
       "is_incremental": false,
@@ -1656,7 +1656,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.LSANative.LSAStructs.LSATrustInformation.html",
-          "hash": "BGdCJuP6ZZIPEQV4eHgAzw=="
+          "hash": "98kl42IpZLvNgunC4iQafg=="
         }
       },
       "is_incremental": false,
@@ -1668,7 +1668,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.LSANative.LSAStructs.ObjectAttributes.html",
-          "hash": "LZz8vw0KD9KP3o7MRudRsQ=="
+          "hash": "8FTxDBJjKCWrF9Uodbu+4g=="
         }
       },
       "is_incremental": false,
@@ -1680,7 +1680,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.LSANative.LSAStructs.PolicyAccountDomainInfo.html",
-          "hash": "i2xrvZuXSvwoXdS3OsUBjQ=="
+          "hash": "0YWgI2ITfu+jNAsCr4gSSQ=="
         }
       },
       "is_incremental": false,
@@ -1704,7 +1704,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.LSANative.UserRights.html",
-          "hash": "okgElOwemZGt3Cb6WWo8wQ=="
+          "hash": "mDQrbPgP1fauAsKM5oizsw=="
         }
       },
       "is_incremental": false,
@@ -1764,7 +1764,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetAPIMethods.html",
-          "hash": "hLXttAbj2xMRt5hirZjViA=="
+          "hash": "ESg9ZV3b/n2U47atdzRVoA=="
         }
       },
       "is_incremental": false,
@@ -1776,7 +1776,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetAPIResult-1.html",
-          "hash": "+FP//56F8hk+O62+bQLejQ=="
+          "hash": "gQhpwVUGOJwNqr+bz8Hpfw=="
         }
       },
       "is_incremental": false,
@@ -1788,7 +1788,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetAPIStructs.DomainControllerInfo.html",
-          "hash": "BmRru9mOtpdET6wg8ATqeA=="
+          "hash": "pWJkBgjmGglCbQjvWnjEIw=="
         }
       },
       "is_incremental": false,
@@ -1800,7 +1800,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetAPIStructs.GuidClass.html",
-          "hash": "/aGhBdPRRYLfxkpMAU3w/Q=="
+          "hash": "Tqyi1bc9Iw3l9V+zo11fZg=="
         }
       },
       "is_incremental": false,
@@ -1812,7 +1812,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetAPIStructs.SessionInfo10.html",
-          "hash": "1LYyWvYzlkvPrvdn2D6G5g=="
+          "hash": "pRdRYerrRwYwehKIoDfQGg=="
         }
       },
       "is_incremental": false,
@@ -1824,7 +1824,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetAPIStructs.WkstaUserInfo1.html",
-          "hash": "3UrhWQFR83D/3iQt8irJEQ=="
+          "hash": "A1Dab3ydbs2kfUhs4uceiw=="
         }
       },
       "is_incremental": false,
@@ -1836,7 +1836,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetAPIStructs.WorkstationInfo100.html",
-          "hash": "cty1gRXIJPNrroN6Qty54Q=="
+          "hash": "hiPZnXG2m1YiXhP90qTcgQ=="
         }
       },
       "is_incremental": false,
@@ -1860,7 +1860,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetSessionEnumResults.html",
-          "hash": "NVzkOUXa0OlE5K6F0ciY8w=="
+          "hash": "i/SP0rz2m+QZSYtDvrNuag=="
         }
       },
       "is_incremental": false,
@@ -1872,7 +1872,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.NetAPINative.NetWkstaUserEnumResults.html",
-          "hash": "IzYRH7teQCBU7RdlDxS7ug=="
+          "hash": "YIHthI1UvmPCy9mK6av+wA=="
         }
       },
       "is_incremental": false,
@@ -1908,7 +1908,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.RPCException.html",
-          "hash": "fPGikCcYxdNO7iStOU9hFg=="
+          "hash": "JRGMlHzra/8nIyrNFCy+3Q=="
         }
       },
       "is_incremental": false,
@@ -1920,7 +1920,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Result-1.html",
-          "hash": "yERR+9c9b+gW7C//UvWF+g=="
+          "hash": "PUngk319fZJB3TczuiqTiA=="
         }
       },
       "is_incremental": false,
@@ -1992,7 +1992,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.SAMRPCNative.SAMStructs.ObjectAttributes.html",
-          "hash": "9I+T4IGyeX2/tZAn/RWOKw=="
+          "hash": "zN3V3K5QKENmCcCjGcs5sQ=="
         }
       },
       "is_incremental": false,
@@ -2004,7 +2004,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.SAMRPCNative.SAMStructs.SamRidEnumeration.html",
-          "hash": "cbUiqbJNoa/hSYIM/hF5BQ=="
+          "hash": "wcT1H4GBBvmN+zMiF1cHng=="
         }
       },
       "is_incremental": false,
@@ -2064,7 +2064,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Shared.SharedStructs.UnicodeString.html",
-          "hash": "oFSyKRV/J60yuNZWdifH+A=="
+          "hash": "6B2ztsu5DU/4TabhErjAMQ=="
         }
       },
       "is_incremental": false,
@@ -2100,7 +2100,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.ILSAPolicy.html",
-          "hash": "2PS6kLmT1Ic7uSR2SF0Irg=="
+          "hash": "rmWEAM2k19dZfeFxsAV43A=="
         }
       },
       "is_incremental": false,
@@ -2112,7 +2112,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.ISAMAlias.html",
-          "hash": "dd5UgM/NzklTI24ilH2LUQ=="
+          "hash": "GsC0sPZLw4X3PfsaDlfyfg=="
         }
       },
       "is_incremental": false,
@@ -2124,7 +2124,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.ISAMDomain.html",
-          "hash": "BhCFQ3mVdac++3NfAf+6sg=="
+          "hash": "4rCY0xyndiEJoPR/X9LvoQ=="
         }
       },
       "is_incremental": false,
@@ -2136,7 +2136,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.ISAMServer.html",
-          "hash": "iLV/h67rsVR63HxyjUq3oA=="
+          "hash": "Dnk5E4sGC1EX7g3rOMZO5g=="
         }
       },
       "is_incremental": false,
@@ -2148,7 +2148,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.LSABase.html",
-          "hash": "cwDXBxs/eLCiCcdxR7Jykw=="
+          "hash": "KyER8K+H2NPMtnNIccojPw=="
         }
       },
       "is_incremental": false,
@@ -2160,7 +2160,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.LSAPolicy.html",
-          "hash": "lh8LyxgVSc0hVTz1ezhgQg=="
+          "hash": "N7bNh0GMLm9NoaatrjFwPQ=="
         }
       },
       "is_incremental": false,
@@ -2172,7 +2172,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.SAMAlias.html",
-          "hash": "G2IlI0BsWFluTJ1zND2XKw=="
+          "hash": "BzhPzn2QLXu0TbSXe+K+kg=="
         }
       },
       "is_incremental": false,
@@ -2184,7 +2184,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.SAMBase.html",
-          "hash": "FESBYHJ2+GApeTO9s9vzZQ=="
+          "hash": "L9qucsEQ5atlzseDDzbVCw=="
         }
       },
       "is_incremental": false,
@@ -2196,7 +2196,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.SAMDomain.html",
-          "hash": "UdFDPfdPfyaqrPFuyekyGA=="
+          "hash": "cAIUiAzzLnwXq9Vy8KL9pg=="
         }
       },
       "is_incremental": false,
@@ -2208,7 +2208,7 @@
       "output": {
         ".html": {
           "relative_path": "api/SharpHoundRPC.Wrappers.SAMServer.html",
-          "hash": "e+m4/z6lhZufSqsvsBgChA=="
+          "hash": "QedAgB/Hw+wL843t6Otalw=="
         }
       },
       "is_incremental": false,
