@@ -278,19 +278,21 @@ namespace SharpHoundCommonLib.Processors
             var props = GetCommonProps(entry);
 
             var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
-            bool enabled, unconstrained, trustedToAuth;
+            bool enabled, unconstrained, trustedToAuth, isDC;
             if (int.TryParse(uac, out var flag))
             {
                 var flags = (UacFlags)flag;
                 enabled = (flags & UacFlags.AccountDisable) == 0;
                 unconstrained = (flags & UacFlags.TrustedForDelegation) == UacFlags.TrustedForDelegation;
                 trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
+                isDC = (flags & UacFlags.ServerTrustAccount) != 0;
             }
             else
             {
                 unconstrained = false;
                 enabled = true;
                 trustedToAuth = false;
+                isDC = false;
             }
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
@@ -335,12 +337,14 @@ namespace SharpHoundCommonLib.Processors
             props.Add("enabled", enabled);
             props.Add("unconstraineddelegation", unconstrained);
             props.Add("trustedtoauth", trustedToAuth);
+            props.Add("isdc", isDC);
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
             props.Add("pwdlastset",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
             props.Add("serviceprincipalnames", entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames));
+            props.Add("email", entry.GetProperty(LDAPProperties.Email));
             var os = entry.GetProperty(LDAPProperties.OperatingSystem);
             var sp = entry.GetProperty(LDAPProperties.ServicePack);
 
@@ -516,6 +520,16 @@ namespace SharpHoundCommonLib.Processors
                     nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
                 props.Add("subjectaltrequireupn",
                     nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN));
+                props.Add("subjectaltrequiredns",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DNS));
+                props.Add("subjectaltrequiredomaindns",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DOMAIN_DNS));
+                props.Add("subjectaltrequireemail",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_EMAIL));
+                props.Add("subjectaltrequirespn",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_SPN));
+                props.Add("subjectrequireemail",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_REQUIRE_EMAIL));
             }
 
             string[] ekus = entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage);
