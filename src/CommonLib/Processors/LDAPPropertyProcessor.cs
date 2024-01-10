@@ -150,40 +150,23 @@ namespace SharpHoundCommonLib.Processors
             var props = GetCommonProps(entry);
 
             var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
-            bool enabled, trustedToAuth, sensitive, dontReqPreAuth, passwdNotReq, unconstrained, pwdNeverExpires;
-            if (int.TryParse(uac, out var flag))
+            var uacFlags = (UacFlags)0;
+            if (entry.GetIntProperty(uac, out var flag))
             {
-                var flags = (UacFlags)flag;
-                enabled = (flags & UacFlags.AccountDisable) == 0;
-                trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
-                sensitive = (flags & UacFlags.NotDelegated) != 0;
-                dontReqPreAuth = (flags & UacFlags.DontReqPreauth) != 0;
-                passwdNotReq = (flags & UacFlags.PasswordNotRequired) != 0;
-                unconstrained = (flags & UacFlags.TrustedForDelegation) != 0;
-                pwdNeverExpires = (flags & UacFlags.DontExpirePassword) != 0;
-            }
-            else
-            {
-                trustedToAuth = false;
-                enabled = true;
-                sensitive = false;
-                dontReqPreAuth = false;
-                passwdNotReq = false;
-                unconstrained = false;
-                pwdNeverExpires = false;
+                uacFlags = (UacFlags)flag;
+                props.Add("sensitive", uacFlags.HasFlag(UacFlags.NotDelegated));
+                props.Add("dontreqpreauth", uacFlags.HasFlag(UacFlags.DontReqPreauth));
+                props.Add("passwordnotreqd", uacFlags.HasFlag(UacFlags.PasswordNotRequired));
+                props.Add("unconstraineddelegation", uacFlags.HasFlag(UacFlags.TrustedForDelegation));
+                props.Add("pwdneverexpires", uacFlags.HasFlag(UacFlags.DontExpirePassword));
+                props.Add("enabled", !uacFlags.HasFlag(UacFlags.AccountDisable));
+                props.Add("trustedtoauth", uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation));
             }
 
-            props.Add("sensitive", sensitive);
-            props.Add("dontreqpreauth", dontReqPreAuth);
-            props.Add("passwordnotreqd", passwdNotReq);
-            props.Add("unconstraineddelegation", unconstrained);
-            props.Add("pwdneverexpires", pwdNeverExpires);
-            props.Add("enabled", enabled);
-            props.Add("trustedtoauth", trustedToAuth);
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
 
             var comps = new List<TypedPrincipal>();
-            if (trustedToAuth)
+            if (uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation))
             {
                 var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
                 props.Add("allowedtodelegate", delegates);
@@ -278,25 +261,20 @@ namespace SharpHoundCommonLib.Processors
             var props = GetCommonProps(entry);
 
             var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
-            bool enabled, unconstrained, trustedToAuth;
-            if (int.TryParse(uac, out var flag))
+            var flags = (UacFlags)0;
+            if (entry.GetIntProperty(uac, out var flag))
             {
-                var flags = (UacFlags)flag;
-                enabled = (flags & UacFlags.AccountDisable) == 0;
-                unconstrained = (flags & UacFlags.TrustedForDelegation) == UacFlags.TrustedForDelegation;
-                trustedToAuth = (flags & UacFlags.TrustedToAuthForDelegation) != 0;
-            }
-            else
-            {
-                unconstrained = false;
-                enabled = true;
-                trustedToAuth = false;
+                flags = (UacFlags)flag;
+                props.Add("enabled", !flags.HasFlag(UacFlags.AccountDisable));
+                props.Add("unconstraineddelegation", flags.HasFlag(UacFlags.TrustedForDelegation));
+                props.Add("trustedtoauth", flags.HasFlag(UacFlags.TrustedToAuthForDelegation));
+                props.Add("isdc", flags.HasFlag(UacFlags.ServerTrustAccount));
             }
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
 
             var comps = new List<TypedPrincipal>();
-            if (trustedToAuth)
+            if (flags.HasFlag(UacFlags.TrustedToAuthForDelegation))
             {
                 var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
                 props.Add("allowedtodelegate", delegates);
@@ -332,15 +310,13 @@ namespace SharpHoundCommonLib.Processors
 
             compProps.AllowedToAct = allowedToActPrincipals.ToArray();
 
-            props.Add("enabled", enabled);
-            props.Add("unconstraineddelegation", unconstrained);
-            props.Add("trustedtoauth", trustedToAuth);
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
             props.Add("lastlogontimestamp",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
             props.Add("pwdlastset",
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
             props.Add("serviceprincipalnames", entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames));
+            props.Add("email", entry.GetProperty(LDAPProperties.Email));
             var os = entry.GetProperty(LDAPProperties.OperatingSystem);
             var sp = entry.GetProperty(LDAPProperties.ServicePack);
 
@@ -516,6 +492,16 @@ namespace SharpHoundCommonLib.Processors
                     nameFlags.HasFlag(PKICertificateNameFlag.ENROLLEE_SUPPLIES_SUBJECT));
                 props.Add("subjectaltrequireupn",
                     nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_UPN));
+                props.Add("subjectaltrequiredns",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DNS));
+                props.Add("subjectaltrequiredomaindns",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_DOMAIN_DNS));
+                props.Add("subjectaltrequireemail",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_EMAIL));
+                props.Add("subjectaltrequirespn",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_ALT_REQUIRE_SPN));
+                props.Add("subjectrequireemail",
+                    nameFlags.HasFlag(PKICertificateNameFlag.SUBJECT_REQUIRE_EMAIL));
             }
 
             string[] ekus = entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage);
