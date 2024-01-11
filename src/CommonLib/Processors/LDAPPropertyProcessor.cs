@@ -148,20 +148,21 @@ namespace SharpHoundCommonLib.Processors
         {
             var userProps = new UserProperties();
             var props = GetCommonProps(entry);
-
-            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
+            
             var uacFlags = (UacFlags)0;
-            if (entry.GetIntProperty(uac, out var flag))
+            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
+            if (int.TryParse(uac, out var flag))
             {
                 uacFlags = (UacFlags)flag;
-                props.Add("sensitive", uacFlags.HasFlag(UacFlags.NotDelegated));
-                props.Add("dontreqpreauth", uacFlags.HasFlag(UacFlags.DontReqPreauth));
-                props.Add("passwordnotreqd", uacFlags.HasFlag(UacFlags.PasswordNotRequired));
-                props.Add("unconstraineddelegation", uacFlags.HasFlag(UacFlags.TrustedForDelegation));
-                props.Add("pwdneverexpires", uacFlags.HasFlag(UacFlags.DontExpirePassword));
-                props.Add("enabled", !uacFlags.HasFlag(UacFlags.AccountDisable));
-                props.Add("trustedtoauth", uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation));
             }
+            
+            props.Add("sensitive", uacFlags.HasFlag(UacFlags.NotDelegated));
+            props.Add("dontreqpreauth", uacFlags.HasFlag(UacFlags.DontReqPreauth));
+            props.Add("passwordnotreqd", uacFlags.HasFlag(UacFlags.PasswordNotRequired));
+            props.Add("unconstraineddelegation", uacFlags.HasFlag(UacFlags.TrustedForDelegation));
+            props.Add("pwdneverexpires", uacFlags.HasFlag(UacFlags.DontExpirePassword));
+            props.Add("enabled", !uacFlags.HasFlag(UacFlags.AccountDisable));
+            props.Add("trustedtoauth", uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation));
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
 
@@ -259,17 +260,18 @@ namespace SharpHoundCommonLib.Processors
         {
             var compProps = new ComputerProperties();
             var props = GetCommonProps(entry);
-
-            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
+            
             var flags = (UacFlags)0;
-            if (entry.GetIntProperty(uac, out var flag))
+            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
+            if (int.TryParse(uac, out var flag))
             {
                 flags = (UacFlags)flag;
-                props.Add("enabled", !flags.HasFlag(UacFlags.AccountDisable));
-                props.Add("unconstraineddelegation", flags.HasFlag(UacFlags.TrustedForDelegation));
-                props.Add("trustedtoauth", flags.HasFlag(UacFlags.TrustedToAuthForDelegation));
-                props.Add("isdc", flags.HasFlag(UacFlags.ServerTrustAccount));
             }
+            
+            props.Add("enabled", !flags.HasFlag(UacFlags.AccountDisable));
+            props.Add("unconstraineddelegation", flags.HasFlag(UacFlags.TrustedForDelegation));
+            props.Add("trustedtoauth", flags.HasFlag(UacFlags.TrustedToAuthForDelegation));
+            props.Add("isdc", flags.HasFlag(UacFlags.ServerTrustAccount));
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
 
