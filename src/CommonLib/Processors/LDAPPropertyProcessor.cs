@@ -116,7 +116,7 @@ namespace SharpHoundCommonLib.Processors
             if (uacFlags[UacFlags.TrustedToAuthForDelegation])
             {
                 var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
-                props.Add("delegates", delegates);
+                props.Add("allowedtodelegate", delegates);
 
                 foreach (var d in delegates)
                 {
@@ -673,7 +673,7 @@ namespace SharpHoundCommonLib.Processors
                     var ac = entry.GetProperty(LDAPProperties.AdminCount);
                     if (ac != null)
                     {
-                        var a = int.Parse(ac);
+                        int.TryParse(ac, out var a);
                         props.Add("admincount", a != 0);
                     }
                     else
