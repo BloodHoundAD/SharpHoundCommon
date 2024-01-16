@@ -32,15 +32,9 @@ namespace SharpHoundCommonLib.Processors
 
         private static Dictionary<string, object> GetCommonProps(ISearchResultEntry entry)
         {
-            return new Dictionary<string, object>
-            {
-                {
-                    PropertyMap.GetPropertyName(LDAPProperties.Description), entry.GetProperty(LDAPProperties.Description)
-                },
-                {
-                    PropertyMap.GetPropertyName(LDAPProperties.WhenCreated), Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty(LDAPProperties.WhenCreated))
-                }
-            };
+            var props = PropertyMap.GetProperties(LDAPProperties.Description, entry);
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.WhenCreated, entry));
+            return props;
         }
 
         /// <summary>
@@ -87,17 +81,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadGroupProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-
-            var ac = entry.GetProperty(LDAPProperties.AdminCount);
-            if (ac != null)
-            {
-                var a = int.Parse(ac);
-                props.Add("admincount", a != 0);
-            }
-            else
-            {
-                props.Add("admincount", false);
-            }
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.AdminCount, entry));
 
             return props;
         }
@@ -113,53 +97,6 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
-        public static Dictionary<string, object> ReadUacFlags(ISearchResultEntry entry)
-        {
-            var props = new Dictionary<string, object>();
-
-            var uacFlags = (UacFlags)0;
-            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
-            if (int.TryParse(uac, out var flags))
-            {
-                uacFlags = (UacFlags)flags;
-            }
-            
-            // var allFlags = ReadFlags(uacFlags);
-            //
-            // foreach (var flag in allFlags)
-            // {
-            //     
-            // }
-            
-            props.Add("sensitive", uacFlags.HasFlag(UacFlags.NotDelegated));
-            props.Add("dontreqpreauth", uacFlags.HasFlag(UacFlags.DontReqPreauth));
-            props.Add("passwordnotreqd", uacFlags.HasFlag(UacFlags.PasswordNotRequired));
-            props.Add("unconstraineddelegation", uacFlags.HasFlag(UacFlags.TrustedForDelegation));
-            props.Add("pwdneverexpires", uacFlags.HasFlag(UacFlags.DontExpirePassword));
-            props.Add("enabled", !uacFlags.HasFlag(UacFlags.AccountDisable));
-            props.Add("trustedtoauth", uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation));
-            props.Add("isdc", uacFlags.HasFlag(UacFlags.ServerTrustAccount));
-            
-            return props;
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="flags"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        private static Dictionary<T, bool> ReadFlags<T>(T flags)
-            where T : Enum
-        {
-            return Enum.GetValues(typeof(T))
-                .Cast<T>()
-                .ToDictionary(
-                    val => val,
-                    val => flags.HasFlag(val)
-                );
-        }
-
         /// <summary>
         ///     Reads specific LDAP properties related to Users
         /// </summary>
@@ -170,28 +107,16 @@ namespace SharpHoundCommonLib.Processors
             var userProps = new UserProperties();
             var props = GetCommonProps(entry);
             
-            var uacFlags = (UacFlags)0;
-            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
-            if (int.TryParse(uac, out var flag))
-            {
-                uacFlags = (UacFlags)flag;
-                var meow = ReadFlags(uacFlags);
-            }
-            
-            props.Add("sensitive", uacFlags.HasFlag(UacFlags.NotDelegated));
-            props.Add("dontreqpreauth", uacFlags.HasFlag(UacFlags.DontReqPreauth));
-            props.Add("passwordnotreqd", uacFlags.HasFlag(UacFlags.PasswordNotRequired));
-            props.Add("unconstraineddelegation", uacFlags.HasFlag(UacFlags.TrustedForDelegation));
-            props.Add("pwdneverexpires", uacFlags.HasFlag(UacFlags.DontExpirePassword));
-            props.Add("enabled", !uacFlags.HasFlag(UacFlags.AccountDisable));
-            props.Add("trustedtoauth", uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.UserAccountControl, entry));
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
 
             var comps = new List<TypedPrincipal>();
-            if (uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation))
+            var uacFlags = PropertyMap.GetUacFlags(entry);
+            if (uacFlags[UacFlags.TrustedToAuthForDelegation])
             {
-                props.AddRange(PropertyMap.GetProperties(LDAPProperties.AllowedToDelegateTo, entry));
+                var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
+                props.Add("delegates", delegates);
 
                 foreach (var d in delegates)
                 {
@@ -223,19 +148,7 @@ namespace SharpHoundCommonLib.Processors
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.UnicodePassword, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.MsSFU30Password, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.ScriptPath, entry));
-
-            var ac = entry.GetProperty(LDAPProperties.AdminCount);
-            if (ac != null)
-            {
-                if (int.TryParse(ac, out var parsed))
-                    props.Add("admincount", parsed != 0);
-                else
-                    props.Add("admincount", false);
-            }
-            else
-            {
-                props.Add("admincount", false);
-            }
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.AdminCount, entry));
 
             var sh = entry.GetByteArrayProperty(LDAPProperties.SIDHistory);
             var sidHistoryList = new List<string>();
@@ -278,22 +191,13 @@ namespace SharpHoundCommonLib.Processors
             var compProps = new ComputerProperties();
             var props = GetCommonProps(entry);
             
-            var flags = (UacFlags)0;
-            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
-            if (int.TryParse(uac, out var flag))
-            {
-                flags = (UacFlags)flag;
-            }
-            
-            props.Add("enabled", !flags.HasFlag(UacFlags.AccountDisable));
-            props.Add("unconstraineddelegation", flags.HasFlag(UacFlags.TrustedForDelegation));
-            props.Add("trustedtoauth", flags.HasFlag(UacFlags.TrustedToAuthForDelegation));
-            props.Add("isdc", flags.HasFlag(UacFlags.ServerTrustAccount));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.UserAccountControl, entry));
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
 
             var comps = new List<TypedPrincipal>();
-            if (flags.HasFlag(UacFlags.TrustedToAuthForDelegation))
+            var uacFlags = PropertyMap.GetUacFlags(entry);
+            if (uacFlags[UacFlags.TrustedToAuthForDelegation])
             {
                 var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
                 props.Add("allowedtodelegate", delegates);
@@ -334,12 +238,7 @@ namespace SharpHoundCommonLib.Processors
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.PasswordLastSet, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.ServicePrincipalNames, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.Email, entry));
-            var os = entry.GetProperty(LDAPProperties.OperatingSystem);
-            var sp = entry.GetProperty(LDAPProperties.ServicePack);
-
-            if (sp != null) os = $"{os} {sp}";
-
-            props.Add("operatingsystem", os);
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.OperatingSystem, entry));
 
             var sh = entry.GetByteArrayProperty(LDAPProperties.SIDHistory);
             var sidHistoryList = new List<string>();
@@ -729,10 +628,6 @@ namespace SharpHoundCommonLib.Processors
                 case LDAPProperties.GPCFileSYSPath:
                     props.Add("gpcpath", entry.GetProperty(LDAPProperties.GPCFileSYSPath)?.ToUpper());
                     break;
-                case LDAPProperties.AllowedToDelegateTo:
-                    var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
-                    props.Add("delegates", delegates);
-                    break;
                 case LDAPProperties.LastLogon:
                     props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
                     break;
@@ -774,6 +669,36 @@ namespace SharpHoundCommonLib.Processors
                 case LDAPProperties.ScriptPath:
                     props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
                     break;
+                case LDAPProperties.AdminCount:
+                    var ac = entry.GetProperty(LDAPProperties.AdminCount);
+                    if (ac != null)
+                    {
+                        var a = int.Parse(ac);
+                        props.Add("admincount", a != 0);
+                    }
+                    else
+                    {
+                        props.Add("admincount", false);
+                    }
+                    break;
+                case LDAPProperties.UserAccountControl:
+                    var allFlags = GetUacFlags(entry);
+                    props.Add("sensitive", allFlags[UacFlags.NotDelegated]);
+                    props.Add("dontreqpreauth", allFlags[UacFlags.DontReqPreauth]);
+                    props.Add("passwordnotreqd", allFlags[UacFlags.PasswordNotRequired]);
+                    props.Add("unconstraineddelegation", allFlags[UacFlags.TrustedForDelegation]);
+                    props.Add("pwdneverexpires", allFlags[UacFlags.DontExpirePassword]);
+                    props.Add("enabled", !allFlags[UacFlags.AccountDisable]);
+                    props.Add("trustedtoauth", allFlags[UacFlags.TrustedToAuthForDelegation]);
+                    props.Add("isdc", allFlags[UacFlags.ServerTrustAccount]);
+                    break;
+                case LDAPProperties.OperatingSystem:
+                case LDAPProperties.ServicePack:
+                    var os = entry.GetProperty(LDAPProperties.OperatingSystem);
+                    var sp = entry.GetProperty(LDAPProperties.ServicePack);
+                    if (sp != null) os = $"{os} {sp}";
+                    props.Add("operatingsystem", os);
+                    break;
                 
                 default:
                     throw new ArgumentException("Cannot resolve to output property name.", ldapProperty);
@@ -803,6 +728,37 @@ namespace SharpHoundCommonLib.Processors
             };
 
             return functionalLevel;
+        }
+        
+        public static Dictionary<UacFlags, bool> GetUacFlags(ISearchResultEntry entry)
+        {
+            var props = new Dictionary<string, object>();
+
+            var uacFlags = (UacFlags)0;
+            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
+            if (int.TryParse(uac, out var flags))
+            {
+                uacFlags = (UacFlags)flags;
+            }
+
+            return ReadFlags(uacFlags);
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="flags"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static Dictionary<T, bool> ReadFlags<T>(T flags)
+            where T : Enum
+        {
+            return Enum.GetValues(typeof(T))
+                .Cast<T>()
+                .ToDictionary(
+                    val => val,
+                    val => flags.HasFlag(val)
+                );
         }
     }
 

@@ -65,7 +65,7 @@ namespace CommonLibTest
             };
 
             foreach (var (key, value) in expected)
-                Assert.Equal(value, LDAPPropertyProcessor.FunctionalLevelToString(key));
+                Assert.Equal(value, PropertyMap.FunctionalLevelToString(key));
         }
 
         [Fact]
