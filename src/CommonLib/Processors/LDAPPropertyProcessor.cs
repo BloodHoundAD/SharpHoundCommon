@@ -127,8 +127,8 @@ namespace SharpHoundCommonLib.Processors
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.AdminCount, entry));
 
             var sidHistory = ReadSidHistory(entry);
+            props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.History.ToArray());
             userProps.SidHistory = sidHistory.Principles.ToArray();
-            props.Add("sidhistory", sidHistory.History.ToArray());
 
             userProps.Props = props;
 
@@ -160,8 +160,8 @@ namespace SharpHoundCommonLib.Processors
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.OperatingSystem, entry));
 
             var sidHistory = ReadSidHistory(entry);
+            props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.History.ToArray());
             compProps.SidHistory = sidHistory.Principles.ToArray();
-            props.Add("sidhistory", sidHistory.History.ToArray());
             
             compProps.DumpSMSAPassword = ReadSmsaPrinciples(entry).ToArray();
 
@@ -616,70 +616,70 @@ namespace SharpHoundCommonLib.Processors
             switch (ldapProperty)
             {
                 case LDAPProperties.Description:
-                    props.Add("description", entry.GetProperty(LDAPProperties.Description));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.Description));
                     break;
                 case LDAPProperties.WhenCreated:
-                    props.Add("whencreated", Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty(LDAPProperties.WhenCreated)));
+                    props.Add(GetPropertyName(ldapProperty), Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty(LDAPProperties.WhenCreated)));
                     break;
                 case LDAPProperties.DomainFunctionalLevel:
                     if (!int.TryParse(entry.GetProperty(LDAPProperties.DomainFunctionalLevel), out var level))
                         level = -1;
-                    props.Add("functionallevel", FunctionalLevelToString(level));
+                    props.Add(GetPropertyName(ldapProperty), FunctionalLevelToString(level));
                     break;
                 case LDAPProperties.GPCFileSYSPath:
-                    props.Add("gpcpath", entry.GetProperty(LDAPProperties.GPCFileSYSPath)?.ToUpper());
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.GPCFileSYSPath)?.ToUpper());
                     break;
                 case LDAPProperties.LastLogon:
-                    props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
+                    props.Add(GetPropertyName(ldapProperty), Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
                     break;
                 case LDAPProperties.LastLogonTimestamp:
-                    props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
+                    props.Add(GetPropertyName(ldapProperty), Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
                     break;
                 case LDAPProperties.PasswordLastSet:
-                    props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
+                    props.Add(GetPropertyName(ldapProperty), Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
                     break;
                 case LDAPProperties.ServicePrincipalNames:
                     var spn = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
-                    props.Add("serviceprincipalnames", spn);
+                    props.Add(GetPropertyName(ldapProperty), spn);
                     props.Add("hasspn", spn.Length > 0);
                     break;
                 case LDAPProperties.DisplayName:
-                    props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.DisplayName));
                     break;
                 case LDAPProperties.Email:
-                    props.Add("email", entry.GetProperty(LDAPProperties.Email));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.Email));
                     break;
                 case LDAPProperties.Title:
-                    props.Add("title", entry.GetProperty(LDAPProperties.Title));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.Title));
                     break;
                 case LDAPProperties.HomeDirectory:
-                    props.Add("homedirectory", entry.GetProperty(LDAPProperties.HomeDirectory));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.HomeDirectory));
                     break;
                 case LDAPProperties.UserPassword:
-                    props.Add("userpassword", entry.GetProperty(LDAPProperties.UserPassword));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.UserPassword));
                     break;
                 case LDAPProperties.UnixUserPassword:
-                    props.Add("unixpassword", entry.GetProperty(LDAPProperties.UnixUserPassword));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.UnixUserPassword));
                     break;
                 case LDAPProperties.UnicodePassword:
-                    props.Add("unicodepassword", entry.GetProperty(LDAPProperties.UnicodePassword));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.UnicodePassword));
                     break;
                 case LDAPProperties.MsSFU30Password:
-                    props.Add("sfupassword", entry.GetProperty(LDAPProperties.MsSFU30Password));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.MsSFU30Password));
                     break;
                 case LDAPProperties.ScriptPath:
-                    props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
+                    props.Add(GetPropertyName(ldapProperty), entry.GetProperty(LDAPProperties.ScriptPath));
                     break;
                 case LDAPProperties.AdminCount:
                     var ac = entry.GetProperty(LDAPProperties.AdminCount);
                     if (ac != null)
                     {
                         int.TryParse(ac, out var a);
-                        props.Add("admincount", a != 0);
+                        props.Add(GetPropertyName(ldapProperty), a != 0);
                     }
                     else
                     {
-                        props.Add("admincount", false);
+                        props.Add(GetPropertyName(ldapProperty), false);
                     }
                     break;
                 case LDAPProperties.UserAccountControl:
@@ -694,15 +694,14 @@ namespace SharpHoundCommonLib.Processors
                     props.Add("isdc", allFlags[UacFlags.ServerTrustAccount]);
                     break;
                 case LDAPProperties.OperatingSystem:
-                case LDAPProperties.ServicePack:
                     var os = entry.GetProperty(LDAPProperties.OperatingSystem);
                     var sp = entry.GetProperty(LDAPProperties.ServicePack);
                     if (sp != null) os = $"{os} {sp}";
-                    props.Add("operatingsystem", os);
+                    props.Add(GetPropertyName(ldapProperty), os);
                     break;
                 case LDAPProperties.AllowedToDelegateTo:
                     var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
-                    props.Add("allowedtodelegate", delegates);
+                    props.Add(GetPropertyName(ldapProperty), delegates);
                     break;
                 
                 default:
@@ -710,6 +709,64 @@ namespace SharpHoundCommonLib.Processors
             }
 
             return props;
+        }
+
+        /// <summary>
+        /// Get output name of a domain object property.
+        /// </summary>
+        /// <param name="ldapProperty"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static string GetPropertyName(string ldapProperty)
+        {
+            switch (ldapProperty)
+            {
+                case LDAPProperties.Description:
+                    return "description";
+                case LDAPProperties.WhenCreated:
+                    return "whencreated";
+                case LDAPProperties.DomainFunctionalLevel:
+                    return "functionallevel";
+                case LDAPProperties.GPCFileSYSPath:
+                    return "gpcpath";
+                case LDAPProperties.LastLogon:
+                    return "lastlogon";
+                case LDAPProperties.LastLogonTimestamp:
+                    return "lastlogontimestamp";
+                case LDAPProperties.PasswordLastSet:
+                    return "pwdlastset";
+                case LDAPProperties.ServicePrincipalNames:
+                    return "serviceprinciplenames";
+                case LDAPProperties.DisplayName:
+                    return "displayname";
+                case LDAPProperties.Email:
+                    return "email";
+                case LDAPProperties.Title:
+                    return "title";
+                case LDAPProperties.HomeDirectory:
+                    return "homedirectory";
+                case LDAPProperties.UserPassword:
+                    return "userpassword";
+                case LDAPProperties.UnixUserPassword:
+                    return "unixpassword";
+                case LDAPProperties.UnicodePassword:
+                    return "unicodepassword";
+                case LDAPProperties.MsSFU30Password:
+                    return "sfupassword";
+                case LDAPProperties.ScriptPath:
+                    return "logonscript";
+                case LDAPProperties.AdminCount:
+                    return "admincount";
+                case LDAPProperties.OperatingSystem:
+                    return "operatingsystem";
+                case LDAPProperties.AllowedToDelegateTo:
+                    return "allowedtodelegate";
+                case LDAPProperties.SIDHistory:
+                    return "sidhistory";
+                
+                default:
+                    throw new ArgumentException("Cannot resolve to output property name.", ldapProperty);
+            }
         }
         
         /// <summary>
