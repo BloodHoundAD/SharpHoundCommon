@@ -393,6 +393,14 @@ namespace SharpHoundCommonLib
             return objectType;
         }
 
+        public static void AddRange<T, U>(this Dictionary<T, U> me, IEnumerable<KeyValuePair<T, U>> keyValuePairs)
+        {
+            foreach (var kvp in keyValuePairs)
+            {
+                me.Add(kvp.Key, kvp.Value);
+            }
+        }
+
         private const string GroupPolicyContainerClass = "groupPolicyContainer";
         private const string OrganizationalUnitClass = "organizationalUnit";
         private const string DomainClass = "domain";

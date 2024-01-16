@@ -35,10 +35,10 @@ namespace SharpHoundCommonLib.Processors
             return new Dictionary<string, object>
             {
                 {
-                    "description", entry.GetProperty(LDAPProperties.Description)
+                    PropertyMap.GetPropertyName(LDAPProperties.Description), entry.GetProperty(LDAPProperties.Description)
                 },
                 {
-                    "whencreated", Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty(LDAPProperties.WhenCreated))
+                    PropertyMap.GetPropertyName(LDAPProperties.WhenCreated), Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty(LDAPProperties.WhenCreated))
                 }
             };
         }
@@ -51,35 +51,9 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadDomainProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-
-            if (!int.TryParse(entry.GetProperty(LDAPProperties.DomainFunctionalLevel), out var level)) level = -1;
-
-            props.Add("functionallevel", FunctionalLevelToString(level));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.DomainFunctionalLevel, entry));
 
             return props;
-        }
-
-        /// <summary>
-        ///     Converts a numeric representation of a functional level to its appropriate functional level string
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        public static string FunctionalLevelToString(int level)
-        {
-            var functionalLevel = level switch
-            {
-                0 => "2000 Mixed/Native",
-                1 => "2003 Interim",
-                2 => "2003",
-                3 => "2008",
-                4 => "2008 R2",
-                5 => "2012",
-                6 => "2012 R2",
-                7 => "2016",
-                _ => "Unknown"
-            };
-
-            return functionalLevel;
         }
 
         /// <summary>
@@ -90,7 +64,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadGPOProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            props.Add("gpcpath", entry.GetProperty(LDAPProperties.GPCFileSYSPath)?.ToUpper());
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.GPCFileSYSPath, entry));
             return props;
         }
 
@@ -139,6 +113,53 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
+        public static Dictionary<string, object> ReadUacFlags(ISearchResultEntry entry)
+        {
+            var props = new Dictionary<string, object>();
+
+            var uacFlags = (UacFlags)0;
+            var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
+            if (int.TryParse(uac, out var flags))
+            {
+                uacFlags = (UacFlags)flags;
+            }
+            
+            // var allFlags = ReadFlags(uacFlags);
+            //
+            // foreach (var flag in allFlags)
+            // {
+            //     
+            // }
+            
+            props.Add("sensitive", uacFlags.HasFlag(UacFlags.NotDelegated));
+            props.Add("dontreqpreauth", uacFlags.HasFlag(UacFlags.DontReqPreauth));
+            props.Add("passwordnotreqd", uacFlags.HasFlag(UacFlags.PasswordNotRequired));
+            props.Add("unconstraineddelegation", uacFlags.HasFlag(UacFlags.TrustedForDelegation));
+            props.Add("pwdneverexpires", uacFlags.HasFlag(UacFlags.DontExpirePassword));
+            props.Add("enabled", !uacFlags.HasFlag(UacFlags.AccountDisable));
+            props.Add("trustedtoauth", uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation));
+            props.Add("isdc", uacFlags.HasFlag(UacFlags.ServerTrustAccount));
+            
+            return props;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="flags"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private static Dictionary<T, bool> ReadFlags<T>(T flags)
+            where T : Enum
+        {
+            return Enum.GetValues(typeof(T))
+                .Cast<T>()
+                .ToDictionary(
+                    val => val,
+                    val => flags.HasFlag(val)
+                );
+        }
+
         /// <summary>
         ///     Reads specific LDAP properties related to Users
         /// </summary>
@@ -154,6 +175,7 @@ namespace SharpHoundCommonLib.Processors
             if (int.TryParse(uac, out var flag))
             {
                 uacFlags = (UacFlags)flag;
+                var meow = ReadFlags(uacFlags);
             }
             
             props.Add("sensitive", uacFlags.HasFlag(UacFlags.NotDelegated));
@@ -169,8 +191,7 @@ namespace SharpHoundCommonLib.Processors
             var comps = new List<TypedPrincipal>();
             if (uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation))
             {
-                var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
-                props.Add("allowedtodelegate", delegates);
+                props.AddRange(PropertyMap.GetProperties(LDAPProperties.AllowedToDelegateTo, entry));
 
                 foreach (var d in delegates)
                 {
@@ -189,23 +210,19 @@ namespace SharpHoundCommonLib.Processors
 
             userProps.AllowedToDelegate = comps.Distinct().ToArray();
 
-            props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
-            props.Add("lastlogontimestamp",
-                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
-            props.Add("pwdlastset",
-                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
-            var spn = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
-            props.Add("serviceprincipalnames", spn);
-            props.Add("hasspn", spn.Length > 0);
-            props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
-            props.Add("email", entry.GetProperty(LDAPProperties.Email));
-            props.Add("title", entry.GetProperty(LDAPProperties.Title));
-            props.Add("homedirectory", entry.GetProperty(LDAPProperties.HomeDirectory));
-            props.Add("userpassword", entry.GetProperty(LDAPProperties.UserPassword));
-            props.Add("unixpassword", entry.GetProperty(LDAPProperties.UnixUserPassword));
-            props.Add("unicodepassword", entry.GetProperty(LDAPProperties.UnicodePassword));
-            props.Add("sfupassword", entry.GetProperty(LDAPProperties.MsSFU30Password));
-            props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.LastLogon, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.LastLogonTimestamp, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.PasswordLastSet, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.ServicePrincipalNames, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.DisplayName, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.Email, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.Title, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.HomeDirectory, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.UserPassword, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.UnixUserPassword, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.UnicodePassword, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.MsSFU30Password, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.ScriptPath, entry));
 
             var ac = entry.GetProperty(LDAPProperties.AdminCount);
             if (ac != null)
@@ -312,13 +329,11 @@ namespace SharpHoundCommonLib.Processors
 
             compProps.AllowedToAct = allowedToActPrincipals.ToArray();
 
-            props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
-            props.Add("lastlogontimestamp",
-                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
-            props.Add("pwdlastset",
-                Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
-            props.Add("serviceprincipalnames", entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames));
-            props.Add("email", entry.GetProperty(LDAPProperties.Email));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.LastLogon, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.LastLogonTimestamp, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.PasswordLastSet, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.ServicePrincipalNames, entry));
+            props.AddRange(PropertyMap.GetProperties(LDAPProperties.Email, entry));
             var os = entry.GetProperty(LDAPProperties.OperatingSystem);
             var sp = entry.GetProperty(LDAPProperties.ServicePack);
 
@@ -690,6 +705,104 @@ namespace SharpHoundCommonLib.Processors
             IS_TEXT_UNICODE_REVERSE_MASK = 0x00F0,
             IS_TEXT_UNICODE_NOT_UNICODE_MASK = 0x0F00,
             IS_TEXT_UNICODE_NOT_ASCII_MASK = 0xF000
+        }
+    }
+
+    public static class PropertyMap
+    {
+        public static Dictionary<string, object> GetProperties(string ldapProperty, ISearchResultEntry entry)
+        {
+            var props = new Dictionary<string, object>();
+            switch (ldapProperty)
+            {
+                case LDAPProperties.Description:
+                    props.Add("description", entry.GetProperty(LDAPProperties.Description));
+                    break;
+                case LDAPProperties.WhenCreated:
+                    props.Add("whencreated", Helpers.ConvertTimestampToUnixEpoch(entry.GetProperty(LDAPProperties.WhenCreated)));
+                    break;
+                case LDAPProperties.DomainFunctionalLevel:
+                    if (!int.TryParse(entry.GetProperty(LDAPProperties.DomainFunctionalLevel), out var level))
+                        level = -1;
+                    props.Add("functionallevel", FunctionalLevelToString(level));
+                    break;
+                case LDAPProperties.GPCFileSYSPath:
+                    props.Add("gpcpath", entry.GetProperty(LDAPProperties.GPCFileSYSPath)?.ToUpper());
+                    break;
+                case LDAPProperties.AllowedToDelegateTo:
+                    var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
+                    props.Add("delegates", delegates);
+                    break;
+                case LDAPProperties.LastLogon:
+                    props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogon)));
+                    break;
+                case LDAPProperties.LastLogonTimestamp:
+                    props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.LastLogonTimestamp)));
+                    break;
+                case LDAPProperties.PasswordLastSet:
+                    props.Add("pwdlastset", Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
+                    break;
+                case LDAPProperties.ServicePrincipalNames:
+                    var spn = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
+                    props.Add("serviceprincipalnames", spn);
+                    props.Add("hasspn", spn.Length > 0);
+                    break;
+                case LDAPProperties.DisplayName:
+                    props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
+                    break;
+                case LDAPProperties.Email:
+                    props.Add("email", entry.GetProperty(LDAPProperties.Email));
+                    break;
+                case LDAPProperties.Title:
+                    props.Add("title", entry.GetProperty(LDAPProperties.Title));
+                    break;
+                case LDAPProperties.HomeDirectory:
+                    props.Add("homedirectory", entry.GetProperty(LDAPProperties.HomeDirectory));
+                    break;
+                case LDAPProperties.UserPassword:
+                    props.Add("userpassword", entry.GetProperty(LDAPProperties.UserPassword));
+                    break;
+                case LDAPProperties.UnixUserPassword:
+                    props.Add("unixpassword", entry.GetProperty(LDAPProperties.UnixUserPassword));
+                    break;
+                case LDAPProperties.UnicodePassword:
+                    props.Add("unicodepassword", entry.GetProperty(LDAPProperties.UnicodePassword));
+                    break;
+                case LDAPProperties.MsSFU30Password:
+                    props.Add("sfupassword", entry.GetProperty(LDAPProperties.MsSFU30Password));
+                    break;
+                case LDAPProperties.ScriptPath:
+                    props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
+                    break;
+                
+                default:
+                    throw new ArgumentException("Cannot resolve to output property name.", ldapProperty);
+            }
+
+            return props;
+        }
+        
+        /// <summary>
+        ///     Converts a numeric representation of a functional level to its appropriate functional level string
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public static string FunctionalLevelToString(int level)
+        {
+            var functionalLevel = level switch
+            {
+                0 => "2000 Mixed/Native",
+                1 => "2003 Interim",
+                2 => "2003",
+                3 => "2008",
+                4 => "2008 R2",
+                5 => "2012",
+                6 => "2012 R2",
+                7 => "2016",
+                _ => "Unknown"
+            };
+
+            return functionalLevel;
         }
     }
 
