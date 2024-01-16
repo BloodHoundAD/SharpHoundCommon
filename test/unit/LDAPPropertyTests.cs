@@ -264,7 +264,7 @@ namespace CommonLibTest
                     {"lastlogon", "132673011142753043"},
                     {"lastlogontimestamp", "132670318095676525"},
                     {"homedirectory", @"\\win10\testdir"},
-                    {"email", "test@testdomain.com"},
+                    {"mail", "test@testdomain.com"},
                     {
                         "serviceprincipalname", new[]
                         {
@@ -400,7 +400,7 @@ namespace CommonLibTest
                     {"lastlogontimestamp", "132670318095676525"},
                     {"operatingsystem", "Windows 10 Enterprise"},
                     {"operatingsystemservicepack", "1607"},
-                    {"email", "test@testdomain.com"},
+                    {"mail", "test@testdomain.com"},
                     {"admincount", "c"},
                     {
                         "sidhistory", new[]
@@ -445,7 +445,7 @@ namespace CommonLibTest
             Assert.Contains("pwdlastset", keys);
             Assert.True((bool)props["enabled"]);
             Assert.False((bool)props["unconstraineddelegation"]);
-            Assert.False((bool)props["trustedtoauth"]);
+            Assert.True((bool)props["trustedtoauth"]);
             Assert.False((bool)props["isdc"]);
 
             Assert.Contains("lastlogon", keys);
