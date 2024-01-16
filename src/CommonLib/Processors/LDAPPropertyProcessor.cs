@@ -107,34 +107,10 @@ namespace SharpHoundCommonLib.Processors
             var userProps = new UserProperties();
             var props = GetCommonProps(entry);
             
+            props.AddRange((PropertyMap.GetProperties(LDAPProperties.AllowedToDelegateTo, entry)));
+            userProps.AllowedToDelegate = (await ReadPropertyDelegates(entry)).ToArray();
+
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.UserAccountControl, entry));
-
-            var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
-
-            var comps = new List<TypedPrincipal>();
-            var uacFlags = PropertyMap.GetUacFlags(entry);
-            if (uacFlags[UacFlags.TrustedToAuthForDelegation])
-            {
-                var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
-                props.Add("allowedtodelegate", delegates);
-
-                foreach (var d in delegates)
-                {
-                    if (d == null)
-                        continue;
-
-                    var resolvedHost = await _utils.ResolveHostToSid(d, domain);
-                    if (resolvedHost != null && resolvedHost.Contains("S-1"))
-                        comps.Add(new TypedPrincipal
-                        {
-                            ObjectIdentifier = resolvedHost,
-                            ObjectType = Label.Computer
-                        });
-                }
-            }
-
-            userProps.AllowedToDelegate = comps.Distinct().ToArray();
-
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.LastLogon, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.LastLogonTimestamp, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.PasswordLastSet, entry));
@@ -150,31 +126,9 @@ namespace SharpHoundCommonLib.Processors
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.ScriptPath, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.AdminCount, entry));
 
-            var sh = entry.GetByteArrayProperty(LDAPProperties.SIDHistory);
-            var sidHistoryList = new List<string>();
-            var sidHistoryPrincipals = new List<TypedPrincipal>();
-            foreach (var sid in sh)
-            {
-                string sSid;
-                try
-                {
-                    sSid = new SecurityIdentifier(sid, 0).Value;
-                }
-                catch
-                {
-                    continue;
-                }
-
-                sidHistoryList.Add(sSid);
-
-                var res = _utils.ResolveIDAndType(sSid, domain);
-
-                sidHistoryPrincipals.Add(res);
-            }
-
-            userProps.SidHistory = sidHistoryPrincipals.Distinct().ToArray();
-
-            props.Add("sidhistory", sidHistoryList.ToArray());
+            var sidHistory = ReadSidHistory(entry);
+            userProps.SidHistory = sidHistory.Principles.ToArray();
+            props.Add("sidhistory", sidHistory.History.ToArray());
 
             userProps.Props = props;
 
@@ -193,45 +147,10 @@ namespace SharpHoundCommonLib.Processors
             
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.UserAccountControl, entry));
 
-            var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
-
-            var comps = new List<TypedPrincipal>();
-            var uacFlags = PropertyMap.GetUacFlags(entry);
-            if (uacFlags[UacFlags.TrustedToAuthForDelegation])
-            {
-                var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
-                props.Add("allowedtodelegate", delegates);
-
-                foreach (var d in delegates)
-                {
-                    var hname = d.Contains("/") ? d.Split('/')[1] : d;
-                    hname = hname.Split(':')[0];
-                    var resolvedHost = await _utils.ResolveHostToSid(hname, domain);
-                    if (resolvedHost != null && (resolvedHost.Contains(".") || resolvedHost.Contains("S-1")))
-                        comps.Add(new TypedPrincipal
-                        {
-                            ObjectIdentifier = resolvedHost,
-                            ObjectType = Label.Computer
-                        });
-                }
-            }
-
-            compProps.AllowedToDelegate = comps.Distinct().ToArray();
-
-            var allowedToActPrincipals = new List<TypedPrincipal>();
-            var rawAllowedToAct = entry.GetByteProperty(LDAPProperties.AllowedToActOnBehalfOfOtherIdentity);
-            if (rawAllowedToAct != null)
-            {
-                var sd = _utils.MakeSecurityDescriptor();
-                sd.SetSecurityDescriptorBinaryForm(rawAllowedToAct, AccessControlSections.Access);
-                foreach (var rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
-                {
-                    var res = _utils.ResolveIDAndType(rule.IdentityReference(), domain);
-                    allowedToActPrincipals.Add(res);
-                }
-            }
-
-            compProps.AllowedToAct = allowedToActPrincipals.ToArray();
+            props.AddRange((PropertyMap.GetProperties(LDAPProperties.AllowedToDelegateTo, entry)));
+            compProps.AllowedToDelegate = (await ReadPropertyDelegates(entry)).ToArray();
+            
+            compProps.AllowedToAct = ReadAllowedToActPrinciples(entry).ToArray();
 
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.LastLogon, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.LastLogonTimestamp, entry));
@@ -240,6 +159,58 @@ namespace SharpHoundCommonLib.Processors
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.Email, entry));
             props.AddRange(PropertyMap.GetProperties(LDAPProperties.OperatingSystem, entry));
 
+            var sidHistory = ReadSidHistory(entry);
+            compProps.SidHistory = sidHistory.Principles.ToArray();
+            props.Add("sidhistory", sidHistory.History.ToArray());
+            
+            compProps.DumpSMSAPassword = ReadSmsaPrinciples(entry).ToArray();
+
+            compProps.Props = props;
+
+            return compProps;
+        }
+        
+        /// <summary>
+        /// Reads principals user or computer may delegate.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public async Task<List<TypedPrincipal>> ReadPropertyDelegates(ISearchResultEntry entry)
+        {
+            var comps = new List<TypedPrincipal>();
+            
+            var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
+            var uacFlags = PropertyMap.GetUacFlags(entry);
+            if (uacFlags[UacFlags.TrustedToAuthForDelegation])
+            {
+                var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
+
+                foreach (var d in delegates)
+                {
+                    if (d == null)
+                        continue;
+
+                    var resolvedHost = await _utils.ResolveHostToSid(d, domain);
+                    if (resolvedHost != null && resolvedHost.Contains("S-1"))
+                        comps.Add(new TypedPrincipal
+                        {
+                            ObjectIdentifier = resolvedHost,
+                            ObjectType = Label.Computer
+                        });
+                }
+            }
+
+            return comps.Distinct().ToList();
+        }
+
+        /// <summary>
+        /// Reads history of SID for domain object.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public SidHistory ReadSidHistory(ISearchResultEntry entry)
+        {
+            var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
             var sh = entry.GetByteArrayProperty(LDAPProperties.SIDHistory);
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();
@@ -262,12 +233,43 @@ namespace SharpHoundCommonLib.Processors
                 sidHistoryPrincipals.Add(res);
             }
 
-            compProps.SidHistory = sidHistoryPrincipals.ToArray();
+            return new SidHistory(sidHistoryList, sidHistoryPrincipals);
+        }
 
-            props.Add("sidhistory", sidHistoryList.ToArray());
+        /// <summary>
+        /// Read principals for identities domain object may act on behalf of.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public List<TypedPrincipal> ReadAllowedToActPrinciples(ISearchResultEntry entry)
+        {
+            var allowedToActPrincipals = new List<TypedPrincipal>();
+            
+            var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
+            var rawAllowedToAct = entry.GetByteProperty(LDAPProperties.AllowedToActOnBehalfOfOtherIdentity);
+            if (rawAllowedToAct != null)
+            {
+                var sd = _utils.MakeSecurityDescriptor();
+                sd.SetSecurityDescriptorBinaryForm(rawAllowedToAct, AccessControlSections.Access);
+                foreach (var rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+                {
+                    var res = _utils.ResolveIDAndType(rule.IdentityReference(), domain);
+                    allowedToActPrincipals.Add(res);
+                }
+            }
 
-            var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);
+            return allowedToActPrincipals;
+        }
+
+        /// <summary>
+        /// Read Standalone Managed Service Accounts of domain object.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public List<TypedPrincipal> ReadSmsaPrinciples(ISearchResultEntry entry)
+        {
             var smsaPrincipals = new List<TypedPrincipal>();
+            var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);
             if (hsa != null)
             {
                 foreach (var dn in hsa)
@@ -279,11 +281,7 @@ namespace SharpHoundCommonLib.Processors
                 }
             }
 
-            compProps.DumpSMSAPassword = smsaPrincipals.ToArray();
-
-            compProps.Props = props;
-
-            return compProps;
+            return smsaPrincipals;
         }
 
         /// <summary>
@@ -607,6 +605,9 @@ namespace SharpHoundCommonLib.Processors
         }
     }
 
+    /// <summary>
+    /// Provides single-truth mapping of domain object properties.
+    /// </summary>
     public static class PropertyMap
     {
         public static Dictionary<string, object> GetProperties(string ldapProperty, ISearchResultEntry entry)
@@ -699,6 +700,10 @@ namespace SharpHoundCommonLib.Processors
                     if (sp != null) os = $"{os} {sp}";
                     props.Add("operatingsystem", os);
                     break;
+                case LDAPProperties.AllowedToDelegateTo:
+                    var delegates = entry.GetArrayProperty(LDAPProperties.AllowedToDelegateTo);
+                    props.Add("allowedtodelegate", delegates);
+                    break;
                 
                 default:
                     throw new ArgumentException("Cannot resolve to output property name.", ldapProperty);
@@ -730,6 +735,11 @@ namespace SharpHoundCommonLib.Processors
             return functionalLevel;
         }
         
+        /// <summary>
+        /// Returns all flags of User Account Control and whether or not they're active.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
         public static Dictionary<UacFlags, bool> GetUacFlags(ISearchResultEntry entry)
         {
             var props = new Dictionary<string, object>();
@@ -745,12 +755,12 @@ namespace SharpHoundCommonLib.Processors
         }
         
         /// <summary>
-        /// 
+        /// Get all flags of a domain object by enumeration.
         /// </summary>
         /// <param name="flags"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static Dictionary<T, bool> ReadFlags<T>(T flags)
+        private static Dictionary<T, bool> ReadFlags<T>(T flags)
             where T : Enum
         {
             return Enum.GetValues(typeof(T))
@@ -817,5 +827,20 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
+    }
+    
+    /// <summary>
+    /// Holds list of SID history and principles.
+    /// </summary>
+    public class SidHistory
+    {
+        public List<string> History { get; set; }
+        public List<TypedPrincipal> Principles { get; set; }
+
+        public SidHistory(List<string> history, List<TypedPrincipal> principals)
+        {
+            History = history;
+            Principles = principals;
+        }
     }
 }
