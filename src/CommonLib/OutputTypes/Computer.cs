@@ -19,6 +19,8 @@ namespace SharpHoundCommonLib.OutputTypes
         public UserRightsAssignmentAPIResult[] UserRights { get; set; } = Array.Empty<UserRightsAssignmentAPIResult>();
         public DCRegistryData DCRegistryData { get; set; } = new();
         public ComputerStatus Status { get; set; }
+        public bool IsDC { get; set; }
+        public string DomainSID { get; set; }
     }
 
     public class DCRegistryData
