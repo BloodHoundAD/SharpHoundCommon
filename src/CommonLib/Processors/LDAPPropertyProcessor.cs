@@ -33,7 +33,7 @@ namespace SharpHoundCommonLib.Processors
         private static Dictionary<string, object> GetCommonProps(ISearchResultEntry entry)
         {
             var props = GetProperties(LDAPProperties.Description, entry);
-            props.AddRange(GetProperties(LDAPProperties.WhenCreated, entry));
+            props.AddMany(GetProperties(LDAPProperties.WhenCreated, entry));
             return props;
         }
 
@@ -45,7 +45,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadDomainProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            props.AddRange(GetProperties(LDAPProperties.DomainFunctionalLevel, entry));
+            props.AddMany(GetProperties(LDAPProperties.DomainFunctionalLevel, entry));
 
             return props;
         }
@@ -58,7 +58,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadGPOProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            props.AddRange(GetProperties(LDAPProperties.GPCFileSYSPath, entry));
+            props.AddMany(GetProperties(LDAPProperties.GPCFileSYSPath, entry));
             return props;
         }
 
@@ -81,7 +81,7 @@ namespace SharpHoundCommonLib.Processors
         public static Dictionary<string, object> ReadGroupProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
-            props.AddRange(GetProperties(LDAPProperties.AdminCount, entry));
+            props.AddMany(GetProperties(LDAPProperties.AdminCount, entry));
 
             return props;
         }
@@ -107,28 +107,28 @@ namespace SharpHoundCommonLib.Processors
             var userProps = new UserProperties();
             var props = GetCommonProps(entry);
             
-            props.AddRange((GetProperties(LDAPProperties.AllowedToDelegateTo, entry)));
+            props.AddMany((GetProperties(LDAPProperties.AllowedToDelegateTo, entry)));
             userProps.AllowedToDelegate = (await ReadPropertyDelegates(entry)).ToArray();
 
-            props.AddRange(GetProperties(LDAPProperties.UserAccountControl, entry));
-            props.AddRange(GetProperties(LDAPProperties.LastLogon, entry));
-            props.AddRange(GetProperties(LDAPProperties.LastLogonTimestamp, entry));
-            props.AddRange(GetProperties(LDAPProperties.PasswordLastSet, entry));
-            props.AddRange(GetProperties(LDAPProperties.ServicePrincipalNames, entry));
-            props.AddRange(GetProperties(LDAPProperties.DisplayName, entry));
-            props.AddRange(GetProperties(LDAPProperties.Email, entry));
-            props.AddRange(GetProperties(LDAPProperties.Title, entry));
-            props.AddRange(GetProperties(LDAPProperties.HomeDirectory, entry));
-            props.AddRange(GetProperties(LDAPProperties.UserPassword, entry));
-            props.AddRange(GetProperties(LDAPProperties.UnixUserPassword, entry));
-            props.AddRange(GetProperties(LDAPProperties.UnicodePassword, entry));
-            props.AddRange(GetProperties(LDAPProperties.MsSFU30Password, entry));
-            props.AddRange(GetProperties(LDAPProperties.ScriptPath, entry));
-            props.AddRange(GetProperties(LDAPProperties.AdminCount, entry));
+            props.AddMany(GetProperties(LDAPProperties.UserAccountControl, entry));
+            props.AddMany(GetProperties(LDAPProperties.LastLogon, entry));
+            props.AddMany(GetProperties(LDAPProperties.LastLogonTimestamp, entry));
+            props.AddMany(GetProperties(LDAPProperties.PasswordLastSet, entry));
+            props.AddMany(GetProperties(LDAPProperties.ServicePrincipalNames, entry));
+            props.AddMany(GetProperties(LDAPProperties.DisplayName, entry));
+            props.AddMany(GetProperties(LDAPProperties.Email, entry));
+            props.AddMany(GetProperties(LDAPProperties.Title, entry));
+            props.AddMany(GetProperties(LDAPProperties.HomeDirectory, entry));
+            props.AddMany(GetProperties(LDAPProperties.UserPassword, entry));
+            props.AddMany(GetProperties(LDAPProperties.UnixUserPassword, entry));
+            props.AddMany(GetProperties(LDAPProperties.UnicodePassword, entry));
+            props.AddMany(GetProperties(LDAPProperties.MsSFU30Password, entry));
+            props.AddMany(GetProperties(LDAPProperties.ScriptPath, entry));
+            props.AddMany(GetProperties(LDAPProperties.AdminCount, entry));
 
             var sidHistory = ReadSidHistory(entry);
-            props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.History.ToArray());
-            userProps.SidHistory = sidHistory.Principles.ToArray();
+            props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.ToArray());
+            userProps.SidHistory = sidHistory.Select(ssid => ReadSidPrinciple(entry, ssid)).ToArray();
 
             userProps.Props = props;
 
@@ -145,23 +145,23 @@ namespace SharpHoundCommonLib.Processors
             var compProps = new ComputerProperties();
             var props = GetCommonProps(entry);
             
-            props.AddRange(GetProperties(LDAPProperties.UserAccountControl, entry));
+            props.AddMany(GetProperties(LDAPProperties.UserAccountControl, entry));
 
-            props.AddRange((GetProperties(LDAPProperties.AllowedToDelegateTo, entry)));
+            props.AddMany((GetProperties(LDAPProperties.AllowedToDelegateTo, entry)));
             compProps.AllowedToDelegate = (await ReadPropertyDelegates(entry)).ToArray();
             
             compProps.AllowedToAct = ReadAllowedToActPrinciples(entry).ToArray();
 
-            props.AddRange(GetProperties(LDAPProperties.LastLogon, entry));
-            props.AddRange(GetProperties(LDAPProperties.LastLogonTimestamp, entry));
-            props.AddRange(GetProperties(LDAPProperties.PasswordLastSet, entry));
-            props.AddRange(GetProperties(LDAPProperties.ServicePrincipalNames, entry));
-            props.AddRange(GetProperties(LDAPProperties.Email, entry));
-            props.AddRange(GetProperties(LDAPProperties.OperatingSystem, entry));
+            props.AddMany(GetProperties(LDAPProperties.LastLogon, entry));
+            props.AddMany(GetProperties(LDAPProperties.LastLogonTimestamp, entry));
+            props.AddMany(GetProperties(LDAPProperties.PasswordLastSet, entry));
+            props.AddMany(GetProperties(LDAPProperties.ServicePrincipalNames, entry));
+            props.AddMany(GetProperties(LDAPProperties.Email, entry));
+            props.AddMany(GetProperties(LDAPProperties.OperatingSystem, entry));
 
             var sidHistory = ReadSidHistory(entry);
-            props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.History.ToArray());
-            compProps.SidHistory = sidHistory.Principles.ToArray();
+            props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.ToArray());
+            compProps.SidHistory = sidHistory.Select(ssid => ReadSidPrinciple(entry, ssid)).ToArray();
             
             compProps.DumpSMSAPassword = ReadSmsaPrinciples(entry).ToArray();
 
@@ -204,16 +204,15 @@ namespace SharpHoundCommonLib.Processors
         }
 
         /// <summary>
-        /// Reads history of SID for domain object.
+        /// Reads history of SIDs for domain object.
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public SidHistory ReadSidHistory(ISearchResultEntry entry)
+        public List<string> ReadSidHistory(ISearchResultEntry entry)
         {
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
             var sh = entry.GetByteArrayProperty(LDAPProperties.SIDHistory);
             var sidHistoryList = new List<string>();
-            var sidHistoryPrincipals = new List<TypedPrincipal>();
             foreach (var sid in sh)
             {
                 string sSid;
@@ -227,13 +226,21 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 sidHistoryList.Add(sSid);
-
-                var res = _utils.ResolveIDAndType(sSid, domain);
-
-                sidHistoryPrincipals.Add(res);
             }
 
-            return new SidHistory(sidHistoryList, sidHistoryPrincipals);
+            return sidHistoryList;
+        }
+
+        /// <summary>
+        /// Get SID principal.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="sidHistoryItem"></param>
+        /// <returns></returns>
+        public TypedPrincipal ReadSidPrinciple(ISearchResultEntry entry, string sidHistoryItem)
+        {
+            var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
+            return _utils.ResolveIDAndType(sidHistoryItem, domain);
         }
 
         /// <summary>
@@ -912,20 +919,5 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
-    }
-    
-    /// <summary>
-    /// Holds list of SID history and principles.
-    /// </summary>
-    public class SidHistory
-    {
-        public List<string> History { get; set; }
-        public List<TypedPrincipal> Principles { get; set; }
-
-        public SidHistory(List<string> history, List<TypedPrincipal> principals)
-        {
-            History = history;
-            Principles = principals;
-        }
     }
 }

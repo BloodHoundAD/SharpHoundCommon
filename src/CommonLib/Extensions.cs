@@ -393,7 +393,14 @@ namespace SharpHoundCommonLib
             return objectType;
         }
 
-        public static void AddRange<T, U>(this Dictionary<T, U> me, IEnumerable<KeyValuePair<T, U>> keyValuePairs)
+        /// <summary>
+        /// Add multiple entries to a dictionary.
+        /// </summary>
+        /// <param name="me">Dictionary (this)</param>
+        /// <param name="entries">KeyValuePairs to add</param>
+        /// <typeparam name="T">Key</typeparam>
+        /// <typeparam name="U">Value</typeparam>
+        public static void AddMany<T, U>(this Dictionary<T, U> me, IEnumerable<KeyValuePair<T, U>> keyValuePairs)
         {
             foreach (var kvp in keyValuePairs)
             {

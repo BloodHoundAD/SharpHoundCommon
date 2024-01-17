@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
+using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
@@ -845,5 +847,34 @@ namespace CommonLibTest
             Assert.Single(keys);
         }
 
+        [Fact]
+        public async Task LDAPPropertyProcessor_ReadPropertyDelegates_ReturnsPoplatedList()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {"useraccountcontrol", 0x1000000.ToString()},
+                    {
+                        "msds-allowedtodelegateto", new[]
+                        {
+                            "ldap/PRIMARY.testlab.local/testlab.local",
+                            "ldap/PRIMARY.testlab.local",
+                            "ldap/PRIMARY",
+                            "ldap/WIN10"
+                        }
+                    }
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+
+            var utils = new MockLDAPUtils();
+            var processor = new LDAPPropertyProcessor(utils);
+            var props = await processor.ReadPropertyDelegates(mock);
+            var delegates = props.Select(d => d.ObjectIdentifier);
+            
+            foreach (var principal in mock.GetArrayProperty("msds-allowedtodelegateto"))
+            {
+                var host = await utils.ResolveHostToSid(principal, mock.GetProperty(LDAPProperties.DistinguishedName));
+                Assert.Single(delegates, host);
+            }
+        }
     }
 }
