@@ -150,7 +150,7 @@ namespace SharpHoundCommonLib.Processors
             props.AddMany((GetProperties(LDAPProperties.AllowedToDelegateTo, entry)));
             compProps.AllowedToDelegate = (await ReadPropertyDelegates(entry)).ToArray();
             
-            compProps.AllowedToAct = ReadAllowedToActPrinciples(entry).ToArray();
+            compProps.AllowedToAct = ReadAllowedToActPrincipals(entry).ToArray();
 
             props.AddMany(GetProperties(LDAPProperties.LastLogon, entry));
             props.AddMany(GetProperties(LDAPProperties.LastLogonTimestamp, entry));
@@ -163,7 +163,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.ToArray());
             compProps.SidHistory = sidHistory.Select(ssid => ReadSidPrincipal(entry, ssid)).ToArray();
             
-            compProps.DumpSMSAPassword = ReadSmsaPrinciples(entry).ToArray();
+            compProps.DumpSMSAPassword = ReadSmsaPrincipals(entry).ToArray();
 
             compProps.Props = props;
 
@@ -248,7 +248,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public List<TypedPrincipal> ReadAllowedToActPrinciples(ISearchResultEntry entry)
+        public List<TypedPrincipal> ReadAllowedToActPrincipals(ISearchResultEntry entry)
         {
             var allowedToActPrincipals = new List<TypedPrincipal>();
             
@@ -273,7 +273,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public List<TypedPrincipal> ReadSmsaPrinciples(ISearchResultEntry entry)
+        public List<TypedPrincipal> ReadSmsaPrincipals(ISearchResultEntry entry)
         {
             var smsaPrincipals = new List<TypedPrincipal>();
             var hsa = entry.GetArrayProperty(LDAPProperties.HostServiceAccount);

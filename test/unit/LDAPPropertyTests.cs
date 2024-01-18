@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
+using FluentAssertions.Specialized;
+using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
@@ -913,6 +918,147 @@ namespace CommonLibTest
                 ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-1105",
                 ObjectType = Label.User
             }, principal);
+        }
+
+        // [Fact]
+        // public void LDAPPropertyProcessor_ReadAllowedToActPrincipals_ReturnsPopulatedList()
+        // {
+        //     var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+        //         new Dictionary<string, object>
+        //         {
+        //             {
+        //                 "msds-allowedtoactonbehalfofotheridentity",
+        //                     Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+        //             }
+        //         }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+        //
+        //     var mockUtils = new Mock<MockLDAPUtils>();
+        //     var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>();
+        //     var mockRuleDescriptor = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose);
+        //     mockRuleDescriptor.Setup(m => m.IdentityReference()).Returns("S-1-5-21-3130019616-2776909439-2417379446-1105");
+        //     
+        //     mockUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        //     mockSecurityDescriptor.Setup(m => m.GetAccessRules(
+        //             It.IsAny<bool>(),
+        //             It.IsAny<bool>(),
+        //             It.IsAny<Type>()))
+        //         .Returns(new List<ActiveDirectoryRuleDescriptor>
+        //         {
+        //             mockRuleDescriptor.Object
+        //         });
+        //     
+        //     var processor = new LDAPPropertyProcessor(mockUtils.Object);
+        //     var principals = processor.ReadAllowedToActPrincipals(mock);
+        //     
+        //     Assert.Contains("S-1-5-21-3130019616-2776909439-2417379446-1105", principals.Select(p => p.ObjectIdentifier));
+        //     Assert.Single(principals);
+        // }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ReadSmsaPrincipals_ReturnsPopulatedList()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {
+                        "msds-hostserviceaccount", new[]
+                        {
+                            "CN=dfm,CN=Users,DC=testlab,DC=local",
+                            "CN=krbtgt,CN=Users,DC=testlab,DC=local"
+                        }
+                    }
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var smsaPrincipals = processor.ReadSmsaPrincipals(mock);
+            var sids = smsaPrincipals.Select(p => p.ObjectIdentifier);
+
+            Assert.Single("S-1-5-21-3130019616-2776909439-2417379446-1105", sids);
+            Assert.Single("S-1-5-21-3130019616-2776909439-2417379446-502", sids);
+        }
+        
+        public static IEnumerable<object[]> ServicePrincipalNamesData =>
+            new List<object[]>
+            {
+                new object[]
+                {
+                    new[]
+                    {
+                        "WSMAN/WIN10",
+                        "WSMAN/WIN10.testlab.local",
+                        "RestrictedKrbHost/WIN10",
+                        "HOST/WIN10",
+                        "RestrictedKrbHost/WIN10.testlab.local",
+                        "HOST/WIN10.testlab.local"
+                    },
+                    true
+                },
+                new object[]
+                {
+                    new string[] { },
+                    false
+                }
+            };
+        
+        [Theory]
+        [MemberData(nameof(ServicePrincipalNamesData))]
+        public void LDAPPropertyProcessor_GetProperties_ServicePrincipalNames(object property, bool expectedHasspn)
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {
+                        "serviceprincipalname", property
+                    }
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+        
+            var props = LDAPPropertyProcessor.GetProperties(LDAPProperties.ServicePrincipalNames, mock);
+        
+            Assert.Single(props.Keys, "serviceprincipalnames");
+            var propPrincipals = props["serviceprincipalnames"] as string[];
+            foreach (var principal in mock.GetArrayProperty("serviceprincipalname"))
+            {
+                Assert.Single(propPrincipals, principal);
+            }
+            
+            Assert.Single(props.Keys, "hasspn");
+            Assert.Equal(expectedHasspn, (bool)props["hasspn"]);
+        }
+
+        public static IEnumerable<object[]> UserAccessControlData =>
+            new List<object[]>
+            {
+                new object[]
+                {
+                    ((int)(UacFlags.NotDelegated | UacFlags.AccountDisable)).ToString(),
+                    new Dictionary<string, bool> {{ "sensitive", true }, { "enabled", false }}
+                },
+                new object[]
+                {
+                    ((int)(UacFlags.ServerTrustAccount | UacFlags.PasswordNotRequired | UacFlags.TrustedForDelegation)).ToString(),
+                    new Dictionary<string, bool> {{ "isdc", true }, { "passwordnotreqd", true }, { "unconstraineddelegation", true }, { "enabled", true }}
+                },
+            };
+        
+        [Theory]
+        [MemberData(nameof(UserAccessControlData))]
+        public void LDAPPropertyProcessor_GetProperties_UserAccountControl(string property, Dictionary<string, bool> expectedFlags)
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {
+                        "useraccountcontrol", property
+                    }
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
+        
+            var props = LDAPPropertyProcessor.GetProperties(LDAPProperties.UserAccountControl, mock);
+
+            foreach (var flag in props)
+            {
+                var expectedFlag = expectedFlags.ContainsKey(flag.Key) && expectedFlags[flag.Key];
+                Assert.Equal(expectedFlag, (bool)flag.Value);
+            }
         }
     }
 }
