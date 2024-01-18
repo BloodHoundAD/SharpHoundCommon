@@ -128,7 +128,7 @@ namespace SharpHoundCommonLib.Processors
 
             var sidHistory = ReadSidHistory(entry);
             props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.ToArray());
-            userProps.SidHistory = sidHistory.Select(ssid => ReadSidPrinciple(entry, ssid)).ToArray();
+            userProps.SidHistory = sidHistory.Select(ssid => ReadSidPrincipal(entry, ssid)).ToArray();
 
             userProps.Props = props;
 
@@ -161,7 +161,7 @@ namespace SharpHoundCommonLib.Processors
 
             var sidHistory = ReadSidHistory(entry);
             props.Add(PropertyMap.GetPropertyName(LDAPProperties.SIDHistory), sidHistory.ToArray());
-            compProps.SidHistory = sidHistory.Select(ssid => ReadSidPrinciple(entry, ssid)).ToArray();
+            compProps.SidHistory = sidHistory.Select(ssid => ReadSidPrincipal(entry, ssid)).ToArray();
             
             compProps.DumpSMSAPassword = ReadSmsaPrinciples(entry).ToArray();
 
@@ -237,7 +237,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="entry"></param>
         /// <param name="sidHistoryItem"></param>
         /// <returns></returns>
-        public TypedPrincipal ReadSidPrinciple(ISearchResultEntry entry, string sidHistoryItem)
+        public TypedPrincipal ReadSidPrincipal(ISearchResultEntry entry, string sidHistoryItem)
         {
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
             return _utils.ResolveIDAndType(sidHistoryItem, domain);
@@ -803,7 +803,7 @@ namespace SharpHoundCommonLib.Processors
                 case LDAPProperties.PasswordLastSet:
                     return "pwdlastset";
                 case LDAPProperties.ServicePrincipalNames:
-                    return "serviceprinciplenames";
+                    return "serviceprincipalnames";
                 case LDAPProperties.DisplayName:
                     return "displayname";
                 case LDAPProperties.Email:

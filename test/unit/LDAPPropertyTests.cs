@@ -876,5 +876,43 @@ namespace CommonLibTest
                 Assert.Single(delegates, host);
             }
         }
+
+        [WindowsOnlyFact]
+        public void LDAPPropertyProcessor_ReadSidHistory_ReturnsPopulatedList()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+            
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var sids = processor.ReadSidHistory(mock);
+            
+            Assert.Contains("S-1-5-21-3130019616-2776909439-2417379446-1105", sids);
+            Assert.Single(sids);
+        }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ReadSidPrincipal_GetPrincipal()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>(), "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+            
+            var sid = "S-1-5-21-3130019616-2776909439-2417379446-1105";
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var principal = processor.ReadSidPrincipal(mock, sid);
+            
+            Assert.Equal(new TypedPrincipal
+            {
+                ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-1105",
+                ObjectType = Label.User
+            }, principal);
+        }
     }
 }
