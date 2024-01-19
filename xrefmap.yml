@@ -1743,6 +1743,96 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.PKIEnrollmentFlag.USER_INTERACTION_REQUIRED
   fullName: SharpHoundCommonLib.Enums.PKIEnrollmentFlag.USER_INTERACTION_REQUIRED
   nameWithType: PKIEnrollmentFlag.USER_INTERACTION_REQUIRED
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag
+  name: PKIPrivateKeyFlag
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html
+  commentId: T:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag
+  nameWithType: PKIPrivateKeyFlag
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_NONE
+  name: ATTEST_NONE
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_ATTEST_NONE
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_NONE
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_NONE
+  nameWithType: PKIPrivateKeyFlag.ATTEST_NONE
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_PREFERRED
+  name: ATTEST_PREFERRED
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_ATTEST_PREFERRED
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_PREFERRED
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_PREFERRED
+  nameWithType: PKIPrivateKeyFlag.ATTEST_PREFERRED
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_REQUIRED
+  name: ATTEST_REQUIRED
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_ATTEST_REQUIRED
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_REQUIRED
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTEST_REQUIRED
+  nameWithType: PKIPrivateKeyFlag.ATTEST_REQUIRED
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTESTATION_WITHOUT_POLICY
+  name: ATTESTATION_WITHOUT_POLICY
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_ATTESTATION_WITHOUT_POLICY
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTESTATION_WITHOUT_POLICY
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.ATTESTATION_WITHOUT_POLICY
+  nameWithType: PKIPrivateKeyFlag.ATTESTATION_WITHOUT_POLICY
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_TRUST_ON_USE
+  name: EK_TRUST_ON_USE
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_EK_TRUST_ON_USE
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_TRUST_ON_USE
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_TRUST_ON_USE
+  nameWithType: PKIPrivateKeyFlag.EK_TRUST_ON_USE
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_VALIDATE_CERT
+  name: EK_VALIDATE_CERT
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_EK_VALIDATE_CERT
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_VALIDATE_CERT
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_VALIDATE_CERT
+  nameWithType: PKIPrivateKeyFlag.EK_VALIDATE_CERT
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_VALIDATE_KEY
+  name: EK_VALIDATE_KEY
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_EK_VALIDATE_KEY
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_VALIDATE_KEY
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EK_VALIDATE_KEY
+  nameWithType: PKIPrivateKeyFlag.EK_VALIDATE_KEY
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EXPORTABLE_KEY
+  name: EXPORTABLE_KEY
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_EXPORTABLE_KEY
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EXPORTABLE_KEY
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.EXPORTABLE_KEY
+  nameWithType: PKIPrivateKeyFlag.EXPORTABLE_KEY
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.HELLO_LOGON_KEY
+  name: HELLO_LOGON_KEY
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_HELLO_LOGON_KEY
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.HELLO_LOGON_KEY
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.HELLO_LOGON_KEY
+  nameWithType: PKIPrivateKeyFlag.HELLO_LOGON_KEY
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_ALTERNATE_SIGNATURE_ALGORITHM
+  name: REQUIRE_ALTERNATE_SIGNATURE_ALGORITHM
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_REQUIRE_ALTERNATE_SIGNATURE_ALGORITHM
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_ALTERNATE_SIGNATURE_ALGORITHM
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_ALTERNATE_SIGNATURE_ALGORITHM
+  nameWithType: PKIPrivateKeyFlag.REQUIRE_ALTERNATE_SIGNATURE_ALGORITHM
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_PRIVATE_KEY_ARCHIVAL
+  name: REQUIRE_PRIVATE_KEY_ARCHIVAL
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_REQUIRE_PRIVATE_KEY_ARCHIVAL
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_PRIVATE_KEY_ARCHIVAL
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_PRIVATE_KEY_ARCHIVAL
+  nameWithType: PKIPrivateKeyFlag.REQUIRE_PRIVATE_KEY_ARCHIVAL
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_SAME_KEY_RENEWAL
+  name: REQUIRE_SAME_KEY_RENEWAL
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_REQUIRE_SAME_KEY_RENEWAL
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_SAME_KEY_RENEWAL
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.REQUIRE_SAME_KEY_RENEWAL
+  nameWithType: PKIPrivateKeyFlag.REQUIRE_SAME_KEY_RENEWAL
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.STRONG_KEY_PROTECTION_REQUIRED
+  name: STRONG_KEY_PROTECTION_REQUIRED
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_STRONG_KEY_PROTECTION_REQUIRED
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.STRONG_KEY_PROTECTION_REQUIRED
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.STRONG_KEY_PROTECTION_REQUIRED
+  nameWithType: PKIPrivateKeyFlag.STRONG_KEY_PROTECTION_REQUIRED
+- uid: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.USE_LEGACY_PROVIDER
+  name: USE_LEGACY_PROVIDER
+  href: api/SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.html#SharpHoundCommonLib_Enums_PKIPrivateKeyFlag_USE_LEGACY_PROVIDER
+  commentId: F:SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.USE_LEGACY_PROVIDER
+  fullName: SharpHoundCommonLib.Enums.PKIPrivateKeyFlag.USE_LEGACY_PROVIDER
+  nameWithType: PKIPrivateKeyFlag.USE_LEGACY_PROVIDER
 - uid: SharpHoundCommonLib.Enums.ResolvedCollectionMethod
   name: ResolvedCollectionMethod
   href: api/SharpHoundCommonLib.Enums.ResolvedCollectionMethod.html
@@ -3642,6 +3732,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.PKIOverlappedPeriod
   fullName: SharpHoundCommonLib.LDAPProperties.PKIOverlappedPeriod
   nameWithType: LDAPProperties.PKIOverlappedPeriod
+- uid: SharpHoundCommonLib.LDAPProperties.PKIPrivateKeyFlag
+  name: PKIPrivateKeyFlag
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PKIPrivateKeyFlag
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PKIPrivateKeyFlag
+  fullName: SharpHoundCommonLib.LDAPProperties.PKIPrivateKeyFlag
+  nameWithType: LDAPProperties.PKIPrivateKeyFlag
 - uid: SharpHoundCommonLib.LDAPProperties.PrimaryGroupID
   name: PrimaryGroupID
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PrimaryGroupID
@@ -5213,6 +5309,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Computer.DCRegistryData
   nameWithType: Computer.DCRegistryData
+- uid: SharpHoundCommonLib.OutputTypes.Computer.DomainSID
+  name: DomainSID
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_DomainSID
+  commentId: P:SharpHoundCommonLib.OutputTypes.Computer.DomainSID
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.DomainSID
+  nameWithType: Computer.DomainSID
+- uid: SharpHoundCommonLib.OutputTypes.Computer.DomainSID*
+  name: DomainSID
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_DomainSID_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.Computer.DomainSID
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.DomainSID
+  nameWithType: Computer.DomainSID
 - uid: SharpHoundCommonLib.OutputTypes.Computer.DumpSMSAPassword
   name: DumpSMSAPassword
   href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_DumpSMSAPassword
@@ -5239,6 +5348,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Computer.HasSIDHistory
   nameWithType: Computer.HasSIDHistory
+- uid: SharpHoundCommonLib.OutputTypes.Computer.IsDC
+  name: IsDC
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_IsDC
+  commentId: P:SharpHoundCommonLib.OutputTypes.Computer.IsDC
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.IsDC
+  nameWithType: Computer.IsDC
+- uid: SharpHoundCommonLib.OutputTypes.Computer.IsDC*
+  name: IsDC
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_IsDC_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.Computer.IsDC
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.IsDC
+  nameWithType: Computer.IsDC
 - uid: SharpHoundCommonLib.OutputTypes.Computer.LocalGroups
   name: LocalGroups
   href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_LocalGroups
