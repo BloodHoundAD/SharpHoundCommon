@@ -264,6 +264,7 @@ namespace CommonLibTest
                     {"lastlogon", "132673011142753043"},
                     {"lastlogontimestamp", "132670318095676525"},
                     {"homedirectory", @"\\win10\testdir"},
+                    {"mail", "test@testdomain.com"},
                     {
                         "serviceprincipalname", new[]
                         {
@@ -298,6 +299,8 @@ namespace CommonLibTest
             Assert.Equal(1568693134, (long)props["pwdlastset"]);
             Assert.Contains("homedirectory", keys);
             Assert.Equal(@"\\win10\testdir", props["homedirectory"] as string);
+            Assert.Contains("email", keys);
+            Assert.Equal("test@testdomain.com", props["email"] as string);
 
             //UAC stuff
             Assert.Contains("sensitive", keys);
@@ -397,6 +400,7 @@ namespace CommonLibTest
                     {"lastlogontimestamp", "132670318095676525"},
                     {"operatingsystem", "Windows 10 Enterprise"},
                     {"operatingsystemservicepack", "1607"},
+                    {"mail", "test@testdomain.com"},
                     {"admincount", "c"},
                     {
                         "sidhistory", new[]
@@ -434,11 +438,15 @@ namespace CommonLibTest
             //UAC
             Assert.Contains("enabled", keys);
             Assert.Contains("unconstraineddelegation", keys);
+            Assert.Contains("trustedtoauth", keys);
+            Assert.Contains("isdc", keys);
             Assert.Contains("lastlogon", keys);
             Assert.Contains("lastlogontimestamp", keys);
             Assert.Contains("pwdlastset", keys);
             Assert.True((bool)props["enabled"]);
             Assert.False((bool)props["unconstraineddelegation"]);
+            Assert.True((bool)props["trustedtoauth"]);
+            Assert.False((bool)props["isdc"]);
 
             Assert.Contains("lastlogon", keys);
             Assert.Equal(1622827514, (long)props["lastlogon"]);
@@ -462,6 +470,8 @@ namespace CommonLibTest
             Assert.Equal("Windows 10 Enterprise 1607", props["operatingsystem"] as string);
             Assert.Contains("description", keys);
             Assert.Equal("Test", props["description"] as string);
+            Assert.Contains("email", keys);
+            Assert.Equal("test@testdomain.com", props["email"] as string);
 
             //SidHistory
             Assert.Contains("sidhistory", keys);
@@ -700,9 +710,7 @@ namespace CommonLibTest
                     {"oid", "1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.30"},
                     {"enrollmentflag", 32},
                     {"requiresmanagerapproval", false},
-                    {"certificatenameflag", 134217728},
-                    {"enrolleesuppliessubject", false},
-                    {"subjectaltrequireupn", false},
+                    {"certificatenameflag", 0x8000000},
                     {"ekus", new[]
                     {"1.3.6.1.5.5.7.3.2"}
                     },
@@ -739,6 +747,11 @@ namespace CommonLibTest
             Assert.Contains("certificatenameflag", keys);
             Assert.Contains("enrolleesuppliessubject", keys);
             Assert.Contains("subjectaltrequireupn", keys);
+            Assert.Contains("subjectaltrequiredns", keys);
+            Assert.Contains("subjectaltrequiredomaindns", keys);
+            Assert.Contains("subjectaltrequireemail", keys);
+            Assert.Contains("subjectaltrequirespn", keys);
+            Assert.Contains("subjectrequireemail", keys);
             Assert.Contains("ekus", keys);
             Assert.Contains("certificateapplicationpolicy", keys);
             Assert.Contains("authorizedsignatures", keys);

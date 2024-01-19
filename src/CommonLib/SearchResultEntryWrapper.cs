@@ -63,7 +63,7 @@ namespace SharpHoundCommonLib
             if (int.TryParse(uac, out var flag))
             {
                 var flags = (UacFlags) flag;
-                if ((flags & UacFlags.ServerTrustAccount) != 0)
+                if (flags.HasFlag(UacFlags.ServerTrustAccount))
                 {
                     _log.LogTrace("Marked {SID} as a domain controller", objectId);
                     res.IsDomainController = true;
