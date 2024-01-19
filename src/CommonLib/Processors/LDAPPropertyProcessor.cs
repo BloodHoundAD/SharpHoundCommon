@@ -514,9 +514,15 @@ namespace SharpHoundCommonLib.Processors
             if (entry.GetIntProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
                 props.Add("authorizedsignatures", authorizedSignatures);
 
-            props.Add("applicationpolicies", entry.GetArrayProperty(LDAPProperties.ApplicationPolicies));
-            props.Add("issuancepolicies", entry.GetArrayProperty(LDAPProperties.IssuancePolicies));
+            bool hasUseLegacyProvider = false;
+            if (entry.GetIntProperty(LDAPProperties.PKIPrivateKeyFlag, out var privateKeyFlagsRaw))
+            {
+                var privateKeyFlags = (PKIPrivateKeyFlag)privateKeyFlagsRaw;
+                hasUseLegacyProvider = privateKeyFlags.HasFlag(PKIPrivateKeyFlag.USE_LEGACY_PROVIDER);
+            }
 
+            props.Add("applicationpolicies", ParseCertTemplateApplicationPolicies(entry.GetArrayProperty(LDAPProperties.ApplicationPolicies), schemaVersion, hasUseLegacyProvider));
+            props.Add("issuancepolicies", entry.GetArrayProperty(LDAPProperties.IssuancePolicies));
 
             // Construct effectiveekus
             string[] effectiveekus = schemaVersion == 1 & ekus.Length > 0 ? ekus : certificateapplicationpolicy;
@@ -576,6 +582,33 @@ namespace SharpHoundCommonLib.Processors
             }
 
             return props;
+        }
+
+        /// <summary>
+        ///     Parse CertTemplate attribute msPKI-RA-Application-Policies
+        /// </summary>
+        /// <param name="applicationPolicies"></param>
+        /// <param name="schemaVersion"></param>
+        /// <param name="hasUseLegacyProvider"></param>
+        private static string[] ParseCertTemplateApplicationPolicies(string[] applicationPolicies, int schemaVersion, bool hasUseLegacyProvider)
+        {
+            if (applicationPolicies == null
+                || applicationPolicies.Length == 0
+                || schemaVersion == 1
+                || schemaVersion == 2
+                || (schemaVersion == 4 && hasUseLegacyProvider)) {
+                return applicationPolicies;
+            } else {
+                // Format: "Name`Type`Value`Name`Type`Value`..."
+                // (https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-crtd/c55ec697-be3f-4117-8316-8895e4399237)
+                // Return the Value of Name = "msPKI-RA-Application-Policies" entries
+                string[] entries = applicationPolicies[0].Split('`');
+                return Enumerable.Range(0, entries.Length / 3)
+                    .Select(i => entries.Skip(i * 3).Take(3).ToArray())
+                    .Where(parts => parts.Length == 3 && parts[0].Equals(LDAPProperties.ApplicationPolicies, StringComparison.OrdinalIgnoreCase))
+                    .Select(parts => parts[2])
+                    .ToArray();
+            }
         }
 
         /// <summary>
