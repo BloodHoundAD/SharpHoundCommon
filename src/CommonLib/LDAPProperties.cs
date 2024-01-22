@@ -59,6 +59,7 @@
         public const string PKINameFlag = "mspki-certificate-name-flag";
         public const string ExtendedKeyUsage = "pkiextendedkeyusage";
         public const string NumSignaturesRequired = "mspki-ra-signature";
+        public const string PKIPrivateKeyFlag = "mspki-private-key-flag";
         public const string ApplicationPolicies = "mspki-ra-application-policies";
         public const string IssuancePolicies = "mspki-ra-policies";
         public const string CertificateApplicationPolicy = "mspki-certificate-application-policy";

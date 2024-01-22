@@ -84,7 +84,7 @@
             LDAPProperties.PKIEnrollmentFlag, LDAPProperties.DisplayName, LDAPProperties.Name, LDAPProperties.TemplateSchemaVersion, LDAPProperties.CertTemplateOID,
             LDAPProperties.PKIOverlappedPeriod, LDAPProperties.PKIExpirationPeriod, LDAPProperties.ExtendedKeyUsage, LDAPProperties.NumSignaturesRequired,
             LDAPProperties.CertificateApplicationPolicy, LDAPProperties.IssuancePolicies, LDAPProperties.CrossCertificatePair,
-            LDAPProperties.ApplicationPolicies
+            LDAPProperties.ApplicationPolicies, LDAPProperties.PKIPrivateKeyFlag
         };
     }
 }

@@ -63,7 +63,7 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         internal static bool GetDomainSidMapping(string key, out string value)
         {
-            if (CacheInstance != null) return CacheInstance.MachineSidCache.TryGetValue(key, out value);
+            if (CacheInstance != null) return CacheInstance.SIDToDomainCache.TryGetValue(key, out value);
             value = null;
             return false;
         }
