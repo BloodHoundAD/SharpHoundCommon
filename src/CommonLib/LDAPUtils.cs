@@ -571,6 +571,10 @@ namespace SharpHoundCommonLib
         public async Task<string> ResolveHostToSid(string hostname, string domain)
         {
             var strippedHost = Helpers.StripServicePrincipalName(hostname).ToUpper().TrimEnd('$');
+            if (string.IsNullOrEmpty(strippedHost))
+            {
+                return null;
+            }
 
             if (_hostResolutionMap.TryGetValue(strippedHost, out var sid)) return sid;
 

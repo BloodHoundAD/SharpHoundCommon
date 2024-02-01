@@ -166,6 +166,15 @@ namespace CommonLibTest
             var actual = SharpHoundCommonLib.Helpers.StripServicePrincipalName(testString);
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void StripServicePrincipalName_EmptyHost_Valid()
+        {
+            var testString = "MSSQLSvc/:1433";
+            var expected = "";
+            var actual = SharpHoundCommonLib.Helpers.StripServicePrincipalName(testString);
+            Assert.Equal(expected, actual);
+        }
 
         [Fact]
         public void B64ToBytes_String_ValidBase64String()
