@@ -892,7 +892,6 @@ namespace SharpHoundCommonLib
                             //If no one is holding this semaphore, we're the first entrant into this logic, so its our responsibility
                             //to make the new LDAP connection
                             Thread.Sleep(backoffDelay);
-                            backoffDelay = GetNextBackoff(retryCount);
                             //Explicitly skip the cache so we don't get the same connection back
                             conn = CreateNewConnection(domainName, globalCatalog, true);
                             if (conn == null)
@@ -907,12 +906,12 @@ namespace SharpHoundCommonLib
                         else
                         {
                             //If the semaphore is already held, we're just waiting until we get the semaphore, at which point a new connection should be available
-                            backoffDelay = GetNextBackoff(retryCount);
                             conn = CreateNewConnection(domainName, globalCatalog);
                         }
                     }
                     finally
                     {
+                        backoffDelay = GetNextBackoff(retryCount);
                         //Always release
                         _semaphoreSlim.Release();
                     }
