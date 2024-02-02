@@ -873,7 +873,15 @@ namespace SharpHoundCommonLib
                 }catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
                                                 retryCount < MaxRetries)
                 {
+                    /*A ServerDown exception indicates that our connection is no longer valid for one of many reasons.
+                    However, this function is generally called by multiple threads, so we need to be careful in recreating
+                    the connection. Using a semaphore, we can ensure that only one thread is actually recreating the connection
+                    while the other threads that hit the ServerDown exception simply wait. The initial caller will hold the semaphore
+                    and do a backoff delay before trying to make a new connection which will replace the existing connection in the 
+                    _ldapConnections cache. Other threads will retrieve the new connection from the cache instead of making a new one
+                    This minimizes overhead of new connections while still fixing our core problem*/
                     var isSemaphoreHeld = _semaphoreSlim.CurrentCount == 0;
+                    //Always increment retry count
                     retryCount++;
                     
                     _semaphoreSlim.Wait(cancellationToken);
@@ -881,8 +889,11 @@ namespace SharpHoundCommonLib
                     {
                         if (!isSemaphoreHeld)
                         {
+                            //If no one is holding this semaphore, we're the first entrant into this logic, so its our responsibility
+                            //to make the new LDAP connection
                             Thread.Sleep(backoffDelay);
                             backoffDelay = GetNextBackoff(retryCount);
+                            //Explicitly skip the cache so we don't get the same connection back
                             conn = CreateNewConnection(domainName, globalCatalog, true);
                             if (conn == null)
                             {
@@ -895,12 +906,14 @@ namespace SharpHoundCommonLib
                         }
                         else
                         {
+                            //If the semaphore is already held, we're just waiting until we get the semaphore, at which point a new connection should be available
                             backoffDelay = GetNextBackoff(retryCount);
                             conn = CreateNewConnection(domainName, globalCatalog);
                         }
                     }
                     finally
                     {
+                        //Always release
                         _semaphoreSlim.Release();
                     }
                     continue;
