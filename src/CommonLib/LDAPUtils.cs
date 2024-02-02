@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -18,9 +19,7 @@ using SharpHoundCommonLib.Exceptions;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
-using SharpHoundRPC;
 using SharpHoundRPC.NetAPINative;
-using SharpHoundRPC.Wrappers;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 using SecurityMasks = System.DirectoryServices.Protocols.SecurityMasks;
@@ -53,8 +52,8 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
         private readonly ConcurrentDictionary<string, string> _domainControllerCache = new();
         private static readonly TimeSpan MinBackoffDelay = TimeSpan.FromSeconds(2);
-        private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(10);
-        private static readonly TimeSpan BackoffDelayMultiplier = TimeSpan.FromSeconds(2);
+        private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(20);
+        private static readonly int BackoffDelayMultiplier = 2;
         private const int MaxRetries = 3;
 
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
@@ -66,6 +65,7 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
+        private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
 
         /// <summary>
         ///     Creates a new instance of LDAP Utils with defaults
@@ -517,8 +517,7 @@ namespace SharpHoundCommonLib
                     //Allow three retries with a backoff on each one if we get a "Server is Busy" error
                     retryCount++;
                     Thread.Sleep(backoffDelay);
-                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
-                    backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+                    backoffDelay = GetNextBackoff(retryCount);
                     continue;
                 }
                 catch (Exception e)
@@ -874,38 +873,65 @@ namespace SharpHoundCommonLib
                 }catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
                                                 retryCount < MaxRetries)
                 {
+                    var isSemaphoreHeld = _semaphoreSlim.CurrentCount == 0;
                     retryCount++;
-                    Thread.Sleep(backoffDelay);
-                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
-                        backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
-                    conn = CreateNewConnection(domainName, globalCatalog, skipCache);
-                    if (conn == null)
-                    {
-                        _log.LogError("Unable to create replacement ldap connection for ServerDown exception. Breaking loop");
-                        yield break;
-                    }
                     
-                    _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
+                    _semaphoreSlim.Wait(cancellationToken);
+                    try
+                    {
+                        if (!isSemaphoreHeld)
+                        {
+                            Thread.Sleep(backoffDelay);
+                            backoffDelay = GetNextBackoff(retryCount);
+                            conn = CreateNewConnection(domainName, globalCatalog, true);
+                            if (conn == null)
+                            {
+                                _log.LogError(
+                                    "Unable to create replacement ldap connection for ServerDown exception. Breaking loop");
+                                yield break;
+                            }
+
+                            _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
+                        }
+                        else
+                        {
+                            backoffDelay = GetNextBackoff(retryCount);
+                            conn = CreateNewConnection(domainName, globalCatalog);
+                        }
+                    }
+                    finally
+                    {
+                        _semaphoreSlim.Release();
+                    }
                     continue;
                 }catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries) {
                     retryCount++;
-                    Thread.Sleep(backoffDelay);
-                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
-                        backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
+                    backoffDelay = GetNextBackoff(retryCount);
                     continue;
                 }
                 catch (LdapException le)
                 {
-                    if (le.ErrorCode != 82)
+                    if (le.ErrorCode != (int)LdapErrorCodes.LocalError)
+                    {
                         if (throwException)
+                        {
                             throw new LDAPQueryException(
-                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}.",
+                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}",
                                 le);
-                        else
-                            _log.LogWarning(le,
-                                "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
-                                le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
+                        }
 
+                        _log.LogWarning(le,
+                            "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
+                            le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
+                    }
+
+                    if (le.ErrorCode == (int)LdapErrorCodes.ServerDown)
+                    {
+                        throw new LDAPQueryException(
+                            $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}",
+                            le);
+                    }
+                    
                     yield break;
                 }
                 catch (Exception e)
@@ -979,99 +1005,15 @@ namespace SharpHoundCommonLib
             string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false,
             string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false)
         {
-            var queryParams = SetupLDAPQueryFilter(
-                ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
+            return QueryLDAP(ldapFilter, scope, props, new CancellationToken(), domainName, includeAcl, showDeleted,
+                adsPath, globalCatalog, skipCache, throwException);
+        }
 
-            if (queryParams.Exception != null)
-            {
-                if (throwException) throw queryParams.Exception;
-
-                _log.LogWarning(queryParams.Exception, "Failed to setup LDAP Query Filter");
-                yield break;
-            }
-            var conn = queryParams.Connection;
-            var request = queryParams.SearchRequest;
-            var pageControl = queryParams.PageControl;
-
-            PageResultResponseControl pageResponse = null;
-
-            var backoffDelay = MinBackoffDelay;
-            var retryCount = 0;
-
-            while (true)
-            {
-                SearchResponse response;
-
-                try
-                {
-                    _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
-                    response = (SearchResponse)conn.SendRequest(request);
-                    if (response != null)
-                        pageResponse = (PageResultResponseControl)response.Controls
-                            .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
-                }
-                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries)
-                {
-                    retryCount++;
-                    Thread.Sleep(backoffDelay);
-                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
-                        backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
-                    continue;
-                }
-                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
-                                               retryCount < MaxRetries)
-                {
-                    retryCount++;
-                    Thread.Sleep(backoffDelay);
-                    backoffDelay = TimeSpan.FromSeconds(Math.Min(
-                        backoffDelay.TotalSeconds * BackoffDelayMultiplier.TotalSeconds, MaxBackoffDelay.TotalSeconds));
-                    conn = CreateNewConnection(domainName, globalCatalog, skipCache);
-                    if (conn == null)
-                    {
-                        _log.LogError("Unable to create replacement ldap connection for ServerDown exception. Breaking loop");
-                        yield break;
-                    }
-                    
-                    _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
-                    continue;
-                }
-                catch (LdapException le)
-                {
-                    if (le.ErrorCode != 82)
-                        if (throwException)
-                            throw new LDAPQueryException(
-                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}",
-                                le);
-                        else
-                            _log.LogWarning(le,
-                                "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
-                                le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
-                    yield break;
-                }
-                catch (Exception e)
-                {
-                    if (throwException)
-                        throw new LDAPQueryException(
-                            $"Exception in LDAP loop for {ldapFilter} and {domainName ?? "Default Domain"}", e);
-
-                    _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter,
-                        domainName ?? "Default Domain");
-                    yield break;
-                }
-
-                if (response == null || pageResponse == null) continue;
-
-                if (response.Entries == null)
-                    yield break;
-
-                foreach (SearchResultEntry entry in response.Entries)
-                    yield return new SearchResultEntryWrapper(entry, this);
-
-                if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0)
-                    yield break;
-
-                pageControl.Cookie = pageResponse.Cookie;
-            }
+        private static TimeSpan GetNextBackoff(int retryCount)
+        {
+            return TimeSpan.FromSeconds(Math.Min(
+                BackoffDelayMultiplier * (retryCount + 1) * retryCount,
+                MaxBackoffDelay.TotalSeconds));
         }
 
         /// <summary>
@@ -1560,8 +1502,11 @@ namespace SharpHoundCommonLib
 
             connection.AuthType = authType;
 
-            if (!skipCache)
-                _ldapConnections.TryAdd(targetServer, connection);
+            _ldapConnections.AddOrUpdate(targetServer, connection, (s, ldapConnection) =>
+            {
+                ldapConnection.Dispose();
+                return connection;
+            });
 
             return connection;
         }
