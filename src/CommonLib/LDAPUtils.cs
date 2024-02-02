@@ -879,7 +879,9 @@ namespace SharpHoundCommonLib
                     while the other threads that hit the ServerDown exception simply wait. The initial caller will hold the semaphore
                     and do a backoff delay before trying to make a new connection which will replace the existing connection in the 
                     _ldapConnections cache. Other threads will retrieve the new connection from the cache instead of making a new one
-                    This minimizes overhead of new connections while still fixing our core problem*/
+                    This minimizes overhead of new connections while still fixing our core problem.
+                    
+                    A CurrentCount of 0 indicates the semaphore is already held because c# semaphores are weird and backwards*/
                     var isSemaphoreHeld = _semaphoreSlim.CurrentCount == 0;
                     //Always increment retry count
                     retryCount++;
