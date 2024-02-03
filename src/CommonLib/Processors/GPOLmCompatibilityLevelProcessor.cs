@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.XPath;
 using Microsoft.Extensions.Logging;
-using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
-using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors
 {
@@ -51,17 +46,16 @@ namespace SharpHoundCommonLib.Processors
                 return false;
             }
 
-
-            //Add the actions for each file. The GPO template file actions will override the XML file actions
             return await ProcessGPOTemplateFile(filePath);
         }
 
         /// <summary>
-        ///     Parses a GPO GptTmpl.inf file and pulls group membership changes out
+        ///     Parses a GPO GptTmpl.inf file and grep lmcompatibilitylevel value
         /// </summary>
         /// <param name="basePath"></param>
-        /// <param name="gpoDomain"></param>
-        /// <returns></returns>
+        /// <returns>
+        ///     lmcompatibilitylevel < 3
+        /// </returns>
         internal async Task<Boolean> ProcessGPOTemplateFile(string basePath)
         {
             var templatePath = Path.Combine(basePath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
