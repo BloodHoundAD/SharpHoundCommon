@@ -65,6 +65,7 @@ namespace SharpHoundCommonLib
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
         private readonly ManualResetEvent _connectionResetEvent = new(false);
+        private readonly object _lockObj = new();
         
 
         /// <summary>
@@ -884,12 +885,15 @@ namespace SharpHoundCommonLib
                     
                     //Always increment retry count
                     retryCount++;
-
-                    //If we are the holders of the reset event, we need to do logic to reset the connection
-                    if (_connectionResetEvent.Reset())
+                    
+                    //Attempt to acquire a lock
+                    if (Monitor.TryEnter(_lockObj))
                     {
+                        //If we've acquired the lock, we want to immediately signal our reset event so everyone else waits
+                        _connectionResetEvent.Reset();
                         try
                         {
+                            //Sleep for our backoff
                             Thread.Sleep(backoffDelay);
                             //Explicitly skip the cache so we don't get the same connection back
                             conn = CreateNewConnection(domainName, globalCatalog, true);
@@ -904,12 +908,15 @@ namespace SharpHoundCommonLib
                         }
                         finally
                         {
+                            //Reset our event + release the lock
                             _connectionResetEvent.Set();
+                            Monitor.Exit(_lockObj);
                         }
                     }
                     else
                     {
                         //If someone else is holding the reset event, we want to just wait and then pull the newly created connection out of the cache
+                        //This event will be released after the first entrant thread is done making a new connection
                         _connectionResetEvent.WaitOne();
                         conn = CreateNewConnection(domainName, globalCatalog);
                     }
