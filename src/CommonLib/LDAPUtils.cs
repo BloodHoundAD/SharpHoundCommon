@@ -64,7 +64,7 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
-        private readonly ManualResetEvent _manualResetEvent = new(false);
+        private readonly ManualResetEvent _connectionResetEvent = new(false);
         
 
         /// <summary>
@@ -886,7 +886,7 @@ namespace SharpHoundCommonLib
                     retryCount++;
 
                     //If we are the holders of the reset event, we need to do logic to reset the connection
-                    if (_manualResetEvent.Reset())
+                    if (_connectionResetEvent.Reset())
                     {
                         try
                         {
@@ -906,13 +906,13 @@ namespace SharpHoundCommonLib
                         }
                         finally
                         {
-                            _manualResetEvent.Set();
+                            _connectionResetEvent.Set();
                         }
                     }
                     else
                     {
                         //If someone else is holding the reset event, we want to just wait and then pull the newly created connection out of the cache
-                        _manualResetEvent.WaitOne();
+                        _connectionResetEvent.WaitOne();
                         conn = CreateNewConnection(domainName, globalCatalog);
                     }
                     
