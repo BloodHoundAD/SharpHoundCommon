@@ -53,7 +53,7 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, string> _domainControllerCache = new();
         private static readonly TimeSpan MinBackoffDelay = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(20);
-        private static readonly int BackoffDelayMultiplier = 2;
+        private const int BackoffDelayMultiplier = 2;
         private const int MaxRetries = 3;
 
         private readonly ConcurrentDictionary<string, LdapConnection> _globalCatalogConnections = new();
@@ -65,7 +65,8 @@ namespace SharpHoundCommonLib
         private readonly ConcurrentDictionary<string, string> _netbiosCache = new();
         private readonly PortScanner _portScanner;
         private LDAPConfig _ldapConfig = new();
-        private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
+        private readonly ManualResetEvent _manualResetEvent = new(false);
+        
 
         /// <summary>
         ///     Creates a new instance of LDAP Utils with defaults
@@ -879,17 +880,16 @@ namespace SharpHoundCommonLib
                     while the other threads that hit the ServerDown exception simply wait. The initial caller will hold the semaphore
                     and do a backoff delay before trying to make a new connection which will replace the existing connection in the 
                     _ldapConnections cache. Other threads will retrieve the new connection from the cache instead of making a new one
-                    This minimizes overhead of new connections while still fixing our core problem.
+                    This minimizes overhead of new connections while still fixing our core problem.*/
+                   
                     
-                    A CurrentCount of 0 indicates the semaphore is already held because c# semaphores are weird and backwards*/
-                    var isSemaphoreHeld = _semaphoreSlim.CurrentCount == 0;
                     //Always increment retry count
                     retryCount++;
-                    
-                    _semaphoreSlim.Wait(cancellationToken);
-                    try
+
+                    //If we are the holders of the reset event, we need to do logic to reset the connection
+                    if (_manualResetEvent.Reset())
                     {
-                        if (!isSemaphoreHeld)
+                        try
                         {
                             //If no one is holding this semaphore, we're the first entrant into this logic, so its our responsibility
                             //to make the new LDAP connection
@@ -905,18 +905,19 @@ namespace SharpHoundCommonLib
 
                             _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
                         }
-                        else
+                        finally
                         {
-                            //If the semaphore is already held, we're just waiting until we get the semaphore, at which point a new connection should be available
-                            conn = CreateNewConnection(domainName, globalCatalog);
+                            _manualResetEvent.Set();
                         }
                     }
-                    finally
+                    else
                     {
-                        backoffDelay = GetNextBackoff(retryCount);
-                        //Always release
-                        _semaphoreSlim.Release();
+                        //If someone else is holding the reset event, we want to just wait and then pull the newly created connection out of the cache
+                        _manualResetEvent.WaitOne();
+                        conn = CreateNewConnection(domainName, globalCatalog);
                     }
+                    
+                    backoffDelay = GetNextBackoff(retryCount);
                     continue;
                 }catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries) {
                     retryCount++;
