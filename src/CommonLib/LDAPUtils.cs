@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
