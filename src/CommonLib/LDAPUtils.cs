@@ -1026,7 +1026,7 @@ namespace SharpHoundCommonLib
         private static TimeSpan GetNextBackoff(int retryCount)
         {
             return TimeSpan.FromSeconds(Math.Min(
-                BackoffDelayMultiplier * (retryCount + 1) * retryCount,
+                MinBackoffDelay.TotalSeconds * Math.Pow(BackoffDelayMultiplier, retryCount),
                 MaxBackoffDelay.TotalSeconds));
         }
 
