@@ -1089,12 +1089,6 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.Label.Base
   fullName: SharpHoundCommonLib.Enums.Label.Base
   nameWithType: Label.Base
-- uid: SharpHoundCommonLib.Enums.Label.CertAuthority
-  name: CertAuthority
-  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_CertAuthority
-  commentId: F:SharpHoundCommonLib.Enums.Label.CertAuthority
-  fullName: SharpHoundCommonLib.Enums.Label.CertAuthority
-  nameWithType: Label.CertAuthority
 - uid: SharpHoundCommonLib.Enums.Label.CertTemplate
   name: CertTemplate
   href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_CertTemplate
@@ -1191,6 +1185,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.LdapErrorCodes.Busy
   fullName: SharpHoundCommonLib.Enums.LdapErrorCodes.Busy
   nameWithType: LdapErrorCodes.Busy
+- uid: SharpHoundCommonLib.Enums.LdapErrorCodes.LocalError
+  name: LocalError
+  href: api/SharpHoundCommonLib.Enums.LdapErrorCodes.html#SharpHoundCommonLib_Enums_LdapErrorCodes_LocalError
+  commentId: F:SharpHoundCommonLib.Enums.LdapErrorCodes.LocalError
+  fullName: SharpHoundCommonLib.Enums.LdapErrorCodes.LocalError
+  nameWithType: LdapErrorCodes.LocalError
 - uid: SharpHoundCommonLib.Enums.LdapErrorCodes.ServerDown
   name: ServerDown
   href: api/SharpHoundCommonLib.Enums.LdapErrorCodes.html#SharpHoundCommonLib_Enums_LdapErrorCodes_ServerDown
