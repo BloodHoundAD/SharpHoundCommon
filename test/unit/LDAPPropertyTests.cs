@@ -1,7 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
+using FluentAssertions.Specialized;
+using Moq;
+using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
@@ -845,5 +853,305 @@ namespace CommonLibTest
             Assert.Single(keys);
         }
 
+        [Fact]
+        public async Task LDAPPropertyProcessor_ReadPropertyDelegates_ReturnsPoplatedList()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {"useraccountcontrol", 0x1000000.ToString()},
+                    {
+                        "msds-allowedtodelegateto", new[]
+                        {
+                            "ldap/PRIMARY.testlab.local/testlab.local",
+                            "ldap/PRIMARY.testlab.local",
+                            "ldap/PRIMARY",
+                            "ldap/WIN10"
+                        }
+                    }
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+
+            var utils = new MockLDAPUtils();
+            var processor = new LDAPPropertyProcessor(utils);
+            var props = await processor.ReadPropertyDelegates(mock);
+            var delegates = props.Select(d => d.ObjectIdentifier);
+            
+            foreach (var principal in mock.GetArrayProperty("msds-allowedtodelegateto"))
+            {
+                var host = await utils.ResolveHostToSid(principal, mock.GetProperty(LDAPProperties.DistinguishedName));
+                Assert.Single(delegates, host);
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void LDAPPropertyProcessor_ReadSidHistory_ReturnsPopulatedList()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {
+                        "sidhistory", new[]
+                        {
+                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                        }
+                    },
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+            
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var sids = processor.ReadSidHistory(mock);
+            
+            Assert.Contains("S-1-5-21-3130019616-2776909439-2417379446-1105", sids);
+            Assert.Single(sids);
+        }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ReadSidPrincipal_GetPrincipal()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>(), "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+            
+            var sid = "S-1-5-21-3130019616-2776909439-2417379446-1105";
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var principal = processor.ReadSidPrincipal(mock, sid);
+            
+            Assert.Equal(new TypedPrincipal
+            {
+                ObjectIdentifier = "S-1-5-21-3130019616-2776909439-2417379446-1105",
+                ObjectType = Label.User
+            }, principal);
+        }
+        
+        [Fact]
+        public void LDAPPropertyProcessor_ReadSmsaPrincipals_ReturnsPopulatedList()
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {
+                        "msds-hostserviceaccount", new[]
+                        {
+                            "CN=dfm,CN=Users,DC=testlab,DC=local",
+                            "CN=krbtgt,CN=Users,DC=testlab,DC=local"
+                        }
+                    }
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+
+            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var smsaPrincipals = processor.ReadSmsaPrincipals(mock);
+            var sids = smsaPrincipals.Select(p => p.ObjectIdentifier);
+
+            Assert.Single(sids, "S-1-5-21-3130019616-2776909439-2417379446-1105");
+            Assert.Single(sids, "S-1-5-21-3130019616-2776909439-2417379446-502");
+        }
+        
+        public static IEnumerable<object[]> UserAccessControlData =>
+            new List<object[]>
+            {
+                new object[]
+                {
+                    ((int)(UacFlags.NotDelegated | UacFlags.AccountDisable)).ToString(),
+                    new Dictionary<string, bool> {{ "sensitive", true }, { "enabled", false }}
+                },
+                new object[]
+                {
+                    ((int)(UacFlags.ServerTrustAccount | UacFlags.PasswordNotRequired | UacFlags.TrustedForDelegation)).ToString(),
+                    new Dictionary<string, bool> {{ "isdc", true }, { "passwordnotreqd", true }, { "unconstraineddelegation", true }, { "enabled", true }}
+                },
+            };
+        
+        [Theory]
+        [MemberData(nameof(UserAccessControlData))]
+        public void LDAPPropertyProcessor_GetProperties_UserAccountControl(string property, Dictionary<string, bool> expectedFlags)
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                new Dictionary<string, object>
+                {
+                    {
+                        "useraccountcontrol", property
+                    }
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
+        
+            var props = LDAPPropertyProcessor.GetProperties(LDAPProperties.UserAccountControl, mock);
+
+            foreach (var flag in props)
+            {
+                var expectedFlag = expectedFlags.ContainsKey(flag.Key) && expectedFlags[flag.Key];
+                Assert.Equal(expectedFlag, (bool)flag.Value);
+            }
+        }
+        
+        public static IEnumerable<object[]> SimplePropertyTestData =>
+            new List<object[]>
+            {
+                new object[]
+                {
+                    LDAPProperties.Description,
+                    new Dictionary<string, object> {{ LDAPProperties.Description, "test desc" }},
+                    new Dictionary<string, object> {{ "description", "test desc" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.DomainFunctionalLevel,
+                    new Dictionary<string, object> {{ LDAPProperties.DomainFunctionalLevel, "1" }},
+                    new Dictionary<string, object> {{ "functionallevel", "2003 Interim" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.DomainFunctionalLevel,
+                    new Dictionary<string, object> {{ LDAPProperties.DomainFunctionalLevel, "nope" }},
+                    new Dictionary<string, object> {{ "functionallevel", "Unknown" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.GPCFileSYSPath,
+                    new Dictionary<string, object> {{ LDAPProperties.GPCFileSYSPath, "/test/testy/test" }},
+                    new Dictionary<string, object> {{ "gpcpath", "/TEST/TESTY/TEST" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.DisplayName,
+                    new Dictionary<string, object> {{ LDAPProperties.DisplayName, "one test of a display name" }},
+                    new Dictionary<string, object> {{ "displayname", "one test of a display name" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.Email,
+                    new Dictionary<string, object> {{ LDAPProperties.Email, "test@testdomain.com" }},
+                    new Dictionary<string, object> {{ "email", "test@testdomain.com" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.Title,
+                    new Dictionary<string, object> {{ LDAPProperties.Title, "Test Title" }},
+                    new Dictionary<string, object> {{ "title", "Test Title" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.HomeDirectory,
+                    new Dictionary<string, object> {{ LDAPProperties.HomeDirectory, "/users/test" }},
+                    new Dictionary<string, object> {{ "homedirectory", "/users/test" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.UserPassword,
+                    new Dictionary<string, object> {{ LDAPProperties.UserPassword, "1234" }},
+                    new Dictionary<string, object> {{ "userpassword", "1234" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.UnixUserPassword,
+                    new Dictionary<string, object> {{ LDAPProperties.UnixUserPassword, "1234" }},
+                    new Dictionary<string, object> {{ "unixpassword", "1234" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.UnicodePassword,
+                    new Dictionary<string, object> {{ LDAPProperties.UnicodePassword, "1234" }},
+                    new Dictionary<string, object> {{ "unicodepassword", "1234" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.MsSFU30Password,
+                    new Dictionary<string, object> {{ LDAPProperties.MsSFU30Password, "1234" }},
+                    new Dictionary<string, object> {{ "sfupassword", "1234" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.ScriptPath,
+                    new Dictionary<string, object> {{ LDAPProperties.ScriptPath, "/scripts" }},
+                    new Dictionary<string, object> {{ "logonscript", "/scripts" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.AdminCount,
+                    new Dictionary<string, object> {{ LDAPProperties.AdminCount, "1" }},
+                    new Dictionary<string, object> {{ "admincount", true }},
+                },
+                new object[]
+                {
+                    LDAPProperties.AdminCount,
+                    new Dictionary<string, object> {{ LDAPProperties.AdminCount, "0" }},
+                    new Dictionary<string, object> {{ "admincount", false }},
+                },
+                new object[]
+                {
+                    LDAPProperties.AdminCount,
+                    new Dictionary<string, object> {{ LDAPProperties.AdminCount, "nope" }},
+                    new Dictionary<string, object> {{ "admincount", false }},
+                },
+                new object[]
+                {
+                    LDAPProperties.OperatingSystem,
+                    new Dictionary<string, object> {{ LDAPProperties.OperatingSystem, "TestOS" }, { LDAPProperties.ServicePack, "SP1" }},
+                    new Dictionary<string, object> {{ "operatingsystem", "TestOS SP1" }},
+                },
+                new object[]
+                {
+                    LDAPProperties.AllowedToDelegateTo,
+                    new Dictionary<string, object> {{ LDAPProperties.AllowedToDelegateTo, new[] { "test1", "test2", "test3" } }},
+                    new Dictionary<string, object> {{ "allowedtodelegate", new[] { "test1", "test2", "test3" } }},
+                },
+                new object[]
+                {
+                    LDAPProperties.ServicePrincipalNames,
+                    new Dictionary<string, object> {{
+                        LDAPProperties.ServicePrincipalNames,
+                        new[]
+                        {
+                            "WSMAN/WIN10",
+                            "WSMAN/WIN10.testlab.local",
+                            "RestrictedKrbHost/WIN10",
+                            "HOST/WIN10",
+                            "RestrictedKrbHost/WIN10.testlab.local",
+                            "HOST/WIN10.testlab.local",
+                        }
+                    }},
+                    new Dictionary<string, object > {{
+                        "serviceprincipalnames",
+                        new[]
+                        {
+                            "WSMAN/WIN10",
+                            "WSMAN/WIN10.testlab.local",
+                            "RestrictedKrbHost/WIN10",
+                            "HOST/WIN10",
+                            "RestrictedKrbHost/WIN10.testlab.local",
+                            "HOST/WIN10.testlab.local",
+                        }},
+                        { "hasspn", true }
+                    }
+                },
+                new object[]
+                {
+                    LDAPProperties.ServicePrincipalNames,
+                    new Dictionary<string, object> {{
+                        LDAPProperties.ServicePrincipalNames,
+                        new string[] {}
+                    }},
+                    new Dictionary<string, object > {{
+                            "serviceprincipalnames",
+                            new string[] {}
+                        },
+                        { "hasspn", false }
+                    }
+                },
+            };
+
+        [Theory]
+        [MemberData(nameof(SimplePropertyTestData))]
+        public void LDAPPropertyProcessor_GetProperties_SimplePropertyTest(string ldapPropertyName, Dictionary<string, object> testInput, Dictionary<string, object> expectedOutput)
+        {
+            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+                testInput,
+                "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
+        
+            var resolvedProps = LDAPPropertyProcessor.GetProperties(ldapPropertyName, mock);
+
+            Assert.Equal(resolvedProps.Count, expectedOutput.Count);
+            foreach (var expected in expectedOutput)
+            {
+                Assert.Single(resolvedProps.Keys, expected.Key);
+                Assert.Equal(expected.Value, resolvedProps[expected.Key]);
+            }
+        }
     }
 }

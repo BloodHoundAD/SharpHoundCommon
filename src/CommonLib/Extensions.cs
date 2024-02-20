@@ -393,6 +393,21 @@ namespace SharpHoundCommonLib
             return objectType;
         }
 
+        /// <summary>
+        /// Add multiple entries to a dictionary.
+        /// </summary>
+        /// <param name="me">Dictionary (this)</param>
+        /// <param name="entries">KeyValuePairs to add</param>
+        /// <typeparam name="T">Key</typeparam>
+        /// <typeparam name="U">Value</typeparam>
+        public static void AddMany<T, U>(this Dictionary<T, U> me, IEnumerable<KeyValuePair<T, U>> keyValuePairs)
+        {
+            foreach (var kvp in keyValuePairs)
+            {
+                me.Add(kvp.Key, kvp.Value);
+            }
+        }
+
         private const string GroupPolicyContainerClass = "groupPolicyContainer";
         private const string OrganizationalUnitClass = "organizationalUnit";
         private const string DomainClass = "domain";
