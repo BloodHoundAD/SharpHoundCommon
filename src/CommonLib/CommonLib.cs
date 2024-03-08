@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace SharpHoundCommonLib
 {
@@ -23,6 +25,12 @@ namespace SharpHoundCommonLib
             _initialized = true;
             if (log != null)
                 Logging.ConfigureLogging(log);
+
+            if (!File.Exists("SharpHoundRPC.dll"))
+            {
+                log.LogCritical("SharpHoundRPC.dll not found. Please reinstall and try again.");
+                throw new DllNotFoundException("SharpHoundRPC.dll not found.");
+            }
 
             if (cache == null)
             {
