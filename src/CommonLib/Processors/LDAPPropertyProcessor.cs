@@ -178,7 +178,7 @@ namespace SharpHoundCommonLib.Processors
                         continue;
 
                     var resolvedHost = await _utils.ResolveHostToSid(d, domain);
-                    if (resolvedHost != null && resolvedHost.StartsWith("S-1"))
+                    if (Helpers.IsSid(resolvedHost))
                         comps.Add(new TypedPrincipal
                         {
                             ObjectIdentifier = resolvedHost,

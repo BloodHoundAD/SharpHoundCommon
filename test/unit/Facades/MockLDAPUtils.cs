@@ -754,6 +754,11 @@ namespace CommonLibTest.Facades
         }
 
 #pragma warning disable CS1998
+        public async Task<string> ResolveHostToSidWithHostnameFallback(string hostname, string domain)
+        {
+            return await ResolveHostToSid(hostname, domain);
+        }
+
         public async Task<string> ResolveHostToSid(string hostname, string domain)
         {
             var h = SharpHoundCommonLib.Helpers.StripServicePrincipalName(hostname);

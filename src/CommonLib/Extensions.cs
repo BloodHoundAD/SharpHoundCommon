@@ -316,7 +316,7 @@ namespace SharpHoundCommonLib
                 return Label.Base;
             }
 
-            if (objectId.StartsWith("S-1") &&
+            if (Helpers.IsSid(objectId) &&
                 WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
             {
                 Log.LogDebug("GetLabel - {ObjectID} is a WellKnownPrincipal with {Type}", objectId,

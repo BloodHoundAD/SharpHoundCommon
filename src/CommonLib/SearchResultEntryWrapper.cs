@@ -76,7 +76,7 @@ namespace SharpHoundCommonLib
             string itemDomain;
             if (distinguishedName == null)
             {
-                if (objectId.StartsWith("S-1-"))
+                if (Helpers.IsSid(objectId))
                 {
                     itemDomain = _utils.GetDomainNameFromSid(objectId);
                 }
@@ -113,7 +113,7 @@ namespace SharpHoundCommonLib
                 return res;
             }
 
-            if (objectId.StartsWith("S-1-"))
+            if (Helpers.IsSid(objectId))
                 try
                 {
                     res.DomainSid = new SecurityIdentifier(objectId).AccountDomainSid.Value;

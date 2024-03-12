@@ -134,7 +134,7 @@ namespace SharpHoundCommonLib.Processors
                     resolvedComputerSID = await _utils.ResolveHostToSid(computerSessionName, computerDomain);
 
                 //Throw out this data if we couldn't resolve it successfully. 
-                if (resolvedComputerSID == null || !resolvedComputerSID.StartsWith("S-1"))
+                if (!Helpers.IsSid(resolvedComputerSID))
                 {
                     _log.LogTrace("Unable to resolve {ComputerSessionName} to real SID", computerSessionName);
                     continue;

@@ -356,7 +356,7 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         private TypedPrincipal GetSid(string account, string domainName)
         {
-            if (!account.StartsWith("S-1-", StringComparison.CurrentCulture))
+            if (!Helpers.IsSid(account))
             {
                 string user;
                 string domain;

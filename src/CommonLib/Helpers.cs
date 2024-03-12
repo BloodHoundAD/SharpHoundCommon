@@ -327,6 +327,11 @@ namespace SharpHoundCommonLib
             CommonOids.SmartcardLogon,
             CommonOids.AnyPurpose
         };
+
+        public static bool IsSid(string sidContender)
+        {
+            return sidContender != null && sidContender.StartsWith("S-1-");
+        }
     }
 
     public class ParsedGPLink
