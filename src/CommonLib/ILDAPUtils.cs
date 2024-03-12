@@ -56,6 +56,14 @@ namespace SharpHoundCommonLib
         IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName);
 
         /// <summary>
+        ///     Takes a host in most applicable forms from AD and attempts to resolve it into a SID, falling back to hostname if SID cannot be resolved.
+        /// </summary>
+        /// <param name="hostname"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
+        Task<string> ResolveHostToSidWithHostnameFallback(string hostname, string domain);
+
+        /// <summary>
         ///     Takes a host in most applicable forms from AD and attempts to resolve it into a SID.
         /// </summary>
         /// <param name="hostname"></param>

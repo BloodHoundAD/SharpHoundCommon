@@ -573,6 +573,38 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
+        /// Takes a host in most applicable forms from AD and attempts to resolve it into a SID, falling back to hostname if SID cannot be resolved.
+        /// </summary>
+        /// <param name="hostname"></param>
+        /// <param name="domain"></param>
+        /// <returns></returns>
+        public async Task<string> ResolveHostToSidWithHostnameFallback(string hostname, string domain)
+        {
+            var sid = await ResolveHostToSid(hostname, domain);
+            if (string.IsNullOrEmpty(sid))
+            {
+                //If we get here, everything has failed, and life is very sad.
+                var strippedHost = Helpers.StripServicePrincipalName(hostname).ToUpper().TrimEnd('$');
+                var normalDomain = NormalizeDomainName(domain);
+
+                var tempName = strippedHost;
+                var tempDomain = normalDomain;
+
+                if (tempName.Contains("."))
+                {
+                    _hostResolutionMap.TryAdd(strippedHost, tempName);
+                    return tempName;
+                }
+
+                tempName = $"{tempName}.{tempDomain}";
+                _hostResolutionMap.TryAdd(strippedHost, tempName);
+                return tempName;
+            }
+
+            return sid;
+        }
+
+        /// <summary>
         ///     Takes a host in most applicable forms from AD and attempts to resolve it into a SID.
         /// </summary>
         /// <param name="hostname"></param>
@@ -689,19 +721,8 @@ namespace SharpHoundCommonLib
                 }
             }
 
-            //If we get here, everything has failed, and life is very sad.
-            tempName = strippedHost;
-            tempDomain = normalDomain;
-
-            if (tempName.Contains("."))
-            {
-                _hostResolutionMap.TryAdd(strippedHost, tempName);
-                return tempName;
-            }
-
-            tempName = $"{tempName}.{tempDomain}";
-            _hostResolutionMap.TryAdd(strippedHost, tempName);
-            return tempName;
+            // Sad times
+            return null;
         }
 
         /// <summary>
