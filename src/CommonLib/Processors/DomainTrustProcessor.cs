@@ -90,7 +90,7 @@ namespace SharpHoundCommonLib.Processors
         {
             TrustType trustType;
 
-            if (attributes.HasFlag(TrustAttributes.WithinForest) || attributes.HasFlag(TrustAttributes.DeprecatedParentChild))
+            if (attributes.HasFlag(TrustAttributes.WithinForest))
                 trustType = TrustType.ParentChild;
             else if (attributes.HasFlag(TrustAttributes.ForestTransitive))
                 trustType = TrustType.Forest;

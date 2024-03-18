@@ -16,7 +16,6 @@ namespace SharpHoundCommonLib.Enums
         TrustUsesAes = 0x100,
         CrossOrganizationNoTGTDelegation = 0x200,
         PIMTrust = 0x400,
-        // We believe this deprecated flag represents a parent/child relationship
-        DeprecatedParentChild = 0x400000,
+        Unknown = 0x400000,
     }
 }

@@ -109,10 +109,6 @@ namespace CommonLibTest
             var test = DomainTrustProcessor.TrustAttributesToType(attrib);
             Assert.Equal(TrustType.ParentChild, test);
 
-            attrib = TrustAttributes.DeprecatedParentChild;
-            test = DomainTrustProcessor.TrustAttributesToType(attrib);
-            Assert.Equal(TrustType.ParentChild, test);
-
             attrib = TrustAttributes.ForestTransitive;
             test = DomainTrustProcessor.TrustAttributesToType(attrib);
             Assert.Equal(TrustType.Forest, test);
