@@ -17,6 +17,7 @@
         RootCA,
         AIACA,
         EnterpriseCA,
-        NTAuthStore
+        NTAuthStore,
+        IssuancePolicy
     }
 }

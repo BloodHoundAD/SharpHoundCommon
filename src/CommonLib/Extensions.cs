@@ -375,7 +375,7 @@ namespace SharpHoundCommonLib
                     objectType = Label.CertTemplate;
                 else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
                     objectType = Label.EnterpriseCA;
-                else if (objectClasses.Contains(CertificationAutorityClass, StringComparer.InvariantCultureIgnoreCase))
+                else if (objectClasses.Contains(CertificationAuthorityClass, StringComparer.InvariantCultureIgnoreCase))
                 {
                     if (entry.DistinguishedName.Contains(DirectoryPaths.RootCALocation))
                         objectType = Label.RootCA;
@@ -383,6 +383,18 @@ namespace SharpHoundCommonLib
                         objectType = Label.AIACA;
                     else if (entry.DistinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
                         objectType = Label.NTAuthStore;
+                }else if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    if (entry.DistinguishedName.StartsWith(DirectoryPaths.OIDContainerLocation,
+                            StringComparison.InvariantCultureIgnoreCase))
+                        objectType = Label.Container;
+                    else
+                    {
+                        if (entry.GetPropertyAsInt(LDAPProperties.Flags, out var flags) && flags == 2)
+                        {
+                            objectType = Label.IssuancePolicy;    
+                        }
+                    }
                 }
             }
 
@@ -400,7 +412,8 @@ namespace SharpHoundCommonLib
         private const string ConfigurationClass = "configuration";
         private const string PKICertificateTemplateClass = "pKICertificateTemplate";
         private const string PKIEnrollmentServiceClass = "pKIEnrollmentService";
-        private const string CertificationAutorityClass = "certificationAuthority";
+        private const string CertificationAuthorityClass = "certificationAuthority";
+        private const string OIDContainerClass = "msPKI-Enterprise-Oid";
 
         #endregion
     }

@@ -161,6 +161,7 @@ namespace SharpHoundCommonLib
 
                     break;
                 case Label.GPO:
+                case Label.IssuancePolicy:
                     res.DisplayName = $"{GetProperty(LDAPProperties.DisplayName)}@{itemDomain}";
                     break;
                 case Label.Domain:
