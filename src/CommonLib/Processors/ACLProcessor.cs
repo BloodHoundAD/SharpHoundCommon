@@ -374,7 +374,7 @@ namespace SharpHoundCommonLib.Processors
                 if (aceRights.HasFlag(ActiveDirectoryRights.GenericWrite) ||
                     aceRights.HasFlag(ActiveDirectoryRights.WriteProperty))
                 {
-                    if (objectType is Label.User or Label.Group or Label.Computer or Label.GPO)
+                    if (objectType is Label.User or Label.Group or Label.Computer or Label.GPO or Label.CertTemplate or Label.RootCA or Label.EnterpriseCA or Label.AIACA or Label.NTAuthStore)
                         if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE
                             {
