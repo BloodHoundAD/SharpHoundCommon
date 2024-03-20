@@ -9,7 +9,7 @@ namespace CommonLibTest.Facades
 {
     public class MockableSearchResultEntry
     {
-        public static SearchResultEntry Construct(Dictionary<string, string> values, string distinguishedName)
+        public static SearchResultEntry Construct(Dictionary<string, object> values, string distinguishedName)
         {
             var attributes = CreateAttributes(values);
 
@@ -17,7 +17,7 @@ namespace CommonLibTest.Facades
         }
 
 
-        private static SearchResultAttributeCollection CreateAttributes(Dictionary<string, string> values)
+        private static SearchResultAttributeCollection CreateAttributes(Dictionary<string, object> values)
         {
             var coll =
                 (SearchResultAttributeCollection)typeof(SearchResultAttributeCollection)
