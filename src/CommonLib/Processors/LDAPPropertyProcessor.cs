@@ -535,12 +535,26 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
-        public Dictionary<string, object> ReadIssuancePolicyProperties(ISearchResultEntry entry)
+        public IssuancePolicyProperties ReadIssuancePolicyProperties(ISearchResultEntry entry)
         {
+            var ret = new IssuancePolicyProperties();
             var props = GetCommonProps(entry);
             props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
+            props.Add("oid", entry.GetProperty(LDAPProperties.CertTemplateOID));
 
-            return props;
+            var link = entry.GetProperty(LDAPProperties.OIDGroupLink);
+            if (!string.IsNullOrEmpty(link))
+            {
+                var linkedGroup = _utils.ResolveDistinguishedName(link);
+                if (linkedGroup != null)
+                {
+                    props.Add("oidgrouplink", linkedGroup.ObjectIdentifier);
+                    ret.GroupLink = linkedGroup;
+                }
+            }
+
+            ret.Props = props;
+            return ret;
         }
 
         /// <summary>
@@ -789,5 +803,11 @@ namespace SharpHoundCommonLib.Processors
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
+    }
+
+    public class IssuancePolicyProperties
+    {
+        public Dictionary<string, object> Props { get; set; } = new();
+        public TypedPrincipal GroupLink { get; set; } = new TypedPrincipal();
     }
 }
