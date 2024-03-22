@@ -55,6 +55,7 @@
         public const string PKIOverlappedPeriod = "pkioverlapperiod";
         public const string TemplateSchemaVersion = "mspki-template-schema-version";
         public const string CertTemplateOID = "mspki-cert-template-oid";
+        public const string OIDGroupLink = "msds-oidtogrouplink";
         public const string PKIEnrollmentFlag = "mspki-enrollment-flag";
         public const string PKINameFlag = "mspki-certificate-name-flag";
         public const string ExtendedKeyUsage = "pkiextendedkeyusage";
