@@ -410,7 +410,7 @@ namespace SharpHoundCommonLib.Processors
                             IsInherited = inherited,
                             RightName = EdgeNames.AddAllowedToAct
                         };
-                    else if (objectType == Label.Computer && aceType == ACEGuids.UserAccountRestrictions && !resolvedPrincipal.ObjectIdentifier.EndsWith("-512"))
+                    else if (objectType == Label.Computer && aceType == ACEGuids.UserAccountRestrictions)
                         yield return new ACE
                         {
                             PrincipalType = resolvedPrincipal.ObjectType,
