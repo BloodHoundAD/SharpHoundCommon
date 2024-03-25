@@ -1059,6 +1059,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.NTAuthStoreLocation
   fullName: SharpHoundCommonLib.Enums.DirectoryPaths.NTAuthStoreLocation
   nameWithType: DirectoryPaths.NTAuthStoreLocation
+- uid: SharpHoundCommonLib.Enums.DirectoryPaths.OIDContainerLocation
+  name: OIDContainerLocation
+  href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_OIDContainerLocation
+  commentId: F:SharpHoundCommonLib.Enums.DirectoryPaths.OIDContainerLocation
+  fullName: SharpHoundCommonLib.Enums.DirectoryPaths.OIDContainerLocation
+  nameWithType: DirectoryPaths.OIDContainerLocation
 - uid: SharpHoundCommonLib.Enums.DirectoryPaths.PKILocation
   name: PKILocation
   href: api/SharpHoundCommonLib.Enums.DirectoryPaths.html#SharpHoundCommonLib_Enums_DirectoryPaths_PKILocation
@@ -1137,6 +1143,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.Label.Group
   fullName: SharpHoundCommonLib.Enums.Label.Group
   nameWithType: Label.Group
+- uid: SharpHoundCommonLib.Enums.Label.IssuancePolicy
+  name: IssuancePolicy
+  href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_IssuancePolicy
+  commentId: F:SharpHoundCommonLib.Enums.Label.IssuancePolicy
+  fullName: SharpHoundCommonLib.Enums.Label.IssuancePolicy
+  nameWithType: Label.IssuancePolicy
 - uid: SharpHoundCommonLib.Enums.Label.LocalGroup
   name: LocalGroup
   href: api/SharpHoundCommonLib.Enums.Label.html#SharpHoundCommonLib_Enums_Label_LocalGroup
@@ -3696,6 +3708,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.ObjectSID
   fullName: SharpHoundCommonLib.LDAPProperties.ObjectSID
   nameWithType: LDAPProperties.ObjectSID
+- uid: SharpHoundCommonLib.LDAPProperties.OIDGroupLink
+  name: OIDGroupLink
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_OIDGroupLink
+  commentId: F:SharpHoundCommonLib.LDAPProperties.OIDGroupLink
+  fullName: SharpHoundCommonLib.LDAPProperties.OIDGroupLink
+  nameWithType: LDAPProperties.OIDGroupLink
 - uid: SharpHoundCommonLib.LDAPProperties.OperatingSystem
   name: OperatingSystem
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_OperatingSystem
@@ -7744,6 +7762,38 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.GroupProcessor.ReadGroupMembers
   nameWithType: GroupProcessor.ReadGroupMembers
+- uid: SharpHoundCommonLib.Processors.IssuancePolicyProperties
+  name: IssuancePolicyProperties
+  href: api/SharpHoundCommonLib.Processors.IssuancePolicyProperties.html
+  commentId: T:SharpHoundCommonLib.Processors.IssuancePolicyProperties
+  fullName: SharpHoundCommonLib.Processors.IssuancePolicyProperties
+  nameWithType: IssuancePolicyProperties
+- uid: SharpHoundCommonLib.Processors.IssuancePolicyProperties.GroupLink
+  name: GroupLink
+  href: api/SharpHoundCommonLib.Processors.IssuancePolicyProperties.html#SharpHoundCommonLib_Processors_IssuancePolicyProperties_GroupLink
+  commentId: P:SharpHoundCommonLib.Processors.IssuancePolicyProperties.GroupLink
+  fullName: SharpHoundCommonLib.Processors.IssuancePolicyProperties.GroupLink
+  nameWithType: IssuancePolicyProperties.GroupLink
+- uid: SharpHoundCommonLib.Processors.IssuancePolicyProperties.GroupLink*
+  name: GroupLink
+  href: api/SharpHoundCommonLib.Processors.IssuancePolicyProperties.html#SharpHoundCommonLib_Processors_IssuancePolicyProperties_GroupLink_
+  commentId: Overload:SharpHoundCommonLib.Processors.IssuancePolicyProperties.GroupLink
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.IssuancePolicyProperties.GroupLink
+  nameWithType: IssuancePolicyProperties.GroupLink
+- uid: SharpHoundCommonLib.Processors.IssuancePolicyProperties.Props
+  name: Props
+  href: api/SharpHoundCommonLib.Processors.IssuancePolicyProperties.html#SharpHoundCommonLib_Processors_IssuancePolicyProperties_Props
+  commentId: P:SharpHoundCommonLib.Processors.IssuancePolicyProperties.Props
+  fullName: SharpHoundCommonLib.Processors.IssuancePolicyProperties.Props
+  nameWithType: IssuancePolicyProperties.Props
+- uid: SharpHoundCommonLib.Processors.IssuancePolicyProperties.Props*
+  name: Props
+  href: api/SharpHoundCommonLib.Processors.IssuancePolicyProperties.html#SharpHoundCommonLib_Processors_IssuancePolicyProperties_Props_
+  commentId: Overload:SharpHoundCommonLib.Processors.IssuancePolicyProperties.Props
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.IssuancePolicyProperties.Props
+  nameWithType: IssuancePolicyProperties.Props
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor
   name: LDAPPropertyProcessor
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html
@@ -7893,6 +7943,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadGroupProperties
   nameWithType: LDAPPropertyProcessor.ReadGroupProperties
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadIssuancePolicyProperties(SharpHoundCommonLib.ISearchResultEntry)
+  name: ReadIssuancePolicyProperties(ISearchResultEntry)
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadIssuancePolicyProperties_SharpHoundCommonLib_ISearchResultEntry_
+  commentId: M:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadIssuancePolicyProperties(SharpHoundCommonLib.ISearchResultEntry)
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadIssuancePolicyProperties(SharpHoundCommonLib.ISearchResultEntry)
+  nameWithType: LDAPPropertyProcessor.ReadIssuancePolicyProperties(ISearchResultEntry)
+- uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadIssuancePolicyProperties*
+  name: ReadIssuancePolicyProperties
+  href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadIssuancePolicyProperties_
+  commentId: Overload:SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadIssuancePolicyProperties
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadIssuancePolicyProperties
+  nameWithType: LDAPPropertyProcessor.ReadIssuancePolicyProperties
 - uid: SharpHoundCommonLib.Processors.LDAPPropertyProcessor.ReadNTAuthStoreProperties(SharpHoundCommonLib.ISearchResultEntry)
   name: ReadNTAuthStoreProperties(ISearchResultEntry)
   href: api/SharpHoundCommonLib.Processors.LDAPPropertyProcessor.html#SharpHoundCommonLib_Processors_LDAPPropertyProcessor_ReadNTAuthStoreProperties_SharpHoundCommonLib_ISearchResultEntry_
