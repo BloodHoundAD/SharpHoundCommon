@@ -957,6 +957,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.DataType.Groups
   fullName: SharpHoundCommonLib.Enums.DataType.Groups
   nameWithType: DataType.Groups
+- uid: SharpHoundCommonLib.Enums.DataType.IssuancePolicies
+  name: IssuancePolicies
+  href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_IssuancePolicies
+  commentId: F:SharpHoundCommonLib.Enums.DataType.IssuancePolicies
+  fullName: SharpHoundCommonLib.Enums.DataType.IssuancePolicies
+  nameWithType: DataType.IssuancePolicies
 - uid: SharpHoundCommonLib.Enums.DataType.NTAuthStores
   name: NTAuthStores
   href: api/SharpHoundCommonLib.Enums.DataType.html#SharpHoundCommonLib_Enums_DataType_NTAuthStores
@@ -4308,6 +4314,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddGroups
   nameWithType: LDAPFilter.AddGroups
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddIssuancePolicies(System.String[])
+  name: AddIssuancePolicies(String[])
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddIssuancePolicies_System_String___
+  commentId: M:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddIssuancePolicies(System.String[])
+  name.vb: AddIssuancePolicies(String())
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddIssuancePolicies(System.String[])
+  fullName.vb: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddIssuancePolicies(System.String())
+  nameWithType: LDAPFilter.AddIssuancePolicies(String[])
+  nameWithType.vb: LDAPFilter.AddIssuancePolicies(String())
+- uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddIssuancePolicies*
+  name: AddIssuancePolicies
+  href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddIssuancePolicies_
+  commentId: Overload:SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddIssuancePolicies
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddIssuancePolicies
+  nameWithType: LDAPFilter.AddIssuancePolicies
 - uid: SharpHoundCommonLib.LDAPQueries.LDAPFilter.AddOUs(System.String[])
   name: AddOUs(String[])
   href: api/SharpHoundCommonLib.LDAPQueries.LDAPFilter.html#SharpHoundCommonLib_LDAPQueries_LDAPFilter_AddOUs_System_String___
@@ -5925,6 +5947,25 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.IntRegistryAPIResult.Value
   nameWithType: IntRegistryAPIResult.Value
+- uid: SharpHoundCommonLib.OutputTypes.IssuancePolicy
+  name: IssuancePolicy
+  href: api/SharpHoundCommonLib.OutputTypes.IssuancePolicy.html
+  commentId: T:SharpHoundCommonLib.OutputTypes.IssuancePolicy
+  fullName: SharpHoundCommonLib.OutputTypes.IssuancePolicy
+  nameWithType: IssuancePolicy
+- uid: SharpHoundCommonLib.OutputTypes.IssuancePolicy.GroupLink
+  name: GroupLink
+  href: api/SharpHoundCommonLib.OutputTypes.IssuancePolicy.html#SharpHoundCommonLib_OutputTypes_IssuancePolicy_GroupLink
+  commentId: P:SharpHoundCommonLib.OutputTypes.IssuancePolicy.GroupLink
+  fullName: SharpHoundCommonLib.OutputTypes.IssuancePolicy.GroupLink
+  nameWithType: IssuancePolicy.GroupLink
+- uid: SharpHoundCommonLib.OutputTypes.IssuancePolicy.GroupLink*
+  name: GroupLink
+  href: api/SharpHoundCommonLib.OutputTypes.IssuancePolicy.html#SharpHoundCommonLib_OutputTypes_IssuancePolicy_GroupLink_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.IssuancePolicy.GroupLink
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.IssuancePolicy.GroupLink
+  nameWithType: IssuancePolicy.GroupLink
 - uid: SharpHoundCommonLib.OutputTypes.LocalGroup
   name: LocalGroup
   href: api/SharpHoundCommonLib.OutputTypes.LocalGroup.html
