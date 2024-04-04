@@ -508,8 +508,11 @@ namespace SharpHoundCommonLib.Processors
 
             var ekus = entry.GetArrayProperty(LDAPProperties.ExtendedKeyUsage);
             props.Add("ekus", ekus);
-            var certificateapplicationpolicy = entry.GetArrayProperty(LDAPProperties.CertificateApplicationPolicy);
-            props.Add("certificateapplicationpolicy", certificateapplicationpolicy);
+            var certificateApplicationPolicy = entry.GetArrayProperty(LDAPProperties.CertificateApplicationPolicy);
+            props.Add("certificateapplicationpolicy", certificateApplicationPolicy);
+            
+            var certificatePolicy = entry.GetArrayProperty(LDAPProperties.CertificatePolicy);
+            props.Add("certificatepolicy", certificatePolicy);
 
             if (entry.GetIntProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
                 props.Add("authorizedsignatures", authorizedSignatures);
@@ -525,12 +528,12 @@ namespace SharpHoundCommonLib.Processors
             props.Add("issuancepolicies", entry.GetArrayProperty(LDAPProperties.IssuancePolicies));
 
             // Construct effectiveekus
-            var effectiveekus = schemaVersion == 1 & ekus.Length > 0 ? ekus : certificateapplicationpolicy;
+            var effectiveekus = schemaVersion == 1 & ekus.Length > 0 ? ekus : certificateApplicationPolicy;
             props.Add("effectiveekus", effectiveekus);
 
             // Construct authenticationenabled
-            var authenticationenabled = effectiveekus.Intersect(Helpers.AuthenticationOIDs).Any() | effectiveekus.Length == 0;
-            props.Add("authenticationenabled", authenticationenabled);
+            var authenticationEnabled = effectiveekus.Intersect(Helpers.AuthenticationOIDs).Any() | effectiveekus.Length == 0;
+            props.Add("authenticationenabled", authenticationEnabled);
 
             return props;
         }
