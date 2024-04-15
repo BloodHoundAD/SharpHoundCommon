@@ -690,7 +690,12 @@ namespace CommonLibTest.Facades
 
         public string GetSidFromDomainName(string domainName)
         {
-            throw new NotImplementedException();
+            if (domainName.Equals("TESTLAB.LOCAL", StringComparison.OrdinalIgnoreCase))
+            {
+                return "S-1-5-21-3130019616-2776909439-2417379446";
+            }
+
+            return null;
         }
 
         public string ConvertWellKnownPrincipal(string sid, string domain)
