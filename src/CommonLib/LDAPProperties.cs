@@ -64,6 +64,7 @@
         public const string ApplicationPolicies = "mspki-ra-application-policies";
         public const string IssuancePolicies = "mspki-ra-policies";
         public const string CertificateApplicationPolicy = "mspki-certificate-application-policy";
+        public const string CertificatePolicy = "mspki-certificate-policy";
         public const string CACertificate = "cacertificate";
         public const string CertificateTemplates = "certificatetemplates";
         public const string CrossCertificatePair = "crosscertificatepair";

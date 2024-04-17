@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
+using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
@@ -714,8 +715,11 @@ namespace CommonLibTest
                     {"ekus", new[]
                     {"1.3.6.1.5.5.7.3.2"}
                     },
-                    {"certificateapplicationpolicy", new[]
+                    {LDAPProperties.CertificateApplicationPolicy, new[]
                     {"1.3.6.1.5.5.7.3.2"}
+                    },
+                    {LDAPProperties.CertificatePolicy, new[]
+                        {"1.3.6.1.5.5.7.3.2"}
                     },
                     {"authorizedsignatures", 1},
                     {"applicationpolicies", new[]
@@ -754,6 +758,12 @@ namespace CommonLibTest
             Assert.Contains("subjectrequireemail", keys);
             Assert.Contains("ekus", keys);
             Assert.Contains("certificateapplicationpolicy", keys);
+            var hasPolicy = test.TryGetValue("certificatepolicy", out var policies);
+            Assert.True(hasPolicy);
+            if (policies is string[] e)
+            {
+                Assert.Contains("1.3.6.1.5.5.7.3.2", e);
+            }
             Assert.Contains("authorizedsignatures", keys);
             Assert.Contains("applicationpolicies", keys);
             Assert.Contains("issuancepolicies", keys);

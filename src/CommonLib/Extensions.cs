@@ -67,8 +67,15 @@ namespace SharpHoundCommonLib
 
         public static string GetSid(this DirectoryEntry result)
         {
-            if (!result.Properties.Contains(LDAPProperties.ObjectSID))
+            try
+            {
+                if (!result.Properties.Contains(LDAPProperties.ObjectSID))
+                    return null;
+            }
+            catch
+            {
                 return null;
+            }
 
             var s = result.Properties[LDAPProperties.ObjectSID][0];
             return s switch
