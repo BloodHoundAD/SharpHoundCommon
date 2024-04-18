@@ -379,6 +379,7 @@ namespace SharpHoundCommonLib.Processors
                         or Label.Group 
                         or Label.Computer 
                         or Label.GPO 
+                        or Label.OU 
                         or Label.CertTemplate 
                         or Label.RootCA 
                         or Label.EnterpriseCA 
@@ -417,6 +418,14 @@ namespace SharpHoundCommonLib.Processors
                             PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                             IsInherited = inherited,
                             RightName = EdgeNames.WriteAccountRestrictions
+                        };
+                    else if (objectType == Label.OU && aceType == ACEGuids.ManageGPLink)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.ManageGPLink
                         };
                     else if (objectType == Label.Group && aceType == ACEGuids.WriteMember)
                         yield return new ACE
