@@ -959,13 +959,6 @@ namespace SharpHoundCommonLib
                             le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
                     }
 
-                    if (le.ErrorCode == (int)LdapErrorCodes.ServerDown)
-                    {
-                        throw new LDAPQueryException(
-                            $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}",
-                            le);
-                    }
-
                     yield break;
                 }
                 catch (Exception e)
