@@ -246,6 +246,40 @@ namespace SharpHoundCommonLib.Processors
             return ret;
         }
 
+        /// <summary>
+        /// This function checks a registry setting on the target host for the specified CA to see if role seperation is enabled.
+        /// If enabled, you cannot perform any CA actions if you have both ManageCA and ManageCertificates permissions. Only CA admins can modify the setting.
+        /// </summary>
+        /// <remarks>https://www.itprotoday.com/security/q-how-can-i-make-sure-given-windows-account-assigned-only-single-certification-authority-ca</remarks>
+        /// <param name="target"></param>
+        /// <param name="caName"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [ExcludeFromCodeCoverage]
+        public BoolRegistryAPIResult RoleSeparationEnabled(string target, string caName)
+        {
+            var ret = new BoolRegistryAPIResult();
+            var regSubKey = $"SYSTEM\\CurrentControlSet\\Services\\CertSvc\\Configuration\\{caName}";
+            const string regValue = "RoleSeparationEnabled";
+            var data = Helpers.GetRegistryKeyData(target, regSubKey, regValue, _log);
+
+            ret.Collected = data.Collected;
+            if (!data.Collected)
+            {
+                ret.FailureReason = data.FailureReason;
+                return ret;
+            }
+
+            if (data.Value == null)
+            {
+                return ret;
+            }
+
+            ret.Value = (int)data.Value == 1;
+
+            return ret;
+        }
+
         public TypedPrincipal GetRegistryPrincipal(SecurityIdentifier sid, string computerDomain, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
         {
             _log.LogTrace("Got principal with sid {SID} on computer {ComputerName}", sid.Value, computerName);
