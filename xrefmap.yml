@@ -2067,6 +2067,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.TrustUsesRc4
   fullName: SharpHoundCommonLib.Enums.TrustAttributes.TrustUsesRc4
   nameWithType: TrustAttributes.TrustUsesRc4
+- uid: SharpHoundCommonLib.Enums.TrustAttributes.Unknown
+  name: Unknown
+  href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_Unknown
+  commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.Unknown
+  fullName: SharpHoundCommonLib.Enums.TrustAttributes.Unknown
+  nameWithType: TrustAttributes.Unknown
 - uid: SharpHoundCommonLib.Enums.TrustAttributes.UplevelOnly
   name: UplevelOnly
   href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_UplevelOnly
@@ -3528,6 +3534,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.CertificateApplicationPolicy
   fullName: SharpHoundCommonLib.LDAPProperties.CertificateApplicationPolicy
   nameWithType: LDAPProperties.CertificateApplicationPolicy
+- uid: SharpHoundCommonLib.LDAPProperties.CertificatePolicy
+  name: CertificatePolicy
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CertificatePolicy
+  commentId: F:SharpHoundCommonLib.LDAPProperties.CertificatePolicy
+  fullName: SharpHoundCommonLib.LDAPProperties.CertificatePolicy
+  nameWithType: LDAPProperties.CertificatePolicy
 - uid: SharpHoundCommonLib.LDAPProperties.CertificateTemplates
   name: CertificateTemplates
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CertificateTemplates
