@@ -41,10 +41,10 @@ namespace CommonLibTest.Facades
             name = name.ToLower();
             return name switch
             {
-                "dfm" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-1105"},
+                "dfm" => new[] { "S-1-5-21-3130019616-2776909439-2417379446-1105" },
                 "administrator" => new[]
                     {"S-1-5-21-3130019616-2776909439-2417379446-500", "S-1-5-21-3084884204-958224920-2707782874-500"},
-                "admin" => new[] {"S-1-5-21-3130019616-2776909439-2417379446-2116"},
+                "admin" => new[] { "S-1-5-21-3130019616-2776909439-2417379446-2116" },
                 _ => Array.Empty<string>()
             };
         }
@@ -1021,7 +1021,8 @@ namespace CommonLibTest.Facades
                     "S-1-5-21-3130019616-2776909439-2417379446-2106", Label.User),
                 "CN=KRBTGT,CN=USERS,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-502", Label.User),
-                _ => null
+                "CN=ENTERPRISE KEY ADMINS,CN=USERS,DC=ESC10,DC=LOCAL" => new TypedPrincipal("S-1-5-21-3662707843-2053279151-3839588741-527", Label.Group),
+                _ => null,
             };
         }
 
@@ -1064,7 +1065,7 @@ namespace CommonLibTest.Facades
 
         private Group GetBaseEnterpriseDC()
         {
-            var g = new Group {ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper()};
+            var g = new Group { ObjectIdentifier = "TESTLAB.LOCAL-S-1-5-9".ToUpper() };
             g.Properties.Add("name", "ENTERPRISE DOMAIN CONTROLLERS@TESTLAB.LOCAL".ToUpper());
             return g;
         }
