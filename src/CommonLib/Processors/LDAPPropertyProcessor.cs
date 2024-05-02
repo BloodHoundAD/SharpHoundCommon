@@ -148,14 +148,14 @@ namespace SharpHoundCommonLib.Processors
         {
             var userProps = new UserProperties();
             var props = GetCommonProps(entry);
-            
+
             var uacFlags = (UacFlags)0;
             var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
             if (int.TryParse(uac, out var flag))
             {
                 uacFlags = (UacFlags)flag;
             }
-            
+
             props.Add("sensitive", uacFlags.HasFlag(UacFlags.NotDelegated));
             props.Add("dontreqpreauth", uacFlags.HasFlag(UacFlags.DontReqPreauth));
             props.Add("passwordnotreqd", uacFlags.HasFlag(UacFlags.PasswordNotRequired));
@@ -260,14 +260,14 @@ namespace SharpHoundCommonLib.Processors
         {
             var compProps = new ComputerProperties();
             var props = GetCommonProps(entry);
-            
+
             var flags = (UacFlags)0;
             var uac = entry.GetProperty(LDAPProperties.UserAccountControl);
             if (int.TryParse(uac, out var flag))
             {
                 flags = (UacFlags)flag;
             }
-            
+
             props.Add("enabled", !flags.HasFlag(UacFlags.AccountDisable));
             props.Add("unconstraineddelegation", flags.HasFlag(UacFlags.TrustedForDelegation));
             props.Add("trustedtoauth", flags.HasFlag(UacFlags.TrustedToAuthForDelegation));
@@ -510,7 +510,7 @@ namespace SharpHoundCommonLib.Processors
             props.Add("ekus", ekus);
             var certificateApplicationPolicy = entry.GetArrayProperty(LDAPProperties.CertificateApplicationPolicy);
             props.Add("certificateapplicationpolicy", certificateApplicationPolicy);
-            
+
             var certificatePolicy = entry.GetArrayProperty(LDAPProperties.CertificatePolicy);
             props.Add("certificatepolicy", certificatePolicy);
 
@@ -543,7 +543,7 @@ namespace SharpHoundCommonLib.Processors
             var ret = new IssuancePolicyProperties();
             var props = GetCommonProps(entry);
             props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
-            props.Add("oid", entry.GetProperty(LDAPProperties.CertTemplateOID));
+            props.Add("certtemplateoid", entry.GetProperty(LDAPProperties.CertTemplateOID));
 
             var link = entry.GetProperty(LDAPProperties.OIDGroupLink);
             if (!string.IsNullOrEmpty(link))
@@ -621,9 +621,12 @@ namespace SharpHoundCommonLib.Processors
                 || applicationPolicies.Length == 0
                 || schemaVersion == 1
                 || schemaVersion == 2
-                || (schemaVersion == 4 && hasUseLegacyProvider)) {
+                || (schemaVersion == 4 && hasUseLegacyProvider))
+            {
                 return applicationPolicies;
-            } else {
+            }
+            else
+            {
                 // Format: "Name`Type`Value`Name`Type`Value`..."
                 // (https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-crtd/c55ec697-be3f-4117-8316-8895e4399237)
                 // Return the Value of Name = "msPKI-RA-Application-Policies" entries
