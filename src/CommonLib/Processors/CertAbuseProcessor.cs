@@ -170,14 +170,23 @@ namespace SharpHoundCommonLib.Processors
             return ret;
         }
         
-        public IEnumerable<TypedPrincipal> ProcessCertTemplates(string[] templates, string domainName)
+        public (IEnumerable<TypedPrincipal> resolvedTemplates, IEnumerable<String> unresolvedTemplates) ProcessCertTemplates(string[] templates, string domainName)
         {
+            var resolvedTemplates = new List<TypedPrincipal>();
+            var unresolvedTemplates = new List<String>();
+
             var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, domainName);
             foreach (var templateCN in templates)
             {
                 var res = _utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(templateCN), LDAPProperties.CanonicalName, certTemplatesLocation, domainName);
-                yield return res;
+                if (res != null) {
+                    resolvedTemplates.Add(res);
+                } else {
+                    unresolvedTemplates.Add(templateCN);
+                }
             }
+
+            return (resolvedTemplates: resolvedTemplates, unresolvedTemplates: unresolvedTemplates);
         }
 
         /// <summary>
