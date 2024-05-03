@@ -5265,6 +5265,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.IsUserSpecifiesSanEnabled
   nameWithType: CARegistryData.IsUserSpecifiesSanEnabled
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData.RoleSeparationEnabled
+  name: RoleSeparationEnabled
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html#SharpHoundCommonLib_OutputTypes_CARegistryData_RoleSeparationEnabled
+  commentId: P:SharpHoundCommonLib.OutputTypes.CARegistryData.RoleSeparationEnabled
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.RoleSeparationEnabled
+  nameWithType: CARegistryData.RoleSeparationEnabled
+- uid: SharpHoundCommonLib.OutputTypes.CARegistryData.RoleSeparationEnabled*
+  name: RoleSeparationEnabled
+  href: api/SharpHoundCommonLib.OutputTypes.CARegistryData.html#SharpHoundCommonLib_OutputTypes_CARegistryData_RoleSeparationEnabled_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.CARegistryData.RoleSeparationEnabled
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.CARegistryData.RoleSeparationEnabled
+  nameWithType: CARegistryData.RoleSeparationEnabled
 - uid: SharpHoundCommonLib.OutputTypes.CertificateExtension
   name: CertificateExtension
   href: api/SharpHoundCommonLib.OutputTypes.CertificateExtension.html
@@ -7182,6 +7195,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.ProcessRegistryEnrollmentPermissions
   nameWithType: CertAbuseProcessor.ProcessRegistryEnrollmentPermissions
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.RoleSeparationEnabled(System.String,System.String)
+  name: RoleSeparationEnabled(String, String)
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_RoleSeparationEnabled_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.CertAbuseProcessor.RoleSeparationEnabled(System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.RoleSeparationEnabled(System.String, System.String)
+  nameWithType: CertAbuseProcessor.RoleSeparationEnabled(String, String)
+- uid: SharpHoundCommonLib.Processors.CertAbuseProcessor.RoleSeparationEnabled*
+  name: RoleSeparationEnabled
+  href: api/SharpHoundCommonLib.Processors.CertAbuseProcessor.html#SharpHoundCommonLib_Processors_CertAbuseProcessor_RoleSeparationEnabled_
+  commentId: Overload:SharpHoundCommonLib.Processors.CertAbuseProcessor.RoleSeparationEnabled
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.CertAbuseProcessor.RoleSeparationEnabled
+  nameWithType: CertAbuseProcessor.RoleSeparationEnabled
 - uid: SharpHoundCommonLib.Processors.CertRegistryResult
   name: CertRegistryResult
   href: api/SharpHoundCommonLib.Processors.CertRegistryResult.html
