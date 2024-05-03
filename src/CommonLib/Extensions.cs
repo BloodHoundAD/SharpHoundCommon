@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
+using SharpHoundCommonLib.LDAPQueries;
+using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 
 namespace SharpHoundCommonLib
 {
@@ -21,6 +23,54 @@ namespace SharpHoundCommonLib
         static Extensions()
         {
             Log = Logging.LogProvider.CreateLogger("Extensions");
+        }
+
+        public static (bool, LdapException, DomainWrapper) TestConnection(this LdapConnection connection)
+        {
+            try
+            {
+                //Attempt an initial bind. If this fails, likely auth is invalid, or its not a valid target
+                connection.Bind();
+            }
+            catch (LdapException e)
+            {
+                return (false, e, null);
+            }
+
+            try
+            {
+                //Do an initial search request to get the rootDSE
+                var searchRequest = new SearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
+                    SearchScope.Base, null);
+                searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
+
+                var response = (SearchResponse)connection.SendRequest(searchRequest);
+                if (response == null)
+                {
+                    return (false, null, null);
+                }
+
+                if (response.Entries.Count == 0)
+                {
+                    return (false, null, null);
+                }
+
+                var entry = response.Entries[0];
+                var baseDN = entry.GetProperty(LDAPProperties.PrimaryNamingContext);
+                var configurationDN = entry.GetProperty(LDAPProperties.ConfigurationNamingContext);
+                var domainname = Helpers.DistinguishedNameToDomain(baseDN).ToUpper();
+
+                return (true, null, new DomainWrapper
+                {
+                    DomainConfigurationPath = configurationDN,
+                    DomainSearchBase = baseDN,
+                    DomainFQDN = domainname
+                });
+            }
+            catch (LdapException e)
+            {
+                return (false, e, null);
+            }
         }
 
         internal static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items)

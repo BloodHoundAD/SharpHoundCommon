@@ -69,5 +69,9 @@
         public const string CertificateTemplates = "certificatetemplates";
         public const string CrossCertificatePair = "crosscertificatepair";
         public const string Flags = "flags";
+        public const string PrimaryNamingContext = "primarynamingcontext";
+        public const string ConfigurationNamingContext = "configurationnamingcontext";
+        public const string NetbiosName = "netbiosName";
+        public const string DnsRoot = "dnsroot";
     }
 }
