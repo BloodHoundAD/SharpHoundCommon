@@ -1469,9 +1469,9 @@ namespace SharpHoundCommonLib
             return connection;
         }
 
-        private LdapConnection CreateConnectionHelper(string directoryIdentifier, bool ssl, AuthType authType)
+        private LdapConnection CreateConnectionHelper(string directoryIdentifier, bool useSSL, AuthType authType)
         {
-            var port = _ldapConfig.GetPort(ssl);
+            var port = _ldapConfig.GetPort(useSSL);
             var target = directoryIdentifier;
             if (_ldapConfig.Server != null)
             {
@@ -1479,7 +1479,7 @@ namespace SharpHoundCommonLib
             }
             var identifier = new LdapDirectoryIdentifier(target, port, false, false);
             var connection = new LdapConnection(identifier) { Timeout = new TimeSpan(0, 0, 5, 0) };
-            SetupLdapConnection(connection, true, authType);
+            SetupLdapConnection(connection, useSSL, authType);
             return connection;
         }
 
@@ -1504,6 +1504,67 @@ namespace SharpHoundCommonLib
             {
                 throw new LdapConnectionException(ldapException);
             }
+        }
+
+        private LdapConnection GetCachedConnection(string domainName)
+        {
+            var key = new LDAPConnectionCacheKey
+            {
+                GlobalCatalog = false,
+                Port = _ldapConfig.GetPort(true),
+                Domain = domainName
+            };
+
+            if (_ldapConnections.TryGetValue(key, out var cachedConnection))
+            {
+                return cachedConnection;
+            }
+
+            key.Port = _ldapConfig.GetPort(false);
+            if (_ldapConnections.TryGetValue(key, out cachedConnection))
+            {
+                return cachedConnection;
+            }
+
+            return null;
+        }
+
+        private void AddCachedConnection(LdapConnection connection, string domainName, DomainWrapper domainInfo)
+        {
+            if (!CachedDomainInfo.ContainsKey(domainName.ToUpper()))
+            {
+                domainInfo.DomainSID =  GetDomainSid(connection, domainInfo);
+                domainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, domainInfo);
+                CachedDomainInfo.TryAdd(domainInfo.DomainFQDN, domainInfo);
+                CachedDomainInfo.TryAdd(domainInfo.DomainNetbiosName, domainInfo);
+                CachedDomainInfo.TryAdd(domainInfo.DomainSID, domainInfo);
+            }
+
+            _ldapConnections.AddOrUpdate(new LDAPConnectionCacheKey
+                {
+                    GlobalCatalog = false,
+                    Port = _ldapConfig.GetPort(true),
+                    Domain = domainName
+                }, connection, (_, ldapConnection) =>
+                {
+                    ldapConnection.Dispose();
+                    return connection;
+                });
+        }
+
+        private LdapConnection BuildLdapConnection(string domainName, bool useSSL, AuthType authType)
+        {
+            var connection = CreateConnectionHelper(domainName, true, authType);
+            var (isSuccess, ldapException, baseDomainInfo) = connection.TestConnection();
+
+            CheckAndThrowException(ldapException);
+            if (!isSuccess)
+            {
+                return null;
+            }
+
+            AddCachedConnection(connection, domainName, baseDomainInfo);
+            return connection;
         }
 
         /// <summary>
@@ -1531,86 +1592,22 @@ namespace SharpHoundCommonLib
             if (!skipCache)
             {
                 //Try both ssl and non-ssl connections from the cache
-                var key = new LDAPConnectionCacheKey
+                var conn = GetCachedConnection(domain);
+                if (conn != null)
                 {
-                    GlobalCatalog = false,
-                    Port = _ldapConfig.GetPort(true),
-                    Domain = domain
-                };
-
-                if (_ldapConnections.TryGetValue(key, out var cachedConnection))
-                {
-                    return cachedConnection;
-                }
-
-                key.Port = _ldapConfig.GetPort(false);
-                if (_ldapConnections.TryGetValue(key, out cachedConnection))
-                {
-                    return cachedConnection;
+                    return conn;
                 }
             }
             
             //Lets build a new connection
             //Always try SSL first
-            var connection = CreateConnectionHelper(domain, true, authType);
-            var (isSuccess, ldapException, baseDomainInfo) = connection.TestConnection();
-
-            if (isSuccess)
+            var connection = BuildLdapConnection(domainName, useSSL: true, authType);
+            if (connection != null)
             {
-                if (!CachedDomainInfo.ContainsKey(domain.ToUpper()))
-                {
-                    baseDomainInfo.DomainSID =  GetDomainSid(connection, baseDomainInfo);
-                    baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainNetbiosName, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainSID, baseDomainInfo);
-                }
-
-                _ldapConnections.AddOrUpdate(new LDAPConnectionCacheKey
-                {
-                    GlobalCatalog = false,
-                    Port = _ldapConfig.GetPort(true),
-                    Domain = domain
-                }, connection, (_, ldapConnection) =>
-                {
-                    ldapConnection.Dispose();
-                    return connection;
-                });
                 return connection;
             }
 
-            CheckAndThrowException(ldapException);
-            
-            connection = CreateConnectionHelper(domain, false, authType);
-
-            (isSuccess, ldapException, baseDomainInfo) = connection.TestConnection();
-                
-            if (isSuccess)
-            {
-                if (!CachedDomainInfo.ContainsKey(domain.ToUpper()))
-                {
-                    baseDomainInfo.DomainSID =  GetDomainSid(connection, baseDomainInfo);
-                    baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainNetbiosName, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainSID, baseDomainInfo);
-                }
-
-                _ldapConnections.AddOrUpdate(new LDAPConnectionCacheKey
-                {
-                    GlobalCatalog = false,
-                    Port = _ldapConfig.GetPort(true),
-                    Domain = domain
-                }, connection, (_, ldapConnection) =>
-                {
-                    ldapConnection.Dispose();
-                    return connection;
-                });
-                return connection;
-            }
-            
-            CheckAndThrowException(ldapException);
-            
+            connection = BuildLdapConnection(domainName, useSSL: false, authType);
             return connection;
         }
 
