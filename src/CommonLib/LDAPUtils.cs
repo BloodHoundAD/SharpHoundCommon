@@ -51,14 +51,14 @@ namespace SharpHoundCommonLib
 
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
         private readonly ConcurrentDictionary<DomainControllerCacheKey, string> _domainControllerCache = new();
-        public ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnection> Connections { get; } = new();
+        // public ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnection> Connections { get; } = new();
         private static readonly TimeSpan MinBackoffDelay = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(20);
         private const int BackoffDelayMultiplier = 2;
         private const int MaxRetries = 3;
         
         private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new();
-        private readonly ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnection> _ldapConnections = new();
+        private readonly LDAPConnectionCache _ldapConnections = new();
         private readonly ConcurrentDictionary<string, int> _ldapRangeSizeCache = new();
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
@@ -104,7 +104,7 @@ namespace SharpHoundCommonLib
             //Close out any existing LDAP connections to request a new incoming config
             foreach (var kv in _ldapConnections)
             {
-                kv.Value.Dispose();
+                kv.Value.Connection.Dispose();
             }
 
             _ldapConnections.Clear();
@@ -1506,55 +1506,35 @@ namespace SharpHoundCommonLib
             }
         }
 
-        private LdapConnection GetCachedConnection(string domainName)
+        private LdapConnectionWrapper BuildLdapConnectionWrapper(LdapConnection connection, string domainName, bool useSSL, bool isGlobalCatalog)
         {
-            var key = new LDAPConnectionCacheKey
+            return new LdapConnectionWrapper
             {
-                GlobalCatalog = false,
-                Port = _ldapConfig.GetPort(true),
-                Domain = domainName
+                Connection = connection,
+                IsGlobalCatalog = isGlobalCatalog,
+                Port = _ldapConfig.GetPort(useSSL),
+                DomainName = domainName.ToUpper(),
             };
-
-            if (_ldapConnections.TryGetValue(key, out var cachedConnection))
-            {
-                return cachedConnection;
-            }
-
-            key.Port = _ldapConfig.GetPort(false);
-            if (_ldapConnections.TryGetValue(key, out cachedConnection))
-            {
-                return cachedConnection;
-            }
-
-            return null;
         }
 
-        private void AddCachedConnection(LdapConnection connection, string domainName, DomainWrapper domainInfo)
+        private void AddCachedConnection(LdapConnectionWrapper connectionWrapper, DomainWrapper domainInfo)
         {
-            if (!CachedDomainInfo.ContainsKey(domainName.ToUpper()))
+            var normalizedDomainName = connectionWrapper.DomainName.ToUpper();
+            if (!CachedDomainInfo.ContainsKey(normalizedDomainName))
             {
-                domainInfo.DomainSID =  GetDomainSid(connection, domainInfo);
-                domainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, domainInfo);
+                domainInfo.DomainSID =  GetDomainSid(connectionWrapper.Connection, domainInfo);
+                domainInfo.DomainNetbiosName = GetDomainNetbiosName(connectionWrapper.Connection, domainInfo);
                 CachedDomainInfo.TryAdd(domainInfo.DomainFQDN, domainInfo);
                 CachedDomainInfo.TryAdd(domainInfo.DomainNetbiosName, domainInfo);
                 CachedDomainInfo.TryAdd(domainInfo.DomainSID, domainInfo);
             }
 
-            _ldapConnections.AddOrUpdate(new LDAPConnectionCacheKey
-                {
-                    GlobalCatalog = false,
-                    Port = _ldapConfig.GetPort(true),
-                    Domain = domainName
-                }, connection, (_, ldapConnection) =>
-                {
-                    ldapConnection.Dispose();
-                    return connection;
-                });
+            _ldapConnections.Add(connectionWrapper);
         }
 
         private LdapConnection BuildLdapConnection(string domainName, bool useSSL, AuthType authType)
         {
-            var connection = CreateConnectionHelper(domainName, true, authType);
+            var connection = CreateConnectionHelper(domainName, useSSL, authType);
             var (isSuccess, ldapException, baseDomainInfo) = connection.TestConnection();
 
             CheckAndThrowException(ldapException);
@@ -1563,7 +1543,9 @@ namespace SharpHoundCommonLib
                 return null;
             }
 
-            AddCachedConnection(connection, domainName, baseDomainInfo);
+            var connectionWrapper = BuildLdapConnectionWrapper(connection, domainName, useSSL, isGlobalCatalog: false);
+            AddCachedConnection(connectionWrapper, baseDomainInfo);
+
             return connection;
         }
 
@@ -1574,10 +1556,10 @@ namespace SharpHoundCommonLib
         /// <param name="skipCache">Skip the connection cache</param>
         /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly scenarios</param>
         /// <returns>A connected LDAP connection or null</returns>
-        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false,
+        private LdapConnection CreateLDAPConnection(string domainName = null, bool skipCache = false,
             AuthType authType = AuthType.Kerberos)
         {
-            var domain = domainName?.ToUpper() ?? GetDomain(domainName)?.Name.ToUpper();
+            var domain = domainName ?? GetDomain(domainName)?.Name;
             
             //If our domain is null here, then we'll automatically hit our current computer's domain, which isn't necessarily what we want.
             //What we really want is the user's domain context
@@ -1592,10 +1574,10 @@ namespace SharpHoundCommonLib
             if (!skipCache)
             {
                 //Try both ssl and non-ssl connections from the cache
-                var conn = GetCachedConnection(domain);
+                var conn = _ldapConnections.Get(domain);
                 if (conn != null)
                 {
-                    return conn;
+                    return conn.Connection;
                 }
             }
             
@@ -1607,6 +1589,7 @@ namespace SharpHoundCommonLib
                 return connection;
             }
 
+            // Then non-SSL
             connection = BuildLdapConnection(domainName, useSSL: false, authType);
             return connection;
         }
@@ -1671,28 +1654,28 @@ namespace SharpHoundCommonLib
             }
         }
 
-        private DomainWrapper BuildDomainInfo(LdapConnection connection)
-        {
-            try
-            {
-                //Do an initial search request to get the rootDSE
-                var searchRequest = new SearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
-                    SearchScope.Base, null);
-                searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
+        // private DomainWrapper BuildDomainInfo(LdapConnection connection)
+        // {
+        //     try
+        //     {
+        //         //Do an initial search request to get the rootDSE
+        //         var searchRequest = new SearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
+        //             SearchScope.Base, null);
+        //         searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
 
-                var response = (SearchResponse)connection.SendRequest(searchRequest);
-                if (response == null)
-                {
-                    return (false, 0);
-                }
+        //         var response = (SearchResponse)connection.SendRequest(searchRequest);
+        //         if (response == null)
+        //         {
+        //             return (false, 0);
+        //         }
 
-                return response.Entries.Count > 0 ? (true, 0) : (false, 0);
-            }
-            catch (LdapException e)
-            {
-                return (false, e.ErrorCode);
-            }
-        }
+        //         return response.Entries.Count > 0 ? (true, 0) : (false, 0);
+        //     }
+        //     catch (LdapException e)
+        //     {
+        //         return (false, e.ErrorCode);
+        //     }
+        // }
 
         private void SetupLdapConnection(LdapConnection connection, bool ssl, AuthType authType)
         {
@@ -1723,7 +1706,7 @@ namespace SharpHoundCommonLib
             connection.AuthType = authType;
         }
 
-        private async Task<string> GetUsableDomainController(Domain domain, int port, bool gc = false)
+        private async Task<string> GetUsableDomainController(Domain domain, int port, bool useGlobalCatalog = false)
         {
             var name = domain.Name?.ToUpper();
             //If we don't have a domain name, just throw this out, we're not getting anything from this
@@ -1734,7 +1717,7 @@ namespace SharpHoundCommonLib
             var key = new DomainControllerCacheKey
             {
                 DomainName = name,
-                GlobalCatalog = gc,
+                GlobalCatalog = useGlobalCatalog,
                 Port = port
             };
             
