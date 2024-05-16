@@ -2,13 +2,19 @@ namespace SharpHoundCommonLib
 {
     public class LDAPConnectionCacheKey
     {
-        public int Port;
-        public bool GlobalCatalog;
-        public string Domain;
+        public bool GlobalCatalog { get; }
+        public string Domain { get; }
+        public string Server { get; set; }
+
+        public LDAPConnectionCacheKey(string domain, bool globalCatalog)
+        {
+            GlobalCatalog = globalCatalog;
+            Domain = domain;
+        }
 
         protected bool Equals(LDAPConnectionCacheKey other)
         {
-            return Port == other.Port && GlobalCatalog == other.GlobalCatalog && Domain == other.Domain;
+            return GlobalCatalog == other.GlobalCatalog && Domain == other.Domain;
         }
 
         public override bool Equals(object obj)
@@ -23,10 +29,7 @@ namespace SharpHoundCommonLib
         {
             unchecked
             {
-                var hashCode = Port;
-                hashCode = (hashCode * 397) ^ GlobalCatalog.GetHashCode();
-                hashCode = (hashCode * 397) ^ (Domain != null ? Domain.GetHashCode() : 0);
-                return hashCode;
+                return (GlobalCatalog.GetHashCode() * 397) ^ (Domain != null ? Domain.GetHashCode() : 0);
             }
         }
     }

@@ -73,5 +73,6 @@
         public const string ConfigurationNamingContext = "configurationnamingcontext";
         public const string NetbiosName = "netbiosName";
         public const string DnsRoot = "dnsroot";
+        public const string ServerName = "servername";
     }
 }

@@ -1477,6 +1477,7 @@ namespace SharpHoundCommonLib
             {
                 target = _ldapConfig.Server;
             }
+            
             var identifier = new LdapDirectoryIdentifier(target, port, false, false);
             var connection = new LdapConnection(identifier) { Timeout = new TimeSpan(0, 0, 5, 0) };
             SetupLdapConnection(connection, true, authType);
@@ -1488,7 +1489,7 @@ namespace SharpHoundCommonLib
             //A null error code with success false indicates that we successfully created a connection but got no data back, this is generally because our AuthType isn't compatible.
             //AuthType Kerberos will only work across trusts in very specific scenarios
             //Throw this exception for clients to handle
-            if (ldapException == null)
+            if (ldapException.ErrorCode == (int)LdapErrorCodes.KerberosAuthType)
             {
                 throw new NoLdapDataException();
             }
@@ -1500,10 +1501,25 @@ namespace SharpHoundCommonLib
             }
 
             //Any other error we dont have specific ways to handle
-            if (ldapException.ErrorCode != (int)ResultCode.Unavailable)
+            if (ldapException.ErrorCode != (int)ResultCode.Unavailable && ldapException.ErrorCode != (int)ResultCode.Busy)
             {
                 throw new LdapConnectionException(ldapException);
             }
+        }
+
+        private string ResolveDomainToFullName(string domain)
+        {
+            if (string.IsNullOrEmpty(domain))
+            {
+                return GetDomain()?.Name.ToUpper().Trim();
+            }
+            
+            if (CachedDomainInfo.TryGetValue(domain.ToUpper(), out var info))
+            {
+                return info.DomainFQDN;
+            }
+
+            return GetDomain(domain)?.Name.ToUpper().Trim();
         }
 
         /// <summary>
@@ -1513,52 +1529,75 @@ namespace SharpHoundCommonLib
         /// <param name="skipCache">Skip the connection cache</param>
         /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly scenarios</param>
         /// <returns>A connected LDAP connection or null</returns>
-        private async Task<LdapConnection> CreateLDAPConnection(string domainName = null, bool skipCache = false,
+        private async Task<LdapConnection> CreateLDAPConnectionWrapper(string domainName = null, bool skipCache = false,
             AuthType authType = AuthType.Kerberos)
         {
-            var domain = domainName?.ToUpper() ?? GetDomain(domainName)?.Name.ToUpper();
-            
-            //If our domain is null here, then we'll automatically hit our current computer's domain, which isn't necessarily what we want.
-            //What we really want is the user's domain context
-            if (domain == null)
-            {
-                _log.LogDebug("Unable to create ldap connection for domain {DomainName}: Could not get a reliable domain name from GetDomain",
-                    domainName);
-                throw new LDAPQueryException(
-                    $"Error creating LDAP connection: GetDomain call failed for {domainName}");
-            }
+            var domain = domainName?.ToUpper().Trim() ?? ResolveDomainToFullName(domainName);
             
             if (!skipCache)
             {
-                //Try both ssl and non-ssl connections from the cache
-                var key = new LDAPConnectionCacheKey
+                if (GetCachedConnection(domain, false, out var conn))
                 {
-                    GlobalCatalog = false,
-                    Port = _ldapConfig.GetPort(true),
-                    Domain = domain
-                };
-
-                if (_ldapConnections.TryGetValue(key, out var cachedConnection))
-                {
-                    return cachedConnection;
-                }
-
-                key.Port = _ldapConfig.GetPort(false);
-                if (_ldapConnections.TryGetValue(key, out cachedConnection))
-                {
-                    return cachedConnection;
+                    return conn;
                 }
             }
-            
+
+            var connection = CreateLDAPConnection(domain, authType);
+            //If our connection isn't null, it means we have a good connection
+            if (connection != null)
+            {
+                return connection;
+            }
+
+            if (domainName != null)
+            {
+                var newDomain = ResolveDomainToFullName(domainName);
+                if (!string.IsNullOrEmpty(newDomain) && !newDomain.Equals(domain, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!skipCache)
+                    {
+                        if (GetCachedConnection(domain, false, out var conn))
+                        {
+                            return conn;
+                        }
+                    }
+
+                    connection = CreateLDAPConnection(domain, authType);
+                    //If our connection isn't null, it means we have a good connection
+                    if (connection != null)
+                    {
+                        return connection;
+                    }
+                }
+            }
+            //Next step, look for domain controllers
+        }
+
+        private bool GetCachedConnection(string domain, bool globalCatalog, out LdapConnection connection)
+        {
+            var domainName = domain;
+            if (CachedDomainInfo.TryGetValue(domain.ToUpper(), out var resolved))
+            {
+                domainName = resolved.DomainFQDN;
+            }
+            var key = new LDAPConnectionCacheKey(domainName, globalCatalog);
+            return _ldapConnections.TryGetValue(key, out connection); 
+        }
+
+        
+        private LdapConnection CreateLDAPConnection(string target, AuthType authType)
+        {
             //Lets build a new connection
             //Always try SSL first
-            var connection = CreateConnectionHelper(domain, true, authType);
-            var (isSuccess, ldapException, baseDomainInfo) = connection.TestConnection();
+            var connection = CreateConnectionHelper(target, true, authType);
+            var connectionResult = connection.TestConnection();
 
-            if (isSuccess)
+            if (connectionResult.Success)
             {
-                if (!CachedDomainInfo.ContainsKey(domain.ToUpper()))
+                var domain = connectionResult.DomainInfo.DomainFQDN;
+                if (!CachedDomainInfo.ContainsKey(domain))
                 {
+                    var baseDomainInfo = connectionResult.DomainInfo;
                     baseDomainInfo.DomainSID =  GetDomainSid(connection, baseDomainInfo);
                     baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
                     CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
@@ -1566,12 +1605,8 @@ namespace SharpHoundCommonLib
                     CachedDomainInfo.TryAdd(baseDomainInfo.DomainSID, baseDomainInfo);
                 }
 
-                _ldapConnections.AddOrUpdate(new LDAPConnectionCacheKey
-                {
-                    GlobalCatalog = false,
-                    Port = _ldapConfig.GetPort(true),
-                    Domain = domain
-                }, connection, (_, ldapConnection) =>
+                var cacheKey = new LDAPConnectionCacheKey(domain, _ldapConfig.GetPort(true), false);
+                _ldapConnections.AddOrUpdate(cacheKey, connection, (_, ldapConnection) =>
                 {
                     ldapConnection.Dispose();
                     return connection;
@@ -1579,16 +1614,20 @@ namespace SharpHoundCommonLib
                 return connection;
             }
 
-            CheckAndThrowException(ldapException);
+            CheckAndThrowException(connectionResult.Exception);
             
-            connection = CreateConnectionHelper(domain, false, authType);
+            //If we get to this point, it means we have an unsuccessful connection, but our error code doesn't indicate an outright failure
+            //Try a new connection without SSL
+            connection = CreateConnectionHelper(target, false, authType);
 
-            (isSuccess, ldapException, baseDomainInfo) = connection.TestConnection();
+            connectionResult = connection.TestConnection();
                 
-            if (isSuccess)
+            if (connectionResult.Success)
             {
+                var domain = connectionResult.DomainInfo.DomainFQDN;
                 if (!CachedDomainInfo.ContainsKey(domain.ToUpper()))
                 {
+                    var baseDomainInfo = connectionResult.DomainInfo;
                     baseDomainInfo.DomainSID =  GetDomainSid(connection, baseDomainInfo);
                     baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
                     CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
@@ -1596,12 +1635,9 @@ namespace SharpHoundCommonLib
                     CachedDomainInfo.TryAdd(baseDomainInfo.DomainSID, baseDomainInfo);
                 }
 
-                _ldapConnections.AddOrUpdate(new LDAPConnectionCacheKey
-                {
-                    GlobalCatalog = false,
-                    Port = _ldapConfig.GetPort(true),
-                    Domain = domain
-                }, connection, (_, ldapConnection) =>
+                var cacheKey = new LDAPConnectionCacheKey(domain, _ldapConfig.GetPort(true), false);
+
+                _ldapConnections.AddOrUpdate(cacheKey, connection, (_, ldapConnection) =>
                 {
                     ldapConnection.Dispose();
                     return connection;
@@ -1609,9 +1645,8 @@ namespace SharpHoundCommonLib
                 return connection;
             }
             
-            CheckAndThrowException(ldapException);
-            
-            return connection;
+            CheckAndThrowException(connectionResult.Exception);
+            return null;
         }
 
         private string GetDomainNetbiosName(LdapConnection connection, DomainWrapper wrapper)

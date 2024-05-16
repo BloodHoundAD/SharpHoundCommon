@@ -25,7 +25,23 @@ namespace SharpHoundCommonLib
             Log = Logging.LogProvider.CreateLogger("Extensions");
         }
 
-        public static (bool, LdapException, DomainWrapper) TestConnection(this LdapConnection connection)
+        public class LdapConnectionTestResult
+        {
+            public bool Success { get; set; }
+            public LdapException Exception { get; set; }
+            public DomainWrapper DomainInfo { get; set; }
+            public string ServerName { get; set; }
+
+            public LdapConnectionTestResult(bool success, LdapException e, DomainWrapper info, string server)
+            {
+                Success = success;
+                Exception = e;
+                DomainInfo = info;
+                ServerName = server;
+            }
+        }
+
+        public static LdapConnectionTestResult TestConnection(this LdapConnection connection)
         {
             try
             {
@@ -34,12 +50,13 @@ namespace SharpHoundCommonLib
             }
             catch (LdapException e)
             {
-                return (false, e, null);
+                return new LdapConnectionTestResult(false, e, null, null);
             }
 
             try
             {
                 //Do an initial search request to get the rootDSE
+                //This ldap filter is equivalent to (objectclass=*)
                 var searchRequest = new SearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
                     SearchScope.Base, null);
                 searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
@@ -47,29 +64,41 @@ namespace SharpHoundCommonLib
                 var response = (SearchResponse)connection.SendRequest(searchRequest);
                 if (response == null)
                 {
-                    return (false, null, null);
+                    return new LdapConnectionTestResult(false, null, null, null);
                 }
 
                 if (response.Entries.Count == 0)
                 {
-                    return (false, null, null);
+                    connection.Dispose();
+                    return new LdapConnectionTestResult(false, new LdapException((int)LdapErrorCodes.KerberosAuthType), null, null);
                 }
 
                 var entry = response.Entries[0];
-                var baseDN = entry.GetProperty(LDAPProperties.PrimaryNamingContext);
-                var configurationDN = entry.GetProperty(LDAPProperties.ConfigurationNamingContext);
-                var domainname = Helpers.DistinguishedNameToDomain(baseDN).ToUpper();
+                var baseDN = entry.GetProperty(LDAPProperties.PrimaryNamingContext).ToUpper().Trim();
+                var configurationDN = entry.GetProperty(LDAPProperties.ConfigurationNamingContext).ToUpper().Trim();
+                var domainname = Helpers.DistinguishedNameToDomain(baseDN).ToUpper().Trim();
+                var servername = entry.GetProperty(LDAPProperties.ServerName);
+                var compName = servername.Substring(0, servername.IndexOf(',')).Substring(3).Trim();
+                var fullServerName = $"{compName}.{domainname}".ToUpper().Trim();
 
-                return (true, null, new DomainWrapper
+                return new LdapConnectionTestResult(true, null, new DomainWrapper
                 {
                     DomainConfigurationPath = configurationDN,
                     DomainSearchBase = baseDN,
                     DomainFQDN = domainname
-                });
+                }, fullServerName);
             }
             catch (LdapException e)
             {
-                return (false, e, null);
+                try
+                {
+                    connection.Dispose();
+                }
+                catch
+                {
+                    //pass
+                }
+                return new LdapConnectionTestResult(false, e, null, null);
             }
         }
 
