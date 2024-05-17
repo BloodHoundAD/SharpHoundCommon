@@ -18,7 +18,10 @@ namespace ConnectionTest
             Assert.True(testResponse.Success);
             Assert.Null(testResponse.Exception);
 
-            // TODO : check testResponse domain data properties
+            // TODO : check testResponse domain data properties?
+            // Not sure I should care about these implementation details tbh
+            // might be breaking that logic out, make easier to Mock
+            // tbd
         }
 
         [Fact]
@@ -53,6 +56,20 @@ namespace ConnectionTest
 
             Assert.False(testResponse.Success);
             Assert.IsType<LdapException>(testResponse.Exception);
+            Assert.Throws<ObjectDisposedException>(() => connection.Bind());
+        }
+
+        [Fact]
+        public void TestConnectionThrowsOtherException()
+        {
+            var connection = MockLdapConnection.Get(ResponseBehavior.ThrowsLdapException);
+            var testResponse = connection.TestConnection();
+
+            // TODO : evaluate this behavior
+            // currently in TestConnection we raise any non-ldap exception up
+            // should we?
+            Assert.False(testResponse.Success);
+            Assert.NotNull(testResponse.Exception);
             Assert.Throws<ObjectDisposedException>(() => connection.Bind());
         }
     }

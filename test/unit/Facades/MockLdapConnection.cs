@@ -13,6 +13,7 @@ namespace CommonLibTest.Facades
             ResponseBehavior.NullResponse => ReturnsNullResponse(),
             ResponseBehavior.EmptyResponse => ReturnsEmptyResponse(),
             ResponseBehavior.ThrowsLdapException => ThrowsLdapException(),
+            ResponseBehavior.ThrowsOtherException => ThrowsOtherException(),
             _ => throw new ArgumentOutOfRangeException(nameof(responseBehavior))
         };
 
@@ -67,6 +68,14 @@ namespace CommonLibTest.Facades
                 .Throws<LdapException>();
             return mock.Object;
         }
+
+        private static LdapConnection ThrowsOtherException()
+        {
+            var mock = new Mock<LdapConnection>();
+            mock.Setup(x => x.SendRequest(It.IsAny<SearchRequest>()))
+                .Throws<Exception>();
+            return mock.Object;
+        }
     }
 
     public enum ResponseBehavior
@@ -75,5 +84,6 @@ namespace CommonLibTest.Facades
         NullResponse,
         EmptyResponse,
         ThrowsLdapException,
+        ThrowsOtherException,
     }
 }
