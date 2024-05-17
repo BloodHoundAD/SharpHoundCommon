@@ -10,6 +10,18 @@ namespace ConnectionTest
     public class ConnectionTests
     {
         [Fact]
+        public void TestConnectionHappyPath()
+        {
+            var connection = MockLdapConnection.Get(ResponseBehavior.HappyPath);
+            var testResponse = connection.TestConnection();
+
+            Assert.True(testResponse.Success);
+            Assert.Null(testResponse.Exception);
+
+            // TODO : check testResponse domain data properties
+        }
+
+        [Fact]
         public void TestConnectionNullResponse()
         {
             var connection = MockLdapConnection.Get(ResponseBehavior.NullResponse);
@@ -17,6 +29,7 @@ namespace ConnectionTest
 
             Assert.False(testResponse.Success);
             Assert.Null(testResponse.Exception);
+            Assert.Throws<ObjectDisposedException>(() => connection.Bind());
         }
 
         // This happens when a Kerberos misconfiguration occurs
