@@ -103,7 +103,7 @@ namespace SharpHoundCommonLib
             //Close out any existing LDAP connections to request a new incoming config
             foreach (var kv in _ldapConnections)
             {
-                kv.Value.Dispose();
+                kv.Value.Connection.Dispose();
             }
 
             _ldapConnections.Clear();
@@ -480,19 +480,21 @@ namespace SharpHoundCommonLib
             var domainName = Helpers.DistinguishedNameToDomain(distinguishedName);
             var task = Task.Run(() => CreateLDAPConnectionWrapper(domainName, authType: _ldapConfig.AuthType));
 
-            LdapConnection conn;
+            LdapConnectionWrapper connWrapper;
 
             try
             {
-                conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
+                connWrapper = task.ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch
             {
                 yield break;
             }
 
-            if (conn == null)
+            if (connWrapper == null)
                 yield break;
+
+            var conn = connWrapper.Connection;
 
             var index = 0;
             var step = 0;
@@ -502,7 +504,7 @@ namespace SharpHoundCommonLib
             var complete = false;
 
             var searchRequest = CreateSearchRequest($"{attributeName}=*", SearchScope.Base, new[] { currentRange },
-                domainName, distinguishedName);
+                connWrapper.DomainInfo, distinguishedName);
 
             if (searchRequest == null)
                 yield break;
@@ -902,7 +904,7 @@ namespace SharpHoundCommonLib
                             //Sleep for our backoff
                             Thread.Sleep(backoffDelay);
                             //Explicitly skip the cache so we don't get the same connection back
-                            conn = CreateNewConnection(domainName, globalCatalog, true);
+                            conn = CreateNewConnection(domainName, globalCatalog, true).Connection;
                             if (conn == null)
                             {
                                 _log.LogError(
@@ -926,7 +928,7 @@ namespace SharpHoundCommonLib
                         //The thread.sleep is to prevent a potential, very unlikely race
                         Thread.Sleep(50);
                         _connectionResetEvent.WaitOne();
-                        conn = CreateNewConnection(domainName, globalCatalog);
+                        conn = CreateNewConnection(domainName, globalCatalog).Connection;
                     }
 
                     backoffDelay = GetNextBackoff(retryCount);
@@ -987,7 +989,7 @@ namespace SharpHoundCommonLib
             }
         }
 
-        private LdapConnection CreateNewConnection(string domainName = null, bool globalCatalog = false,
+        private LdapConnectionWrapper CreateNewConnection(string domainName = null, bool globalCatalog = false,
             bool skipCache = false)
         {
             var task = Task.Run(() => CreateLDAPConnectionWrapper(domainName, skipCache, _ldapConfig.AuthType, globalCatalog));
@@ -1167,10 +1169,10 @@ namespace SharpHoundCommonLib
 
             var queryParams = new LDAPQueryParams();
 
-            LdapConnection conn;
+            LdapConnectionWrapper connWrapper;
             try
             {
-                conn = task.ConfigureAwait(false).GetAwaiter().GetResult();
+                connWrapper = task.ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (LdapException ldapException)
             {
@@ -1192,6 +1194,8 @@ namespace SharpHoundCommonLib
             //     return queryParams;
             // }
 
+            var conn = connWrapper.Connection;
+
             //If we get a null connection, something went wrong, but we don't have an error to go with it for whatever reason
             if (conn == null)
             {
@@ -1205,7 +1209,7 @@ namespace SharpHoundCommonLib
 
             try
             {
-                request = CreateSearchRequest(ldapFilter, scope, props, domainName, adsPath, showDeleted);
+                request = CreateSearchRequest(ldapFilter, scope, props, connWrapper.DomainInfo, adsPath, showDeleted);
             }
             catch (LDAPQueryException ldapQueryException)
             {
@@ -1387,21 +1391,14 @@ namespace SharpHoundCommonLib
         /// <param name="filter">LDAP filter</param>
         /// <param name="scope">SearchScope to query</param>
         /// <param name="attributes">LDAP properties to fetch for each object</param>
-        /// <param name="domainName">Domain to query</param>
+        /// <param name="domainInfo">Domain info object which is created alongside the LDAP connection</param>
         /// <param name="adsPath">ADS path to limit the query too</param>
         /// <param name="showDeleted">Include deleted objects in results</param>
         /// <returns>A built SearchRequest</returns>
         private SearchRequest CreateSearchRequest(string filter, SearchScope scope, string[] attributes,
-            string domainName = null, string adsPath = null, bool showDeleted = false)
+            DomainInfo domainInfo, string adsPath = null, bool showDeleted = false)
         {
-            var basePath = "";
-            var domain = GetDomain(domainName)?.Name ?? domainName;
-
-            if (domain == null)
-                throw new LDAPQueryException(
-                    $"Unable to create search request: GetDomain call failed for {domainName}");
-
-            var adPath = adsPath?.Replace("LDAP://", "") ?? $"DC={domain.Replace(".", ",DC=")}";
+            var adPath = adsPath?.Replace("LDAP://", "") ?? domainInfo.DomainSearchBase;
 
             var request = new SearchRequest(adPath, filter, scope, attributes);
             request.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
@@ -1611,24 +1608,15 @@ namespace SharpHoundCommonLib
                 if (await _portScanner.CheckPort(target, _ldapConfig.GetGCPort(true)) || (!_ldapConfig.ForceSSL &&
                         await _portScanner.CheckPort(target, _ldapConfig.GetGCPort(false))))
                 {
-                    var connection = CreateLDAPConnection(target, authType, true, out var domainInfo);
-                    return new LdapConnectionWrapper
-                    {
-                        Connection = connection,
-                        DomainInfo = domainInfo
-                    };
+                    return CreateLDAPConnection(target, authType, true);
+                    
                 }
             }
             else
             {
                 if (await _portScanner.CheckPort(target, _ldapConfig.GetPort(true)) || (!_ldapConfig.ForceSSL && await _portScanner.CheckPort(target, _ldapConfig.GetPort(false))))
                 {
-                    var connection = CreateLDAPConnection(target, authType, false, out var domainInfo);
-                    return new LdapConnectionWrapper
-                    {
-                        Connection = connection,
-                        DomainInfo = domainInfo
-                    };
+                    return CreateLDAPConnection(target, authType, false);
                 }
             }
             
