@@ -23,5 +23,10 @@ namespace SharpHoundCommonLib
 
             return ssl ? 636 : 389;
         }
+        
+        public int GetGCPort(bool ssl)
+        {
+            return ssl ? 3269 : 3268;
+        }
     }
 }
