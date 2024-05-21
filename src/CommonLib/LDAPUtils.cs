@@ -50,7 +50,6 @@ namespace SharpHoundCommonLib
         private static readonly ConcurrentDictionary<string, DomainInfo> CachedDomainInfo = new(StringComparer.OrdinalIgnoreCase);
 
         private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
-        private readonly ConcurrentDictionary<DomainControllerCacheKey, string> _domainControllerCache = new();
         private static readonly TimeSpan MinBackoffDelay = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(20);
         private const int BackoffDelayMultiplier = 2;
@@ -99,7 +98,6 @@ namespace SharpHoundCommonLib
         public void SetLDAPConfig(LDAPConfig config)
         {
             _ldapConfig = config ?? throw new Exception("LDAP Configuration can not be null");
-            _domainControllerCache.Clear();
             //Close out any existing LDAP connections to request a new incoming config
             foreach (var kv in _ldapConnections)
             {
@@ -1494,9 +1492,22 @@ namespace SharpHoundCommonLib
         /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly/cross trust(forest) scenarios</param>
         /// <param name="globalCatalog">Use global catalog or not</param>
         /// <returns>A connected LDAP connection or null</returns>
+
         private async Task<LdapConnectionWrapper> CreateLDAPConnectionWrapper(string domainName = null, bool skipCache = false,
             AuthType authType = AuthType.Kerberos, bool globalCatalog = false)
         {
+            // Step 1: If domain passed in is non-null, skip this step
+            // - Call GetDomain with a null domain to get the user's current domain
+            // Step 2: Take domain passed in to the function or resolved from step 1
+            // - Try an ldap connection on SSL
+            // - If ServerUnavailable - Try an ldap connection on non-SSL
+            //     Step 3: Pass the domain to GetDomain to resolve to a better name (potentially)
+            //     - If we get a better name, repeat step 2 with the new name
+            //     Step 4:
+            // - Use GetDomain to get a domain object along with a list of domain controllers
+            // - Try the primary domain controller on both ssl/non-ssl
+            // - Loop over domain controllers and try each on ssl/non-ssl
+            
             //If a server has been manually specified, we should never get past this block for opsec reasons
             if (_ldapConfig.Server != null)
             {
@@ -1953,48 +1964,6 @@ namespace SharpHoundCommonLib
             }
             
             connection.AuthType = authType;
-        }
-
-        private async Task<string> GetUsableDomainController(Domain domain, int port, bool gc = false)
-        {
-            var name = domain.Name?.ToUpper();
-            //If we don't have a domain name, just throw this out, we're not getting anything from this
-            if (name == null)
-            {
-                return null;
-            }
-            var key = new DomainControllerCacheKey
-            {
-                DomainName = name,
-                GlobalCatalog = gc,
-                Port = port
-            };
-            
-            if (_domainControllerCache.TryGetValue(key, out var dc))
-                return dc;
-
-            var pdc = domain.PdcRoleOwner.Name;
-            if (await _portScanner.CheckPort(pdc, port))
-            {
-                _domainControllerCache.TryAdd(key, pdc);
-                _log.LogInformation("Found usable primary domain Controller for {Domain} : {DC}", name, pdc);
-                return pdc;
-            }
-
-            //If the PDC isn't reachable loop through the rest
-            foreach (DomainController domainController in domain.DomainControllers)
-            {
-                var dcname = domainController.Name;
-                if (!await _portScanner.CheckPort(dcname, port)) continue;
-                _log.LogInformation("Found usable Domain Controller for {Domain} : {DC}", name, dcname);
-                _domainControllerCache.TryAdd(key, dcname);
-                return name;
-            }
-
-            //If we get here, somehow we didn't get any usable DCs. Save it off as null
-            _domainControllerCache.TryAdd(key, null);
-            _log.LogWarning("Unable to find usable domain controller for {Domain}", domain.Name);
-            return null;
         }
 
         /// <summary>
