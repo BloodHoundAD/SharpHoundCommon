@@ -719,7 +719,7 @@ namespace CommonLibTest.Facades
         }
 
         public bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain,
-            [UnscopedRef] out TypedPrincipal principal)
+            out TypedPrincipal principal)
         {
             throw new NotImplementedException();
         }
