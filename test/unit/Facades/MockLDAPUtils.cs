@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
@@ -714,6 +716,12 @@ namespace CommonLibTest.Facades
             commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
             _seenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, sid);
             return true;
+        }
+
+        public bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain,
+            [UnscopedRef] out TypedPrincipal principal)
+        {
+            throw new NotImplementedException();
         }
 
         public void AddDomainController(string domainControllerSID)

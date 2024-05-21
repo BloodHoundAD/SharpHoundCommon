@@ -128,6 +128,37 @@ namespace SharpHoundCommonLib
             });
             return true;
         }
+        
+        public bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid,
+            string computerDomain, out TypedPrincipal principal)
+        {
+            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+            {
+                //The everyone and auth users principals are special and will be converted to the domain equivalent
+                if (sid.Value is "S-1-1-0" or "S-1-5-11")
+                {
+                    GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
+                    return true;
+                }
+
+                //Use the computer object id + the RID of the sid we looked up to create our new principal
+                principal = new TypedPrincipal
+                {
+                    ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
+                    ObjectType = common.ObjectType switch
+                    {
+                        Label.User => Label.LocalUser,
+                        Label.Group => Label.LocalGroup,
+                        _ => common.ObjectType
+                    }
+                };
+
+                return true;
+            }
+
+            principal = null;
+            return false;
+        }
 
         /// <summary>
         ///     Adds a SID to an internal list of domain controllers
@@ -1186,13 +1217,13 @@ namespace SharpHoundCommonLib
                 queryParams.Exception = ldapQueryException;
                 return queryParams;
             }
-            // catch (Exception e)
-            // {
-            //     var errorString =
-            //         $"Exception getting LDAP connection for {ldapFilter} and domain {domainName ?? "Default Domain"}: {e.Message}";
-            //     queryParams.Exception = new LDAPQueryException(errorString, e);
-            //     return queryParams;
-            // }
+            catch (Exception e)
+            {
+                var errorString =
+                    $"Exception getting LDAP connection for {ldapFilter} and domain {domainName ?? "Default Domain"}: {e.Message}";
+                queryParams.Exception = new LDAPQueryException(errorString, e);
+                return queryParams;
+            }
 
             var conn = connWrapper.Connection;
 
@@ -1478,7 +1509,11 @@ namespace SharpHoundCommonLib
                 }
                 
                 var singleServerConn = CreateLDAPConnection(_ldapConfig.Server, authType, globalCatalog);
-                if (singleServerConn == null) return null;
+                if (singleServerConn == null) return new LdapConnectionWrapper()
+                {
+                    Connection = null,
+                    DomainInfo = null
+                };
                 var cacheKey = new LDAPConnectionCacheKey(_ldapConfig.Server, globalCatalog);
                 _ldapConnections.AddOrUpdate(cacheKey, singleServerConn, (_, ldapConnection) =>
                 {
@@ -1494,7 +1529,11 @@ namespace SharpHoundCommonLib
             //If our domain is STILL null, we're not going to get anything reliable, so exit out
             if (domain == null)
             {
-                return null;
+                return new LdapConnectionWrapper
+                {
+                    Connection = null,
+                    DomainInfo = null
+                };
             }
             
             if (!skipCache)
@@ -1587,7 +1626,11 @@ namespace SharpHoundCommonLib
                 }
             }
 
-            return null;
+            return new LdapConnectionWrapper()
+            {
+                Connection = null,
+                DomainInfo = null
+            };
         }
 
         private bool GetCachedConnection(string domain, bool globalCatalog, out LdapConnectionWrapper connectionWrapper)
@@ -1652,6 +1695,7 @@ namespace SharpHoundCommonLib
                     if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
                     {
                         Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);
+                        _netbiosCache.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainNetbiosName);
                     }
 
                     info = baseDomainInfo;
