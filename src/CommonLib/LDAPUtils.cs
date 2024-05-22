@@ -1203,23 +1203,25 @@ namespace SharpHoundCommonLib
             {
                 connWrapper = task.ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            catch (LdapException ldapException)
+            catch (NoLdapDataException)
             {
                 var errorString =
-                    $"LDAP Exception {ldapException.ErrorCode} when creating connection for {ldapFilter} and domain {domainName ?? "Default Domain"}: {ldapException.Message}";
-                queryParams.Exception = new LDAPQueryException(errorString, ldapException);
+                    $"Successfully connected via LDAP to {domainName ?? "Default Domain"} but no data received. This is most likely due to permissions or using kerberos authentication across trusts.";
+                queryParams.Exception = new LDAPQueryException(errorString, null);
                 return queryParams;
             }
-            catch (LDAPQueryException ldapQueryException)
-            {
-                queryParams.Exception = ldapQueryException;
-                return queryParams;
-            }
-            catch (Exception e)
+            catch (LdapAuthenticationException e)
             {
                 var errorString =
-                    $"Exception getting LDAP connection for {ldapFilter} and domain {domainName ?? "Default Domain"}: {e.Message}";
-                queryParams.Exception = new LDAPQueryException(errorString, e);
+                    $"Failed to connect via LDAP to {domainName ?? "Default Domain"}: Authentication is invalid";
+                queryParams.Exception = new LDAPQueryException(errorString, e.InnerException);
+                return queryParams;
+            }
+            catch (LdapConnectionException e)
+            {
+                var errorString =
+                    $"Failed to connect via LDAP to {domainName ?? "Default Domain"}: {e.InnerException.Message} (Code: {e.ErrorCode}";
+                queryParams.Exception = new LDAPQueryException(errorString, e.InnerException);
                 return queryParams;
             }
 
