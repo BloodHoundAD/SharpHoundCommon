@@ -11,6 +11,7 @@ namespace SharpHoundCommonLib
         public string DomainSearchBase { get; set; }
         public string DomainConfigurationPath { get; set; }
         public string DomainNetbiosName { get; set; }
+        public string SchemaPath { get; set; }
 
         public override string ToString()
         {

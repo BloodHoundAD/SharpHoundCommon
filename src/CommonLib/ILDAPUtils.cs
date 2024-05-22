@@ -33,12 +33,12 @@ namespace SharpHoundCommonLib
     {
         void SetLDAPConfig(LDAPConfig config);
         bool TestLDAPConfig(string domain);
-        string[] GetUserGlobalCatalogMatches(string name);
+        string[] GetUserGlobalCatalogMatches(string name, string domain);
         TypedPrincipal ResolveIDAndType(string id, string fallbackDomain);
         TypedPrincipal ResolveCertTemplateByProperty(string propValue, string propName, string containerDN, string domainName);
         Label LookupSidType(string sid, string domain);
         Label LookupGuidType(string guid, string domain);
-        string GetDomainNameFromSid(string sid);
+        string GetDomainNameFromSid(string sid, string domainName);
         string GetSidFromDomainName(string domainName);
         string ConvertWellKnownPrincipal(string sid, string domain);
         bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
@@ -108,7 +108,7 @@ namespace SharpHoundCommonLib
         /// <param name="throwException">Throw exceptions rather than logging the errors directly</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
         IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
-            string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false,
+            string[] props, CancellationToken cancellationToken, string domainName, bool includeAcl = false,
             bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false,
             bool throwException = false);
 
@@ -130,7 +130,7 @@ namespace SharpHoundCommonLib
         /// <param name="throwException">Throw exceptions rather than logging the errors directly</param>
         /// <returns>All LDAP search results matching the specified parameters</returns>
         IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
-            string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false,
+            string[] props, string domainName, bool includeAcl = false, bool showDeleted = false,
             string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false);
 
         Forest GetForest(string domainName = null);

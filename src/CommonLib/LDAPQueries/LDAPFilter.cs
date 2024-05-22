@@ -129,6 +129,18 @@ namespace SharpHoundCommonLib.LDAPQueries
 
             return this;
         }
+        
+        /// <summary>
+        ///     Add a filter that will include TrustedDomain objects
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public LDAPFilter AddTrustedDomains(params string[] conditions)
+        {
+            _filterParts.Add(BuildString("(objectclass=trustedDomain)", conditions));
+
+            return this;
+        }
 
         /// <summary>
         ///     Add a filter that will include Container objects

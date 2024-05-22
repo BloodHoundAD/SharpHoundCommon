@@ -225,14 +225,14 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public string[] GetUserGlobalCatalogMatches(string name)
+        public string[] GetUserGlobalCatalogMatches(string name, string domain)
         {
             var tempName = name.ToLower();
             if (Cache.GetGCCache(tempName, out var sids))
                 return sids;
 
             var query = new LDAPFilter().AddUsers($"samaccountname={tempName}").GetFilter();
-            var results = QueryLDAP(query, SearchScope.Subtree, new[] { "objectsid" }, globalCatalog: true)
+            var results = QueryLDAP(query, SearchScope.Subtree, new[] { "objectsid" },domain, globalCatalog: true)
                 .Select(x => x.GetSid()).Where(x => x != null).ToArray();
             Cache.AddGCCache(tempName, results);
             return results;
@@ -305,7 +305,7 @@ namespace SharpHoundCommonLib
             if (Cache.GetIDType(sid, out var type))
                 return type;
 
-            var rDomain = GetDomainNameFromSid(sid) ?? domain;
+            var rDomain = GetDomainNameFromSid(sid, domain) ?? domain;
 
             var result =
                 QueryLDAP(CommonFilters.SpecificSID(sid), SearchScope.Subtree, CommonProperties.TypeResolutionProps,
@@ -346,7 +346,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="sid"></param>
         /// <returns></returns>
-        public string GetDomainNameFromSid(string sid)
+        public string GetDomainNameFromSid(string sid, string domainName)
         {
             try
             {
@@ -359,9 +359,16 @@ namespace SharpHoundCommonLib
 
                 if (Cache.GetDomainSidMapping(domainSid, out var domain))
                     return domain;
-
+                
+                if (CachedDomainInfo.TryGetValue(sid, out var info))
+                {
+                    Cache.AddDomainSidMapping(domainSid, info.DomainFQDN);
+                    Cache.AddDomainSidMapping(info.DomainFQDN, domainSid);
+                    return info.DomainFQDN;
+                }
+                
                 _log.LogDebug("No cache hit for {DomainSid}", domainSid);
-                domain = GetDomainNameFromSidLdap(domainSid);
+                domain = GetDomainNameFromSidLdap(domainSid, domainName);
                 _log.LogDebug("Resolved to {Domain}", domain);
 
                 //Cache both to and from so we can use this later
@@ -873,12 +880,12 @@ namespace SharpHoundCommonLib
         ///     Thrown when an error occurs during LDAP query (only when throwException = true)
         /// </exception>
         public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
-            string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false,
+            string[] props, CancellationToken cancellationToken, string domainName, bool includeAcl = false,
             bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false,
             bool throwException = false)
         {
             var queryParams = SetupLDAPQueryFilter(
-                ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
+                ldapFilter, scope, props, domainName, includeAcl, includeAcl, adsPath, globalCatalog, skipCache);
 
             if (queryParams.Exception != null)
             {
@@ -1018,7 +1025,7 @@ namespace SharpHoundCommonLib
             }
         }
 
-        private LdapConnectionWrapper CreateNewConnection(string domainName = null, bool globalCatalog = false,
+        private LdapConnectionWrapper CreateNewConnection(string domainName, bool globalCatalog = false,
             bool skipCache = false)
         {
             var task = Task.Run(() => CreateLDAPConnectionWrapper(domainName, skipCache, _ldapConfig.AuthType, globalCatalog));
@@ -1054,7 +1061,7 @@ namespace SharpHoundCommonLib
         ///     Thrown when an error occurs during LDAP query (only when throwException = true)
         /// </exception>
         public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
-            string[] props, string domainName = null, bool includeAcl = false, bool showDeleted = false,
+            string[] props, string domainName, bool includeAcl = false, bool showDeleted = false,
             string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false)
         {
             return QueryLDAP(ldapFilter, scope, props, new CancellationToken(), domainName, includeAcl, showDeleted,
@@ -1175,8 +1182,8 @@ namespace SharpHoundCommonLib
         /// <param name="ldapFilter">LDAP filter</param>
         /// <param name="scope">SearchScope to query</param>
         /// <param name="props">LDAP properties to fetch for each object</param>
-        /// <param name="includeAcl">Include the DACL and Owner values in the NTSecurityDescriptor</param>
         /// <param name="domainName">Domain to query</param>
+        /// <param name="includeAcl">Include the DACL and Owner values in the NTSecurityDescriptor</param>
         /// <param name="showDeleted">Include deleted objects</param>
         /// <param name="adsPath">ADS path to limit the query too</param>
         /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
@@ -1186,9 +1193,9 @@ namespace SharpHoundCommonLib
         /// </param>
         /// <returns>Tuple of LdapConnection, SearchRequest, PageResultRequestControl and LDAPQueryException</returns>
         // ReSharper disable once MemberCanBePrivate.Global
-        internal LDAPQueryParams SetupLDAPQueryFilter(
-            string ldapFilter,
-            SearchScope scope, string[] props, bool includeAcl = false, string domainName = null,
+        internal LDAPQueryParams SetupLDAPQueryFilter(string ldapFilter,
+            SearchScope scope, string[] props, string domainName,
+            bool includeAcl = false,
             bool showDeleted = false,
             string adsPath = null, bool globalCatalog = false, bool skipCache = false)
         {
@@ -1292,28 +1299,26 @@ namespace SharpHoundCommonLib
             _ldapConfig = config;
         }
 
-        private string GetDomainNameFromSidLdap(string sid)
+        private string GetDomainNameFromSidLdap(string sid, string domain)
         {
-            var hexSid = Helpers.ConvertSidToHexSid(sid);
-
-            if (hexSid == null)
-                return null;
-
             //Search using objectsid first
+            var filter = new LDAPFilter().AddDomains().AddFilter(CommonFilters.SpecificSID(sid), true);
             var result =
-                QueryLDAP($"(&(objectclass=domain)(objectsid={hexSid}))", SearchScope.Subtree,
-                    new[] { "distinguishedname" }, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+                QueryLDAP(filter.GetFilter(), SearchScope.Subtree,
+                    new[] { LDAPProperties.DistinguishedName }, domain, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result != null)
             {
                 var domainName = Helpers.DistinguishedNameToDomain(result.DistinguishedName);
                 return domainName;
             }
+            
+            filter = new LDAPFilter().AddTrustedDomains().AddFilter($"(securityidentifier={sid})", true);
 
             //Try trusteddomain objects with the securityidentifier attribute
             result =
-                QueryLDAP($"(&(objectclass=trusteddomain)(securityidentifier={sid}))", SearchScope.Subtree,
-                    new[] { "cn" }, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
+                QueryLDAP(filter.GetFilter(), SearchScope.Subtree,
+                    new[] { LDAPProperties.CanonicalName }, domain, globalCatalog: true).DefaultIfEmpty(null).FirstOrDefault();
 
             if (result != null)
             {
@@ -1495,7 +1500,7 @@ namespace SharpHoundCommonLib
         /// <param name="globalCatalog">Use global catalog or not</param>
         /// <returns>A connected LDAP connection or null</returns>
 
-        private async Task<LdapConnectionWrapper> CreateLDAPConnectionWrapper(string domainName = null, bool skipCache = false,
+        private async Task<LdapConnectionWrapper> CreateLDAPConnectionWrapper(string domainName, bool skipCache = false,
             AuthType authType = AuthType.Kerberos, bool globalCatalog = false)
         {
             // Step 1: If domain passed in is non-null, skip this step
@@ -1812,6 +1817,7 @@ namespace SharpHoundCommonLib
                 var entry = response.Entries[0];
                 var baseDN = entry.GetProperty(LDAPProperties.RootDomainNamingContext).ToUpper().Trim();
                 var configurationDN = entry.GetProperty(LDAPProperties.ConfigurationNamingContext).ToUpper().Trim();
+                var schemaDN = entry.GetProperty(LDAPProperties.SchemaNamingContext).ToUpper().Trim();
                 var domainname = Helpers.DistinguishedNameToDomain(baseDN).ToUpper().Trim();
                 var servername = entry.GetProperty(LDAPProperties.ServerName);
                 var compName = servername.Substring(0, servername.IndexOf(',')).Substring(3).Trim();
@@ -1821,7 +1827,8 @@ namespace SharpHoundCommonLib
                 {
                     DomainConfigurationPath = configurationDN,
                     DomainSearchBase = baseDN,
-                    DomainFQDN = domainname
+                    DomainFQDN = domainname,
+                    SchemaPath = schemaDN
                 }, fullServerName);
             }
             catch (LdapException e)
@@ -2025,7 +2032,7 @@ namespace SharpHoundCommonLib
         /// <param name="domainName"></param>
         /// <param name="defaultRangeSize"></param>
         /// <returns></returns>
-        public int GetDomainRangeSize(string domainName = null, int defaultRangeSize = 750)
+        public int GetDomainRangeSize(string domainName, int defaultRangeSize = 750)
         {
             var domainPath = DomainNameToDistinguishedName(domainName);
             //Default to a page size of 750 for safety
@@ -2042,7 +2049,7 @@ namespace SharpHoundCommonLib
             }
 
             var configPath = CommonPaths.CreateDNPath(CommonPaths.QueryPolicyPath, domainPath);
-            var enumerable = QueryLDAP("(objectclass=*)", SearchScope.Base, null, adsPath: configPath);
+            var enumerable = QueryLDAP("(objectclass=*)", SearchScope.Base, null, domainName, adsPath: configPath);
             var config = enumerable.DefaultIfEmpty(null).FirstOrDefault();
             var pageSize = config?.GetArrayProperty(LDAPProperties.LdapAdminLimits)
                 .FirstOrDefault(x => x.StartsWith("MaxPageSize", StringComparison.OrdinalIgnoreCase));
