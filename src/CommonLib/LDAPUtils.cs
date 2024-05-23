@@ -527,7 +527,7 @@ namespace SharpHoundCommonLib
                 yield break;
             }
 
-            if (connWrapper == null)
+            if (connWrapper.Connection == null)
                 yield break;
 
             var conn = connWrapper.Connection;
@@ -1691,7 +1691,7 @@ namespace SharpHoundCommonLib
             //Always try SSL first
             var connection = CreateConnectionHelper(target, true, authType, globalCatalog);
             var connectionResult = TestConnection(connection);
-            DomainInfo info = null;
+            DomainInfo info;
 
             if (connectionResult.Success)
             {
@@ -1708,11 +1708,14 @@ namespace SharpHoundCommonLib
                     if (!string.IsNullOrEmpty(baseDomainInfo.DomainSID))
                     {
                         Cache.AddDomainSidMapping(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainSID);
+                        if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
+                        {
+                            Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);    
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
                     {
-                        Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);
                         _netbiosCache.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainNetbiosName);
                     }
 
@@ -1902,8 +1905,10 @@ namespace SharpHoundCommonLib
             try
             {
                 //This ldap filter searches for domain controllers
+                //Searches for any accounts with a UAC value inclusive of 8192 bitwise
+                //8192 is the flag for SERVER_TRUST_ACCOUNT, which is set only on Domain Controllers
                 var searchRequest = new SearchRequest(info.DomainSearchBase,
-                    "(userAccountControl:1.2.840.113556.1.4.803:=8192)",
+                    "(&(objectCategory=computer)(userAccountControl:1.2.840.113556.1.4.803:=8192))",
                     SearchScope.Subtree, new[] { "objectsid"});
 
                 var response = (SearchResponse)connection.SendRequest(searchRequest);
@@ -1922,30 +1927,7 @@ namespace SharpHoundCommonLib
                 return "";
             }
         }
-        //
-        // private DomainWrapper BuildDomainInfo(LdapConnection connection)
-        // {
-        //     try
-        //     {
-        //         //Do an initial search request to get the rootDSE
-        //         var searchRequest = new SearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
-        //             SearchScope.Base, null);
-        //         searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
-        //
-        //         var response = (SearchResponse)connection.SendRequest(searchRequest);
-        //         if (response == null)
-        //         {
-        //             return (false, 0);
-        //         }
-        //
-        //         return response.Entries.Count > 0 ? (true, 0) : (false, 0);
-        //     }
-        //     catch (LdapException e)
-        //     {
-        //         return (false, e.ErrorCode);
-        //     }
-        // }
-
+        
         private void SetupLdapConnection(LdapConnection connection, bool ssl, AuthType authType)
         {
             //These options are important!
