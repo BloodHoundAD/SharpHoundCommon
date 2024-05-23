@@ -1686,7 +1686,7 @@ namespace SharpHoundCommonLib
             //Always try SSL first
             var connection = CreateConnectionHelper(target, true, authType, globalCatalog);
             var connectionResult = TestConnection(connection);
-            DomainInfo info = null;
+            DomainInfo info;
 
             if (connectionResult.Success)
             {
