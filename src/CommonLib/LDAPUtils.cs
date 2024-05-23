@@ -520,7 +520,7 @@ namespace SharpHoundCommonLib
                 yield break;
             }
 
-            if (connWrapper == null)
+            if (connWrapper.Connection == null)
                 yield break;
 
             var conn = connWrapper.Connection;
@@ -1703,11 +1703,14 @@ namespace SharpHoundCommonLib
                     if (!string.IsNullOrEmpty(baseDomainInfo.DomainSID))
                     {
                         Cache.AddDomainSidMapping(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainSID);
+                        if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
+                        {
+                            Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);    
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
                     {
-                        Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);
                         _netbiosCache.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainNetbiosName);
                     }
 
