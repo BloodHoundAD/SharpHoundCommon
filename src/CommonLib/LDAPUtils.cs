@@ -1707,6 +1707,7 @@ namespace SharpHoundCommonLib
                     if (!string.IsNullOrEmpty(baseDomainInfo.DomainSID))
                     {
                         Cache.AddDomainSidMapping(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainSID);
+                        Cache.AddDomainSidMapping(baseDomainInfo.DomainSID, baseDomainInfo.DomainFQDN);
                         if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
                         {
                             Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);    
