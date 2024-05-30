@@ -73,6 +73,7 @@ namespace SharpHoundCommonLib.Processors
             }
 
             _log.LogTrace("Requesting schema from {Schema}", schema);
+            
             foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
                          new[] {LDAPProperties.SchemaIDGUID, LDAPProperties.Name}, adsPath: schema))
             {

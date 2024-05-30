@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
@@ -714,6 +716,37 @@ namespace CommonLibTest.Facades
             commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
             _seenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, sid);
             return true;
+        }
+
+        public bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain,
+            out TypedPrincipal principal)
+        {
+            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+            {
+                //The everyone and auth users principals are special and will be converted to the domain equivalent
+                if (sid.Value is "S-1-1-0" or "S-1-5-11")
+                {
+                    GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
+                    return true;
+                }
+
+                //Use the computer object id + the RID of the sid we looked up to create our new principal
+                principal = new TypedPrincipal
+                {
+                    ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
+                    ObjectType = common.ObjectType switch
+                    {
+                        Label.User => Label.LocalUser,
+                        Label.Group => Label.LocalGroup,
+                        _ => common.ObjectType
+                    }
+                };
+
+                return true;
+            }
+
+            principal = null;
+            return false;
         }
 
         public void AddDomainController(string domainControllerSID)
