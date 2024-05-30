@@ -32,14 +32,12 @@ namespace SharpHoundCommonLib
         }
 
         [DataMember] public ConcurrentDictionary<string, string[]> GlobalCatalogCache { get; private set; }
-
         [DataMember] public ConcurrentDictionary<string, Label> IdToTypeCache { get; private set; }
-
-        [DataMember] public ConcurrentDictionary<string, string> MachineSidCache { get; private set; }
-
-        [DataMember] public ConcurrentDictionary<string, string> SIDToDomainCache { get; private set; }
-
         [DataMember] public ConcurrentDictionary<string, string> ValueToIdCache { get; private set; }
+        [DataMember] public ConcurrentDictionary<string, string> MachineSidCache { get; private set; }
+        [DataMember] public ConcurrentDictionary<string, string> SIDToDomainCache { get; private set; }
+        [DataMember] public ConcurrentDictionary<string, string> DomainNameToSidCache { get; private set; }
+        [DataMember] public ConcurrentDictionary<string, DomainInfo> DomainSidToDomainInfoCache { get; private set; }
         [DataMember] public DateTime CacheCreationDate { get; set; }
         [DataMember] public Version CacheCreationVersion { get; set; }
 
@@ -100,12 +98,12 @@ namespace SharpHoundCommonLib
             CacheInstance?.IdToTypeCache.TryAdd(key, value);
         }
 
-        internal static void AddGCCache(string key, string[] value)
+        internal static void AddGlobalCatalogMatches(string key, string[] value)
         {
             CacheInstance?.GlobalCatalogCache?.TryAdd(key, value);
         }
 
-        internal static bool GetGCCache(string key, out string[] value)
+        internal static bool GetGlobalCatalogMatches(string key, out string[] value)
         {
             if (CacheInstance != null) return CacheInstance.GlobalCatalogCache.TryGetValue(key, out value);
             value = null;

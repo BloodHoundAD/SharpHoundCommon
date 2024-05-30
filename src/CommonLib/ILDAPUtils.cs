@@ -27,6 +27,7 @@ namespace SharpHoundCommonLib
         public bool GlobalCatalog;
         public bool SkipCache;
         public bool ThrowException;
+        public bool Paged;
     }
 
     public interface ILDAPUtils
@@ -34,15 +35,13 @@ namespace SharpHoundCommonLib
         void SetLDAPConfig(LDAPConfig config);
         bool TestLDAPConfig(string domain);
         string[] GetUserGlobalCatalogMatches(string name, string domain);
-        TypedPrincipal ResolveIDAndType(string id, string fallbackDomain);
+        bool ResolveIDAndType(string id, string domain, out TypedPrincipal resolvedPrincipal);
         TypedPrincipal ResolveCertTemplateByProperty(string propValue, string propName, string containerDN, string domainName);
-        Label LookupSidType(string sid, string domain);
-        Label LookupGuidType(string guid, string domain);
-        string GetDomainNameFromSid(string sid, string domainName);
-        string GetSidFromDomainName(string domainName);
+        bool LookupObjectType(string id, string domain, out Label objectType);
+        bool GetDomainNameFromSid(string sid, out string domainName);
+        Task<(bool, string)> GetSidFromDomainName(string domainName);
         string ConvertWellKnownPrincipal(string sid, string domain);
         bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal);
-
         bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain,
             out TypedPrincipal principal);
         Domain GetDomain(string domainName = null);
@@ -73,14 +72,14 @@ namespace SharpHoundCommonLib
         /// <param name="name"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        TypedPrincipal ResolveAccountName(string name, string domain);
+        bool ResolveAccountName(string name, string domain, out TypedPrincipal resolvedAccount);
 
         /// <summary>
         ///     Attempts to convert a distinguishedname to its corresponding ID and object type.
         /// </summary>
         /// <param name="dn">DistinguishedName</param>
         /// <returns>A <c>TypedPrincipal</c> object with the SID and Label</returns>
-        TypedPrincipal ResolveDistinguishedName(string dn);
+        bool ResolveDistinguishedName(string dn, out TypedPrincipal resolvedPrincipal);
 
         /// <summary>
         ///     Performs an LDAP query using the parameters specified by the user.
@@ -110,7 +109,7 @@ namespace SharpHoundCommonLib
         IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, CancellationToken cancellationToken, string domainName, bool includeAcl = false,
             bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false,
-            bool throwException = false);
+            bool throwException = false, bool paged = false);
 
         /// <summary>
         ///     Performs an LDAP query using the parameters specified by the user.
@@ -131,12 +130,9 @@ namespace SharpHoundCommonLib
         /// <returns>All LDAP search results matching the specified parameters</returns>
         IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
             string[] props, string domainName, bool includeAcl = false, bool showDeleted = false,
-            string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false);
+            string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false, bool paged = false);
 
         Forest GetForest(string domainName = null);
-        string GetConfigurationPath(string domainName);
-        string GetSchemaPath(string domainName);
-
         ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
         string BuildLdapPath(string dnPath, string domain);
         bool IsDomainController(string computerObjectId, string domainName);

@@ -228,18 +228,18 @@ namespace SharpHoundCommonLib
         public string[] GetUserGlobalCatalogMatches(string name, string domain)
         {
             var tempName = name.ToLower();
-            if (Cache.GetGCCache(tempName, out var sids))
+            if (Cache.GetGlobalCatalogMatches(tempName, out var sids))
                 return sids;
 
             var query = new LDAPFilter().AddUsers($"samaccountname={tempName}").GetFilter();
             var results = QueryLDAP(query, SearchScope.Subtree, new[] { "objectsid" },domain, globalCatalog: true)
                 .Select(x => x.GetSid()).Where(x => x != null).ToArray();
-            Cache.AddGCCache(tempName, results);
+            Cache.AddGlobalCatalogMatches(tempName, results);
             return results;
         }
 
         /// <summary>
-        ///     Uses an LDAP lookup to attempt to find the Label for a given SID
+        ///     Uses an LDAP lookup to attempt to find the Label for a given SID/GUID
         ///     Will also convert to a well known principal ID if needed
         /// </summary>
         /// <param name="id"></param>
@@ -348,36 +348,43 @@ namespace SharpHoundCommonLib
         /// <returns></returns>
         public string GetDomainNameFromSid(string sid, string domainName)
         {
+            string domainSid;
             try
             {
                 var parsedSid = new SecurityIdentifier(sid);
-                var domainSid = parsedSid.AccountDomainSid?.Value.ToUpper();
-                if (domainSid == null)
-                    return null;
-
-                _log.LogDebug("Resolving sid {DomainSid}", domainSid);
-
-                if (Cache.GetDomainSidMapping(domainSid, out var domain))
-                    return domain;
+                domainSid = parsedSid.AccountDomainSid?.Value.ToUpper();
+            }
+            catch
+            {
+                return null;
+            }
+            
+            if (domainSid == null)
+                return null;
+            
+            if (Cache.GetDomainSidMapping(domainSid, out var domain))
+                return domain;
                 
-                if (CachedDomainInfo.TryGetValue(sid, out var info))
-                {
-                    Cache.AddDomainSidMapping(domainSid, info.DomainFQDN);
-                    Cache.AddDomainSidMapping(info.DomainFQDN, domainSid);
-                    return info.DomainFQDN;
-                }
-                
-                _log.LogDebug("No cache hit for {DomainSid}", domainSid);
+            if (CachedDomainInfo.TryGetValue(sid, out var info))
+            {
+                Cache.AddDomainSidMapping(domainSid, info.DomainFQDN);
+                Cache.AddDomainSidMapping(info.DomainFQDN, domainSid);
+                return info.DomainFQDN;
+            }
+            
+            _log.LogDebug("Resolving sid {DomainSid} to domain name", domainSid);
+            
+            try
+            {
                 domain = GetDomainNameFromSidLdap(domainSid, domainName);
-                _log.LogDebug("Resolved to {Domain}", domain);
-
                 //Cache both to and from so we can use this later
                 if (domain != null)
                 {
+                    _log.LogDebug("Resolved {DomainSid} to {Domain}",domainSid, domain);
                     Cache.AddDomainSidMapping(domainSid, domain);
                     Cache.AddDomainSidMapping(domain, domainSid);
                 }
-
+                
                 return domain;
             }
             catch
@@ -1783,7 +1790,7 @@ namespace SharpHoundCommonLib
             return null;
         }
 
-        private LdapConnectionTestResult TestConnection(LdapConnection connection)
+        private static LdapConnectionTestResult TestConnection(LdapConnection connection)
         {
             try
             {
