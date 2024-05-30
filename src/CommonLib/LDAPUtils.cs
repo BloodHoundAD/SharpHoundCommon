@@ -402,6 +402,10 @@ namespace SharpHoundCommonLib
             {
                 Cache.AddDomainSidMapping(sid, tempDomainName);
                 Cache.AddDomainSidMapping(tempDomainName, sid);
+                if (tempDomainName != domainName)
+                {
+                    Cache.AddDomainSidMapping(domainName, sid);
+                }
             }
 
             return sid;
@@ -1694,7 +1698,7 @@ namespace SharpHoundCommonLib
                 if (!CachedDomainInfo.ContainsKey(domain))
                 {
                     var baseDomainInfo = connectionResult.DomainInfo;
-                    baseDomainInfo.DomainSID =  GetDomainSid(connection, baseDomainInfo);
+                    baseDomainInfo.DomainSID =  GetDomainSidFromConnection(connection, baseDomainInfo);
                     baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
                     _log.LogInformation("Got info for domain: {info}", baseDomainInfo);
                     CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
@@ -1746,7 +1750,7 @@ namespace SharpHoundCommonLib
                 if (!CachedDomainInfo.ContainsKey(domain.ToUpper()))
                 {
                     var baseDomainInfo = connectionResult.DomainInfo;
-                    baseDomainInfo.DomainSID =  GetDomainSid(connection, baseDomainInfo);
+                    baseDomainInfo.DomainSID =  GetDomainSidFromConnection(connection, baseDomainInfo);
                     baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
                     CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
                     CachedDomainInfo.TryAdd(baseDomainInfo.DomainNetbiosName, baseDomainInfo);
@@ -1893,7 +1897,7 @@ namespace SharpHoundCommonLib
             }
         }
 
-        private string GetDomainSid(LdapConnection connection, DomainInfo info)
+        private string GetDomainSidFromConnection(LdapConnection connection, DomainInfo info)
         {
             try
             {
