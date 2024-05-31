@@ -609,6 +609,90 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.CSVComputerStatus.ToCsv
   nameWithType: CSVComputerStatus.ToCsv
+- uid: SharpHoundCommonLib.DomainInfo
+  name: DomainInfo
+  href: api/SharpHoundCommonLib.DomainInfo.html
+  commentId: T:SharpHoundCommonLib.DomainInfo
+  fullName: SharpHoundCommonLib.DomainInfo
+  nameWithType: DomainInfo
+- uid: SharpHoundCommonLib.DomainInfo.DomainConfigurationPath
+  name: DomainConfigurationPath
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainConfigurationPath
+  commentId: P:SharpHoundCommonLib.DomainInfo.DomainConfigurationPath
+  fullName: SharpHoundCommonLib.DomainInfo.DomainConfigurationPath
+  nameWithType: DomainInfo.DomainConfigurationPath
+- uid: SharpHoundCommonLib.DomainInfo.DomainConfigurationPath*
+  name: DomainConfigurationPath
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainConfigurationPath_
+  commentId: Overload:SharpHoundCommonLib.DomainInfo.DomainConfigurationPath
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.DomainInfo.DomainConfigurationPath
+  nameWithType: DomainInfo.DomainConfigurationPath
+- uid: SharpHoundCommonLib.DomainInfo.DomainFQDN
+  name: DomainFQDN
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainFQDN
+  commentId: P:SharpHoundCommonLib.DomainInfo.DomainFQDN
+  fullName: SharpHoundCommonLib.DomainInfo.DomainFQDN
+  nameWithType: DomainInfo.DomainFQDN
+- uid: SharpHoundCommonLib.DomainInfo.DomainFQDN*
+  name: DomainFQDN
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainFQDN_
+  commentId: Overload:SharpHoundCommonLib.DomainInfo.DomainFQDN
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.DomainInfo.DomainFQDN
+  nameWithType: DomainInfo.DomainFQDN
+- uid: SharpHoundCommonLib.DomainInfo.DomainNetbiosName
+  name: DomainNetbiosName
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainNetbiosName
+  commentId: P:SharpHoundCommonLib.DomainInfo.DomainNetbiosName
+  fullName: SharpHoundCommonLib.DomainInfo.DomainNetbiosName
+  nameWithType: DomainInfo.DomainNetbiosName
+- uid: SharpHoundCommonLib.DomainInfo.DomainNetbiosName*
+  name: DomainNetbiosName
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainNetbiosName_
+  commentId: Overload:SharpHoundCommonLib.DomainInfo.DomainNetbiosName
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.DomainInfo.DomainNetbiosName
+  nameWithType: DomainInfo.DomainNetbiosName
+- uid: SharpHoundCommonLib.DomainInfo.DomainSearchBase
+  name: DomainSearchBase
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainSearchBase
+  commentId: P:SharpHoundCommonLib.DomainInfo.DomainSearchBase
+  fullName: SharpHoundCommonLib.DomainInfo.DomainSearchBase
+  nameWithType: DomainInfo.DomainSearchBase
+- uid: SharpHoundCommonLib.DomainInfo.DomainSearchBase*
+  name: DomainSearchBase
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainSearchBase_
+  commentId: Overload:SharpHoundCommonLib.DomainInfo.DomainSearchBase
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.DomainInfo.DomainSearchBase
+  nameWithType: DomainInfo.DomainSearchBase
+- uid: SharpHoundCommonLib.DomainInfo.DomainSID
+  name: DomainSID
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainSID
+  commentId: P:SharpHoundCommonLib.DomainInfo.DomainSID
+  fullName: SharpHoundCommonLib.DomainInfo.DomainSID
+  nameWithType: DomainInfo.DomainSID
+- uid: SharpHoundCommonLib.DomainInfo.DomainSID*
+  name: DomainSID
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_DomainSID_
+  commentId: Overload:SharpHoundCommonLib.DomainInfo.DomainSID
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.DomainInfo.DomainSID
+  nameWithType: DomainInfo.DomainSID
+- uid: SharpHoundCommonLib.DomainInfo.ToString
+  name: ToString()
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_ToString
+  commentId: M:SharpHoundCommonLib.DomainInfo.ToString
+  fullName: SharpHoundCommonLib.DomainInfo.ToString()
+  nameWithType: DomainInfo.ToString()
+- uid: SharpHoundCommonLib.DomainInfo.ToString*
+  name: ToString
+  href: api/SharpHoundCommonLib.DomainInfo.html#SharpHoundCommonLib_DomainInfo_ToString_
+  commentId: Overload:SharpHoundCommonLib.DomainInfo.ToString
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.DomainInfo.ToString
+  nameWithType: DomainInfo.ToString
 - uid: SharpHoundCommonLib.EdgeNames
   name: EdgeNames
   href: api/SharpHoundCommonLib.EdgeNames.html
@@ -1203,6 +1287,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.LdapErrorCodes.Busy
   fullName: SharpHoundCommonLib.Enums.LdapErrorCodes.Busy
   nameWithType: LdapErrorCodes.Busy
+- uid: SharpHoundCommonLib.Enums.LdapErrorCodes.KerberosAuthType
+  name: KerberosAuthType
+  href: api/SharpHoundCommonLib.Enums.LdapErrorCodes.html#SharpHoundCommonLib_Enums_LdapErrorCodes_KerberosAuthType
+  commentId: F:SharpHoundCommonLib.Enums.LdapErrorCodes.KerberosAuthType
+  fullName: SharpHoundCommonLib.Enums.LdapErrorCodes.KerberosAuthType
+  nameWithType: LdapErrorCodes.KerberosAuthType
 - uid: SharpHoundCommonLib.Enums.LdapErrorCodes.LocalError
   name: LocalError
   href: api/SharpHoundCommonLib.Enums.LdapErrorCodes.html#SharpHoundCommonLib_Enums_LdapErrorCodes_LocalError
@@ -2295,6 +2385,57 @@ references:
   commentId: N:SharpHoundCommonLib.Exceptions
   fullName: SharpHoundCommonLib.Exceptions
   nameWithType: SharpHoundCommonLib.Exceptions
+- uid: SharpHoundCommonLib.Exceptions.LdapAuthenticationException
+  name: LdapAuthenticationException
+  href: api/SharpHoundCommonLib.Exceptions.LdapAuthenticationException.html
+  commentId: T:SharpHoundCommonLib.Exceptions.LdapAuthenticationException
+  fullName: SharpHoundCommonLib.Exceptions.LdapAuthenticationException
+  nameWithType: LdapAuthenticationException
+- uid: SharpHoundCommonLib.Exceptions.LdapAuthenticationException.#ctor(System.DirectoryServices.Protocols.LdapException)
+  name: LdapAuthenticationException(LdapException)
+  href: api/SharpHoundCommonLib.Exceptions.LdapAuthenticationException.html#SharpHoundCommonLib_Exceptions_LdapAuthenticationException__ctor_System_DirectoryServices_Protocols_LdapException_
+  commentId: M:SharpHoundCommonLib.Exceptions.LdapAuthenticationException.#ctor(System.DirectoryServices.Protocols.LdapException)
+  fullName: SharpHoundCommonLib.Exceptions.LdapAuthenticationException.LdapAuthenticationException(System.DirectoryServices.Protocols.LdapException)
+  nameWithType: LdapAuthenticationException.LdapAuthenticationException(LdapException)
+- uid: SharpHoundCommonLib.Exceptions.LdapAuthenticationException.#ctor*
+  name: LdapAuthenticationException
+  href: api/SharpHoundCommonLib.Exceptions.LdapAuthenticationException.html#SharpHoundCommonLib_Exceptions_LdapAuthenticationException__ctor_
+  commentId: Overload:SharpHoundCommonLib.Exceptions.LdapAuthenticationException.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Exceptions.LdapAuthenticationException.LdapAuthenticationException
+  nameWithType: LdapAuthenticationException.LdapAuthenticationException
+- uid: SharpHoundCommonLib.Exceptions.LdapConnectionException
+  name: LdapConnectionException
+  href: api/SharpHoundCommonLib.Exceptions.LdapConnectionException.html
+  commentId: T:SharpHoundCommonLib.Exceptions.LdapConnectionException
+  fullName: SharpHoundCommonLib.Exceptions.LdapConnectionException
+  nameWithType: LdapConnectionException
+- uid: SharpHoundCommonLib.Exceptions.LdapConnectionException.#ctor(System.DirectoryServices.Protocols.LdapException)
+  name: LdapConnectionException(LdapException)
+  href: api/SharpHoundCommonLib.Exceptions.LdapConnectionException.html#SharpHoundCommonLib_Exceptions_LdapConnectionException__ctor_System_DirectoryServices_Protocols_LdapException_
+  commentId: M:SharpHoundCommonLib.Exceptions.LdapConnectionException.#ctor(System.DirectoryServices.Protocols.LdapException)
+  fullName: SharpHoundCommonLib.Exceptions.LdapConnectionException.LdapConnectionException(System.DirectoryServices.Protocols.LdapException)
+  nameWithType: LdapConnectionException.LdapConnectionException(LdapException)
+- uid: SharpHoundCommonLib.Exceptions.LdapConnectionException.#ctor*
+  name: LdapConnectionException
+  href: api/SharpHoundCommonLib.Exceptions.LdapConnectionException.html#SharpHoundCommonLib_Exceptions_LdapConnectionException__ctor_
+  commentId: Overload:SharpHoundCommonLib.Exceptions.LdapConnectionException.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Exceptions.LdapConnectionException.LdapConnectionException
+  nameWithType: LdapConnectionException.LdapConnectionException
+- uid: SharpHoundCommonLib.Exceptions.LdapConnectionException.ErrorCode
+  name: ErrorCode
+  href: api/SharpHoundCommonLib.Exceptions.LdapConnectionException.html#SharpHoundCommonLib_Exceptions_LdapConnectionException_ErrorCode
+  commentId: P:SharpHoundCommonLib.Exceptions.LdapConnectionException.ErrorCode
+  fullName: SharpHoundCommonLib.Exceptions.LdapConnectionException.ErrorCode
+  nameWithType: LdapConnectionException.ErrorCode
+- uid: SharpHoundCommonLib.Exceptions.LdapConnectionException.ErrorCode*
+  name: ErrorCode
+  href: api/SharpHoundCommonLib.Exceptions.LdapConnectionException.html#SharpHoundCommonLib_Exceptions_LdapConnectionException_ErrorCode_
+  commentId: Overload:SharpHoundCommonLib.Exceptions.LdapConnectionException.ErrorCode
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Exceptions.LdapConnectionException.ErrorCode
+  nameWithType: LdapConnectionException.ErrorCode
 - uid: SharpHoundCommonLib.Exceptions.LDAPQueryException
   name: LDAPQueryException
   href: api/SharpHoundCommonLib.Exceptions.LDAPQueryException.html
@@ -2326,6 +2467,38 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Exceptions.LDAPQueryException.LDAPQueryException
   nameWithType: LDAPQueryException.LDAPQueryException
+- uid: SharpHoundCommonLib.Exceptions.NoLdapDataException
+  name: NoLdapDataException
+  href: api/SharpHoundCommonLib.Exceptions.NoLdapDataException.html
+  commentId: T:SharpHoundCommonLib.Exceptions.NoLdapDataException
+  fullName: SharpHoundCommonLib.Exceptions.NoLdapDataException
+  nameWithType: NoLdapDataException
+- uid: SharpHoundCommonLib.Exceptions.NoLdapDataException.#ctor(System.Int32)
+  name: NoLdapDataException(Int32)
+  href: api/SharpHoundCommonLib.Exceptions.NoLdapDataException.html#SharpHoundCommonLib_Exceptions_NoLdapDataException__ctor_System_Int32_
+  commentId: M:SharpHoundCommonLib.Exceptions.NoLdapDataException.#ctor(System.Int32)
+  fullName: SharpHoundCommonLib.Exceptions.NoLdapDataException.NoLdapDataException(System.Int32)
+  nameWithType: NoLdapDataException.NoLdapDataException(Int32)
+- uid: SharpHoundCommonLib.Exceptions.NoLdapDataException.#ctor*
+  name: NoLdapDataException
+  href: api/SharpHoundCommonLib.Exceptions.NoLdapDataException.html#SharpHoundCommonLib_Exceptions_NoLdapDataException__ctor_
+  commentId: Overload:SharpHoundCommonLib.Exceptions.NoLdapDataException.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Exceptions.NoLdapDataException.NoLdapDataException
+  nameWithType: NoLdapDataException.NoLdapDataException
+- uid: SharpHoundCommonLib.Exceptions.NoLdapDataException.ErrorCode
+  name: ErrorCode
+  href: api/SharpHoundCommonLib.Exceptions.NoLdapDataException.html#SharpHoundCommonLib_Exceptions_NoLdapDataException_ErrorCode
+  commentId: P:SharpHoundCommonLib.Exceptions.NoLdapDataException.ErrorCode
+  fullName: SharpHoundCommonLib.Exceptions.NoLdapDataException.ErrorCode
+  nameWithType: NoLdapDataException.ErrorCode
+- uid: SharpHoundCommonLib.Exceptions.NoLdapDataException.ErrorCode*
+  name: ErrorCode
+  href: api/SharpHoundCommonLib.Exceptions.NoLdapDataException.html#SharpHoundCommonLib_Exceptions_NoLdapDataException_ErrorCode_
+  commentId: Overload:SharpHoundCommonLib.Exceptions.NoLdapDataException.ErrorCode
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Exceptions.NoLdapDataException.ErrorCode
+  nameWithType: NoLdapDataException.ErrorCode
 - uid: SharpHoundCommonLib.Extensions
   name: Extensions
   href: api/SharpHoundCommonLib.Extensions.html
@@ -2781,6 +2954,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILDAPUtils.BuildLdapPath
   nameWithType: ILDAPUtils.BuildLdapPath
+- uid: SharpHoundCommonLib.ILDAPUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier,System.String,System.String,SharpHoundCommonLib.OutputTypes.TypedPrincipal@)
+  name: ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String, out TypedPrincipal)
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_ConvertLocalWellKnownPrincipal_System_Security_Principal_SecurityIdentifier_System_String_System_String_SharpHoundCommonLib_OutputTypes_TypedPrincipal__
+  commentId: M:SharpHoundCommonLib.ILDAPUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier,System.String,System.String,SharpHoundCommonLib.OutputTypes.TypedPrincipal@)
+  name.vb: ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String, ByRef TypedPrincipal)
+  fullName: SharpHoundCommonLib.ILDAPUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier, System.String, System.String, out SharpHoundCommonLib.OutputTypes.TypedPrincipal)
+  fullName.vb: SharpHoundCommonLib.ILDAPUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier, System.String, System.String, ByRef SharpHoundCommonLib.OutputTypes.TypedPrincipal)
+  nameWithType: ILDAPUtils.ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String, out TypedPrincipal)
+  nameWithType.vb: ILDAPUtils.ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String, ByRef TypedPrincipal)
+- uid: SharpHoundCommonLib.ILDAPUtils.ConvertLocalWellKnownPrincipal*
+  name: ConvertLocalWellKnownPrincipal
+  href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_ConvertLocalWellKnownPrincipal_
+  commentId: Overload:SharpHoundCommonLib.ILDAPUtils.ConvertLocalWellKnownPrincipal
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILDAPUtils.ConvertLocalWellKnownPrincipal
+  nameWithType: ILDAPUtils.ConvertLocalWellKnownPrincipal
 - uid: SharpHoundCommonLib.ILDAPUtils.ConvertWellKnownPrincipal(System.String,System.String)
   name: ConvertWellKnownPrincipal(String, String)
   href: api/SharpHoundCommonLib.ILDAPUtils.html#SharpHoundCommonLib_ILDAPUtils_ConvertWellKnownPrincipal_System_String_System_String_
@@ -3408,12 +3597,38 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPConfig.DisableSigning
   nameWithType: LDAPConfig.DisableSigning
-- uid: SharpHoundCommonLib.LDAPConfig.GetPort
-  name: GetPort()
-  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_GetPort
-  commentId: M:SharpHoundCommonLib.LDAPConfig.GetPort
-  fullName: SharpHoundCommonLib.LDAPConfig.GetPort()
-  nameWithType: LDAPConfig.GetPort()
+- uid: SharpHoundCommonLib.LDAPConfig.ForceSSL
+  name: ForceSSL
+  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_ForceSSL
+  commentId: P:SharpHoundCommonLib.LDAPConfig.ForceSSL
+  fullName: SharpHoundCommonLib.LDAPConfig.ForceSSL
+  nameWithType: LDAPConfig.ForceSSL
+- uid: SharpHoundCommonLib.LDAPConfig.ForceSSL*
+  name: ForceSSL
+  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_ForceSSL_
+  commentId: Overload:SharpHoundCommonLib.LDAPConfig.ForceSSL
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConfig.ForceSSL
+  nameWithType: LDAPConfig.ForceSSL
+- uid: SharpHoundCommonLib.LDAPConfig.GetGCPort(System.Boolean)
+  name: GetGCPort(Boolean)
+  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_GetGCPort_System_Boolean_
+  commentId: M:SharpHoundCommonLib.LDAPConfig.GetGCPort(System.Boolean)
+  fullName: SharpHoundCommonLib.LDAPConfig.GetGCPort(System.Boolean)
+  nameWithType: LDAPConfig.GetGCPort(Boolean)
+- uid: SharpHoundCommonLib.LDAPConfig.GetGCPort*
+  name: GetGCPort
+  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_GetGCPort_
+  commentId: Overload:SharpHoundCommonLib.LDAPConfig.GetGCPort
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConfig.GetGCPort
+  nameWithType: LDAPConfig.GetGCPort
+- uid: SharpHoundCommonLib.LDAPConfig.GetPort(System.Boolean)
+  name: GetPort(Boolean)
+  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_GetPort_System_Boolean_
+  commentId: M:SharpHoundCommonLib.LDAPConfig.GetPort(System.Boolean)
+  fullName: SharpHoundCommonLib.LDAPConfig.GetPort(System.Boolean)
+  nameWithType: LDAPConfig.GetPort(Boolean)
 - uid: SharpHoundCommonLib.LDAPConfig.GetPort*
   name: GetPort
   href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_GetPort_
@@ -3460,19 +3675,6 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPConfig.Server
   nameWithType: LDAPConfig.Server
-- uid: SharpHoundCommonLib.LDAPConfig.SSL
-  name: SSL
-  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_SSL
-  commentId: P:SharpHoundCommonLib.LDAPConfig.SSL
-  fullName: SharpHoundCommonLib.LDAPConfig.SSL
-  nameWithType: LDAPConfig.SSL
-- uid: SharpHoundCommonLib.LDAPConfig.SSL*
-  name: SSL
-  href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_SSL_
-  commentId: Overload:SharpHoundCommonLib.LDAPConfig.SSL
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.LDAPConfig.SSL
-  nameWithType: LDAPConfig.SSL
 - uid: SharpHoundCommonLib.LDAPConfig.Username
   name: Username
   href: api/SharpHoundCommonLib.LDAPConfig.html#SharpHoundCommonLib_LDAPConfig_Username
@@ -3486,6 +3688,114 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPConfig.Username
   nameWithType: LDAPConfig.Username
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey
+  name: LDAPConnectionCacheKey
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html
+  commentId: T:SharpHoundCommonLib.LDAPConnectionCacheKey
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey
+  nameWithType: LDAPConnectionCacheKey
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.#ctor(System.String,System.Boolean)
+  name: LDAPConnectionCacheKey(String, Boolean)
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey__ctor_System_String_System_Boolean_
+  commentId: M:SharpHoundCommonLib.LDAPConnectionCacheKey.#ctor(System.String,System.Boolean)
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.LDAPConnectionCacheKey(System.String, System.Boolean)
+  nameWithType: LDAPConnectionCacheKey.LDAPConnectionCacheKey(String, Boolean)
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.#ctor*
+  name: LDAPConnectionCacheKey
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey__ctor_
+  commentId: Overload:SharpHoundCommonLib.LDAPConnectionCacheKey.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.LDAPConnectionCacheKey
+  nameWithType: LDAPConnectionCacheKey.LDAPConnectionCacheKey
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.Domain
+  name: Domain
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_Domain
+  commentId: P:SharpHoundCommonLib.LDAPConnectionCacheKey.Domain
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.Domain
+  nameWithType: LDAPConnectionCacheKey.Domain
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.Domain*
+  name: Domain
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_Domain_
+  commentId: Overload:SharpHoundCommonLib.LDAPConnectionCacheKey.Domain
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.Domain
+  nameWithType: LDAPConnectionCacheKey.Domain
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.Equals(SharpHoundCommonLib.LDAPConnectionCacheKey)
+  name: Equals(LDAPConnectionCacheKey)
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_Equals_SharpHoundCommonLib_LDAPConnectionCacheKey_
+  commentId: M:SharpHoundCommonLib.LDAPConnectionCacheKey.Equals(SharpHoundCommonLib.LDAPConnectionCacheKey)
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.Equals(SharpHoundCommonLib.LDAPConnectionCacheKey)
+  nameWithType: LDAPConnectionCacheKey.Equals(LDAPConnectionCacheKey)
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.Equals(System.Object)
+  name: Equals(Object)
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_Equals_System_Object_
+  commentId: M:SharpHoundCommonLib.LDAPConnectionCacheKey.Equals(System.Object)
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.Equals(System.Object)
+  nameWithType: LDAPConnectionCacheKey.Equals(Object)
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.Equals*
+  name: Equals
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_Equals_
+  commentId: Overload:SharpHoundCommonLib.LDAPConnectionCacheKey.Equals
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.Equals
+  nameWithType: LDAPConnectionCacheKey.Equals
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.GetHashCode
+  name: GetHashCode()
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_GetHashCode
+  commentId: M:SharpHoundCommonLib.LDAPConnectionCacheKey.GetHashCode
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.GetHashCode()
+  nameWithType: LDAPConnectionCacheKey.GetHashCode()
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.GetHashCode*
+  name: GetHashCode
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_GetHashCode_
+  commentId: Overload:SharpHoundCommonLib.LDAPConnectionCacheKey.GetHashCode
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.GetHashCode
+  nameWithType: LDAPConnectionCacheKey.GetHashCode
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.GlobalCatalog
+  name: GlobalCatalog
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_GlobalCatalog
+  commentId: P:SharpHoundCommonLib.LDAPConnectionCacheKey.GlobalCatalog
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.GlobalCatalog
+  nameWithType: LDAPConnectionCacheKey.GlobalCatalog
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.GlobalCatalog*
+  name: GlobalCatalog
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_GlobalCatalog_
+  commentId: Overload:SharpHoundCommonLib.LDAPConnectionCacheKey.GlobalCatalog
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.GlobalCatalog
+  nameWithType: LDAPConnectionCacheKey.GlobalCatalog
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.Server
+  name: Server
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_Server
+  commentId: P:SharpHoundCommonLib.LDAPConnectionCacheKey.Server
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.Server
+  nameWithType: LDAPConnectionCacheKey.Server
+- uid: SharpHoundCommonLib.LDAPConnectionCacheKey.Server*
+  name: Server
+  href: api/SharpHoundCommonLib.LDAPConnectionCacheKey.html#SharpHoundCommonLib_LDAPConnectionCacheKey_Server_
+  commentId: Overload:SharpHoundCommonLib.LDAPConnectionCacheKey.Server
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPConnectionCacheKey.Server
+  nameWithType: LDAPConnectionCacheKey.Server
+- uid: SharpHoundCommonLib.LdapConnectionWrapper
+  name: LdapConnectionWrapper
+  href: api/SharpHoundCommonLib.LdapConnectionWrapper.html
+  commentId: T:SharpHoundCommonLib.LdapConnectionWrapper
+  fullName: SharpHoundCommonLib.LdapConnectionWrapper
+  nameWithType: LdapConnectionWrapper
+- uid: SharpHoundCommonLib.LdapConnectionWrapper.Connection
+  name: Connection
+  href: api/SharpHoundCommonLib.LdapConnectionWrapper.html#SharpHoundCommonLib_LdapConnectionWrapper_Connection
+  commentId: F:SharpHoundCommonLib.LdapConnectionWrapper.Connection
+  fullName: SharpHoundCommonLib.LdapConnectionWrapper.Connection
+  nameWithType: LdapConnectionWrapper.Connection
+- uid: SharpHoundCommonLib.LdapConnectionWrapper.DomainInfo
+  name: DomainInfo
+  href: api/SharpHoundCommonLib.LdapConnectionWrapper.html#SharpHoundCommonLib_LdapConnectionWrapper_DomainInfo
+  commentId: F:SharpHoundCommonLib.LdapConnectionWrapper.DomainInfo
+  fullName: SharpHoundCommonLib.LdapConnectionWrapper.DomainInfo
+  nameWithType: LdapConnectionWrapper.DomainInfo
 - uid: SharpHoundCommonLib.LDAPProperties
   name: LDAPProperties
   href: api/SharpHoundCommonLib.LDAPProperties.html
@@ -3552,6 +3862,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.CertTemplateOID
   fullName: SharpHoundCommonLib.LDAPProperties.CertTemplateOID
   nameWithType: LDAPProperties.CertTemplateOID
+- uid: SharpHoundCommonLib.LDAPProperties.ConfigurationNamingContext
+  name: ConfigurationNamingContext
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ConfigurationNamingContext
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ConfigurationNamingContext
+  fullName: SharpHoundCommonLib.LDAPProperties.ConfigurationNamingContext
+  nameWithType: LDAPProperties.ConfigurationNamingContext
 - uid: SharpHoundCommonLib.LDAPProperties.CrossCertificatePair
   name: CrossCertificatePair
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_CrossCertificatePair
@@ -3582,6 +3898,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.DNSHostName
   fullName: SharpHoundCommonLib.LDAPProperties.DNSHostName
   nameWithType: LDAPProperties.DNSHostName
+- uid: SharpHoundCommonLib.LDAPProperties.DnsRoot
+  name: DnsRoot
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_DnsRoot
+  commentId: F:SharpHoundCommonLib.LDAPProperties.DnsRoot
+  fullName: SharpHoundCommonLib.LDAPProperties.DnsRoot
+  nameWithType: LDAPProperties.DnsRoot
 - uid: SharpHoundCommonLib.LDAPProperties.DomainFunctionalLevel
   name: DomainFunctionalLevel
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_DomainFunctionalLevel
@@ -3702,6 +4024,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.Name
   fullName: SharpHoundCommonLib.LDAPProperties.Name
   nameWithType: LDAPProperties.Name
+- uid: SharpHoundCommonLib.LDAPProperties.NetbiosName
+  name: NetbiosName
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_NetbiosName
+  commentId: F:SharpHoundCommonLib.LDAPProperties.NetbiosName
+  fullName: SharpHoundCommonLib.LDAPProperties.NetbiosName
+  nameWithType: LDAPProperties.NetbiosName
 - uid: SharpHoundCommonLib.LDAPProperties.NumSignaturesRequired
   name: NumSignaturesRequired
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_NumSignaturesRequired
@@ -3780,6 +4108,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.PrimaryGroupID
   fullName: SharpHoundCommonLib.LDAPProperties.PrimaryGroupID
   nameWithType: LDAPProperties.PrimaryGroupID
+- uid: SharpHoundCommonLib.LDAPProperties.RootDomainNamingContext
+  name: RootDomainNamingContext
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_RootDomainNamingContext
+  commentId: F:SharpHoundCommonLib.LDAPProperties.RootDomainNamingContext
+  fullName: SharpHoundCommonLib.LDAPProperties.RootDomainNamingContext
+  nameWithType: LDAPProperties.RootDomainNamingContext
 - uid: SharpHoundCommonLib.LDAPProperties.SAMAccountName
   name: SAMAccountName
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_SAMAccountName
@@ -3816,6 +4150,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.SecurityIdentifier
   fullName: SharpHoundCommonLib.LDAPProperties.SecurityIdentifier
   nameWithType: LDAPProperties.SecurityIdentifier
+- uid: SharpHoundCommonLib.LDAPProperties.ServerName
+  name: ServerName
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ServerName
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ServerName
+  fullName: SharpHoundCommonLib.LDAPProperties.ServerName
+  nameWithType: LDAPProperties.ServerName
 - uid: SharpHoundCommonLib.LDAPProperties.ServicePack
   name: ServicePack
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ServicePack
@@ -4555,6 +4895,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.BuildLdapPath
   nameWithType: LDAPUtils.BuildLdapPath
+- uid: SharpHoundCommonLib.LDAPUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier,System.String,System.String,SharpHoundCommonLib.OutputTypes.TypedPrincipal@)
+  name: ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String, out TypedPrincipal)
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_ConvertLocalWellKnownPrincipal_System_Security_Principal_SecurityIdentifier_System_String_System_String_SharpHoundCommonLib_OutputTypes_TypedPrincipal__
+  commentId: M:SharpHoundCommonLib.LDAPUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier,System.String,System.String,SharpHoundCommonLib.OutputTypes.TypedPrincipal@)
+  name.vb: ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String, ByRef TypedPrincipal)
+  fullName: SharpHoundCommonLib.LDAPUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier, System.String, System.String, out SharpHoundCommonLib.OutputTypes.TypedPrincipal)
+  fullName.vb: SharpHoundCommonLib.LDAPUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier, System.String, System.String, ByRef SharpHoundCommonLib.OutputTypes.TypedPrincipal)
+  nameWithType: LDAPUtils.ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String, out TypedPrincipal)
+  nameWithType.vb: LDAPUtils.ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String, ByRef TypedPrincipal)
+- uid: SharpHoundCommonLib.LDAPUtils.ConvertLocalWellKnownPrincipal*
+  name: ConvertLocalWellKnownPrincipal
+  href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_ConvertLocalWellKnownPrincipal_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.ConvertLocalWellKnownPrincipal
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.ConvertLocalWellKnownPrincipal
+  nameWithType: LDAPUtils.ConvertLocalWellKnownPrincipal
 - uid: SharpHoundCommonLib.LDAPUtils.ConvertWellKnownPrincipal(System.String,System.String)
   name: ConvertWellKnownPrincipal(String, String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_ConvertWellKnownPrincipal_System_String_System_String_
@@ -4727,6 +5083,77 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPUtils.IsDomainController
   nameWithType: LDAPUtils.IsDomainController
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult
+  name: LDAPUtils.LdapConnectionTestResult
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html
+  commentId: T:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult
+  nameWithType: LDAPUtils.LdapConnectionTestResult
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.#ctor(System.Boolean,System.DirectoryServices.Protocols.LdapException,SharpHoundCommonLib.DomainInfo,System.String)
+  name: LdapConnectionTestResult(Boolean, LdapException, DomainInfo, String)
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult__ctor_System_Boolean_System_DirectoryServices_Protocols_LdapException_SharpHoundCommonLib_DomainInfo_System_String_
+  commentId: M:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.#ctor(System.Boolean,System.DirectoryServices.Protocols.LdapException,SharpHoundCommonLib.DomainInfo,System.String)
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.LdapConnectionTestResult(System.Boolean, System.DirectoryServices.Protocols.LdapException, SharpHoundCommonLib.DomainInfo, System.String)
+  nameWithType: LDAPUtils.LdapConnectionTestResult.LdapConnectionTestResult(Boolean, LdapException, DomainInfo, String)
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.#ctor*
+  name: LdapConnectionTestResult
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult__ctor_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.LdapConnectionTestResult
+  nameWithType: LDAPUtils.LdapConnectionTestResult.LdapConnectionTestResult
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.DomainInfo
+  name: DomainInfo
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult_DomainInfo
+  commentId: P:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.DomainInfo
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.DomainInfo
+  nameWithType: LDAPUtils.LdapConnectionTestResult.DomainInfo
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.DomainInfo*
+  name: DomainInfo
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult_DomainInfo_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.DomainInfo
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.DomainInfo
+  nameWithType: LDAPUtils.LdapConnectionTestResult.DomainInfo
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Exception
+  name: Exception
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult_Exception
+  commentId: P:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Exception
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Exception
+  nameWithType: LDAPUtils.LdapConnectionTestResult.Exception
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Exception*
+  name: Exception
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult_Exception_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Exception
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Exception
+  nameWithType: LDAPUtils.LdapConnectionTestResult.Exception
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.ServerName
+  name: ServerName
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult_ServerName
+  commentId: P:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.ServerName
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.ServerName
+  nameWithType: LDAPUtils.LdapConnectionTestResult.ServerName
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.ServerName*
+  name: ServerName
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult_ServerName_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.ServerName
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.ServerName
+  nameWithType: LDAPUtils.LdapConnectionTestResult.ServerName
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Success
+  name: Success
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult_Success
+  commentId: P:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Success
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Success
+  nameWithType: LDAPUtils.LdapConnectionTestResult.Success
+- uid: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Success*
+  name: Success
+  href: api/SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.html#SharpHoundCommonLib_LDAPUtils_LdapConnectionTestResult_Success_
+  commentId: Overload:SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Success
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LDAPUtils.LdapConnectionTestResult.Success
+  nameWithType: LDAPUtils.LdapConnectionTestResult.Success
 - uid: SharpHoundCommonLib.LDAPUtils.LookupGuidType(System.String,System.String)
   name: LookupGuidType(String, String)
   href: api/SharpHoundCommonLib.LDAPUtils.html#SharpHoundCommonLib_LDAPUtils_LookupGuidType_System_String_System_String_

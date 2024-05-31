@@ -22,9 +22,9 @@
 <tr><th>Coverable lines:</th><td>103</td></tr>
 <tr><th>Total lines:</th><td>283</td></tr>
 <tr><th>Line coverage:</th><td>70.8% (73 of 103)</td></tr>
-<tr><th>Covered branches:</th><td>11</td></tr>
-<tr><th>Total branches:</th><td>14</td></tr>
-<tr><th>Branch coverage:</th><td>78.5% (11 of 14)</td></tr>
+<tr><th>Covered branches:</th><td>13</td></tr>
+<tr><th>Total branches:</th><td>16</td></tr>
+<tr><th>Branch coverage:</th><td>81.2% (13 of 16)</td></tr>
 </tbody>
 </table>
 <h1>Metrics</h1>
@@ -32,7 +32,7 @@
 <thead><tr><th>Method</th><th>Branch coverage <a href="https://en.wikipedia.org/wiki/Code_coverage"><i class="icon-info-circled"></i></a></th><th>Cyclomatic complexity <a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon-info-circled"></i></a></th><th>NPath complexity <a href="https://modess.io/npath-complexity-cyclomatic-complexity-explained"><i class="icon-info-circled"></i></a></th><th>Sequence coverage <a href="https://en.wikipedia.org/wiki/Code_coverage"><i class="icon-info-circled"></i></a></th></tr></thead>
 <tbody>
 <tr><td title="System.Void SharpHoundCommonLib.LDAPQueries.LDAPFilter::.ctor()"><a href="#file0_line11" class="navigatetohash">.ctor()</a></td><td>100%</td><td>1</td><td>0</td><td>100%</td></tr>
-<tr><td title="System.String[] SharpHoundCommonLib.LDAPQueries.LDAPFilter::CheckConditions(System.Collections.Generic.IEnumerable`1&lt;System.String&gt;)"><a href="#file0_line20" class="navigatetohash">CheckConditions(...)</a></td><td>100%</td><td>1</td><td>0</td><td>100%</td></tr>
+<tr><td title="System.String[] SharpHoundCommonLib.LDAPQueries.LDAPFilter::CheckConditions(System.Collections.Generic.IEnumerable`1&lt;System.String&gt;)"><a href="#file0_line20" class="navigatetohash">CheckConditions(...)</a></td><td>100%</td><td>2</td><td>0</td><td>100%</td></tr>
 <tr><td title="System.String SharpHoundCommonLib.LDAPQueries.LDAPFilter::FixFilter(System.String)"><a href="#file0_line25" class="navigatetohash">FixFilter(...)</a></td><td>100%</td><td>4</td><td>0</td><td>100%</td></tr>
 <tr><td title="System.String SharpHoundCommonLib.LDAPQueries.LDAPFilter::BuildString(System.String,System.String[])"><a href="#file0_line41" class="navigatetohash">BuildString(...)</a></td><td>100%</td><td>2</td><td>0</td><td>100%</td></tr>
 <tr><td title="SharpHoundCommonLib.LDAPQueries.LDAPFilter SharpHoundCommonLib.LDAPQueries.LDAPFilter::AddAllObjects(System.String[])"><a href="#file0_line53" class="navigatetohash">AddAllObjects(...)</a></td><td>100%</td><td>1</td><td>0</td><td>100%</td></tr>
@@ -81,7 +81,7 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line18"></a><code>18</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;returns&gt;&lt;/returns&gt;</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line19"></a><code>19</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;static&nbsp;string[]&nbsp;CheckConditions(IEnumerable&lt;string&gt;&nbsp;conditions)</code></td></tr>
 <tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line20"></a><code>20</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line21"></a><code>21</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;conditions.Select(FixFilter).ToArray();</code></td></tr>
+<tr class="coverableline" title="Covered (2 visits, 2 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line21"></a><code>21</code></td><td class="percentagebar percentagebar100"><i class="icon-fork"></i></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;conditions.Select(FixFilter).ToArray();</code></td></tr>
 <tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line22"></a><code>22</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line23"></a><code>23</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line24"></a><code>24</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;static&nbsp;string&nbsp;FixFilter(string&nbsp;filter)</code></td></tr>
@@ -346,7 +346,7 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line283"></a><code>283</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />5/3/2024 - 1:48:11 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />5/31/2024 - 5:35:31 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
