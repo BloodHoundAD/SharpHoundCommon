@@ -856,39 +856,27 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        ///     Performs an LDAP query using the parameters specified by the user.
+        /// Queries an LDAP server with the specified filter and parameters.
         /// </summary>
-        /// <param name="ldapFilter">LDAP filter</param>
-        /// <param name="scope">SearchScope to query</param>
-        /// <param name="props">LDAP properties to fetch for each object</param>
-        /// <param name="cancellationToken">Cancellation Token</param>
-        /// <param name="includeAcl">Include the DACL and Owner values in the NTSecurityDescriptor</param>
-        /// <param name="showDeleted">Include deleted objects</param>
-        /// <param name="domainName">Domain to query</param>
-        /// <param name="adsPath">ADS path to limit the query too</param>
-        /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
-        /// <param name="skipCache">
-        ///     Skip the connection cache and force a new connection. You must dispose of this connection
-        ///     yourself.
-        /// </param>
-        /// <param name="throwException">Throw exceptions rather than logging the errors directly</param>
-        /// <returns>All LDAP search results matching the specified parameters</returns>
-        /// <exception cref="LDAPQueryException">
-        ///     Thrown when an error occurs during LDAP query (only when throwException = true)
-        /// </exception>
-        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
-            string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false,
-            bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false,
-            bool throwException = false)
+        /// <param name="ldapFilter">The LDAP filter to use.</param>
+        /// <param name="scope">The search scope.</param>
+        /// <param name="props">The properties to retrieve.</param>
+        /// <param name="cancellationToken">Cancellation token to handle task cancellation.</param>
+        /// <param name="domainName">The domain name to query against.</param>
+        /// <param name="includeAcl">Whether to include ACL in the query.</param>
+        /// <param name="showDeleted">Whether to show deleted objects.</param>
+        /// <param name="adsPath">The ADS path to query.</param>
+        /// <param name="globalCatalog">Whether to use the global catalog.</param>
+        /// <param name="skipCache">Whether to skip the cache.</param>
+        /// <param name="throwException">Whether to throw an exception on error.</param>
+        /// <returns>An enumerable of search result entries.</returns>
+        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false)
         {
-            var queryParams = SetupLDAPQueryFilter(
-                ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
+            var queryParams = SetupLDAPQueryFilter(ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
 
             if (queryParams.Exception != null)
             {
-                _log.LogWarning("Failed to setup LDAP Query Filter: {Message}", queryParams.Exception.Message);
-                if (throwException)
-                    throw new LDAPQueryException("Failed to setup LDAP Query Filter", queryParams.Exception);
+                HandleSetupException(queryParams.Exception, throwException);
                 yield break;
             }
 
@@ -899,104 +887,37 @@ namespace SharpHoundCommonLib
             PageResultResponseControl pageResponse = null;
             var backoffDelay = MinBackoffDelay;
             var retryCount = 0;
+
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested)
                     yield break;
 
-                SearchResponse response;
+                SearchResponse response = null;
+
                 try
                 {
-                    _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
-                    response = (SearchResponse)conn.SendRequest(request);
-                    if (response != null)
-                        pageResponse = (PageResultResponseControl)response.Controls
-                            .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
+                    response = SendLdapRequest(conn, request, ldapFilter, ref pageResponse);
                 }
-                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
-                                               retryCount < MaxRetries)
+                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && retryCount < MaxRetries)
                 {
-                    /*A ServerDown exception indicates that our connection is no longer valid for one of many reasons.
-                    However, this function is generally called by multiple threads, so we need to be careful in recreating
-                    the connection. Using a semaphore, we can ensure that only one thread is actually recreating the connection
-                    while the other threads that hit the ServerDown exception simply wait. The initial caller will hold the semaphore
-                    and do a backoff delay before trying to make a new connection which will replace the existing connection in the
-                    _ldapConnections cache. Other threads will retrieve the new connection from the cache instead of making a new one
-                    This minimizes overhead of new connections while still fixing our core problem.*/
-                    
-                    //Always increment retry count
-                    retryCount++;
-
-                    //Attempt to acquire a lock
-                    if (Monitor.TryEnter(_lockObj))
-                    {
-                        //If we've acquired the lock, we want to immediately signal our reset event so everyone else waits
-                        _connectionResetEvent.Reset();
-                        try
-                        {
-                            //Sleep for our backoff
-                            Thread.Sleep(backoffDelay);
-                            //Explicitly skip the cache so we don't get the same connection back
-                            conn = CreateNewConnection(domainName, globalCatalog, true).Connection;
-                            if (conn == null)
-                            {
-                                _log.LogError(
-                                    "Unable to create replacement ldap connection for ServerDown exception. Breaking loop");
-                                yield break;
-                            }
-
-                            _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
-                        }
-                        finally
-                        {
-                            //Reset our event + release the lock
-                            _connectionResetEvent.Set();
-                            Monitor.Exit(_lockObj);
-                        }
-                    }
-                    else
-                    {
-                        //If someone else is holding the reset event, we want to just wait and then pull the newly created connection out of the cache
-                        //This event will be released after the first entrant thread is done making a new connection
-                        //The thread.sleep is to prevent a potential, very unlikely race
-                        Thread.Sleep(50);
-                        _connectionResetEvent.WaitOne();
-                        conn = CreateNewConnection(domainName, globalCatalog).Connection;
-                    }
-
-                    backoffDelay = GetNextBackoff(retryCount);
+                    if (!HandleServerDownException(domainName, globalCatalog, ref conn, ref retryCount, ref backoffDelay))
+                        yield break;
                     continue;
                 }
                 catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.Busy && retryCount < MaxRetries)
                 {
-                    retryCount++;
-                    backoffDelay = GetNextBackoff(retryCount);
+                    HandleBusyException(ref retryCount, ref backoffDelay);
                     continue;
                 }
                 catch (LdapException le)
                 {
-                    if (le.ErrorCode != (int)LdapErrorCodes.LocalError)
-                    {
-                        if (throwException)
-                        {
-                            throw new LDAPQueryException(
-                                $"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}",
-                                le);
-                        }
-
-                        _log.LogWarning(le,
-                            "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
-                            le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
-                    }
-
+                    HandleLdapException(le, ldapFilter, domainName, throwException);
                     yield break;
                 }
                 catch (Exception e)
                 {
-                    _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
-                    if (throwException)
-                        throw new LDAPQueryException($"Exception in LDAP loop for {ldapFilter} and {domainName}", e);
-
+                    HandleGenericException(e, ldapFilter, domainName, throwException);
                     yield break;
                 }
 
@@ -1014,12 +935,87 @@ namespace SharpHoundCommonLib
                     yield return new SearchResultEntryWrapper(entry, this);
                 }
 
-                if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 ||
-                    cancellationToken.IsCancellationRequested)
+                if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 || cancellationToken.IsCancellationRequested)
                     yield break;
 
                 pageControl.Cookie = pageResponse.Cookie;
             }
+        }
+
+        private void HandleSetupException(Exception exception, bool throwException)
+        {
+            _log.LogWarning("Failed to setup LDAP Query Filter: {Message}", exception.Message);
+            if (throwException)
+                throw new LDAPQueryException("Failed to setup LDAP Query Filter", exception);
+        }
+
+        private SearchResponse SendLdapRequest(LdapConnection conn, SearchRequest request, string ldapFilter, ref PageResultResponseControl pageResponse)
+        {
+            _log.LogTrace("Sending LDAP request for {Filter}", ldapFilter);
+            var response = (SearchResponse)conn.SendRequest(request);
+            if (response != null)
+                pageResponse = (PageResultResponseControl)response.Controls.FirstOrDefault(x => x is PageResultResponseControl);
+            return response;
+        }
+
+        private bool HandleServerDownException(string domainName, bool globalCatalog, ref LdapConnection conn, ref int retryCount, ref TimeSpan backoffDelay)
+        {
+            retryCount++;
+            if (Monitor.TryEnter(_lockObj))
+            {
+                _connectionResetEvent.Reset();
+                try
+                {
+                    Thread.Sleep(backoffDelay);
+                    conn = CreateNewConnection(domainName, globalCatalog, true).Connection;
+                    if (conn == null)
+                    {
+                        _log.LogError("Unable to create replacement LDAP connection for ServerDown exception. Breaking loop");
+                        return false;
+                    }
+                    _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
+                }
+                finally
+                {
+                    _connectionResetEvent.Set();
+                    Monitor.Exit(_lockObj);
+                }
+            }
+            else
+            {
+                Thread.Sleep(50);
+                _connectionResetEvent.WaitOne();
+                conn = CreateNewConnection(domainName, globalCatalog).Connection;
+            }
+
+            backoffDelay = GetNextBackoff(retryCount);
+            return true;
+        }
+
+        private void HandleBusyException(ref int retryCount, ref TimeSpan backoffDelay)
+        {
+            retryCount++;
+            backoffDelay = GetNextBackoff(retryCount);
+        }
+
+        private void HandleLdapException(LdapException le, string ldapFilter, string domainName, bool throwException)
+        {
+            if (le.ErrorCode != (int)LdapErrorCodes.LocalError)
+            {
+                if (throwException)
+                {
+                    throw new LDAPQueryException($"LDAP Exception in Loop: {le.ErrorCode}. {le.ServerErrorMessage}. {le.Message}. Filter: {ldapFilter}. Domain: {domainName}", le);
+                }
+
+                _log.LogWarning(le, "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}", le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
+            }
+        }
+
+        private void HandleGenericException(Exception e, string ldapFilter, string domainName, bool throwException)
+        {
+            _log.LogWarning(e, "Exception in LDAP loop for {Filter} and {Domain}", ldapFilter, domainName);
+            if (throwException)
+                throw new LDAPQueryException($"Exception in LDAP loop for {ldapFilter} and {domainName}", e);
         }
 
         private LdapConnectionWrapper CreateNewConnection(string domainName = null, bool globalCatalog = false,
@@ -1452,26 +1448,28 @@ namespace SharpHoundCommonLib
             return connection;
         }
 
+        /// <summary>
+        /// Checks the LDAP exception and throws an appropriate custom exception based on the error code.
+        /// </summary>
+        /// <param name="ldapException">The LDAP exception to check.</param>
         private static void CheckAndThrowException(LdapException ldapException)
         {
-            //A null error code with success false indicates that we successfully created a connection but got no data back, this is generally because our AuthType isn't compatible.
-            //AuthType Kerberos will only work across trusts in very specific scenarios. Alternatively, we don't have read rights.
-            //Throw this exception for clients to handle
-            if (ldapException.ErrorCode is (int)LdapErrorCodes.KerberosAuthType or (int)ResultCode.InsufficientAccessRights)
+            // Handle specific LDAP error codes with custom exceptions
+            switch (ldapException.ErrorCode)
             {
-                throw new NoLdapDataException(ldapException.ErrorCode);
-            }
+                case (int)LdapErrorCodes.KerberosAuthType:
+                case (int)ResultCode.InsufficientAccessRights:
+                    throw new NoLdapDataException(ldapException.ErrorCode);
 
-            //We shouldn't ever hit this in theory, but we'll error out if its the case
-            if (ldapException.ErrorCode is (int)ResultCode.InappropriateAuthentication)
-            {
-                throw new LdapAuthenticationException(ldapException);
-            }
+                case (int)ResultCode.InappropriateAuthentication:
+                    throw new LdapAuthenticationException(ldapException);
 
-            //Any other error we dont have specific ways to handle
-            if (ldapException.ErrorCode != (int)ResultCode.Unavailable && ldapException.ErrorCode != (int)ResultCode.Busy)
-            {
-                throw new LdapConnectionException(ldapException);
+                default:
+                    if (ldapException.ErrorCode != (int)ResultCode.Unavailable && ldapException.ErrorCode != (int)ResultCode.Busy)
+                    {
+                        throw new LdapConnectionException(ldapException);
+                    }
+                    break;
             }
         }
 
@@ -1498,7 +1496,6 @@ namespace SharpHoundCommonLib
         /// <param name="authType">Auth type to use. Defaults to Kerberos. Use Negotiate for netonly/cross trust(forest) scenarios</param>
         /// <param name="globalCatalog">Use global catalog or not</param>
         /// <returns>A connected LDAP connection or null</returns>
-
         private async Task<LdapConnectionWrapper> CreateLDAPConnectionWrapper(string domainName = null, bool skipCache = false,
             AuthType authType = AuthType.Kerberos, bool globalCatalog = false)
         {
@@ -1517,33 +1514,12 @@ namespace SharpHoundCommonLib
             //If a server has been manually specified, we should never get past this block for opsec reasons
             if (_ldapConfig.Server != null)
             {
-                if (!skipCache)
-                {
-                    if (GetCachedConnection(_ldapConfig.Server, globalCatalog, out var conn))
-                    {
-                        return conn;
-                    }
-                }
-                
-                var singleServerConn = CreateLDAPConnection(_ldapConfig.Server, authType, globalCatalog);
-                if (singleServerConn == null) return new LdapConnectionWrapper()
-                {
-                    Connection = null,
-                    DomainInfo = null
-                };
-                var cacheKey = new LDAPConnectionCacheKey(_ldapConfig.Server, globalCatalog);
-                _ldapConnections.AddOrUpdate(cacheKey, singleServerConn, (_, ldapConnection) =>
-                {
-                    ldapConnection.Connection.Dispose();
-                    return singleServerConn;
-                });
-                return singleServerConn;
+                return HandleManualServerConnection(authType, globalCatalog, skipCache);
             }
-            
-            //Take the incoming domain name and Upper/Trim it. If the name is null, we'll have to use GetDomain to figure out the user's domain context
+
+            // Get our domain name
             var domain = domainName?.ToUpper().Trim() ?? ResolveDomainToFullName(domainName);
 
-            //If our domain is STILL null, we're not going to get anything reliable, so exit out
             if (domain == null)
             {
                 return new LdapConnectionWrapper
@@ -1552,98 +1528,102 @@ namespace SharpHoundCommonLib
                     DomainInfo = null
                 };
             }
-            
-            if (!skipCache)
+
+            // Use a cached connection for this domain if we have it
+            if (!skipCache && GetCachedConnection(domain, globalCatalog, out var cachedConnection))
             {
-                if (GetCachedConnection(domain, globalCatalog, out var conn))
-                {
-                    return conn;
-                }
+                return cachedConnection;
             }
 
+            // Otherwise create a new one
             var connectionWrapper = CreateLDAPConnection(domain, authType, globalCatalog);
-            //If our connection isn't null, it means we have a good connection
             if (connectionWrapper != null)
             {
-                var cacheKey = new LDAPConnectionCacheKey(domain, globalCatalog);
-                _ldapConnections.AddOrUpdate(cacheKey, connectionWrapper, (_, ldapConnection) =>
-                {
-                    ldapConnection.Connection.Dispose();
-                    return connectionWrapper;
-                });
+                CacheConnection(domain, globalCatalog, connectionWrapper);
                 return connectionWrapper;
             }
 
-            //If our incoming domain name wasn't null, try to re-resolve the name for a better potential match and then retry
             if (domainName != null)
             {
                 var newDomain = ResolveDomainToFullName(domainName);
                 if (!string.IsNullOrEmpty(newDomain) && !newDomain.Equals(domain, StringComparison.OrdinalIgnoreCase))
                 {
-                    //Set our domain name to the newly resolved value for future steps
                     domain = newDomain;
-                    if (!skipCache)
+                    if (!skipCache && GetCachedConnection(domain, globalCatalog, out cachedConnection))
                     {
-                        //Check our cache again, maybe the new name works
-                        if (GetCachedConnection(domain, globalCatalog, out var conn))
-                        {
-                            return conn;
-                        }
+                        return cachedConnection;
                     }
 
                     connectionWrapper = CreateLDAPConnection(domain, authType, globalCatalog);
-                    //If our connection isn't null, it means we have a good connection
                     if (connectionWrapper != null)
                     {
-                        var cacheKey = new LDAPConnectionCacheKey(domain, globalCatalog);
-                        _ldapConnections.AddOrUpdate(cacheKey, connectionWrapper, (_, ldapConnection) =>
-                        {
-                            ldapConnection.Connection.Dispose();
-                            return connectionWrapper;
-                        });
+                        CacheConnection(domain, globalCatalog, connectionWrapper);
                         return connectionWrapper;
                     }
                 }
             }
-            
-            //Next step, look for domain controllers
+
+            return await ConnectToDomainControllers(domain, authType, globalCatalog);
+        }
+
+        private LdapConnectionWrapper HandleManualServerConnection(AuthType authType, bool globalCatalog, bool skipCache)
+        {
+            if (!skipCache && GetCachedConnection(_ldapConfig.Server, globalCatalog, out var cachedConnection))
+            {
+                return cachedConnection;
+            }
+
+            var singleServerConn = CreateLDAPConnection(_ldapConfig.Server, authType, globalCatalog);
+            if (singleServerConn == null)
+            {
+                return new LdapConnectionWrapper
+                {
+                    Connection = null,
+                    DomainInfo = null
+                };
+            }
+
+            CacheConnection(_ldapConfig.Server, globalCatalog, singleServerConn);
+            return singleServerConn;
+        }
+
+        private void CacheConnection(string domain, bool globalCatalog, LdapConnectionWrapper connectionWrapper)
+        {
+            var cacheKey = new LDAPConnectionCacheKey(domain, globalCatalog);
+            _ldapConnections.AddOrUpdate(cacheKey, connectionWrapper, (_, ldapConnection) =>
+            {
+                ldapConnection.Connection.Dispose();
+                return connectionWrapper;
+            });
+        }
+
+        private async Task<LdapConnectionWrapper> ConnectToDomainControllers(string domain, AuthType authType, bool globalCatalog)
+        {
             var domainObj = GetDomain(domain);
             if (domainObj?.Name == null)
             {
                 return null;
             }
 
-            //Start with the PDC of the domain and see if we can connect
             var pdc = domainObj.PdcRoleOwner.Name;
-            connectionWrapper = await CreateLDAPConnectionWithPortCheck(pdc, authType, globalCatalog);
+            var connectionWrapper = await CreateLDAPConnectionWithPortCheck(pdc, authType, globalCatalog);
             if (connectionWrapper != null)
             {
-                var cacheKey = new LDAPConnectionCacheKey(domain, globalCatalog);
-                _ldapConnections.AddOrUpdate(cacheKey, connectionWrapper, (_, ldapConnection) =>
-                {
-                    ldapConnection.Connection.Dispose();
-                    return connectionWrapper;
-                });
+                CacheConnection(domain, globalCatalog, connectionWrapper);
                 return connectionWrapper;
             }
 
-            //Loop over all other domain controllers and see if we can make a good connection to any
             foreach (DomainController dc in domainObj.DomainControllers)
             {
                 connectionWrapper = await CreateLDAPConnectionWithPortCheck(dc.Name, authType, globalCatalog);
                 if (connectionWrapper != null)
                 {
-                    var cacheKey = new LDAPConnectionCacheKey(domain, globalCatalog);
-                    _ldapConnections.AddOrUpdate(cacheKey, connectionWrapper, (_, ldapConnection) =>
-                    {
-                        ldapConnection.Connection.Dispose();
-                        return connectionWrapper;
-                    });
+                    CacheConnection(domain, globalCatalog, connectionWrapper);
                     return connectionWrapper;
                 }
             }
 
-            return new LdapConnectionWrapper()
+            return new LdapConnectionWrapper
             {
                 Connection = null,
                 DomainInfo = null
@@ -1686,101 +1666,98 @@ namespace SharpHoundCommonLib
         
         private LdapConnectionWrapper CreateLDAPConnection(string target, AuthType authType, bool globalCatalog)
         {
-            //Lets build a new connection
-            //Always try SSL first
-            var connection = CreateConnectionHelper(target, true, authType, globalCatalog);
-            var connectionResult = TestConnection(connection);
-            DomainInfo info;
+            var connection = CreateAndTestConnection(target, authType, globalCatalog, useSsl: true);
 
-            if (connectionResult.Success)
+            if (connection != null)
             {
-                var domain = connectionResult.DomainInfo.DomainFQDN;
-                if (!CachedDomainInfo.ContainsKey(domain))
-                {
-                    var baseDomainInfo = connectionResult.DomainInfo;
-                    baseDomainInfo.DomainSID =  GetDomainSidFromConnection(connection, baseDomainInfo);
-                    baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
-                    _log.LogInformation("Got info for domain: {info}", baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainNetbiosName, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainSID, baseDomainInfo);
-                    if (!string.IsNullOrEmpty(baseDomainInfo.DomainSID))
-                    {
-                        Cache.AddDomainSidMapping(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainSID);
-                        Cache.AddDomainSidMapping(baseDomainInfo.DomainSID, baseDomainInfo.DomainFQDN);
-                        if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
-                        {
-                            Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);    
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
-                    {
-                        _netbiosCache.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainNetbiosName);
-                    }
-
-                    info = baseDomainInfo;
-                }
-                else
-                {
-                    CachedDomainInfo.TryGetValue(domain, out info);
-                }
-                return new LdapConnectionWrapper
-                {
-                    Connection = connection,
-                    DomainInfo = info
-                };
+                return connection;
             }
 
-            CheckAndThrowException(connectionResult.Exception);
-
-            //If we're not allowing fallbacks to LDAP from LDAPS, just return here
             if (_ldapConfig.ForceSSL)
             {
                 return null;
             }
-            //If we get to this point, it means we have an unsuccessful connection, but our error code doesn't indicate an outright failure
-            //Try a new connection without SSL
-            connection = CreateConnectionHelper(target, false, authType, globalCatalog);
 
-            connectionResult = TestConnection(connection);
-                
+            connection = CreateAndTestConnection(target, authType, globalCatalog, useSsl: false);
+            return connection;
+        }
+
+        /// <summary>
+        /// Creates and tests an LDAP connection.
+        /// </summary>
+        /// <param name="target">The target server.</param>
+        /// <param name="authType">The authentication type.</param>
+        /// <param name="globalCatalog">Whether to use the global catalog.</param>
+        /// <param name="useSsl">Whether to use SSL.</param>
+        /// <returns>An LdapConnectionWrapper if successful, otherwise null.</returns>
+        private LdapConnectionWrapper CreateAndTestConnection(string target, AuthType authType, bool globalCatalog, bool useSsl)
+        {
+            var connection = CreateConnectionHelper(target, useSsl, authType, globalCatalog);
+            var connectionResult = TestConnection(connection);
+
             if (connectionResult.Success)
             {
-                var domain = connectionResult.DomainInfo.DomainFQDN;
-                if (!CachedDomainInfo.ContainsKey(domain.ToUpper()))
-                {
-                    var baseDomainInfo = connectionResult.DomainInfo;
-                    baseDomainInfo.DomainSID =  GetDomainSidFromConnection(connection, baseDomainInfo);
-                    baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainNetbiosName, baseDomainInfo);
-                    CachedDomainInfo.TryAdd(baseDomainInfo.DomainSID, baseDomainInfo);
-                    
-                    if (!string.IsNullOrEmpty(baseDomainInfo.DomainSID))
-                    {
-                        Cache.AddDomainSidMapping(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainSID);
-                    }
-
-                    if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
-                    {
-                        Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);
-                    }
-
-                    info = baseDomainInfo;
-                }else
-                {
-                    CachedDomainInfo.TryGetValue(domain, out info);
-                }
-                return new LdapConnectionWrapper
-                {
-                    Connection = connection,
-                    DomainInfo = info
-                };
+                return CacheDomainInfo(connection, connectionResult);
             }
-            
+
             CheckAndThrowException(connectionResult.Exception);
             return null;
+        }
+
+        /// <summary>
+        /// Caches the domain information and returns a connection wrapper.
+        /// </summary>
+        /// <param name="connection">The LDAP connection.</param>
+        /// <param name="connectionResult">The connection result.</param>
+        /// <returns>An <see cref="LdapConnectionWrapper"/>.</returns>
+        private LdapConnectionWrapper CacheDomainInfo(LdapConnection connection, LdapConnectionTestResult connectionResult)
+        {
+            var domain = connectionResult.DomainInfo.DomainFQDN;
+            if (!CachedDomainInfo.ContainsKey(domain))
+            {
+                var baseDomainInfo = connectionResult.DomainInfo;
+                baseDomainInfo.DomainSID = GetDomainSidFromConnection(connection, baseDomainInfo);
+                baseDomainInfo.DomainNetbiosName = GetDomainNetbiosName(connection, baseDomainInfo);
+
+                CacheDomainInfo(baseDomainInfo);
+
+                _log.LogInformation("Got info for domain: {info}", baseDomainInfo);
+            }
+
+            CachedDomainInfo.TryGetValue(domain, out var info);
+
+            return new LdapConnectionWrapper
+            {
+                Connection = connection,
+                DomainInfo = info
+            };
+        }
+
+        /// <summary>
+        /// Caches the domain information.
+        /// </summary>
+        /// <param name="baseDomainInfo">The base domain information.</param>
+        private void CacheDomainInfo(DomainInfo baseDomainInfo)
+        {
+            CachedDomainInfo.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo);
+            CachedDomainInfo.TryAdd(baseDomainInfo.DomainNetbiosName, baseDomainInfo);
+            CachedDomainInfo.TryAdd(baseDomainInfo.DomainSID, baseDomainInfo);
+
+            if (!string.IsNullOrEmpty(baseDomainInfo.DomainSID))
+            {
+                Cache.AddDomainSidMapping(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainSID);
+                Cache.AddDomainSidMapping(baseDomainInfo.DomainSID, baseDomainInfo.DomainFQDN);
+                
+                if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
+                {
+                    Cache.AddDomainSidMapping(baseDomainInfo.DomainNetbiosName, baseDomainInfo.DomainSID);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(baseDomainInfo.DomainNetbiosName))
+            {
+                _netbiosCache.TryAdd(baseDomainInfo.DomainFQDN, baseDomainInfo.DomainNetbiosName);
+            }
         }
 
         private LdapConnectionTestResult TestConnection(LdapConnection connection)
@@ -1800,11 +1777,7 @@ namespace SharpHoundCommonLib
             {
                 //Do an initial search request to get the rootDSE
                 //This ldap filter is equivalent to (objectclass=*)
-                var searchRequest = new SearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
-                    SearchScope.Base, null);
-                searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
-
-                var response = (SearchResponse)connection.SendRequest(searchRequest);
+                var response = SendRootDseSearchRequest(connection);
                 if (response?.Entries == null)
                 {
                     connection.Dispose();
@@ -1818,19 +1791,10 @@ namespace SharpHoundCommonLib
                 }
 
                 var entry = response.Entries[0];
-                var baseDN = entry.GetProperty(LDAPProperties.RootDomainNamingContext).ToUpper().Trim();
-                var configurationDN = entry.GetProperty(LDAPProperties.ConfigurationNamingContext).ToUpper().Trim();
-                var domainname = Helpers.DistinguishedNameToDomain(baseDN).ToUpper().Trim();
-                var servername = entry.GetProperty(LDAPProperties.ServerName);
-                var compName = servername.Substring(0, servername.IndexOf(',')).Substring(3).Trim();
-                var fullServerName = $"{compName}.{domainname}".ToUpper().Trim();
+                var domainInfo = ExtractDomainInfo(entry);
+                var fullServerName = GetFullServerName(entry, domainInfo.DomainFQDN);
 
-                return new LdapConnectionTestResult(true, null, new DomainInfo
-                {
-                    DomainConfigurationPath = configurationDN,
-                    DomainSearchBase = baseDN,
-                    DomainFQDN = domainname
-                }, fullServerName);
+                return new LdapConnectionTestResult(true, null, domainInfo, fullServerName);
             }
             catch (LdapException e)
             {
@@ -1844,6 +1808,34 @@ namespace SharpHoundCommonLib
                 }
                 return new LdapConnectionTestResult(false, e, null, null);
             }
+        }
+
+        private SearchResponse SendRootDseSearchRequest(LdapConnection connection)
+        {
+            var searchRequest = new SearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(), SearchScope.Base, null);
+            searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
+            return (SearchResponse)connection.SendRequest(searchRequest);
+        }
+
+        private DomainInfo ExtractDomainInfo(SearchResultEntry entry)
+        {
+            var baseDN = entry.GetProperty(LDAPProperties.RootDomainNamingContext).ToUpper().Trim();
+            var configurationDN = entry.GetProperty(LDAPProperties.ConfigurationNamingContext).ToUpper().Trim();
+            var domainname = Helpers.DistinguishedNameToDomain(baseDN).ToUpper().Trim();
+
+            return new DomainInfo
+            {
+                DomainConfigurationPath = configurationDN,
+                DomainSearchBase = baseDN,
+                DomainFQDN = domainname
+            };
+        }
+
+        private string GetFullServerName(SearchResultEntry entry, string domainname)
+        {
+            var servername = entry.GetProperty(LDAPProperties.ServerName);
+            var compName = servername.Substring(0, servername.IndexOf(',')).Substring(3).Trim();
+            return $"{compName}.{domainname}".ToUpper().Trim();
         }
             
         public class LdapConnectionTestResult
