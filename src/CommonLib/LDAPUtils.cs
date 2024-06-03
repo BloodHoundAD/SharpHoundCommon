@@ -856,21 +856,29 @@ namespace SharpHoundCommonLib
         }
 
         /// <summary>
-        /// Queries an LDAP server with the specified filter and parameters.
+        ///     Performs an LDAP query using the parameters specified by the user.
         /// </summary>
-        /// <param name="ldapFilter">The LDAP filter to use.</param>
-        /// <param name="scope">The search scope.</param>
-        /// <param name="props">The properties to retrieve.</param>
-        /// <param name="cancellationToken">Cancellation token to handle task cancellation.</param>
-        /// <param name="domainName">The domain name to query against.</param>
-        /// <param name="includeAcl">Whether to include ACL in the query.</param>
-        /// <param name="showDeleted">Whether to show deleted objects.</param>
-        /// <param name="adsPath">The ADS path to query.</param>
-        /// <param name="globalCatalog">Whether to use the global catalog.</param>
-        /// <param name="skipCache">Whether to skip the cache.</param>
-        /// <param name="throwException">Whether to throw an exception on error.</param>
-        /// <returns>An enumerable of search result entries.</returns>
-        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props, CancellationToken cancellationToken, string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false)
+        /// <param name="ldapFilter">LDAP filter</param>
+        /// <param name="scope">SearchScope to query</param>
+        /// <param name="props">LDAP properties to fetch for each object</param>
+        /// <param name="cancellationToken">Cancellation Token</param>
+        /// <param name="includeAcl">Include the DACL and Owner values in the NTSecurityDescriptor</param>
+        /// <param name="showDeleted">Include deleted objects</param>
+        /// <param name="domainName">Domain to query</param>
+        /// <param name="adsPath">ADS path to limit the query too</param>
+        /// <param name="globalCatalog">Use the global catalog instead of the regular LDAP server</param>
+        /// <param name="skipCache">
+        ///     Skip the connection cache and force a new connection. You must dispose of this connection
+        ///     yourself.
+        /// </param>
+        /// <param name="throwException">Throw exceptions rather than logging the errors directly</param>
+        /// <returns>All LDAP search results matching the specified parameters</returns>
+        /// <exception cref="LDAPQueryException">
+        ///     Thrown when an error occurs during LDAP query (only when throwException = true)
+        /// </exception>
+        public IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope,
+            string[] props, CancellationToken cancellationToken, string domainName = null,bool includeAcl = false,
+            bool showDeleted = false, string adsPath = null, bool globalCatalog = false, bool skipCache = false, bool throwException = false)
         {
             var queryParams = SetupLDAPQueryFilter(ldapFilter, scope, props, includeAcl, domainName, includeAcl, adsPath, globalCatalog, skipCache);
 
@@ -899,6 +907,14 @@ namespace SharpHoundCommonLib
                 {
                     response = SendLdapRequest(conn, request, ldapFilter, ref pageResponse);
                 }
+
+                /*A ServerDown exception indicates that our connection is no longer valid for one of many reasons.
+                However, this function is generally called by multiple threads, so we need to be careful in recreating
+                the connection. Using a semaphore, we can ensure that only one thread is actually recreating the connection
+                while the other threads that hit the ServerDown exception simply wait. The initial caller will hold the semaphore
+                and do a backoff delay before trying to make a new connection which will replace the existing connection in the
+                _ldapConnections cache. Other threads will retrieve the new connection from the cache instead of making a new one
+                This minimizes overhead of new connections while still fixing our core problem.*/
                 catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && retryCount < MaxRetries)
                 {
                     if (!HandleServerDownException(domainName, globalCatalog, ref conn, ref retryCount, ref backoffDelay))
@@ -961,13 +977,17 @@ namespace SharpHoundCommonLib
         private bool HandleServerDownException(string domainName, bool globalCatalog, ref LdapConnection conn, ref int retryCount, ref TimeSpan backoffDelay)
         {
             retryCount++;
+
+            // Attempt to acuire a lock
             if (Monitor.TryEnter(_lockObj))
             {
+                // If we get the lock, signal our reset event so every other thread waits
                 _connectionResetEvent.Reset();
                 try
                 {
                     Thread.Sleep(backoffDelay);
-                    conn = CreateNewConnection(domainName, globalCatalog, true).Connection;
+                    // Skip the cache so we don't get an existing connection back
+                    conn = CreateNewConnection(domainName, globalCatalog, skipCache: true).Connection;
                     if (conn == null)
                     {
                         _log.LogError("Unable to create replacement LDAP connection for ServerDown exception. Breaking loop");
@@ -977,12 +997,16 @@ namespace SharpHoundCommonLib
                 }
                 finally
                 {
+                    // Reset our event and release the lock
                     _connectionResetEvent.Set();
                     Monitor.Exit(_lockObj);
                 }
             }
             else
             {
+                // If someone else is holding the reset event, we want to just wait and then pull the newly created connection out of the cache
+                // This event will be released after the first entrant thread is done making a new connection
+                // The thread.sleep is to prevent a potential, very unlikely race
                 Thread.Sleep(50);
                 _connectionResetEvent.WaitOne();
                 conn = CreateNewConnection(domainName, globalCatalog).Connection;
@@ -1459,12 +1483,17 @@ namespace SharpHoundCommonLib
             {
                 case (int)LdapErrorCodes.KerberosAuthType:
                 case (int)ResultCode.InsufficientAccessRights:
+                    // A null error code with success false indicates that we successfully created a connection but got no data back, this is generally because our AuthType isn't compatible.
+                    // AuthType Kerberos will only work across trusts in very specific scenarios. Alternatively, we don't have read rights.
+                    // Throw this exception for clients to handle
                     throw new NoLdapDataException(ldapException.ErrorCode);
 
                 case (int)ResultCode.InappropriateAuthentication:
+                    // We shouldn't ever hit this in theory, but we'll error out if its the case
                     throw new LdapAuthenticationException(ldapException);
 
                 default:
+                    // Any other error we dont have specific ways to handle
                     if (ldapException.ErrorCode != (int)ResultCode.Unavailable && ldapException.ErrorCode != (int)ResultCode.Busy)
                     {
                         throw new LdapConnectionException(ldapException);
@@ -1517,9 +1546,10 @@ namespace SharpHoundCommonLib
                 return HandleManualServerConnection(authType, globalCatalog, skipCache);
             }
 
-            // Get our domain name
+            // Take the incoming domain name and Upper/Trim it. If the name is null, we'll have to use GetDomain to figure out the user's domain context
             var domain = domainName?.ToUpper().Trim() ?? ResolveDomainToFullName(domainName);
 
+            // If our domain is STILL null, we're not going to get anything reliable, so exit out
             if (domain == null)
             {
                 return new LdapConnectionWrapper
@@ -1535,7 +1565,7 @@ namespace SharpHoundCommonLib
                 return cachedConnection;
             }
 
-            // Otherwise create a new one
+            // Otherwise try to create a new one
             var connectionWrapper = CreateLDAPConnection(domain, authType, globalCatalog);
             if (connectionWrapper != null)
             {
@@ -1543,12 +1573,16 @@ namespace SharpHoundCommonLib
                 return connectionWrapper;
             }
 
+            // If our incoming domain name wasn't null, try to re-resolve the name for a better potential match and then retry
             if (domainName != null)
             {
                 var newDomain = ResolveDomainToFullName(domainName);
                 if (!string.IsNullOrEmpty(newDomain) && !newDomain.Equals(domain, StringComparison.OrdinalIgnoreCase))
                 {
+                    // Set our domain name to the newly resolved value for future steps
                     domain = newDomain;
+
+                    // Check our cache again, maybe the new name works
                     if (!skipCache && GetCachedConnection(domain, globalCatalog, out cachedConnection))
                     {
                         return cachedConnection;
@@ -1563,6 +1597,7 @@ namespace SharpHoundCommonLib
                 }
             }
 
+            // Next step, look for domain controllers
             return await ConnectToDomainControllers(domain, authType, globalCatalog);
         }
 
@@ -1605,6 +1640,7 @@ namespace SharpHoundCommonLib
                 return null;
             }
 
+            // Start with the PDC of the domain and see if we can connect
             var pdc = domainObj.PdcRoleOwner.Name;
             var connectionWrapper = await CreateLDAPConnectionWithPortCheck(pdc, authType, globalCatalog);
             if (connectionWrapper != null)
@@ -1613,6 +1649,7 @@ namespace SharpHoundCommonLib
                 return connectionWrapper;
             }
 
+            // Loop over all other domain controllers and see if we can make a good connection to any
             foreach (DomainController dc in domainObj.DomainControllers)
             {
                 connectionWrapper = await CreateLDAPConnectionWithPortCheck(dc.Name, authType, globalCatalog);
@@ -1666,6 +1703,7 @@ namespace SharpHoundCommonLib
         
         private LdapConnectionWrapper CreateLDAPConnection(string target, AuthType authType, bool globalCatalog)
         {
+            // Always try SSL first
             var connection = CreateAndTestConnection(target, authType, globalCatalog, useSsl: true);
 
             if (connection != null)
@@ -1673,11 +1711,13 @@ namespace SharpHoundCommonLib
                 return connection;
             }
 
+            // If we're not allowing non-SSL fallbacks, just leave
             if (_ldapConfig.ForceSSL)
             {
                 return null;
             }
 
+            // If SSL didn't work, let's try without SSL
             connection = CreateAndTestConnection(target, authType, globalCatalog, useSsl: false);
             return connection;
         }
@@ -1764,7 +1804,7 @@ namespace SharpHoundCommonLib
         {
             try
             {
-                //Attempt an initial bind. If this fails, likely auth is invalid, or its not a valid target
+                // Attempt an initial bind. If this fails, likely auth is invalid, or its not a valid target
                 connection.Bind();
             }
             catch (LdapException e)
@@ -1775,8 +1815,8 @@ namespace SharpHoundCommonLib
 
             try
             {
-                //Do an initial search request to get the rootDSE
-                //This ldap filter is equivalent to (objectclass=*)
+                // Do an initial search request to get the rootDSE
+                // This ldap filter is equivalent to (objectclass=*)
                 var response = SendRootDseSearchRequest(connection);
                 if (response?.Entries == null)
                 {
