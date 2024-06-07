@@ -97,7 +97,7 @@ namespace SharpHoundCommonLib
         /// <exception cref="Exception"></exception>
         public void SetLDAPConfig(LDAPConfig config)
         {
-            _ldapConfig = config ?? throw new Exception("LDAP Configuration can not be null");
+            _ldapConfig = config ?? throw new ArgumentNullException(nameof(config), "LDAP Configuration can not be null");
             //Close out any existing LDAP connections to request a new incoming config
             foreach (var kv in _ldapConnections)
             {
@@ -1517,6 +1517,7 @@ namespace SharpHoundCommonLib
             //If a server has been manually specified, we should never get past this block for opsec reasons
             if (_ldapConfig.Server != null)
             {
+                _log.LogInformation("Server is set via config, attempting to create ldap connection to {Server}", _ldapConfig.Server);
                 if (!skipCache)
                 {
                     if (GetCachedConnection(_ldapConfig.Server, globalCatalog, out var conn))
@@ -1526,11 +1527,14 @@ namespace SharpHoundCommonLib
                 }
                 
                 var singleServerConn = CreateLDAPConnection(_ldapConfig.Server, authType, globalCatalog);
-                if (singleServerConn == null) return new LdapConnectionWrapper()
-                {
-                    Connection = null,
-                    DomainInfo = null
-                };
+                if (singleServerConn == null) {
+                    return new LdapConnectionWrapper
+                    {
+                        Connection = null,
+                        DomainInfo = null
+                    };
+                }
+                
                 var cacheKey = new LDAPConnectionCacheKey(_ldapConfig.Server, globalCatalog);
                 _ldapConnections.AddOrUpdate(cacheKey, singleServerConn, (_, ldapConnection) =>
                 {
@@ -1546,6 +1550,7 @@ namespace SharpHoundCommonLib
             //If our domain is STILL null, we're not going to get anything reliable, so exit out
             if (domain == null)
             {
+                _log.LogWarning("Initial domain name for new LDAP connection is null and/or unresolvable. Unable to create a new connection");
                 return new LdapConnectionWrapper
                 {
                     Connection = null,
@@ -1560,6 +1565,8 @@ namespace SharpHoundCommonLib
                     return conn;
                 }
             }
+            
+            _log.LogInformation("No cached LDAP connection found for {Domain}, attempting a new connection", domain);
 
             var connectionWrapper = CreateLDAPConnection(domain, authType, globalCatalog);
             //If our connection isn't null, it means we have a good connection
@@ -1669,7 +1676,6 @@ namespace SharpHoundCommonLib
                         await _portScanner.CheckPort(target, _ldapConfig.GetGCPort(false))))
                 {
                     return CreateLDAPConnection(target, authType, true);
-                    
                 }
             }
             else
@@ -1682,7 +1688,6 @@ namespace SharpHoundCommonLib
             
             return null;
         }
-
         
         private LdapConnectionWrapper CreateLDAPConnection(string target, AuthType authType, bool globalCatalog)
         {

@@ -120,6 +120,42 @@ namespace SharpHoundCommonLib
             return rid;
         }
 
+        public static bool GetNamingContextSearchBase(this LdapConnection connection, NamingContexts context,
+            out string searchBase)
+        {
+            var searchRequest =
+                new SearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(), SearchScope.Base, null);
+            searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
+            SearchResponse response;
+            try
+            {
+                response = (SearchResponse)connection.SendRequest(searchRequest);
+            }
+            catch
+            {
+                searchBase = "";
+                return false;
+            }
+
+            if (response?.Entries == null || response.Entries.Count == 0)
+            {
+                searchBase = "";
+                return false;
+            }
+
+            var entry = response.Entries[0];
+            searchBase = context switch
+            {
+                NamingContexts.Default => entry.GetProperty(LDAPProperties.DefaultNamingContext),
+                NamingContexts.Configuration => entry.GetProperty(LDAPProperties.ConfigurationNamingContext),
+                NamingContexts.Schema => entry.GetProperty(LDAPProperties.SchemaNamingContext),
+                _ => throw new ArgumentOutOfRangeException(nameof(context), context, null)
+            };
+
+            searchBase = searchBase?.Trim().ToUpper();
+            return searchBase != null;
+        }
+
         #region SearchResultEntry
 
         /// <summary>
@@ -392,7 +428,8 @@ namespace SharpHoundCommonLib
                         objectType = Label.AIACA;
                     else if (entry.DistinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
                         objectType = Label.NTAuthStore;
-                }else if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase))
+                }
+                else if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase))
                 {
                     if (entry.DistinguishedName.StartsWith(DirectoryPaths.OIDContainerLocation,
                             StringComparison.InvariantCultureIgnoreCase))
@@ -401,7 +438,7 @@ namespace SharpHoundCommonLib
                     {
                         if (entry.GetPropertyAsInt(LDAPProperties.Flags, out var flags) && flags == 2)
                         {
-                            objectType = Label.IssuancePolicy;    
+                            objectType = Label.IssuancePolicy;
                         }
                     }
                 }

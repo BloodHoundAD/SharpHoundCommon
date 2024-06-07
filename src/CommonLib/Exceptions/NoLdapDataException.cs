@@ -4,10 +4,8 @@ namespace SharpHoundCommonLib.Exceptions
 {
     public class NoLdapDataException : Exception
     {
-        public int ErrorCode { get; set; }
-        public NoLdapDataException(int errorCode)
+        public NoLdapDataException()
         {
-            ErrorCode = errorCode;
         }
     }
 }
