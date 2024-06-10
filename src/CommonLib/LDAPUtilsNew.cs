@@ -23,7 +23,7 @@ public class LDAPUtilsNew
     private LDAPConfig _ldapConfig = new();
     private readonly ILogger _log;
     //This cache is indexed by domain sid
-    private readonly ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnection> _ldapConnectionCache = new();
+    private readonly DCConnectionCache _ldapConnectionCache;
     private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
     private readonly string[] _translateNames = { "Administrator", "admin" };
     private readonly PortScanner _portScanner;
@@ -198,14 +198,14 @@ public class LDAPUtilsNew
     
     private LdapConnection CheckCacheConnection(LdapConnection connection, string domainName, bool globalCatalog, bool forceCreateNewConnection)
     {
-        LDAPConnectionCacheKey cacheKey;
+        string cacheIdentifier;
         if (_ldapConfig.Server != null)
         {
-            cacheKey = new LDAPConnectionCacheKey(_ldapConfig.Server, globalCatalog);
+            cacheIdentifier = _ldapConfig.Server;
         }
         else
         {
-            if (!GetDomainSidFromDomainName(domainName, out var cacheIdentifier))
+            if (!GetDomainSidFromDomainName(domainName, out cacheIdentifier))
             {
                 //This is kinda gross, but its another way to get the correct domain sid
                 if (!connection.GetNamingContextSearchBase(NamingContexts.Default, out var searchBase) || !GetDomainSidFromConnection(connection, searchBase, out cacheIdentifier))
@@ -214,50 +214,36 @@ public class LDAPUtilsNew
                      * If we get here, we couldn't resolve a domain sid, which is hella bad, but we also want to keep from creating a shitton of new connections
                      * Cache using the domainname and pray it all works out
                      */
-                    cacheIdentifier = domainName.ToUpper().Trim();
+                    cacheIdentifier = domainName;
                 }
             }
-
-            cacheKey = new LDAPConnectionCacheKey(cacheIdentifier, globalCatalog);
         }
         
         if (forceCreateNewConnection)
         {
-            return _ldapConnectionCache.AddOrUpdate(cacheKey, connection, (_, existingConnection) =>
-            {
-                existingConnection.Dispose();
-                return connection;
-            });
+            return _ldapConnectionCache.AddOrUpdate(cacheIdentifier, globalCatalog, connection);
         }
 
-        return _ldapConnectionCache.AddOrUpdate(cacheKey, connection, (_, existingConnection) =>
-        {
-            connection.Dispose();
-            return existingConnection;
-        });
+        return _ldapConnectionCache.TryAdd(cacheIdentifier, globalCatalog, connection);
     }
     
     private bool GetCachedConnection(string domain, bool globalCatalog, out LdapConnection connection)
     {
-        LDAPConnectionCacheKey cacheKey;
         //If server is set via our config, we'll always just use this as the cache key
         if (_ldapConfig.Server != null)
         {
-            cacheKey = new LDAPConnectionCacheKey(_ldapConfig.Server, globalCatalog);
-            return _ldapConnectionCache.TryGetValue(cacheKey, out connection);
+            return _ldapConnectionCache.TryGet(_ldapConfig.Server, globalCatalog, out connection);
         }
         
         if (GetDomainSidFromDomainName(domain, out var domainSid))
         {
-            cacheKey = new LDAPConnectionCacheKey(domainSid, globalCatalog);
-            if (_ldapConnectionCache.TryGetValue(cacheKey, out connection))
+            if (_ldapConnectionCache.TryGet(_ldapConfig.Server, globalCatalog, out connection))
             {
                 return true;
             }
         }
 
-        cacheKey = new LDAPConnectionCacheKey(domain.ToUpper().Trim(), globalCatalog);
-        return _ldapConnectionCache.TryGetValue(cacheKey, out connection);
+        return _ldapConnectionCache.TryGet(domain, globalCatalog, out connection);
     }
     
 
