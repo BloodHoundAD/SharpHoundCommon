@@ -3,7 +3,7 @@
         <TargetFramework>net462</TargetFramework>
         <OutputType>library</OutputType>
         <PackageId>SharpHoundCommon</PackageId>
-        <LangVersion>11</LangVersion>
+        <LangVersion>default</LangVersion>
         <Authors>Rohan Vazarkar</Authors>
         <Company>SpecterOps</Company>
         <PackageDescription>Common library for C# BloodHound enumeration tasks</PackageDescription>

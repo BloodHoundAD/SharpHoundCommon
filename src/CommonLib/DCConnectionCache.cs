@@ -5,35 +5,35 @@ namespace SharpHoundCommonLib
 {
     public class DCConnectionCache
     {
-        private readonly ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnection> _ldapConnectionCache;
+        private readonly ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnectionWrapperNew> _ldapConnectionCache;
 
         public DCConnectionCache()
         {
-            _ldapConnectionCache = new ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnection>();
+            _ldapConnectionCache = new ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnectionWrapperNew>();
         }
 
-        public bool TryGet(string key, bool isGlobalCatalog, out LdapConnection connection)
+        public bool TryGet(string key, bool isGlobalCatalog, out LdapConnectionWrapperNew connection)
         {
             var cacheKey = GetKey(key, isGlobalCatalog);
             return _ldapConnectionCache.TryGetValue(cacheKey, out connection);
         }
 
-        public LdapConnection AddOrUpdate(string key, bool isGlobalCatalog, LdapConnection connection)
+        public LdapConnectionWrapperNew AddOrUpdate(string key, bool isGlobalCatalog, LdapConnectionWrapperNew connection)
         {
             var cacheKey = GetKey(key, isGlobalCatalog);
             return _ldapConnectionCache.AddOrUpdate(cacheKey, connection, (_, existingConnection) =>
             {
-                existingConnection.Dispose();
+                existingConnection.Connection.Dispose();
                 return connection;
             });
         }
 
-        public LdapConnection TryAdd(string key, bool isGlobalCatalog, LdapConnection connection)
+        public LdapConnectionWrapperNew TryAdd(string key, bool isGlobalCatalog, LdapConnectionWrapperNew connection)
         {
             var cacheKey = GetKey(key, isGlobalCatalog);
             return _ldapConnectionCache.AddOrUpdate(cacheKey, connection, (_, existingConnection) =>
             {
-                connection.Dispose();
+                connection.Connection.Dispose();
                 return existingConnection;
             });
         }
