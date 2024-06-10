@@ -12,15 +12,15 @@ namespace SharpHoundCommonLib
             _ldapConnectionCache = new ConcurrentDictionary<LDAPConnectionCacheKey, LdapConnection>();
         }
 
-        public bool TryGet(string domainName, bool isGlobalCatalog, out LdapConnection connection)
+        public bool TryGet(string key, bool isGlobalCatalog, out LdapConnection connection)
         {
-            var key = GetKey(domainName, isGlobalCatalog);
-            return _ldapConnectionCache.TryGetValue(key, out connection);
+            var cacheKey = GetKey(key, isGlobalCatalog);
+            return _ldapConnectionCache.TryGetValue(cacheKey, out connection);
         }
 
-        public LdapConnection AddOrUpdate(string domainName, bool isGlobalCatalog, LdapConnection connection)
+        public LdapConnection AddOrUpdate(string key, bool isGlobalCatalog, LdapConnection connection)
         {
-            var cacheKey = GetKey(domainName, isGlobalCatalog);
+            var cacheKey = GetKey(key, isGlobalCatalog);
             return _ldapConnectionCache.AddOrUpdate(cacheKey, connection, (_, existingConnection) =>
             {
                 existingConnection.Dispose();
@@ -28,9 +28,9 @@ namespace SharpHoundCommonLib
             });
         }
 
-        public LdapConnection TryAdd(string domainName, bool isGlobalCatalog, LdapConnection connection)
+        public LdapConnection TryAdd(string key, bool isGlobalCatalog, LdapConnection connection)
         {
-            var cacheKey = GetKey(domainName, isGlobalCatalog);
+            var cacheKey = GetKey(key, isGlobalCatalog);
             return _ldapConnectionCache.AddOrUpdate(cacheKey, connection, (_, existingConnection) =>
             {
                 connection.Dispose();
@@ -38,9 +38,9 @@ namespace SharpHoundCommonLib
             });
         }
 
-        private LDAPConnectionCacheKey GetKey(string domainName, bool isGlobalCatalog)
+        private LDAPConnectionCacheKey GetKey(string key, bool isGlobalCatalog)
         {
-            return new LDAPConnectionCacheKey(domainName, isGlobalCatalog);
+            return new LDAPConnectionCacheKey(key.ToUpper().Trim(), isGlobalCatalog);
         }
 
         private class LDAPConnectionCacheKey
