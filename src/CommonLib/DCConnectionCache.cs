@@ -45,9 +45,8 @@ namespace SharpHoundCommonLib
 
         private class LDAPConnectionCacheKey
         {
-            public bool GlobalCatalog { get; }
             public string Domain { get; }
-            public string Server { get; set; }
+            public bool GlobalCatalog { get; }
 
             public LDAPConnectionCacheKey(string domain, bool globalCatalog)
             {
