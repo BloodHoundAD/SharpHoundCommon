@@ -237,7 +237,7 @@ public class LDAPUtilsNew
         
         if (GetDomainSidFromDomainName(domain, out var domainSid))
         {
-            if (_ldapConnectionCache.TryGet(_ldapConfig.Server, globalCatalog, out connection))
+            if (_ldapConnectionCache.TryGet(domainSid, globalCatalog, out connection))
             {
                 return true;
             }
