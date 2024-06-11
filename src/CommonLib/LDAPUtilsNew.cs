@@ -44,7 +44,6 @@ public class LDAPUtilsNew {
         [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
         //Always force create a new connection
         var (success, connectionWrapper, message) = await GetLdapConnection(queryParameters.DomainName,
-            _ldapConfig.AuthType,
             queryParameters.GlobalCatalog, true);
         if (!success) {
             _log.LogDebug("PagedQuery failure: unable to create a connection: {Reason}\n{Info}", message,
@@ -59,7 +58,7 @@ public class LDAPUtilsNew {
         }
 
         //Pull the server name from the connection for retry logic later
-        if (!GetServerFromConnection(connectionWrapper.Connection, out var serverName)) {
+        if (!connectionWrapper.GetServer(out var serverName)) {
             serverName = null;
         }
 
@@ -72,8 +71,6 @@ public class LDAPUtilsNew {
         searchRequest.Controls.Add(pageControl);
 
         PageResultResponseControl pageResponse = null;
-        var backoffDelay = MinBackoffDelay;
-        var retryCount = 0;
 
         while (true) {
             if (cancellationToken.IsCancellationRequested) {
@@ -89,14 +86,13 @@ public class LDAPUtilsNew {
                         .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
                 }
             }
-            catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
-                                           retryCount < MaxRetries) {
+            catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown) {
                 /*
                  * If we dont have a servername, we're not going to be able to re-establish a connection here. Page cookies are only valid for the server they were generated on. Bail out.
                  */
                 if (serverName == null) {
                     _log.LogError(
-                        "PagedQuery - Received serverdown exception with server unknown. Unable to generate new connection\n{Info}",
+                        "PagedQuery - Received server down exception without a known servername. Unable to generate new connection\n{Info}",
                         queryParameters.GetQueryInfo());
                     yield break;
                 }
@@ -108,7 +104,8 @@ public class LDAPUtilsNew {
                     _ldapConnections cache. Other threads will retrieve the new connection from the cache instead of making a new one
                     This minimizes overhead of new connections while still fixing our core problem.*/
 
-                retryCount++;
+                var backoffDelay = MinBackoffDelay;
+                var retryCount = 0;
 
                 //Attempt to acquire a lock
                 if (Monitor.TryEnter(_lockObj)) {
@@ -118,6 +115,7 @@ public class LDAPUtilsNew {
                         //Sleep for our backoff
                         Thread.Sleep(backoffDelay);
                         //Explicitly skip the cache so we don't get the same connection back
+                        connectionWrapper = GetLdapConnectionForServer(serverName)
                         conn = CreateNewConnection(domainName, globalCatalog, true).Connection;
                         if (conn == null) {
                             _log.LogError(
@@ -169,9 +167,9 @@ public class LDAPUtilsNew {
             }
 
             basePath = queryParameters.NamingContext switch {
-                NamingContexts.Configuration => $"CN=Configuration,{tempPath}",
-                NamingContexts.Schema => $"CN=Schema,CN=Configuration,{tempPath}",
-                NamingContexts.Default => tempPath,
+                NamingContext.Configuration => $"CN=Configuration,{tempPath}",
+                NamingContext.Schema => $"CN=Schema,CN=Configuration,{tempPath}",
+                NamingContext.Default => tempPath,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
@@ -216,7 +214,7 @@ public class LDAPUtilsNew {
     }
 
     private bool
-        GetLdapConnectionForServer(string serverName, AuthType authType, out LdapConnectionWrapperNew connectionWrapper,
+        GetLdapConnectionForServer(string serverName, out LdapConnectionWrapperNew connectionWrapper,
             bool globalCatalog = false, bool forceCreateNewConnection = false) {
         if (string.IsNullOrWhiteSpace(serverName)) {
             throw new ArgumentNullException(nameof(serverName));
@@ -227,7 +225,7 @@ public class LDAPUtilsNew {
                 GetCachedConnection(serverName, globalCatalog, out connectionWrapper))
                 return true;
 
-            if (CreateLdapConnection(serverName, authType, globalCatalog, out var serverConnection)) {
+            if (CreateLdapConnection(serverName, globalCatalog, out connectionWrapper)) {
                 return true;
             }
 
@@ -248,7 +246,7 @@ public class LDAPUtilsNew {
     }
 
     private async Task<(bool Success, LdapConnectionWrapperNew Connection, string Message )> GetLdapConnection(
-        string domainName, AuthType authType = AuthType.Negotiate, bool globalCatalog = false,
+        string domainName, bool globalCatalog = false,
         bool forceCreateNewConnection = false) {
         //TODO: Pull out individual strategies into single functions for readability and better logging
         if (string.IsNullOrWhiteSpace(domainName)) throw new ArgumentNullException(nameof(domainName));
@@ -258,14 +256,13 @@ public class LDAPUtilsNew {
              * If a server is explicitly set on the config, we should only test this config
              */
             LdapConnectionWrapperNew connectionWrapper;
-            LdapConnection connection;
             if (_ldapConfig.Server != null) {
                 _log.LogWarning("Server is overridden via config, creating connection to {Server}", _ldapConfig.Server);
                 if (!forceCreateNewConnection &&
                     GetCachedConnection(domainName, globalCatalog, out connectionWrapper))
                     return (true, connectionWrapper, "");
 
-                if (CreateLdapConnection(_ldapConfig.Server, authType, globalCatalog, out var serverConnection)) {
+                if (CreateLdapConnection(_ldapConfig.Server, globalCatalog, out var serverConnection)) {
                     connectionWrapper = CheckCacheConnection(serverConnection, domainName, globalCatalog,
                         forceCreateNewConnection);
                     return (true, connectionWrapper, "");
@@ -280,10 +277,10 @@ public class LDAPUtilsNew {
             _log.LogInformation("No cached connection found for domain {Domain}, attempting a new connection",
                 domainName);
 
-            if (CreateLdapConnection(domainName.ToUpper().Trim(), authType, globalCatalog, out connection)) {
+            if (CreateLdapConnection(domainName.ToUpper().Trim(), globalCatalog, out connectionWrapper)) {
                 _log.LogDebug("Successfully created ldap connection for domain: {Domain} using strategy 1", domainName);
                 connectionWrapper =
-                    CheckCacheConnection(connection, domainName, globalCatalog, forceCreateNewConnection);
+                    CheckCacheConnection(connectionWrapper, domainName, globalCatalog, forceCreateNewConnection);
                 return (true, connectionWrapper, "");
             }
 
@@ -300,11 +297,11 @@ public class LDAPUtilsNew {
                     return (true, connectionWrapper, "");
 
                 if (!tempDomainName.Equals(domainName, StringComparison.OrdinalIgnoreCase) &&
-                    CreateLdapConnection(tempDomainName, authType, globalCatalog, out connection)) {
+                    CreateLdapConnection(tempDomainName, globalCatalog, out connectionWrapper)) {
                     _log.LogDebug(
                         "Successfully created ldap connection for domain: {Domain} using strategy 2 with name {NewName}",
                         domainName, tempDomainName);
-                    connectionWrapper = CheckCacheConnection(connection, tempDomainName, globalCatalog,
+                    connectionWrapper = CheckCacheConnection(connectionWrapper, tempDomainName, globalCatalog,
                         forceCreateNewConnection);
                     return (true, connectionWrapper, "");
                 }
@@ -312,7 +309,7 @@ public class LDAPUtilsNew {
                 var server = dsGetDcNameResult.Value.DomainControllerName.TrimStart('\\');
 
                 var result =
-                    await CreateLDAPConnectionWithPortCheck(server, authType, globalCatalog);
+                    await CreateLDAPConnectionWithPortCheck(server, globalCatalog);
                 if (result.success) {
                     _log.LogDebug(
                         "Successfully created ldap connection for domain: {Domain} using strategy 3 to server {Server}",
@@ -337,18 +334,18 @@ public class LDAPUtilsNew {
                 return (true, connectionWrapper, "");
 
             if (!tempDomainName.Equals(domainName, StringComparison.OrdinalIgnoreCase) &&
-                CreateLdapConnection(tempDomainName, authType, globalCatalog, out connection)) {
+                CreateLdapConnection(tempDomainName, globalCatalog, out connectionWrapper)) {
                 _log.LogDebug(
                     "Successfully created ldap connection for domain: {Domain} using strategy 4 with name {NewName}",
                     domainName, tempDomainName);
                 connectionWrapper =
-                    CheckCacheConnection(connection, tempDomainName, globalCatalog, forceCreateNewConnection);
+                    CheckCacheConnection(connectionWrapper, tempDomainName, globalCatalog, forceCreateNewConnection);
                 return (true, connectionWrapper, "");
             }
 
             var primaryDomainController = domainObject.PdcRoleOwner.Name;
             var portConnectionResult =
-                await CreateLDAPConnectionWithPortCheck(primaryDomainController, authType, globalCatalog);
+                await CreateLDAPConnectionWithPortCheck(primaryDomainController, globalCatalog);
             if (portConnectionResult.success) {
                 _log.LogDebug(
                     "Successfully created ldap connection for domain: {Domain} using strategy 5 with to pdc {Server}",
@@ -361,7 +358,7 @@ public class LDAPUtilsNew {
             //Loop over all other domain controllers and see if we can make a good connection to any
             foreach (DomainController dc in domainObject.DomainControllers) {
                 portConnectionResult =
-                    await CreateLDAPConnectionWithPortCheck(primaryDomainController, authType, globalCatalog);
+                    await CreateLDAPConnectionWithPortCheck(primaryDomainController, globalCatalog);
                 if (portConnectionResult.success) {
                     _log.LogDebug(
                         "Successfully created ldap connection for domain: {Domain} using strategy 6 with to pdc {Server}",
@@ -387,23 +384,22 @@ public class LDAPUtilsNew {
         }
     }
 
-    private async Task<(bool success, LdapConnection connection)> CreateLDAPConnectionWithPortCheck(string target,
-        AuthType authType, bool globalCatalog) {
+    private async Task<(bool success, LdapConnectionWrapperNew connection)> CreateLDAPConnectionWithPortCheck(string target, bool globalCatalog) {
         if (globalCatalog) {
             if (await _portScanner.CheckPort(target, _ldapConfig.GetGCPort(true)) || (!_ldapConfig.ForceSSL &&
                     await _portScanner.CheckPort(target, _ldapConfig.GetGCPort(false))))
-                return (CreateLdapConnection(target, authType, true, out var connection), connection);
+                return (CreateLdapConnection(target, true, out var connection), connection);
         }
         else {
             if (await _portScanner.CheckPort(target, _ldapConfig.GetPort(true)) || (!_ldapConfig.ForceSSL &&
                     await _portScanner.CheckPort(target, _ldapConfig.GetPort(false))))
-                return (CreateLdapConnection(target, authType, true, out var connection), connection);
+                return (CreateLdapConnection(target, true, out var connection), connection);
         }
 
         return (false, null);
     }
 
-    private LdapConnectionWrapperNew CheckCacheConnection(LdapConnection connection, string domainName, bool globalCatalog, bool forceCreateNewConnection)
+    private LdapConnectionWrapperNew CheckCacheConnection(LdapConnectionWrapperNew connectionWrapper, string domainName, bool globalCatalog, bool forceCreateNewConnection)
     {
         string cacheIdentifier;
         if (_ldapConfig.Server != null)
@@ -415,7 +411,7 @@ public class LDAPUtilsNew {
             if (!GetDomainSidFromDomainName(domainName, out cacheIdentifier))
             {
                 //This is kinda gross, but its another way to get the correct domain sid
-                if (!connection.GetNamingContextSearchBase(NamingContexts.Default, out var searchBase) || !GetDomainSidFromConnection(connection, searchBase, out cacheIdentifier))
+                if (!connectionWrapper.Connection.GetNamingContextSearchBase(NamingContext.Default, out var searchBase) || !GetDomainSidFromConnection(connectionWrapper.Connection, searchBase, out cacheIdentifier))
                 {
                     /*
                      * If we get here, we couldn't resolve a domain sid, which is hella bad, but we also want to keep from creating a shitton of new connections
@@ -425,15 +421,13 @@ public class LDAPUtilsNew {
                 }
             }
         }
-
-        var wrapper = new LdapConnectionWrapperNew(connection);
         
         if (forceCreateNewConnection)
         {
-            return _ldapConnectionCache.AddOrUpdate(cacheIdentifier, globalCatalog, wrapper);
+            return _ldapConnectionCache.AddOrUpdate(cacheIdentifier, globalCatalog, connectionWrapper);
         }
 
-        return _ldapConnectionCache.TryAdd(cacheIdentifier, globalCatalog, wrapper);
+        return _ldapConnectionCache.TryAdd(cacheIdentifier, globalCatalog, connectionWrapper);
     }
     
     private bool GetCachedConnection(string domain, bool globalCatalog, out LdapConnectionWrapperNew connection)
@@ -498,11 +492,11 @@ public class LDAPUtilsNew {
         return server != null;
     }
 
-    private bool CreateLdapConnection(string target, AuthType authType, bool globalCatalog,
-        out LdapConnection connection) {
-        var baseConnection = CreateBaseConnection(target, true, authType, globalCatalog);
-        if (TestLdapConnection(baseConnection, target)) {
-            connection = baseConnection;
+    private bool CreateLdapConnection(string target, bool globalCatalog,
+        out LdapConnectionWrapperNew connection) {
+        var baseConnection = CreateBaseConnection(target, true, globalCatalog);
+        if (TestLdapConnection(baseConnection, target, out var entry)) {
+            connection = new LdapConnectionWrapperNew(baseConnection, entry);
             return true;
         }
 
@@ -518,9 +512,9 @@ public class LDAPUtilsNew {
             return false;
         }
 
-        baseConnection = CreateBaseConnection(target, false, authType, globalCatalog);
-        if (TestLdapConnection(baseConnection, target)) {
-            connection = baseConnection;
+        baseConnection = CreateBaseConnection(target, false, globalCatalog);
+        if (TestLdapConnection(baseConnection, target, out entry)) {
+            connection = new LdapConnectionWrapperNew(baseConnection, entry);
             return true;
         }
 
@@ -535,7 +529,7 @@ public class LDAPUtilsNew {
         return false;
     }
 
-    private LdapConnection CreateBaseConnection(string directoryIdentifier, bool ssl, AuthType authType,
+    private LdapConnection CreateBaseConnection(string directoryIdentifier, bool ssl,
         bool globalCatalog) {
         var port = globalCatalog ? _ldapConfig.GetGCPort(ssl) : _ldapConfig.GetPort(ssl);
         var identifier = new LdapDirectoryIdentifier(directoryIdentifier, port, false, false);
@@ -560,7 +554,7 @@ public class LDAPUtilsNew {
             connection.Credential = cred;
         }
 
-        connection.AuthType = authType;
+        connection.AuthType = _ldapConfig.AuthType;
 
         return connection;
     }
@@ -570,13 +564,14 @@ public class LDAPUtilsNew {
     /// </summary>
     /// <param name="connection"></param>
     /// <param name="identifier"></param>
+    /// <param name="entry">The rootdse object for this connection if successful</param>
     /// <returns></returns>
     /// <exception cref="LdapAuthenticationException">Something is wrong with the supplied credentials</exception>
     /// <exception cref="NoLdapDataException">
     ///     A connection "succeeded" but no data was returned. This can be related to
     ///     kerberos auth across trusts or just simply lack of permissions
     /// </exception>
-    private bool TestLdapConnection(LdapConnection connection, string identifier) {
+    private bool TestLdapConnection(LdapConnection connection, string identifier, out ISearchResultEntry entry) {
         try {
             //Attempt an initial bind. If this fails, likely auth is invalid, or its not a valid target
             connection.Bind();
@@ -588,9 +583,11 @@ public class LDAPUtilsNew {
                 throw new LdapAuthenticationException(e);
             }
 
+            entry = null;
             return false;
         }
         catch (Exception e) {
+            entry = null;
             return false;
         }
 
@@ -608,6 +605,7 @@ public class LDAPUtilsNew {
              * If we can't send the initial search request, its unlikely any other search requests will work so we will immediately return false
              */
             _log.LogDebug(e, "TestLdapConnection failed during search request against target {Target}", identifier);
+            entry = null;
             return false;
         }
 
@@ -623,6 +621,7 @@ public class LDAPUtilsNew {
             throw new NoLdapDataException();
         }
 
+        entry = new SearchResultEntryWrapper(response.Entries[0]);
         return true;
     }
 

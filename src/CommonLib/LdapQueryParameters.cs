@@ -14,7 +14,7 @@ public class LdapQueryParameters
     public bool IncludeSecurityDescriptor { get; set; } = false;
     public bool IncludeDeleted { get; set; } = false;
     public string SearchBase { get; set; }
-    public NamingContexts NamingContext { get; set; } = NamingContexts.Default;
+    public NamingContext NamingContext { get; set; } = NamingContext.Default;
 
     public string GetQueryInfo()
     {

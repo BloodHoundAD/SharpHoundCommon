@@ -6,27 +6,47 @@ namespace SharpHoundCommonLib;
 
 public class LdapConnectionWrapperNew
 {
-    public LdapConnection Connection;
+    public LdapConnection Connection { get; private set; }
+    private readonly ISearchResultEntry _searchResultEntry;
     private string _domainSearchBase;
     private string _configurationSearchBase;
     private string _schemaSearchBase;
+    private string _server;
     private const string Unknown = "UNKNOWN";
 
-    public LdapConnectionWrapperNew(LdapConnection connection)
+    public LdapConnectionWrapperNew(LdapConnection connection, ISearchResultEntry entry)
     {
         Connection = connection;
+        _searchResultEntry = entry;
     }
 
-    public bool GetSearchBase(NamingContexts context, out string searchBase)
+    public bool GetServer(out string server) {
+        if (_server != null) {
+            server = _server;
+            return true;
+        }
+
+        _server = _searchResultEntry.GetProperty(LDAPProperties.DNSHostName);
+        server = _server;
+        return server != null;
+    }
+
+    public bool GetSearchBase(NamingContext context, out string searchBase)
     {
         searchBase = GetSavedContext(context);
         if (searchBase != null)
         {
             return true;
         }
+        
+        searchBase = context switch {
+            NamingContext.Default => _searchResultEntry.GetProperty(LDAPProperties.DefaultNamingContext),
+            NamingContext.Configuration => _searchResultEntry.GetProperty(LDAPProperties.ConfigurationNamingContext),
+            NamingContext.Schema => _searchResultEntry.GetProperty(LDAPProperties.SchemaNamingContext),
+            _ => throw new ArgumentOutOfRangeException(nameof(context), context, null)
+        };
 
-        if (Connection.GetNamingContextSearchBase(context, out searchBase))
-        {
+        if (searchBase != null) {
             SaveContext(context, searchBase);
             return true;
         }
@@ -34,28 +54,28 @@ public class LdapConnectionWrapperNew
         return false;
     }
 
-    private string GetSavedContext(NamingContexts context)
+    private string GetSavedContext(NamingContext context)
     {
         return context switch
         {
-            NamingContexts.Configuration => _configurationSearchBase,
-            NamingContexts.Default => _domainSearchBase,
-            NamingContexts.Schema => _schemaSearchBase,
+            NamingContext.Configuration => _configurationSearchBase,
+            NamingContext.Default => _domainSearchBase,
+            NamingContext.Schema => _schemaSearchBase,
             _ => throw new ArgumentOutOfRangeException(nameof(context), context, null)
         };
     }
 
-    public void SaveContext(NamingContexts context, string searchBase)
+    public void SaveContext(NamingContext context, string searchBase)
     {
         switch (context)
         {
-            case NamingContexts.Default:
+            case NamingContext.Default:
                 _domainSearchBase = searchBase;
                 break;
-            case NamingContexts.Configuration:
+            case NamingContext.Configuration:
                 _configurationSearchBase = searchBase;
                 break;
-            case NamingContexts.Schema:
+            case NamingContext.Schema:
                 _schemaSearchBase = searchBase;
                 break;
             default:

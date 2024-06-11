@@ -120,7 +120,7 @@ namespace SharpHoundCommonLib
             return rid;
         }
 
-        public static bool GetNamingContextSearchBase(this LdapConnection connection, NamingContexts context,
+        public static bool GetNamingContextSearchBase(this LdapConnection connection, NamingContext context,
             out string searchBase)
         {
             var searchRequest =
@@ -146,9 +146,9 @@ namespace SharpHoundCommonLib
             var entry = response.Entries[0];
             searchBase = context switch
             {
-                NamingContexts.Default => entry.GetProperty(LDAPProperties.DefaultNamingContext),
-                NamingContexts.Configuration => entry.GetProperty(LDAPProperties.ConfigurationNamingContext),
-                NamingContexts.Schema => entry.GetProperty(LDAPProperties.SchemaNamingContext),
+                NamingContext.Default => entry.GetProperty(LDAPProperties.DefaultNamingContext),
+                NamingContext.Configuration => entry.GetProperty(LDAPProperties.ConfigurationNamingContext),
+                NamingContext.Schema => entry.GetProperty(LDAPProperties.SchemaNamingContext),
                 _ => throw new ArgumentOutOfRangeException(nameof(context), context, null)
             };
 
