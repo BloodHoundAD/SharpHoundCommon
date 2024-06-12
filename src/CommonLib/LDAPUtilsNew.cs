@@ -65,6 +65,8 @@ public class LDAPUtilsNew {
             yield break;
         }
 
+        var connection = connectionWrapper.Connection;
+
         //Pull the server name from the connection for retry logic later
         if (!connectionWrapper.GetServer(out var serverName)) {
             _log.LogDebug("PagedQuery: Failed to get server value");
@@ -97,10 +99,10 @@ public class LDAPUtilsNew {
                 yield break;
             }
 
-            SearchResponse response;
+            SearchResponse response = null;
             try {
                 _log.LogTrace("Sending paged ldap request - {Info}", queryParameters.GetQueryInfo());
-                response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+                response = (SearchResponse)connection.SendRequest(searchRequest);
                 if (response != null) {
                     pageResponse = (PageResultResponseControl)response.Controls
                         .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
@@ -156,10 +158,42 @@ public class LDAPUtilsNew {
                 //No point in printing local exceptions because they're literally worthless
                 tempResult = new LdapResult<ISearchResultEntry>() {
                     Error =
-                        $"PagedQuery - Caught unrecoverable exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
+                        $"PagedQuery - Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
                     QueryInfo = queryParameters.GetQueryInfo()
                 };
             }
+            catch (Exception e) {
+                tempResult = new LdapResult<ISearchResultEntry> {
+                    Error =
+                        $"PagedQuery - Caught unrecoverable exception: {e.Message}",
+                    QueryInfo = queryParameters.GetQueryInfo()
+                };
+            }
+
+            if (cancellationToken.IsCancellationRequested) {
+                yield break;
+            }
+
+            //I'm not sure why this happens sometimes, but if we try the request again, it works sometimes, other times we get an exception
+            if (response == null || pageResponse == null) {
+                continue;
+            }
+
+            foreach (ISearchResultEntry entry in response.Entries) {
+                if (cancellationToken.IsCancellationRequested) {
+                    yield break;
+                }
+
+                yield return new LdapResult<ISearchResultEntry>() {
+                    Value = entry
+                };
+            }
+            
+            if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 ||
+                cancellationToken.IsCancellationRequested)
+                yield break;
+            
+            pageControl.Cookie = pageResponse.Cookie;
         }
     }
     
