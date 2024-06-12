@@ -85,9 +85,15 @@ public class LDAPUtilsNew {
 
         PageResultResponseControl pageResponse = null;
         var busyRetryCount = 0;
+        LdapResult<ISearchResultEntry> tempResult = null;
 
         while (true) {
             if (cancellationToken.IsCancellationRequested) {
+                yield break;
+            }
+
+            if (tempResult != null) {
+                yield return tempResult;
                 yield break;
             }
 
@@ -148,14 +154,11 @@ public class LDAPUtilsNew {
             }
             catch (LdapException le) {
                 //No point in printing local exceptions because they're literally worthless
-                if (le.ErrorCode != (int)LdapErrorCodes.LocalError)
-                {
-                    _log.LogWarning(le,
-                        "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
-                        le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
-                }
-
-                yield break;
+                tempResult = new LdapResult<ISearchResultEntry>() {
+                    Error =
+                        $"PagedQuery - Caught unrecoverable exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
+                    QueryInfo = queryParameters.GetQueryInfo()
+                };
             }
         }
     }
