@@ -40,7 +40,7 @@ public class LDAPUtilsNew {
     private readonly object _lockObj = new();
     private readonly ManualResetEvent _connectionResetEvent = new(false);
 
-    public async IAsyncEnumerable<ISearchResultEntry> PagedQuery(LdapQueryParameters queryParameters,
+    public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
         [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
         //Always force create a new connection
         var (success, connectionWrapper, message) = await GetLdapConnection(queryParameters.DomainName,
@@ -48,22 +48,35 @@ public class LDAPUtilsNew {
         if (!success) {
             _log.LogDebug("PagedQuery failure: unable to create a connection: {Reason}\n{Info}", message,
                 queryParameters.GetQueryInfo());
+            yield return new LdapResult<ISearchResultEntry> {
+                Error = $"Unable to create a connection: {message}",
+                QueryInfo = queryParameters.GetQueryInfo()
+            };
             yield break;
         }
 
         //This should never happen as far as I know, so just checking for safety
         if (connectionWrapper == null) {
-            _log.LogWarning("PagedQuery failure: ldap connection is null\n{Info}", queryParameters.GetQueryInfo());
+            _log.LogError("PagedQuery failure: ldap connection is null\n{Info}", queryParameters.GetQueryInfo());
+            yield return new LdapResult<ISearchResultEntry> {
+                Error = "Connection is null",
+                QueryInfo = queryParameters.GetQueryInfo()
+            };
             yield break;
         }
 
         //Pull the server name from the connection for retry logic later
         if (!connectionWrapper.GetServer(out var serverName)) {
+            _log.LogDebug("PagedQuery: Failed to get server value");
             serverName = null;
         }
 
         if (!CreateSearchRequest(queryParameters, ref connectionWrapper, out var searchRequest)) {
             _log.LogError("PagedQuery failure: unable to resolve search base\n{Info}", queryParameters.GetQueryInfo());
+            yield return new LdapResult<ISearchResultEntry> {
+                Error = "Unable to create search request",
+                QueryInfo = queryParameters.GetQueryInfo()
+            };
             yield break;
         }
 
@@ -71,6 +84,7 @@ public class LDAPUtilsNew {
         searchRequest.Controls.Add(pageControl);
 
         PageResultResponseControl pageResponse = null;
+        var busyRetryCount = 0;
 
         while (true) {
             if (cancellationToken.IsCancellationRequested) {
@@ -96,58 +110,65 @@ public class LDAPUtilsNew {
                         queryParameters.GetQueryInfo());
                     yield break;
                 }
-                /*A ServerDown exception indicates that our connection is no longer valid for one of many reasons.
-                    However, this function is generally called by multiple threads, so we need to be careful in recreating
-                    the connection. Using a semaphore, we can ensure that only one thread is actually recreating the connection
-                    while the other threads that hit the ServerDown exception simply wait. The initial caller will hold the semaphore
-                    and do a backoff delay before trying to make a new connection which will replace the existing connection in the
-                    _ldapConnections cache. Other threads will retrieve the new connection from the cache instead of making a new one
-                    This minimizes overhead of new connections while still fixing our core problem.*/
 
-                var backoffDelay = MinBackoffDelay;
-                var retryCount = 0;
-
-                //Attempt to acquire a lock
-                if (Monitor.TryEnter(_lockObj)) {
-                    //If we've acquired the lock, we want to immediately signal our reset event so everyone else waits
-                    _connectionResetEvent.Reset();
-                    try {
-                        //Sleep for our backoff
-                        Thread.Sleep(backoffDelay);
-                        //Explicitly skip the cache so we don't get the same connection back
-                        connectionWrapper = GetLdapConnectionForServer(serverName)
-                        conn = CreateNewConnection(domainName, globalCatalog, true).Connection;
-                        if (conn == null) {
-                            _log.LogError(
-                                "Unable to create replacement ldap connection for ServerDown exception. Breaking loop");
-                            yield break;
-                        }
-
-                        _log.LogInformation("Created new LDAP connection after receiving ServerDown from server");
+                /*
+                 * Paged queries will not use the cached ldap connections, as the intention is to only have 1 or a couple of these queries running at once.
+                 * The connection logic here is simplified accordingly
+                 */
+                for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
+                    var backoffDelay = GetNextBackoff(retryCount);
+                    await Task.Delay(backoffDelay, cancellationToken);
+                    if (GetLdapConnectionForServer(serverName, out var newConnectionWrapper,
+                            queryParameters.GlobalCatalog,
+                            true)) {
+                        newConnectionWrapper.CopyContexts(connectionWrapper);
+                        connectionWrapper.Connection.Dispose();
+                        connectionWrapper = newConnectionWrapper;
+                        _log.LogDebug(
+                            "PagedQuery - Successfully created new ldap connection to {Server} after ServerDown",
+                            serverName);
+                        break;
                     }
-                    finally {
-                        //Reset our event + release the lock
-                        _connectionResetEvent.Set();
-                        Monitor.Exit(_lockObj);
+
+                    if (retryCount == MaxRetries - 1) {
+                        _log.LogError("PagedQuery - Failed to get a new connection after ServerDown.\n{Info}",
+                            queryParameters.GetQueryInfo());
+                        yield break;
                     }
                 }
-                else {
-                    //If someone else is holding the reset event, we want to just wait and then pull the newly created connection out of the cache
-                    //This event will be released after the first entrant thread is done making a new connection
-                    //The thread.sleep is to prevent a potential, very unlikely race
-                    Thread.Sleep(50);
-                    _connectionResetEvent.WaitOne();
-                    conn = CreateNewConnection(domainName, globalCatalog).Connection;
+            }
+            catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
+                /*
+                 * If we get a busy error, we want to do an exponential backoff, but maintain the current connection
+                 * The expectation is that given enough time, the server should stop being busy and service our query appropriately
+                 */
+                busyRetryCount++;
+                var backoffDelay = GetNextBackoff(busyRetryCount);
+                await Task.Delay(backoffDelay, cancellationToken);
+            }
+            catch (LdapException le) {
+                //No point in printing local exceptions because they're literally worthless
+                if (le.ErrorCode != (int)LdapErrorCodes.LocalError)
+                {
+                    _log.LogWarning(le,
+                        "LDAP Exception in Loop: {ErrorCode}. {ServerErrorMessage}. {Message}. Filter: {Filter}. Domain: {Domain}",
+                        le.ErrorCode, le.ServerErrorMessage, le.Message, ldapFilter, domainName);
                 }
 
-                backoffDelay = GetNextBackoff(retryCount);
-                continue;
+                yield break;
             }
         }
     }
+    
+    private static TimeSpan GetNextBackoff(int retryCount)
+    {
+        return TimeSpan.FromSeconds(Math.Min(
+            MinBackoffDelay.TotalSeconds * Math.Pow(BackoffDelayMultiplier, retryCount),
+            MaxBackoffDelay.TotalSeconds));
+    }
 
     private bool CreateSearchRequest(LdapQueryParameters queryParameters,
-        ref LdapConnectionWrapperNew connectionWrapper, out SearchRequest searchRequest, bool paged = false) {
+        ref LdapConnectionWrapperNew connectionWrapper, out SearchRequest searchRequest) {
         string basePath;
         if (!string.IsNullOrWhiteSpace(queryParameters.SearchBase)) {
             basePath = queryParameters.SearchBase;

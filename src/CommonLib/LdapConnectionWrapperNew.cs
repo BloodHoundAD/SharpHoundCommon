@@ -20,6 +20,13 @@ public class LdapConnectionWrapperNew
         _searchResultEntry = entry;
     }
 
+    public void CopyContexts(LdapConnectionWrapperNew other) {
+        _domainSearchBase = other._domainSearchBase;
+        _configurationSearchBase = other._configurationSearchBase;
+        _schemaSearchBase = other._schemaSearchBase;
+        _server = other._server;
+    }
+
     public bool GetServer(out string server) {
         if (_server != null) {
             server = _server;

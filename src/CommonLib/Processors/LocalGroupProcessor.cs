@@ -26,15 +26,15 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
-        public virtual Result<ISAMServer> OpenSamServer(string computerName)
+        public virtual LdapResult<ISAMServer> OpenSamServer(string computerName)
         {
             var result = SAMServer.OpenServer(computerName);
             if (result.IsFailed)
             {
-                return Result<ISAMServer>.Fail(result.SError);
+                return LdapResult<ISAMServer>.Fail(result.SError);
             }
 
-            return Result<ISAMServer>.Ok(result.Value);
+            return LdapResult<ISAMServer>.Ok(result.Value);
         }
 
         public IAsyncEnumerable<LocalGroupAPIResult> GetLocalGroups(ResolvedSearchResult result)

@@ -384,15 +384,15 @@ namespace SharpHoundCommonLib.Processors
         // TODO: Copied from URA processor. Find a way to have this function in a shared spot
         
 
-        public virtual Result<ISAMServer> OpenSamServer(string computerName)
+        public virtual LdapResult<ISAMServer> OpenSamServer(string computerName)
         {
             var result = SAMServer.OpenServer(computerName);
             if (result.IsFailed)
             {
-                return Result<ISAMServer>.Fail(result.SError);
+                return LdapResult<ISAMServer>.Fail(result.SError);
             }
 
-            return Result<ISAMServer>.Ok(result.Value);
+            return LdapResult<ISAMServer>.Ok(result.Value);
         }
 
         private async Task SendComputerStatus(CSVComputerStatus status)

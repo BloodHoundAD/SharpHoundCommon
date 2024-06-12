@@ -15,6 +15,7 @@ public class LdapQueryParameters
     public bool IncludeDeleted { get; set; } = false;
     public string SearchBase { get; set; }
     public NamingContext NamingContext { get; set; } = NamingContext.Default;
+    public bool ThrowException { get; set; } = false;
 
     public string GetQueryInfo()
     {

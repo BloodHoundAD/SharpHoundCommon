@@ -25,12 +25,12 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
-        public virtual Result<ILSAPolicy> OpenLSAPolicy(string computerName)
+        public virtual LdapResult<ILSAPolicy> OpenLSAPolicy(string computerName)
         {
             var result = LSAPolicy.OpenPolicy(computerName);
-            if (result.IsFailed) return Result<ILSAPolicy>.Fail(result.SError);
+            if (result.IsFailed) return LdapResult<ILSAPolicy>.Fail(result.SError);
 
-            return Result<ILSAPolicy>.Ok(result.Value);
+            return LdapResult<ILSAPolicy>.Ok(result.Value);
         }
 
         public IAsyncEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(ResolvedSearchResult result,
