@@ -12,12 +12,18 @@ public class LdapConnectionWrapperNew
     private string _configurationSearchBase;
     private string _schemaSearchBase;
     private string _server;
+    public string Guid { get; set; }
     private const string Unknown = "UNKNOWN";
+    public bool GlobalCatalog;
+    public string PoolIdentifier;
 
-    public LdapConnectionWrapperNew(LdapConnection connection, ISearchResultEntry entry)
+    public LdapConnectionWrapperNew(LdapConnection connection, ISearchResultEntry entry, bool globalCatalog, string poolIdentifier)
     {
         Connection = connection;
         _searchResultEntry = entry;
+        Guid = new Guid().ToString();
+        GlobalCatalog = globalCatalog;
+        PoolIdentifier = poolIdentifier;
     }
 
     public void CopyContexts(LdapConnectionWrapperNew other) {
@@ -88,5 +94,20 @@ public class LdapConnectionWrapperNew
             default:
                 throw new ArgumentOutOfRangeException(nameof(context), context, null);
         }
+    }
+
+    protected bool Equals(LdapConnectionWrapperNew other) {
+        return Guid == other.Guid;
+    }
+
+    public override bool Equals(object obj) {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((LdapConnectionWrapperNew)obj);
+    }
+
+    public override int GetHashCode() {
+        return (Guid != null ? Guid.GetHashCode() : 0);
     }
 }
