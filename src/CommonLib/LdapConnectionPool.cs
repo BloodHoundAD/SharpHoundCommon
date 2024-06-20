@@ -132,7 +132,7 @@ public class LdapConnectionPool : IDisposable{
             }
         }
         
-        if (!GetDomain(_identifier, out var domainObject) || domainObject.Name == null) {
+        if (!LDAPUtilsNew.GetDomain(_identifier, _ldapConfig, out var domainObject) || domainObject.Name == null) {
             //If we don't get a result here, we effectively have no other ways to resolve this domain, so we'll just have to exit out
             _log.LogDebug(
                 "Could not get domain object from GetDomain, unable to create ldap connection for domain {Domain}",
@@ -333,41 +333,6 @@ public class LdapConnectionPool : IDisposable{
         }
 
         return (false, null);
-    }
-    
-    /// <summary>
-    ///     Attempts to get the Domain object representing the target domain. If null is specified for the domain name, gets
-    ///     the user's current domain
-    /// </summary>
-    /// <param name="domain"></param>
-    /// <param name="domainName"></param>
-    /// <returns></returns>
-    private bool GetDomain(string domainName, out Domain domain) {
-        var cacheKey = domainName;
-        if (DomainCache.TryGetValue(cacheKey, out domain)) return true;
-
-        try {
-            DirectoryContext context;
-            if (_ldapConfig.Username != null)
-                context = domainName != null
-                    ? new DirectoryContext(DirectoryContextType.Domain, domainName, _ldapConfig.Username,
-                        _ldapConfig.Password)
-                    : new DirectoryContext(DirectoryContextType.Domain, _ldapConfig.Username,
-                        _ldapConfig.Password);
-            else
-                context = domainName != null
-                    ? new DirectoryContext(DirectoryContextType.Domain, domainName)
-                    : new DirectoryContext(DirectoryContextType.Domain);
-
-            domain = Domain.GetDomain(context);
-            if (domain == null) return false;
-            DomainCache.TryAdd(cacheKey, domain);
-            return true;
-        }
-        catch (Exception e) {
-            _log.LogDebug(e, "GetDomain call failed for domain name {Name}", domainName);
-            return false;
-        }
     }
 }
 

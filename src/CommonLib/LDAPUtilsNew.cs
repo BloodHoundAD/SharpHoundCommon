@@ -25,7 +25,7 @@ public class LDAPUtilsNew {
     //This cache is indexed by domain sid
     private readonly ConcurrentDictionary<string, NetAPIStructs.DomainControllerInfo?> _dcInfoCache = new();
     private readonly DCConnectionCache _ldapConnectionCache = new();
-    private readonly ConcurrentDictionary<string, Domain> _domainCache = new();
+    private static readonly ConcurrentDictionary<string, Domain> _domainCache = new();
     private readonly ILogger _log;
     private readonly NativeMethods _nativeMethods;
     private readonly string _nullCacheKey = Guid.NewGuid().ToString();
@@ -930,6 +930,32 @@ public class LDAPUtilsNew {
         }
         catch (Exception e) {
             _log.LogDebug(e, "GetDomain call failed for domain name {Name}", domainName);
+            return false;
+        }
+    }
+
+    public static bool GetDomain(string domainName, LDAPConfig ldapConfig, out Domain domain) {
+        if (_domainCache.TryGetValue(domainName, out domain)) return true;
+
+        try {
+            DirectoryContext context;
+            if (ldapConfig.Username != null)
+                context = domainName != null
+                    ? new DirectoryContext(DirectoryContextType.Domain, domainName, ldapConfig.Username,
+                        ldapConfig.Password)
+                    : new DirectoryContext(DirectoryContextType.Domain, ldapConfig.Username,
+                        ldapConfig.Password);
+            else
+                context = domainName != null
+                    ? new DirectoryContext(DirectoryContextType.Domain, domainName)
+                    : new DirectoryContext(DirectoryContextType.Domain);
+
+            domain = Domain.GetDomain(context);
+            if (domain == null) return false;
+            _domainCache.TryAdd(domainName, domain);
+            return true;
+        }
+        catch (Exception e) {
             return false;
         }
     }
