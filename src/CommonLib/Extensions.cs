@@ -67,6 +67,24 @@ namespace SharpHoundCommonLib
             return output;
         }
 
+        public static string GetProperty(this DirectoryEntry entry, string propertyName) {
+            try {
+                if (!entry.Properties.Contains(propertyName)) {
+                    return null;
+                }
+            }
+            catch {
+                return null;
+            }
+
+            var s = entry.Properties[propertyName][0];
+            return s switch
+            {
+                string st => st,
+                _ => null
+            };
+        }
+
         public static string GetSid(this DirectoryEntry result)
         {
             try

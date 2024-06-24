@@ -12,8 +12,7 @@ public class LdapConnectionWrapperNew
     private string _configurationSearchBase;
     private string _schemaSearchBase;
     private string _server;
-    public string Guid { get; set; }
-    private const string Unknown = "UNKNOWN";
+    private string Guid { get; set; }
     public bool GlobalCatalog;
     public string PoolIdentifier;
 
@@ -33,15 +32,13 @@ public class LdapConnectionWrapperNew
         _server = other._server;
     }
 
-    public bool GetServer(out string server) {
+    public string GetServer() {
         if (_server != null) {
-            server = _server;
-            return true;
+            return _server;
         }
 
         _server = _searchResultEntry.GetProperty(LDAPProperties.DNSHostName);
-        server = _server;
-        return server != null;
+        return _server;
     }
 
     public bool GetSearchBase(NamingContext context, out string searchBase)

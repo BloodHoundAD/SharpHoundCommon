@@ -41,9 +41,11 @@ public class LdapConnectionPool : IDisposable{
         if (!_connections.TryTake(out var connectionWrapper)) {
             var (success, connection, message) = await CreateNewConnection();
             if (!success) {
+                //If we didn't get a connection, immediately release the semaphore so we don't have hanging ones
+                _semaphore.Release();
                 return (false, null, message);
             }
-
+            
             connectionWrapper = connection;
         }
 
@@ -54,7 +56,13 @@ public class LdapConnectionPool : IDisposable{
         GetConnectionForSpecificServerAsync(string server, bool globalCatalog) {
         await _semaphore.WaitAsync();
 
-        return CreateNewConnectionForServer(server, globalCatalog);
+        var result= CreateNewConnectionForServer(server, globalCatalog);
+        if (!result.Success) {
+            //If we didn't get a connection, immediately release the semaphore so we don't have hanging ones
+            _semaphore.Release();
+        }
+
+        return result;
     }
 
     public async Task<(bool Success, LdapConnectionWrapperNew connectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
@@ -62,6 +70,8 @@ public class LdapConnectionPool : IDisposable{
         if (!_globalCatalogConnection.TryTake(out var connectionWrapper)) {
             var (success, connection, message) = await CreateNewConnection(true);
             if (!success) {
+                //If we didn't get a connection, immediately release the semaphore so we don't have hanging ones
+                _semaphore.Release();
                 return (false, null, message);
             }
 
@@ -71,8 +81,8 @@ public class LdapConnectionPool : IDisposable{
         return (true, connectionWrapper, null);
     }
 
-    public void ReleaseConnection(LdapConnectionWrapperNew connectionWrapper, bool returnToPool = true) {
-        if (returnToPool) {
+    public void ReleaseConnection(LdapConnectionWrapperNew connectionWrapper, bool connectionFaulted = false) {
+        if (!connectionFaulted) {
             if (connectionWrapper.GlobalCatalog) {
                 _globalCatalogConnection.Add(connectionWrapper);
             }
@@ -132,7 +142,7 @@ public class LdapConnectionPool : IDisposable{
             }
         }
         
-        if (!LDAPUtilsNew.GetDomain(_identifier, _ldapConfig, out var domainObject) || domainObject.Name == null) {
+        if (!LdapUtilsNew.GetDomain(_identifier, _ldapConfig, out var domainObject) || domainObject.Name == null) {
             //If we don't get a result here, we effectively have no other ways to resolve this domain, so we'll just have to exit out
             _log.LogDebug(
                 "Could not get domain object from GetDomain, unable to create ldap connection for domain {Domain}",
@@ -161,7 +171,7 @@ public class LdapConnectionPool : IDisposable{
         
         foreach (DomainController dc in domainObject.DomainControllers) {
             portConnectionResult =
-                await CreateLDAPConnectionWithPortCheck(primaryDomainController, globalCatalog);
+                await CreateLDAPConnectionWithPortCheck(dc.Name, globalCatalog);
             if (portConnectionResult.success) {
                 _log.LogDebug(
                     "Successfully created ldap connection for domain: {Domain} using strategy 6 with to pdc {Server}",
@@ -283,7 +293,7 @@ public class LdapConnectionPool : IDisposable{
         try {
             //Do an initial search request to get the rootDSE
             //This ldap filter is equivalent to (objectclass=*)
-            var searchRequest = LDAPUtilsNew.CreateSearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
+            var searchRequest = LdapUtilsNew.CreateSearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
                 SearchScope.Base, null);
 
             response = (SearchResponse)connection.SendRequest(searchRequest);

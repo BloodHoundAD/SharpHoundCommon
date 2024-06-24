@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.DirectoryServices;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib;
 
@@ -10,9 +12,24 @@ public class ConnectionPoolManager : IDisposable{
     private readonly ConcurrentDictionary<string, LdapConnectionPool> _pools = new();
     private readonly LDAPConfig _ldapConfig;
     private readonly string[] _translateNames = { "Administrator", "admin" };
+    private readonly ConcurrentDictionary<string, string> _resolvedIdentifiers = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ILogger _log;
+    private readonly PortScanner _portScanner;
 
-    public ConnectionPoolManager(LDAPConfig config) {
+    public ConnectionPoolManager(LDAPConfig config, ILogger log = null, PortScanner scanner = null) {
         _ldapConfig = config;
+        _log = log ?? Logging.LogProvider.CreateLogger("ConnectionPoolManager");
+        _portScanner = scanner ?? new PortScanner();
+    }
+
+    public void ReleaseConnection(LdapConnectionWrapperNew connectionWrapper, bool connectionFaulted = false) {
+        //I dont think this is possible, but at least account for it
+        if (!_pools.TryGetValue(connectionWrapper.PoolIdentifier, out var pool)) {
+            connectionWrapper.Connection.Dispose();
+            return;
+        }
+        
+        pool.ReleaseConnection(connectionWrapper, connectionFaulted);
     }
 
     public async Task<(bool Success, LdapConnectionWrapperNew connectionWrapper, string Message)> GetLdapConnection(
@@ -20,7 +37,7 @@ public class ConnectionPoolManager : IDisposable{
         var resolved = ResolveIdentifier(identifier);
 
         if (!_pools.TryGetValue(identifier, out var pool)) {
-            pool = new LdapConnectionPool(resolved, _ldapConfig);
+            pool = new LdapConnectionPool(resolved, _ldapConfig,scanner: _portScanner);
             _pools.TryAdd(identifier, pool);
         }
 
@@ -35,7 +52,7 @@ public class ConnectionPoolManager : IDisposable{
         var resolved = ResolveIdentifier(identifier);
 
         if (!_pools.TryGetValue(identifier, out var pool)) {
-            pool = new LdapConnectionPool(resolved, _ldapConfig);
+            pool = new LdapConnectionPool(resolved, _ldapConfig,scanner: _portScanner);
             _pools.TryAdd(identifier, pool);
         }
         
@@ -43,7 +60,18 @@ public class ConnectionPoolManager : IDisposable{
     }
 
     private string ResolveIdentifier(string identifier) {
-        return GetDomainSidFromDomainName(identifier, out var sid) ? sid : identifier;
+        if (_resolvedIdentifiers.TryGetValue(identifier, out var resolved)) {
+            return resolved;
+        }
+
+
+        if (GetDomainSidFromDomainName(identifier, out var sid)) {
+            _log.LogDebug("Resolved identifier {Identifier} to {Resolved}", identifier, sid);
+            _resolvedIdentifiers.TryAdd(identifier, sid);
+            return sid;
+        }
+            
+        return identifier;
     }
     
     private bool GetDomainSidFromDomainName(string domainName, out string domainSid) {
@@ -64,7 +92,7 @@ public class ConnectionPoolManager : IDisposable{
             //we expect this to fail sometimes
         }
 
-        if (LDAPUtilsNew.GetDomain(domainName, _ldapConfig, out var domainObject))
+        if (LdapUtilsNew.GetDomain(domainName, _ldapConfig, out var domainObject))
             try {
                 domainSid = domainObject.GetDirectoryEntry().GetSid();
                 if (domainSid != null) {

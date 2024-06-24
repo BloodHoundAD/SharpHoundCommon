@@ -164,6 +164,15 @@ namespace SharpHoundCommonLib
             temp = DCReplaceRegex.Replace(temp, "").Replace(",", ".").ToUpper();
             return temp;
         }
+        
+        /// <summary>
+        /// Converts a domain name to a distinguished name using simple string substitution
+        /// </summary>
+        /// <param name="domainName"></param>
+        /// <returns></returns>
+        public static string DomainNameToDistinguishedName(string domainName) {
+            return $"DC={domainName.Replace(".", ",DC=")}";
+        }
 
         /// <summary>
         ///     Strips a "serviceprincipalname" entry down to just its hostname
