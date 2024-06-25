@@ -107,7 +107,7 @@ namespace SharpHoundCommonLib
 
         internal static bool GetGCCache(string key, out string[] value)
         {
-            if (CacheInstance != null) return CacheInstance.GlobalCatalogCache.TryGetValue(key, out value);
+            if (CacheInstance != null) return CacheInstance.GlobalCatalogCache.TryGetValue(key.ToUpper(), out value);
             value = null;
             return false;
         }
