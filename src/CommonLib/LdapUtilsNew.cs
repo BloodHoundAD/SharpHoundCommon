@@ -26,7 +26,7 @@ using SecurityMasks = System.DirectoryServices.Protocols.SecurityMasks;
 
 namespace SharpHoundCommonLib;
 
-public class LdapUtilsNew {
+public class LdapUtilsNew : ILdapUtilsNew{
     //This cache is indexed by domain sid
     private readonly ConcurrentDictionary<string, NetAPIStructs.DomainControllerInfo?> _dcInfoCache = new();
     private static readonly ConcurrentDictionary<string, Domain> DomainCache = new();
@@ -87,6 +87,123 @@ public class LdapUtilsNew {
         _ldapConfig = config;
         _connectionPool.Dispose();
         _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
+    }
+
+    public async IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName,
+        string attributeName, [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
+        var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
+
+        var connectionResult = await _connectionPool.GetLdapConnection(domain, false);
+        if (!connectionResult.Success) {
+            yield return Result<string>.Fail(connectionResult.Message);
+            yield break;
+        }
+
+        var index = 0;
+        var step = 0;
+
+        //Start by using * as our upper index, which will automatically give us the range size
+        var currentRange = $"{attributeName};range={index}-*";
+        var complete = false;
+
+        var queryParameters = new LdapQueryParameters() {
+            DomainName = domain,
+            LDAPFilter = $"{attributeName}=*",
+            Attributes = new[] { currentRange },
+            SearchScope = SearchScope.Base,
+            SearchBase = distinguishedName
+        };
+        var connectionWrapper = connectionResult.ConnectionWrapper;
+
+        if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest)) {
+            yield return Result<string>.Fail("Failed to create search request");
+            yield break;
+        }
+        
+        var queryRetryCount = 0;
+        var busyRetryCount = 0;
+        
+        Result<string> tempResult = null;
+
+        while (true) {
+            if (cancellationToken.IsCancellationRequested) {
+                yield break;
+            }
+            SearchResponse response = null;
+            try {
+                response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+            }
+            catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
+                busyRetryCount++;
+                var backoffDelay = GetNextBackoff(busyRetryCount);
+                await Task.Delay(backoffDelay, cancellationToken);
+            }
+            catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && queryRetryCount < MaxRetries) {
+                queryRetryCount++;
+                _connectionPool.ReleaseConnection(connectionWrapper, true);
+                for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
+                    var backoffDelay = GetNextBackoff(retryCount);
+                    await Task.Delay(backoffDelay, cancellationToken);
+                    var (success, newConnectionWrapper, message) =
+                        await _connectionPool.GetLdapConnection(domain,
+                            false);
+                    if (success) {
+                        _log.LogDebug("RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}",
+                            newConnectionWrapper.GetServer());
+                        connectionWrapper = newConnectionWrapper;
+                        break;
+                    }
+
+                    //If we hit our max retries for making a new connection, set tempResult so we can yield it after this logic
+                    if (retryCount == MaxRetries - 1) {
+                        _log.LogError("RangedRetrieval - Failed to get a new connection after ServerDown for path {Path}", distinguishedName);
+                        tempResult =
+                            Result<string>.Fail(
+                                "RangedRetrieval - Failed to get a new connection after ServerDown.");
+                    }
+                }
+            }catch (LdapException le) {
+                tempResult = Result<string>.Fail(
+                    $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})");
+            }
+            catch (Exception e) {
+                tempResult =
+                    Result<string>.Fail($"Caught unrecoverable exception: {e.Message}");
+            }
+            
+            //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
+            if (tempResult != null) {
+                yield return tempResult;
+                yield break;
+            }
+
+            if (response?.Entries.Count == 1) {
+                var entry = response.Entries[0];
+                //We dont know the name of our attribute, but there should only be one, so we're safe to just use a loop here
+                foreach (string attr in entry.Attributes.AttributeNames) {
+                    currentRange = attr;
+                    complete = currentRange.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
+                    step = entry.Attributes[currentRange].Count;
+                }
+
+                foreach (string dn in entry.Attributes[currentRange].GetValues(typeof(string))) {
+                    yield return Result<string>.Ok(dn);
+                    index++;
+                }
+
+                if (complete) {
+                    yield break;
+                }
+
+                currentRange = $"{attributeName};range={index}-{index + step}";
+                searchRequest.Attributes.Clear();
+                searchRequest.Attributes.Add(currentRange);
+            }
+            else {
+                //I dont know what can cause a RR to have multiple entries, but its nothing good. Break out
+                yield break;
+            }
+        }
     }
 
     public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
@@ -291,7 +408,9 @@ public class LdapUtilsNew {
                     if (retryCount == MaxRetries - 1) {
                         _log.LogError("PagedQuery - Failed to get a new connection after ServerDown.\n{Info}",
                             queryParameters.GetQueryInfo());
-                        yield break;
+                        tempResult =
+                            LdapResult<ISearchResultEntry>.Fail("Failed to get a new connection after serverdown",
+                                queryParameters);
                     }
                 }
             }
@@ -438,7 +557,7 @@ public class LdapUtilsNew {
         }
     }
 
-    public async Task<(bool Success, TypedPrincipal wellKnownPrincipal)> GetWellKnownPrincipal(
+    public async Task<(bool Success, TypedPrincipal WellKnownPrincipal)> GetWellKnownPrincipal(
         string securityIdentifier, string objectDomain) {
         if (!WellKnownPrincipal.GetWellKnownPrincipal(securityIdentifier, out var wellKnownPrincipal)) {
             return (false, null);
@@ -523,7 +642,7 @@ public class LdapUtilsNew {
     }
 
     private bool CreateSearchRequest(LdapQueryParameters queryParameters,
-        ref LdapConnectionWrapperNew connectionWrapper, out SearchRequest searchRequest) {
+        LdapConnectionWrapperNew connectionWrapper, out SearchRequest searchRequest) {
         string basePath;
         if (!string.IsNullOrWhiteSpace(queryParameters.SearchBase)) {
             basePath = queryParameters.SearchBase;
@@ -602,7 +721,7 @@ public class LdapUtilsNew {
             return result;
         }
 
-        if (!CreateSearchRequest(queryParameters, ref connectionWrapper, out var searchRequest)) {
+        if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest)) {
             result.Success = false;
             result.Message = "Failed to create search request";
             return result;
@@ -615,7 +734,7 @@ public class LdapUtilsNew {
         return result;
     }
 
-    public static SearchRequest CreateSearchRequest(string distinguishedName, string ldapFilter,
+    private SearchRequest CreateSearchRequest(string distinguishedName, string ldapFilter,
         SearchScope searchScope,
         string[] attributes) {
         var searchRequest = new SearchRequest(distinguishedName, ldapFilter,
@@ -705,7 +824,7 @@ public class LdapUtilsNew {
         return (false, string.Empty);
     }
 
-    public async Task<(bool Success, string domainSid)> GetDomainSidFromDomainName(string domainName) {
+    public async Task<(bool Success, string DomainSid)> GetDomainSidFromDomainName(string domainName) {
         if (Cache.GetDomainSidMapping(domainName, out var domainSid)) return (true, domainSid);
 
         try {
@@ -993,7 +1112,7 @@ public class LdapUtilsNew {
         return null;
     }
 
-    public async Task<(bool success, string[] sids)> GetGlobalCatalogMatches(string name, string domain) {
+    public async Task<(bool Success, string[] Sids)> GetGlobalCatalogMatches(string name, string domain) {
         if (Cache.GetGCCache(name, out var matches)) {
             return (true, matches);
         }
@@ -1018,6 +1137,31 @@ public class LdapUtilsNew {
         }
 
         return (true, sids.ToArray());
+    }
+
+    public async Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propertyValue,
+        string propertyName, string containerDistinguishedName, string domainName) {
+        var filter = new LDAPFilter().AddCertificateTemplates().AddFilter($"({propertyName}={propertyValue})", true);
+        var result = await Query(new LdapQueryParameters() {
+            DomainName = domainName,
+            Attributes = CommonProperties.TypeResolutionProps,
+            SearchScope = SearchScope.OneLevel,
+            SearchBase = containerDistinguishedName,
+            LDAPFilter = filter.GetFilter(),
+        }).DefaultIfEmpty(null).FirstAsync();
+
+        if (result == null) {
+            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}", propertyName, propertyName, containerDistinguishedName);
+            return (false, null);
+        }
+
+        if (!result.IsSuccess) {
+            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}: {Error}", propertyName, propertyName, containerDistinguishedName, result.Error);
+            return (false, null);
+        }
+        
+        var entry = result.Value;
+        return (true, new TypedPrincipal(entry.GetGuid(), Label.CertTemplate));
     }
 
     /// <summary>
@@ -1090,7 +1234,34 @@ public class LdapUtilsNew {
     /// Created for testing purposes
     /// </summary>
     /// <returns></returns>
-    public static ActiveDirectorySecurityDescriptor MakeSecurityDescriptor() {
+    public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor() {
         return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
+    }
+
+    public async Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain) {
+        if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+        {
+            //The everyone and auth users principals are special and will be converted to the domain equivalent
+            if (sid.Value is "S-1-1-0" or "S-1-5-11")
+            {
+                return await GetWellKnownPrincipal(sid.Value, computerDomain);
+            }
+
+            //Use the computer object id + the RID of the sid we looked up to create our new principal
+            var principal = new TypedPrincipal
+            {
+                ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
+                ObjectType = common.ObjectType switch
+                {
+                    Label.User => Label.LocalUser,
+                    Label.Group => Label.LocalGroup,
+                    _ => common.ObjectType
+                }
+            };
+
+            return (true, principal);
+        }
+
+        return (false, null);
     }
 }
