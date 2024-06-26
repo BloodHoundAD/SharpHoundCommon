@@ -653,60 +653,56 @@ public class LdapUtilsNew {
     }
 
     private async Task<(bool Success, string Sid)> TryGetSid(string domainName) {
-        var methods = new Func<string, Task<(bool, string)>>[] {
-            TryGetSidFromDirectoryEntry,
-            TryGetSidFromDomainObject,
-            TryGetSidFromNTAccount,
-            TryGetSidFromLdapQuery
-        };
-
-        foreach (var method in methods) {
-            var (success, sid) = await method(domainName);
-            if (success)
-                return (true, sid);
-        }
+        if (TryGetSidFromDirectoryEntry(domainName) is (true, var sid))
+            return Task.FromResult(true, sid);
+        else if (TryGetSidFromDomainObject(domainName) is (true, var sid))
+            return Task.FromResult(true, sid);
+        else if (TryGetSidFromNTAccount(domainName) is (true, var sid))
+            return Task.FromResult(true, sid);
+        else if (await TryGetSidFromLdapQuery(domainName) is (true, var sid))
+            return Task.FromResult(true, sid);
 
         return (false, string.Empty);
     }
 
-    private Task<(bool, string)> TryGetSidFromDirectoryEntry(string domainName) {
+    private (bool, string) TryGetSidFromDirectoryEntry(string domainName) {
         try {
             var entry = new DirectoryEntry($"LDAP://{domainName}");
             entry.RefreshCache(new[] { "objectSid" });
             var sid = entry.GetSid();
-            return Task.FromResult((sid != null, sid));
+            return (sid != null, sid);
         }
         catch {
-            return Task.FromResult((false, (string)null));
+            return (false, (string)null);
         }
     }
 
-    private Task<(bool, string)> TryGetSidFromDomainObject(string domainName) {
+    private (bool, string) TryGetSidFromDomainObject(string domainName) {
         if (!GetDomain(domainName, out var domainObject))
-            return Task.FromResult((false, (string)null));
+            return (false, (string)null);
 
         try {
             var sid = domainObject.GetDirectoryEntry().GetSid();
-            return Task.FromResult((sid != null, sid));
+            return (sid != null, sid);
         }
         catch {
-            return Task.FromResult((false, (string)null));
+            return (false, (string)null);
         }
     }
 
-    private Task<(bool, string)> TryGetSidFromNTAccount(string domainName) {
+    private (bool, string) TryGetSidFromNTAccount(string domainName) {
         foreach (var name in _translateNames) {
             try {
                 var account = new NTAccount(domainName, name);
                 var sid = (SecurityIdentifier)account.Translate(typeof(SecurityIdentifier));
-                return Task.FromResult((true, sid.AccountDomainSid.ToString()));
+                return (true, sid.AccountDomainSid.ToString());
             }
             catch {
                 // Continue to next name if this one fails
             }
         }
 
-        return Task.FromResult((false, (string)null));
+        return (false, (string)null);
     }
 
     private async Task<(bool, string)> TryGetSidFromLdapQuery(string domainName) {
