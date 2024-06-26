@@ -6,8 +6,10 @@ using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +26,7 @@ using SecurityMasks = System.DirectoryServices.Protocols.SecurityMasks;
 
 namespace SharpHoundCommonLib;
 
-public class LdapUtilsNew {
+public class LdapUtilsNew : ILdapUtilsNew{
     //This cache is indexed by domain sid
     private readonly ConcurrentDictionary<string, NetAPIStructs.DomainControllerInfo?> _dcInfoCache = new();
     private static readonly ConcurrentDictionary<string, Domain> DomainCache = new();
@@ -35,6 +37,7 @@ public class LdapUtilsNew {
     private static readonly ConcurrentDictionary<string, ResolvedWellKnownPrincipal>
         SeenWellKnownPrincipals = new();
 
+    private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new(StringComparer.OrdinalIgnoreCase);
     private readonly ILogger _log;
     private readonly PortScanner _portScanner;
     private readonly NativeMethods _nativeMethods;
@@ -50,6 +53,16 @@ public class LdapUtilsNew {
     private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(20);
     private const int BackoffDelayMultiplier = 2;
     private const int MaxRetries = 3;
+
+    private static readonly byte[] NameRequest = {
+        0x80, 0x94, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x20, 0x43, 0x4b, 0x41,
+        0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41,
+        0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41,
+        0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41,
+        0x41, 0x41, 0x41, 0x41, 0x41, 0x00, 0x00, 0x21,
+        0x00, 0x01
+    };
 
     private class ResolvedWellKnownPrincipal {
         public string DomainName { get; set; }
@@ -76,8 +89,124 @@ public class LdapUtilsNew {
         _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
     }
 
-    public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(
-        LdapQueryParameters queryParameters,
+    public async IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName,
+        string attributeName, [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
+        var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
+
+        var connectionResult = await _connectionPool.GetLdapConnection(domain, false);
+        if (!connectionResult.Success) {
+            yield return Result<string>.Fail(connectionResult.Message);
+            yield break;
+        }
+
+        var index = 0;
+        var step = 0;
+
+        //Start by using * as our upper index, which will automatically give us the range size
+        var currentRange = $"{attributeName};range={index}-*";
+        var complete = false;
+
+        var queryParameters = new LdapQueryParameters() {
+            DomainName = domain,
+            LDAPFilter = $"{attributeName}=*",
+            Attributes = new[] { currentRange },
+            SearchScope = SearchScope.Base,
+            SearchBase = distinguishedName
+        };
+        var connectionWrapper = connectionResult.ConnectionWrapper;
+
+        if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest)) {
+            yield return Result<string>.Fail("Failed to create search request");
+            yield break;
+        }
+        
+        var queryRetryCount = 0;
+        var busyRetryCount = 0;
+        
+        Result<string> tempResult = null;
+
+        while (true) {
+            if (cancellationToken.IsCancellationRequested) {
+                yield break;
+            }
+            SearchResponse response = null;
+            try {
+                response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+            }
+            catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
+                busyRetryCount++;
+                var backoffDelay = GetNextBackoff(busyRetryCount);
+                await Task.Delay(backoffDelay, cancellationToken);
+            }
+            catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && queryRetryCount < MaxRetries) {
+                queryRetryCount++;
+                _connectionPool.ReleaseConnection(connectionWrapper, true);
+                for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
+                    var backoffDelay = GetNextBackoff(retryCount);
+                    await Task.Delay(backoffDelay, cancellationToken);
+                    var (success, newConnectionWrapper, message) =
+                        await _connectionPool.GetLdapConnection(domain,
+                            false);
+                    if (success) {
+                        _log.LogDebug("RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}",
+                            newConnectionWrapper.GetServer());
+                        connectionWrapper = newConnectionWrapper;
+                        break;
+                    }
+
+                    //If we hit our max retries for making a new connection, set tempResult so we can yield it after this logic
+                    if (retryCount == MaxRetries - 1) {
+                        _log.LogError("RangedRetrieval - Failed to get a new connection after ServerDown for path {Path}", distinguishedName);
+                        tempResult =
+                            Result<string>.Fail(
+                                "RangedRetrieval - Failed to get a new connection after ServerDown.");
+                    }
+                }
+            }catch (LdapException le) {
+                tempResult = Result<string>.Fail(
+                    $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})");
+            }
+            catch (Exception e) {
+                tempResult =
+                    Result<string>.Fail($"Caught unrecoverable exception: {e.Message}");
+            }
+            
+            //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
+            if (tempResult != null) {
+                yield return tempResult;
+                yield break;
+            }
+
+            if (response?.Entries.Count == 1) {
+                var entry = response.Entries[0];
+                //We dont know the name of our attribute, but there should only be one, so we're safe to just use a loop here
+                foreach (string attr in entry.Attributes.AttributeNames) {
+                    currentRange = attr;
+                    complete = currentRange.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
+                    step = entry.Attributes[currentRange].Count;
+                }
+
+                foreach (string dn in entry.Attributes[currentRange].GetValues(typeof(string))) {
+                    yield return Result<string>.Ok(dn);
+                    index++;
+                }
+
+                if (complete) {
+                    yield break;
+                }
+
+                currentRange = $"{attributeName};range={index}-{index + step}";
+                searchRequest.Attributes.Clear();
+                searchRequest.Attributes.Add(currentRange);
+            }
+            else {
+                //I dont know what can cause a RR to have multiple entries, but its nothing good. Break out
+                yield break;
+            }
+        }
+    }
+
+    public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
         [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
         var setupResult = await SetupLdapQuery(queryParameters);
         if (!setupResult.Success) {
@@ -357,17 +486,21 @@ public class LdapUtilsNew {
             return (true, principal);
         }
 
-        var type = identifier.StartsWith("S-") ? LookupSidType(id, fallbackDomain) : LookupGuidType(id, fallbackDomain);
-        return new TypedPrincipal(id, type);
+        if (identifier.StartsWith("S-")) {
+            var result = await LookupSidType(identifier, objectDomain);
+            return (result.Success, new TypedPrincipal(identifier, result.Type));
+        }
+
+        var (success, type) = await LookupGuidType(identifier, objectDomain);
+        return (success, new TypedPrincipal(identifier, type));
     }
 
-    private async Task<(bool Success, Label type)> LookupSidType(string sid, string domain) {
+    private async Task<(bool Success, Label Type)> LookupSidType(string sid, string domain) {
         if (Cache.GetIDType(sid, out var type)) {
             return (true, type);
         }
 
-        if (await GetDomainSidFromDomainName(domain) is (true, var domainSid)) {
-        }
+        return await GetDomainSidFromDomainName(domain);
     }
 
     public async Task<(bool Success, TypedPrincipal wellKnownPrincipal)> GetWellKnownPrincipal(
@@ -455,7 +588,7 @@ public class LdapUtilsNew {
     }
 
     private bool CreateSearchRequest(LdapQueryParameters queryParameters,
-        ref LdapConnectionWrapperNew connectionWrapper, out SearchRequest searchRequest) {
+        LdapConnectionWrapperNew connectionWrapper, out SearchRequest searchRequest) {
         string basePath;
         if (!string.IsNullOrWhiteSpace(queryParameters.SearchBase)) {
             basePath = queryParameters.SearchBase;
@@ -500,7 +633,10 @@ public class LdapUtilsNew {
         return true;
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> utils_rewrite
     private bool CallDsGetDcName(string domainName, out NetAPIStructs.DomainControllerInfo? info) {
         if (_dcInfoCache.TryGetValue(domainName.ToUpper().Trim(), out info)) return info != null;
 
@@ -535,7 +671,7 @@ public class LdapUtilsNew {
             return result;
         }
 
-        if (!CreateSearchRequest(queryParameters, ref connectionWrapper, out var searchRequest)) {
+        if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest)) {
             result.Success = false;
             result.Message = "Failed to create search request";
             return result;
@@ -548,7 +684,7 @@ public class LdapUtilsNew {
         return result;
     }
 
-    public static SearchRequest CreateSearchRequest(string distinguishedName, string ldapFilter,
+    private SearchRequest CreateSearchRequest(string distinguishedName, string ldapFilter,
         SearchScope searchScope,
         string[] attributes) {
         var searchRequest = new SearchRequest(distinguishedName, ldapFilter,
@@ -811,8 +947,296 @@ public class LdapUtilsNew {
         }
     }
 
-    private struct LdapFailure {
-        public LdapFailureReason FailureReason { get; set; }
-        public string Message { get; set; }
+    public async Task<(bool Success, TypedPrincipal Principal)> ResolveAccountName(string name, string domain) {
+        if (string.IsNullOrWhiteSpace(name)) {
+            return (false, null);
+        }
+
+        if (Cache.GetPrefixedValue(name, domain, out var id) && Cache.GetIDType(id, out var type))
+            return (true, new TypedPrincipal {
+                ObjectIdentifier = id,
+                ObjectType = type
+            });
+
+        var result = await Query(new LdapQueryParameters() {
+            DomainName = domain,
+            Attributes = CommonProperties.TypeResolutionProps,
+            LDAPFilter = $"(samaccountname={name})"
+        }).FirstAsync();
+
+        if (result.IsSuccess) {
+            type = result.Value.GetLabel();
+            id = result.Value.GetObjectIdentifier();
+
+            if (!string.IsNullOrWhiteSpace(id)) {
+                Cache.AddPrefixedValue(name, domain, id);
+                Cache.AddType(id, type);
+            }
+
+            var (tempID, _) = await GetWellKnownPrincipalObjectIdentifier(id, domain);
+            return (true, new TypedPrincipal(tempID, type));
+        }
+
+        return (false, null);
+    }
+
+    public async Task<(bool Success, string SecurityIdentifier)> ResolveHostToSid(string host, string domain) {
+        //Remove SPN prefixes from the host name so we're working with a clean name
+        var strippedHost = Helpers.StripServicePrincipalName(host).ToUpper().TrimEnd('$');
+        if (string.IsNullOrEmpty(strippedHost)) {
+            return (false, string.Empty);
+        }
+
+        if (_hostResolutionMap.TryGetValue(strippedHost, out var sid)) return (true, sid);
+
+        //Immediately start with NetWekstaGetInfo as its our most reliable indicator if successful
+        var workstationInfo = await GetWorkstationInfo(strippedHost);
+        if (workstationInfo.HasValue) {
+            var tempName = workstationInfo.Value.ComputerName;
+            var tempDomain = workstationInfo.Value.LanGroup;
+
+            if (string.IsNullOrWhiteSpace(tempDomain)) {
+                tempDomain = domain;
+            }
+
+            if (!string.IsNullOrWhiteSpace(tempName)) {
+                tempName = $"{tempName}$".ToUpper();
+                if (await ResolveAccountName(tempName, tempDomain) is (true, var principal)) {
+                    _hostResolutionMap.TryAdd(strippedHost, principal.ObjectIdentifier);
+                    return (true, principal.ObjectIdentifier);
+                }
+            }
+        }
+
+        //Try some socket magic to get the NETBIOS name
+        if (RequestNETBIOSNameFromComputer(strippedHost, domain, out var netBiosName)) {
+            if (!string.IsNullOrWhiteSpace(netBiosName)) {
+                var result = await ResolveAccountName($"{netBiosName}$", domain);
+                if (result.Success) {
+                    _hostResolutionMap.TryAdd(strippedHost, result.Principal.ObjectIdentifier);
+                    return (true, result.Principal.ObjectIdentifier);
+                }
+            }
+        }
+
+        //Start by handling non-IP address names
+        if (!IPAddress.TryParse(strippedHost, out _)) {
+            //PRIMARY.TESTLAB.LOCAL
+            if (strippedHost.Contains(".")) {
+                var split = strippedHost.Split('.');
+                var name = split[0];
+                var result = await ResolveAccountName($"{name}$", domain);
+                if (result.Success) {
+                    _hostResolutionMap.TryAdd(strippedHost, result.Principal.ObjectIdentifier);
+                    return (true, result.Principal.ObjectIdentifier);
+                }
+
+                var tempDomain = string.Join(".", split.Skip(1).ToArray());
+                result = await ResolveAccountName($"{name}$", tempDomain);
+                if (result.Success) {
+                    _hostResolutionMap.TryAdd(strippedHost, result.Principal.ObjectIdentifier);
+                    return (true, result.Principal.ObjectIdentifier);
+                }
+            }
+            else {
+                //Format: WIN10 (probably a netbios name)
+                var result = await ResolveAccountName($"{strippedHost}$", domain);
+                if (result.Success) {
+                    _hostResolutionMap.TryAdd(strippedHost, result.Principal.ObjectIdentifier);
+                    return (true, result.Principal.ObjectIdentifier);
+                }
+            }
+        }
+
+        try {
+            var resolvedHostname = (await Dns.GetHostEntryAsync(strippedHost)).HostName;
+            var split = resolvedHostname.Split('.');
+            var name = split[0];
+            var result = await ResolveAccountName($"{name}$", domain);
+            if (result.Success) {
+                _hostResolutionMap.TryAdd(strippedHost, result.Principal.ObjectIdentifier);
+                return (true, result.Principal.ObjectIdentifier);
+            }
+
+            var tempDomain = string.Join(".", split.Skip(1).ToArray());
+            result = await ResolveAccountName($"{name}$", tempDomain);
+            if (result.Success) {
+                _hostResolutionMap.TryAdd(strippedHost, result.Principal.ObjectIdentifier);
+                return (true, result.Principal.ObjectIdentifier);
+            }
+        }
+        catch {
+            //pass
+        }
+
+        return (false, "");
+    }
+
+    /// <summary>
+    ///     Calls the NetWkstaGetInfo API on a hostname
+    /// </summary>
+    /// <param name="hostname"></param>
+    /// <returns></returns>
+    private async Task<NetAPIStructs.WorkstationInfo100?> GetWorkstationInfo(string hostname) {
+        if (!await _portScanner.CheckPort(hostname))
+            return null;
+
+        var result = _nativeMethods.CallNetWkstaGetInfo(hostname);
+        if (result.IsSuccess) return result.Value;
+
+        return null;
+    }
+
+    public async Task<(bool Success, string[] Sids)> GetGlobalCatalogMatches(string name, string domain) {
+        if (Cache.GetGCCache(name, out var matches)) {
+            return (true, matches);
+        }
+
+        var sids = new List<string>();
+
+        await foreach (var result in Query(new LdapQueryParameters {
+                     DomainName = domain,
+                     Attributes = new[] { LDAPProperties.ObjectSID },
+                     GlobalCatalog = true,
+                     LDAPFilter = new LDAPFilter().AddUsers($"(samaccountname={name})").GetFilter()
+                 })) {
+            if (result.IsSuccess) {
+                var sid = result.Value.GetSid();
+                if (!string.IsNullOrWhiteSpace(sid)) {
+                    sids.Add(sid);    
+                }
+            }
+            else {
+                return (false, Array.Empty<string>());
+            }
+        }
+
+        return (true, sids.ToArray());
+    }
+
+    public async Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propertyValue,
+        string propertyName, string containerDistinguishedName, string domainName) {
+        var filter = new LDAPFilter().AddCertificateTemplates().AddFilter($"({propertyName}={propertyValue})", true);
+        var result = await Query(new LdapQueryParameters() {
+            DomainName = domainName,
+            Attributes = CommonProperties.TypeResolutionProps,
+            SearchScope = SearchScope.OneLevel,
+            SearchBase = containerDistinguishedName,
+            LDAPFilter = filter.GetFilter(),
+        }).DefaultIfEmpty(null).FirstAsync();
+
+        if (result == null) {
+            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}", propertyName, propertyName, containerDistinguishedName);
+            return (false, null);
+        }
+
+        if (!result.IsSuccess) {
+            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}: {Error}", propertyName, propertyName, containerDistinguishedName, result.Error);
+            return (false, null);
+        }
+        
+        var entry = result.Value;
+        return (true, new TypedPrincipal(entry.GetGuid(), Label.CertTemplate));
+    }
+
+    /// <summary>
+    ///     Uses a socket and a set of bytes to request the NETBIOS name from a remote computer
+    /// </summary>
+    /// <param name="server"></param>
+    /// <param name="domain"></param>
+    /// <param name="netbios"></param>
+    /// <returns></returns>
+    private static bool RequestNETBIOSNameFromComputer(string server, string domain, out string netbios) {
+        var receiveBuffer = new byte[1024];
+        var requestSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        try {
+            //Set receive timeout to 1 second
+            requestSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+            EndPoint remoteEndpoint;
+
+            //We need to create an endpoint to bind too. If its an IP, just use that.
+            if (IPAddress.TryParse(server, out var parsedAddress))
+                remoteEndpoint = new IPEndPoint(parsedAddress, 137);
+            else
+                //If its not an IP, we're going to try and resolve it from DNS
+                try {
+                    IPAddress address;
+                    if (server.Contains("."))
+                        address = Dns
+                            .GetHostAddresses(server).First(x => x.AddressFamily == AddressFamily.InterNetwork);
+                    else
+                        address = Dns.GetHostAddresses($"{server}.{domain}")[0];
+
+                    if (address == null) {
+                        netbios = null;
+                        return false;
+                    }
+
+                    remoteEndpoint = new IPEndPoint(address, 137);
+                }
+                catch {
+                    //Failed to resolve an IP, so return null
+                    netbios = null;
+                    return false;
+                }
+
+            var originEndpoint = new IPEndPoint(IPAddress.Any, 0);
+            requestSocket.Bind(originEndpoint);
+
+            try {
+                requestSocket.SendTo(NameRequest, remoteEndpoint);
+                var receivedByteCount = requestSocket.ReceiveFrom(receiveBuffer, ref remoteEndpoint);
+                if (receivedByteCount >= 90) {
+                    netbios = new ASCIIEncoding().GetString(receiveBuffer, 57, 16).Trim('\0', ' ');
+                    return true;
+                }
+
+                netbios = null;
+                return false;
+            }
+            catch (SocketException) {
+                netbios = null;
+                return false;
+            }
+        }
+        finally {
+            //Make sure we close the socket if its open
+            requestSocket.Close();
+        }
+    }
+
+    /// <summary>
+    /// Created for testing purposes
+    /// </summary>
+    /// <returns></returns>
+    public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor() {
+        return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
+    }
+
+    public async Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain) {
+        if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+        {
+            //The everyone and auth users principals are special and will be converted to the domain equivalent
+            if (sid.Value is "S-1-1-0" or "S-1-5-11")
+            {
+                return await GetWellKnownPrincipal(sid.Value, computerDomain);
+            }
+
+            //Use the computer object id + the RID of the sid we looked up to create our new principal
+            var principal = new TypedPrincipal
+            {
+                ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
+                ObjectType = common.ObjectType switch
+                {
+                    Label.User => Label.LocalUser,
+                    Label.Group => Label.LocalGroup,
+                    _ => common.ObjectType
+                }
+            };
+
+            return (true, principal);
+        }
+
+        return (false, null);
     }
 }

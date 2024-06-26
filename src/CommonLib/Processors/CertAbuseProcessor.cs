@@ -17,7 +17,7 @@ namespace SharpHoundCommonLib.Processors
     public class CertAbuseProcessor
     {
         private readonly ILogger _log;
-        public readonly ILDAPUtils _utils;
+        private readonly ILDAPUtils _utils;
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
         public event ComputerStatusDelegate ComputerStatusEvent;
 
@@ -162,7 +162,7 @@ namespace SharpHoundCommonLib.Processors
             foreach (var genericAce in descriptor.DiscretionaryAcl)
             {
                 var ace = (QualifiedAce)genericAce;
-                enrollmentAgentRestrictions.Add(new EnrollmentAgentRestriction(ace, computerDomain, certTemplatesLocation, this, computerName, isDomainController, computerObjectId, machineSid));
+                enrollmentAgentRestrictions.Add(new EnrollmentAgentRestriction(ace, computerDomain, certTemplatesLocation, this, _utils, computerName, isDomainController, computerObjectId, machineSid));
             }
 
             ret.Restrictions = enrollmentAgentRestrictions.ToArray();
@@ -381,18 +381,15 @@ namespace SharpHoundCommonLib.Processors
             return machineSid;
         }
 
-        // TODO: Copied from URA processor. Find a way to have this function in a shared spot
-        
-
-        public virtual LdapResult<ISAMServer> OpenSamServer(string computerName)
+        public virtual SharpHoundRPC.Result<ISAMServer> OpenSamServer(string computerName)
         {
             var result = SAMServer.OpenServer(computerName);
             if (result.IsFailed)
             {
-                return LdapResult<ISAMServer>.Fail(result.SError);
+                return SharpHoundRPC.Result<ISAMServer>.Fail(result.SError);
             }
 
-            return LdapResult<ISAMServer>.Ok(result.Value);
+            return SharpHoundRPC.Result<ISAMServer>.Ok(result.Value);
         }
 
         private async Task SendComputerStatus(CSVComputerStatus status)
@@ -404,7 +401,7 @@ namespace SharpHoundCommonLib.Processors
 
     public class EnrollmentAgentRestriction
     {
-        public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
+        public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor, ILDAPUtils utils, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
         {
             var targets = new List<TypedPrincipal>();
             var index = 0;
@@ -434,12 +431,12 @@ namespace SharpHoundCommonLib.Processors
                 var template = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2).Replace("\u0000", string.Empty);
 
                 // Attempt to resolve the cert template by CN
-                Template = certAbuseProcessor._utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(template), LDAPProperties.CanonicalName, certTemplatesLocation, computerDomain);
+                Template = utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(template), LDAPProperties.CanonicalName, certTemplatesLocation, computerDomain);
 
                 // Attempt to resolve the cert template by OID
                 if (Template == null)
                 {
-                    Template = certAbuseProcessor._utils.ResolveCertTemplateByProperty(template, LDAPProperties.CertTemplateOID, certTemplatesLocation, computerDomain);
+                    Template = utils.ResolveCertTemplateByProperty(template, LDAPProperties.CertTemplateOID, certTemplatesLocation, computerDomain);
                 }
             }
             else

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
-using SharpHoundRPC;
 using SharpHoundRPC.Shared;
 using SharpHoundRPC.Wrappers;
 
@@ -26,15 +25,15 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
-        public virtual LdapResult<ISAMServer> OpenSamServer(string computerName)
+        public virtual SharpHoundRPC.Result<ISAMServer> OpenSamServer(string computerName)
         {
             var result = SAMServer.OpenServer(computerName);
             if (result.IsFailed)
             {
-                return LdapResult<ISAMServer>.Fail(result.SError);
+                return SharpHoundRPC.Result<ISAMServer>.Fail(result.SError);
             }
 
-            return LdapResult<ISAMServer>.Ok(result.Value);
+            return SharpHoundRPC.Result<ISAMServer>.Ok(result.Value);
         }
 
         public IAsyncEnumerable<LocalGroupAPIResult> GetLocalGroups(ResolvedSearchResult result)

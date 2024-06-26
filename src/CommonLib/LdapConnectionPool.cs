@@ -36,7 +36,7 @@ public class LdapConnectionPool : IDisposable{
         _nativeMethods = nativeMethods ?? new NativeMethods();
     }
 
-    public async Task<(bool Success, LdapConnectionWrapperNew connectionWrapper, string Message)> GetConnectionAsync() {
+    public async Task<(bool Success, LdapConnectionWrapperNew ConnectionWrapper, string Message)> GetConnectionAsync() {
         await _semaphore.WaitAsync();
         if (!_connections.TryTake(out var connectionWrapper)) {
             var (success, connection, message) = await CreateNewConnection();
@@ -65,7 +65,7 @@ public class LdapConnectionPool : IDisposable{
         return result;
     }
 
-    public async Task<(bool Success, LdapConnectionWrapperNew connectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
+    public async Task<(bool Success, LdapConnectionWrapperNew ConnectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
         await _semaphore.WaitAsync();
         if (!_globalCatalogConnection.TryTake(out var connectionWrapper)) {
             var (success, connection, message) = await CreateNewConnection(true);
@@ -293,7 +293,7 @@ public class LdapConnectionPool : IDisposable{
         try {
             //Do an initial search request to get the rootDSE
             //This ldap filter is equivalent to (objectclass=*)
-            var searchRequest = LdapUtilsNew.CreateSearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
+            var searchRequest = CreateSearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
                 SearchScope.Base, null);
 
             response = (SearchResponse)connection.SendRequest(searchRequest);
@@ -343,6 +343,15 @@ public class LdapConnectionPool : IDisposable{
         }
 
         return (false, null);
+    }
+    
+    private SearchRequest CreateSearchRequest(string distinguishedName, string ldapFilter,
+        SearchScope searchScope,
+        string[] attributes) {
+        var searchRequest = new SearchRequest(distinguishedName, ldapFilter,
+            searchScope, attributes);
+        searchRequest.Controls.Add(new SearchOptionsControl(SearchOption.DomainScope));
+        return searchRequest;
     }
 }
 

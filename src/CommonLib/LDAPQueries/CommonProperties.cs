@@ -5,7 +5,8 @@
         public static readonly string[] TypeResolutionProps =
         {
             LDAPProperties.SAMAccountType, LDAPProperties.ObjectSID, LDAPProperties.ObjectGUID,
-            LDAPProperties.ObjectClass, LDAPProperties.SAMAccountName, LDAPProperties.GroupMSAMembership
+            LDAPProperties.ObjectClass, LDAPProperties.SAMAccountName, LDAPProperties.GroupMSAMembership,
+            LDAPProperties.Flags
         };
 
         public static readonly string[] ObjectID = { LDAPProperties.ObjectSID, LDAPProperties.ObjectGUID };
