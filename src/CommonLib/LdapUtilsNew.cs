@@ -654,13 +654,13 @@ public class LdapUtilsNew {
 
     private async Task<(bool Success, string Sid)> TryGetSid(string domainName) {
         if (TryGetSidFromDirectoryEntry(domainName) is (true, var sid))
-            return Task.FromResult(true, sid);
+            return (true, sid);
         else if (TryGetSidFromDomainObject(domainName) is (true, var sid))
-            return Task.FromResult(true, sid);
+            return (true, sid);
         else if (TryGetSidFromNTAccount(domainName) is (true, var sid))
-            return Task.FromResult(true, sid);
+            return (true, sid);
         else if (await TryGetSidFromLdapQuery(domainName) is (true, var sid))
-            return Task.FromResult(true, sid);
+            return (true, sid);
 
         return (false, string.Empty);
     }
