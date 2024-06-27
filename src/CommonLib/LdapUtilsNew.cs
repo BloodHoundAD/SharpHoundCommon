@@ -89,121 +89,114 @@ public class LdapUtilsNew : ILdapUtilsNew{
         _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
     }
 
-    public async IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName,
-        string attributeName, [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
+    public async IAsyncEnumerable<Result<string>> RangedRetrieval(
+        string distinguishedName,
+        string attributeName,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default) {
         var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
-
         var connectionResult = await _connectionPool.GetLdapConnection(domain, false);
         if (!connectionResult.Success) {
             yield return Result<string>.Fail(connectionResult.Message);
             yield break;
         }
 
+        var connectionWrapper = connectionResult.ConnectionWrapper;
         var index = 0;
         var step = 0;
-
-        //Start by using * as our upper index, which will automatically give us the range size
         var currentRange = $"{attributeName};range={index}-*";
-        var complete = false;
 
-        var queryParameters = new LdapQueryParameters() {
+        var queryParameters = new LdapQueryParameters {
             DomainName = domain,
             LDAPFilter = $"{attributeName}=*",
             Attributes = new[] { currentRange },
             SearchScope = SearchScope.Base,
             SearchBase = distinguishedName
         };
-        var connectionWrapper = connectionResult.ConnectionWrapper;
 
         if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest)) {
             yield return Result<string>.Fail("Failed to create search request");
             yield break;
         }
-        
-        var queryRetryCount = 0;
-        var busyRetryCount = 0;
-        
-        Result<string> tempResult = null;
 
-        while (true) {
-            if (cancellationToken.IsCancellationRequested) {
+        while (!cancellationToken.IsCancellationRequested) {
+            var queryResult = await ExecuteRangedQuery(connectionWrapper, searchRequest, domain, cancellationToken);
+            if (!queryResult.Success) {
+                if (queryResult.Error != null)
+                    yield return queryResult.Error;
                 yield break;
             }
-            SearchResponse response = null;
+
+            connectionWrapper = queryResult.ConnectionWrapper; // Update connection wrapper if it changed
+
+            var (complete, newRange, values) = ProcessQueryResponse(queryResult.Response, currentRange);
+
+            foreach (var value in values) {
+                yield return Result<string>.Ok(value);
+                index++;
+            }
+
+            if (complete)
+                yield break;
+
+            currentRange = $"{attributeName};range={index}-{index + step}";
+            searchRequest.Attributes.Clear();
+            searchRequest.Attributes.Add(currentRange);
+        }
+    }
+
+    private async Task<(bool Success, SearchResponse Response, ConnectionWrapper ConnectionWrapper, Result<string> Error)> ExecuteRangedQuery(
+        ConnectionWrapper connectionWrapper,
+        SearchRequest searchRequest,
+        string domain,
+        CancellationToken cancellationToken) {
+        int queryRetryCount = 0, busyRetryCount = 0;
+
+        while (!cancellationToken.IsCancellationRequested) {
             try {
-                response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+                var response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+                return (true, response, connectionWrapper, null);
             }
             catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
-                busyRetryCount++;
-                var backoffDelay = GetNextBackoff(busyRetryCount);
-                await Task.Delay(backoffDelay, cancellationToken);
+                await HandleBusyServer(busyRetryCount++, cancellationToken);
             }
             catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && queryRetryCount < MaxRetries) {
-                queryRetryCount++;
-                _connectionPool.ReleaseConnection(connectionWrapper, true);
-                for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
-                    var backoffDelay = GetNextBackoff(retryCount);
-                    await Task.Delay(backoffDelay, cancellationToken);
-                    var (success, newConnectionWrapper, message) =
-                        await _connectionPool.GetLdapConnection(domain,
-                            false);
-                    if (success) {
-                        _log.LogDebug("RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}",
-                            newConnectionWrapper.GetServer());
-                        connectionWrapper = newConnectionWrapper;
-                        break;
-                    }
-
-                    //If we hit our max retries for making a new connection, set tempResult so we can yield it after this logic
-                    if (retryCount == MaxRetries - 1) {
-                        _log.LogError("RangedRetrieval - Failed to get a new connection after ServerDown for path {Path}", distinguishedName);
-                        tempResult =
-                            Result<string>.Fail(
-                                "RangedRetrieval - Failed to get a new connection after ServerDown.");
-                    }
+                var newConnection = await HandleServerDown(connectionWrapper, queryParameters, cancellationToken);
+                if (newConnection.Success)
+                {
+                    connectionWrapper = newConnection.Wrapper;
+                    queryRetryCount++;
                 }
-            }catch (LdapException le) {
-                tempResult = Result<string>.Fail(
-                    $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})");
+                else
+                {
+                    return (false, null, connectionWrapper, newConnection.Error);
+                }
+            }
+            catch (LdapException le) {
+                return (false, null, connectionWrapper, Result<string>.Fail(
+                    $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})"));
             }
             catch (Exception e) {
-                tempResult =
-                    Result<string>.Fail($"Caught unrecoverable exception: {e.Message}");
-            }
-            
-            //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
-            if (tempResult != null) {
-                yield return tempResult;
-                yield break;
-            }
-
-            if (response?.Entries.Count == 1) {
-                var entry = response.Entries[0];
-                //We dont know the name of our attribute, but there should only be one, so we're safe to just use a loop here
-                foreach (string attr in entry.Attributes.AttributeNames) {
-                    currentRange = attr;
-                    complete = currentRange.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
-                    step = entry.Attributes[currentRange].Count;
-                }
-
-                foreach (string dn in entry.Attributes[currentRange].GetValues(typeof(string))) {
-                    yield return Result<string>.Ok(dn);
-                    index++;
-                }
-
-                if (complete) {
-                    yield break;
-                }
-
-                currentRange = $"{attributeName};range={index}-{index + step}";
-                searchRequest.Attributes.Clear();
-                searchRequest.Attributes.Add(currentRange);
-            }
-            else {
-                //I dont know what can cause a RR to have multiple entries, but its nothing good. Break out
-                yield break;
+                return (false, null, connectionWrapper, Result<string>.Fail(
+                    $"Caught unrecoverable exception: {e.Message}"));
             }
         }
+
+        return (false, null, connectionWrapper, Result<string>.Fail("Operation cancelled"));
+    }
+
+    private (bool Complete, string NewRange, IEnumerable<string> Values) ProcessQueryResponse(SearchResponse response, string currentRange) {
+        if (response?.Entries.Count != 1)
+            return (true, null, Enumerable.Empty<string>());
+
+        var entry = response.Entries[0];
+        var attr = entry.Attributes.AttributeNames.Cast<string>().FirstOrDefault();
+        if (attr == null)
+            return (true, null, Enumerable.Empty<string>());
+
+        var complete = attr.IndexOf("*", StringComparison.OrdinalIgnoreCase) > 0;
+        var values = entry.Attributes[attr].GetValues(typeof(string)).Cast<string>();
+
+        return (complete, attr, values);
     }
 
     public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
