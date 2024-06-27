@@ -15,7 +15,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
-using SharpHoundCommonLib.Exceptions;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
@@ -42,7 +41,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
     private readonly PortScanner _portScanner;
     private readonly NativeMethods _nativeMethods;
     private readonly string _nullCacheKey = Guid.NewGuid().ToString();
-    private readonly Regex SidRegex = new Regex(@"^(S-\d+-\d+-\d+-\d+-\d+-\d+)-\d+$");
+    private readonly Regex _sidRegex = new(@"^(S-\d+-\d+-\d+-\d+-\d+-\d+)-\d+$");
 
     private readonly string[] _translateNames = { "Administrator", "admin" };
     private LDAPConfig _ldapConfig = new();
@@ -194,7 +193,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 if (complete) {
                     yield break;
                 }
-
+                
                 currentRange = $"{attributeName};range={index}-{index + step}";
                 searchRequest.Attributes.Clear();
                 searchRequest.Attributes.Add(currentRange);
@@ -472,7 +471,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
     public async Task<(bool Success, TypedPrincipal Principal)>
         ResolveIDAndType(string identifier, string objectDomain) {
         if (identifier.Contains("0ACNF")) {
-            return (false, null);
+            return (false, new TypedPrincipal(identifier, Label.Base));
         }
 
         if (await GetWellKnownPrincipal(identifier, objectDomain) is (true, var principal)) {
@@ -510,8 +509,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
             Cache.AddType(sid, type);
             return (true, type);
         }
-
-
+        
         try {
             var entry = new DirectoryEntry($"LDAP://<SID={sid}>");
             if (entry.GetLabel(out type)) {
@@ -749,7 +747,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
             domainSid = new SecurityIdentifier(sid).AccountDomainSid?.Value.ToUpper();
         }
         catch {
-            var match = SidRegex.Match(sid);
+            var match = _sidRegex.Match(sid);
             domainSid = match.Success ? match.Groups[1].Value : null;
         }
 
