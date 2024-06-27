@@ -160,7 +160,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 await HandleBusyServer(busyRetryCount++, cancellationToken);
             }
             catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && queryRetryCount < MaxRetries) {
-                var newConnection = await HandleServerDown(connectionWrapper, queryParameters, cancellationToken);
+                var newConnection = await HandleServerDown(domain, connectionWrapper, cancellationToken);
                 if (newConnection.Success)
                 {
                     connectionWrapper = newConnection.Wrapper;
@@ -197,6 +197,26 @@ public class LdapUtilsNew : ILdapUtilsNew{
         var values = entry.Attributes[attr].GetValues(typeof(string)).Cast<string>();
 
         return (complete, attr, values);
+    }
+
+    private async Task<(bool Success, ConnectionWrapper Wrapper, Result<string> Error)> HandleServerDown(
+        string domain,
+        ConnectionWrapper connectionWrapper,
+        CancellationToken cancellationToken) {
+        _connectionPool.ReleaseConnection(connectionWrapper, true);
+
+        for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
+            await Task.Delay(GetNextBackoff(retryCount), cancellationToken);
+            var (success, newConnectionWrapper, message) = await _connectionPool.GetLdapConnection(domain, false);
+            
+            if (success) {
+                _log.LogDebug("RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}", newConnectionWrapper.GetServer());
+                return (true, newConnectionWrapper, null);
+            }
+        }
+
+        _log.LogError("RangedRetrieval - Failed to get a new connection after ServerDown");
+        return (false, null, Result<string>.Fail("RangedRetrieval - Failed to get a new connection after ServerDown."));
     }
 
     public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
@@ -339,10 +359,6 @@ public class LdapUtilsNew : ILdapUtilsNew{
             var queryResult = await ExecutePagedQuery(searchRequest, connectionWrapper, queryParameters, serverName,
                 cancellationToken);
             if (!queryResult.Success) {
-                if (queryResult.Error != null) {
-                    yield return queryResult.Error;
-                }
-
                 yield break;
             }
 
