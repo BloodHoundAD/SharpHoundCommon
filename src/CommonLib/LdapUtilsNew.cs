@@ -15,7 +15,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
-using SharpHoundCommonLib.Exceptions;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
@@ -144,8 +143,8 @@ public class LdapUtilsNew : ILdapUtilsNew{
         }
     }
 
-    private async Task<(bool Success, SearchResponse Response, ConnectionWrapper ConnectionWrapper, Result<string> Error)> ExecuteRangedQuery(
-        ConnectionWrapper connectionWrapper,
+    private async Task<(bool Success, SearchResponse Response, LdapConnectionWrapperNew ConnectionWrapper, Result<string> Error)> ExecuteRangedQuery(
+        LdapConnectionWrapperNew connectionWrapper,
         SearchRequest searchRequest,
         string domain,
         CancellationToken cancellationToken) {
@@ -160,7 +159,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 await HandleBusyServer(busyRetryCount++, cancellationToken);
             }
             catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && queryRetryCount < MaxRetries) {
-                var newConnection = await HandleServerDown(domain, connectionWrapper, cancellationToken);
+                var newConnection = await HandleServerDown(domain, connectionWrapper, false, operationName: nameof(ExecuteRangedQuery));
                 if (newConnection.Success)
                 {
                     connectionWrapper = newConnection.Wrapper;
@@ -199,24 +198,31 @@ public class LdapUtilsNew : ILdapUtilsNew{
         return (complete, attr, values);
     }
 
-    private async Task<(bool Success, ConnectionWrapper Wrapper, Result<string> Error)> HandleServerDown(
+    private async Task<(bool Success, LdapConnectionWrapperNew Wrapper, Result<string> Error)> HandleServerDown(
         string domain,
-        ConnectionWrapper connectionWrapper,
-        CancellationToken cancellationToken) {
+        LdapConnectionWrapperNew connectionWrapper,
+        bool isGlobalCatalog,
+        string operationName,
+        string specificServer = null) {
         _connectionPool.ReleaseConnection(connectionWrapper, true);
 
-        for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
-            await Task.Delay(GetNextBackoff(retryCount), cancellationToken);
-            var (success, newConnectionWrapper, message) = await _connectionPool.GetLdapConnection(domain, false);
+        for (var retryCount = 0; retryCount < MaxRetries; retryCount++)
+        {
+            await Task.Delay(GetNextBackoff(retryCount));
             
-            if (success) {
-                _log.LogDebug("RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}", newConnectionWrapper.GetServer());
+            (bool success, LdapConnectionWrapperNew newConnectionWrapper, string message) = specificServer != null
+                ? await _connectionPool.GetLdapConnectionForServer(domain, specificServer, isGlobalCatalog)
+                : await _connectionPool.GetLdapConnection(domain, isGlobalCatalog);
+
+            if (success)
+            {
+                _log.LogDebug($"{operationName} - Recovered from ServerDown successfully, connection made to {newConnectionWrapper.GetServer()}");
                 return (true, newConnectionWrapper, null);
             }
         }
 
-        _log.LogError("RangedRetrieval - Failed to get a new connection after ServerDown");
-        return (false, null, Result<string>.Fail("RangedRetrieval - Failed to get a new connection after ServerDown."));
+        _log.LogError($"{operationName} - Failed to get a new connection after ServerDown for domain {domain}");
+        return (false, null, Result<string>.Fail($"{operationName} - Failed to get a new connection after ServerDown."));
     }
 
     public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
@@ -273,7 +279,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
                  * and because this is not a paged query, we can get this connection from anywhere.
                  */
 
-                var newConnection = await HandleServerDown(queryParameters, connectionWrapper, cancellationToken);
+                var newConnection = await HandleServerDown(queryParameters.DomainName, connectionWrapper, queryParameters.GlobalCatalog, nameof(ExecuteQuery));
                 if (newConnection.Success) {
                     connectionWrapper = newConnection.Wrapper;
                     queryRetryCount++;
@@ -302,32 +308,6 @@ public class LdapUtilsNew : ILdapUtilsNew{
         }
 
         return (false, null, LdapResult<ISearchResultEntry>.Fail("Operation cancelled", queryParameters));
-    }
-
-    private async Task<(bool Success, LdapConnectionWrapperNew Wrapper, LdapResult<ISearchResultEntry> Error)>
-        HandleServerDown(
-            LdapQueryParameters queryParameters,
-            LdapConnectionWrapperNew connectionWrapper,
-            CancellationToken cancellationToken) {
-        _connectionPool.ReleaseConnection(connectionWrapper, true);
-
-        for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
-            await Task.Delay(GetNextBackoff(retryCount), cancellationToken);
-            var (success, newConnectionWrapper, message) =
-                await _connectionPool.GetLdapConnection(queryParameters.DomainName, queryParameters.GlobalCatalog);
-
-            if (success) {
-                _log.LogDebug("Query - Recovered from ServerDown successfully, connection made to {NewServer}",
-                    newConnectionWrapper.GetServer());
-                return (true, newConnectionWrapper, null);
-            }
-        }
-
-        _log.LogError("Query - Failed to get a new connection after ServerDown.\n{Info}",
-            queryParameters.GetQueryInfo());
-        return (false, null,
-            LdapResult<ISearchResultEntry>.Fail("Query - Failed to get a new connection after ServerDown.",
-                queryParameters));
     }
 
     private async Task HandleBusyServer(int busyRetryCount, CancellationToken cancellationToken) {
@@ -421,7 +401,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 }
 
                 var newConnection =
-                    await HandlePagedServerDown(queryParameters, connectionWrapper, serverName, cancellationToken);
+                    await HandleServerDown(queryParameters.DomainName, connectionWrapper, queryParameters.GlobalCatalog, nameof(ExecutePagedQuery), serverName);
                 if (newConnection.Success) {
                     connectionWrapper = newConnection.Wrapper;
                 }
@@ -450,34 +430,6 @@ public class LdapUtilsNew : ILdapUtilsNew{
 
         return (false, null, connectionWrapper,
             LdapResult<ISearchResultEntry>.Fail("Operation cancelled", queryParameters));
-    }
-
-    private async Task<(bool Success, LdapConnectionWrapperNew Wrapper, LdapResult<ISearchResultEntry> Error)>
-        HandlePagedServerDown(
-            LdapQueryParameters queryParameters,
-            LdapConnectionWrapperNew connectionWrapper,
-            string serverName,
-            CancellationToken cancellationToken) {
-        /*
-         * Paged queries will not use the cached ldap connections, as the intention is to only have 1 or a couple of these queries running at once.
-         * The connection logic here is simplified accordingly
-         */
-        _connectionPool.ReleaseConnection(connectionWrapper, true);
-
-        for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
-            await Task.Delay(GetNextBackoff(retryCount), cancellationToken);
-            var (success, newConnectionWrapper, message) = await _connectionPool.GetLdapConnectionForServer(
-                queryParameters.DomainName, serverName, queryParameters.GlobalCatalog);
-
-            if (success) {
-                _log.LogDebug("PagedQuery - Recovered from ServerDown successfully");
-                return (true, newConnectionWrapper, null);
-            }
-        }
-
-        _log.LogError("PagedQuery - Failed to get a new connection after ServerDown.\n{Info}",
-            queryParameters.GetQueryInfo());
-        return (false, null, null);
     }
 
     public bool ResolveIDAndType(SecurityIdentifier securityIdentifier, string objectDomain,
@@ -642,10 +594,6 @@ public class LdapUtilsNew : ILdapUtilsNew{
         return true;
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> utils_rewrite
     private bool CallDsGetDcName(string domainName, out NetAPIStructs.DomainControllerInfo? info) {
         if (_dcInfoCache.TryGetValue(domainName.ToUpper().Trim(), out info)) return info != null;
 
@@ -800,12 +748,12 @@ public class LdapUtilsNew : ILdapUtilsNew{
     private async Task<(bool Success, string Sid)> TryGetSid(string domainName) {
         if (TryGetSidFromDirectoryEntry(domainName) is (true, var sid))
             return (true, sid);
-        else if (TryGetSidFromDomainObject(domainName) is (true, var sid))
-            return (true, sid);
-        else if (TryGetSidFromNTAccount(domainName) is (true, var sid))
-            return (true, sid);
-        else if (await TryGetSidFromLdapQuery(domainName) is (true, var sid))
-            return (true, sid);
+        else if (TryGetSidFromDomainObject(domainName) is (true, var sid2))
+            return (true, sid2);
+        else if (TryGetSidFromNTAccount(domainName) is (true, var sid3))
+            return (true, sid3);
+        else if (await TryGetSidFromLdapQuery(domainName) is (true, var sid4))
+            return (true, sid4);
 
         return (false, string.Empty);
     }
