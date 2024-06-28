@@ -11,10 +11,10 @@ namespace SharpHoundCommonLib;
 
 public interface ILdapUtilsNew {
     IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
-        CancellationToken cancellationToken);
+        CancellationToken cancellationToken = new());
 
     IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
-        CancellationToken cancellationToken);
+        CancellationToken cancellationToken = new());
 
     IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName,
         string attributeName, CancellationToken cancellationToken = new());
@@ -40,4 +40,7 @@ public interface ILdapUtilsNew {
 
     public Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid,
         string computerDomainSid, string computerDomain);
+
+    public Task<bool> IsDomainController(string computerObjectId, string domainName);
+    public Task<(bool Success, TypedPrincipal Principal)> LookupDistinguishedName(string distinguishedName);
 }

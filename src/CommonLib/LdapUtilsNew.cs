@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.Protocols;
 using System.Linq;
@@ -15,7 +16,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
-using SharpHoundCommonLib.Exceptions;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
@@ -38,11 +38,14 @@ public class LdapUtilsNew : ILdapUtilsNew{
         SeenWellKnownPrincipals = new();
 
     private readonly ConcurrentDictionary<string, string> _hostResolutionMap = new(StringComparer.OrdinalIgnoreCase);
+
+    private readonly ConcurrentDictionary<string, TypedPrincipal> _distinguishedNameCache =
+        new(StringComparer.OrdinalIgnoreCase);
     private readonly ILogger _log;
     private readonly PortScanner _portScanner;
     private readonly NativeMethods _nativeMethods;
     private readonly string _nullCacheKey = Guid.NewGuid().ToString();
-    private readonly Regex SidRegex = new Regex(@"^(S-\d+-\d+-\d+-\d+-\d+-\d+)-\d+$");
+    private readonly Regex _sidRegex = new(@"^(S-\d+-\d+-\d+-\d+-\d+-\d+)-\d+$");
 
     private readonly string[] _translateNames = { "Administrator", "admin" };
     private LDAPConfig _ldapConfig = new();
@@ -194,7 +197,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 if (complete) {
                     yield break;
                 }
-
+                
                 currentRange = $"{attributeName};range={index}-{index + step}";
                 searchRequest.Attributes.Clear();
                 searchRequest.Attributes.Add(currentRange);
@@ -472,7 +475,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
     public async Task<(bool Success, TypedPrincipal Principal)>
         ResolveIDAndType(string identifier, string objectDomain) {
         if (identifier.Contains("0ACNF")) {
-            return (false, null);
+            return (false, new TypedPrincipal(identifier, Label.Base));
         }
 
         if (await GetWellKnownPrincipal(identifier, objectDomain) is (true, var principal)) {
@@ -510,20 +513,35 @@ public class LdapUtilsNew : ILdapUtilsNew{
             Cache.AddType(sid, type);
             return (true, type);
         }
-
-
+        
         try {
             var entry = new DirectoryEntry($"LDAP://<SID={sid}>");
             if (entry.GetLabel(out type)) {
                 Cache.AddType(sid, type);
                 return (true, type);
             }
-
-            return (false, Label.Base);
         }
         catch {
-            return (false, Label.Base);
+            //pass
         }
+        
+        using (var ctx = new PrincipalContext(ContextType.Domain)) {
+            try {
+                var principal = Principal.FindByIdentity(ctx, IdentityType.Sid, sid);
+                if (principal != null) {
+                    var entry = (DirectoryEntry)principal.GetUnderlyingObject();
+                    if (entry.GetLabel(out type)) {
+                        Cache.AddType(sid, type);
+                        return (true, type);
+                    }
+                }
+            }
+            catch {
+                //pass
+            }
+        }
+
+        return (false, Label.Base);
     }
 
     private async Task<(bool Success, Label type)> LookupGuidType(string guid, string domain) {
@@ -549,12 +567,28 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 Cache.AddType(guid, type);
                 return (true, type);
             }
-
-            return (false, Label.Base);
         }
         catch {
-            return (false, Label.Base);
+            //pass
         }
+        
+        using (var ctx = new PrincipalContext(ContextType.Domain)) {
+            try {
+                var principal = Principal.FindByIdentity(ctx, IdentityType.Guid, guid);
+                if (principal != null) {
+                    var entry = (DirectoryEntry)principal.GetUnderlyingObject();
+                    if (entry.GetLabel(out type)) {
+                        Cache.AddType(guid, type);
+                        return (true, type);
+                    }
+                }
+            }
+            catch {
+                //pass
+            }
+        }
+
+        return (false, Label.Base);
     }
 
     public async Task<(bool Success, TypedPrincipal WellKnownPrincipal)> GetWellKnownPrincipal(
@@ -749,7 +783,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
             domainSid = new SecurityIdentifier(sid).AccountDomainSid?.Value.ToUpper();
         }
         catch {
-            var match = SidRegex.Match(sid);
+            var match = _sidRegex.Match(sid);
             domainSid = match.Success ? match.Groups[1].Value : null;
         }
 
@@ -765,7 +799,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
             var entry = new DirectoryEntry($"LDAP://<SID={domainSid}>");
             entry.RefreshCache(new[] { LDAPProperties.DistinguishedName });
             var dn = entry.GetProperty(LDAPProperties.DistinguishedName);
-            if (!string.IsNullOrEmpty(dn)) {
+            if (!string.IsNullOrWhiteSpace(dn)) {
                 Cache.AddDomainSidMapping(domainSid, Helpers.DistinguishedNameToDomain(dn));
                 return (true, Helpers.DistinguishedNameToDomain(dn));
             }
@@ -777,6 +811,22 @@ public class LdapUtilsNew : ILdapUtilsNew{
         if (await ConvertDomainSidToDomainNameFromLdap(sid) is (true, var domainName)) {
             Cache.AddDomainSidMapping(domainSid, domainName);
             return (true, domainName);
+        }
+
+        using (var ctx = new PrincipalContext(ContextType.Domain)) {
+            try {
+                var principal = Principal.FindByIdentity(ctx, IdentityType.Sid, sid);
+                if (principal != null) {
+                    var dn = principal.DistinguishedName;
+                    if (!string.IsNullOrWhiteSpace(dn)) {
+                        Cache.AddDomainSidMapping(domainSid, Helpers.DistinguishedNameToDomain(dn));
+                        return (true, Helpers.DistinguishedNameToDomain(dn));
+                    }
+                }
+            }
+            catch {
+                //pass
+            }
         }
 
         return (false, string.Empty);
@@ -1239,29 +1289,85 @@ public class LdapUtilsNew : ILdapUtilsNew{
     }
 
     public async Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain) {
-        if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+        if (!WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common)) return (false, null);
+        //The everyone and auth users principals are special and will be converted to the domain equivalent
+        if (sid.Value is "S-1-1-0" or "S-1-5-11")
         {
-            //The everyone and auth users principals are special and will be converted to the domain equivalent
-            if (sid.Value is "S-1-1-0" or "S-1-5-11")
+            return await GetWellKnownPrincipal(sid.Value, computerDomain);
+        }
+
+        //Use the computer object id + the RID of the sid we looked up to create our new principal
+        var principal = new TypedPrincipal
+        {
+            ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
+            ObjectType = common.ObjectType switch
             {
-                return await GetWellKnownPrincipal(sid.Value, computerDomain);
+                Label.User => Label.LocalUser,
+                Label.Group => Label.LocalGroup,
+                _ => common.ObjectType
             }
+        };
 
-            //Use the computer object id + the RID of the sid we looked up to create our new principal
-            var principal = new TypedPrincipal
-            {
-                ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
-                ObjectType = common.ObjectType switch
-                {
-                    Label.User => Label.LocalUser,
-                    Label.Group => Label.LocalGroup,
-                    _ => common.ObjectType
-                }
-            };
+        return (true, principal);
 
+    }
+    
+    public async Task<bool> IsDomainController(string computerObjectId, string domainName)
+    {
+        var filter = new LDAPFilter().AddFilter(CommonFilters.SpecificSID(computerObjectId), true)
+            .AddFilter(CommonFilters.DomainControllers, true);
+        var result = await Query(new LdapQueryParameters() {
+            DomainName = domainName,
+            Attributes = CommonProperties.ObjectID,
+            LDAPFilter = filter.GetFilter(),
+        }).DefaultIfEmpty(null).FirstOrDefaultAsync();
+        return result is { IsSuccess: true };
+    }
+
+    public async Task<(bool Success, TypedPrincipal Principal)> LookupDistinguishedName(string distinguishedName) {
+        if (_distinguishedNameCache.TryGetValue(distinguishedName, out var principal)) {
             return (true, principal);
         }
 
-        return (false, null);
+        var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
+        var result = await Query(new LdapQueryParameters {
+            DomainName = domain,
+            Attributes = CommonProperties.TypeResolutionProps,
+            SearchBase = distinguishedName,
+            SearchScope = SearchScope.Base,
+            LDAPFilter = new LDAPFilter().AddAllObjects().GetFilter()
+        }).DefaultIfEmpty(null).FirstOrDefaultAsync();
+
+        if (result is { IsSuccess: true }) {
+            var entry = result.Value;
+            var id = entry.GetObjectIdentifier();
+            if (id == null) {
+                return (false, default);
+            }
+
+            if (await GetWellKnownPrincipal(id, domain) is (true, var wellKnownPrincipal)) {
+                _distinguishedNameCache.TryAdd(distinguishedName, wellKnownPrincipal);
+                return (true, wellKnownPrincipal);
+            }
+
+            var type = entry.GetLabel();
+            principal = new TypedPrincipal(id, type);
+            _distinguishedNameCache.TryAdd(distinguishedName, principal);
+            return (true, principal);
+        }
+
+        using (var ctx = new PrincipalContext(ContextType.Domain)) {
+            try {
+                var lookupPrincipal = Principal.FindByIdentity(ctx, IdentityType.DistinguishedName, distinguishedName);
+                if (lookupPrincipal != null && ((DirectoryEntry)lookupPrincipal.GetUnderlyingObject()).GetTypedPrincipal(out principal)) {
+                    return (true, principal);
+                }
+
+                return (false, default);
+            }
+            catch {
+                return (false, default);
+            }
+        }
     }
 }
