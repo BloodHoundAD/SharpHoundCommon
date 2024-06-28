@@ -356,9 +356,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 foreach (var dn in hsa)
                 {
-                    var resolvedPrincipal = await _utils.ResolveDistinguishedName(dn);
-
-                    if (resolvedPrincipal != null)
+                    if (await _utils.LookupDistinguishedName(dn) is (true, var resolvedPrincipal))
                         smsaPrincipals.Add(resolvedPrincipal);
                 }
             }
@@ -536,7 +534,7 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
-        public IssuancePolicyProperties ReadIssuancePolicyProperties(ISearchResultEntry entry)
+        public async Task<IssuancePolicyProperties> ReadIssuancePolicyProperties(ISearchResultEntry entry)
         {
             var ret = new IssuancePolicyProperties();
             var props = GetCommonProps(entry);
@@ -546,8 +544,7 @@ namespace SharpHoundCommonLib.Processors
             var link = entry.GetProperty(LDAPProperties.OIDGroupLink);
             if (!string.IsNullOrEmpty(link))
             {
-                var linkedGroup = _utils.ResolveDistinguishedName(link);
-                if (linkedGroup != null)
+                if (await _utils.LookupDistinguishedName(link) is (true, var linkedGroup))
                 {
                     props.Add("oidgrouplink", linkedGroup.ObjectIdentifier);
                     ret.GroupLink = linkedGroup;
