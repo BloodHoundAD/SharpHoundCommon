@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
+using SharpHoundCommonLib.OutputTypes;
 using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 
 namespace SharpHoundCommonLib
@@ -107,6 +108,13 @@ namespace SharpHoundCommonLib
             }
 
             return dest.ToArray();
+        }
+
+        public static bool GetTypedPrincipal(this DirectoryEntry entry, out TypedPrincipal principal) {
+            var identifier = entry.GetObjectIdentifier();
+            var success = entry.GetLabel(out var label);
+            principal = new TypedPrincipal(identifier, label);
+            return (success && !string.IsNullOrWhiteSpace(identifier));
         }
 
         public static string GetObjectIdentifier(this DirectoryEntry entry) {

@@ -25,6 +25,7 @@
     </ItemGroup>
     <ItemGroup>
         <Reference Include="System.DirectoryServices" />
+        <Reference Include="System.DirectoryServices.AccountManagement" />
         <Reference Include="System.DirectoryServices.Protocols" />
     </ItemGroup>
     <ItemGroup>

@@ -17,12 +17,12 @@ namespace SharpHoundCommonLib.Processors
     public class CertAbuseProcessor
     {
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtilsNew _utils;
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
         public event ComputerStatusDelegate ComputerStatusEvent;
 
         
-        public CertAbuseProcessor(ILDAPUtils utils, ILogger log = null)
+        public CertAbuseProcessor(ILdapUtilsNew utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("CAProc");
@@ -57,9 +57,9 @@ namespace SharpHoundCommonLib.Processors
             descriptor.SetSecurityDescriptorBinaryForm(aceData.Value as byte[], AccessControlSections.All);
 
             var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
-            var computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
-            var isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
-            var machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
+            var (success,computerDomain) = await _utils.GetDomainNameFromSid(computerObjectId);
+            var isDomainController = await _utils.IsDomainController(computerObjectId, computerDomain);
+            var machineSid = await GetMachineSid(computerName, computerObjectId);
 
             var aces = new List<ACE>();
 
@@ -92,7 +92,10 @@ namespace SharpHoundCommonLib.Processors
                 if (principalSid == null)
                     continue;
 
-                var principalDomain = _utils.GetDomainNameFromSid(principalSid) ?? objectDomain;
+                var (getDomainSuccess, principalDomain) = await _utils.GetDomainNameFromSid(principalSid);
+                if (!getDomainSuccess) {
+                       
+                }
                 var resolvedPrincipal = GetRegistryPrincipal(new SecurityIdentifier(principalSid), principalDomain, computerName, isDomainController, computerObjectId, machineSid);
                 var isInherited = rule.IsInherited();
 
@@ -153,16 +156,15 @@ namespace SharpHoundCommonLib.Processors
                 return ret;
             }
             
-            var computerDomain = _utils.GetDomainNameFromSid(computerObjectId);
-            var isDomainController = _utils.IsDomainController(computerObjectId, computerDomain);
-            var machineSid = await GetMachineSid(computerName, computerObjectId, computerDomain, isDomainController);
-            var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, computerDomain);
+            var isDomainController = await _utils.IsDomainController(computerObjectId, objectDomain);
+            var machineSid = await GetMachineSid(computerName, computerObjectId);
+            var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, objectDomain);
             var descriptor = new RawSecurityDescriptor(regData.Value as byte[], 0);
             var enrollmentAgentRestrictions = new List<EnrollmentAgentRestriction>();
             foreach (var genericAce in descriptor.DiscretionaryAcl)
             {
                 var ace = (QualifiedAce)genericAce;
-                enrollmentAgentRestrictions.Add(new EnrollmentAgentRestriction(ace, computerDomain, certTemplatesLocation, this, _utils, computerName, isDomainController, computerObjectId, machineSid));
+                enrollmentAgentRestrictions.Add(new EnrollmentAgentRestriction(ace, objectDomain, certTemplatesLocation, this, _utils, computerName, isDomainController, computerObjectId, machineSid));
             }
 
             ret.Restrictions = enrollmentAgentRestrictions.ToArray();
@@ -170,10 +172,10 @@ namespace SharpHoundCommonLib.Processors
             return ret;
         }
         
-        public (IEnumerable<TypedPrincipal> resolvedTemplates, IEnumerable<String> unresolvedTemplates) ProcessCertTemplates(string[] templates, string domainName)
+        public (IEnumerable<TypedPrincipal> resolvedTemplates, IEnumerable<string> unresolvedTemplates) ProcessCertTemplates(string[] templates, string domainName)
         {
             var resolvedTemplates = new List<TypedPrincipal>();
-            var unresolvedTemplates = new List<String>();
+            var unresolvedTemplates = new List<string>();
 
             var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, domainName);
             foreach (var templateCN in templates)
@@ -333,7 +335,7 @@ namespace SharpHoundCommonLib.Processors
             return _utils.ResolveIDAndType(sid.Value, computerDomain);
         }
 
-        private async Task<SecurityIdentifier> GetMachineSid(string computerName, string computerObjectId, string computerDomain, bool isDomainController)
+        private async Task<SecurityIdentifier> GetMachineSid(string computerName, string computerObjectId)
         {
             SecurityIdentifier machineSid = null;
 
@@ -401,7 +403,7 @@ namespace SharpHoundCommonLib.Processors
 
     public class EnrollmentAgentRestriction
     {
-        public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor, ILDAPUtils utils, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
+        public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor, ILdapUtilsNew utils, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
         {
             var targets = new List<TypedPrincipal>();
             var index = 0;

@@ -11,15 +11,15 @@ namespace SharpHoundCommonLib.Processors
     public class GroupProcessor
     {
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtilsNew _utils;
 
-        public GroupProcessor(ILDAPUtils utils, ILogger log = null)
+        public GroupProcessor(ILdapUtilsNew utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("GroupProc");
         }
         
-        public IEnumerable<TypedPrincipal> ReadGroupMembers(ResolvedSearchResult result, ISearchResultEntry entry)
+        public IAsyncEnumerable<TypedPrincipal> ReadGroupMembers(ResolvedSearchResult result, ISearchResultEntry entry)
         {
             var members = entry.GetArrayProperty(LDAPProperties.Members);
             var name = result.DisplayName;
@@ -35,7 +35,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="members"></param>
         /// <param name="objectName"></param>
         /// <returns></returns>
-        public IEnumerable<TypedPrincipal> ReadGroupMembers(string distinguishedName, string[] members,
+        public async IAsyncEnumerable<TypedPrincipal> ReadGroupMembers(string distinguishedName, string[] members,
             string objectName = "")
         {
             // If our returned array has a length of 0, one of two things is happening
@@ -45,21 +45,19 @@ namespace SharpHoundCommonLib.Processors
             {
                 _log.LogTrace("Member property for {ObjectName} is empty, trying range retrieval",
                     objectName);
-                foreach (var member in _utils.DoRangedRetrieval(distinguishedName, "member"))
+                await foreach (var result in _utils.RangedRetrieval(distinguishedName, "member"))
                 {
-                    _log.LogTrace("Got member {DN} for {ObjectName} from ranged retrieval", member, objectName);
-                    var res = _utils.ResolveDistinguishedName(member);
+                    if (!result.Success) {
+                        yield break;
+                    }
 
-                    if (res == null)
-                        yield return new TypedPrincipal
-                        {
-                            ObjectIdentifier = member.ToUpper(),
-                            ObjectType = Label.Base
-                        };
-                    else
-                    {
-                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier))
-                            yield return res;
+                    var member = result.Value;
+                    _log.LogTrace("Got member {DN} for {ObjectName} from ranged retrieval", member, objectName);
+                    if (await _utils.LookupDistinguishedName(member) is (true, var res) && !Helpers.IsSidFiltered(res.ObjectIdentifier)) {
+                        yield return res;
+                    }
+                    else {
+                        yield return new TypedPrincipal(member.ToUpper(), Label.Base);
                     }
                 }
             }
@@ -69,18 +67,11 @@ namespace SharpHoundCommonLib.Processors
                 foreach (var member in members)
                 {
                     _log.LogTrace("Got member {DN} for {ObjectName}", member, objectName);
-                    var res = _utils.ResolveDistinguishedName(member);
-
-                    if (res == null)
-                        yield return new TypedPrincipal
-                        {
-                            ObjectIdentifier = member.ToUpper(),
-                            ObjectType = Label.Base
-                        };
-                    else
-                    {
-                        if (!Helpers.IsSidFiltered(res.ObjectIdentifier))
-                            yield return res;
+                    if (await _utils.LookupDistinguishedName(member) is (true, var res) && !Helpers.IsSidFiltered(res.ObjectIdentifier)) {
+                        yield return res;
+                    }
+                    else {
+                        yield return new TypedPrincipal(member.ToUpper(), Label.Base);
                     }
                 }
             }

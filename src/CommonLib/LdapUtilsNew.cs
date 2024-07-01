@@ -26,7 +26,7 @@ using SecurityMasks = System.DirectoryServices.Protocols.SecurityMasks;
 
 namespace SharpHoundCommonLib;
 
-public class LdapUtilsNew : ILdapUtilsNew{
+public class LdapUtilsNew : ILdapUtilsNew {
     //This cache is indexed by domain sid
     private readonly ConcurrentDictionary<string, NetAPIStructs.DomainControllerInfo?> _dcInfoCache = new();
     private static readonly ConcurrentDictionary<string, Domain> DomainCache = new();
@@ -41,6 +41,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
 
     private readonly ConcurrentDictionary<string, TypedPrincipal> _distinguishedNameCache =
         new(StringComparer.OrdinalIgnoreCase);
+
     private readonly ILogger _log;
     private readonly PortScanner _portScanner;
     private readonly NativeMethods _nativeMethods;
@@ -122,16 +123,17 @@ public class LdapUtilsNew : ILdapUtilsNew{
             yield return Result<string>.Fail("Failed to create search request");
             yield break;
         }
-        
+
         var queryRetryCount = 0;
         var busyRetryCount = 0;
-        
+
         Result<string> tempResult = null;
 
         while (true) {
             if (cancellationToken.IsCancellationRequested) {
                 yield break;
             }
+
             SearchResponse response = null;
             try {
                 response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
@@ -141,7 +143,8 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 var backoffDelay = GetNextBackoff(busyRetryCount);
                 await Task.Delay(backoffDelay, cancellationToken);
             }
-            catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && queryRetryCount < MaxRetries) {
+            catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
+                                           queryRetryCount < MaxRetries) {
                 queryRetryCount++;
                 _connectionPool.ReleaseConnection(connectionWrapper, true);
                 for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
@@ -151,7 +154,8 @@ public class LdapUtilsNew : ILdapUtilsNew{
                         await _connectionPool.GetLdapConnection(domain,
                             false);
                     if (success) {
-                        _log.LogDebug("RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}",
+                        _log.LogDebug(
+                            "RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}",
                             newConnectionWrapper.GetServer());
                         connectionWrapper = newConnectionWrapper;
                         break;
@@ -159,13 +163,16 @@ public class LdapUtilsNew : ILdapUtilsNew{
 
                     //If we hit our max retries for making a new connection, set tempResult so we can yield it after this logic
                     if (retryCount == MaxRetries - 1) {
-                        _log.LogError("RangedRetrieval - Failed to get a new connection after ServerDown for path {Path}", distinguishedName);
+                        _log.LogError(
+                            "RangedRetrieval - Failed to get a new connection after ServerDown for path {Path}",
+                            distinguishedName);
                         tempResult =
                             Result<string>.Fail(
                                 "RangedRetrieval - Failed to get a new connection after ServerDown.");
                     }
                 }
-            }catch (LdapException le) {
+            }
+            catch (LdapException le) {
                 tempResult = Result<string>.Fail(
                     $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})");
             }
@@ -173,7 +180,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 tempResult =
                     Result<string>.Fail($"Caught unrecoverable exception: {e.Message}");
             }
-            
+
             //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
             if (tempResult != null) {
                 yield return tempResult;
@@ -197,7 +204,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
                 if (complete) {
                     yield break;
                 }
-                
+
                 currentRange = $"{attributeName};range={index}-{index + step}";
                 searchRequest.Attributes.Clear();
                 searchRequest.Attributes.Add(currentRange);
@@ -513,7 +520,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
             Cache.AddType(sid, type);
             return (true, type);
         }
-        
+
         try {
             var entry = new DirectoryEntry($"LDAP://<SID={sid}>");
             if (entry.GetLabel(out type)) {
@@ -524,7 +531,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
         catch {
             //pass
         }
-        
+
         using (var ctx = new PrincipalContext(ContextType.Domain)) {
             try {
                 var principal = Principal.FindByIdentity(ctx, IdentityType.Sid, sid);
@@ -571,7 +578,7 @@ public class LdapUtilsNew : ILdapUtilsNew{
         catch {
             //pass
         }
-        
+
         using (var ctx = new PrincipalContext(ContextType.Domain)) {
             try {
                 var principal = Principal.FindByIdentity(ctx, IdentityType.Guid, guid);
@@ -1170,15 +1177,15 @@ public class LdapUtilsNew : ILdapUtilsNew{
         var sids = new List<string>();
 
         await foreach (var result in Query(new LdapQueryParameters {
-                     DomainName = domain,
-                     Attributes = new[] { LDAPProperties.ObjectSID },
-                     GlobalCatalog = true,
-                     LDAPFilter = new LDAPFilter().AddUsers($"(samaccountname={name})").GetFilter()
-                 })) {
+                           DomainName = domain,
+                           Attributes = new[] { LDAPProperties.ObjectSID },
+                           GlobalCatalog = true,
+                           LDAPFilter = new LDAPFilter().AddUsers($"(samaccountname={name})").GetFilter()
+                       })) {
             if (result.IsSuccess) {
                 var sid = result.Value.GetSid();
                 if (!string.IsNullOrWhiteSpace(sid)) {
-                    sids.Add(sid);    
+                    sids.Add(sid);
                 }
             }
             else {
@@ -1201,15 +1208,18 @@ public class LdapUtilsNew : ILdapUtilsNew{
         }).DefaultIfEmpty(null).FirstAsync();
 
         if (result == null) {
-            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}", propertyName, propertyName, containerDistinguishedName);
+            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}",
+                propertyName, propertyName, containerDistinguishedName);
             return (false, null);
         }
 
         if (!result.IsSuccess) {
-            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}: {Error}", propertyName, propertyName, containerDistinguishedName, result.Error);
+            _log.LogWarning(
+                "Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}: {Error}",
+                propertyName, propertyName, containerDistinguishedName, result.Error);
             return (false, null);
         }
-        
+
         var entry = result.Value;
         return (true, new TypedPrincipal(entry.GetGuid(), Label.CertTemplate));
     }
@@ -1288,20 +1298,18 @@ public class LdapUtilsNew : ILdapUtilsNew{
         return new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
     }
 
-    public async Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain) {
+    public async Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid,
+        string computerDomainSid, string computerDomain) {
         if (!WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common)) return (false, null);
         //The everyone and auth users principals are special and will be converted to the domain equivalent
-        if (sid.Value is "S-1-1-0" or "S-1-5-11")
-        {
+        if (sid.Value is "S-1-1-0" or "S-1-5-11") {
             return await GetWellKnownPrincipal(sid.Value, computerDomain);
         }
 
         //Use the computer object id + the RID of the sid we looked up to create our new principal
-        var principal = new TypedPrincipal
-        {
+        var principal = new TypedPrincipal {
             ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
-            ObjectType = common.ObjectType switch
-            {
+            ObjectType = common.ObjectType switch {
                 Label.User => Label.LocalUser,
                 Label.Group => Label.LocalGroup,
                 _ => common.ObjectType
@@ -1309,15 +1317,14 @@ public class LdapUtilsNew : ILdapUtilsNew{
         };
 
         return (true, principal);
-
     }
-    
-    public async Task<bool> IsDomainController(string computerObjectId, string domainName)
-    {
+
+    public async Task<bool> IsDomainController(string computerObjectId, string domainName) {
+        var resDomain = await GetDomainNameFromSid(domainName) is (false, var tempDomain) ? tempDomain : domainName;
         var filter = new LDAPFilter().AddFilter(CommonFilters.SpecificSID(computerObjectId), true)
             .AddFilter(CommonFilters.DomainControllers, true);
         var result = await Query(new LdapQueryParameters() {
-            DomainName = domainName,
+            DomainName = resDomain,
             Attributes = CommonProperties.ObjectID,
             LDAPFilter = filter.GetFilter(),
         }).DefaultIfEmpty(null).FirstOrDefaultAsync();
@@ -1359,7 +1366,8 @@ public class LdapUtilsNew : ILdapUtilsNew{
         using (var ctx = new PrincipalContext(ContextType.Domain)) {
             try {
                 var lookupPrincipal = Principal.FindByIdentity(ctx, IdentityType.DistinguishedName, distinguishedName);
-                if (lookupPrincipal != null && ((DirectoryEntry)lookupPrincipal.GetUnderlyingObject()).GetTypedPrincipal(out principal)) {
+                if (lookupPrincipal != null &&
+                    ((DirectoryEntry)lookupPrincipal.GetUnderlyingObject()).GetTypedPrincipal(out principal)) {
                     return (true, principal);
                 }
 
