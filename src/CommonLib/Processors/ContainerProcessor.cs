@@ -96,7 +96,7 @@ namespace SharpHoundCommonLib.Processors
                                LDAPFilter = filter.GetFilter(),
                                SearchBase = distinguishedName
                            })) {
-                if (!childEntryResult.Success) {
+                if (!childEntryResult.IsSuccess) {
                     _log.LogWarning("Error while getting container child objects for {DistinguishedName}: {Reason}", distinguishedName, childEntryResult.Error);
                     yield break;
                 }

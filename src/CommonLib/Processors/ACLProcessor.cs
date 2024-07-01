@@ -62,7 +62,7 @@ namespace SharpHoundCommonLib.Processors
                 Attributes = new[] {LDAPProperties.SchemaIDGUID, LDAPProperties.Name},
             }))
             {
-                if (result.Success) {
+                if (result.IsSuccess) {
                     var name = result.Value.GetProperty(LDAPProperties.Name)?.ToLower();
                     var guid = result.Value.GetGuid();
                     if (name == null || guid == null) {

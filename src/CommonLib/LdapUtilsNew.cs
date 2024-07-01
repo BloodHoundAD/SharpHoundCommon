@@ -710,6 +710,10 @@ public class LdapUtilsNew : ILdapUtilsNew {
             };
 
             connectionWrapper.SaveContext(queryParameters.NamingContext, basePath);
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.RelativeSearchBase)) {
+                basePath = $"{queryParameters.RelativeSearchBase},{basePath}";
+            }
         }
 
         searchRequest = new SearchRequest(basePath, queryParameters.LDAPFilter, queryParameters.SearchScope,
@@ -929,7 +933,7 @@ public class LdapUtilsNew : ILdapUtilsNew {
             LDAPFilter = new LDAPFilter().AddFilter(CommonFilters.DomainControllers, true).GetFilter()
         }).FirstAsync();
 
-        if (result.Success) {
+        if (result.IsSuccess) {
             var sid = result.Value.GetSid();
             if (!string.IsNullOrEmpty(sid)) {
                 domainSid = new SecurityIdentifier(sid).AccountDomainSid.Value;
@@ -1197,26 +1201,27 @@ public class LdapUtilsNew : ILdapUtilsNew {
     }
 
     public async Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propertyValue,
-        string propertyName, string containerDistinguishedName, string domainName) {
+        string propertyName, string domainName) {
         var filter = new LDAPFilter().AddCertificateTemplates().AddFilter($"({propertyName}={propertyValue})", true);
-        var result = await Query(new LdapQueryParameters() {
+        var result = await Query(new LdapQueryParameters {
             DomainName = domainName,
             Attributes = CommonProperties.TypeResolutionProps,
             SearchScope = SearchScope.OneLevel,
-            SearchBase = containerDistinguishedName,
+            NamingContext = NamingContext.Configuration,
+            RelativeSearchBase = DirectoryPaths.CertTemplateLocation,
             LDAPFilter = filter.GetFilter(),
         }).DefaultIfEmpty(null).FirstAsync();
 
         if (result == null) {
-            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}",
-                propertyName, propertyName, containerDistinguishedName);
+            _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue}",
+                propertyName, propertyName);
             return (false, null);
         }
 
         if (!result.IsSuccess) {
             _log.LogWarning(
-                "Could not find certificate template with {PropertyName}:{PropertyValue} under {Container}: {Error}",
-                propertyName, propertyName, containerDistinguishedName, result.Error);
+                "Could not find certificate template with {PropertyName}:{PropertyValue}: {Error}",
+                propertyName, propertyName, result.Error);
             return (false, null);
         }
 

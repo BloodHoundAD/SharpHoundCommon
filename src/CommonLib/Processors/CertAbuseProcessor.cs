@@ -65,8 +65,8 @@ namespace SharpHoundCommonLib.Processors
 
             if (ownerSid != null)
             {
-                var resolvedOwner = GetRegistryPrincipal(new SecurityIdentifier(ownerSid), computerDomain, computerName, isDomainController, computerObjectId, machineSid);
-                if (resolvedOwner != null)
+                if (await GetRegistryPrincipal(new SecurityIdentifier(ownerSid), computerDomain, computerName,
+                        isDomainController, computerObjectId, machineSid) is (true, var resolvedOwner)) {
                     aces.Add(new ACE
                     {
                         PrincipalType = resolvedOwner.ObjectType,
@@ -74,6 +74,8 @@ namespace SharpHoundCommonLib.Processors
                         RightName = EdgeNames.Owns,
                         IsInherited = false
                     }); 
+                }
+                    
             }
             else
             {
@@ -96,7 +98,9 @@ namespace SharpHoundCommonLib.Processors
                 if (!getDomainSuccess) {
                        
                 }
-                var resolvedPrincipal = GetRegistryPrincipal(new SecurityIdentifier(principalSid), principalDomain, computerName, isDomainController, computerObjectId, machineSid);
+                var (resSuccess, resolvedPrincipal) = await GetRegistryPrincipal(new SecurityIdentifier(principalSid), principalDomain, computerName, isDomainController, computerObjectId, machineSid);
+                if (!resSuccess)
+                    continue;
                 var isInherited = rule.IsInherited();
 
                 var cARights = (CertificationAuthorityRights)rule.ActiveDirectoryRights();
@@ -158,13 +162,15 @@ namespace SharpHoundCommonLib.Processors
             
             var isDomainController = await _utils.IsDomainController(computerObjectId, objectDomain);
             var machineSid = await GetMachineSid(computerName, computerObjectId);
-            var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, objectDomain);
             var descriptor = new RawSecurityDescriptor(regData.Value as byte[], 0);
             var enrollmentAgentRestrictions = new List<EnrollmentAgentRestriction>();
             foreach (var genericAce in descriptor.DiscretionaryAcl)
             {
                 var ace = (QualifiedAce)genericAce;
-                enrollmentAgentRestrictions.Add(new EnrollmentAgentRestriction(ace, objectDomain, certTemplatesLocation, this, _utils, computerName, isDomainController, computerObjectId, machineSid));
+                if (await CreateEnrollmentAgentRestriction(ace, objectDomain, computerName, isDomainController,
+                        computerObjectId, machineSid) is (true, var restriction)) {
+                    enrollmentAgentRestrictions.Add(restriction);
+                }
             }
 
             ret.Restrictions = enrollmentAgentRestrictions.ToArray();
@@ -172,17 +178,16 @@ namespace SharpHoundCommonLib.Processors
             return ret;
         }
         
-        public (IEnumerable<TypedPrincipal> resolvedTemplates, IEnumerable<string> unresolvedTemplates) ProcessCertTemplates(string[] templates, string domainName)
+        public async Task<(IEnumerable<TypedPrincipal> resolvedTemplates, IEnumerable<string> unresolvedTemplates)> ProcessCertTemplates(IEnumerable<string> templates, string domainName)
         {
             var resolvedTemplates = new List<TypedPrincipal>();
             var unresolvedTemplates = new List<string>();
 
-            var certTemplatesLocation = _utils.BuildLdapPath(DirectoryPaths.CertTemplateLocation, domainName);
             foreach (var templateCN in templates)
             {
-                var res = _utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(templateCN), LDAPProperties.CanonicalName, certTemplatesLocation, domainName);
-                if (res != null) {
-                    resolvedTemplates.Add(res);
+                var res = await _utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(templateCN), LDAPProperties.CanonicalName, domainName);
+                if (res.Success) {
+                    resolvedTemplates.Add(res.Principal);
                 } else {
                     unresolvedTemplates.Add(templateCN);
                 }
@@ -291,26 +296,23 @@ namespace SharpHoundCommonLib.Processors
             return ret;
         }
 
-        public TypedPrincipal GetRegistryPrincipal(SecurityIdentifier sid, string computerDomain, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
+        public async Task<(bool Success, TypedPrincipal Principal)> GetRegistryPrincipal(SecurityIdentifier sid, string computerDomain, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
         {
             _log.LogTrace("Got principal with sid {SID} on computer {ComputerName}", sid.Value, computerName);
 
             //Check if our sid is filtered
             if (Helpers.IsSidFiltered(sid.Value))
-                return null;
+                return (false, default);
 
-            if (isDomainController)
-            {
-                var result = _utils.ResolveIDAndType(sid.Value, computerDomain);
-                if (result != null)
-                    return result;
+            if (isDomainController &&
+                await _utils.ResolveIDAndType(sid.Value, computerDomain) is (true, var resolvedPrincipal)) {
+                return (true, resolvedPrincipal);
             }
 
             //If we get a local well known principal, we need to convert it using the computer's domain sid
-            if (_utils.ConvertLocalWellKnownPrincipal(sid, computerObjectId, computerDomain, out var principal))
-            {
-                _log.LogTrace("Got Well Known Principal {SID} on computer {Computer} with type {Type}", principal.ObjectIdentifier, computerName, principal.ObjectType);
-                return principal;
+            if (await _utils.ConvertLocalWellKnownPrincipal(sid, computerObjectId, computerDomain) is
+                (true, var principal)) {
+                return (true, principal);
             }
 
             //If the security identifier starts with the machine sid, we need to resolve it as a local principal
@@ -319,20 +321,14 @@ namespace SharpHoundCommonLib.Processors
                 _log.LogTrace("Got local principal {sid} on computer {Computer}", sid.Value, computerName);
                 
                 // Set label to be local group. It could be a local user or alias but I'm not sure how we can confirm. Besides, it will not have any effect on the end result
-                var objectType = Label.LocalGroup;
-
                 // The local group sid is computer machine sid - group rid.
                 var groupRid = sid.Rid();
                 var newSid = $"{computerObjectId}-{groupRid}";
-                return (new TypedPrincipal
-                {
-                    ObjectIdentifier = newSid,
-                    ObjectType = objectType
-                });
+                return (true, new TypedPrincipal(newSid, Label.LocalGroup));
             }
 
             //If we get here, we most likely have a domain principal. Do a lookup
-            return _utils.ResolveIDAndType(sid.Value, computerDomain);
+            return await _utils.ResolveIDAndType(sid.Value, computerDomain);
         }
 
         private async Task<SecurityIdentifier> GetMachineSid(string computerName, string computerObjectId)
@@ -383,6 +379,58 @@ namespace SharpHoundCommonLib.Processors
             return machineSid;
         }
 
+        private async Task<(bool success, EnrollmentAgentRestriction restriction)> CreateEnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid) {
+            var targets = new List<TypedPrincipal>();
+            var index = 0;
+
+            var accessType = ace.AceType.ToString();
+            var agent = await GetRegistryPrincipal(ace.SecurityIdentifier, computerDomain, computerName, isDomainController,
+                computerObjectId, machineSid);
+
+            var opaque = ace.GetOpaque();
+            var sidCount = BitConverter.ToUInt32(opaque, 0);
+            index += 4;
+
+            for (var i = 0; i < sidCount; i++) {
+                var sid = new SecurityIdentifier(opaque, index);
+                if (await GetRegistryPrincipal(sid, computerDomain, computerName, isDomainController, computerObjectId,
+                        machineSid) is (true, var regPrincipal)) {
+                    targets.Add(regPrincipal);
+                }
+
+                index += sid.BinaryLength;
+            }
+
+            var finalTargets = targets.ToArray();
+            var allTemplates = index >= opaque.Length;
+            if (index < opaque.Length) {
+                var template = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2).Replace("\u0000", string.Empty);
+                if (await _utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(template), LDAPProperties.CanonicalName, computerDomain) is (true, var resolvedTemplate)) {
+                    return (true, new EnrollmentAgentRestriction {
+                        Template = resolvedTemplate,
+                        Agent = agent.Principal,
+                        AllTemplates = allTemplates,
+                        AccessType = accessType,
+                        Targets = finalTargets
+                    });
+                }
+
+                if (await _utils.ResolveCertTemplateByProperty(
+                        Encoder.LdapFilterEncode(template), LDAPProperties.CertTemplateOID, computerDomain) is
+                            (true, var resolvedOidTemplate)) {
+                    return (true, new EnrollmentAgentRestriction {
+                        Template = resolvedOidTemplate,
+                        Agent = agent.Principal,
+                        AllTemplates = allTemplates,
+                        AccessType = accessType,
+                        Targets = finalTargets
+                    });
+                }
+            }
+
+            return (false, default);
+        }
+
         public virtual SharpHoundRPC.Result<ISAMServer> OpenSamServer(string computerName)
         {
             var result = SAMServer.OpenServer(computerName);
@@ -403,50 +451,6 @@ namespace SharpHoundCommonLib.Processors
 
     public class EnrollmentAgentRestriction
     {
-        public EnrollmentAgentRestriction(QualifiedAce ace, string computerDomain, string certTemplatesLocation, CertAbuseProcessor certAbuseProcessor, ILdapUtilsNew utils, string computerName, bool isDomainController, string computerObjectId, SecurityIdentifier machineSid)
-        {
-            var targets = new List<TypedPrincipal>();
-            var index = 0;
-
-            // Access type (Allow/Deny)
-            AccessType = ace.AceType.ToString();
-
-            // Agent
-            Agent = certAbuseProcessor.GetRegistryPrincipal(ace.SecurityIdentifier, computerDomain, computerName, isDomainController, computerObjectId, machineSid);
-
-            // Targets
-            var opaque = ace.GetOpaque();
-            var sidCount = BitConverter.ToUInt32(opaque, 0);
-            index += 4;
-            for (var i = 0; i < sidCount; i++)
-            {
-                var sid = new SecurityIdentifier(opaque, index);
-                targets.Add(certAbuseProcessor.GetRegistryPrincipal(ace.SecurityIdentifier, computerDomain, computerName, isDomainController, computerObjectId, machineSid));
-                index += sid.BinaryLength;
-            }
-            Targets = targets.ToArray();
-
-            // Template
-            if (index < opaque.Length)
-            {
-                AllTemplates = false;
-                var template = Encoding.Unicode.GetString(opaque, index, opaque.Length - index - 2).Replace("\u0000", string.Empty);
-
-                // Attempt to resolve the cert template by CN
-                Template = utils.ResolveCertTemplateByProperty(Encoder.LdapFilterEncode(template), LDAPProperties.CanonicalName, certTemplatesLocation, computerDomain);
-
-                // Attempt to resolve the cert template by OID
-                if (Template == null)
-                {
-                    Template = utils.ResolveCertTemplateByProperty(template, LDAPProperties.CertTemplateOID, certTemplatesLocation, computerDomain);
-                }
-            }
-            else
-            {
-                AllTemplates = true;
-            }
-        }
-
         public string AccessType { get; set; }
         public TypedPrincipal Agent { get; set; }
         public TypedPrincipal[] Targets { get; set; }

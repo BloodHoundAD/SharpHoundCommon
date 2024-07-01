@@ -32,7 +32,7 @@ namespace SharpHoundCommonLib.Processors
                                    DomainName = domain
                                }))
             {
-                if (!result.Success) {
+                if (!result.IsSuccess) {
                     yield break;
                 }
 

@@ -128,7 +128,7 @@ namespace SharpHoundCommonLib.Processors {
                         SearchBase = linkDn
                     }).DefaultIfEmpty(null).FirstOrDefaultAsync();
 
-                    if (result is not { Success: true }) {
+                    if (result is not { IsSuccess: true }) {
                         continue;
                     }
 

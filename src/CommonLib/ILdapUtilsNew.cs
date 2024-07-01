@@ -35,7 +35,7 @@ public interface ILdapUtilsNew {
     Task<(bool Success, TypedPrincipal Principal)> ResolveAccountName(string name, string domain);
     Task<(bool Success, string SecurityIdentifier)> ResolveHostToSid(string host, string domain);
     Task<(bool Success, string[] Sids)> GetGlobalCatalogMatches(string name, string domain);
-    Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propValue, string propName, string containerDN, string domainName);
+    Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propValue, string propName, string domainName);
     ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
 
     public Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid,

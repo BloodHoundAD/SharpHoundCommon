@@ -24,7 +24,7 @@ public class Result {
     
     public string Error { get; set; }
     public bool IsSuccess => Error == null && Success;
-    public bool Success { get; set; }
+    private bool Success { get; set; }
 
     protected Result(bool success, string error) {
         Success = success;

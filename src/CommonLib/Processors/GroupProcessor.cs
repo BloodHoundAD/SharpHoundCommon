@@ -47,7 +47,7 @@ namespace SharpHoundCommonLib.Processors
                     objectName);
                 await foreach (var result in _utils.RangedRetrieval(distinguishedName, "member"))
                 {
-                    if (!result.Success) {
+                    if (!result.IsSuccess) {
                         yield break;
                     }
 
