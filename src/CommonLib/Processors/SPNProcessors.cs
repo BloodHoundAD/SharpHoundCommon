@@ -8,9 +8,9 @@ namespace SharpHoundCommonLib.Processors
     {
         private const string MSSQLSPNString = "mssqlsvc";
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtilsNew _utils;
 
-        public SPNProcessors(ILDAPUtils utils, ILogger log = null)
+        public SPNProcessors(ILdapUtilsNew utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("SPNProc");
@@ -59,10 +59,10 @@ namespace SharpHoundCommonLib.Processors
 
                     var host = await _utils.ResolveHostToSid(spn, domain);
                     _log.LogTrace("Resolved {SPN} to {Hostname}", spn, host);
-                    if (host != null && host.StartsWith("S-1-"))
+                    if (host.Success && host.SecurityIdentifier.StartsWith("S-1-"))
                         yield return new SPNPrivilege
                         {
-                            ComputerSID = host,
+                            ComputerSID = host.SecurityIdentifier,
                             Port = port,
                             Service = EdgeNames.SQLAdmin
                         };
