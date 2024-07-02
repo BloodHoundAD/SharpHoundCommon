@@ -1213,6 +1213,7 @@ namespace SharpHoundCommonLib {
                 }
             }
 
+            Cache.AddGCCache(name, sids.ToArray());
             return (true, sids.ToArray());
         }
 
@@ -1441,6 +1442,10 @@ namespace SharpHoundCommonLib {
 
         public Task<(bool Success, string Message)> TestLdapConnection(string domain) {
             return _connectionPool.TestDomainConnection(domain, false);
+        }
+
+        public void Dispose() {
+            _connectionPool?.Dispose();
         }
     }
 }

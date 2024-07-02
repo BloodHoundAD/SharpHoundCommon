@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
@@ -5,7 +6,7 @@ using System.Threading.Tasks;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib {
-    public interface ILdapUtils {
+    public interface ILdapUtils : IDisposable {
         IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new());
 
