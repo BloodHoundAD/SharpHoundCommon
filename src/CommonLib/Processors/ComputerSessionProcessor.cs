@@ -19,12 +19,12 @@ namespace SharpHoundCommonLib.Processors
         private readonly string _currentUserName;
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
         private readonly bool _doLocalAdminSessionEnum;
         private readonly string _localAdminUsername;
         private readonly string _localAdminPassword;
 
-        public ComputerSessionProcessor(ILdapUtilsNew utils, string currentUserName = null, NativeMethods nativeMethods = null, ILogger log = null, bool doLocalAdminSessionEnum = false, string localAdminUsername = null, string localAdminPassword = null)
+        public ComputerSessionProcessor(ILdapUtils utils, string currentUserName = null, NativeMethods nativeMethods = null, ILogger log = null, bool doLocalAdminSessionEnum = false, string localAdminUsername = null, string localAdminPassword = null)
         {
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();

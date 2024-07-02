@@ -8,9 +8,9 @@ namespace SharpHoundCommonLib.Processors
     {
         private const string MSSQLSPNString = "mssqlsvc";
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public SPNProcessors(ILdapUtilsNew utils, ILogger log = null)
+        public SPNProcessors(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("SPNProc");

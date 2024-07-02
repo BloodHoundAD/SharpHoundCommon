@@ -11,7 +11,7 @@ namespace SharpHoundCommonLib {
             ErrorCode = errorCode;
         }
     
-        public static LdapResult<T> Ok(T value) {
+        public new static LdapResult<T> Ok(T value) {
             return new LdapResult<T>(value, true, string.Empty, null, 0);
         }
 

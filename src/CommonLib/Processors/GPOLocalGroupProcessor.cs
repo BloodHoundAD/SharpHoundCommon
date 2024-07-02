@@ -42,9 +42,9 @@ namespace SharpHoundCommonLib.Processors {
 
         private readonly ILogger _log;
 
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public GPOLocalGroupProcessor(ILdapUtilsNew utils, ILogger log = null) {
+        public GPOLocalGroupProcessor(ILdapUtils utils, ILogger log = null) {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("GPOLocalGroupProc");
         }
@@ -114,13 +114,6 @@ namespace SharpHoundCommonLib.Processors {
                     actions = new List<GroupAction>();
 
                     var gpoDomain = Helpers.DistinguishedNameToDomain(linkDn);
-
-                    var opts = new LDAPQueryOptions {
-                        Filter = new LDAPFilter().AddAllObjects().GetFilter(),
-                        Scope = SearchScope.Base,
-                        Properties = CommonProperties.GPCFileSysPath,
-                        AdsPath = linkDn
-                    };
                     var result = await _utils.Query(new LdapQueryParameters() {
                         LDAPFilter = new LDAPFilter().AddAllObjects().GetFilter(),
                         SearchScope = SearchScope.Base,

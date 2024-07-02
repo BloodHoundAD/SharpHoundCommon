@@ -11,9 +11,9 @@ namespace SharpHoundCommonLib.Processors
     public class GroupProcessor
     {
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public GroupProcessor(ILdapUtilsNew utils, ILogger log = null)
+        public GroupProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("GroupProc");

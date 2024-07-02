@@ -141,7 +141,7 @@ namespace SharpHoundCommonLib {
                 }
             }
         
-            if (!LdapUtilsNew.GetDomain(_identifier, _ldapConfig, out var domainObject) || domainObject.Name == null) {
+            if (!LdapUtils.GetDomain(_identifier, _ldapConfig, out var domainObject) || domainObject.Name == null) {
                 //If we don't get a result here, we effectively have no other ways to resolve this domain, so we'll just have to exit out
                 _log.LogDebug(
                     "Could not get domain object from GetDomain, unable to create ldap connection for domain {Domain}",

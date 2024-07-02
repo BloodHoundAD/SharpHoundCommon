@@ -39,12 +39,12 @@ namespace SharpHoundCommonLib
         private const string MSAClass = "msds-managedserviceaccount";
         private readonly SearchResultEntry _entry;
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public SearchResultEntryWrapper(SearchResultEntry entry, ILdapUtilsNew utils = null, ILogger log = null)
+        public SearchResultEntryWrapper(SearchResultEntry entry, ILdapUtils utils = null, ILogger log = null)
         {
             _entry = entry;
-            _utils = utils ?? new LdapUtilsNew();
+            _utils = utils ?? new LdapUtils();
             _log = log ?? Logging.LogProvider.CreateLogger("SearchResultWrapper");
         }
 

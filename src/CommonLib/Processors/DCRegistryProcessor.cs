@@ -9,10 +9,10 @@ namespace SharpHoundCommonLib.Processors
     public class DCRegistryProcessor
     {
         private readonly ILogger _log;
-        public readonly ILdapUtilsNew _utils;
+        public readonly ILdapUtils _utils;
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
 
-        public DCRegistryProcessor(ILdapUtilsNew utils, ILogger log = null)
+        public DCRegistryProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("DCRegProc");

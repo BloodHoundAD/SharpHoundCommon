@@ -25,7 +25,7 @@ using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 using SecurityMasks = System.DirectoryServices.Protocols.SecurityMasks;
 
 namespace SharpHoundCommonLib {
-    public class LdapUtilsNew : ILdapUtilsNew {
+    public class LdapUtils : ILdapUtils {
         //This cache is indexed by domain sid
         private readonly ConcurrentDictionary<string, NetAPIStructs.DomainControllerInfo?> _dcInfoCache = new();
         private static readonly ConcurrentDictionary<string, Domain> DomainCache = new();
@@ -73,14 +73,14 @@ namespace SharpHoundCommonLib {
             public string WkpId { get; set; }
         }
 
-        public LdapUtilsNew() {
+        public LdapUtils() {
             _nativeMethods = new NativeMethods();
             _portScanner = new PortScanner();
             _log = Logging.LogProvider.CreateLogger("LDAPUtils");
             _connectionPool = new ConnectionPoolManager(_ldapConfig);
         }
 
-        public LdapUtilsNew(NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null) {
+        public LdapUtils(NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null) {
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _portScanner = scanner ?? new PortScanner();
             _log = log ?? Logging.LogProvider.CreateLogger("LDAPUtils");
@@ -1017,6 +1017,7 @@ namespace SharpHoundCommonLib {
                 return true;
             }
             catch (Exception e) {
+                Logging.Logger.LogDebug("Static GetDomain call failed for domain {DomainName}: {Error}", domainName, e.Message);
                 return false;
             }
         }

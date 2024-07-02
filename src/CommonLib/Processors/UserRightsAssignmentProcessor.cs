@@ -14,9 +14,9 @@ namespace SharpHoundCommonLib.Processors
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
 
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public UserRightsAssignmentProcessor(ILdapUtilsNew  utils, ILogger log = null)
+        public UserRightsAssignmentProcessor(ILdapUtils  utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("UserRightsAssignmentProcessor");

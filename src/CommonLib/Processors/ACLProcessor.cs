@@ -16,9 +16,8 @@ namespace SharpHoundCommonLib.Processors
     {
         private static readonly Dictionary<Label, string> BaseGuids;
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
-        private static bool _isCacheBuilt;
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
         private static readonly HashSet<string> BuiltDomainCaches = new(StringComparer.OrdinalIgnoreCase);
         
         static ACLProcessor()
@@ -43,7 +42,7 @@ namespace SharpHoundCommonLib.Processors
             };
         }
 
-        public ACLProcessor(ILdapUtilsNew utils, ILogger log = null)
+        public ACLProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("ACLProc");

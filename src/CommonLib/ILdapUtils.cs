@@ -1,14 +1,11 @@
 using System.Collections.Generic;
-using System.DirectoryServices.Protocols;
-using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib {
-    public interface ILdapUtilsNew {
+    public interface ILdapUtils {
         IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new());
 

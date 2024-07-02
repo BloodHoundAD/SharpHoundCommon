@@ -11,9 +11,9 @@ namespace SharpHoundCommonLib.Processors
     public class DomainTrustProcessor
     {
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public DomainTrustProcessor(ILdapUtilsNew utils, ILogger log = null)
+        public DomainTrustProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("DomainTrustProc");

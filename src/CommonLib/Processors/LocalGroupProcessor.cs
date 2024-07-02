@@ -15,9 +15,9 @@ namespace SharpHoundCommonLib.Processors
     {
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public LocalGroupProcessor(ILdapUtilsNew utils, ILogger log = null)
+        public LocalGroupProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("LocalGroupProcessor");

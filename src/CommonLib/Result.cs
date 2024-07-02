@@ -2,11 +2,11 @@ namespace SharpHoundCommonLib {
     public class Result<T> : Result {
         public T Value { get; set; }
     
-        protected internal Result(T value, bool success, string error) : base(success, error) {
+        protected Result(T value, bool success, string error) : base(success, error) {
             Value = value;
         }
 
-        public static Result<T> Fail(string message) {
+        public new static Result<T> Fail(string message) {
             return new Result<T>(default, false, message);
         }
     

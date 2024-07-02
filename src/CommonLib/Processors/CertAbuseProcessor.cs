@@ -17,12 +17,12 @@ namespace SharpHoundCommonLib.Processors
     public class CertAbuseProcessor
     {
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
         public event ComputerStatusDelegate ComputerStatusEvent;
 
         
-        public CertAbuseProcessor(ILdapUtilsNew utils, ILogger log = null)
+        public CertAbuseProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("CAProc");

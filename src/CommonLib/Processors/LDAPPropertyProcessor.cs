@@ -23,9 +23,9 @@ namespace SharpHoundCommonLib.Processors
             .Concat(CommonProperties.SPNTargetProps).Concat(CommonProperties.DomainTrustProps)
             .Concat(CommonProperties.GPOLocalGroupProps).ToArray();
 
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public LDAPPropertyProcessor(ILdapUtilsNew utils)
+        public LDAPPropertyProcessor(ILdapUtils utils)
         {
             _utils = utils;
         }

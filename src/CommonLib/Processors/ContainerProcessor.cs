@@ -12,9 +12,9 @@ namespace SharpHoundCommonLib.Processors
     public class ContainerProcessor
     {
         private readonly ILogger _log;
-        private readonly ILdapUtilsNew _utils;
+        private readonly ILdapUtils _utils;
 
-        public ContainerProcessor(ILdapUtilsNew utils, ILogger log = null)
+        public ContainerProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("ContainerProc");

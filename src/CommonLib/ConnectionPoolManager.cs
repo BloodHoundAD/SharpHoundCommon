@@ -91,7 +91,7 @@ namespace SharpHoundCommonLib {
                 //we expect this to fail sometimes
             }
 
-            if (LdapUtilsNew.GetDomain(domainName, _ldapConfig, out var domainObject))
+            if (LdapUtils.GetDomain(domainName, _ldapConfig, out var domainObject))
                 try {
                     domainSid = domainObject.GetDirectoryEntry().GetSid();
                     if (domainSid != null) {
