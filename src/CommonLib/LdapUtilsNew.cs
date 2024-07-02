@@ -110,7 +110,7 @@ namespace SharpHoundCommonLib {
             var currentRange = $"{attributeName};range={index}-*";
             var complete = false;
 
-            var queryParameters = new LdapQueryParameters() {
+            var queryParameters = new LdapQueryParameters {
                 DomainName = domain,
                 LDAPFilter = $"{attributeName}=*",
                 Attributes = new[] { currentRange },
@@ -120,6 +120,7 @@ namespace SharpHoundCommonLib {
             var connectionWrapper = connectionResult.ConnectionWrapper;
 
             if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest)) {
+                _connectionPool.ReleaseConnection(connectionWrapper);
                 yield return Result<string>.Fail("Failed to create search request");
                 yield break;
             }
@@ -127,13 +128,9 @@ namespace SharpHoundCommonLib {
             var queryRetryCount = 0;
             var busyRetryCount = 0;
 
-            Result<string> tempResult = null;
+            LdapResult<string> tempResult = null;
 
-            while (true) {
-                if (cancellationToken.IsCancellationRequested) {
-                    yield break;
-                }
-
+            while (!cancellationToken.IsCancellationRequested) {
                 SearchResponse response = null;
                 try {
                     response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
@@ -166,32 +163,30 @@ namespace SharpHoundCommonLib {
                             _log.LogError(
                                 "RangedRetrieval - Failed to get a new connection after ServerDown for path {Path}",
                                 distinguishedName);
-                            _connectionPool.ReleaseConnection(connectionWrapper);
                             tempResult =
-                                Result<string>.Fail(
-                                    "RangedRetrieval - Failed to get a new connection after ServerDown.");
+                                LdapResult<string>.Fail(
+                                    "RangedRetrieval - Failed to get a new connection after ServerDown.", queryParameters, le.ErrorCode);
                         }
                     }
                 }
                 catch (LdapException le) {
-                    if (le.ErrorCode is (int)LdapErrorCodes.ServerDown) {
-                        _connectionPool.ReleaseConnection(connectionWrapper, true);
-                    }
-                    else {
-                        _connectionPool.ReleaseConnection(connectionWrapper);
-                    }
-                    tempResult = Result<string>.Fail(
-                        $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})");
+                    tempResult = LdapResult<string>.Fail(
+                        $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})", queryParameters, le.ErrorCode);
                 }
                 catch (Exception e) {
-                    _connectionPool.ReleaseConnection(connectionWrapper);
                     tempResult =
-                        Result<string>.Fail($"Caught unrecoverable exception: {e.Message}");
+                        LdapResult<string>.Fail($"Caught unrecoverable exception: {e.Message}", queryParameters);
                 }
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
                 //We handle connection release in the relevant exception blocks
                 if (tempResult != null) {
+                    if (tempResult.ErrorCode == (int)LdapErrorCodes.ServerDown) {
+                        _connectionPool.ReleaseConnection(connectionWrapper, true);
+                    }
+                    else {
+                        _connectionPool.ReleaseConnection(connectionWrapper);
+                    }
                     yield return tempResult;
                     yield break;
                 }
@@ -225,6 +220,8 @@ namespace SharpHoundCommonLib {
                     yield break;
                 }
             }
+            
+            _connectionPool.ReleaseConnection(connectionWrapper);
         }
 
         public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
@@ -241,6 +238,7 @@ namespace SharpHoundCommonLib {
             var connectionWrapper = setupResult.ConnectionWrapper;
 
             if (cancellationToken.IsCancellationRequested) {
+                _connectionPool.ReleaseConnection(connectionWrapper);
                 yield break;
             }
 
@@ -249,11 +247,7 @@ namespace SharpHoundCommonLib {
             LdapResult<ISearchResultEntry> tempResult = null;
             var querySuccess = false;
             SearchResponse response = null;
-            while (true) {
-                if (cancellationToken.IsCancellationRequested) {
-                    yield break;
-                }
-
+            while (!cancellationToken.IsCancellationRequested) {
                 try {
                     _log.LogTrace("Sending ldap request - {Info}", queryParameters.GetQueryInfo());
                     response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
@@ -328,6 +322,12 @@ namespace SharpHoundCommonLib {
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
                 if (tempResult != null) {
+                    if (tempResult.ErrorCode == (int)LdapErrorCodes.ServerDown) {
+                        _connectionPool.ReleaseConnection(connectionWrapper, true);
+                    }
+                    else {
+                        _connectionPool.ReleaseConnection(connectionWrapper);
+                    }
                     yield return tempResult;
                     yield break;
                 }
@@ -338,10 +338,11 @@ namespace SharpHoundCommonLib {
                 }
             }
 
-            //TODO: Fix this with a new wrapper object
-            foreach (ISearchResultEntry entry in response.Entries) {
-                yield return LdapResult<ISearchResultEntry>.Ok(entry);
+            foreach (SearchResultEntry entry in response.Entries) {
+                yield return LdapResult<ISearchResultEntry>.Ok(new SearchResultEntryWrapper(entry, this));
             }
+            
+            _connectionPool.ReleaseConnection(connectionWrapper);
         }
 
         public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
@@ -370,16 +371,7 @@ namespace SharpHoundCommonLib {
             var queryRetryCount = 0;
             LdapResult<ISearchResultEntry> tempResult = null;
 
-            while (true) {
-                if (cancellationToken.IsCancellationRequested) {
-                    yield break;
-                }
-
-                if (tempResult != null) {
-                    yield return tempResult;
-                    yield break;
-                }
-
+            while (!cancellationToken.IsCancellationRequested) {
                 SearchResponse response = null;
                 try {
                     _log.LogTrace("Sending paged ldap request - {Info}", queryParameters.GetQueryInfo());
@@ -406,6 +398,7 @@ namespace SharpHoundCommonLib {
                         _log.LogError(
                             "PagedQuery - Received server down exception without a known servername. Unable to generate new connection\n{Info}",
                             queryParameters.GetQueryInfo());
+                        _connectionPool.ReleaseConnection(connectionWrapper, true);
                         yield break;
                     }
 
@@ -431,7 +424,7 @@ namespace SharpHoundCommonLib {
                                 queryParameters.GetQueryInfo());
                             tempResult =
                                 LdapResult<ISearchResultEntry>.Fail("Failed to get a new connection after serverdown",
-                                    queryParameters);
+                                    queryParameters, le.ErrorCode);
                         }
                     }
                 }
@@ -447,7 +440,7 @@ namespace SharpHoundCommonLib {
                 catch (LdapException le) {
                     tempResult = LdapResult<ISearchResultEntry>.Fail(
                         $"PagedQuery - Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
-                        queryParameters);
+                        queryParameters, le.ErrorCode);
                 }
                 catch (Exception e) {
                     tempResult =
@@ -456,11 +449,18 @@ namespace SharpHoundCommonLib {
                 }
 
                 if (tempResult != null) {
+                    if (tempResult.ErrorCode == (int)LdapErrorCodes.ServerDown) {
+                        _connectionPool.ReleaseConnection(connectionWrapper, true);
+                    }
+                    else {
+                        _connectionPool.ReleaseConnection(connectionWrapper);
+                    }
                     yield return tempResult;
                     yield break;
                 }
 
                 if (cancellationToken.IsCancellationRequested) {
+                    _connectionPool.ReleaseConnection(connectionWrapper);
                     yield break;
                 }
 
@@ -471,6 +471,7 @@ namespace SharpHoundCommonLib {
 
                 foreach (ISearchResultEntry entry in response.Entries) {
                     if (cancellationToken.IsCancellationRequested) {
+                        _connectionPool.ReleaseConnection(connectionWrapper);
                         yield break;
                     }
 
@@ -478,9 +479,11 @@ namespace SharpHoundCommonLib {
                 }
 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 ||
-                    cancellationToken.IsCancellationRequested)
+                    cancellationToken.IsCancellationRequested) {
+                    _connectionPool.ReleaseConnection(connectionWrapper);
                     yield break;
-
+                }
+                
                 pageControl.Cookie = pageResponse.Cookie;
             }
         }
@@ -773,13 +776,14 @@ namespace SharpHoundCommonLib {
             //This should never happen as far as I know, so just checking for safety
             if (connectionWrapper.Connection == null) {
                 result.Success = false;
-                result.Message = $"Connection object is null";
+                result.Message = "Connection object is null";
                 return result;
             }
 
             if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest)) {
                 result.Success = false;
                 result.Message = "Failed to create search request";
+                _connectionPool.ReleaseConnection(connectionWrapper);
                 return result;
             }
 
