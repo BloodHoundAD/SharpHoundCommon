@@ -9,7 +9,7 @@
         <PackageDescription>Common library for C# BloodHound enumeration tasks</PackageDescription>
         <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/BloodHoundAD/SharpHoundCommon</RepositoryUrl>
-        <Version>3.2.0-rc1</Version>
+        <Version>4.0.0-rc1</Version>
         <AssemblyName>SharpHoundCommonLib</AssemblyName>
         <RootNamespace>SharpHoundCommonLib</RootNamespace>
     </PropertyGroup>
@@ -25,6 +25,7 @@
     </ItemGroup>
     <ItemGroup>
         <Reference Include="System.DirectoryServices" />
+        <Reference Include="System.DirectoryServices.AccountManagement" />
         <Reference Include="System.DirectoryServices.Protocols" />
     </ItemGroup>
     <ItemGroup>

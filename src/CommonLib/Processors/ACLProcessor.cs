@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
@@ -15,10 +16,10 @@ namespace SharpHoundCommonLib.Processors
     {
         private static readonly Dictionary<Label, string> BaseGuids;
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
-        private static bool _isCacheBuilt;
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
-
+        private readonly ILdapUtils _utils;
+        private static readonly HashSet<string> BuiltDomainCaches = new(StringComparer.OrdinalIgnoreCase);
+        
         static ACLProcessor()
         {
             //Create a dictionary with the base GUIDs of each object type
@@ -41,50 +42,37 @@ namespace SharpHoundCommonLib.Processors
             };
         }
 
-        public ACLProcessor(ILDAPUtils utils, bool noGuidCache = false, ILogger log = null, string domain = null)
+        public ACLProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("ACLProc");
-            if (!noGuidCache)
-                BuildGUIDCache(domain);
         }
 
         /// <summary>
         ///     Builds a mapping of GUID -> Name for LDAP rights. Used for rights that are created using an extended schema such as
         ///     LAPS
         /// </summary>
-        private void BuildGUIDCache(string domain)
-        {
-            if (_isCacheBuilt)
-                return;
-
-            var forest = _utils.GetForest(domain);
-            if (forest == null)
+        private async Task BuildGuidCache(string domain) {
+            BuiltDomainCaches.Add(domain);
+            await foreach (var result in _utils.Query(new LdapQueryParameters() {
+                DomainName = domain,
+                LDAPFilter = "(schemaIDGUID=*)",
+                NamingContext = NamingContext.Schema,
+                Attributes = new[] {LDAPProperties.SchemaIDGUID, LDAPProperties.Name},
+            }))
             {
-                _log.LogError("BuildGUIDCache - Unable to resolve forest");
-                return;
+                if (result.IsSuccess) {
+                    var name = result.Value.GetProperty(LDAPProperties.Name)?.ToLower();
+                    var guid = result.Value.GetGuid();
+                    if (name == null || guid == null) {
+                        continue;
+                    }
+
+                    if (name is LDAPProperties.LAPSPassword or LDAPProperties.LegacyLAPSPassword) {
+                        GuidMap.TryAdd(guid, name);    
+                    }
+                }
             }
-
-            var schema = forest.Schema.Name;
-            if (string.IsNullOrEmpty(schema))
-            {
-                _log.LogError("BuildGUIDCache - Schema string is null or empty");
-                return;
-            }
-
-            _log.LogTrace("Requesting schema from {Schema}", schema);
-            
-            foreach (var entry in _utils.QueryLDAP("(schemaIDGUID=*)", SearchScope.Subtree,
-                         new[] {LDAPProperties.SchemaIDGUID, LDAPProperties.Name}, adsPath: schema))
-            {
-                var name = entry.GetProperty(LDAPProperties.Name)?.ToLower();
-                var guid = new Guid(entry.GetByteProperty(LDAPProperties.SchemaIDGUID)).ToString();
-                GuidMap.TryAdd(guid, name);
-            }
-
-            _log.LogTrace("BuildGUIDCache - Successfully grabbed schema");
-
-            _isCacheBuilt = true;
         }
 
         /// <summary>
@@ -120,7 +108,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="result"></param>
         /// <param name="searchResult"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessACL(ResolvedSearchResult result, ISearchResultEntry searchResult)
+        public IAsyncEnumerable<ACE> ProcessACL(ResolvedSearchResult result, ISearchResultEntry searchResult)
         {
             var descriptor = searchResult.GetByteProperty(LDAPProperties.SecurityDescriptor);
             var domain = result.Domain;
@@ -141,10 +129,13 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectType"></param>
         /// <param name="hasLaps"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain,
+        public async IAsyncEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain,
             Label objectType,
             bool hasLaps, string objectName = "")
         {
+            if (!BuiltDomainCaches.Contains(objectDomain)) {
+                await BuildGuidCache(objectDomain);
+            }
             if (ntSecurityDescriptor == null)
             {
                 _log.LogDebug("Security Descriptor is null for {Name}", objectName);
@@ -168,8 +159,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (ownerSid != null)
             {
-                var resolvedOwner = _utils.ResolveIDAndType(ownerSid, objectDomain);
-                if (resolvedOwner != null)
+                if (await _utils.ResolveIDAndType(ownerSid, objectDomain) is (true, var resolvedOwner)) {
                     yield return new ACE
                     {
                         PrincipalType = resolvedOwner.ObjectType,
@@ -177,6 +167,7 @@ namespace SharpHoundCommonLib.Processors
                         RightName = EdgeNames.Owns,
                         IsInherited = false
                     };
+                }
             }
             else
             {
@@ -212,7 +203,10 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
+                var (success, resolvedPrincipal) = await _utils.ResolveIDAndType(principalSid, objectDomain);
+                if (!success) {
+                    _log.LogDebug("Failed to resolve type for principal {Sid}", principalSid);
+                }
 
                 var aceRights = ace.ActiveDirectoryRights();
                 //Lowercase this just in case. As far as I know it should always come back that way anyways, but better safe than sorry
@@ -341,7 +335,7 @@ namespace SharpHoundCommonLib.Processors
                                     IsInherited = inherited,
                                     RightName = EdgeNames.AllExtendedRights
                                 };
-                            else if (mappedGuid is "ms-mcs-admpwd")
+                            else if (mappedGuid is LDAPProperties.LegacyLAPSPassword or LDAPProperties.LAPSPassword)
                                 yield return new ACE
                                 {
                                     PrincipalType = resolvedPrincipal.ObjectType,
@@ -506,7 +500,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="resolvedSearchResult"></param>
         /// <param name="searchResultEntry"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessGMSAReaders(ResolvedSearchResult resolvedSearchResult,
+        public IAsyncEnumerable<ACE> ProcessGMSAReaders(ResolvedSearchResult resolvedSearchResult,
             ISearchResultEntry searchResultEntry)
         {
             var descriptor = searchResultEntry.GetByteProperty(LDAPProperties.GroupMSAMembership);
@@ -522,7 +516,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="groupMSAMembership"></param>
         /// <param name="objectDomain"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectDomain)
+        public IAsyncEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectDomain)
         {
             return ProcessGMSAReaders(groupMSAMembership, "", objectDomain);
         }
@@ -535,7 +529,7 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="objectName"></param>
         /// <param name="objectDomain"></param>
         /// <returns></returns>
-        public IEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectName, string objectDomain)
+        public async IAsyncEnumerable<ACE> ProcessGMSAReaders(byte[] groupMSAMembership, string objectName, string objectDomain)
         {
             if (groupMSAMembership == null)
             {
@@ -580,9 +574,8 @@ namespace SharpHoundCommonLib.Processors
 
                 _log.LogTrace("Processing GMSA ACE with principal {Principal}", principalSid);
 
-                var resolvedPrincipal = _utils.ResolveIDAndType(principalSid, objectDomain);
-
-                if (resolvedPrincipal != null)
+                var (success, resolvedPrincipal) = await _utils.ResolveIDAndType(principalSid, objectDomain);
+                if (success) {
                     yield return new ACE
                     {
                         RightName = EdgeNames.ReadGMSAPassword,
@@ -590,6 +583,7 @@ namespace SharpHoundCommonLib.Processors
                         PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                         IsInherited = ace.IsInherited()
                     };
+                }
             }
         }
     }

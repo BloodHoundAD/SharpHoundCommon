@@ -23,9 +23,9 @@ namespace SharpHoundCommonLib.Processors
             .Concat(CommonProperties.SPNTargetProps).Concat(CommonProperties.DomainTrustProps)
             .Concat(CommonProperties.GPOLocalGroupProps).ToArray();
 
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtils _utils;
 
-        public LDAPPropertyProcessor(ILDAPUtils utils)
+        public LDAPPropertyProcessor(ILdapUtils utils)
         {
             _utils = utils;
         }
@@ -178,10 +178,10 @@ namespace SharpHoundCommonLib.Processors
                         continue;
 
                     var resolvedHost = await _utils.ResolveHostToSid(d, domain);
-                    if (resolvedHost != null && resolvedHost.Contains("S-1"))
+                    if (resolvedHost.Success && resolvedHost.SecurityIdentifier.Contains("S-1"))
                         comps.Add(new TypedPrincipal
                         {
-                            ObjectIdentifier = resolvedHost,
+                            ObjectIdentifier = resolvedHost.SecurityIdentifier,
                             ObjectType = Label.Computer
                         });
                 }
@@ -237,9 +237,8 @@ namespace SharpHoundCommonLib.Processors
 
                 sidHistoryList.Add(sSid);
 
-                var res = _utils.ResolveIDAndType(sSid, domain);
-
-                sidHistoryPrincipals.Add(res);
+                if (await _utils.ResolveIDAndType(sSid, domain) is (true, var res))
+                    sidHistoryPrincipals.Add(res);
             }
 
             userProps.SidHistory = sidHistoryPrincipals.Distinct().ToArray();
@@ -286,10 +285,10 @@ namespace SharpHoundCommonLib.Processors
                     var hname = d.Contains("/") ? d.Split('/')[1] : d;
                     hname = hname.Split(':')[0];
                     var resolvedHost = await _utils.ResolveHostToSid(hname, domain);
-                    if (resolvedHost != null && resolvedHost.Contains("S-1"))
+                    if (resolvedHost.Success && resolvedHost.SecurityIdentifier.Contains("S-1"))
                         comps.Add(new TypedPrincipal
                         {
-                            ObjectIdentifier = resolvedHost,
+                            ObjectIdentifier = resolvedHost.SecurityIdentifier,
                             ObjectType = Label.Computer
                         });
                 }
@@ -305,8 +304,8 @@ namespace SharpHoundCommonLib.Processors
                 sd.SetSecurityDescriptorBinaryForm(rawAllowedToAct, AccessControlSections.Access);
                 foreach (var rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
                 {
-                    var res = _utils.ResolveIDAndType(rule.IdentityReference(), domain);
-                    allowedToActPrincipals.Add(res);
+                    if (await _utils.ResolveIDAndType(rule.IdentityReference(), domain) is (true, var res))
+                        allowedToActPrincipals.Add(res);
                 }
             }
 
@@ -343,9 +342,8 @@ namespace SharpHoundCommonLib.Processors
 
                 sidHistoryList.Add(sSid);
 
-                var res = _utils.ResolveIDAndType(sSid, domain);
-
-                sidHistoryPrincipals.Add(res);
+                if (await _utils.ResolveIDAndType(sSid, domain) is (true, var res))
+                    sidHistoryPrincipals.Add(res);
             }
 
             compProps.SidHistory = sidHistoryPrincipals.ToArray();
@@ -358,9 +356,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 foreach (var dn in hsa)
                 {
-                    var resolvedPrincipal = _utils.ResolveDistinguishedName(dn);
-
-                    if (resolvedPrincipal != null)
+                    if (await _utils.LookupDistinguishedName(dn) is (true, var resolvedPrincipal))
                         smsaPrincipals.Add(resolvedPrincipal);
                 }
             }
@@ -538,7 +534,7 @@ namespace SharpHoundCommonLib.Processors
             return props;
         }
 
-        public IssuancePolicyProperties ReadIssuancePolicyProperties(ISearchResultEntry entry)
+        public async Task<IssuancePolicyProperties> ReadIssuancePolicyProperties(ISearchResultEntry entry)
         {
             var ret = new IssuancePolicyProperties();
             var props = GetCommonProps(entry);
@@ -548,8 +544,7 @@ namespace SharpHoundCommonLib.Processors
             var link = entry.GetProperty(LDAPProperties.OIDGroupLink);
             if (!string.IsNullOrEmpty(link))
             {
-                var linkedGroup = _utils.ResolveDistinguishedName(link);
-                if (linkedGroup != null)
+                if (await _utils.LookupDistinguishedName(link) is (true, var linkedGroup))
                 {
                     props.Add("oidgrouplink", linkedGroup.ObjectIdentifier);
                     ret.GroupLink = linkedGroup;

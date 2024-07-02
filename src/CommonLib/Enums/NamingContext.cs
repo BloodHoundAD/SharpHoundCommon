@@ -1,8 +1,8 @@
-namespace SharpHoundCommonLib.Enums;
-
-public enum NamingContext
-{
-    Default,
-    Configuration,
-    Schema,
+namespace SharpHoundCommonLib.Enums {
+    public enum NamingContext
+    {
+        Default,
+        Configuration,
+        Schema,
+    }
 }

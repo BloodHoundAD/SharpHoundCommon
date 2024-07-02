@@ -19,12 +19,12 @@ namespace SharpHoundCommonLib.Processors
         private readonly string _currentUserName;
         private readonly ILogger _log;
         private readonly NativeMethods _nativeMethods;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtils _utils;
         private readonly bool _doLocalAdminSessionEnum;
         private readonly string _localAdminUsername;
         private readonly string _localAdminPassword;
 
-        public ComputerSessionProcessor(ILDAPUtils utils, string currentUserName = null, NativeMethods nativeMethods = null, ILogger log = null, bool doLocalAdminSessionEnum = false, string localAdminUsername = null, string localAdminPassword = null)
+        public ComputerSessionProcessor(ILdapUtils utils, string currentUserName = null, NativeMethods nativeMethods = null, ILogger log = null, bool doLocalAdminSessionEnum = false, string localAdminUsername = null, string localAdminPassword = null)
         {
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();
@@ -54,8 +54,7 @@ namespace SharpHoundCommonLib.Processors
             if (_doLocalAdminSessionEnum)
             {
                 // If we are authenticating using a local admin, we need to impersonate for this
-                Impersonator Impersonate;
-                using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                using (new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
                 {
                     result = _nativeMethods.NetSessionEnum(computerName);
                 }
@@ -125,13 +124,12 @@ namespace SharpHoundCommonLib.Processors
                 computerSessionName = computerSessionName.TrimStart('\\');
 
                 string resolvedComputerSID = null;
-
                 //Resolve "localhost" equivalents to the computer sid
                 if (computerSessionName is "[::1]" or "127.0.0.1")
                     resolvedComputerSID = computerSid;
-                else
+                else if (await _utils.ResolveHostToSid(computerSessionName, computerDomain) is (true, var tempSid))
                     //Attempt to resolve the host name to a SID
-                    resolvedComputerSID = await _utils.ResolveHostToSid(computerSessionName, computerDomain);
+                    resolvedComputerSID = tempSid;
 
                 //Throw out this data if we couldn't resolve it successfully. 
                 if (resolvedComputerSID == null || !resolvedComputerSID.StartsWith("S-1"))
@@ -140,20 +138,20 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                var matches = _utils.GetUserGlobalCatalogMatches(username);
-                if (matches.Length > 0)
+                var (matchSuccess, sids) = await _utils.GetGlobalCatalogMatches(username, computerDomain);
+                if (matchSuccess)
                 {
                     results.AddRange(
-                        matches.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
+                        sids.Select(s => new Session {ComputerSID = resolvedComputerSID, UserSID = s}));
                 }
                 else
                 {
-                    var res = _utils.ResolveAccountName(username, computerDomain);
-                    if (res != null)
+                    var res = await _utils.ResolveAccountName(username, computerDomain);
+                    if (res.Success)
                         results.Add(new Session
                         {
                             ComputerSID = resolvedComputerSID,
-                            UserSID = res.ObjectIdentifier
+                            UserSID = res.Principal.ObjectIdentifier
                         });
                 }
             }
@@ -180,8 +178,7 @@ namespace SharpHoundCommonLib.Processors
             if (_doLocalAdminSessionEnum)
             {
                 // If we are authenticating using a local admin, we need to impersonate for this
-                Impersonator Impersonate;
-                using (Impersonate = new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
+                using (new Impersonator(_localAdminUsername, ".", _localAdminPassword, LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50))
                 {
                     result = _nativeMethods.NetWkstaUserEnum(computerName);
                 }
@@ -259,8 +256,8 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-                var res = _utils.ResolveAccountName(username, domain);
-                if (res == null)
+                var (success, res) = await _utils.ResolveAccountName(username, domain);
+                if (!success)
                     continue;
 
                 _log.LogTrace("Resolved NetWkstaUserEnum entry: {SID}", res.ObjectIdentifier);
@@ -311,17 +308,21 @@ namespace SharpHoundCommonLib.Processors
                     ComputerName = computerName
                 });
                 _log.LogDebug("Registry session enum succeeded on {ComputerName}", computerName);
-                ret.Results = key.GetSubKeyNames()
-                    .Where(subkey => SidRegex.IsMatch(subkey))
-                    .Select(x => _utils.ResolveIDAndType(x, computerDomain))
-                    .Where(x => x != null)
-                    .Select(x =>
-                        new Session
-                        {
+                var results = new List<Session>();
+                foreach (var subkey in key.GetSubKeyNames()) {
+                    if (!SidRegex.IsMatch(subkey)) {
+                        continue;
+                    }
+
+                    if (await _utils.ResolveIDAndType(subkey, computerDomain) is (true, var principal)) {
+                        results.Add(new Session() {
                             ComputerSID = computerSid,
-                            UserSID = x.ObjectIdentifier
-                        })
-                    .ToArray();
+                            UserSID = principal.ObjectIdentifier
+                        });
+                    }
+                }
+
+                ret.Results = results.ToArray();
 
                 return ret;
             }

@@ -2,21 +2,20 @@ using System;
 using System.DirectoryServices.Protocols;
 using SharpHoundCommonLib.Enums;
 
-namespace SharpHoundCommonLib;
+namespace SharpHoundCommonLib {
+    public class LdapConnectionWrapperNew
+    {
+        public LdapConnection Connection { get; private set; }
+        private readonly ISearchResultEntry _searchResultEntry;
+        private string _domainSearchBase;
+        private string _configurationSearchBase;
+        private string _schemaSearchBase;
+        private string _server;
+        private string Guid { get; set; }
+        public bool GlobalCatalog;
+        public string PoolIdentifier;
 
-public class LdapConnectionWrapperNew
-{
-    public LdapConnection Connection { get; private set; }
-    private readonly ISearchResultEntry _searchResultEntry;
-    private string _domainSearchBase;
-    private string _configurationSearchBase;
-    private string _schemaSearchBase;
-    private string _server;
-    private string Guid { get; set; }
-    public bool GlobalCatalog;
-    public string PoolIdentifier;
-
-    public LdapConnectionWrapperNew(LdapConnection connection, ISearchResultEntry entry, bool globalCatalog, string poolIdentifier)
+        public LdapConnectionWrapperNew(LdapConnection connection, ISearchResultEntry entry, bool globalCatalog, string poolIdentifier)
     {
         Connection = connection;
         _searchResultEntry = entry;
@@ -25,14 +24,14 @@ public class LdapConnectionWrapperNew
         PoolIdentifier = poolIdentifier;
     }
 
-    public void CopyContexts(LdapConnectionWrapperNew other) {
+        public void CopyContexts(LdapConnectionWrapperNew other) {
         _domainSearchBase = other._domainSearchBase;
         _configurationSearchBase = other._configurationSearchBase;
         _schemaSearchBase = other._schemaSearchBase;
         _server = other._server;
     }
 
-    public string GetServer() {
+        public string GetServer() {
         if (_server != null) {
             return _server;
         }
@@ -41,7 +40,7 @@ public class LdapConnectionWrapperNew
         return _server;
     }
 
-    public bool GetSearchBase(NamingContext context, out string searchBase)
+        public bool GetSearchBase(NamingContext context, out string searchBase)
     {
         searchBase = GetSavedContext(context);
         if (searchBase != null)
@@ -64,7 +63,7 @@ public class LdapConnectionWrapperNew
         return false;
     }
 
-    private string GetSavedContext(NamingContext context)
+        private string GetSavedContext(NamingContext context)
     {
         return context switch
         {
@@ -75,7 +74,7 @@ public class LdapConnectionWrapperNew
         };
     }
 
-    public void SaveContext(NamingContext context, string searchBase)
+        public void SaveContext(NamingContext context, string searchBase)
     {
         switch (context)
         {
@@ -93,18 +92,19 @@ public class LdapConnectionWrapperNew
         }
     }
 
-    protected bool Equals(LdapConnectionWrapperNew other) {
+        protected bool Equals(LdapConnectionWrapperNew other) {
         return Guid == other.Guid;
     }
 
-    public override bool Equals(object obj) {
+        public override bool Equals(object obj) {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != this.GetType()) return false;
         return Equals((LdapConnectionWrapperNew)obj);
     }
 
-    public override int GetHashCode() {
+        public override int GetHashCode() {
         return (Guid != null ? Guid.GetHashCode() : 0);
+    }
     }
 }

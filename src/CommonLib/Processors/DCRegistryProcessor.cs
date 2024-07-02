@@ -9,10 +9,10 @@ namespace SharpHoundCommonLib.Processors
     public class DCRegistryProcessor
     {
         private readonly ILogger _log;
-        public readonly ILDAPUtils _utils;
+        public readonly ILdapUtils _utils;
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
 
-        public DCRegistryProcessor(ILDAPUtils utils, ILogger log = null)
+        public DCRegistryProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("DCRegProc");
@@ -29,7 +29,7 @@ namespace SharpHoundCommonLib.Processors
         public IntRegistryAPIResult GetCertificateMappingMethods(string target)
         {
             var ret = new IntRegistryAPIResult();
-            var subKey = $"SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\Schannel";
+            const string subKey = @"SYSTEM\CurrentControlSet\Control\SecurityProviders\Schannel";
             const string subValue = "CertificateMappingMethods";
             var data = Helpers.GetRegistryKeyData(target, subKey, subValue, _log);
 
@@ -62,7 +62,7 @@ namespace SharpHoundCommonLib.Processors
         public IntRegistryAPIResult GetStrongCertificateBindingEnforcement(string target)
         {
             var ret = new IntRegistryAPIResult();
-            var subKey = $"SYSTEM\\CurrentControlSet\\Services\\Kdc";
+            const string subKey = @"SYSTEM\CurrentControlSet\Services\Kdc";
             const string subValue = "StrongCertificateBindingEnforcement";
             var data = Helpers.GetRegistryKeyData(target, subKey, subValue, _log);
 
