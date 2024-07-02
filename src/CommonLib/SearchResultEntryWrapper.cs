@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 
@@ -12,7 +14,7 @@ namespace SharpHoundCommonLib
     public interface ISearchResultEntry
     {
         string DistinguishedName { get; }
-        ResolvedSearchResult ResolveBloodHoundInfo();
+        Task<ResolvedSearchResult> ResolveBloodHoundInfo();
         string GetProperty(string propertyName);
         byte[] GetByteProperty(string propertyName);
         string[] GetArrayProperty(string propertyName);
@@ -37,18 +39,18 @@ namespace SharpHoundCommonLib
         private const string MSAClass = "msds-managedserviceaccount";
         private readonly SearchResultEntry _entry;
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtilsNew _utils;
 
-        public SearchResultEntryWrapper(SearchResultEntry entry, ILDAPUtils utils = null, ILogger log = null)
+        public SearchResultEntryWrapper(SearchResultEntry entry, ILdapUtilsNew utils = null, ILogger log = null)
         {
             _entry = entry;
-            _utils = utils ?? new LDAPUtils();
+            _utils = utils ?? new LdapUtilsNew();
             _log = log ?? Logging.LogProvider.CreateLogger("SearchResultWrapper");
         }
 
         public string DistinguishedName => _entry.DistinguishedName;
 
-        public ResolvedSearchResult ResolveBloodHoundInfo()
+        public async Task<ResolvedSearchResult> ResolveBloodHoundInfo()
         {
             var res = new ResolvedSearchResult();
 
@@ -76,9 +78,9 @@ namespace SharpHoundCommonLib
             string itemDomain;
             if (distinguishedName == null)
             {
-                if (objectId.StartsWith("S-1-"))
+                if (objectId.StartsWith("S-1-") && await _utils.GetDomainNameFromSid(objectId) is (true, var domain))
                 {
-                    itemDomain = _utils.GetDomainNameFromSid(objectId);
+                    itemDomain = domain;
                 }
                 else
                 {
@@ -104,10 +106,12 @@ namespace SharpHoundCommonLib
             
             if (WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var wkPrincipal))
             {
-                res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
+                if (await _utils.GetDomainSidFromDomainName(itemDomain) is (true, var sid))
+                    res.DomainSid = sid;
                 res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
                 res.ObjectType = wkPrincipal.ObjectType;
-                res.ObjectId = _utils.ConvertWellKnownPrincipal(objectId, itemDomain);
+                if (await _utils.ConvertLocalWellKnownPrincipal(new SecurityIdentifier(objectId), res.DomainSid, itemDomain) is (true, var principal))
+                    res.ObjectId = principal.ObjectIdentifier;
 
                 _log.LogTrace("Resolved {DN} to wkp {ObjectID}", DistinguishedName, res.ObjectId);
                 return res;
@@ -120,10 +124,12 @@ namespace SharpHoundCommonLib
                 }
                 catch
                 {
-                    res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
+                    if (await _utils.GetDomainSidFromDomainName(itemDomain) is (true, var sid))
+                        res.DomainSid = sid;
                 }
             else
-                res.DomainSid = _utils.GetSidFromDomainName(itemDomain);
+                if (await _utils.GetDomainSidFromDomainName(itemDomain) is (true, var sid))
+                    res.DomainSid = sid;
 
             var samAccountName = GetProperty(LDAPProperties.SAMAccountName);
 
@@ -232,7 +238,8 @@ namespace SharpHoundCommonLib
 
         public Label GetLabel()
         {
-            return _entry.GetLabel();
+            _entry.GetLabel(out var label);
+            return label;
         }
 
         public string GetSid()

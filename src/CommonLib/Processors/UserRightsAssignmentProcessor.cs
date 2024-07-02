@@ -53,15 +53,15 @@ namespace SharpHoundCommonLib.Processors
             string computerObjectId, string computerDomain, bool isDomainController, string[] desiredPrivileges = null)
         {
             var policyOpenResult = OpenLSAPolicy(computerName);
-            if (policyOpenResult.IsFailed)
+            if (!policyOpenResult.IsSuccess)
             {
                 _log.LogDebug("LSAOpenPolicy failed on {ComputerName} with status {Status}", computerName,
-                    policyOpenResult.SError);
+                    policyOpenResult.Error);
                 await SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "LSAOpenPolicy",
                     ComputerName = computerName,
-                    Status = policyOpenResult.SError
+                    Status = policyOpenResult.Error
                 });
                 yield break;
             }
@@ -109,7 +109,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     _log.LogDebug(
                         "LSAEnumerateAccountsWithUserRight failed on {ComputerName} with status {Status} for privilege {Privilege}",
-                        computerName, policyOpenResult.SError, privilege);
+                        computerName, policyOpenResult.Error, privilege);
                     await SendComputerStatus(new CSVComputerStatus
                     {
                         ComputerName = computerName,
