@@ -1432,5 +1432,15 @@ namespace SharpHoundCommonLib {
                 yield return output;
             }
         }
+
+        public void SetLdapConfig(LDAPConfig config) {
+            _ldapConfig = config;
+            _connectionPool.Dispose();
+            _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
+        }
+
+        public Task<(bool Success, string Message)> TestLdapConnection(string domain) {
+            return _connectionPool.TestDomainConnection(domain, false);
+        }
     }
 }

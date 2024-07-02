@@ -31,6 +31,12 @@ namespace SharpHoundCommonLib {
             pool.ReleaseConnection(connectionWrapper, connectionFaulted);
         }
 
+        public async Task<(bool Success, string Message)> TestDomainConnection(string identifier, bool globalCatalog) {
+            var (success, connection, message) = await GetLdapConnection(identifier, globalCatalog);
+            ReleaseConnection(connection);
+            return (success, message);
+        }
+
         public async Task<(bool Success, LdapConnectionWrapperNew ConnectionWrapper, string Message)> GetLdapConnection(
             string identifier, bool globalCatalog) {
             var resolved = ResolveIdentifier(identifier);

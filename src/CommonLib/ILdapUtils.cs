@@ -34,12 +34,14 @@ namespace SharpHoundCommonLib {
         Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propValue, string propName, string domainName);
         ActiveDirectorySecurityDescriptor MakeSecurityDescriptor();
 
-        public Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid,
+        Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid,
             string computerDomainSid, string computerDomain);
 
-        public Task<bool> IsDomainController(string computerObjectId, string domainName);
-        public Task<(bool Success, TypedPrincipal Principal)> LookupDistinguishedName(string distinguishedName);
-        public void AddDomainController(string domainControllerSID);
+        Task<bool> IsDomainController(string computerObjectId, string domainName);
+        Task<(bool Success, TypedPrincipal Principal)> LookupDistinguishedName(string distinguishedName);
+        void AddDomainController(string domainControllerSID);
         IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
+        void SetLdapConfig(LDAPConfig config);
+        Task<(bool Success, string Message)> TestLdapConnection(string domain);
     }
 }
