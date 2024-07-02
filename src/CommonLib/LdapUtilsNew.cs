@@ -29,6 +29,7 @@ namespace SharpHoundCommonLib {
         //This cache is indexed by domain sid
         private readonly ConcurrentDictionary<string, NetAPIStructs.DomainControllerInfo?> _dcInfoCache = new();
         private static readonly ConcurrentDictionary<string, Domain> DomainCache = new();
+        private static readonly ConcurrentDictionary<string, byte> DomainControllers = new();
 
         private static readonly ConcurrentDictionary<string, string> DomainToForestCache =
             new(StringComparer.OrdinalIgnoreCase);
@@ -165,6 +166,7 @@ namespace SharpHoundCommonLib {
                             _log.LogError(
                                 "RangedRetrieval - Failed to get a new connection after ServerDown for path {Path}",
                                 distinguishedName);
+                            _connectionPool.ReleaseConnection(connectionWrapper);
                             tempResult =
                                 Result<string>.Fail(
                                     "RangedRetrieval - Failed to get a new connection after ServerDown.");
@@ -172,15 +174,23 @@ namespace SharpHoundCommonLib {
                     }
                 }
                 catch (LdapException le) {
+                    if (le.ErrorCode is (int)LdapErrorCodes.ServerDown) {
+                        _connectionPool.ReleaseConnection(connectionWrapper, true);
+                    }
+                    else {
+                        _connectionPool.ReleaseConnection(connectionWrapper);
+                    }
                     tempResult = Result<string>.Fail(
                         $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})");
                 }
                 catch (Exception e) {
+                    _connectionPool.ReleaseConnection(connectionWrapper);
                     tempResult =
                         Result<string>.Fail($"Caught unrecoverable exception: {e.Message}");
                 }
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
+                //We handle connection release in the relevant exception blocks
                 if (tempResult != null) {
                     yield return tempResult;
                     yield break;
@@ -201,6 +211,7 @@ namespace SharpHoundCommonLib {
                     }
 
                     if (complete) {
+                        _connectionPool.ReleaseConnection(connectionWrapper);
                         yield break;
                     }
 
@@ -210,6 +221,7 @@ namespace SharpHoundCommonLib {
                 }
                 else {
                     //I dont know what can cause a RR to have multiple entries, but its nothing good. Break out
+                    _connectionPool.ReleaseConnection(connectionWrapper);
                     yield break;
                 }
             }
@@ -1380,6 +1392,39 @@ namespace SharpHoundCommonLib {
                 catch {
                     return (false, default);
                 }
+            }
+        }
+        
+        public void AddDomainController(string domainControllerSID)
+        {
+            DomainControllers.TryAdd(domainControllerSID, new byte());
+        }
+
+        public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput() {
+            foreach (var wkp in SeenWellKnownPrincipals)
+            {
+                WellKnownPrincipal.GetWellKnownPrincipal(wkp.Value.WkpId, out var principal);
+                OutputBase output = principal.ObjectType switch
+                {
+                    Label.User => new User(),
+                    Label.Computer => new Computer(),
+                    Label.Group => new OutputTypes.Group(),
+                    Label.GPO => new GPO(),
+                    Label.Domain => new OutputTypes.Domain(),
+                    Label.OU => new OU(),
+                    Label.Container => new Container(),
+                    Label.Configuration => new Container(),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                output.Properties.Add("name", $"{principal.ObjectIdentifier}@{wkp.Value.DomainName}".ToUpper());
+                if (await GetDomainSidFromDomainName(wkp.Value.DomainName) is (true, var sid)) {
+                    output.Properties.Add("domainsid", sid);    
+                }
+                
+                output.Properties.Add("domain", wkp.Value.DomainName.ToUpper());
+                output.ObjectIdentifier = wkp.Key;
+                yield return output;
             }
         }
     }

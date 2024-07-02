@@ -42,5 +42,7 @@ namespace SharpHoundCommonLib {
 
         public Task<bool> IsDomainController(string computerObjectId, string domainName);
         public Task<(bool Success, TypedPrincipal Principal)> LookupDistinguishedName(string distinguishedName);
+        public void AddDomainController(string domainControllerSID);
+        IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
     }
 }
