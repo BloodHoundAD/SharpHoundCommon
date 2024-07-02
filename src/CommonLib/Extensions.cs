@@ -69,9 +69,11 @@ namespace SharpHoundCommonLib
 
         public static string GetProperty(this DirectoryEntry entry, string propertyName) {
             try {
-                if (!entry.Properties.Contains(propertyName)) {
+                if (!entry.Properties.Contains(propertyName))
+                    entry.RefreshCache(new[] { propertyName });
+                
+                if (!entry.Properties.Contains(propertyName))
                     return null;
-                }
             }
             catch {
                 return null;
@@ -85,11 +87,40 @@ namespace SharpHoundCommonLib
             };
         }
 
-        public static string GetSid(this DirectoryEntry result)
+        public static string[] GetPropertyAsArray(this DirectoryEntry entry, string propertyName) {
+            try {
+                if (!entry.Properties.Contains(propertyName))
+                    entry.RefreshCache(new[] { propertyName });
+                
+                if (!entry.Properties.Contains(propertyName))
+                    return null;
+            }
+            catch {
+                return null;
+            }
+
+            var dest = new List<string>();
+            foreach (var val in entry.Properties[propertyName]) {
+                if (val is string s) {
+                    dest.Add(s);
+                }
+            }
+
+            return dest.ToArray();
+        }
+
+        public static string GetObjectIdentifier(this DirectoryEntry entry) {
+            return entry.GetSid() ?? entry.GetGuid();
+        }
+
+        public static string GetSid(this DirectoryEntry entry)
         {
             try
             {
-                if (!result.Properties.Contains(LDAPProperties.ObjectSID))
+                if (!entry.Properties.Contains(LDAPProperties.ObjectSID))
+                    entry.RefreshCache(new[] { LDAPProperties.ObjectSID });
+
+                if (!entry.Properties.Contains(LDAPProperties.ObjectSID))
                     return null;
             }
             catch
@@ -97,11 +128,36 @@ namespace SharpHoundCommonLib
                 return null;
             }
 
-            var s = result.Properties[LDAPProperties.ObjectSID][0];
+            var s = entry.Properties[LDAPProperties.ObjectSID][0];
             return s switch
             {
                 byte[] b => new SecurityIdentifier(b, 0).ToString(),
                 string st => new SecurityIdentifier(Encoding.ASCII.GetBytes(st), 0).ToString(),
+                _ => null
+            };
+        }
+        
+        public static string GetGuid(this DirectoryEntry entry)
+        {
+            try
+            {
+                //Attempt to refresh the props first
+                if (!entry.Properties.Contains(LDAPProperties.ObjectGUID))
+                    entry.RefreshCache(new[] { LDAPProperties.ObjectGUID });
+
+                if (!entry.Properties.Contains(LDAPProperties.ObjectGUID))
+                    return null;
+            }
+            catch
+            {
+                return null;
+            }
+
+            var s = entry.Properties[LDAPProperties.ObjectGUID][0];
+            return s switch
+            {
+                byte[] b => new Guid(b).ToString(),
+                string st => st,
                 _ => null
             };
         }
@@ -363,110 +419,103 @@ namespace SharpHoundCommonLib
             return bool.TryParse(deleted, out var isDeleted) && isDeleted;
         }
 
+        public static bool GetLabel(this DirectoryEntry entry, out Label type) {
+            try {
+                entry.RefreshCache(CommonProperties.TypeResolutionProps);
+            }
+            catch {
+                //pass
+            }
+
+            var flagString = entry.GetProperty(LDAPProperties.Flags);
+            if (!int.TryParse(flagString, out var flags)) {
+                flags = 0;
+            }
+
+            return ResolveLabel(entry.GetObjectIdentifier(), entry.GetProperty(LDAPProperties.DistinguishedName),
+                entry.GetProperty(LDAPProperties.SAMAccountType),
+                entry.GetPropertyAsArray(LDAPProperties.SAMAccountType), flags, out type);
+        }
+
+        private static bool ResolveLabel(string objectIdentifier, string distinguishedName, string samAccountType, string[] objectClasses, int flags, out Label type) {
+            if (objectIdentifier != null && WellKnownPrincipal.GetWellKnownPrincipal(objectIdentifier, out var principal)) {
+                type = principal.ObjectType;
+                return true;
+            }
+            
+            //Override GMSA/MSA account to treat them as users for the graph
+            if (objectClasses != null && (objectClasses.Contains(MSAClass, StringComparer.OrdinalIgnoreCase) ||
+                                          objectClasses.Contains(GMSAClass, StringComparer.OrdinalIgnoreCase)))
+            {
+                type = Label.User;
+                return true;
+            }
+
+            if (samAccountType != null) {
+                var objectType = Helpers.SamAccountTypeToType(samAccountType);
+                if (objectType != Label.Base) {
+                    type = objectType;
+                    return true;
+                }
+            }
+
+            if (objectClasses == null) {
+                type = Label.Base;
+                return false;
+            }
+            
+            if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.GPO;
+            if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.OU;
+            if (objectClasses.Contains(DomainClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.Domain;
+            if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.Container;
+            if (objectClasses.Contains(ConfigurationClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.Configuration;
+            if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.CertTemplate;
+            if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.EnterpriseCA;
+            if (objectClasses.Contains(CertificationAuthorityClass, StringComparer.InvariantCultureIgnoreCase)) {
+                if (distinguishedName.Contains(DirectoryPaths.RootCALocation))
+                    type = Label.RootCA;
+                if (distinguishedName.Contains(DirectoryPaths.AIACALocation))
+                    type = Label.AIACA;
+                if (distinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
+                    type = Label.NTAuthStore;
+            }
+            
+            if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase)) {
+                if (distinguishedName.StartsWith(DirectoryPaths.OIDContainerLocation,
+                        StringComparison.InvariantCultureIgnoreCase))
+                    type = Label.Container;
+                if (flags == 2)
+                {
+                    type = Label.IssuancePolicy;
+                }
+            }
+
+            type = Label.Base;
+            return false;
+        }
+
         /// <summary>
         ///     Extension method to determine the BloodHound type of a SearchResultEntry using LDAP properties
         ///     Requires ldap properties objectsid, samaccounttype, objectclass
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Label GetLabel(this SearchResultEntry entry)
+        public static bool GetLabel(this SearchResultEntry entry, out Label type)
         {
-            var objectId = entry.GetObjectIdentifier();
-
-            if (objectId == null)
-            {
-                Log.LogWarning("Failed to get an object identifier for {DN}", entry.DistinguishedName);
-                return Label.Base;
+            if (!entry.GetPropertyAsInt(LDAPProperties.Flags, out var flags)) {
+                flags = 0;
             }
 
-            if (objectId.StartsWith("S-1") &&
-                WellKnownPrincipal.GetWellKnownPrincipal(objectId, out var commonPrincipal))
-            {
-                Log.LogDebug("GetLabel - {ObjectID} is a WellKnownPrincipal with {Type}", objectId,
-                    commonPrincipal.ObjectType);
-                return commonPrincipal.ObjectType;
-            }
-
-
-            var objectType = Label.Base;
-            var samAccountType = entry.GetProperty(LDAPProperties.SAMAccountType);
-            var objectClasses = entry.GetPropertyAsArray(LDAPProperties.ObjectClass);
-
-            //Override object class for GMSA/MSA accounts
-            if (objectClasses != null && (objectClasses.Contains(MSAClass, StringComparer.OrdinalIgnoreCase) ||
-                                          objectClasses.Contains(GMSAClass, StringComparer.OrdinalIgnoreCase)))
-            {
-                Log.LogDebug("GetLabel - {ObjectID} is an MSA/GMSA, returning User", objectId);
-                Cache.AddConvertedValue(entry.DistinguishedName, objectId);
-                Cache.AddType(objectId, objectType);
-                return Label.User;
-            }
-
-
-            //Its not a common principal. Lets use properties to figure out what it actually is
-            if (samAccountType != null) objectType = Helpers.SamAccountTypeToType(samAccountType);
-
-            Log.LogDebug("GetLabel - SamAccountTypeToType returned {Label}", objectType);
-            if (objectType != Label.Base)
-            {
-                Cache.AddConvertedValue(entry.DistinguishedName, objectId);
-                Cache.AddType(objectId, objectType);
-                return objectType;
-            }
-
-
-            if (objectClasses == null)
-            {
-                Log.LogDebug("GetLabel - ObjectClasses for {ObjectID} is null", objectId);
-                objectType = Label.Base;
-            }
-            else
-            {
-                Log.LogDebug("GetLabel - ObjectClasses for {ObjectID}: {Classes}", objectId,
-                    string.Join(", ", objectClasses));
-                if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.GPO;
-                else if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.OU;
-                else if (objectClasses.Contains(DomainClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.Domain;
-                else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.Container;
-                else if (objectClasses.Contains(ConfigurationClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.Configuration;
-                else if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.CertTemplate;
-                else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
-                    objectType = Label.EnterpriseCA;
-                else if (objectClasses.Contains(CertificationAuthorityClass, StringComparer.InvariantCultureIgnoreCase))
-                {
-                    if (entry.DistinguishedName.Contains(DirectoryPaths.RootCALocation))
-                        objectType = Label.RootCA;
-                    else if (entry.DistinguishedName.Contains(DirectoryPaths.AIACALocation))
-                        objectType = Label.AIACA;
-                    else if (entry.DistinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
-                        objectType = Label.NTAuthStore;
-                }
-                else if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase))
-                {
-                    if (entry.DistinguishedName.StartsWith(DirectoryPaths.OIDContainerLocation,
-                            StringComparison.InvariantCultureIgnoreCase))
-                        objectType = Label.Container;
-                    else
-                    {
-                        if (entry.GetPropertyAsInt(LDAPProperties.Flags, out var flags) && flags == 2)
-                        {
-                            objectType = Label.IssuancePolicy;
-                        }
-                    }
-                }
-            }
-
-            Log.LogDebug("GetLabel - Final label for {ObjectID}: {Label}", objectId, objectType);
-
-            Cache.AddConvertedValue(entry.DistinguishedName, objectId);
-            Cache.AddType(objectId, objectType);
-            return objectType;
+            return ResolveLabel(entry.GetObjectIdentifier(), entry.DistinguishedName,
+                entry.GetProperty(LDAPProperties.SAMAccountType), entry.GetPropertyAsArray(LDAPProperties.ObjectClass),
+                flags, out type);
         }
 
         private const string GroupPolicyContainerClass = "groupPolicyContainer";

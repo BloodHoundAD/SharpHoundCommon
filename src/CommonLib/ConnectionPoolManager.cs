@@ -32,7 +32,7 @@ public class ConnectionPoolManager : IDisposable{
         pool.ReleaseConnection(connectionWrapper, connectionFaulted);
     }
 
-    public async Task<(bool Success, LdapConnectionWrapperNew connectionWrapper, string Message)> GetLdapConnection(
+    public async Task<(bool Success, LdapConnectionWrapperNew ConnectionWrapper, string Message)> GetLdapConnection(
         string identifier, bool globalCatalog) {
         var resolved = ResolveIdentifier(identifier);
 
