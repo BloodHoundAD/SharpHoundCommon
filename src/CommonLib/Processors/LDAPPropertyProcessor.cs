@@ -356,7 +356,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 foreach (var dn in hsa)
                 {
-                    if (await _utils.LookupDistinguishedName(dn) is (true, var resolvedPrincipal))
+                    if (await _utils.ResolveDistinguishedName(dn) is (true, var resolvedPrincipal))
                         smsaPrincipals.Add(resolvedPrincipal);
                 }
             }
@@ -544,7 +544,7 @@ namespace SharpHoundCommonLib.Processors
             var link = entry.GetProperty(LDAPProperties.OIDGroupLink);
             if (!string.IsNullOrEmpty(link))
             {
-                if (await _utils.LookupDistinguishedName(link) is (true, var linkedGroup))
+                if (await _utils.ResolveDistinguishedName(link) is (true, var linkedGroup))
                 {
                     props.Add("oidgrouplink", linkedGroup.ObjectIdentifier);
                     ret.GroupLink = linkedGroup;

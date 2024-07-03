@@ -697,7 +697,7 @@ namespace SharpHoundCommonLib {
         }
 
         private bool CreateSearchRequest(LdapQueryParameters queryParameters,
-            LdapConnectionWrapperNew connectionWrapper, out SearchRequest searchRequest) {
+            LdapConnectionWrapper connectionWrapper, out SearchRequest searchRequest) {
             string basePath;
             if (!string.IsNullOrWhiteSpace(queryParameters.SearchBase)) {
                 basePath = queryParameters.SearchBase;
@@ -1353,7 +1353,7 @@ namespace SharpHoundCommonLib {
             return result is { IsSuccess: true };
         }
 
-        public async Task<(bool Success, TypedPrincipal Principal)> LookupDistinguishedName(string distinguishedName) {
+        public async Task<(bool Success, TypedPrincipal Principal)> ResolveDistinguishedName(string distinguishedName) {
             if (_distinguishedNameCache.TryGetValue(distinguishedName, out var principal)) {
                 return (true, principal);
             }
@@ -1444,6 +1444,71 @@ namespace SharpHoundCommonLib {
             return _connectionPool.TestDomainConnection(domain, false);
         }
 
+        public async Task<(bool Success, string Path)> GetNamingContextPath(string domain, NamingContext context) {
+            if (await _connectionPool.GetLdapConnection(domain, false) is (true, var wrapper, _)) {
+                _connectionPool.ReleaseConnection(wrapper);
+                if (wrapper.GetSearchBase(context, out var searchBase)) {
+                    return (true, searchBase);
+                }
+            }
+            
+            var property = context switch {
+                NamingContext.Default => LDAPProperties.DefaultNamingContext,
+                NamingContext.Configuration => LDAPProperties.ConfigurationNamingContext,
+                NamingContext.Schema => LDAPProperties.SchemaNamingContext,
+                _ => throw new ArgumentOutOfRangeException(nameof(context), context, null)
+            };
+
+            try {
+                var entry = CreateDirectoryEntry($"LDAP://{domain}/RootDSE");
+                entry.RefreshCache(new[] { property });
+                var searchBase = entry.GetProperty(property);
+                if (!string.IsNullOrWhiteSpace(searchBase)) {
+                    return (true, searchBase);
+                }
+            }
+            catch {
+                //pass
+            }
+
+            if (GetDomain(domain, out var domainObj)) {
+                try {
+                    var entry = domainObj.GetDirectoryEntry();
+                    entry.RefreshCache(new[] { property });
+                    var searchBase = entry.GetProperty(property);
+                    if (!string.IsNullOrWhiteSpace(searchBase)) {
+                        return (true, searchBase);
+                    }
+                }
+                catch {
+                    //pass
+                }
+
+                var name = domainObj.Name;
+                if (!string.IsNullOrWhiteSpace(name)) {
+                    var tempPath = Helpers.DomainNameToDistinguishedName(name);
+                    
+                    var searchBase = context switch {
+                        NamingContext.Configuration => $"CN=Configuration,{tempPath}",
+                        NamingContext.Schema => $"CN=Schema,CN=Configuration,{tempPath}",
+                        NamingContext.Default => tempPath,
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+
+                    return (true, searchBase);
+                }
+            }
+
+            return (false, default);
+        }
+
+        private DirectoryEntry CreateDirectoryEntry(string path) {
+            if (_ldapConfig.Username != null) {
+                return new DirectoryEntry(path, _ldapConfig.Username, _ldapConfig.Password);
+            }
+
+            return new DirectoryEntry(path);
+        }
         public void Dispose() {
             _connectionPool?.Dispose();
         }

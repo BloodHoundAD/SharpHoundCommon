@@ -61,7 +61,7 @@ namespace SharpHoundCommonLib.Processors
                 return (false, default);
             }
 
-            return await _utils.LookupDistinguishedName(containerDn);
+            return await _utils.ResolveDistinguishedName(containerDn);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace SharpHoundCommonLib.Processors
             {
                 var enforced = link.Status.Equals("2");
 
-                var res = await _utils.LookupDistinguishedName(link.DistinguishedName);
+                var res = await _utils.ResolveDistinguishedName(link.DistinguishedName);
 
                 if (res.Success) {
                     yield return new GPLink

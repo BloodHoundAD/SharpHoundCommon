@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib {
@@ -39,10 +40,11 @@ namespace SharpHoundCommonLib {
             string computerDomainSid, string computerDomain);
 
         Task<bool> IsDomainController(string computerObjectId, string domainName);
-        Task<(bool Success, TypedPrincipal Principal)> LookupDistinguishedName(string distinguishedName);
+        Task<(bool Success, TypedPrincipal Principal)> ResolveDistinguishedName(string distinguishedName);
         void AddDomainController(string domainControllerSID);
         IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
         void SetLdapConfig(LDAPConfig config);
         Task<(bool Success, string Message)> TestLdapConnection(string domain);
+        Task<(bool Success, string Path)> GetNamingContextPath(string domain, NamingContext context);
     }
 }

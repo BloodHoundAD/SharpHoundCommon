@@ -53,7 +53,7 @@ namespace SharpHoundCommonLib.Processors
 
                     var member = result.Value;
                     _log.LogTrace("Got member {DN} for {ObjectName} from ranged retrieval", member, objectName);
-                    if (await _utils.LookupDistinguishedName(member) is (true, var res) && !Helpers.IsSidFiltered(res.ObjectIdentifier)) {
+                    if (await _utils.ResolveDistinguishedName(member) is (true, var res) && !Helpers.IsSidFiltered(res.ObjectIdentifier)) {
                         yield return res;
                     }
                     else {
@@ -67,7 +67,7 @@ namespace SharpHoundCommonLib.Processors
                 foreach (var member in members)
                 {
                     _log.LogTrace("Got member {DN} for {ObjectName}", member, objectName);
-                    if (await _utils.LookupDistinguishedName(member) is (true, var res) && !Helpers.IsSidFiltered(res.ObjectIdentifier)) {
+                    if (await _utils.ResolveDistinguishedName(member) is (true, var res) && !Helpers.IsSidFiltered(res.ObjectIdentifier)) {
                         yield return res;
                     }
                     else {

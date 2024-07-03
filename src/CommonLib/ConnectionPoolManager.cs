@@ -21,7 +21,7 @@ namespace SharpHoundCommonLib {
             _portScanner = scanner ?? new PortScanner();
         }
 
-        public void ReleaseConnection(LdapConnectionWrapperNew connectionWrapper, bool connectionFaulted = false) {
+        public void ReleaseConnection(LdapConnectionWrapper connectionWrapper, bool connectionFaulted = false) {
             //I dont think this is possible, but at least account for it
             if (!_pools.TryGetValue(connectionWrapper.PoolIdentifier, out var pool)) {
                 connectionWrapper.Connection.Dispose();
@@ -37,7 +37,7 @@ namespace SharpHoundCommonLib {
             return (success, message);
         }
 
-        public async Task<(bool Success, LdapConnectionWrapperNew ConnectionWrapper, string Message)> GetLdapConnection(
+        public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetLdapConnection(
             string identifier, bool globalCatalog) {
             var resolved = ResolveIdentifier(identifier);
 
@@ -52,7 +52,7 @@ namespace SharpHoundCommonLib {
             return await pool.GetConnectionAsync();
         }
     
-        public async Task<(bool Success, LdapConnectionWrapperNew connectionWrapper, string Message)> GetLdapConnectionForServer(
+        public async Task<(bool Success, LdapConnectionWrapper connectionWrapper, string Message)> GetLdapConnectionForServer(
             string identifier, string server, bool globalCatalog) {
             var resolved = ResolveIdentifier(identifier);
 

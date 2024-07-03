@@ -3,7 +3,7 @@ using System.DirectoryServices.Protocols;
 
 namespace SharpHoundCommonLib {
     public class LdapQuerySetupResult {
-        public LdapConnectionWrapperNew ConnectionWrapper { get; set; }
+        public LdapConnectionWrapper ConnectionWrapper { get; set; }
         public SearchRequest SearchRequest { get; set; }
         public string Server { get; set; }
         public bool Success { get; set; }

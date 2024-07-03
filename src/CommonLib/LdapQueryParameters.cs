@@ -32,7 +32,6 @@ namespace SharpHoundCommonLib {
         }
 
         public NamingContext NamingContext { get; set; } = NamingContext.Default;
-        public bool ThrowException { get; set; } = false;
 
         public string GetQueryInfo()
         {
