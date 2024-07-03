@@ -14,8 +14,8 @@ using SharpHoundRPC.NetAPINative;
 
 namespace SharpHoundCommonLib {
     public class LdapConnectionPool : IDisposable{
-        private readonly ConcurrentBag<LdapConnectionWrapperNew> _connections;
-        private readonly ConcurrentBag<LdapConnectionWrapperNew> _globalCatalogConnection;
+        private readonly ConcurrentBag<LdapConnectionWrapper> _connections;
+        private readonly ConcurrentBag<LdapConnectionWrapper> _globalCatalogConnection;
         private static readonly ConcurrentDictionary<string, Domain> DomainCache = new();
         private readonly SemaphoreSlim _semaphore;
         private readonly string _identifier;
@@ -25,8 +25,8 @@ namespace SharpHoundCommonLib {
         private readonly NativeMethods _nativeMethods;
 
         public LdapConnectionPool(string identifier, LDAPConfig config, int maxConnections = 10, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
-            _connections = new ConcurrentBag<LdapConnectionWrapperNew>();
-            _globalCatalogConnection = new ConcurrentBag<LdapConnectionWrapperNew>();
+            _connections = new ConcurrentBag<LdapConnectionWrapper>();
+            _globalCatalogConnection = new ConcurrentBag<LdapConnectionWrapper>();
             _semaphore = new SemaphoreSlim(maxConnections, maxConnections);
             _identifier = identifier;
             _ldapConfig = config;
@@ -35,7 +35,7 @@ namespace SharpHoundCommonLib {
             _nativeMethods = nativeMethods ?? new NativeMethods();
         }
 
-        public async Task<(bool Success, LdapConnectionWrapperNew ConnectionWrapper, string Message)> GetConnectionAsync() {
+        public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetConnectionAsync() {
             await _semaphore.WaitAsync();
             if (!_connections.TryTake(out var connectionWrapper)) {
                 var (success, connection, message) = await CreateNewConnection();
@@ -51,7 +51,7 @@ namespace SharpHoundCommonLib {
             return (true, connectionWrapper, null);
         }
 
-        public async Task<(bool Success, LdapConnectionWrapperNew connectionWrapper, string Message)>
+        public async Task<(bool Success, LdapConnectionWrapper connectionWrapper, string Message)>
             GetConnectionForSpecificServerAsync(string server, bool globalCatalog) {
             await _semaphore.WaitAsync();
 
@@ -64,7 +64,7 @@ namespace SharpHoundCommonLib {
             return result;
         }
 
-        public async Task<(bool Success, LdapConnectionWrapperNew ConnectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
+        public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
             await _semaphore.WaitAsync();
             if (!_globalCatalogConnection.TryTake(out var connectionWrapper)) {
                 var (success, connection, message) = await CreateNewConnection(true);
@@ -80,7 +80,7 @@ namespace SharpHoundCommonLib {
             return (true, connectionWrapper, null);
         }
 
-        public void ReleaseConnection(LdapConnectionWrapperNew connectionWrapper, bool connectionFaulted = false) {
+        public void ReleaseConnection(LdapConnectionWrapper connectionWrapper, bool connectionFaulted = false) {
             if (!connectionFaulted) {
                 if (connectionWrapper.GlobalCatalog) {
                     _globalCatalogConnection.Add(connectionWrapper);
@@ -102,7 +102,7 @@ namespace SharpHoundCommonLib {
             }
         }
 
-        private async Task<(bool Success, LdapConnectionWrapperNew Connection, string Message)> CreateNewConnection(bool globalCatalog = false) {
+        private async Task<(bool Success, LdapConnectionWrapper Connection, string Message)> CreateNewConnection(bool globalCatalog = false) {
             if (!string.IsNullOrWhiteSpace(_ldapConfig.Server)) {
                 return CreateNewConnectionForServer(_ldapConfig.Server, globalCatalog);
             }
@@ -182,7 +182,7 @@ namespace SharpHoundCommonLib {
             return (false, null, "All attempted connections failed");
         }
     
-        private (bool Success, LdapConnectionWrapperNew Connection, string Message ) CreateNewConnectionForServer(string identifier, bool globalCatalog = false) {
+        private (bool Success, LdapConnectionWrapper Connection, string Message ) CreateNewConnectionForServer(string identifier, bool globalCatalog = false) {
             if (CreateLdapConnection(identifier, globalCatalog, out var serverConnection)) {
                 return (true, serverConnection, "");
             }
@@ -191,10 +191,10 @@ namespace SharpHoundCommonLib {
         }
     
         private bool CreateLdapConnection(string target, bool globalCatalog,
-            out LdapConnectionWrapperNew connection) {
+            out LdapConnectionWrapper connection) {
             var baseConnection = CreateBaseConnection(target, true, globalCatalog);
             if (TestLdapConnection(baseConnection, out var result)) {
-                connection = new LdapConnectionWrapperNew(baseConnection, result.SearchResultEntry, globalCatalog, _identifier);
+                connection = new LdapConnectionWrapper(baseConnection, result.SearchResultEntry, globalCatalog, _identifier);
                 return true;
             }
 
@@ -212,7 +212,7 @@ namespace SharpHoundCommonLib {
 
             baseConnection = CreateBaseConnection(target, false, globalCatalog);
             if (TestLdapConnection(baseConnection, out result)) {
-                connection = new LdapConnectionWrapperNew(baseConnection, result.SearchResultEntry, globalCatalog, _identifier);
+                connection = new LdapConnectionWrapper(baseConnection, result.SearchResultEntry, globalCatalog, _identifier);
                 return true;
             }
 
@@ -328,7 +328,7 @@ namespace SharpHoundCommonLib {
             public int ErrorCode { get; set; }
         }
     
-        private async Task<(bool success, LdapConnectionWrapperNew connection)> CreateLDAPConnectionWithPortCheck(
+        private async Task<(bool success, LdapConnectionWrapper connection)> CreateLDAPConnectionWithPortCheck(
             string target, bool globalCatalog) {
             if (globalCatalog) {
                 if (await _portScanner.CheckPort(target, _ldapConfig.GetGCPort(true)) || (!_ldapConfig.ForceSSL &&
