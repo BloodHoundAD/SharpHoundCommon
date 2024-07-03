@@ -110,7 +110,7 @@ namespace SharpHoundCommonLib
                     res.DomainSid = sid;
                 res.DisplayName = $"{wkPrincipal.ObjectIdentifier}@{itemDomain}";
                 res.ObjectType = wkPrincipal.ObjectType;
-                if (await _utils.ConvertLocalWellKnownPrincipal(new SecurityIdentifier(objectId), res.DomainSid, itemDomain) is (true, var principal))
+                if (await _utils.GetWellKnownPrincipal(objectId, itemDomain) is (true, var principal))
                     res.ObjectId = principal.ObjectIdentifier;
 
                 _log.LogTrace("Resolved {DN} to wkp {ObjectID}", DistinguishedName, res.ObjectId);

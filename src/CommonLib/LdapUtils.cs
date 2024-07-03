@@ -650,9 +650,14 @@ namespace SharpHoundCommonLib {
             }
 
             if (GetDomain(domain, out var domainObject)) {
-                var forestName = domainObject.Forest.Name.ToUpper();
-                DomainToForestCache.TryAdd(domain, forestName);
-                return (true, forestName);
+                try {
+                    var forestName = domainObject.Forest.Name.ToUpper();
+                    DomainToForestCache.TryAdd(domain, forestName);
+                    return (true, forestName);
+                }
+                catch {
+                    //pass
+                }
             }
 
             var (success, forest) = await GetForestFromLdap(domain);
