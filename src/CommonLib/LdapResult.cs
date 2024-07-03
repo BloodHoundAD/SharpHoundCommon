@@ -14,6 +14,10 @@ namespace SharpHoundCommonLib {
         public new static LdapResult<T> Ok(T value) {
             return new LdapResult<T>(value, true, string.Empty, null, 0);
         }
+        
+        public new static LdapResult<T> Fail() {
+            return new LdapResult<T>(default, false, string.Empty, null, 0);
+        }
 
         public static LdapResult<T> Fail(string message, LdapQueryParameters queryInfo) {
             return new LdapResult<T>(default, false, message, queryInfo.GetQueryInfo(), 0);

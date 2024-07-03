@@ -77,20 +77,14 @@ namespace SharpHoundCommonLib {
             _nativeMethods = new NativeMethods();
             _portScanner = new PortScanner();
             _log = Logging.LogProvider.CreateLogger("LDAPUtils");
-            _connectionPool = new ConnectionPoolManager(_ldapConfig);
+            _connectionPool = new ConnectionPoolManager(_ldapConfig, _log);
         }
 
         public LdapUtils(NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null) {
             _nativeMethods = nativeMethods ?? new NativeMethods();
             _portScanner = scanner ?? new PortScanner();
             _log = log ?? Logging.LogProvider.CreateLogger("LDAPUtils");
-            _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
-        }
-
-        public void SetLDAPConfig(LDAPConfig config) {
-            _ldapConfig = config;
-            _connectionPool.Dispose();
-            _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
+            _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner:_portScanner);
         }
 
         public async IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName,
@@ -316,7 +310,7 @@ namespace SharpHoundCommonLib {
                 }
                 catch (Exception e) {
                     tempResult =
-                        LdapResult<ISearchResultEntry>.Fail($"PagedQuery - Caught unrecoverable exception: {e.Message}",
+                        LdapResult<ISearchResultEntry>.Fail($"Query - Caught unrecoverable exception: {e.Message}",
                             queryParameters);
                 }
 
@@ -337,12 +331,11 @@ namespace SharpHoundCommonLib {
                     break;
                 }
             }
-
+            
+            _connectionPool.ReleaseConnection(connectionWrapper);
             foreach (SearchResultEntry entry in response.Entries) {
                 yield return LdapResult<ISearchResultEntry>.Ok(new SearchResultEntryWrapper(entry, this));
             }
-            
-            _connectionPool.ReleaseConnection(connectionWrapper);
         }
 
         public async IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
@@ -469,13 +462,13 @@ namespace SharpHoundCommonLib {
                     continue;
                 }
 
-                foreach (ISearchResultEntry entry in response.Entries) {
+                foreach (SearchResultEntry entry in response.Entries) {
                     if (cancellationToken.IsCancellationRequested) {
                         _connectionPool.ReleaseConnection(connectionWrapper);
                         yield break;
                     }
 
-                    yield return LdapResult<ISearchResultEntry>.Ok(entry);
+                    yield return LdapResult<ISearchResultEntry>.Ok(new SearchResultEntryWrapper(entry, this));
                 }
 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 ||
@@ -527,7 +520,7 @@ namespace SharpHoundCommonLib {
                 DomainName = tempDomain,
                 LDAPFilter = CommonFilters.SpecificSID(sid),
                 Attributes = CommonProperties.TypeResolutionProps
-            }).FirstAsync();
+            }).DefaultIfEmpty(LdapResult<ISearchResultEntry>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess) {
                 type = result.Value.GetLabel();
@@ -574,7 +567,7 @@ namespace SharpHoundCommonLib {
                 DomainName = domain,
                 LDAPFilter = CommonFilters.SpecificGUID(guid),
                 Attributes = CommonProperties.TypeResolutionProps
-            }).FirstAsync();
+            }).DefaultIfEmpty(LdapResult<ISearchResultEntry>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess) {
                 type = result.Value.GetLabel();
@@ -868,7 +861,7 @@ namespace SharpHoundCommonLib {
                 Attributes = new[] { LDAPProperties.DistinguishedName },
                 GlobalCatalog = true,
                 LDAPFilter = new LDAPFilter().AddDomains(CommonFilters.SpecificSID(domainSid)).GetFilter()
-            }).FirstAsync();
+            }).DefaultIfEmpty(LdapResult<ISearchResultEntry>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess) {
                 return (true, Helpers.DistinguishedNameToDomain(result.Value.DistinguishedName));
@@ -880,7 +873,7 @@ namespace SharpHoundCommonLib {
                 GlobalCatalog = true,
                 LDAPFilter = new LDAPFilter().AddFilter("(objectclass=trusteddomain)", true)
                     .AddFilter($"(securityidentifier={Helpers.ConvertSidToHexSid(domainSid)})", true).GetFilter()
-            }).FirstAsync();
+            }).DefaultIfEmpty(LdapResult<ISearchResultEntry>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess) {
                 return (true, Helpers.DistinguishedNameToDomain(result.Value.DistinguishedName));
@@ -891,7 +884,7 @@ namespace SharpHoundCommonLib {
                 Attributes = new[] { LDAPProperties.DistinguishedName },
                 LDAPFilter = new LDAPFilter().AddFilter("(objectclass=domaindns)", true)
                     .AddFilter(CommonFilters.SpecificSID(domainSid), true).GetFilter()
-            }).FirstAsync();
+            }).DefaultIfEmpty(LdapResult<ISearchResultEntry>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess) {
                 return (true, Helpers.DistinguishedNameToDomain(result.Value.DistinguishedName));
@@ -946,7 +939,7 @@ namespace SharpHoundCommonLib {
                 DomainName = domainName,
                 Attributes = new[] { LDAPProperties.ObjectSID },
                 LDAPFilter = new LDAPFilter().AddFilter(CommonFilters.DomainControllers, true).GetFilter()
-            }).FirstAsync();
+            }).DefaultIfEmpty(LdapResult<ISearchResultEntry>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess) {
                 var sid = result.Value.GetSid();
@@ -1064,7 +1057,7 @@ namespace SharpHoundCommonLib {
                 DomainName = domain,
                 Attributes = CommonProperties.TypeResolutionProps,
                 LDAPFilter = $"(samaccountname={name})"
-            }).FirstAsync();
+            }).DefaultIfEmpty(LdapResult<ISearchResultEntry>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess) {
                 type = result.Value.GetLabel();
@@ -1227,13 +1220,7 @@ namespace SharpHoundCommonLib {
                 NamingContext = NamingContext.Configuration,
                 RelativeSearchBase = DirectoryPaths.CertTemplateLocation,
                 LDAPFilter = filter.GetFilter(),
-            }).DefaultIfEmpty(null).FirstAsync();
-
-            if (result == null) {
-                _log.LogWarning("Could not find certificate template with {PropertyName}:{PropertyValue}",
-                    propertyName, propertyName);
-                return (false, null);
-            }
+            }).DefaultIfEmpty(LdapResult<ISearchResultEntry>.Fail()).FirstOrDefaultAsync();
 
             if (!result.IsSuccess) {
                 _log.LogWarning(

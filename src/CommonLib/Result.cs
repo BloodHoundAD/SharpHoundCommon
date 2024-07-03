@@ -22,7 +22,7 @@ namespace SharpHoundCommonLib {
     public class Result {
     
         public string Error { get; set; }
-        public bool IsSuccess => Error == null && Success;
+        public bool IsSuccess => string.IsNullOrWhiteSpace(Error) && Success;
         private bool Success { get; set; }
 
         protected Result(bool success, string error) {

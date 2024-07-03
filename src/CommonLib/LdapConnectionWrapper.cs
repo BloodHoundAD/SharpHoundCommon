@@ -11,8 +11,8 @@ namespace SharpHoundCommonLib {
         private string _schemaSearchBase;
         private string _server;
         private string Guid { get; set; }
-        public bool GlobalCatalog;
-        public string PoolIdentifier;
+        public readonly bool GlobalCatalog;
+        public readonly string PoolIdentifier;
 
         public LdapConnectionWrapper(LdapConnection connection, ISearchResultEntry entry, bool globalCatalog,
             string poolIdentifier) {

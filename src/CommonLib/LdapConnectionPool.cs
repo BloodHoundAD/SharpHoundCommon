@@ -16,19 +16,20 @@ namespace SharpHoundCommonLib {
     public class LdapConnectionPool : IDisposable{
         private readonly ConcurrentBag<LdapConnectionWrapper> _connections;
         private readonly ConcurrentBag<LdapConnectionWrapper> _globalCatalogConnection;
-        private static readonly ConcurrentDictionary<string, Domain> DomainCache = new();
         private readonly SemaphoreSlim _semaphore;
         private readonly string _identifier;
+        private readonly string _poolIdentifier;
         private readonly LDAPConfig _ldapConfig;
         private readonly ILogger _log;
         private readonly PortScanner _portScanner;
         private readonly NativeMethods _nativeMethods;
 
-        public LdapConnectionPool(string identifier, LDAPConfig config, int maxConnections = 10, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
+        public LdapConnectionPool(string identifier, string poolIdentifier, LDAPConfig config, int maxConnections = 10, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
             _connections = new ConcurrentBag<LdapConnectionWrapper>();
             _globalCatalogConnection = new ConcurrentBag<LdapConnectionWrapper>();
             _semaphore = new SemaphoreSlim(maxConnections, maxConnections);
             _identifier = identifier;
+            _poolIdentifier = poolIdentifier;
             _ldapConfig = config;
             _log = log ?? Logging.LogProvider.CreateLogger("LdapConnectionPool");
             _portScanner = scanner ?? new PortScanner();
@@ -81,6 +82,7 @@ namespace SharpHoundCommonLib {
         }
 
         public void ReleaseConnection(LdapConnectionWrapper connectionWrapper, bool connectionFaulted = false) {
+            _semaphore.Release();
             if (!connectionFaulted) {
                 if (connectionWrapper.GlobalCatalog) {
                     _globalCatalogConnection.Add(connectionWrapper);
@@ -92,8 +94,6 @@ namespace SharpHoundCommonLib {
             else {
                 connectionWrapper.Connection.Dispose();
             }
-
-            _semaphore.Release();
         }
     
         public void Dispose() {
@@ -108,7 +108,7 @@ namespace SharpHoundCommonLib {
             }
 
             if (CreateLdapConnection(_identifier.ToUpper().Trim(), globalCatalog, out var connectionWrapper)) {
-                _log.LogDebug("Successfully created ldap connection for domain: {Domain} using strategy 1", _identifier);
+                _log.LogDebug("Successfully created ldap connection for domain: {Domain} using strategy 1. SSL: {SSl}", _identifier, connectionWrapper.Connection.SessionOptions.SecureSocketLayer);
                 return (true, connectionWrapper, "");
             }
         
@@ -194,7 +194,7 @@ namespace SharpHoundCommonLib {
             out LdapConnectionWrapper connection) {
             var baseConnection = CreateBaseConnection(target, true, globalCatalog);
             if (TestLdapConnection(baseConnection, out var result)) {
-                connection = new LdapConnectionWrapper(baseConnection, result.SearchResultEntry, globalCatalog, _identifier);
+                connection = new LdapConnectionWrapper(baseConnection, result.SearchResultEntry, globalCatalog, _poolIdentifier);
                 return true;
             }
 
@@ -212,7 +212,7 @@ namespace SharpHoundCommonLib {
 
             baseConnection = CreateBaseConnection(target, false, globalCatalog);
             if (TestLdapConnection(baseConnection, out result)) {
-                connection = new LdapConnectionWrapper(baseConnection, result.SearchResultEntry, globalCatalog, _identifier);
+                connection = new LdapConnectionWrapper(baseConnection, result.SearchResultEntry, globalCatalog, _poolIdentifier);
                 return true;
             }
 
@@ -229,19 +229,26 @@ namespace SharpHoundCommonLib {
     
         private LdapConnection CreateBaseConnection(string directoryIdentifier, bool ssl,
             bool globalCatalog) {
+            _log.LogDebug("Creating connection for identifier {Identifier}", directoryIdentifier);
             var port = globalCatalog ? _ldapConfig.GetGCPort(ssl) : _ldapConfig.GetPort(ssl);
             var identifier = new LdapDirectoryIdentifier(directoryIdentifier, port, false, false);
             var connection = new LdapConnection(identifier) { Timeout = new TimeSpan(0, 0, 5, 0) };
-
+            
             //These options are important!
             connection.SessionOptions.ProtocolVersion = 3;
             //Referral chasing does not work with paged searches 
             connection.SessionOptions.ReferralChasing = ReferralChasingOptions.None;
             if (ssl) connection.SessionOptions.SecureSocketLayer = true;
-
-            connection.SessionOptions.Sealing = !_ldapConfig.DisableSigning;
-            connection.SessionOptions.Signing = !_ldapConfig.DisableSigning;
-
+            
+            if (_ldapConfig.DisableSigning || ssl) {
+                connection.SessionOptions.Signing = false;
+                connection.SessionOptions.Sealing = false;
+            }
+            else {
+                connection.SessionOptions.Signing = true;
+                connection.SessionOptions.Sealing = true;
+            }
+            
             if (_ldapConfig.DisableCertVerification)
                 connection.SessionOptions.VerifyServerCertificate = (_, _) => true;
 

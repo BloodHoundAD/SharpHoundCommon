@@ -446,6 +446,7 @@ namespace SharpHoundCommonLib
         }
 
         private static bool ResolveLabel(string objectIdentifier, string distinguishedName, string samAccountType, string[] objectClasses, int flags, out Label type) {
+            type = Label.Base;
             if (objectIdentifier != null && WellKnownPrincipal.GetWellKnownPrincipal(objectIdentifier, out var principal)) {
                 type = principal.ObjectType;
                 return true;
@@ -474,28 +475,26 @@ namespace SharpHoundCommonLib
             
             if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
                 type = Label.GPO;
-            if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
                 type = Label.OU;
-            if (objectClasses.Contains(DomainClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(DomainClass, StringComparer.InvariantCultureIgnoreCase))
                 type = Label.Domain;
-            if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
                 type = Label.Container;
-            if (objectClasses.Contains(ConfigurationClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(ConfigurationClass, StringComparer.InvariantCultureIgnoreCase))
                 type = Label.Configuration;
-            if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
                 type = Label.CertTemplate;
-            if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
                 type = Label.EnterpriseCA;
-            if (objectClasses.Contains(CertificationAuthorityClass, StringComparer.InvariantCultureIgnoreCase)) {
+            else if (objectClasses.Contains(CertificationAuthorityClass, StringComparer.InvariantCultureIgnoreCase)) {
                 if (distinguishedName.Contains(DirectoryPaths.RootCALocation))
                     type = Label.RootCA;
                 if (distinguishedName.Contains(DirectoryPaths.AIACALocation))
                     type = Label.AIACA;
                 if (distinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
                     type = Label.NTAuthStore;
-            }
-            
-            if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase)) {
+            }else if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase)) {
                 if (distinguishedName.StartsWith(DirectoryPaths.OIDContainerLocation,
                         StringComparison.InvariantCultureIgnoreCase))
                     type = Label.Container;
@@ -505,8 +504,7 @@ namespace SharpHoundCommonLib
                 }
             }
 
-            type = Label.Base;
-            return false;
+            return type != Label.Base;
         }
 
         /// <summary>

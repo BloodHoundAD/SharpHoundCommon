@@ -24,6 +24,7 @@ namespace SharpHoundCommonLib {
         public void ReleaseConnection(LdapConnectionWrapper connectionWrapper, bool connectionFaulted = false) {
             //I dont think this is possible, but at least account for it
             if (!_pools.TryGetValue(connectionWrapper.PoolIdentifier, out var pool)) {
+                _log.LogWarning("Could not find pool for {Identifier}", connectionWrapper.PoolIdentifier);
                 connectionWrapper.Connection.Dispose();
                 return;
             }
@@ -41,9 +42,9 @@ namespace SharpHoundCommonLib {
             string identifier, bool globalCatalog) {
             var resolved = ResolveIdentifier(identifier);
 
-            if (!_pools.TryGetValue(identifier, out var pool)) {
-                pool = new LdapConnectionPool(resolved, _ldapConfig,scanner: _portScanner);
-                _pools.TryAdd(identifier, pool);
+            if (!_pools.TryGetValue(resolved, out var pool)) {
+                pool = new LdapConnectionPool(identifier, resolved, _ldapConfig,scanner: _portScanner);
+                _pools.TryAdd(resolved, pool);
             }
 
             if (globalCatalog) {
@@ -56,9 +57,9 @@ namespace SharpHoundCommonLib {
             string identifier, string server, bool globalCatalog) {
             var resolved = ResolveIdentifier(identifier);
 
-            if (!_pools.TryGetValue(identifier, out var pool)) {
-                pool = new LdapConnectionPool(resolved, _ldapConfig,scanner: _portScanner);
-                _pools.TryAdd(identifier, pool);
+            if (!_pools.TryGetValue(resolved, out var pool)) {
+                pool = new LdapConnectionPool(resolved, identifier, _ldapConfig,scanner: _portScanner);
+                _pools.TryAdd(resolved, pool);
             }
         
             return await pool.GetConnectionForSpecificServerAsync(server, globalCatalog);
