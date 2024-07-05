@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors

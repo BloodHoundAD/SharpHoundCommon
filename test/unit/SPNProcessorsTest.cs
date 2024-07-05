@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using SharpHoundCommonLib;
+using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using Xunit;
