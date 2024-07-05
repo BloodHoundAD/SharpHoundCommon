@@ -1433,7 +1433,11 @@ namespace SharpHoundCommonLib {
         }
 
         public Task<(bool Success, string Message)> TestLdapConnection(string domain) {
-            return _connectionPool.TestDomainConnection(domain, false);
+            try {
+                return _connectionPool.TestDomainConnection(domain, false);
+            } catch (Exception e) {
+                return (false, e.Message);
+            }
         }
 
         public async Task<(bool Success, string Path)> GetNamingContextPath(string domain, NamingContext context) {
