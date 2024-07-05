@@ -1504,5 +1504,79 @@ namespace SharpHoundCommonLib {
         public void Dispose() {
             _connectionPool?.Dispose();
         }
+        
+        internal static bool ResolveLabel(string objectIdentifier, string distinguishedName, string samAccountType, string[] objectClasses, int flags, out Label type) {
+            type = Label.Base;
+            if (objectIdentifier != null && WellKnownPrincipal.GetWellKnownPrincipal(objectIdentifier, out var principal)) {
+                type = principal.ObjectType;
+                return true;
+            }
+            
+            //Override GMSA/MSA account to treat them as users for the graph
+            if (objectClasses != null && (objectClasses.Contains(MSAClass, StringComparer.OrdinalIgnoreCase) ||
+                                          objectClasses.Contains(GMSAClass, StringComparer.OrdinalIgnoreCase)))
+            {
+                type = Label.User;
+                return true;
+            }
+
+            if (samAccountType != null) {
+                var objectType = Helpers.SamAccountTypeToType(samAccountType);
+                if (objectType != Label.Base) {
+                    type = objectType;
+                    return true;
+                }
+            }
+
+            if (objectClasses == null) {
+                type = Label.Base;
+                return false;
+            }
+            
+            if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.GPO;
+            else if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.OU;
+            else if (objectClasses.Contains(DomainClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.Domain;
+            else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.Container;
+            else if (objectClasses.Contains(ConfigurationClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.Configuration;
+            else if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.CertTemplate;
+            else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
+                type = Label.EnterpriseCA;
+            else if (objectClasses.Contains(CertificationAuthorityClass, StringComparer.InvariantCultureIgnoreCase)) {
+                if (distinguishedName.Contains(DirectoryPaths.RootCALocation))
+                    type = Label.RootCA;
+                if (distinguishedName.Contains(DirectoryPaths.AIACALocation))
+                    type = Label.AIACA;
+                if (distinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
+                    type = Label.NTAuthStore;
+            }else if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase)) {
+                if (distinguishedName.StartsWith(DirectoryPaths.OIDContainerLocation,
+                        StringComparison.InvariantCultureIgnoreCase))
+                    type = Label.Container;
+                if (flags == 2)
+                {
+                    type = Label.IssuancePolicy;
+                }
+            }
+
+            return type != Label.Base;
+        }
+
+        private const string GroupPolicyContainerClass = "groupPolicyContainer";
+        private const string OrganizationalUnitClass = "organizationalUnit";
+        private const string DomainClass = "domain";
+        private const string ContainerClass = "container";
+        private const string ConfigurationClass = "configuration";
+        private const string PKICertificateTemplateClass = "pKICertificateTemplate";
+        private const string PKIEnrollmentServiceClass = "pKIEnrollmentService";
+        private const string CertificationAuthorityClass = "certificationAuthority";
+        private const string OIDContainerClass = "msPKI-Enterprise-Oid";
+        private const string GMSAClass = "msds-groupmanagedserviceaccount";
+        private const string MSAClass = "msds-managedserviceaccount";
     }
 }

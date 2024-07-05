@@ -17,7 +17,7 @@ using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace CommonLibTest.Facades
 {
-    public class MockLDAPUtils : ILDAPUtils
+    public class MockLDAPUtils : ILdapUtils
     {
         private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
         private readonly Forest _forest;
