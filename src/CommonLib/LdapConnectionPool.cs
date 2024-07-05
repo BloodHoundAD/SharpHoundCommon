@@ -107,75 +107,88 @@ namespace SharpHoundCommonLib {
                 return CreateNewConnectionForServer(_ldapConfig.Server, globalCatalog);
             }
 
-            if (CreateLdapConnection(_identifier.ToUpper().Trim(), globalCatalog, out var connectionWrapper)) {
-                _log.LogDebug("Successfully created ldap connection for domain: {Domain} using strategy 1. SSL: {SSl}", _identifier, connectionWrapper.Connection.SessionOptions.SecureSocketLayer);
-                return (true, connectionWrapper, "");
-            }
-        
-            string tempDomainName;
-        
-            var dsGetDcNameResult = _nativeMethods.CallDsGetDcName(null, _identifier,
-                (uint)(NetAPIEnums.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY |
-                       NetAPIEnums.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME |
-                       NetAPIEnums.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED));
-            if (dsGetDcNameResult.IsSuccess) {
-                tempDomainName = dsGetDcNameResult.Value.DomainName;
+            var hasDomainObject = LdapUtils.GetDomain(_identifier, _ldapConfig, out var domainObject);
+            var primaryDomainController = domainObject?.PdcRoleOwner.Name;
+            LdapConnectionWrapper connectionWrapper = null;
 
+            try {
+                if (CreateLdapConnection(_identifier.ToUpper().Trim(), globalCatalog, out connectionWrapper)) {
+                    _log.LogDebug("Successfully created ldap connection for domain: {Domain} using strategy 1. SSL: {SSl}", _identifier, connectionWrapper.Connection.SessionOptions.SecureSocketLayer);
+                    return (true, connectionWrapper, "");
+                }
+            
+                string tempDomainName;
+            
+                var dsGetDcNameResult = _nativeMethods.CallDsGetDcName(null, _identifier,
+                    (uint)(NetAPIEnums.DSGETDCNAME_FLAGS.DS_FORCE_REDISCOVERY |
+                        NetAPIEnums.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME |
+                        NetAPIEnums.DSGETDCNAME_FLAGS.DS_DIRECTORY_SERVICE_REQUIRED));
+                if (dsGetDcNameResult.IsSuccess) {
+                    tempDomainName = dsGetDcNameResult.Value.DomainName;
+
+                    if (!tempDomainName.Equals(_identifier, StringComparison.OrdinalIgnoreCase) &&
+                        CreateLdapConnection(tempDomainName, globalCatalog, out connectionWrapper)) {
+                        _log.LogDebug(
+                            "Successfully created ldap connection for domain: {Domain} using strategy 2 with name {NewName}",
+                            _identifier, tempDomainName);
+                        return (true, connectionWrapper, "");
+                    }
+                
+                    var server = dsGetDcNameResult.Value.DomainControllerName.TrimStart('\\');
+
+                    var result =
+                        await CreateLDAPConnectionWithPortCheck(server, globalCatalog);
+                    if (result.success) {
+                        _log.LogDebug(
+                            "Successfully created ldap connection for domain: {Domain} using strategy 3 to server {Server}",
+                            _identifier, server);
+                        return (true, result.connection, "");
+                    }
+                }
+            
+                if (!hasDomainObject || domainObject.Name == null) {
+                    //If we don't get a result here, we effectively have no other ways to resolve this domain, so we'll just have to exit out
+                    _log.LogDebug(
+                        "Could not get domain object from GetDomain, unable to create ldap connection for domain {Domain}",
+                        _identifier);
+                    return (false, null, "Unable to get domain object for further strategies");
+                }
+                tempDomainName = domainObject.Name.ToUpper().Trim();
+            
                 if (!tempDomainName.Equals(_identifier, StringComparison.OrdinalIgnoreCase) &&
                     CreateLdapConnection(tempDomainName, globalCatalog, out connectionWrapper)) {
                     _log.LogDebug(
-                        "Successfully created ldap connection for domain: {Domain} using strategy 2 with name {NewName}",
+                        "Successfully created ldap connection for domain: {Domain} using strategy 4 with name {NewName}",
                         _identifier, tempDomainName);
                     return (true, connectionWrapper, "");
                 }
             
-                var server = dsGetDcNameResult.Value.DomainControllerName.TrimStart('\\');
-
-                var result =
-                    await CreateLDAPConnectionWithPortCheck(server, globalCatalog);
-                if (result.success) {
-                    _log.LogDebug(
-                        "Successfully created ldap connection for domain: {Domain} using strategy 3 to server {Server}",
-                        _identifier, server);
-                    return (true, result.connection, "");
-                }
-            }
-        
-            if (!LdapUtils.GetDomain(_identifier, _ldapConfig, out var domainObject) || domainObject.Name == null) {
-                //If we don't get a result here, we effectively have no other ways to resolve this domain, so we'll just have to exit out
-                _log.LogDebug(
-                    "Could not get domain object from GetDomain, unable to create ldap connection for domain {Domain}",
-                    _identifier);
-                return (false, null, "Unable to get domain object for further strategies");
-            }
-            tempDomainName = domainObject.Name.ToUpper().Trim();
-        
-            if (!tempDomainName.Equals(_identifier, StringComparison.OrdinalIgnoreCase) &&
-                CreateLdapConnection(tempDomainName, globalCatalog, out connectionWrapper)) {
-                _log.LogDebug(
-                    "Successfully created ldap connection for domain: {Domain} using strategy 4 with name {NewName}",
-                    _identifier, tempDomainName);
-                return (true, connectionWrapper, "");
-            }
-        
-            var primaryDomainController = domainObject.PdcRoleOwner.Name;
-            var portConnectionResult =
-                await CreateLDAPConnectionWithPortCheck(primaryDomainController, globalCatalog);
-            if (portConnectionResult.success) {
-                _log.LogDebug(
-                    "Successfully created ldap connection for domain: {Domain} using strategy 5 with to pdc {Server}",
-                    _identifier, primaryDomainController);
-                return (true, connectionWrapper, "");
-            }
-        
-            foreach (DomainController dc in domainObject.DomainControllers) {
-                portConnectionResult =
-                    await CreateLDAPConnectionWithPortCheck(dc.Name, globalCatalog);
+                var portConnectionResult =
+                    await CreateLDAPConnectionWithPortCheck(primaryDomainController, globalCatalog);
                 if (portConnectionResult.success) {
                     _log.LogDebug(
-                        "Successfully created ldap connection for domain: {Domain} using strategy 6 with to pdc {Server}",
+                        "Successfully created ldap connection for domain: {Domain} using strategy 5 with to pdc {Server}",
                         _identifier, primaryDomainController);
-                    return (true, connectionWrapper, "");
+                    return (true, portConnectionResult.connection, "");
+                }
+            } catch (Exception e) {
+                _log.LogInformation(e, "Cannot connect to domain controller on {Domain}, trying another if available.", _identifier);
+            }
+        
+            foreach (DomainController dc in domainObject?.DomainControllers) {
+                try {
+                    var portConnectionResult =
+                    await CreateLDAPConnectionWithPortCheck(dc.Name, globalCatalog);
+
+                    if (portConnectionResult.success) {
+                        _log.LogDebug(
+                            "Successfully created ldap connection for domain: {Domain} using strategy 6 with to pdc {Server}",
+                            _identifier, primaryDomainController);
+                        return (true, portConnectionResult.connection, "");
+                    }
+                } catch (Exception e) {
+                    _log.LogInformation(e, "Cannot connect to domain controller {DC} on {Domain}, trying another if available.", dc.Name, _identifier);
+                    continue;
                 }
             }
 
@@ -183,8 +196,12 @@ namespace SharpHoundCommonLib {
         }
     
         private (bool Success, LdapConnectionWrapper Connection, string Message ) CreateNewConnectionForServer(string identifier, bool globalCatalog = false) {
-            if (CreateLdapConnection(identifier, globalCatalog, out var serverConnection)) {
-                return (true, serverConnection, "");
+            try {
+                if (CreateLdapConnection(identifier, globalCatalog, out var serverConnection)) {
+                    return (true, serverConnection, "");
+                }
+            } catch {
+                // pass
             }
 
             return (false, null, $"Failed to create ldap connection for {identifier}");
