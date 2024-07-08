@@ -51,6 +51,65 @@ namespace CommonLibTest.Facades
             };
         }
 
+        public IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
+            CancellationToken cancellationToken = new CancellationToken()) {
+            throw new NotImplementedException();
+        }
+
+        public IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
+            CancellationToken cancellationToken = new CancellationToken()) {
+            throw new NotImplementedException();
+        }
+
+        public IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName, string attributeName,
+            CancellationToken cancellationToken = new CancellationToken()) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, TypedPrincipal Principal)> ResolveIDAndType(SecurityIdentifier securityIdentifier, string objectDomain) {
+            throw new NotImplementedException();
+        }
+
+        Task<(bool Success, TypedPrincipal Principal)> ILdapUtils.ResolveIDAndType(string identifier, string objectDomain) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, TypedPrincipal WellKnownPrincipal)> GetWellKnownPrincipal(string securityIdentifier, string objectDomain) {
+            throw new NotImplementedException();
+        }
+
+        Task<(bool Success, string DomainName)> ILdapUtils.GetDomainNameFromSid(string sid) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, string DomainSid)> GetDomainSidFromDomainName(string domainName) {
+            throw new NotImplementedException();
+        }
+
+        public bool GetDomain(string domainName, out Domain domain) {
+            throw new NotImplementedException();
+        }
+
+        public bool GetDomain(out Domain domain) {
+            throw new NotImplementedException();
+        }
+
+        Task<(bool Success, TypedPrincipal Principal)> ILdapUtils.ResolveAccountName(string name, string domain) {
+            throw new NotImplementedException();
+        }
+
+        Task<(bool Success, string SecurityIdentifier)> ILdapUtils.ResolveHostToSid(string host, string domain) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, string[] Sids)> GetGlobalCatalogMatches(string name, string domain) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propValue, string propName, string domainName) {
+            throw new NotImplementedException();
+        }
+
         public TypedPrincipal ResolveIDAndType(string id, string fallbackDomain)
         {
             id = id?.ToUpper();
@@ -749,9 +808,29 @@ namespace CommonLibTest.Facades
             return false;
         }
 
+        Task<(bool Success, TypedPrincipal Principal)> ILdapUtils.ResolveDistinguishedName(string distinguishedName) {
+            throw new NotImplementedException();
+        }
+
         public void AddDomainController(string domainControllerSID)
         {
             _domainControllers.TryAdd(domainControllerSID, new byte());
+        }
+
+        public IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput() {
+            throw new NotImplementedException();
+        }
+
+        public void SetLdapConfig(LDAPConfig config) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, string Message)> TestLdapConnection(string domain) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, string Path)> GetNamingContextPath(string domain, NamingContext context) {
+            throw new NotImplementedException();
         }
 
         public Domain GetDomain(string domainName = null)
@@ -821,6 +900,10 @@ namespace CommonLibTest.Facades
             };
         }
 #pragma warning restore CS1998
+
+        Task<bool> ILdapUtils.IsDomainController(string computerObjectId, string domainName) {
+            throw new NotImplementedException();
+        }
 
         public TypedPrincipal ResolveDistinguishedName(string dn)
         {
@@ -1059,11 +1142,6 @@ namespace CommonLibTest.Facades
             };
         }
 
-        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(LDAPQueryOptions options)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props,
             CancellationToken cancellationToken,
             string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null,
@@ -1089,6 +1167,10 @@ namespace CommonLibTest.Facades
         {
             var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>();
             return mockSecurityDescriptor.Object;
+        }
+
+        public Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain) {
+            throw new NotImplementedException();
         }
 
         public string BuildLdapPath(string dnPath, string domain)
@@ -1118,14 +1200,13 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        TypedPrincipal ILDAPUtils.ResolveCertTemplateByProperty(string propValue, string propName, string containerDN, string domainName)
+        public bool IsDomainController(string computerObjectId, string domainName)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsDomainController(string computerObjectId, string domainName)
-        {
-            throw new NotImplementedException();
+        public void Dispose() {
+            _forest?.Dispose();
         }
     }
 }

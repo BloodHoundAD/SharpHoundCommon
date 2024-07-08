@@ -23,10 +23,14 @@ namespace CommonLibTest
             };
 
             var sre = MockableSearchResultEntry.Construct(attribs, "CN=Test,CN=OID,CN=Public Key Services,CN=Services,CN=Configuration");
-            Assert.Equal(Label.IssuancePolicy, sre.GetLabel());
+            var success = sre.GetLabel(out var label);
+            Assert.True(success);
+            Assert.Equal(Label.IssuancePolicy, label);
 
             sre = MockableSearchResultEntry.Construct(attribs, "CN=OID,CN=Public Key Services,CN=Services,CN=Configuration");
-            Assert.Equal(Label.Container, sre.GetLabel());
+            success = sre.GetLabel(out label);
+            Assert.True(success);
+            Assert.Equal(Label.Container, label);
         }
     }
 }
