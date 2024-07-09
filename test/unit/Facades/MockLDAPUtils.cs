@@ -696,15 +696,15 @@ namespace CommonLibTest.Facades
         }
 
         public async Task<(bool Success, TypedPrincipal Principal)> ResolveAccountName(string name, string domain) {
-            return (true, name.ToUpper() switch
-            {
+            var res = name.ToUpper() switch {
                 "ADMINISTRATOR" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-500", Label.User),
                 "DFM" => new TypedPrincipal(
                     "S-1-5-21-3130019616-2776909439-2417379446-1105", Label.User),
                 "TEST" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-1106", Label.User),
                 _ => null
-            });
+            };
+            return (res != null, res);
         }
 
         public async Task<(bool Success, string SecurityIdentifier)> ResolveHostToSid(string host, string domain) {
