@@ -276,741 +276,741 @@ namespace CommonLibTest
     
         Assert.Empty(result);
     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_Null_ACE()
-    //     {
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         collection.Add(null);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_Deny_ACE()
-    //     {
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Deny);
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_Unmatched_Inheritance_ACE()
-    //     {
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(false);
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_Null_SID_ACE()
-    //     {
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns((string)null);
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_GenericAll_Unmatched_Guid()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var unmatchedGuid = new Guid("583991c8-629d-4a07-8a70-74d19d22ac9c");
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericAll);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(unmatchedGuid);
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_GenericAll()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericAll);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, EdgeNames.GenericAll);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_WriteDacl()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = ActiveDirectoryRights.WriteDacl;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(expectedRightName);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName.ToString());
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_WriteOwner()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = ActiveDirectoryRights.WriteOwner;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(expectedRightName);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName.ToString());
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_Self()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.AddSelf;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.Self);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Group, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_Domain_Unmatched()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_Domain_DSReplicationGetChanges()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.GetChanges;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.DSReplicationGetChanges));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_Domain_All()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.AllExtendedRights;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_Domain_DSReplicationGetChangesAll()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.GetChangesAll;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.DSReplicationGetChangesAll));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_User_Unmatched()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.GetChangesAll;
-    //         var unmatchedGuid = new Guid("583991c8-629d-4a07-8a70-74d19d22ac9c");
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(unmatchedGuid);
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_User_UserForceChangePassword()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.ForceChangePassword;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.UserForceChangePassword));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_User_All()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.AllExtendedRights;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_Computer_NoLAPS()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.AllExtendedRights;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, false).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_Computer_All()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.AllExtendedRights;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, true).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact(Skip = "Need to populate cache to reach this case")]
-    //     public void ACLProcessor_ProcessACL_ExtendedRight_Computer_MappedGuid()
-    //     {
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_GenericWrite_Unmatched()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.AllExtendedRights;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Container, true).ToArray();
-    //
-    //         Assert.Empty(result);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_GenericWrite_User_All()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.GenericWrite;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.User, true).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_GenericWrite_User_WriteMember()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.AddMember;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Group, true).ToArray();
-    //
-    //         _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
-    //
-    //     [Fact]
-    //     public void ACLProcessor_ProcessACL_GenericWrite_Computer_WriteAllowedToAct()
-    //     {
-    //         var expectedPrincipalType = Label.Group;
-    //         var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
-    //         var expectedRightName = EdgeNames.AddAllowedToAct;
-    //
-    //         var mockLDAPUtils = new Mock<ILdapUtils>();
-    //         var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
-    //         var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
-    //         var collection = new List<ActiveDirectoryRuleDescriptor>();
-    //         mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
-    //         mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
-    //         mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
-    //         mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
-    //         mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteAllowedToAct));
-    //         collection.Add(mockRule.Object);
-    //
-    //         mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
-    //             .Returns(collection);
-    //         mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
-    //         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
-    //         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
-    //             .Returns(new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType));
-    //
-    //         var processor = new ACLProcessor(mockLDAPUtils.Object);
-    //         var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
-    //         var result = processor.ProcessACL(bytes, _testDomainName, Label.Computer, true).ToArray();
-    //
-    //         Assert.Single(result);
-    //         var actual = result.First();
-    //         Assert.Equal(actual.PrincipalType, expectedPrincipalType);
-    //         Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
-    //         Assert.Equal(actual.IsInherited, false);
-    //         Assert.Equal(actual.RightName, expectedRightName);
-    //     }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_Null_ACE()
+    {
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        collection.Add(null);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_Deny_ACE()
+    {
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Deny);
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_Unmatched_Inheritance_ACE()
+    {
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(false);
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_Null_SID_ACE()
+    {
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns((string)null);
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_GenericAll_Unmatched_Guid()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var unmatchedGuid = new Guid("583991c8-629d-4a07-8a70-74d19d22ac9c");
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericAll);
+        mockRule.Setup(x => x.ObjectType()).Returns(unmatchedGuid);
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_GenericAll()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericAll);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, EdgeNames.GenericAll);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_WriteDacl()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = ActiveDirectoryRights.WriteDacl;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(expectedRightName);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName.ToString());
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_WriteOwner()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = ActiveDirectoryRights.WriteOwner;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(expectedRightName);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName.ToString());
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_Self()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.AddSelf;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.Self);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Group, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_Domain_Unmatched()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_Domain_DSReplicationGetChanges()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.GetChanges;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.DSReplicationGetChanges));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_Domain_All()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.AllExtendedRights;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_Domain_DSReplicationGetChangesAll()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.GetChangesAll;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.DSReplicationGetChangesAll));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Domain, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_User_Unmatched()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.GetChangesAll;
+        var unmatchedGuid = new Guid("583991c8-629d-4a07-8a70-74d19d22ac9c");
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(unmatchedGuid);
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_User_UserForceChangePassword()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.ForceChangePassword;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.UserForceChangePassword));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_User_All()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.AllExtendedRights;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, false).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_Computer_NoLAPS()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.AllExtendedRights;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Computer, false).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_Computer_All()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.AllExtendedRights;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.ExtendedRight);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Computer, true).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact(Skip = "Need to populate cache to reach this case")]
+    public async Task ACLProcessor_ProcessACL_ExtendedRight_Computer_MappedGuid()
+    {
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_GenericWrite_Unmatched()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.AllExtendedRights;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Container, true).ToArrayAsync();
+    
+        Assert.Empty(result);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_GenericWrite_User_All()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.GenericWrite;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.AllGuid));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.User, true).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_GenericWrite_User_WriteMember()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.AddMember;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteMember));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(AddMemberSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Group, true).ToArrayAsync();
+    
+        _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
+    
+    [Fact]
+    public async Task ACLProcessor_ProcessACL_GenericWrite_Computer_WriteAllowedToAct()
+    {
+        var expectedPrincipalType = Label.Group;
+        var expectedPrincipalSID = "S-1-5-21-3130019616-2776909439-2417379446-512";
+        var expectedRightName = EdgeNames.AddAllowedToAct;
+    
+        var mockLDAPUtils = new Mock<ILdapUtils>();
+        var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+        var mockRule = new Mock<ActiveDirectoryRuleDescriptor>(MockBehavior.Loose, null);
+        var collection = new List<ActiveDirectoryRuleDescriptor>();
+        mockRule.Setup(x => x.AccessControlType()).Returns(AccessControlType.Allow);
+        mockRule.Setup(x => x.IsAceInheritedFrom(It.IsAny<string>())).Returns(true);
+        mockRule.Setup(x => x.IdentityReference()).Returns(expectedPrincipalSID);
+        mockRule.Setup(x => x.ActiveDirectoryRights()).Returns(ActiveDirectoryRights.GenericWrite);
+        mockRule.Setup(x => x.ObjectType()).Returns(new Guid(ACEGuids.WriteAllowedToAct));
+        collection.Add(mockRule.Object);
+    
+        mockSecurityDescriptor.Setup(m => m.GetAccessRules(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<Type>()))
+            .Returns(collection);
+        mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
+        mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+        mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
+    
+        var processor = new ACLProcessor(mockLDAPUtils.Object);
+        var bytes = Helpers.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
+        var result = await processor.ProcessACL(bytes, _testDomainName, Label.Computer, true).ToArrayAsync();
+    
+        Assert.Single(result);
+        var actual = result.First();
+        Assert.Equal(actual.PrincipalType, expectedPrincipalType);
+        Assert.Equal(actual.PrincipalSID, expectedPrincipalSID);
+        Assert.Equal(actual.IsInherited, false);
+        Assert.Equal(actual.RightName, expectedRightName);
+    }
     }
 }
