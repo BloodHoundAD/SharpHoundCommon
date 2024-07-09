@@ -664,7 +664,7 @@ namespace CommonLibTest.Facades
                 _ => null
             };
 
-            return (true, principal);
+            return (principal != null, principal);
         }
 
         public async Task<(bool Success, TypedPrincipal WellKnownPrincipal)> GetWellKnownPrincipal(string securityIdentifier, string objectDomain) {
