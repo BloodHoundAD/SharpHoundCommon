@@ -502,6 +502,28 @@ namespace SharpHoundCommonLib.Processors {
                 };
             }
 
+            protected bool Equals(GroupAction other) {
+                return Action == other.Action && Target == other.Target && TargetSid == other.TargetSid && TargetType == other.TargetType && TargetRid == other.TargetRid;
+            }
+
+            public override bool Equals(object obj) {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != this.GetType()) return false;
+                return Equals((GroupAction)obj);
+            }
+
+            public override int GetHashCode() {
+                unchecked {
+                    var hashCode = (int)Action;
+                    hashCode = (hashCode * 397) ^ (int)Target;
+                    hashCode = (hashCode * 397) ^ (TargetSid != null ? TargetSid.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ (int)TargetType;
+                    hashCode = (hashCode * 397) ^ (int)TargetRid;
+                    return hashCode;
+                }
+            }
+
             public override string ToString() {
                 return
                     $"{nameof(Action)}: {Action}, {nameof(Target)}: {Target}, {nameof(TargetSid)}: {TargetSid}, {nameof(TargetType)}: {TargetType}, {nameof(TargetRid)}: {TargetRid}";
