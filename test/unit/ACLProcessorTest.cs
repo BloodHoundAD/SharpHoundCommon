@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 using System.Security.AccessControl;
+using System.Threading;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using Moq;
@@ -65,6 +66,9 @@ namespace CommonLibTest
         {
             var mockLdapUtils = new MockLDAPUtils();
             var mockUtils = new Mock<ILdapUtils>();
+            var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+            mockUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(mockData.ToAsyncEnumerable());
             mockUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns((string a, string b) => mockLdapUtils.ResolveIDAndType(a, b));
             var sd = new ActiveDirectorySecurityDescriptor(new ActiveDirectorySecurity());
