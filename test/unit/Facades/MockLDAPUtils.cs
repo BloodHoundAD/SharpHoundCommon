@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.ActiveDirectory;
-using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
-using SharpHoundRPC.Wrappers;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
 namespace CommonLibTest.Facades
 {
@@ -28,92 +27,28 @@ namespace CommonLibTest.Facades
             _forest = MockableForest.Construct("FOREST.LOCAL");
         }
 
-        public void SetLDAPConfig(LDAPConfig config)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool TestLDAPConfig(string domain)
-        {
-            return true;
-        }
-
-        public string[] GetUserGlobalCatalogMatches(string name)
-        {
-            name = name.ToLower();
-            return name switch
-            {
-                "dfm" => new[] { "S-1-5-21-3130019616-2776909439-2417379446-1105" },
-                "administrator" => new[]
-                    {"S-1-5-21-3130019616-2776909439-2417379446-500", "S-1-5-21-3084884204-958224920-2707782874-500"},
-                "admin" => new[] { "S-1-5-21-3130019616-2776909439-2417379446-2116" },
-                _ => Array.Empty<string>()
-            };
-        }
-
-        public IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
+        public virtual IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new CancellationToken()) {
             throw new NotImplementedException();
         }
 
-        public IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
+        public virtual IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new CancellationToken()) {
             throw new NotImplementedException();
         }
 
-        public IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName, string attributeName,
+        public virtual IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName, string attributeName,
             CancellationToken cancellationToken = new CancellationToken()) {
             throw new NotImplementedException();
         }
 
         public Task<(bool Success, TypedPrincipal Principal)> ResolveIDAndType(SecurityIdentifier securityIdentifier, string objectDomain) {
-            throw new NotImplementedException();
+            return ResolveIDAndType(securityIdentifier.Value, objectDomain);
         }
 
-        Task<(bool Success, TypedPrincipal Principal)> ILdapUtils.ResolveIDAndType(string identifier, string objectDomain) {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool Success, TypedPrincipal WellKnownPrincipal)> GetWellKnownPrincipal(string securityIdentifier, string objectDomain) {
-            throw new NotImplementedException();
-        }
-
-        Task<(bool Success, string DomainName)> ILdapUtils.GetDomainNameFromSid(string sid) {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool Success, string DomainSid)> GetDomainSidFromDomainName(string domainName) {
-            throw new NotImplementedException();
-        }
-
-        public bool GetDomain(string domainName, out Domain domain) {
-            throw new NotImplementedException();
-        }
-
-        public bool GetDomain(out Domain domain) {
-            throw new NotImplementedException();
-        }
-
-        Task<(bool Success, TypedPrincipal Principal)> ILdapUtils.ResolveAccountName(string name, string domain) {
-            throw new NotImplementedException();
-        }
-
-        Task<(bool Success, string SecurityIdentifier)> ILdapUtils.ResolveHostToSid(string host, string domain) {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool Success, string[] Sids)> GetGlobalCatalogMatches(string name, string domain) {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propValue, string propName, string domainName) {
-            throw new NotImplementedException();
-        }
-
-        public TypedPrincipal ResolveIDAndType(string id, string fallbackDomain)
-        {
-            id = id?.ToUpper();
-            if (GetWellKnownPrincipal(id, fallbackDomain, out var principal)) return principal;
+        public async Task<(bool Success, TypedPrincipal Principal)> ResolveIDAndType(string identifier, string objectDomain) {
+            var id = identifier.ToUpper();
+            if (await GetWellKnownPrincipal(id, objectDomain) is (true, var principal)) return (true, principal);
 
             principal = id switch
             {
@@ -729,34 +664,81 @@ namespace CommonLibTest.Facades
                 _ => null
             };
 
-            return principal;
+            return (principal != null, principal);
         }
 
-        public Label LookupSidType(string sid, string domain)
-        {
-            var result = ResolveIDAndType(sid, domain);
-            return result.ObjectType;
+        public async Task<(bool Success, TypedPrincipal WellKnownPrincipal)> GetWellKnownPrincipal(string securityIdentifier, string objectDomain) {
+            if (!WellKnownPrincipal.GetWellKnownPrincipal(securityIdentifier, out var commonPrincipal)) return (false, default);
+            commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(securityIdentifier, objectDomain);
+            _seenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, securityIdentifier);
+            return (true, commonPrincipal);
         }
 
-        public Label LookupGuidType(string guid, string domain)
-        {
-            var result = ResolveIDAndType(guid, domain);
-            return result.ObjectType;
-        }
-
-        public string GetDomainNameFromSid(string sid)
-        {
+        Task<(bool Success, string DomainName)> ILdapUtils.GetDomainNameFromSid(string sid) {
             throw new NotImplementedException();
         }
 
-        public string GetSidFromDomainName(string domainName)
-        {
+        public async Task<(bool Success, string DomainSid)> GetDomainSidFromDomainName(string domainName) {
             if (domainName.Equals("TESTLAB.LOCAL", StringComparison.OrdinalIgnoreCase))
             {
-                return "S-1-5-21-3130019616-2776909439-2417379446";
+                return (true, "S-1-5-21-3130019616-2776909439-2417379446");
             }
 
-            return null;
+            return (false, default);
+        }
+
+        public bool GetDomain(string domainName, out Domain domain) {
+            throw new NotImplementedException();
+        }
+
+        public bool GetDomain(out Domain domain) {
+            throw new NotImplementedException();
+        }
+
+        public async Task<(bool Success, TypedPrincipal Principal)> ResolveAccountName(string name, string domain) {
+            var res = name.ToUpper() switch {
+                "ADMINISTRATOR" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-500", Label.User),
+                "DFM" => new TypedPrincipal(
+                    "S-1-5-21-3130019616-2776909439-2417379446-1105", Label.User),
+                "TEST" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-1106", Label.User),
+                _ => null
+            };
+            return (res != null, res);
+        }
+
+        public async Task<(bool Success, string SecurityIdentifier)> ResolveHostToSid(string host, string domain) {
+            var h = SharpHoundCommonLib.Helpers.StripServicePrincipalName(host);
+            
+            var resolved =  h.ToUpper() switch
+            {
+                "192.168.1.1" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
+                "PRIMARY" => "S-1-5-21-3130019616-2776909439-2417379446-1001",
+                "PRIMARY.TESTLAB.LOCAL" => "S-1-5-21-3130019616-2776909439-2417379446-1001",
+                "WIN10" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
+                "WIN10.TESTLAB.LOCAL" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
+                _ => null
+            };
+
+            return (resolved != null, resolved);
+        }
+
+        public async Task<(bool Success, string[] Sids)> GetGlobalCatalogMatches(string name, string domain) {
+            name = name.ToLower();
+            var results =  name switch
+            {
+                "dfm" => new[] { "S-1-5-21-3130019616-2776909439-2417379446-1105" },
+                "administrator" => new[]
+                    {"S-1-5-21-3130019616-2776909439-2417379446-500", "S-1-5-21-3084884204-958224920-2707782874-500"},
+                "admin" => new[] { "S-1-5-21-3130019616-2776909439-2417379446-2116" },
+                _ => Array.Empty<string>()
+            };
+
+            return (!results.IsNullOrEmpty(), results);
+        }
+
+        public Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propValue, string propName, string domainName) {
+            throw new NotImplementedException();
         }
 
         public string ConvertWellKnownPrincipal(string sid, string domain)
@@ -769,145 +751,8 @@ namespace CommonLibTest.Facades
             return $"{forest}-{sid}".ToUpper();
         }
 
-        public bool GetWellKnownPrincipal(string sid, string domain, out TypedPrincipal commonPrincipal)
-        {
-            if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out commonPrincipal)) return false;
-            commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(sid, domain);
-            _seenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, sid);
-            return true;
-        }
-
-        public bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain,
-            out TypedPrincipal principal)
-        {
-            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
-            {
-                //The everyone and auth users principals are special and will be converted to the domain equivalent
-                if (sid.Value is "S-1-1-0" or "S-1-5-11")
-                {
-                    GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
-                    return true;
-                }
-
-                //Use the computer object id + the RID of the sid we looked up to create our new principal
-                principal = new TypedPrincipal
-                {
-                    ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
-                    ObjectType = common.ObjectType switch
-                    {
-                        Label.User => Label.LocalUser,
-                        Label.Group => Label.LocalGroup,
-                        _ => common.ObjectType
-                    }
-                };
-
-                return true;
-            }
-
-            principal = null;
-            return false;
-        }
-
-        Task<(bool Success, TypedPrincipal Principal)> ILdapUtils.ResolveDistinguishedName(string distinguishedName) {
-            throw new NotImplementedException();
-        }
-
-        public void AddDomainController(string domainControllerSID)
-        {
-            _domainControllers.TryAdd(domainControllerSID, new byte());
-        }
-
-        public IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput() {
-            throw new NotImplementedException();
-        }
-
-        public void SetLdapConfig(LDAPConfig config) {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool Success, string Message)> TestLdapConnection(string domain) {
-            throw new NotImplementedException();
-        }
-
-        public Task<(bool Success, string Path)> GetNamingContextPath(string domain, NamingContext context) {
-            throw new NotImplementedException();
-        }
-
-        public Domain GetDomain(string domainName = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput(string domain)
-        {
-            foreach (var wkp in _seenWellKnownPrincipals)
-            {
-                WellKnownPrincipal.GetWellKnownPrincipal(wkp.Value, out var principal);
-                OutputBase output = principal.ObjectType switch
-                {
-                    Label.User => new User(),
-                    Label.Computer => new Computer(),
-                    Label.Group => new Group(),
-                    Label.GPO => new GPO(),
-                    Label.Domain => new SharpHoundCommonLib.OutputTypes.Domain(),
-                    Label.OU => new OU(),
-                    Label.Container => new Container(),
-                    _ => throw new ArgumentOutOfRangeException()
-                };
-
-                output.Properties.Add("name", principal.ObjectIdentifier);
-                output.ObjectIdentifier = wkp.Key;
-                yield return output;
-            }
-
-            var entdc = GetBaseEnterpriseDC();
-            entdc.Members = _domainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
-            yield return entdc;
-        }
-
-        public virtual IEnumerable<string> DoRangedRetrieval(string distinguishedName, string attributeName)
-        {
-            throw new NotImplementedException();
-        }
-
-#pragma warning disable CS1998
-        public async Task<string> ResolveHostToSid(string hostname, string domain)
-        {
-            var h = SharpHoundCommonLib.Helpers.StripServicePrincipalName(hostname);
-            return h.ToUpper() switch
-            {
-                "192.168.1.1" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
-                "PRIMARY" => "S-1-5-21-3130019616-2776909439-2417379446-1001",
-                "PRIMARY.TESTLAB.LOCAL" => "S-1-5-21-3130019616-2776909439-2417379446-1001",
-                "WIN10" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
-                "WIN10.TESTLAB.LOCAL" => "S-1-5-21-3130019616-2776909439-2417379446-1104",
-                _ => null
-            };
-        }
-#pragma warning restore CS1998
-
-#pragma warning disable CS1998
-        public TypedPrincipal ResolveAccountName(string name, string domain)
-        {
-            return name.ToUpper() switch
-            {
-                "ADMINISTRATOR" => new TypedPrincipal(
-                    "S-1-5-21-3130019616-2776909439-2417379446-500", Label.User),
-                "DFM" => new TypedPrincipal(
-                    "S-1-5-21-3130019616-2776909439-2417379446-1105", Label.User),
-                "TEST" => new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-1106", Label.User),
-                _ => null
-            };
-        }
-#pragma warning restore CS1998
-
-        Task<bool> ILdapUtils.IsDomainController(string computerObjectId, string domainName) {
-            throw new NotImplementedException();
-        }
-
-        public TypedPrincipal ResolveDistinguishedName(string dn)
-        {
-            return dn.ToUpper() switch
+        public async Task<(bool Success, TypedPrincipal Principal)> ResolveDistinguishedName(string distinguishedName) {
+            var result =  distinguishedName.ToUpper() switch
             {
                 "CN=REPLICATOR,CN=BUILTIN,DC=TESTLAB,DC=LOCAL" => new TypedPrincipal("TESTLAB.LOCAL-S-1-5-32-552",
                     Label.Group),
@@ -1140,21 +985,64 @@ namespace CommonLibTest.Facades
                 "CN=ENTERPRISE KEY ADMINS,CN=USERS,DC=ESC10,DC=LOCAL" => new TypedPrincipal("S-1-5-21-3662707843-2053279151-3839588741-527", Label.Group),
                 _ => null,
             };
+
+            return (result != null, result);
         }
 
-        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props,
-            CancellationToken cancellationToken,
-            string domainName = null, bool includeAcl = false, bool showDeleted = false, string adsPath = null,
-            bool globalCatalog = false, bool skipCache = false, bool throwException = false)
+        public void AddDomainController(string domainControllerSID)
+        {
+            _domainControllers.TryAdd(domainControllerSID, new byte());
+        }
+
+        public IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput() {
+            throw new NotImplementedException();
+        }
+
+        public void SetLdapConfig(LDAPConfig config) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, string Message)> TestLdapConnection(string domain) {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, string Path)> GetNamingContextPath(string domain, NamingContext context) {
+            throw new NotImplementedException();
+        }
+
+        public Domain GetDomain(string domainName = null)
         {
             throw new NotImplementedException();
         }
 
-        public virtual IEnumerable<ISearchResultEntry> QueryLDAP(string ldapFilter, SearchScope scope, string[] props,
-            string domainName = null,
-            bool includeAcl = false, bool showDeleted = false, string adsPath = null, bool globalCatalog = false,
-            bool skipCache = false, bool throwException = false)
+        public IEnumerable<OutputBase> GetWellKnownPrincipalOutput(string domain)
         {
+            foreach (var wkp in _seenWellKnownPrincipals)
+            {
+                WellKnownPrincipal.GetWellKnownPrincipal(wkp.Value, out var principal);
+                OutputBase output = principal.ObjectType switch
+                {
+                    Label.User => new User(),
+                    Label.Computer => new Computer(),
+                    Label.Group => new Group(),
+                    Label.GPO => new GPO(),
+                    Label.Domain => new SharpHoundCommonLib.OutputTypes.Domain(),
+                    Label.OU => new OU(),
+                    Label.Container => new Container(),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                output.Properties.Add("name", principal.ObjectIdentifier);
+                output.ObjectIdentifier = wkp.Key;
+                yield return output;
+            }
+
+            var entdc = GetBaseEnterpriseDC();
+            entdc.Members = _domainControllers.Select(x => new TypedPrincipal(x.Key, Label.Computer)).ToArray();
+            yield return entdc;
+        }
+
+        Task<bool> ILdapUtils.IsDomainController(string computerObjectId, string domainName) {
             throw new NotImplementedException();
         }
 
@@ -1169,8 +1057,31 @@ namespace CommonLibTest.Facades
             return mockSecurityDescriptor.Object;
         }
 
-        public Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain) {
-            throw new NotImplementedException();
+        public async Task<(bool Success, TypedPrincipal Principal)> ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid, string computerDomain) {
+            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
+            {
+                //The everyone and auth users principals are special and will be converted to the domain equivalent
+                if (sid.Value is "S-1-1-0" or "S-1-5-11")
+                {
+                    return await GetWellKnownPrincipal(sid.Value, computerDomain);
+                }
+
+                //Use the computer object id + the RID of the sid we looked up to create our new principal
+                var principal = new TypedPrincipal
+                {
+                    ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
+                    ObjectType = common.ObjectType switch
+                    {
+                        Label.User => Label.LocalUser,
+                        Label.Group => Label.LocalGroup,
+                        _ => common.ObjectType
+                    }
+                };
+
+                return (true, principal);
+            }
+
+            return (false, default);
         }
 
         public string BuildLdapPath(string dnPath, string domain)
@@ -1184,12 +1095,7 @@ namespace CommonLibTest.Facades
             g.Properties.Add("name", "ENTERPRISE DOMAIN CONTROLLERS@TESTLAB.LOCAL".ToUpper());
             return g;
         }
-
-        public TypedPrincipal ResolveCertTemplateByCN(string cn, string containerDN, string domainName)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public string GetConfigurationPath(string domainName)
         {
             throw new NotImplementedException();
@@ -1206,7 +1112,7 @@ namespace CommonLibTest.Facades
         }
 
         public void Dispose() {
-            _forest?.Dispose();
+         
         }
     }
 }

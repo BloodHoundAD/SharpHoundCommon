@@ -1701,7 +1701,7 @@ namespace SharpHoundCommonLib
                 if (distinguishedName.StartsWith(DirectoryPaths.OIDContainerLocation,
                         StringComparison.InvariantCultureIgnoreCase))
                     type = Label.Container;
-                if (flags == 2)
+                else if (flags == 2)
                 {
                     type = Label.IssuancePolicy;
                 }
