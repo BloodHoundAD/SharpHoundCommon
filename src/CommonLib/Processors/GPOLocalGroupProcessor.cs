@@ -49,10 +49,12 @@ namespace SharpHoundCommonLib.Processors {
             _log = log ?? Logging.LogProvider.CreateLogger("GPOLocalGroupProc");
         }
 
-        public Task<ResultingGPOChanges> ReadGPOLocalGroups(ISearchResultEntry entry) {
-            var links = entry.GetProperty(LDAPProperties.GPLink);
-            var dn = entry.DistinguishedName;
-            return ReadGPOLocalGroups(links, dn);
+        public Task<ResultingGPOChanges> ReadGPOLocalGroups(IDirectoryObject entry) {
+            if (entry.TryGetProperty(LDAPProperties.GPLink, out var links) && entry.TryGetDistinguishedName(out var dn)) {
+                return ReadGPOLocalGroups(links, dn);    
+            }
+
+            return default;
         }
 
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName) {
@@ -74,8 +76,7 @@ namespace SharpHoundCommonLib.Processors {
                 }
 
                 var entry = result.Value;
-                var sid = entry.GetSid();
-                if (string.IsNullOrWhiteSpace(sid)) {
+                if (!entry.TryGetSecurityIdentifier(out var sid)) {
                     continue;
                 }
 
@@ -125,8 +126,7 @@ namespace SharpHoundCommonLib.Processors {
                         continue;
                     }
 
-                    var filePath = result.Value.GetProperty(LDAPProperties.GPCFileSYSPath);
-                    if (string.IsNullOrWhiteSpace(filePath)) {
+                    if (!result.Value.TryGetProperty(LDAPProperties.GPCFileSYSPath, out var filePath)) {
                         GpoActionCache.TryAdd(linkDn, actions);
                         continue;
                     }

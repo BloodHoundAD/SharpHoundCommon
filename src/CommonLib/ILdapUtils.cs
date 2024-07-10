@@ -8,10 +8,10 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib {
     public interface ILdapUtils : IDisposable {
-        IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
+        IAsyncEnumerable<LdapResult<IDirectoryObject>> Query(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new());
 
-        IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
+        IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new());
 
         IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName,

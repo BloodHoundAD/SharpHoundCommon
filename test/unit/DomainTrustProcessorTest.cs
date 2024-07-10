@@ -29,7 +29,7 @@ namespace CommonLibTest
             var mockUtils = new Mock<MockLDAPUtils>();
             var searchResults = new[]
             {
-                LdapResult<ISearchResultEntry>.Ok(new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
                     new Dictionary<string, object>
                     {
                         {"trustdirection", "3"},
@@ -37,7 +37,7 @@ namespace CommonLibTest
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
                         {"securityidentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
-                    }, "", Label.Domain))
+                    }, "","", Label.Domain))
             };
 
             mockUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>())).Returns(searchResults.ToAsyncEnumerable);
@@ -59,7 +59,7 @@ namespace CommonLibTest
             var mockUtils = new Mock<MockLDAPUtils>();
             var searchResults = new[]
             {
-                LdapResult<ISearchResultEntry>.Ok(new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
                     new Dictionary<string, object>
                     {
                         {"trustdirection", "3"},
@@ -67,8 +67,8 @@ namespace CommonLibTest
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
                         {"securityIdentifier", Array.Empty<byte>()}
-                    }, "", Label.Domain)),
-                LdapResult<ISearchResultEntry>.Ok(new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
+                    }, "","", Label.Domain)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
                     new Dictionary<string, object>
                     {
                         {"trustdirection", "3"},
@@ -76,23 +76,23 @@ namespace CommonLibTest
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
                         {"securityIdentifier", Helpers.B64ToBytes("QQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
-                    }, "", Label.Domain)),
-                LdapResult<ISearchResultEntry>.Ok(new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
+                    }, "","", Label.Domain)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
                     new Dictionary<string, object>
                     {
                         {"trusttype", "2"},
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
                         {"securityIdentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
-                    }, "", Label.Domain)),
-                LdapResult<ISearchResultEntry>.Ok(new MockSearchResultEntry("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
+                    }, "","", Label.Domain)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
                     new Dictionary<string, object>
                     {
                         {"trustdirection", "3"},
                         {"trusttype", "2"},
                         {"cn", "external.local"},
                         {"securityIdentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
-                    }, "", Label.Domain))
+                    }, "","", Label.Domain))
             };
 
             mockUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>())).Returns(searchResults.ToAsyncEnumerable);

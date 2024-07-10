@@ -47,12 +47,12 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="result"></param>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public Task<ComputerStatus> IsComputerAvailable(ResolvedSearchResult result, ISearchResultEntry entry)
+        public Task<ComputerStatus> IsComputerAvailable(ResolvedSearchResult result, IDirectoryObject entry)
         {
             var name = result.DisplayName;
-            var os = entry.GetProperty(LDAPProperties.OperatingSystem);
-            var pwdlastset = entry.GetProperty(LDAPProperties.PasswordLastSet);
-
+            entry.TryGetProperty(LDAPProperties.OperatingSystem, out var os);
+            entry.TryGetProperty(LDAPProperties.PasswordLastSet, out var pwdlastset);
+            
             return IsComputerAvailable(name, os, pwdlastset);
         }
 

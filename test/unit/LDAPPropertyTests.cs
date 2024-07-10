@@ -23,11 +23,11 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadDomainProperties_TestGoodData()
         {
-            var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
+            var mock = new MockDirectoryObject("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
             {
                 {"description", "TESTLAB Domain"},
                 {"msds-behavior-version", "6"}
-            }, "S-1-5-21-3130019616-2776909439-2417379446", Label.Domain);
+            }, "S-1-5-21-3130019616-2776909439-2417379446","", Label.Domain);
 
             var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
             Assert.Contains("functionallevel", test.Keys);
@@ -39,10 +39,10 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadDomainProperties_TestBadFunctionalLevel()
         {
-            var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
+            var mock = new MockDirectoryObject("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
             {
                 {"msds-behavior-version", "a"}
-            }, "S-1-5-21-3130019616-2776909439-2417379446", Label.Domain);
+            }, "S-1-5-21-3130019616-2776909439-2417379446","", Label.Domain);
 
             var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
             Assert.Contains("functionallevel", test.Keys);
@@ -72,7 +72,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadGPOProperties_TestGoodData()
         {
-            var mock = new MockSearchResultEntry(
+            var mock = new MockDirectoryObject(
                 "CN\u003d{94DD0260-38B5-497E-8876-10E7A96E80D0},CN\u003dPolicies,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
@@ -82,7 +82,7 @@ namespace CommonLibTest
                             "XFx0ZXN0bGFiLmxvY2FsXFN5c1ZvbFx0ZXN0bGFiLmxvY2FsXFBvbGljaWVzXHs5NEREMDI2MC0zOEI1LTQ5N0UtODg3Ni0xMEU3QTk2RTgwRDB9")
                     },
                     {"description", "Test"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446", Label.GPO);
+                }, "S-1-5-21-3130019616-2776909439-2417379446","", Label.GPO);
 
             var test = LDAPPropertyProcessor.ReadGPOProperties(mock);
 
@@ -96,11 +96,11 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadOUProperties_TestGoodData()
         {
-            var mock = new MockSearchResultEntry("OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"}
-                }, "2A374493-816A-4193-BEFD-D2F4132C6DCA", Label.OU);
+                },"", "2A374493-816A-4193-BEFD-D2F4132C6DCA", Label.OU);
 
             var test = LDAPPropertyProcessor.ReadOUProperties(mock);
             Assert.Contains("description", test.Keys);
@@ -110,12 +110,12 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadGroupProperties_TestGoodData()
         {
-            var mock = new MockSearchResultEntry("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
                     {"admincount", "1"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-512","", Label.Group);
 
             var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
@@ -127,12 +127,12 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadGroupProperties_TestGoodData_FalseAdminCount()
         {
-            var mock = new MockSearchResultEntry("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
                     {"admincount", "0"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-512","", Label.Group);
 
             var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
@@ -144,11 +144,11 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadGroupProperties_NullAdminCount()
         {
-            var mock = new MockSearchResultEntry("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003dDomain Admins,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-512", Label.Group);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-512","", Label.Group);
 
             var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
@@ -160,7 +160,7 @@ namespace CommonLibTest
         [Fact]
         public async Task LDAPPropertyProcessor_ReadUserProperties_TestTrustedToAuth()
         {
-            var mock = new MockSearchResultEntry("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
@@ -189,10 +189,10 @@ namespace CommonLibTest
                             "rdpman/win10"
                         }
                     }
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "",Label.User);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
-            var test = await processor.ReadUserProperties(mock);
+            var test = await processor.ReadUserProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
 
@@ -223,7 +223,7 @@ namespace CommonLibTest
         [Fact]
         public async Task LDAPPropertyProcessor_ReadUserProperties_NullAdminCount()
         {
-            var mock = new MockSearchResultEntry("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
@@ -244,10 +244,10 @@ namespace CommonLibTest
                         }
                     },
                     {"pwdlastset", "132131667346106691"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","", Label.User);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
-            var test = await processor.ReadUserProperties(mock);
+            var test = await processor.ReadUserProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
             Assert.Contains("admincount", keys);
@@ -257,7 +257,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task LDAPPropertyProcessor_ReadUserProperties_HappyPath()
         {
-            var mock = new MockSearchResultEntry("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
@@ -280,10 +280,10 @@ namespace CommonLibTest
                         }
                     },
                     {"pwdlastset", "132131667346106691"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","", Label.User);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
-            var test = await processor.ReadUserProperties(mock);
+            var test = await processor.ReadUserProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
 
@@ -339,7 +339,7 @@ namespace CommonLibTest
         [Fact]
         public async Task LDAPPropertyProcessor_ReadUserProperties_TestBadPaths()
         {
-            var mock = new MockSearchResultEntry("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003ddfm,CN\u003dUsers,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
@@ -361,10 +361,10 @@ namespace CommonLibTest
                         }
                     },
                     {"pwdlastset", "132131667346106691"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.User);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","", Label.User);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
-            var test = await processor.ReadUserProperties(mock);
+            var test = await processor.ReadUserProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
 
@@ -392,7 +392,7 @@ namespace CommonLibTest
         public async Task LDAPPropertyProcessor_ReadComputerProperties_HappyPath()
         {
             //TODO: Add coverage for allowedtoact
-            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
@@ -429,10 +429,10 @@ namespace CommonLibTest
                             "HOST/WIN10.testlab.local"
                         }
                     }
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","", Label.Computer);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
-            var test = await processor.ReadComputerProperties(mock);
+            var test = await processor.ReadComputerProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
 
@@ -490,7 +490,7 @@ namespace CommonLibTest
         [Fact]
         public async Task LDAPPropertyProcessor_ReadComputerProperties_TestBadPaths()
         {
-            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
@@ -525,10 +525,10 @@ namespace CommonLibTest
                             "HOST/WIN10.testlab.local"
                         }
                     }
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "",Label.Computer);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
-            var test = await processor.ReadComputerProperties(mock);
+            var test = await processor.ReadComputerProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
 
@@ -546,7 +546,7 @@ namespace CommonLibTest
         [Fact]
         public async Task LDAPPropertyProcessor_ReadComputerProperties_TestDumpSMSAPassword()
         {
-            var mock = new MockSearchResultEntry("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
+            var mock = new MockDirectoryObject("CN\u003dWIN10,OU\u003dTestOU,DC\u003dtestlab,DC\u003dlocal",
                 new Dictionary<string, object>
                 {
                     {"description", "Test"},
@@ -589,10 +589,10 @@ namespace CommonLibTest
                             "CN=krbtgt,CN=Users,DC=testlab,DC=local"
                         }
                     }
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", Label.Computer);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "",Label.Computer);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
-            var test = await processor.ReadComputerProperties(mock);
+            var test = await processor.ReadComputerProperties(mock, "testlab.local");
 
             var expected = new TypedPrincipal[]
             {
@@ -617,7 +617,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadRootCAProperties()
         {
-            var mock = new MockSearchResultEntry(
+            var mock = new MockDirectoryObject(
                 "CN\u003dDUMPSTER-DC01-CA,CN\u003dCERTIFICATION AUTHORITIES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
                 {
@@ -626,7 +626,7 @@ namespace CommonLibTest
                     {"name", "DUMPSTER-DC01-CA@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.RootCA);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.RootCA);
 
             var test = LDAPPropertyProcessor.ReadRootCAProperties(mock);
             var keys = test.Keys;
@@ -643,7 +643,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadAIACAProperties()
         {
-            var mock = new MockSearchResultEntry(
+            var mock = new MockDirectoryObject(
                 "CN\u003dDUMPSTER-DC01-CA,CN\u003dAIA,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
                 {
@@ -653,7 +653,7 @@ namespace CommonLibTest
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
                     {"hascrosscertificatepair", true},
-                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.AIACA);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.AIACA);
 
             var test = LDAPPropertyProcessor.ReadAIACAProperties(mock);
             var keys = test.Keys;
@@ -671,7 +671,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadNTAuthStoreProperties()
         {
-            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
                 {
                     {"description", null},
@@ -679,7 +679,7 @@ namespace CommonLibTest
                     {"name", "NTAUTHCERTIFICATES@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
 
             var test = LDAPPropertyProcessor.ReadNTAuthStoreProperties(mock);
             var keys = test.Keys;
@@ -696,7 +696,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ReadCertTemplateProperties()
         {
-            var mock = new MockSearchResultEntry("CN\u003dWORKSTATION,CN\u003dCERTIFICATE TEMPLATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dEXTERNAL,DC\u003dLOCAL",
+            var mock = new MockDirectoryObject("CN\u003dWORKSTATION,CN\u003dCERTIFICATE TEMPLATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dEXTERNAL,DC\u003dLOCAL",
                 new Dictionary<string, object>
                 {
                     {"domain", "EXTERNAL.LOCAL"},
@@ -706,12 +706,12 @@ namespace CommonLibTest
                     {"whencreated", 1683986183},
                     {"validityperiod", 31536000},
                     {"renewalperiod", 3628800},
-                    {"schemaversion", 2},
+                    {LDAPProperties.TemplateSchemaVersion, 2},
                     {"displayname", "Workstation Authentication"},
                     {"oid", "1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.30"},
-                    {"enrollmentflag", 32},
+                    {LDAPProperties.PKIEnrollmentFlag, 32},
                     {"requiresmanagerapproval", false},
-                    {"certificatenameflag", 0x8000000},
+                    {LDAPProperties.PKINameFlag, 0x8000000},
                     {"ekus", new[]
                     {"1.3.6.1.5.5.7.3.2"}
                     },
@@ -721,7 +721,7 @@ namespace CommonLibTest
                     {LDAPProperties.CertificatePolicy, new[]
                         {"1.3.6.1.5.5.7.3.2"}
                     },
-                    {"authorizedsignatures", 1},
+                    {LDAPProperties.NumSignaturesRequired, 1},
                     {"applicationpolicies", new[]
                     {  "1.3.6.1.4.1.311.20.2.1"}
                     },
@@ -729,7 +729,7 @@ namespace CommonLibTest
                     {"1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.400",
                     "1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.402"}
                     },
-                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.CertTemplate);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.CertTemplate);
 
             var test = LDAPPropertyProcessor.ReadCertTemplateProperties(mock);
             var keys = test.Keys;
@@ -773,7 +773,7 @@ namespace CommonLibTest
         // [Fact]
         // public void LDAPPropertyProcessor_ReadIssuancePolicyProperties()
         // {
-        //     var mock = new MockSearchResultEntry("CN\u003d6250993.11BB1AB25A8A65E9FCDF709FCDD5FBC6,CN\u003dOID,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dESC10,DC\u003dLOCAL",
+        //     var mock = new MockDirectoryObject("CN\u003d6250993.11BB1AB25A8A65E9FCDF709FCDD5FBC6,CN\u003dOID,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dESC10,DC\u003dLOCAL",
         //         new Dictionary<string, object>
         //         {
         //             {"domain", "ESC10.LOCAL"},
@@ -809,7 +809,7 @@ namespace CommonLibTest
         // [Fact]
         // public void LDAPPropertyProcessor_ReadIssuancePolicyProperties_NoOIDGroupLink()
         // {
-        //     var mock = new MockSearchResultEntry("CN\u003d6250993.11BB1AB25A8A65E9FCDF709FCDD5FBC6,CN\u003dOID,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dESC10,DC\u003dLOCAL",
+        //     var mock = new MockDirectoryObject("CN\u003d6250993.11BB1AB25A8A65E9FCDF709FCDD5FBC6,CN\u003dOID,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dESC10,DC\u003dLOCAL",
         //         new Dictionary<string, object>
         //         {
         //             {"domain", "ESC10.LOCAL"},
@@ -845,7 +845,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ParseAllProperties()
         {
-            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
                 {
                     {"description", null},
@@ -853,7 +853,7 @@ namespace CommonLibTest
                     {"name", "NTAUTHCERTIFICATES@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);
@@ -871,9 +871,9 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ParseAllProperties_NoProperties()
         {
-            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                { }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                { }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);
@@ -886,9 +886,9 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_NullString()
         {
-            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                {{"domainsid", null} }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                {{"domainsid", null} }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);
@@ -900,9 +900,9 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_BadPasswordTime()
         {
-            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                {{"badpasswordtime", "130435290000000000"} }, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                {{"badpasswordtime", "130435290000000000"} }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);
@@ -915,9 +915,9 @@ namespace CommonLibTest
         [Fact]
         public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_NotBadPasswordTime()
         {
-            var mock = new MockSearchResultEntry("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                {{"domainsid", "S-1-5-21-2697957641-2271029196-387917394"}}, "2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                {{"domainsid", "S-1-5-21-2697957641-2271029196-387917394"}}, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);

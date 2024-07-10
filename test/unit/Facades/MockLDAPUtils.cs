@@ -27,12 +27,12 @@ namespace CommonLibTest.Facades
             _forest = MockableForest.Construct("FOREST.LOCAL");
         }
 
-        public virtual IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
+        public virtual IAsyncEnumerable<LdapResult<IDirectoryObject>> Query(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new CancellationToken()) {
             throw new NotImplementedException();
         }
 
-        public virtual IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
+        public virtual IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new CancellationToken()) {
             throw new NotImplementedException();
         }

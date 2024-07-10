@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
@@ -35,9 +36,13 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public async Task<(bool Success, TypedPrincipal principal)> GetContainingObject(ISearchResultEntry entry)
+        public async Task<(bool Success, TypedPrincipal principal)> GetContainingObject(IDirectoryObject entry)
         {
-            return await GetContainingObject(entry.DistinguishedName);
+            if (entry.TryGetDistinguishedName(out var dn)) {
+                return await GetContainingObject(dn);
+            }
+
+            return (false, default);
         }
 
         /// <summary>
@@ -71,12 +76,14 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="entry"></param>
         /// <returns></returns>
         public IAsyncEnumerable<TypedPrincipal> GetContainerChildObjects(ResolvedSearchResult result,
-            ISearchResultEntry entry)
+            IDirectoryObject entry)
         {
             var name = result.DisplayName;
-            var dn = entry.DistinguishedName;
-
-            return GetContainerChildObjects(dn, name);
+            if (entry.TryGetDistinguishedName(out var dn)) {
+                return GetContainerChildObjects(dn, name);    
+            }
+            
+            return AsyncEnumerable.Empty<TypedPrincipal>();
         }
 
         /// <summary>
@@ -102,17 +109,13 @@ namespace SharpHoundCommonLib.Processors
                 }
 
                 var childEntry = childEntryResult.Value;
-                var dn = childEntry.DistinguishedName;
-                if (IsDistinguishedNameFiltered(dn))
-                {
+                if (!childEntry.TryGetDistinguishedName(out var dn) || IsDistinguishedNameFiltered(dn)) {
                     _log.LogTrace("Skipping filtered child {Child} for {Container}", dn, containerName);
                     continue;
                 }
 
-                var id = childEntry.GetObjectIdentifier();
-                if (id == null)
-                {
-                    _log.LogTrace("Got null ID for {ChildDN} under {Container}", childEntry.DistinguishedName,
+                if (!childEntry.GetObjectIdentifier(out var id)) {
+                    _log.LogTrace("Got null ID for {ChildDN} under {Container}", dn,
                         containerName);
                     continue;
                 }
@@ -124,11 +127,13 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        public IAsyncEnumerable<GPLink> ReadContainerGPLinks(ResolvedSearchResult result, ISearchResultEntry entry)
+        public IAsyncEnumerable<GPLink> ReadContainerGPLinks(ResolvedSearchResult result, IDirectoryObject entry)
         {
-            var links = entry.GetProperty(LDAPProperties.GPLink);
+            if (entry.TryGetProperty(LDAPProperties.GPLink, out var links)) {
+                return ReadContainerGPLinks(links);    
+            }
 
-            return ReadContainerGPLinks(links);
+            return AsyncEnumerable.Empty<GPLink>();
         }
 
         /// <summary>

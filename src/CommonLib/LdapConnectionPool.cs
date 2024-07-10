@@ -335,7 +335,7 @@ namespace SharpHoundCommonLib {
 
         private class LdapConnectionTestResult {
             public string Message { get; set; }
-            public ISearchResultEntry SearchResultEntry { get; set; }
+            public IDirectoryObject SearchResultEntry { get; set; }
             public int ErrorCode { get; set; }
         }
     

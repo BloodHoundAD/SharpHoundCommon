@@ -38,9 +38,7 @@ namespace SharpHoundCommonLib.Processors
 
                 var entry = result.Value;
                 var trust = new DomainTrust();
-                var targetSidBytes = entry.GetByteProperty(LDAPProperties.SecurityIdentifier);
-                if (targetSidBytes == null || targetSidBytes.Length == 0)
-                {
+                if (!entry.TryGetByteProperty(LDAPProperties.SecurityIdentifier, out var targetSidBytes) || targetSidBytes.Length == 0) {
                     _log.LogTrace("Trust sid is null or empty for target: {Domain}", domain);
                     continue;
                 }
@@ -58,33 +56,26 @@ namespace SharpHoundCommonLib.Processors
 
                 trust.TargetDomainSid = sid;
 
-                if (int.TryParse(entry.GetProperty(LDAPProperties.TrustDirection), out var td))
-                {
-                    trust.TrustDirection = (TrustDirection) td;
-                }
-                else
-                {
+                if (!entry.TryGetIntProperty(LDAPProperties.TrustDirection, out var td)) {
                     _log.LogTrace("Failed to convert trustdirection for target: {Domain}", domain);
                     continue;
                 }
 
-
+                trust.TrustDirection = (TrustDirection) td;
+                
                 TrustAttributes attributes;
 
-                if (int.TryParse(entry.GetProperty(LDAPProperties.TrustAttributes), out var ta))
-                {
-                    attributes = (TrustAttributes) ta;
-                }
-                else
-                {
+                if (!entry.TryGetIntProperty(LDAPProperties.TrustAttributes, out var ta)) {
                     _log.LogTrace("Failed to convert trustattributes for target: {Domain}", domain);
                     continue;
                 }
+                
+                attributes = (TrustAttributes) ta;
 
                 trust.IsTransitive = !attributes.HasFlag(TrustAttributes.NonTransitive);
-                var name = entry.GetProperty(LDAPProperties.CanonicalName)?.ToUpper();
-                if (name != null)
-                    trust.TargetDomainName = name;
+                if (entry.TryGetProperty(LDAPProperties.CanonicalName, out var cn)) {
+                    trust.TargetDomainName = cn.ToUpper();
+                }
 
                 trust.SidFilteringEnabled = attributes.HasFlag(TrustAttributes.FilterSids);
                 trust.TrustType = TrustAttributesToType(attributes);

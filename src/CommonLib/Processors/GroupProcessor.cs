@@ -19,13 +19,13 @@ namespace SharpHoundCommonLib.Processors
             _log = log ?? Logging.LogProvider.CreateLogger("GroupProc");
         }
         
-        public IAsyncEnumerable<TypedPrincipal> ReadGroupMembers(ResolvedSearchResult result, ISearchResultEntry entry)
+        public IAsyncEnumerable<TypedPrincipal> ReadGroupMembers(ResolvedSearchResult result, IDirectoryObject entry)
         {
-            var members = entry.GetArrayProperty(LDAPProperties.Members);
-            var name = result.DisplayName;
-            var dn = entry.DistinguishedName;
-
-            return ReadGroupMembers(dn, members, name);
+            if (entry.TryGetArrayProperty(LDAPProperties.Members, out var members) && entry.TryGetDistinguishedName(out var dn)) {
+                return ReadGroupMembers(dn, members, result.DisplayName);
+            }
+            
+            return AsyncEnumerable.Empty<TypedPrincipal>();
         }
 
         /// <summary>

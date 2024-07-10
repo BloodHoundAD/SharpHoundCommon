@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -62,12 +63,12 @@ namespace SharpHoundCommonLib.Processors
             }))
             {
                 if (result.IsSuccess) {
-                    var name = result.Value.GetProperty(LDAPProperties.Name)?.ToLower();
-                    var guid = result.Value.GetGuid();
-                    if (name == null || guid == null) {
+                    if (!result.Value.TryGetProperty(LDAPProperties.Name, out var name) ||
+                        !result.Value.TryGetGuid(out var guid)) {
                         continue;
                     }
 
+                    name = name.ToLower();
                     if (name is LDAPProperties.LAPSPassword or LDAPProperties.LegacyLAPSPassword) {
                         GuidMap.TryAdd(guid, name);    
                     }
@@ -80,10 +81,12 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public bool IsACLProtected(ISearchResultEntry entry)
-        {
-            var ntsd = entry.GetByteProperty(LDAPProperties.SecurityDescriptor);
-            return IsACLProtected(ntsd);
+        public bool IsACLProtected(IDirectoryObject entry) {
+            if (entry.TryGetByteProperty(LDAPProperties.SecurityDescriptor, out var ntsd)) {
+                return IsACLProtected(ntsd);
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -108,9 +111,11 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="result"></param>
         /// <param name="searchResult"></param>
         /// <returns></returns>
-        public IAsyncEnumerable<ACE> ProcessACL(ResolvedSearchResult result, ISearchResultEntry searchResult)
+        public IAsyncEnumerable<ACE> ProcessACL(ResolvedSearchResult result, IDirectoryObject searchResult)
         {
-            var descriptor = searchResult.GetByteProperty(LDAPProperties.SecurityDescriptor);
+            if (!searchResult.TryGetByteProperty(LDAPProperties.SecurityDescriptor, out var descriptor)) {
+                return AsyncEnumerable.Empty<ACE>();
+            }
             var domain = result.Domain;
             var type = result.ObjectType;
             var hasLaps = searchResult.HasLAPS();
@@ -501,9 +506,11 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="searchResultEntry"></param>
         /// <returns></returns>
         public IAsyncEnumerable<ACE> ProcessGMSAReaders(ResolvedSearchResult resolvedSearchResult,
-            ISearchResultEntry searchResultEntry)
+            IDirectoryObject searchResultEntry)
         {
-            var descriptor = searchResultEntry.GetByteProperty(LDAPProperties.GroupMSAMembership);
+            if (!searchResultEntry.TryGetByteProperty(LDAPProperties.GroupMSAMembership, out var descriptor)) {
+                return AsyncEnumerable.Empty<ACE>();
+            }
             var domain = resolvedSearchResult.Domain;
             var name = resolvedSearchResult.DisplayName;
 

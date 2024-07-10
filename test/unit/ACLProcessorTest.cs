@@ -68,7 +68,7 @@ namespace CommonLibTest
         {
             var mockLdapUtils = new MockLDAPUtils();
             var mockUtils = new Mock<ILdapUtils>();
-            var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+            var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
             mockUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
                 .Returns(mockData.ToAsyncEnumerable());
             mockUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
@@ -251,7 +251,7 @@ namespace CommonLibTest
         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync((true, new TypedPrincipal(expectedSID, expectedPrincipalType)));
     
-        var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+        var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
         mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
             .Returns(mockData.ToAsyncEnumerable());
     
@@ -398,7 +398,7 @@ namespace CommonLibTest
         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync((true,new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
-        var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+        var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
         mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
             .Returns(mockData.ToAsyncEnumerable());
     
@@ -432,7 +432,7 @@ namespace CommonLibTest
         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
-        var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+        var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
         mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
             .Returns(mockData.ToAsyncEnumerable());
     
@@ -472,7 +472,7 @@ namespace CommonLibTest
         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
-        var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+        var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
         mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
             .Returns(mockData.ToAsyncEnumerable());
     
@@ -512,7 +512,7 @@ namespace CommonLibTest
         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
-        var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+        var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
         mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
             .Returns(mockData.ToAsyncEnumerable());
     
@@ -552,7 +552,7 @@ namespace CommonLibTest
         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
-        var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+        var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
         mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
             .Returns(mockData.ToAsyncEnumerable());
     
@@ -591,7 +591,7 @@ namespace CommonLibTest
         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
-        var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+        var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
         mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
             .Returns(mockData.ToAsyncEnumerable());
     
@@ -700,7 +700,7 @@ namespace CommonLibTest
         mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
         mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
-        var mockData = new[] { LdapResult<ISearchResultEntry>.Fail() };
+        var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
         mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
             .Returns(mockData.ToAsyncEnumerable());
     
