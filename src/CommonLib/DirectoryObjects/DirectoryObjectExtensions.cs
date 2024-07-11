@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using SharpHoundCommonLib.Enums;
 
-namespace SharpHoundCommonLib;
+namespace SharpHoundCommonLib.DirectoryObjects;
 
 public static class DirectoryObjectExtensions {
     public static bool IsMSA(this IDirectoryObject directoryObject) {
@@ -10,7 +10,7 @@ public static class DirectoryObjectExtensions {
             return false;
         }
 
-        return classes.Contains(MSAClass, StringComparer.InvariantCultureIgnoreCase);
+        return classes.Contains(ObjectClass.MSAClass, StringComparer.InvariantCultureIgnoreCase);
     }
     
     public static bool IsGMSA(this IDirectoryObject directoryObject) {
@@ -18,7 +18,7 @@ public static class DirectoryObjectExtensions {
             return false;
         }
 
-        return classes.Contains(GMSAClass, StringComparer.InvariantCultureIgnoreCase);
+        return classes.Contains(ObjectClass.GMSAClass, StringComparer.InvariantCultureIgnoreCase);
     }
     
     public static bool GetObjectIdentifier(this IDirectoryObject directoryObject, out string objectIdentifier) {
@@ -31,12 +31,12 @@ public static class DirectoryObjectExtensions {
     
     public static bool GetLabel(this IDirectoryObject directoryObject, out Label type) {
         type = Label.Base;
-        if (!directoryObject.TryGetIntProperty(LDAPProperties.Flags, out var flags)) {
-            flags = 0;
-        }
-
         if (!directoryObject.GetObjectIdentifier(out var objectIdentifier)) {
             return false;
+        }
+        
+        if (!directoryObject.TryGetIntProperty(LDAPProperties.Flags, out var flags)) {
+            flags = 0;
         }
 
         directoryObject.TryGetDistinguishedName(out var distinguishedName);
@@ -68,7 +68,14 @@ public static class DirectoryObjectExtensions {
 
         return false;
     }
-    
-    private const string GMSAClass = "msds-groupmanagedserviceaccount";
-    private const string MSAClass = "msds-managedserviceaccount";
+
+    public static bool TryGetDomain(this IDirectoryObject directoryObject, out string domain) {
+        if (directoryObject.TryGetDistinguishedName(out var distinguishedName)) {
+            domain = Helpers.DistinguishedNameToDomain(distinguishedName);
+            return true;
+        }
+
+        domain = string.Empty;
+        return false;
+    }
 }

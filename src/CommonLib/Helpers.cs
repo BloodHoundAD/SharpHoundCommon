@@ -13,6 +13,7 @@ using System.Security;
 using System.Threading.Tasks;
 using SharpHoundCommonLib.Processors;
 using Microsoft.Win32;
+using SharpHoundCommonLib.DirectoryObjects;
 
 namespace SharpHoundCommonLib {
     public static class Helpers {

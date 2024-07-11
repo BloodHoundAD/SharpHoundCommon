@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using SharpHoundCommonLib.DirectoryObjects;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -47,7 +48,7 @@ namespace SharpHoundCommonLib {
         private readonly PortScanner _portScanner;
         private readonly NativeMethods _nativeMethods;
         private readonly string _nullCacheKey = Guid.NewGuid().ToString();
-        public static Regex SIDRegex = new(@"^(S-\d+-\d+-\d+-\d+-\d+-\d+)-\d+$");
+        public static readonly Regex SIDRegex = new(@"^(S-\d+-\d+-\d+-\d+-\d+-\d+)-\d+$");
 
         private readonly string[] _translateNames = { "Administrator", "admin" };
         private LDAPConfig _ldapConfig = new();
@@ -532,7 +533,7 @@ namespace SharpHoundCommonLib {
                 try {
                     var principal = Principal.FindByIdentity(ctx, IdentityType.Sid, sid);
                     if (principal != null) {
-                        var entry = (DirectoryEntry)principal.GetUnderlyingObject();
+                        var entry = ((DirectoryEntry)principal.GetUnderlyingObject()).ToDirectoryObject();
                         if (entry.GetLabel(out type)) {
                             Cache.AddType(sid, type);
                             return (true, type);
@@ -576,7 +577,7 @@ namespace SharpHoundCommonLib {
                 try {
                     var principal = Principal.FindByIdentity(ctx, IdentityType.Guid, guid);
                     if (principal != null) {
-                        var entry = (DirectoryEntry)principal.GetUnderlyingObject();
+                        var entry = ((DirectoryEntry)principal.GetUnderlyingObject()).ToDirectoryObject();
                         if (entry.GetLabel(out type)) {
                             Cache.AddType(guid, type);
                             return (true, type);
@@ -1031,7 +1032,7 @@ namespace SharpHoundCommonLib {
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess && result.Value.GetObjectIdentifier(out id)) {
-                result.Value.GetLabel(out type); 
+                result.Value.GetLabel(out type);
                 Cache.AddPrefixedValue(name, domain, id);
                 Cache.AddType(id, type);
 
@@ -1161,7 +1162,7 @@ namespace SharpHoundCommonLib {
                                LDAPFilter = new LDAPFilter().AddUsers($"(samaccountname={name})").GetFilter()
                            })) {
                 if (result.IsSuccess && result.Value.TryGetSecurityIdentifier(out var sid)) {
-                        sids.Add(sid);
+                    sids.Add(sid);
                 } else {
                     return (false, Array.Empty<string>());
                 }
@@ -1335,9 +1336,11 @@ namespace SharpHoundCommonLib {
                 try {
                     var lookupPrincipal =
                         Principal.FindByIdentity(ctx, IdentityType.DistinguishedName, distinguishedName);
-                    if (lookupPrincipal != null &&
-                        ((DirectoryEntry)lookupPrincipal.GetUnderlyingObject()).GetTypedPrincipal(out principal)) {
-                        return (true, principal);
+                    if (lookupPrincipal != null) {
+                        var entry = ((DirectoryEntry)lookupPrincipal.GetUnderlyingObject()).ToDirectoryObject();
+                        if (entry.GetObjectIdentifier(out var identifier) && entry.GetLabel(out var label)) {
+                            return (true, new TypedPrincipal(identifier, label));    
+                        }
                     }
 
                     return (false, default);
@@ -1441,10 +1444,10 @@ namespace SharpHoundCommonLib {
 
         private IDirectoryObject CreateDirectoryEntry(string path) {
             if (_ldapConfig.Username != null) {
-                return new DirectoryEntryWrapper(new DirectoryEntry(path, _ldapConfig.Username, _ldapConfig.Password));
+                return new DirectoryEntry(path, _ldapConfig.Username, _ldapConfig.Password).ToDirectoryObject();
             }
 
-            return new DirectoryEntryWrapper(new DirectoryEntry(path));
+            return new DirectoryEntry(path).ToDirectoryObject();
         }
 
         public void Dispose() {
@@ -1461,8 +1464,8 @@ namespace SharpHoundCommonLib {
             }
 
             //Override GMSA/MSA account to treat them as users for the graph
-            if (objectClasses != null && (objectClasses.Contains(MSAClass, StringComparer.OrdinalIgnoreCase) ||
-                                          objectClasses.Contains(GMSAClass, StringComparer.OrdinalIgnoreCase))) {
+            if (objectClasses != null && (objectClasses.Contains(ObjectClass.MSAClass, StringComparer.OrdinalIgnoreCase) ||
+                                          objectClasses.Contains(ObjectClass.GMSAClass, StringComparer.OrdinalIgnoreCase))) {
                 type = Label.User;
                 return true;
             }
@@ -1475,35 +1478,35 @@ namespace SharpHoundCommonLib {
                 }
             }
 
-            if (objectClasses == null) {
+            if (objectClasses == null || objectClasses.Length == 0) {
                 type = Label.Base;
                 return false;
             }
 
-            if (objectClasses.Contains(GroupPolicyContainerClass, StringComparer.InvariantCultureIgnoreCase))
+            if (objectClasses.Contains(ObjectClass.GroupPolicyContainerClass, StringComparer.OrdinalIgnoreCase))
                 type = Label.GPO;
-            else if (objectClasses.Contains(OrganizationalUnitClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(ObjectClass.OrganizationalUnitClass, StringComparer.OrdinalIgnoreCase))
                 type = Label.OU;
-            else if (objectClasses.Contains(DomainClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(ObjectClass.DomainClass, StringComparer.OrdinalIgnoreCase))
                 type = Label.Domain;
-            else if (objectClasses.Contains(ContainerClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(ObjectClass.ContainerClass, StringComparer.OrdinalIgnoreCase))
                 type = Label.Container;
-            else if (objectClasses.Contains(ConfigurationClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(ObjectClass.ConfigurationClass, StringComparer.OrdinalIgnoreCase))
                 type = Label.Configuration;
-            else if (objectClasses.Contains(PKICertificateTemplateClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(ObjectClass.PKICertificateTemplateClass, StringComparer.OrdinalIgnoreCase))
                 type = Label.CertTemplate;
-            else if (objectClasses.Contains(PKIEnrollmentServiceClass, StringComparer.InvariantCultureIgnoreCase))
+            else if (objectClasses.Contains(ObjectClass.PKIEnrollmentServiceClass, StringComparer.OrdinalIgnoreCase))
                 type = Label.EnterpriseCA;
-            else if (objectClasses.Contains(CertificationAuthorityClass, StringComparer.InvariantCultureIgnoreCase)) {
-                if (distinguishedName.Contains(DirectoryPaths.RootCALocation))
+            else if (objectClasses.Contains(ObjectClass.CertificationAuthorityClass, StringComparer.OrdinalIgnoreCase)) {
+                if (distinguishedName.IndexOf(DirectoryPaths.RootCALocation, StringComparison.OrdinalIgnoreCase) > 0)
                     type = Label.RootCA;
-                if (distinguishedName.Contains(DirectoryPaths.AIACALocation))
+                if (distinguishedName.IndexOf(DirectoryPaths.AIACALocation, StringComparison.OrdinalIgnoreCase) > 0)
                     type = Label.AIACA;
-                if (distinguishedName.Contains(DirectoryPaths.NTAuthStoreLocation))
+                if (distinguishedName.IndexOf(DirectoryPaths.NTAuthStoreLocation, StringComparison.OrdinalIgnoreCase) > 0)
                     type = Label.NTAuthStore;
-            } else if (objectClasses.Contains(OIDContainerClass, StringComparer.InvariantCultureIgnoreCase)) {
+            } else if (objectClasses.Contains(ObjectClass.OIDContainerClass, StringComparer.OrdinalIgnoreCase)) {
                 if (distinguishedName.StartsWith(DirectoryPaths.OIDContainerLocation,
-                        StringComparison.InvariantCultureIgnoreCase))
+                        StringComparison.OrdinalIgnoreCase))
                     type = Label.Container;
                 else if (flags == 2) {
                     type = Label.IssuancePolicy;
@@ -1513,16 +1516,6 @@ namespace SharpHoundCommonLib {
             return type != Label.Base;
         }
 
-        private const string GroupPolicyContainerClass = "groupPolicyContainer";
-        private const string OrganizationalUnitClass = "organizationalUnit";
-        private const string DomainClass = "domain";
-        private const string ContainerClass = "container";
-        private const string ConfigurationClass = "configuration";
-        private const string PKICertificateTemplateClass = "pKICertificateTemplate";
-        private const string PKIEnrollmentServiceClass = "pKIEnrollmentService";
-        private const string CertificationAuthorityClass = "certificationAuthority";
-        private const string OIDContainerClass = "msPKI-Enterprise-Oid";
-        private const string GMSAClass = "msds-groupmanagedserviceaccount";
-        private const string MSAClass = "msds-managedserviceaccount";
+        
     }
 }

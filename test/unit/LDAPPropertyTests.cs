@@ -27,7 +27,7 @@ namespace CommonLibTest
             {
                 {"description", "TESTLAB Domain"},
                 {"msds-behavior-version", "6"}
-            }, "S-1-5-21-3130019616-2776909439-2417379446","", Label.Domain);
+            }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
             var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
             Assert.Contains("functionallevel", test.Keys);
@@ -42,7 +42,7 @@ namespace CommonLibTest
             var mock = new MockDirectoryObject("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
             {
                 {"msds-behavior-version", "a"}
-            }, "S-1-5-21-3130019616-2776909439-2417379446","", Label.Domain);
+            }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
             var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
             Assert.Contains("functionallevel", test.Keys);
@@ -82,7 +82,7 @@ namespace CommonLibTest
                             "XFx0ZXN0bGFiLmxvY2FsXFN5c1ZvbFx0ZXN0bGFiLmxvY2FsXFBvbGljaWVzXHs5NEREMDI2MC0zOEI1LTQ5N0UtODg3Ni0xMEU3QTk2RTgwRDB9")
                     },
                     {"description", "Test"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446","", Label.GPO);
+                }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
             var test = LDAPPropertyProcessor.ReadGPOProperties(mock);
 
@@ -100,7 +100,7 @@ namespace CommonLibTest
                 new Dictionary<string, object>
                 {
                     {"description", "Test"}
-                },"", "2A374493-816A-4193-BEFD-D2F4132C6DCA", Label.OU);
+                },"", "2A374493-816A-4193-BEFD-D2F4132C6DCA");
 
             var test = LDAPPropertyProcessor.ReadOUProperties(mock);
             Assert.Contains("description", test.Keys);
@@ -115,7 +115,7 @@ namespace CommonLibTest
                 {
                     {"description", "Test"},
                     {"admincount", "1"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-512","", Label.Group);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-512","");
 
             var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
@@ -132,7 +132,7 @@ namespace CommonLibTest
                 {
                     {"description", "Test"},
                     {"admincount", "0"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-512","", Label.Group);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-512","");
 
             var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
@@ -148,7 +148,7 @@ namespace CommonLibTest
                 new Dictionary<string, object>
                 {
                     {"description", "Test"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-512","", Label.Group);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-512","");
 
             var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
@@ -189,7 +189,7 @@ namespace CommonLibTest
                             "rdpman/win10"
                         }
                     }
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "",Label.User);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadUserProperties(mock, "testlab.local");
@@ -244,7 +244,7 @@ namespace CommonLibTest
                         }
                     },
                     {"pwdlastset", "132131667346106691"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","", Label.User);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadUserProperties(mock, "testlab.local");
@@ -280,7 +280,7 @@ namespace CommonLibTest
                         }
                     },
                     {"pwdlastset", "132131667346106691"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","", Label.User);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadUserProperties(mock, "testlab.local");
@@ -361,7 +361,7 @@ namespace CommonLibTest
                         }
                     },
                     {"pwdlastset", "132131667346106691"}
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","", Label.User);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadUserProperties(mock, "testlab.local");
@@ -429,7 +429,7 @@ namespace CommonLibTest
                             "HOST/WIN10.testlab.local"
                         }
                     }
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","", Label.Computer);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101","");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadComputerProperties(mock, "testlab.local");
@@ -525,7 +525,7 @@ namespace CommonLibTest
                             "HOST/WIN10.testlab.local"
                         }
                     }
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "",Label.Computer);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadComputerProperties(mock, "testlab.local");
@@ -589,7 +589,7 @@ namespace CommonLibTest
                             "CN=krbtgt,CN=Users,DC=testlab,DC=local"
                         }
                     }
-                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "",Label.Computer);
+                }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var test = await processor.ReadComputerProperties(mock, "testlab.local");
@@ -626,7 +626,7 @@ namespace CommonLibTest
                     {"name", "DUMPSTER-DC01-CA@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.RootCA);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var test = LDAPPropertyProcessor.ReadRootCAProperties(mock);
             var keys = test.Keys;
@@ -653,7 +653,7 @@ namespace CommonLibTest
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
                     {"hascrosscertificatepair", true},
-                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.AIACA);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var test = LDAPPropertyProcessor.ReadAIACAProperties(mock);
             var keys = test.Keys;
@@ -679,7 +679,7 @@ namespace CommonLibTest
                     {"name", "NTAUTHCERTIFICATES@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var test = LDAPPropertyProcessor.ReadNTAuthStoreProperties(mock);
             var keys = test.Keys;
@@ -713,23 +713,23 @@ namespace CommonLibTest
                     {"requiresmanagerapproval", false},
                     {LDAPProperties.PKINameFlag, 0x8000000},
                     {"ekus", new[]
-                    {"1.3.6.1.5.5.7.3.2"}
+                        {"1.3.6.1.5.5.7.3.2"}
                     },
                     {LDAPProperties.CertificateApplicationPolicy, new[]
-                    {"1.3.6.1.5.5.7.3.2"}
+                        {"1.3.6.1.5.5.7.3.2"}
                     },
                     {LDAPProperties.CertificatePolicy, new[]
                         {"1.3.6.1.5.5.7.3.2"}
                     },
                     {LDAPProperties.NumSignaturesRequired, 1},
                     {"applicationpolicies", new[]
-                    {  "1.3.6.1.4.1.311.20.2.1"}
+                        {  "1.3.6.1.4.1.311.20.2.1"}
                     },
                     {"issuancepolicies", new[]
-                    {"1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.400",
-                    "1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.402"}
+                        {"1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.400",
+                            "1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.1.402"}
                     },
-                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.CertTemplate);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var test = LDAPPropertyProcessor.ReadCertTemplateProperties(mock);
             var keys = test.Keys;
@@ -853,7 +853,7 @@ namespace CommonLibTest
                     {"name", "NTAUTHCERTIFICATES@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);
@@ -873,7 +873,7 @@ namespace CommonLibTest
         {
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                { }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                    { }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);
@@ -888,7 +888,7 @@ namespace CommonLibTest
         {
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                {{"domainsid", null} }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                    {{"domainsid", null} }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);
@@ -902,7 +902,7 @@ namespace CommonLibTest
         {
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                {{"badpasswordtime", "130435290000000000"} }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                    {{"badpasswordtime", "130435290000000000"} }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);
@@ -917,7 +917,7 @@ namespace CommonLibTest
         {
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                {{"domainsid", "S-1-5-21-2697957641-2271029196-387917394"}}, "","2F9F3630-F46A-49BF-B186-6629994EBCF9", Label.NTAuthStore);
+                    {{"domainsid", "S-1-5-21-2697957641-2271029196-387917394"}}, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
             var props = processor.ParseAllProperties(mock);

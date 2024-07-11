@@ -88,17 +88,17 @@ namespace CommonLibTest
                 //These first 4 should be filtered by our DN filters
                 LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject(
                     "CN=7868d4c8-ac41-4e05-b401-776280e8e9f1,CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local"
-                    , null, null,null,Label.Base)),
-                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Microsoft,CN=Program Data,DC=testlab,DC=local", null, null,null,Label.Base)),
-                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local", null, null,null,Label.Base)),
+                    , null, null,null)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Microsoft,CN=Program Data,DC=testlab,DC=local", null, null,null)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local", null, null,null)),
                 LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=User,CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=Policies,CN=System,DC=testlab,DC=local", null,
-                    null,null,Label.Base)),
+                    null,null)),
                 //This is a real object in our mock
-                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, "","ECAD920E-8EB1-4E31-A80E-DD36367F81F4", Label.Container)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, "","ECAD920E-8EB1-4E31-A80E-DD36367F81F4")),
                 //This object does not exist in our mock
-                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, "","ECAD920E-8EB1-4E31-A80E-DD36367F81FD", Label.Container)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, "","ECAD920E-8EB1-4E31-A80E-DD36367F81FD")),
                 //Test null objectid
-                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, null, "",Label.Container))
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, null, ""))
             };
 
             mock.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>())).Returns(searchResults.ToAsyncEnumerable);

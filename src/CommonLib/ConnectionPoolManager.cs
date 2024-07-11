@@ -4,6 +4,7 @@ using System.DirectoryServices;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using SharpHoundCommonLib.DirectoryObjects;
 using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib {
@@ -97,8 +98,7 @@ namespace SharpHoundCommonLib {
 
             if (LdapUtils.GetDomain(domainName, _ldapConfig, out var domainObject))
                 try {
-                    domainSid = domainObject.GetDirectoryEntry().GetSid();
-                    if (domainSid != null) {
+                    if (domainObject.GetDirectoryEntry().ToDirectoryObject().TryGetSecurityIdentifier(out domainSid)) {
                         Cache.AddDomainSidMapping(domainName, domainSid);
                         return true;
                     }

@@ -12,40 +12,38 @@ namespace CommonLibTest.Facades;
 public class MockDirectoryObject : IDirectoryObject {
     private readonly string _objectSID;
     private readonly string _objectGuid;
-    private readonly Label _objectType;
-    private readonly IDictionary _properties;
-    private readonly string _distinguishedName;
+    public IDictionary Properties { get; set; }
+    public string DistinguishedName { get; set; }
 
-    public MockDirectoryObject(string distinguishedName, IDictionary properties, string sid, string guid, Label type) {
-        _distinguishedName = distinguishedName;
-        _properties = properties;
+    public MockDirectoryObject(string distinguishedName, IDictionary properties, string sid, string guid) {
+        DistinguishedName = distinguishedName;
+        Properties = properties;
         _objectSID = sid;
         _objectGuid = guid;
-        _objectType = type;
     }
     
     public bool TryGetDistinguishedName(out string value) {
-        value = _distinguishedName;
+        value = DistinguishedName;
         return true;
     }
 
     public bool TryGetProperty(string propertyName, out string value) {
-        if (!_properties.Contains(propertyName)) {
+        if (!Properties.Contains(propertyName)) {
             value = default;
             return false;
         }
 
-        value = _properties[propertyName] as string;
+        value = Properties[propertyName] as string;
         return true;
     }
 
     public bool TryGetByteProperty(string propertyName, out byte[] value) {
-        if (!_properties.Contains(propertyName)) {
+        if (!Properties.Contains(propertyName)) {
             value = default;
             return false;
         }
 
-        switch (_properties[propertyName]) {
+        switch (Properties[propertyName]) {
             case string prop:
                 value = Encoding.ASCII.GetBytes(prop);
                 return true;
@@ -59,12 +57,12 @@ public class MockDirectoryObject : IDirectoryObject {
     }
 
     public bool TryGetArrayProperty(string propertyName, out string[] value) {
-        if (!_properties.Contains(propertyName)) {
+        if (!Properties.Contains(propertyName)) {
             value = Array.Empty<string>();
             return false;
         }
 
-        var temp = _properties[propertyName];
+        var temp = Properties[propertyName];
         if (temp.IsArray()) {
             value = temp as string[];
             return true;
@@ -75,12 +73,12 @@ public class MockDirectoryObject : IDirectoryObject {
     }
 
     public bool TryGetByteArrayProperty(string propertyName, out byte[][] value) {
-        if (!_properties.Contains(propertyName)) {
+        if (!Properties.Contains(propertyName)) {
             value = Array.Empty<byte[]>();
             return false;
         }
 
-        if (_properties[propertyName] is byte[][] b) {
+        if (Properties[propertyName] is byte[][] b) {
             value = b;
             return true;
         }
@@ -90,12 +88,12 @@ public class MockDirectoryObject : IDirectoryObject {
     }
 
     public bool TryGetIntProperty(string propertyName, out int value) {
-        if (!_properties.Contains(propertyName)) {
+        if (!Properties.Contains(propertyName)) {
             value = default;
             return false;
         }
 
-        switch (_properties[propertyName]) {
+        switch (Properties[propertyName]) {
             case int i:
                 value = i;
                 return true;
@@ -129,19 +127,19 @@ public class MockDirectoryObject : IDirectoryObject {
     }
 
     public string GetProperty(string propertyName) {
-        return _properties[propertyName] as string;
+        return Properties[propertyName] as string;
     }
 
     public byte[] GetByteProperty(string propertyName) {
-        return _properties[propertyName] as byte[];
+        return Properties[propertyName] as byte[];
     }
 
     public int PropertyCount(string propertyName) {
-        if (!_properties.Contains(propertyName)) {
+        if (!Properties.Contains(propertyName)) {
             return 0;
         }
         
-        var property = _properties[propertyName];
+        var property = Properties[propertyName];
         if (property.IsArray())
         {
             var cast = property as string[];
@@ -152,6 +150,6 @@ public class MockDirectoryObject : IDirectoryObject {
     }
 
     public IEnumerable<string> PropertyNames() {
-        foreach (var property in _properties.Keys) yield return property.ToString().ToLower();
+        foreach (var property in Properties.Keys) yield return property.ToString().ToLower();
     }
 }

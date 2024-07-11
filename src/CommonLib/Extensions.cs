@@ -1,4 +1,5 @@
 ﻿using System;
+using System.DirectoryServices;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
@@ -70,6 +71,10 @@ namespace SharpHoundCommonLib
             var value = securityIdentifier.Value;
             var rid = int.Parse(value.Substring(value.LastIndexOf("-", StringComparison.Ordinal) + 1));
             return rid;
+        }
+        
+        public static IDirectoryObject ToDirectoryObject(this DirectoryEntry entry) {
+            return new DirectoryEntryWrapper(entry);
         }
     }
 }

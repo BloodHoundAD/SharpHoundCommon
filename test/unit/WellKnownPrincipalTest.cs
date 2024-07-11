@@ -6,14 +6,6 @@ using Xunit.Abstractions;
 
 namespace CommonLibTest
 {
-    public struct WKP
-    {
-        public string SID { get; set; }
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-    }
-
     public class WellKnownPrincipalTest : IDisposable
     {
         #region Constructor(s)
