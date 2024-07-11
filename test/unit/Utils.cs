@@ -8,7 +8,7 @@ using Xunit;
 
 namespace CommonLibTest
 {
-    public class Helpers
+    public static class Utils
     {
         internal static byte[] B64ToBytes(string base64)
         {
@@ -24,15 +24,15 @@ namespace CommonLibTest
 
     internal static class Extensions
     {
-        internal static async Task<T[]> ToArrayAsync<T>(this IAsyncEnumerable<T> items,
-            CancellationToken cancellationToken = default)
-        {
-            var results = new List<T>();
-            await foreach (var item in items.WithCancellation(cancellationToken)
-                               .ConfigureAwait(false))
-                results.Add(item);
-            return results.ToArray();
-        }
+        // internal static async Task<T[]> ToArrayAsync<T>(this IAsyncEnumerable<T> items,
+        //     CancellationToken cancellationToken = default)
+        // {
+        //     var results = new List<T>();
+        //     await foreach (var item in items.WithCancellation(cancellationToken)
+        //                        .ConfigureAwait(false))
+        //         results.Add(item);
+        //     return results.ToArray();
+        // }
 
         internal static bool IsArray(this object obj)
         {

@@ -36,7 +36,7 @@ namespace CommonLibTest
                         {"trusttype", "2"},
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
-                        {"securityidentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
+                        {"securityidentifier", Utils.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "",""))
             };
 
@@ -75,7 +75,7 @@ namespace CommonLibTest
                         {"trusttype", "2"},
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
-                        {"securityIdentifier", Helpers.B64ToBytes("QQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
+                        {"securityIdentifier", Utils.B64ToBytes("QQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "","")),
                 LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
                     new Dictionary<string, object>
@@ -83,7 +83,7 @@ namespace CommonLibTest
                         {"trusttype", "2"},
                         {"trustattributes", 0x24.ToString()},
                         {"cn", "external.local"},
-                        {"securityIdentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
+                        {"securityIdentifier", Utils.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "","")),
                 LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
                     new Dictionary<string, object>
@@ -91,7 +91,7 @@ namespace CommonLibTest
                         {"trustdirection", "3"},
                         {"trusttype", "2"},
                         {"cn", "external.local"},
-                        {"securityIdentifier", Helpers.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
+                        {"securityIdentifier", Utils.B64ToBytes("AQQAAAAAAAUVAAAA7JjftxhaHTnafGWh")}
                     }, "",""))
             };
 

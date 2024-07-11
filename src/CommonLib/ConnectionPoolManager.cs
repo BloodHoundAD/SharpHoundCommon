@@ -85,7 +85,7 @@ namespace SharpHoundCommonLib {
             if (Cache.GetDomainSidMapping(domainName, out domainSid)) return true;
 
             try {
-                var entry = new DirectoryEntryWrapper(new DirectoryEntry($"LDAP://{domainName}"));
+                var entry = new DirectoryEntry($"LDAP://{domainName}").ToDirectoryObject();
                 if (entry.TryGetSecurityIdentifier(out var sid)) {
                     Cache.AddDomainSidMapping(domainName, sid);
                     domainSid = sid;

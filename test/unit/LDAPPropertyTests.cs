@@ -78,7 +78,7 @@ namespace CommonLibTest
                 {
                     {
                         "gpcfilesyspath",
-                        Helpers.B64ToString(
+                        Utils.B64ToString(
                             "XFx0ZXN0bGFiLmxvY2FsXFN5c1ZvbFx0ZXN0bGFiLmxvY2FsXFBvbGljaWVzXHs5NEREMDI2MC0zOEI1LTQ5N0UtODg3Ni0xMEU3QTk2RTgwRDB9")
                     },
                     {"description", "Test"}
@@ -178,7 +178,7 @@ namespace CommonLibTest
                     {
                         "sidhistory", new[]
                         {
-                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                            Utils.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
                         }
                     },
                     {"pwdlastset", "132131667346106691"},
@@ -240,7 +240,7 @@ namespace CommonLibTest
                     {
                         "sidhistory", new[]
                         {
-                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                            Utils.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
                         }
                     },
                     {"pwdlastset", "132131667346106691"}
@@ -276,7 +276,7 @@ namespace CommonLibTest
                     {
                         "sidhistory", new[]
                         {
-                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                            Utils.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
                         }
                     },
                     {"pwdlastset", "132131667346106691"}
@@ -406,7 +406,7 @@ namespace CommonLibTest
                     {
                         "sidhistory", new[]
                         {
-                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                            Utils.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
                         }
                     },
                     {
@@ -559,7 +559,7 @@ namespace CommonLibTest
                     {
                         "sidhistory", new[]
                         {
-                            Helpers.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
+                            Utils.B64ToBytes("AQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQUQQAAA==")
                         }
                     },
                     {

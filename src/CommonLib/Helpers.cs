@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
@@ -10,10 +9,8 @@ using SharpHoundCommonLib.Enums;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Security;
-using System.Threading.Tasks;
 using SharpHoundCommonLib.Processors;
 using Microsoft.Win32;
-using SharpHoundCommonLib.DirectoryObjects;
 
 namespace SharpHoundCommonLib {
     public static class Helpers {
@@ -285,165 +282,6 @@ namespace SharpHoundCommonLib {
             }
 
             return data;
-        }
-
-        public static async Task<(bool Success, ResolvedSearchResult ResolvedResult)> ResolveSearchResult(
-            IDirectoryObject directoryObject, ILdapUtils utils) {
-            if (!directoryObject.GetObjectIdentifier(out var objectIdentifier)) {
-                return (false, default);
-            }
-
-            //If the object is deleted, we can short circuit the rest of this logic as we don't really care about anything else
-            var res = new ResolvedSearchResult {
-                ObjectId = objectIdentifier
-            };
-
-            if (directoryObject.TryGetIntProperty(LDAPProperties.UserAccountControl, out var rawUac)) {
-                var flags = (UacFlags)rawUac;
-                if (flags.HasFlag(UacFlags.ServerTrustAccount)) {
-                    res.IsDomainController = true;
-                    utils.AddDomainController(objectIdentifier);
-                }
-            }
-
-            if (directoryObject.IsDeleted()) {
-                res.Deleted = true;
-                return (true, res);
-            }
-
-            string domain;
-
-            if (directoryObject.TryGetDistinguishedName(out var distinguishedName)) {
-                domain = Helpers.DistinguishedNameToDomain(distinguishedName);
-            } else {
-                if (objectIdentifier.StartsWith("S-1-5") &&
-                    await utils.GetDomainNameFromSid(objectIdentifier) is (true, var domainName)) {
-                    domain = domainName;
-                } else {
-                    return (false, default);
-                }
-            }
-
-            string domainSid;
-            var match = LdapUtils.SIDRegex.Match(objectIdentifier);
-            if (match.Success) {
-                domainSid = match.Groups[1].Value;
-            } else if (await utils.GetDomainSidFromDomainName(domain) is (true, var sid)) {
-                domainSid = sid;
-            } else {
-                Logging.Logger.LogWarning("Failed to resolve domain sid for object {Identifier}", objectIdentifier);
-                domainSid = null;
-            }
-
-            res.Domain = domain;
-            res.DomainSid = domainSid;
-
-            if (WellKnownPrincipal.GetWellKnownPrincipal(objectIdentifier, out var wellKnownPrincipal)) {
-                res.DisplayName = $"{wellKnownPrincipal.ObjectIdentifier}@{domain}";
-                res.ObjectType = wellKnownPrincipal.ObjectType;
-                if (await utils.GetWellKnownPrincipal(objectIdentifier, domain) is (true, var convertedPrincipal)) {
-                    res.ObjectId = convertedPrincipal.ObjectIdentifier;
-                }
-
-                return (true, res);
-            }
-
-            if (!directoryObject.GetLabel(out var label)) {
-                if (await utils.ResolveIDAndType(objectIdentifier, domain) is (true, var typedPrincipal)) {
-                    label = typedPrincipal.ObjectType;
-                }
-            }
-
-            if (directoryObject.IsMSA() || directoryObject.IsGMSA()) {
-                label = Label.User;
-            }
-
-            res.ObjectType = label;
-
-            directoryObject.TryGetProperty(LDAPProperties.SAMAccountName, out var samAccountName);
-
-            switch (label) {
-                case Label.User:
-                case Label.Group:
-                case Label.Base:
-                    res.DisplayName = $"{samAccountName}@{domain}";
-                    break;
-                case Label.Computer: {
-                    var shortName = samAccountName?.TrimEnd('$');
-                    if (directoryObject.TryGetProperty(LDAPProperties.DNSHostName, out var dns)) {
-                        res.DisplayName = dns;
-                    } else if (!string.IsNullOrWhiteSpace(shortName)) {
-                        res.DisplayName = $"{shortName}.{domain}";
-                    } else if (directoryObject.TryGetProperty(LDAPProperties.CanonicalName,
-                                   out var canonicalName)) {
-                        res.DisplayName = $"{canonicalName}.{domain}";
-                    } else if (directoryObject.TryGetProperty(LDAPProperties.Name, out var name)) {
-                        res.DisplayName = $"{name}.{domain}";
-                    } else {
-                        res.DisplayName = $"UNKNOWN@{domain}";
-                    }
-
-                    break;
-                }
-                case Label.GPO:
-                case Label.IssuancePolicy: {
-                    if (directoryObject.TryGetProperty(LDAPProperties.DisplayName, out var displayName)) {
-                        res.DisplayName = $"{displayName}@{domain}";
-                    } else if (directoryObject.TryGetProperty(LDAPProperties.CanonicalName,
-                                   out var canonicalName)) {
-                        res.DisplayName = $"{canonicalName}@{domain}";
-                    } else {
-                        res.DisplayName = $"UNKNOWN@{domain}";
-                    }
-
-                    break;
-                }
-                case Label.Domain:
-                    res.DisplayName = domain;
-                    break;
-                case Label.OU: {
-                    if (directoryObject.TryGetProperty(LDAPProperties.Name, out var name)) {
-                        res.DisplayName = $"{name}@{domain}";
-                    } else if (directoryObject.TryGetProperty(LDAPProperties.OU, out var ou)) {
-                        res.DisplayName = $"{ou}@{domain}";
-                    } else {
-                        res.DisplayName = $"UNKNOWN@{domain}";
-                    }
-
-                    break;
-                }
-                case Label.Container: {
-                    if (directoryObject.TryGetProperty(LDAPProperties.Name, out var name)) {
-                        res.DisplayName = $"{name}@{domain}";
-                    } else if (directoryObject.TryGetProperty(LDAPProperties.CanonicalName,
-                                   out var canonicalName)) {
-                        res.DisplayName = $"{canonicalName}@{domain}";
-                    } else {
-                        res.DisplayName = $"UNKNOWN@{domain}";
-                    }
-
-                    break;
-                }
-                case Label.Configuration:
-                case Label.RootCA:
-                case Label.AIACA:
-                case Label.NTAuthStore:
-                case Label.EnterpriseCA:
-                case Label.CertTemplate: {
-                    if (directoryObject.TryGetProperty(LDAPProperties.Name, out var name)) {
-                        res.DisplayName = $"{name}@{domain}";
-                    } else {
-                        res.DisplayName = $"UNKNOWN@{domain}";
-                    }
-
-                    break;
-                }
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            res.DisplayName = res.DisplayName.ToUpper();
-            return (true, res);
         }
 
         public static IRegistryKey OpenRemoteRegistry(string target) {

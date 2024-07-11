@@ -24,7 +24,7 @@ public class MockDirectoryObject : IDirectoryObject {
     
     public bool TryGetDistinguishedName(out string value) {
         value = DistinguishedName;
-        return true;
+        return !string.IsNullOrWhiteSpace(DistinguishedName);
     }
 
     public bool TryGetProperty(string propertyName, out string value) {

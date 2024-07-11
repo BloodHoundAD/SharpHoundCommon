@@ -674,8 +674,12 @@ namespace CommonLibTest.Facades
             return (true, commonPrincipal);
         }
 
-        Task<(bool Success, string DomainName)> ILdapUtils.GetDomainNameFromSid(string sid) {
-            throw new NotImplementedException();
+        async Task<(bool Success, string DomainName)> ILdapUtils.GetDomainNameFromSid(string sid) {
+            if (sid.StartsWith("S-1-5-21-3130019616-2776909439-2417379446", StringComparison.OrdinalIgnoreCase)) {
+                return (true, "TESTLAB.LOCAL");
+            }
+
+            return (false, default);
         }
 
         public async Task<(bool Success, string DomainSid)> GetDomainSidFromDomainName(string domainName) {

@@ -1,6 +1,6 @@
 ﻿namespace SharpHoundCommonLib.Enums
 {
-    public class DirectoryPaths
+    public static class DirectoryPaths
     {
         public const string EnterpriseCALocation = "CN=Enrollment Services,CN=Public Key Services,CN=Services";
         public const string RootCALocation = "CN=Certification Authorities,CN=Public Key Services,CN=Services";

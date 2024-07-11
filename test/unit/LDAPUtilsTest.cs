@@ -1,22 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
-using System.DirectoryServices.Protocols;
-using System.Threading;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
-using Moq;
-using Moq.Protected;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
-using SharpHoundCommonLib.Exceptions;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace CommonLibTest
-{
-    public class LDAPUtilsTest : IDisposable
-    {
+namespace CommonLibTest {
+    public class LDAPUtilsTest : IDisposable {
         private readonly string _testDomainName;
         private readonly string _testForestName;
         private readonly ITestOutputHelper _testOutputHelper;
@@ -24,8 +16,7 @@ namespace CommonLibTest
 
         #region Constructor(s)
 
-        public LDAPUtilsTest(ITestOutputHelper testOutputHelper)
-        {
+        public LDAPUtilsTest(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
             _testForestName = "PARENT.LOCAL";
             _testDomainName = "TESTLAB.LOCAL";
@@ -37,24 +28,21 @@ namespace CommonLibTest
 
         #region IDispose Implementation
 
-        public void Dispose()
-        {
+        public void Dispose() {
             // Tear down (called once per test)
         }
 
         #endregion
 
         [Fact]
-        public void SanityCheck()
-        {
+        public void SanityCheck() {
             Assert.True(true);
         }
 
         /// <summary>
         /// </summary>
         [Fact]
-        public async Task GetUserGlobalCatalogMatches_Garbage_ReturnsNull()
-        {
+        public async Task GetUserGlobalCatalogMatches_Garbage_ReturnsNull() {
             var test = await _utils.GetGlobalCatalogMatches("foo", "bar");
             _testOutputHelper.WriteLine(test.ToString());
             Assert.True(test.Success);
@@ -62,15 +50,13 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public async Task ResolveIDAndType_DuplicateSid_ReturnsNull()
-        {
+        public async Task ResolveIDAndType_DuplicateSid_ReturnsNull() {
             var test = await _utils.ResolveIDAndType("ABC0ACNF", null);
             Assert.False(test.Success);
         }
 
         [Fact]
-        public async void ResolveIDAndType_WellKnownAdministrators_ReturnsConvertedSID()
-        {
+        public async void ResolveIDAndType_WellKnownAdministrators_ReturnsConvertedSID() {
             var test = await _utils.ResolveIDAndType("S-1-5-32-544", "TESTLAB.LOCAL");
             Assert.True(test.Success);
             Assert.NotNull(test.Principal);
@@ -114,16 +100,14 @@ namespace CommonLibTest
         // }
 
         [Fact]
-        public async void GetWellKnownPrincipal_NonWellKnown_ReturnsNull()
-        {
+        public async void GetWellKnownPrincipal_NonWellKnown_ReturnsNull() {
             var result = await _utils.GetWellKnownPrincipal("S-1-5-21-123456-78910", _testDomainName);
             Assert.False(result.Success);
             Assert.Null(result.WellKnownPrincipal);
         }
 
         [Fact]
-        public async void GetWellKnownPrincipal_WithDomain_ConvertsSID()
-        {
+        public async void GetWellKnownPrincipal_WithDomain_ConvertsSID() {
             var result =
                 await _utils.GetWellKnownPrincipal("S-1-5-32-544", _testDomainName);
             Assert.True(result.Success);
@@ -132,22 +116,133 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void DistinguishedNameToDomain_RegularObject_CorrectDomain()
-        {
-            var result = SharpHoundCommonLib.Helpers.DistinguishedNameToDomain(
-                "CN=Account Operators,CN=Builtin,DC=testlab,DC=local");
-            Assert.Equal("TESTLAB.LOCAL", result);
+        public async Task Test_ResolveSearchResult_BadObjectID() {
+            var utils = new MockLDAPUtils();
+            var attribs = new Dictionary<string, object> {
+                { LDAPProperties.ObjectClass, new[] { "top", "person" } },
+                { LDAPProperties.SAMAccountType, "805306368" }
+            };
 
-            result = SharpHoundCommonLib.Helpers.DistinguishedNameToDomain("DC=testlab,DC=local");
-            Assert.Equal("TESTLAB.LOCAL", result);
+            var mock = new MockDirectoryObject("abc", attribs,
+                "", "");
+            var (success, _) = await LdapUtils.ResolveSearchResult(mock, utils);
+            Assert.False(success);
         }
 
         [Fact]
-        public void DistinguishedNameToDomain_DeletedObjects_CorrectDomain()
-        {
-            var result = SharpHoundCommonLib.Helpers.DistinguishedNameToDomain(
-                @"DC=..Deleted-_msdcs.testlab.local\0ADEL:af1f072f-28d7-4b86-9b87-a408bfc9cb0d,CN=Deleted Objects,DC=testlab,DC=local");
-            Assert.Equal("TESTLAB.LOCAL", result);
+        public async Task Test_ResolveSearchResult_DeletedObject() {
+            var utils = new MockLDAPUtils();
+            var attribs = new Dictionary<string, object> {
+                { LDAPProperties.IsDeleted, "true" },
+            };
+
+            var guid = new Guid().ToString();
+
+            var mock = new MockDirectoryObject("abc", attribs,
+                "", guid);
+            var (success, resolved) = await LdapUtils.ResolveSearchResult(mock, utils);
+            Assert.True(success);
+            Assert.Equal(guid, resolved.ObjectId);
+            Assert.True(resolved.Deleted);
+        }
+
+        [Fact]
+        public async Task Test_ResolveSearchResult_DCObject() {
+            var utils = new MockLDAPUtils();
+            var attribs = new Dictionary<string, object> {
+                { LDAPProperties.SAMAccountType, "805306369" }, {
+                    LDAPProperties.UserAccountControl,
+                    ((int)(UacFlags.ServerTrustAccount | UacFlags.WorkstationTrustAccount)).ToString()
+                },
+                { LDAPProperties.DNSHostName, "primary.testlab.local" }
+            };
+            var guid = new Guid().ToString();
+            const string sid = "S-1-5-21-3130019616-2776909439-2417379446-1001";
+            const string dn = "CN=PRIMARY,OU=DOMAIN CONTROLLERS,DC=TESTLAB,DC=LOCAL";
+
+            var mock = new MockDirectoryObject(dn, attribs, sid, guid);
+
+            var (success, result) = await LdapUtils.ResolveSearchResult(mock, utils);
+            Assert.True(success);
+            Assert.Equal(sid, result.ObjectId);
+            Assert.Equal(Label.Computer, result.ObjectType);
+            Assert.True(result.IsDomainController);
+            Assert.Equal("PRIMARY.TESTLAB.LOCAL", result.DisplayName);
+            Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.DomainSid);
+            Assert.Equal("TESTLAB.LOCAL", result.Domain);
+            Assert.False(result.Deleted);
+
+            mock.DistinguishedName = "";
+
+            (success, result) = await LdapUtils.ResolveSearchResult(mock, utils);
+            Assert.True(success);
+            Assert.Equal(sid, result.ObjectId);
+            Assert.Equal(Label.Computer, result.ObjectType);
+            Assert.True(result.IsDomainController);
+            Assert.Equal("PRIMARY.TESTLAB.LOCAL", result.DisplayName);
+            Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.DomainSid);
+            Assert.Equal("TESTLAB.LOCAL", result.Domain);
+            Assert.False(result.Deleted);
+
+            mock.Properties.Remove(LDAPProperties.DNSHostName);
+            mock.Properties[LDAPProperties.CanonicalName] = "PRIMARY";
+            (success, result) = await LdapUtils.ResolveSearchResult(mock, utils);
+            Assert.True(success);
+            Assert.Equal(sid, result.ObjectId);
+            Assert.Equal(Label.Computer, result.ObjectType);
+            Assert.True(result.IsDomainController);
+            Assert.Equal("PRIMARY.TESTLAB.LOCAL", result.DisplayName);
+            Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.DomainSid);
+            Assert.Equal("TESTLAB.LOCAL", result.Domain);
+            Assert.False(result.Deleted);
+
+            mock.Properties.Remove(LDAPProperties.CanonicalName);
+            mock.Properties[LDAPProperties.Name] = "PRIMARY";
+            (success, result) = await LdapUtils.ResolveSearchResult(mock, utils);
+            Assert.True(success);
+            Assert.Equal(sid, result.ObjectId);
+            Assert.Equal(Label.Computer, result.ObjectType);
+            Assert.True(result.IsDomainController);
+            Assert.Equal("PRIMARY.TESTLAB.LOCAL", result.DisplayName);
+            Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.DomainSid);
+            Assert.Equal("TESTLAB.LOCAL", result.Domain);
+            Assert.False(result.Deleted);
+
+            mock.Properties.Remove(LDAPProperties.Name);
+            (success, result) = await LdapUtils.ResolveSearchResult(mock, utils);
+            Assert.True(success);
+            Assert.Equal(sid, result.ObjectId);
+            Assert.Equal(Label.Computer, result.ObjectType);
+            Assert.True(result.IsDomainController);
+            Assert.Equal("UNKNOWN.TESTLAB.LOCAL", result.DisplayName);
+            Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.DomainSid);
+            Assert.Equal("TESTLAB.LOCAL", result.Domain);
+            Assert.False(result.Deleted);
+        }
+
+        [Fact]
+        public async Task Test_ResolveSearchResult_MSAGMSA() {
+            var utils = new MockLDAPUtils();
+            var attribs = new Dictionary<string, object> {
+                { LDAPProperties.ObjectClass, new[] { "top", ObjectClass.MSAClass } },
+                { LDAPProperties.SAMAccountType, "805306369" },
+                { LDAPProperties.SAMAccountName, "TESTMSA$" }
+            };
+
+            const string sid = "S-1-5-21-3130019616-2776909439-2417379446-2105";
+            const string dn = "CN=TESTMSA,CN=MANAGED SERVICE ACCOUNTS,DC=TESTLAB,DC=LOCAL";
+            var guid = new Guid().ToString();
+
+            var mock = new MockDirectoryObject(dn, attribs, sid, guid);
+
+            var (success, result) = await LdapUtils.ResolveSearchResult(mock, utils);
+            Assert.True(success);
+            Assert.Equal(sid, result.ObjectId);
+            Assert.Equal(Label.User, result.ObjectType);
+            Assert.Equal("TESTMSA$@TESTLAB.LOCAL", result.DisplayName);
+            Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.DomainSid);
+            Assert.Equal("TESTLAB.LOCAL", result.Domain);
+            Assert.False(result.Deleted);
         }
     }
 }
