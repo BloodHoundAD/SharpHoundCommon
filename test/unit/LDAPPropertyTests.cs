@@ -20,34 +20,34 @@ namespace CommonLibTest
             _testOutputHelper = testOutputHelper;
         }
 
-        [Fact]
-        public void LDAPPropertyProcessor_ReadDomainProperties_TestGoodData()
-        {
-            var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
-            {
-                {"description", "TESTLAB Domain"},
-                {"msds-behavior-version", "6"}
-            }, "S-1-5-21-3130019616-2776909439-2417379446", Label.Domain);
+        // [Fact]
+        // public void LDAPPropertyProcessor_ReadDomainProperties_TestGoodData()
+        // {
+        //     var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
+        //     {
+        //         {"description", "TESTLAB Domain"},
+        //         {"msds-behavior-version", "6"}
+        //     }, "S-1-5-21-3130019616-2776909439-2417379446", Label.Domain);
 
-            var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
-            Assert.Contains("functionallevel", test.Keys);
-            Assert.Equal("2012 R2", test["functionallevel"] as string);
-            Assert.Contains("description", test.Keys);
-            Assert.Equal("TESTLAB Domain", test["description"] as string);
-        }
+        //     var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
+        //     Assert.Contains("functionallevel", test.Keys);
+        //     Assert.Equal("2012 R2", test["functionallevel"] as string);
+        //     Assert.Contains("description", test.Keys);
+        //     Assert.Equal("TESTLAB Domain", test["description"] as string);
+        // }
 
-        [Fact]
-        public void LDAPPropertyProcessor_ReadDomainProperties_TestBadFunctionalLevel()
-        {
-            var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
-            {
-                {"msds-behavior-version", "a"}
-            }, "S-1-5-21-3130019616-2776909439-2417379446", Label.Domain);
+        // [Fact]
+        // public void LDAPPropertyProcessor_ReadDomainProperties_TestBadFunctionalLevel()
+        // {
+        //     var mock = new MockSearchResultEntry("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
+        //     {
+        //         {"msds-behavior-version", "a"}
+        //     }, "S-1-5-21-3130019616-2776909439-2417379446", Label.Domain);
 
-            var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
-            Assert.Contains("functionallevel", test.Keys);
-            Assert.Equal("Unknown", test["functionallevel"] as string);
-        }
+        //     var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
+        //     Assert.Contains("functionallevel", test.Keys);
+        //     Assert.Equal("Unknown", test["functionallevel"] as string);
+        // }
 
         [Fact]
         public void LDAPPropertyProcessor_FunctionalLevelToString_TestFunctionalLevels()

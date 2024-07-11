@@ -803,6 +803,16 @@ namespace SharpHoundCommonLib
             };
         }
 
+        public string GetDSHueristics(string dn)
+        {
+            var configPath = CommonPaths.CreateDNPath(CommonPaths.DirectoryServicePath, dn);
+            var enumerable = QueryLDAP("(objectclass=*)", SearchScope.Base, null, adsPath: configPath);
+            if (enumerable == null)
+                return null;
+            var obj = enumerable.DefaultIfEmpty(null).FirstOrDefault();
+            return obj.GetProperty(LDAPProperties.DSHeuristics);
+        }
+
         /// <summary>
         ///     Queries LDAP using LDAPQueryOptions
         /// </summary>

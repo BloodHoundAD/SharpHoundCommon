@@ -61,10 +61,10 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
 
-
+                var trustAttributes = result.GetProperty(LDAPProperties.TrustAttributes);
+                trust.TrustAttributes = trustAttributes;
                 TrustAttributes attributes;
-
-                if (int.TryParse(result.GetProperty(LDAPProperties.TrustAttributes), out var ta))
+                if (int.TryParse(trustAttributes, out var ta))
                 {
                     attributes = (TrustAttributes) ta;
                 }
@@ -79,7 +79,15 @@ namespace SharpHoundCommonLib.Processors
                 if (name != null)
                     trust.TargetDomainName = name;
 
-                trust.SidFilteringEnabled = attributes.HasFlag(TrustAttributes.FilterSids);
+                trust.SidFilteringEnabled = 
+                    attributes.HasFlag(TrustAttributes.QuarantinedDomain) || 
+                    (attributes.HasFlag(TrustAttributes.ForestTransitive) && 
+                    !attributes.HasFlag(TrustAttributes.TreatAsExternal));
+
+                trust.TGTDelegationEnabled = 
+                    !attributes.HasFlag(TrustAttributes.QuarantinedDomain) &&
+                    (attributes.HasFlag(TrustAttributes.CrossOrganizationEnableTGTDelegation)
+                    || !attributes.HasFlag(TrustAttributes.CrossOrganizationNoTGTDelegation));
                 trust.TrustType = TrustAttributesToType(attributes);
 
                 yield return trust;

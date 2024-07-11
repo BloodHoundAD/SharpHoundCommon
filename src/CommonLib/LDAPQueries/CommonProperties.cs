@@ -53,7 +53,9 @@
             LDAPProperties.GroupPolicyOptions, LDAPProperties.AllowedToDelegateTo,
             LDAPProperties.AllowedToActOnBehalfOfOtherIdentity, LDAPProperties.WhenCreated,
             LDAPProperties.HostServiceAccount, LDAPProperties.UnixUserPassword, LDAPProperties.MsSFU30Password,
-            LDAPProperties.UnicodePassword
+            LDAPProperties.UnicodePassword, LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts, 
+            LDAPProperties.MachineAccountQuota, LDAPProperties.WhenChanged, LDAPProperties.SupportedEncryptionTypes,
+            LDAPProperties.DSHeuristics
         };
 
         public static readonly string[] ContainerProps =

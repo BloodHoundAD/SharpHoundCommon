@@ -48,13 +48,19 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadDomainProperties(ISearchResultEntry entry)
+        public Dictionary<string, object> ReadDomainProperties(ISearchResultEntry entry)
         {
             var props = GetCommonProps(entry);
 
             if (!int.TryParse(entry.GetProperty(LDAPProperties.DomainFunctionalLevel), out var level)) level = -1;
 
             props.Add("functionallevel", FunctionalLevelToString(level));
+
+            props.Add("expirepasswordsonsmartcardonlyaccounts", entry.GetProperty(LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts));
+            props.Add("machineaccountquota", entry.GetProperty(LDAPProperties.MachineAccountQuota));
+
+            var dsh = _utils.GetDSHueristics(entry.DistinguishedName);
+            props.Add("dsheuristics", dsh);
 
             return props;
         }
@@ -163,6 +169,13 @@ namespace SharpHoundCommonLib.Processors
             props.Add("pwdneverexpires", uacFlags.HasFlag(UacFlags.DontExpirePassword));
             props.Add("enabled", !uacFlags.HasFlag(UacFlags.AccountDisable));
             props.Add("trustedtoauth", uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation));
+            props.Add("smartcardrequired", uacFlags.HasFlag(UacFlags.SmartcardRequired));
+            props.Add("encryptedtextpwdallowed", uacFlags.HasFlag(UacFlags.EncryptedTextPwdAllowed));
+            props.Add("usedeskeyonly", uacFlags.HasFlag(UacFlags.UseDesKeyOnly));
+            props.Add("logonscriptenabled", uacFlags.HasFlag(UacFlags.Script));
+            props.Add("lockedout", uacFlags.HasFlag(UacFlags.Lockout));
+            props.Add("passwordcantchange", uacFlags.HasFlag(UacFlags.PasswordCantChange));
+            props.Add("passwordexpired", uacFlags.HasFlag(UacFlags.PasswordExpired));
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
 
@@ -206,6 +219,8 @@ namespace SharpHoundCommonLib.Processors
             props.Add("unicodepassword", entry.GetProperty(LDAPProperties.UnicodePassword));
             props.Add("sfupassword", entry.GetProperty(LDAPProperties.MsSFU30Password));
             props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
+            props.Add("supportedencryptiontypes", entry.GetProperty(LDAPProperties.SupportedEncryptionTypes));
+            props.Add("useraccountcontrol", uac);
 
             var ac = entry.GetProperty(LDAPProperties.AdminCount);
             if (ac != null)
@@ -272,6 +287,11 @@ namespace SharpHoundCommonLib.Processors
             props.Add("unconstraineddelegation", flags.HasFlag(UacFlags.TrustedForDelegation));
             props.Add("trustedtoauth", flags.HasFlag(UacFlags.TrustedToAuthForDelegation));
             props.Add("isdc", flags.HasFlag(UacFlags.ServerTrustAccount));
+            props.Add("encryptedtextpwdallowed", flags.HasFlag(UacFlags.EncryptedTextPwdAllowed));
+            props.Add("usedeskeyonly", flags.HasFlag(UacFlags.UseDesKeyOnly));
+            props.Add("logonscriptenabled", flags.HasFlag(UacFlags.Script));
+            props.Add("lockedout", flags.HasFlag(UacFlags.Lockout));
+            props.Add("passwordexpired", flags.HasFlag(UacFlags.PasswordExpired));
 
             var domain = Helpers.DistinguishedNameToDomain(entry.DistinguishedName);
 
@@ -319,6 +339,8 @@ namespace SharpHoundCommonLib.Processors
                 Helpers.ConvertFileTimeToUnixEpoch(entry.GetProperty(LDAPProperties.PasswordLastSet)));
             props.Add("serviceprincipalnames", entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames));
             props.Add("email", entry.GetProperty(LDAPProperties.Email));
+            props.Add("supportedencryptiontypes", entry.GetProperty(LDAPProperties.SupportedEncryptionTypes));
+            props.Add("useraccountcontrol", uac);
             var os = entry.GetProperty(LDAPProperties.OperatingSystem);
             var sp = entry.GetProperty(LDAPProperties.ServicePack);
 

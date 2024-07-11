@@ -78,6 +78,7 @@ namespace SharpHoundCommonLib
         /// <returns>A <c>TypedPrincipal</c> object with the SID and Label</returns>
         TypedPrincipal ResolveDistinguishedName(string dn);
 
+        string GetDSHueristics(string dn);
         /// <summary>
         ///     Performs an LDAP query using the parameters specified by the user.
         /// </summary>

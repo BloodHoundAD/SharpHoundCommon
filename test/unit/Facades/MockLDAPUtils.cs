@@ -1094,5 +1094,10 @@ namespace CommonLibTest.Facades
         {
             throw new NotImplementedException();
         }
+
+        public string GetDSHueristics(string dn)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
