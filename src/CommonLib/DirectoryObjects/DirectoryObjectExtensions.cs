@@ -68,14 +68,4 @@ public static class DirectoryObjectExtensions {
 
         return false;
     }
-
-    public static bool TryGetDomain(this IDirectoryObject directoryObject, out string domain) {
-        if (directoryObject.TryGetDistinguishedName(out var distinguishedName)) {
-            domain = Helpers.DistinguishedNameToDomain(distinguishedName);
-            return true;
-        }
-
-        domain = string.Empty;
-        return false;
-    }
 }
