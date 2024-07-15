@@ -16,13 +16,13 @@ using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace CommonLibTest.Facades
 {
-    public class MockLDAPUtils : ILdapUtils
+    public class MockLdapUtils : ILdapUtils
     {
         private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
         private readonly Forest _forest;
         private readonly ConcurrentDictionary<string, string> _seenWellKnownPrincipals = new();
 
-        public MockLDAPUtils()
+        public MockLdapUtils()
         {
             _forest = MockableForest.Construct("FOREST.LOCAL");
         }
@@ -1002,7 +1002,7 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        public void SetLdapConfig(LDAPConfig config) {
+        public void SetLdapConfig(LdapConfig config) {
             throw new NotImplementedException();
         }
 

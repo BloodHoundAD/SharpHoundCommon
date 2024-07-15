@@ -51,7 +51,7 @@ namespace SharpHoundCommonLib {
         private static readonly Regex SIDRegex = new(@"^(S-\d+-\d+-\d+-\d+-\d+-\d+)(-\d+)?$");
 
         private readonly string[] _translateNames = { "Administrator", "admin" };
-        private LDAPConfig _ldapConfig = new();
+        private LdapConfig _ldapConfig = new();
 
         private ConnectionPoolManager _connectionPool;
 
@@ -632,7 +632,7 @@ namespace SharpHoundCommonLib {
             return ($"UNKNOWN-{securityIdentifier}", "UNKNOWN");
         }
 
-        private async Task<(bool Success, string ForestName)> GetForest(string domain) {
+        public virtual async Task<(bool Success, string ForestName)> GetForest(string domain) {
             if (DomainToForestCache.TryGetValue(domain, out var cachedForest)) {
                 return (true, cachedForest);
             }
@@ -661,7 +661,7 @@ namespace SharpHoundCommonLib {
                 Attributes = new[] { LDAPProperties.RootDomainNamingContext },
                 SearchScope = SearchScope.Base,
                 DomainName = domain,
-                LDAPFilter = new LDAPFilter().AddAllObjects().GetFilter(),
+                LDAPFilter = new LdapFilter().AddAllObjects().GetFilter(),
             };
 
             var result = await Query(queryParameters).FirstAsync();
@@ -842,7 +842,7 @@ namespace SharpHoundCommonLib {
                 DomainName = domain.Name,
                 Attributes = new[] { LDAPProperties.DistinguishedName },
                 GlobalCatalog = true,
-                LDAPFilter = new LDAPFilter().AddDomains(CommonFilters.SpecificSID(domainSid)).GetFilter()
+                LDAPFilter = new LdapFilter().AddDomains(CommonFilters.SpecificSID(domainSid)).GetFilter()
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess && result.Value.TryGetDistinguishedName(out var distinguishedName)) {
@@ -853,7 +853,7 @@ namespace SharpHoundCommonLib {
                 DomainName = domain.Name,
                 Attributes = new[] { LDAPProperties.DistinguishedName },
                 GlobalCatalog = true,
-                LDAPFilter = new LDAPFilter().AddFilter("(objectclass=trusteddomain)", true)
+                LDAPFilter = new LdapFilter().AddFilter("(objectclass=trusteddomain)", true)
                     .AddFilter($"(securityidentifier={Helpers.ConvertSidToHexSid(domainSid)})", true).GetFilter()
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
@@ -864,7 +864,7 @@ namespace SharpHoundCommonLib {
             result = await Query(new LdapQueryParameters {
                 DomainName = domain.Name,
                 Attributes = new[] { LDAPProperties.DistinguishedName },
-                LDAPFilter = new LDAPFilter().AddFilter("(objectclass=domaindns)", true)
+                LDAPFilter = new LdapFilter().AddFilter("(objectclass=domaindns)", true)
                     .AddFilter(CommonFilters.SpecificSID(domainSid), true).GetFilter()
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
@@ -915,7 +915,7 @@ namespace SharpHoundCommonLib {
             var result = await Query(new LdapQueryParameters() {
                 DomainName = domainName,
                 Attributes = new[] { LDAPProperties.ObjectSID },
-                LDAPFilter = new LDAPFilter().AddFilter(CommonFilters.DomainControllers, true).GetFilter()
+                LDAPFilter = new LdapFilter().AddFilter(CommonFilters.DomainControllers, true).GetFilter()
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess && result.Value.TryGetSecurityIdentifier(out var securityIdentifier)) {
@@ -961,7 +961,7 @@ namespace SharpHoundCommonLib {
             }
         }
 
-        public static bool GetDomain(string domainName, LDAPConfig ldapConfig, out Domain domain) {
+        public static bool GetDomain(string domainName, LdapConfig ldapConfig, out Domain domain) {
             if (DomainCache.TryGetValue(domainName, out domain)) return true;
 
             try {
@@ -1159,10 +1159,14 @@ namespace SharpHoundCommonLib {
                                DomainName = domain,
                                Attributes = new[] { LDAPProperties.ObjectSID },
                                GlobalCatalog = true,
-                               LDAPFilter = new LDAPFilter().AddUsers($"(samaccountname={name})").GetFilter()
+                               LDAPFilter = new LdapFilter().AddUsers($"(samaccountname={name})").GetFilter()
                            })) {
                 if (result.IsSuccess && result.Value.TryGetSecurityIdentifier(out var sid)) {
-                    sids.Add(sid);
+                    if (await GetWellKnownPrincipal(sid, domain) is (true, var principal)) {
+                        sids.Add(principal.ObjectIdentifier);
+                    } else {
+                        sids.Add(sid);    
+                    }
                 } else {
                     return (false, Array.Empty<string>());
                 }
@@ -1174,7 +1178,7 @@ namespace SharpHoundCommonLib {
 
         public async Task<(bool Success, TypedPrincipal Principal)> ResolveCertTemplateByProperty(string propertyValue,
             string propertyName, string domainName) {
-            var filter = new LDAPFilter().AddCertificateTemplates()
+            var filter = new LdapFilter().AddCertificateTemplates()
                 .AddFilter($"({propertyName}={propertyValue})", true);
             var result = await Query(new LdapQueryParameters {
                 DomainName = domainName,
@@ -1294,7 +1298,7 @@ namespace SharpHoundCommonLib {
 
         public async Task<bool> IsDomainController(string computerObjectId, string domainName) {
             var resDomain = await GetDomainNameFromSid(domainName) is (false, var tempDomain) ? tempDomain : domainName;
-            var filter = new LDAPFilter().AddFilter(CommonFilters.SpecificSID(computerObjectId), true)
+            var filter = new LdapFilter().AddFilter(CommonFilters.SpecificSID(computerObjectId), true)
                 .AddFilter(CommonFilters.DomainControllers, true);
             var result = await Query(new LdapQueryParameters() {
                 DomainName = resDomain,
@@ -1315,7 +1319,7 @@ namespace SharpHoundCommonLib {
                 Attributes = CommonProperties.TypeResolutionProps,
                 SearchBase = distinguishedName,
                 SearchScope = SearchScope.Base,
-                LDAPFilter = new LDAPFilter().AddAllObjects().GetFilter()
+                LDAPFilter = new LdapFilter().AddAllObjects().GetFilter()
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess && result.Value.GetObjectIdentifier(out var id)) {
@@ -1339,6 +1343,13 @@ namespace SharpHoundCommonLib {
                     if (lookupPrincipal != null) {
                         var entry = ((DirectoryEntry)lookupPrincipal.GetUnderlyingObject()).ToDirectoryObject();
                         if (entry.GetObjectIdentifier(out var identifier) && entry.GetLabel(out var label)) {
+                            if (await GetWellKnownPrincipal(identifier, domain) is (true, var wellKnownPrincipal)) {
+                                _distinguishedNameCache.TryAdd(distinguishedName, wellKnownPrincipal);
+                                return (true, wellKnownPrincipal);
+                            }
+
+                            principal = new TypedPrincipal(identifier, label);
+                            _distinguishedNameCache.TryAdd(distinguishedName, principal);
                             return (true, new TypedPrincipal(identifier, label));
                         }
                     }
@@ -1380,7 +1391,7 @@ namespace SharpHoundCommonLib {
             }
         }
 
-        public void SetLdapConfig(LDAPConfig config) {
+        public void SetLdapConfig(LdapConfig config) {
             _ldapConfig = config;
             _connectionPool.Dispose();
             _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);

@@ -25,7 +25,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPFilter_CreateNewFilter_FilterNotNull()
         {
-            var test = new LDAPFilter();
+            var test = new LdapFilter();
             Assert.NotNull(test);
         }
 
@@ -36,7 +36,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPFilter_GroupFilter_FilterCorrect()
         {
-            var test = new LDAPFilter();
+            var test = new LdapFilter();
             test.AddGroups();
             var filter = test.GetFilter();
             _testOutputHelper.WriteLine(filter);
@@ -48,7 +48,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPFilter_GroupFilter_ExtraFilter_FilterCorrect()
         {
-            var test = new LDAPFilter();
+            var test = new LdapFilter();
             test.AddGroups("objectclass=*");
             var filter = test.GetFilter();
             _testOutputHelper.WriteLine(filter);
@@ -60,7 +60,7 @@ namespace CommonLibTest
         [Fact]
         public void LDAPFilter_GetFilterList()
         {
-            var test = new LDAPFilter().AddUsers().AddComputers();
+            var test = new LdapFilter().AddUsers().AddComputers();
             IEnumerable<string> filters = test.GetFilterList();
 
             int i = 0;

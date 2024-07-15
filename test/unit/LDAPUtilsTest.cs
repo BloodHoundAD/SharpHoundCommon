@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
+using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using Xunit;
@@ -64,40 +66,16 @@ namespace CommonLibTest {
             Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", test.Principal.ObjectIdentifier);
         }
 
-        // [WindowsOnlyFact]
-        // public async void GetWellKnownPrincipal_EnterpriseDomainControllers_ReturnsCorrectedSID()
-        // {
-        //     var mock = new Mock<LdapUtils>();
-        //     var mockForest = MockableForest.Construct(_testForestName);
-        //     mock.Setup(x => x.GetForest(It.IsAny<string>())).Returns(mockForest);
-        //     var result = await mock.Object.GetWellKnownPrincipal("S-1-5-9", null);
-        //     Assert.True(result.Success);
-        //     Assert.Equal($"{_testForestName}-S-1-5-9", result.WellKnownPrincipal.ObjectIdentifier);
-        //     Assert.Equal(Label.Group, result.WellKnownPrincipal.ObjectType);
-        // }
-        //
-        // [Fact]
-        // public void BuildLdapPath_BadDomain_ReturnsNull()
-        // {
-        //     var mock = new Mock<LdapUtils>();
-        //     //var mockDomain = MockableDomain.Construct("TESTLAB.LOCAL");
-        //     mock.Setup(x => x.GetDomain(It.IsAny<string>()))
-        //         .Returns((Domain)null);
-        //     var result = mock.Object.BuildLdapPath("TEST", "ABC");
-        //     Assert.Null(result);
-        // }
-        //
-        // [WindowsOnlyFact]
-        // public void BuildLdapPath_HappyPath()
-        // {
-        //     var mock = new Mock<LdapUtils>();
-        //     var mockDomain = MockableDomain.Construct("TESTLAB.LOCAL");
-        //     mock.Setup(x => x.GetDomain(It.IsAny<string>()))
-        //         .Returns(mockDomain);
-        //     var result = mock.Object.BuildLdapPath(DirectoryPaths.PKILocation, "ABC");
-        //     Assert.NotNull(result);
-        //     Assert.Equal("CN=Public Key Services,CN=Services,CN=Configuration,DC=TESTLAB,DC=LOCAL", result);
-        // }
+        [Fact]
+        public async void GetWellKnownPrincipal_EnterpriseDomainControllers_ReturnsCorrectedSID()
+        {
+            var mock = new Mock<LdapUtils>();
+            mock.Setup(x => x.GetForest(It.IsAny<string>())).ReturnsAsync((true, _testForestName));
+            var result = await mock.Object.GetWellKnownPrincipal("S-1-5-9", null);
+            Assert.True(result.Success);
+            Assert.Equal($"{_testForestName}-S-1-5-9", result.WellKnownPrincipal.ObjectIdentifier);
+            Assert.Equal(Label.Group, result.WellKnownPrincipal.ObjectType);
+        }
 
         [Fact]
         public async void GetWellKnownPrincipal_NonWellKnown_ReturnsNull() {
@@ -117,7 +95,7 @@ namespace CommonLibTest {
 
         [Fact]
         public async Task Test_ResolveSearchResult_BadObjectID() {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var attribs = new Dictionary<string, object> {
                 { LDAPProperties.ObjectClass, new[] { "top", "person" } },
                 { LDAPProperties.SAMAccountType, "805306368" }
@@ -131,7 +109,7 @@ namespace CommonLibTest {
 
         [Fact]
         public async Task Test_ResolveSearchResult_DeletedObject() {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var attribs = new Dictionary<string, object> {
                 { LDAPProperties.IsDeleted, "true" },
             };
@@ -148,7 +126,7 @@ namespace CommonLibTest {
 
         [Fact]
         public async Task Test_ResolveSearchResult_DCObject() {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var attribs = new Dictionary<string, object> {
                 { LDAPProperties.SAMAccountType, "805306369" }, {
                     LDAPProperties.UserAccountControl,
@@ -222,7 +200,7 @@ namespace CommonLibTest {
 
         [Fact]
         public async Task Test_ResolveSearchResult_MSAGMSA() {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var attribs = new Dictionary<string, object> {
                 { LDAPProperties.ObjectClass, new[] { "top", ObjectClass.MSAClass } },
                 { LDAPProperties.SAMAccountType, "805306369" },

@@ -26,7 +26,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task DomainTrustProcessor_EnumerateDomainTrusts_HappyPath()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var searchResults = new[]
             {
                 LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",
@@ -56,7 +56,7 @@ namespace CommonLibTest
         [Fact]
         public async Task DomainTrustProcessor_EnumerateDomainTrusts_SadPaths()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var searchResults = new[]
             {
                 LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN\u003dexternal.local,CN\u003dSystem,DC\u003dtestlab,DC\u003dlocal",

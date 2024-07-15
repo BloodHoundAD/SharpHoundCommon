@@ -67,7 +67,7 @@ namespace SharpHoundCommonLib.Processors {
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks
             var affectedComputers = new List<TypedPrincipal>();
             await foreach (var result in _utils.Query(new LdapQueryParameters() {
-                               LDAPFilter = new LDAPFilter().AddComputersNoMSAs().GetFilter(),
+                               LDAPFilter = new LdapFilter().AddComputersNoMSAs().GetFilter(),
                                Attributes = CommonProperties.ObjectSID,
                                SearchBase = distinguishedName
                            })) {
@@ -116,7 +116,7 @@ namespace SharpHoundCommonLib.Processors {
 
                     var gpoDomain = Helpers.DistinguishedNameToDomain(linkDn);
                     var result = await _utils.Query(new LdapQueryParameters() {
-                        LDAPFilter = new LDAPFilter().AddAllObjects().GetFilter(),
+                        LDAPFilter = new LdapFilter().AddAllObjects().GetFilter(),
                         SearchScope = SearchScope.Base,
                         Attributes = CommonProperties.GPCFileSysPath,
                         SearchBase = linkDn

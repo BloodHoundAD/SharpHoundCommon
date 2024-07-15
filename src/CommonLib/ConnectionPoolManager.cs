@@ -10,13 +10,13 @@ using SharpHoundCommonLib.Processors;
 namespace SharpHoundCommonLib {
     public class ConnectionPoolManager : IDisposable{
         private readonly ConcurrentDictionary<string, LdapConnectionPool> _pools = new();
-        private readonly LDAPConfig _ldapConfig;
+        private readonly LdapConfig _ldapConfig;
         private readonly string[] _translateNames = { "Administrator", "admin" };
         private readonly ConcurrentDictionary<string, string> _resolvedIdentifiers = new(StringComparer.OrdinalIgnoreCase);
         private readonly ILogger _log;
         private readonly PortScanner _portScanner;
 
-        public ConnectionPoolManager(LDAPConfig config, ILogger log = null, PortScanner scanner = null) {
+        public ConnectionPoolManager(LdapConfig config, ILogger log = null, PortScanner scanner = null) {
             _ldapConfig = config;
             _log = log ?? Logging.LogProvider.CreateLogger("ConnectionPoolManager");
             _portScanner = scanner ?? new PortScanner();

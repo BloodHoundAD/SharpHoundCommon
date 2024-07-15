@@ -11,11 +11,11 @@ using Xunit.Abstractions;
 
 namespace CommonLibTest
 {
-    public class LDAPPropertyTests
+    public class LdapPropertyTests
     {
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public LDAPPropertyTests(ITestOutputHelper testOutputHelper)
+        public LdapPropertyTests(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
         }
@@ -29,7 +29,7 @@ namespace CommonLibTest
                 {"msds-behavior-version", "6"}
             }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
-            var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
+            var test = LdapPropertyProcessor.ReadDomainProperties(mock);
             Assert.Contains("functionallevel", test.Keys);
             Assert.Equal("2012 R2", test["functionallevel"] as string);
             Assert.Contains("description", test.Keys);
@@ -44,7 +44,7 @@ namespace CommonLibTest
                 {"msds-behavior-version", "a"}
             }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
-            var test = LDAPPropertyProcessor.ReadDomainProperties(mock);
+            var test = LdapPropertyProcessor.ReadDomainProperties(mock);
             Assert.Contains("functionallevel", test.Keys);
             Assert.Equal("Unknown", test["functionallevel"] as string);
         }
@@ -66,7 +66,7 @@ namespace CommonLibTest
             };
 
             foreach (var (key, value) in expected)
-                Assert.Equal(value, LDAPPropertyProcessor.FunctionalLevelToString(key));
+                Assert.Equal(value, LdapPropertyProcessor.FunctionalLevelToString(key));
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace CommonLibTest
                     {"description", "Test"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
-            var test = LDAPPropertyProcessor.ReadGPOProperties(mock);
+            var test = LdapPropertyProcessor.ReadGPOProperties(mock);
 
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
@@ -102,7 +102,7 @@ namespace CommonLibTest
                     {"description", "Test"}
                 },"", "2A374493-816A-4193-BEFD-D2F4132C6DCA");
 
-            var test = LDAPPropertyProcessor.ReadOUProperties(mock);
+            var test = LdapPropertyProcessor.ReadOUProperties(mock);
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
         }
@@ -117,7 +117,7 @@ namespace CommonLibTest
                     {"admincount", "1"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-512","");
 
-            var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
+            var test = LdapPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
@@ -134,7 +134,7 @@ namespace CommonLibTest
                     {"admincount", "0"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-512","");
 
-            var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
+            var test = LdapPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
@@ -150,7 +150,7 @@ namespace CommonLibTest
                     {"description", "Test"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-512","");
 
-            var test = LDAPPropertyProcessor.ReadGroupProperties(mock);
+            var test = LdapPropertyProcessor.ReadGroupProperties(mock);
             Assert.Contains("description", test.Keys);
             Assert.Equal("Test", test["description"] as string);
             Assert.Contains("admincount", test.Keys);
@@ -191,7 +191,7 @@ namespace CommonLibTest
                     }
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var test = await processor.ReadUserProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
@@ -246,7 +246,7 @@ namespace CommonLibTest
                     {"pwdlastset", "132131667346106691"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101","");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var test = await processor.ReadUserProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
@@ -282,7 +282,7 @@ namespace CommonLibTest
                     {"pwdlastset", "132131667346106691"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101","");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var test = await processor.ReadUserProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
@@ -363,7 +363,7 @@ namespace CommonLibTest
                     {"pwdlastset", "132131667346106691"}
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101","");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var test = await processor.ReadUserProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
@@ -431,7 +431,7 @@ namespace CommonLibTest
                     }
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101","");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var test = await processor.ReadComputerProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
@@ -527,7 +527,7 @@ namespace CommonLibTest
                     }
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var test = await processor.ReadComputerProperties(mock, "testlab.local");
             var props = test.Props;
             var keys = props.Keys;
@@ -591,7 +591,7 @@ namespace CommonLibTest
                     }
                 }, "S-1-5-21-3130019616-2776909439-2417379446-1101", "");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var test = await processor.ReadComputerProperties(mock, "testlab.local");
 
             var expected = new TypedPrincipal[]
@@ -628,7 +628,7 @@ namespace CommonLibTest
                     {"whencreated", 1683986131},
                 }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var test = LDAPPropertyProcessor.ReadRootCAProperties(mock);
+            var test = LdapPropertyProcessor.ReadRootCAProperties(mock);
             var keys = test.Keys;
 
             //These are not common properties
@@ -655,7 +655,7 @@ namespace CommonLibTest
                     {"hascrosscertificatepair", true},
                 }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var test = LDAPPropertyProcessor.ReadAIACAProperties(mock);
+            var test = LdapPropertyProcessor.ReadAIACAProperties(mock);
             var keys = test.Keys;
 
             //These are not common properties
@@ -681,7 +681,7 @@ namespace CommonLibTest
                     {"whencreated", 1683986131},
                 }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var test = LDAPPropertyProcessor.ReadNTAuthStoreProperties(mock);
+            var test = LdapPropertyProcessor.ReadNTAuthStoreProperties(mock);
             var keys = test.Keys;
 
             //These are not common properties
@@ -731,7 +731,7 @@ namespace CommonLibTest
                     },
                 }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var test = LDAPPropertyProcessor.ReadCertTemplateProperties(mock);
+            var test = LdapPropertyProcessor.ReadCertTemplateProperties(mock);
             var keys = test.Keys;
 
             //These are not common properties
@@ -855,7 +855,7 @@ namespace CommonLibTest
                     {"whencreated", 1683986131},
                 }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
             var keys = props.Keys;
 
@@ -875,7 +875,7 @@ namespace CommonLibTest
                 new Dictionary<string, object>
                     { }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
             var keys = props.Keys;
 
@@ -890,7 +890,7 @@ namespace CommonLibTest
                 new Dictionary<string, object>
                     {{"domainsid", null} }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
             var keys = props.Keys;
 
@@ -904,7 +904,7 @@ namespace CommonLibTest
                 new Dictionary<string, object>
                     {{"badpasswordtime", "130435290000000000"} }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
             var keys = props.Keys;
 
@@ -919,7 +919,7 @@ namespace CommonLibTest
                 new Dictionary<string, object>
                     {{"domainsid", "S-1-5-21-2697957641-2271029196-387917394"}}, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
-            var processor = new LDAPPropertyProcessor(new MockLDAPUtils());
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
             var keys = props.Keys;
 

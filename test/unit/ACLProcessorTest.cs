@@ -58,7 +58,7 @@ namespace CommonLibTest
         [Fact]
         public void ACLProcessor_IsACLProtected_NullNTSD_ReturnsFalse()
         {
-            var processor = new ACLProcessor(new MockLDAPUtils());
+            var processor = new ACLProcessor(new MockLdapUtils());
             var result = processor.IsACLProtected((byte[])null);
             Assert.False(result);
         }
@@ -66,7 +66,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task ACLProcessor_TestKnownDataAddMember()
         {
-            var mockLdapUtils = new MockLDAPUtils();
+            var mockLdapUtils = new MockLdapUtils();
             var mockUtils = new Mock<ILdapUtils>();
             var mockData = new[] { LdapResult<IDirectoryObject>.Fail() };
             mockUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
@@ -228,7 +228,7 @@ namespace CommonLibTest
     [Fact]
     public async Task ACLProcessor_ProcessACL_Null_NTSecurityDescriptor()
     {
-        var processor = new ACLProcessor(new MockLDAPUtils());
+        var processor = new ACLProcessor(new MockLdapUtils());
         var result = await processor.ProcessACL(null, _testDomainName, Label.User, false).ToArrayAsync();
     
         Assert.Empty(result);

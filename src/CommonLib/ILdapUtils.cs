@@ -43,7 +43,7 @@ namespace SharpHoundCommonLib {
         Task<(bool Success, TypedPrincipal Principal)> ResolveDistinguishedName(string distinguishedName);
         void AddDomainController(string domainControllerSID);
         IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
-        void SetLdapConfig(LDAPConfig config);
+        void SetLdapConfig(LdapConfig config);
         Task<(bool Success, string Message)> TestLdapConnection(string domain);
         Task<(bool Success, string Path)> GetNamingContextPath(string domain, NamingContext context);
     }

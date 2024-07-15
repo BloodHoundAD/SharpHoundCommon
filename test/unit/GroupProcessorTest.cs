@@ -68,7 +68,7 @@ namespace CommonLibTest
         [Fact]
         public async Task GroupProcessor_ReadGroupMembers_EmptyMembers_DoesRangedRetrieval()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var expected = new TypedPrincipal[]
             {
                 new()
@@ -105,7 +105,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task GroupProcessor_ReadGroupMembers_ReturnsCorrectMembers()
         {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var processor = new GroupProcessor(utils);
             var expected = new TypedPrincipal[]
             {

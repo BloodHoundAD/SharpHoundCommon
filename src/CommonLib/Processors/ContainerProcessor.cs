@@ -95,7 +95,7 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         public async IAsyncEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName = "")
         {
-            var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
+            var filter = new LdapFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
             filter.AddCertificateAuthorities().AddCertificateTemplates().AddEnterpriseCertificationAuthorities();
             await foreach (var childEntryResult in _utils.Query(new LdapQueryParameters {
                                DomainName = Helpers.DistinguishedNameToDomain(distinguishedName),

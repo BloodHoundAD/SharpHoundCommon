@@ -46,9 +46,9 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="methods"></param>
         /// <returns></returns>
-        public static bool IsComputerCollectionSet(this ResolvedCollectionMethod methods)
-        {
-            return (methods & ResolvedCollectionMethod.ComputerOnly) != 0;
+        public static bool IsComputerCollectionSet(this CollectionMethod methods) {
+            const CollectionMethod test = CollectionMethod.ComputerOnly | CollectionMethod.LoggedOn;
+            return (methods & test) != 0;
         }
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="methods"></param>
         /// <returns></returns>
-        public static bool IsLocalGroupCollectionSet(this ResolvedCollectionMethod methods)
+        public static bool IsLocalGroupCollectionSet(this CollectionMethod methods)
         {
-            return (methods & ResolvedCollectionMethod.LocalGroups) != 0;
+            return (methods & CollectionMethod.LocalGroups) != 0;
         }
 
         /// <summary>

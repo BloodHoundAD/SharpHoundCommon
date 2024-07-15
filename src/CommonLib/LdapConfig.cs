@@ -2,7 +2,7 @@
 
 namespace SharpHoundCommonLib
 {
-    public class LDAPConfig
+    public class LdapConfig
     {
         public string Username { get; set; } = null;
         public string Password { get; set; } = null;

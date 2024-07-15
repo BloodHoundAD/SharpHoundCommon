@@ -19,12 +19,12 @@ namespace SharpHoundCommonLib {
         private readonly SemaphoreSlim _semaphore;
         private readonly string _identifier;
         private readonly string _poolIdentifier;
-        private readonly LDAPConfig _ldapConfig;
+        private readonly LdapConfig _ldapConfig;
         private readonly ILogger _log;
         private readonly PortScanner _portScanner;
         private readonly NativeMethods _nativeMethods;
 
-        public LdapConnectionPool(string identifier, string poolIdentifier, LDAPConfig config, int maxConnections = 10, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
+        public LdapConnectionPool(string identifier, string poolIdentifier, LdapConfig config, int maxConnections = 10, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
             _connections = new ConcurrentBag<LdapConnectionWrapper>();
             _globalCatalogConnection = new ConcurrentBag<LdapConnectionWrapper>();
             _semaphore = new SemaphoreSlim(maxConnections, maxConnections);
@@ -303,7 +303,7 @@ namespace SharpHoundCommonLib {
             try {
                 //Do an initial search request to get the rootDSE
                 //This ldap filter is equivalent to (objectclass=*)
-                var searchRequest = CreateSearchRequest("", new LDAPFilter().AddAllObjects().GetFilter(),
+                var searchRequest = CreateSearchRequest("", new LdapFilter().AddAllObjects().GetFilter(),
                     SearchScope.Base, null);
 
                 response = (SearchResponse)connection.SendRequest(searchRequest);

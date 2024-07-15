@@ -33,7 +33,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ContainerProcessor_ReadContainerGPLinks_IgnoresNull()
         {
-            var processor = new ContainerProcessor(new MockLDAPUtils());
+            var processor = new ContainerProcessor(new MockLdapUtils());
             var test = await processor.ReadContainerGPLinks(null).ToArrayAsync();
             Assert.Empty(test);
         }
@@ -41,7 +41,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ContainerProcessor_ReadContainerGPLinks_UnresolvedGPLink_IsIgnored()
         {
-            var processor = new ContainerProcessor(new MockLDAPUtils());
+            var processor = new ContainerProcessor(new MockLdapUtils());
             //GPLink that doesn't exist
             const string s =
                 "[LDAP://cn={94DD0260-38B5-497E-8876-ABCDEFG},cn=policies,cn=system,DC=testlab,DC=local;0]";
@@ -52,7 +52,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ContainerProcessor_ReadContainerGPLinks_ReturnsCorrectValues()
         {
-            var processor = new ContainerProcessor(new MockLDAPUtils());
+            var processor = new ContainerProcessor(new MockLdapUtils());
             var test = await processor.ReadContainerGPLinks(_testGpLinkString).ToArrayAsync();
 
             var expected = new GPLink[]
@@ -81,7 +81,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ContainerProcessor_GetContainerChildObjects_ReturnsCorrectData()
         {
-            var mock = new Mock<MockLDAPUtils>();
+            var mock = new Mock<MockLdapUtils>();
 
             var searchResults = new[]
             {
@@ -135,7 +135,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ContainerProcessor_GetContainingObject_ExpectedResult()
         {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var proc = new ContainerProcessor(utils);
 
             var (success, result) = await proc.GetContainingObject("OU=TESTOU,DC=TESTLAB,DC=LOCAL");
@@ -157,7 +157,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ContainerProcessor_GetContainingObject_BadDN_ReturnsNull()
         {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var proc = new ContainerProcessor(utils);
 
             var (success, result) = await proc.GetContainingObject("abc123");

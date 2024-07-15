@@ -13,7 +13,7 @@ using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors {
-    public class LDAPPropertyProcessor {
+    public class LdapPropertyProcessor {
         private static readonly string[] ReservedAttributes = CommonProperties.TypeResolutionProps
             .Concat(CommonProperties.BaseQueryProps).Concat(CommonProperties.GroupResolutionProps)
             .Concat(CommonProperties.ComputerMethodProps).Concat(CommonProperties.ACLProps)
@@ -23,7 +23,7 @@ namespace SharpHoundCommonLib.Processors {
 
         private readonly ILdapUtils _utils;
 
-        public LDAPPropertyProcessor(ILdapUtils utils) {
+        public LdapPropertyProcessor(ILdapUtils utils) {
             _utils = utils;
         }
 

@@ -133,14 +133,14 @@ namespace CommonLibTest {
             mockLDAPUtils
                 .Setup(x => x.Query(
                     It.Is<LdapQueryParameters>(y =>
-                        y.LDAPFilter.Equals(new LDAPFilter().AddComputersNoMSAs().GetFilter()) &&
+                        y.LDAPFilter.Equals(new LdapFilter().AddComputersNoMSAs().GetFilter()) &&
                         y.Attributes.Equals(CommonProperties.ObjectSID)),
                     It.IsAny<CancellationToken>())).Returns(mockSearchResults.ToAsyncEnumerable);
 
             mockLDAPUtils
                 .Setup(x => x.Query(
                     It.Is<LdapQueryParameters>(y =>
-                        y.LDAPFilter.Equals(new LDAPFilter().AddAllObjects().GetFilter())),
+                        y.LDAPFilter.Equals(new LdapFilter().AddAllObjects().GetFilter())),
                     It.IsAny<CancellationToken>()))
                 .Returns(Array.Empty<LdapResult<IDirectoryObject>>().ToAsyncEnumerable);
 
@@ -271,7 +271,7 @@ namespace CommonLibTest {
 
         [Fact]
         public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NullSID() {
-            var mockLDAPUtils = new MockLDAPUtils();
+            var mockLDAPUtils = new MockLdapUtils();
             var gpcFileSysPath = Path.GetTempPath();
             var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
 
