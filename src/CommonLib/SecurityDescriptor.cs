@@ -15,6 +15,8 @@ namespace SharpHoundCommonLib
             _inner = inner;
         }
 
+        public InheritanceFlags InheritanceFlags => _inner.InheritanceFlags;
+
         public virtual AccessControlType AccessControlType()
         {
             return _inner.AccessControlType;
@@ -28,6 +30,10 @@ namespace SharpHoundCommonLib
         public virtual bool IsInherited()
         {
             return _inner.IsInherited;
+        }
+
+        public virtual string InheritedObjectType() {
+            return _inner.InheritedObjectType.ToString();
         }
 
         public virtual bool IsAceInheritedFrom(string guid)
