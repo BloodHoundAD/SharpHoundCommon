@@ -50,10 +50,11 @@ namespace SharpHoundCommonLib.Processors
         public Task<ComputerStatus> IsComputerAvailable(ResolvedSearchResult result, IDirectoryObject entry)
         {
             var name = result.DisplayName;
-            entry.TryGetProperty(LDAPProperties.OperatingSystem, out var os);
-            entry.TryGetProperty(LDAPProperties.PasswordLastSet, out var pwdlastset);
+            var os = entry.GetProperty(LDAPProperties.OperatingSystem);
+            var pwdlastset = entry.GetProperty(LDAPProperties.PasswordLastSet);
+            var lastLogon = entry.GetProperty(LDAPProperties.LastLogonTimestamp);
             
-            return IsComputerAvailable(name, os, pwdlastset);
+            return IsComputerAvailable(name, os, pwdlastset, lastLogon);
         }
 
         /// <summary>
@@ -65,9 +66,10 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerName">The computer to check availability for</param>
         /// <param name="operatingSystem">The LDAP operatingsystem attribute value</param>
         /// <param name="pwdLastSet">The LDAP pwdlastset attribute value</param>
+        /// <param name="lastLogon">The LDAP lastlogontimestamp attribute value</param>
         /// <returns>A <cref>ComputerStatus</cref> object that represents the availability of the computer</returns>
         public async Task<ComputerStatus> IsComputerAvailable(string computerName, string operatingSystem,
-            string pwdLastSet)
+            string pwdLastSet, string lastLogon)
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
@@ -89,23 +91,24 @@ namespace SharpHoundCommonLib.Processors
             if (!_skipPasswordCheck)
             {
                 var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
+                var lastLogonTimeStamp = Helpers.ConvertLdapTimeToLong(lastLogon);
                 var threshold = DateTime.Now.AddDays(_computerExpiryDays * -1).ToFileTimeUtc();
 
-                if (passwordLastSet < threshold)
+                if (passwordLastSet < threshold && lastLogonTimeStamp < threshold)
                 {
                     _log.LogDebug(
-                        "{ComputerName} is not available because password last set {PwdLastSet} is out of range",
-                        computerName, passwordLastSet);
+                        "{ComputerName} is not available because password last set and lastlogontimestamp are out of range",
+                        computerName);
                     await SendComputerStatus(new CSVComputerStatus
                     {
-                        Status = ComputerStatus.OldPwd,
+                        Status = ComputerStatus.NotActive,
                         Task = "ComputerAvailability",
                         ComputerName = computerName
                     });
                     return new ComputerStatus
                     {
                         Connectable = false,
-                        Error = ComputerStatus.OldPwd
+                        Error = ComputerStatus.NotActive
                     };
                 }
             }

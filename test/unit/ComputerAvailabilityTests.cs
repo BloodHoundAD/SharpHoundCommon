@@ -36,7 +36,7 @@ namespace CommonLibTest
         public async Task ComputerAvailability_IsComputerAvailable_BadOperatingSystem_ReturnsFalse()
         {
             var processor = new ComputerAvailability();
-            var test = await processor.IsComputerAvailable("test", "Linux Mint 1.0", "132682398326125518");
+            var test = await processor.IsComputerAvailable("test", "Linux Mint 1.0", "132682398326125518", "132682398326125518");
 
             Assert.False(test.Connectable);
             Assert.Equal(ComputerStatus.NonWindowsOS, test.Error);
@@ -50,10 +50,10 @@ namespace CommonLibTest
             //Create a date 91 days ago. Our threshold for pwdlastset is 90 days
             var n = DateTime.Now.AddDays(-91) - new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc);
 
-            var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString());
+            var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString(), n.Ticks.ToString());
 
             Assert.False(test.Connectable);
-            Assert.Equal(ComputerStatus.OldPwd, test.Error);
+            Assert.Equal(ComputerStatus.NotActive, test.Error);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace CommonLibTest
             //Create a date 5 days ago
             var n = DateTime.Now.AddDays(-5) - new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc);
 
-            var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString());
+            var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString(), n.Ticks.ToString());
 
             Assert.False(test.Connectable);
             Assert.Equal(ComputerStatus.PortNotOpen, test.Error);
@@ -78,7 +78,7 @@ namespace CommonLibTest
             //Create a date 5 days ago 
             var n = DateTime.Now.AddDays(-5) - new DateTime(1601, 01, 01, 0, 0, 0, DateTimeKind.Utc);
 
-            var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString());
+            var test = await processor.IsComputerAvailable("test", "Windows 10 Enterprise", n.Ticks.ToString(), n.Ticks.ToString());
 
             Assert.True(test.Connectable);
         }

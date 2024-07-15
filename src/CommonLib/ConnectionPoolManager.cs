@@ -4,7 +4,6 @@ using System.DirectoryServices;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using SharpHoundCommonLib.DirectoryObjects;
 using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib {
