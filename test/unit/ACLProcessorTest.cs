@@ -1069,5 +1069,29 @@ namespace CommonLibTest {
             
             Assert.Equal(result1, result2);
         }
+        
+        [Fact]
+        public void Test_ACLProcessor_IsACLProtected_Protected() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
+            var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+            mockSecurityDescriptor.Setup(x => x.AreAccessRulesProtected()).Returns(true);
+            mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+            
+            var processor = new ACLProcessor(mockLDAPUtils.Object);
+            var result = processor.IsACLProtected(Array.Empty<byte>());
+            Assert.True(result);
+        }
+        
+        [Fact]
+        public void Test_ACLProcessor_IsACLProtected_NotProtected() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
+            var mockSecurityDescriptor = new Mock<ActiveDirectorySecurityDescriptor>(MockBehavior.Loose, null);
+            mockSecurityDescriptor.Setup(x => x.AreAccessRulesProtected()).Returns(false);
+            mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+            
+            var processor = new ACLProcessor(mockLDAPUtils.Object);
+            var result = processor.IsACLProtected(Array.Empty<byte>());
+            Assert.False(result);
+        }
     }
 }
