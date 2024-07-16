@@ -79,8 +79,8 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="entry"></param>
         /// <returns></returns>
         public bool IsACLProtected(IDirectoryObject entry) {
-            if (entry.TryGetByteProperty(LDAPProperties.SecurityDescriptor, out var ntsd)) {
-                return IsACLProtected(ntsd);
+            if (entry.TryGetByteProperty(LDAPProperties.SecurityDescriptor, out var ntSecurityDescriptor)) {
+                return IsACLProtected(ntSecurityDescriptor);
             }
 
             return false;
