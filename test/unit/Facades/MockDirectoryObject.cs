@@ -33,8 +33,19 @@ public class MockDirectoryObject : IDirectoryObject {
             return false;
         }
 
-        value = Properties[propertyName] as string;
-        return true;
+        var temp = Properties[propertyName];
+
+        switch (temp) {
+            case string s:
+                value = s;
+                return true;
+            case int i:
+                value = i.ToString();
+                return true;
+            default:
+                value = default;
+                return false;
+        }
     }
 
     public bool TryGetByteProperty(string propertyName, out byte[] value) {
