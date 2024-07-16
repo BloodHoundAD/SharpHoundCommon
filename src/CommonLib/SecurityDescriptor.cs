@@ -15,7 +15,7 @@ namespace SharpHoundCommonLib
             _inner = inner;
         }
 
-        public InheritanceFlags InheritanceFlags => _inner.InheritanceFlags;
+        public virtual InheritanceFlags InheritanceFlags => _inner.InheritanceFlags;
 
         public virtual AccessControlType AccessControlType()
         {

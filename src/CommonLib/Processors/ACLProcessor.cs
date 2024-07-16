@@ -120,7 +120,7 @@ namespace SharpHoundCommonLib.Processors {
             return ProcessACL(descriptor, domain, type, hasLaps, name);
         }
 
-        private static string CalculateInheritanceHash(string identityReference, ActiveDirectoryRights rights,
+        internal static string CalculateInheritanceHash(string identityReference, ActiveDirectoryRights rights,
             string aceType, string inheritedObjectType) {
             var hash = identityReference + rights + aceType + inheritedObjectType;
             using (var md5 = MD5.Create()) {
