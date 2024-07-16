@@ -1,30 +1,19 @@
 ﻿using System;
-using System.DirectoryServices;
-using CommonLibTest.Facades;
-using Moq;
-using Newtonsoft.Json;
-using SharpHoundCommonLib;
-using SharpHoundCommonLib.Enums;
-using SharpHoundCommonLib.Processors;
-using Xunit;
 using Xunit.Abstractions;
 
-namespace CommonLibTest
-{
-    public class CertAbuseProcessorTest : IDisposable
-    {
+namespace CommonLibTest {
+    //TODO: Make these tests work
+    public class CertAbuseProcessorTest : IDisposable {
         private const string CASecurityFixture =
             "AQAUhCABAAAwAQAAFAAAAEQAAAACADAAAgAAAALAFAD//wAAAQEAAAAAAAEAAAAAAsAUAP//AAABAQAAAAAABQcAAAACANwABwAAAAADGAABAAAAAQIAAAAAAAUgAAAAIAIAAAADGAACAAAAAQIAAAAAAAUgAAAAIAIAAAADJAABAAAAAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQAAIAAAADJAACAAAAAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQAAIAAAADJAABAAAAAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQBwIAAAADJAACAAAAAQUAAAAAAAUVAAAAIE+Qun9GhKV2SBaQBwIAAAADFAAAAgAAAQEAAAAAAAULAAAAAQIAAAAAAAUgAAAAIAIAAAECAAAAAAAFIAAAACACAAA=";
 
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public CertAbuseProcessorTest(ITestOutputHelper testOutputHelper)
-        {
+        public CertAbuseProcessorTest(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
         }
 
         // [Fact]

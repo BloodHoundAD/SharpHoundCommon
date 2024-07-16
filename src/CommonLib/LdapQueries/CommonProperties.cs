@@ -30,7 +30,8 @@
         public static readonly string[] ComputerMethodProps =
         {
             LDAPProperties.SAMAccountName, LDAPProperties.DistinguishedName, LDAPProperties.DNSHostName,
-            LDAPProperties.SAMAccountType, LDAPProperties.OperatingSystem, LDAPProperties.PasswordLastSet
+            LDAPProperties.SAMAccountType, LDAPProperties.OperatingSystem, LDAPProperties.PasswordLastSet,
+            LDAPProperties.LastLogonTimestamp
         };
 
         public static readonly string[] ACLProps =

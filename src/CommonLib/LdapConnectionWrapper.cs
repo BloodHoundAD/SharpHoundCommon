@@ -5,7 +5,7 @@ using SharpHoundCommonLib.Enums;
 namespace SharpHoundCommonLib {
     public class LdapConnectionWrapper {
         public LdapConnection Connection { get; private set; }
-        private readonly ISearchResultEntry _searchResultEntry;
+        private readonly IDirectoryObject _searchResultEntry;
         private string _domainSearchBase;
         private string _configurationSearchBase;
         private string _schemaSearchBase;
@@ -14,7 +14,7 @@ namespace SharpHoundCommonLib {
         public readonly bool GlobalCatalog;
         public readonly string PoolIdentifier;
 
-        public LdapConnectionWrapper(LdapConnection connection, ISearchResultEntry entry, bool globalCatalog,
+        public LdapConnectionWrapper(LdapConnection connection, IDirectoryObject entry, bool globalCatalog,
             string poolIdentifier) {
             Connection = connection;
             _searchResultEntry = entry;

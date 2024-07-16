@@ -49,10 +49,12 @@ namespace SharpHoundCommonLib.Processors {
             _log = log ?? Logging.LogProvider.CreateLogger("GPOLocalGroupProc");
         }
 
-        public Task<ResultingGPOChanges> ReadGPOLocalGroups(ISearchResultEntry entry) {
-            var links = entry.GetProperty(LDAPProperties.GPLink);
-            var dn = entry.DistinguishedName;
-            return ReadGPOLocalGroups(links, dn);
+        public Task<ResultingGPOChanges> ReadGPOLocalGroups(IDirectoryObject entry) {
+            if (entry.TryGetProperty(LDAPProperties.GPLink, out var links) && entry.TryGetDistinguishedName(out var dn)) {
+                return ReadGPOLocalGroups(links, dn);    
+            }
+
+            return default;
         }
 
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName) {
@@ -65,7 +67,7 @@ namespace SharpHoundCommonLib.Processors {
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks
             var affectedComputers = new List<TypedPrincipal>();
             await foreach (var result in _utils.Query(new LdapQueryParameters() {
-                               LDAPFilter = new LDAPFilter().AddComputersNoMSAs().GetFilter(),
+                               LDAPFilter = new LdapFilter().AddComputersNoMSAs().GetFilter(),
                                Attributes = CommonProperties.ObjectSID,
                                SearchBase = distinguishedName
                            })) {
@@ -74,8 +76,7 @@ namespace SharpHoundCommonLib.Processors {
                 }
 
                 var entry = result.Value;
-                var sid = entry.GetSid();
-                if (string.IsNullOrWhiteSpace(sid)) {
+                if (!entry.TryGetSecurityIdentifier(out var sid)) {
                     continue;
                 }
 
@@ -115,7 +116,7 @@ namespace SharpHoundCommonLib.Processors {
 
                     var gpoDomain = Helpers.DistinguishedNameToDomain(linkDn);
                     var result = await _utils.Query(new LdapQueryParameters() {
-                        LDAPFilter = new LDAPFilter().AddAllObjects().GetFilter(),
+                        LDAPFilter = new LdapFilter().AddAllObjects().GetFilter(),
                         SearchScope = SearchScope.Base,
                         Attributes = CommonProperties.GPCFileSysPath,
                         SearchBase = linkDn
@@ -125,8 +126,7 @@ namespace SharpHoundCommonLib.Processors {
                         continue;
                     }
 
-                    var filePath = result.Value.GetProperty(LDAPProperties.GPCFileSYSPath);
-                    if (string.IsNullOrWhiteSpace(filePath)) {
+                    if (!result.Value.TryGetProperty(LDAPProperties.GPCFileSYSPath, out var filePath)) {
                         GpoActionCache.TryAdd(linkDn, actions);
                         continue;
                     }
@@ -500,6 +500,28 @@ namespace SharpHoundCommonLib.Processors {
                     ObjectIdentifier = TargetSid,
                     ObjectType = TargetType
                 };
+            }
+
+            protected bool Equals(GroupAction other) {
+                return Action == other.Action && Target == other.Target && TargetSid == other.TargetSid && TargetType == other.TargetType && TargetRid == other.TargetRid;
+            }
+
+            public override bool Equals(object obj) {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != this.GetType()) return false;
+                return Equals((GroupAction)obj);
+            }
+
+            public override int GetHashCode() {
+                unchecked {
+                    var hashCode = (int)Action;
+                    hashCode = (hashCode * 397) ^ (int)Target;
+                    hashCode = (hashCode * 397) ^ (TargetSid != null ? TargetSid.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ (int)TargetType;
+                    hashCode = (hashCode * 397) ^ (int)TargetRid;
+                    return hashCode;
+                }
             }
 
             public override string ToString() {

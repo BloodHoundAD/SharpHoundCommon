@@ -1,4 +1,5 @@
 ﻿using System;
+using System.DirectoryServices;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
@@ -45,9 +46,9 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="methods"></param>
         /// <returns></returns>
-        public static bool IsComputerCollectionSet(this ResolvedCollectionMethod methods)
-        {
-            return (methods & ResolvedCollectionMethod.ComputerOnly) != 0;
+        public static bool IsComputerCollectionSet(this CollectionMethod methods) {
+            const CollectionMethod test = CollectionMethod.ComputerOnly | CollectionMethod.LoggedOn;
+            return (methods & test) != 0;
         }
 
         /// <summary>
@@ -55,9 +56,9 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="methods"></param>
         /// <returns></returns>
-        public static bool IsLocalGroupCollectionSet(this ResolvedCollectionMethod methods)
+        public static bool IsLocalGroupCollectionSet(this CollectionMethod methods)
         {
-            return (methods & ResolvedCollectionMethod.LocalGroups) != 0;
+            return (methods & CollectionMethod.LocalGroups) != 0;
         }
 
         /// <summary>
@@ -70,6 +71,10 @@ namespace SharpHoundCommonLib
             var value = securityIdentifier.Value;
             var rid = int.Parse(value.Substring(value.LastIndexOf("-", StringComparison.Ordinal) + 1));
             return rid;
+        }
+        
+        public static IDirectoryObject ToDirectoryObject(this DirectoryEntry entry) {
+            return new DirectoryEntryWrapper(entry);
         }
     }
 }

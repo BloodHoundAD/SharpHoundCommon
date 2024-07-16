@@ -78,5 +78,6 @@
         public const string NetbiosName = "netbiosName";
         public const string DnsRoot = "dnsroot";
         public const string ServerName = "servername";
+        public const string OU = "ou";
     }
 }
