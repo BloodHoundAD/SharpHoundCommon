@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
+// ReSharper disable StringLiteralTypo
 
 namespace SharpHoundCommonLib.Processors {
     public class LdapPropertyProcessor {
@@ -131,6 +132,7 @@ namespace SharpHoundCommonLib.Processors {
         ///     Reads specific LDAP properties related to Users
         /// </summary>
         /// <param name="entry"></param>
+        /// <param name="domain"></param>
         /// <returns></returns>
         public async Task<UserProperties> ReadUserProperties(IDirectoryObject entry, string domain) {
             var userProps = new UserProperties();
@@ -181,11 +183,11 @@ namespace SharpHoundCommonLib.Processors {
 
             props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(lastLogonTimeStamp));
 
-            if (!entry.TryGetProperty(LDAPProperties.PasswordLastSet, out var pwdlastset)) {
-                pwdlastset = null;
+            if (!entry.TryGetProperty(LDAPProperties.PasswordLastSet, out var passwordLastSet)) {
+                passwordLastSet = null;
             }
             props.Add("pwdlastset",
-                Helpers.ConvertFileTimeToUnixEpoch(pwdlastset));
+                Helpers.ConvertFileTimeToUnixEpoch(passwordLastSet));
             entry.TryGetArrayProperty(LDAPProperties.ServicePrincipalNames, out var spn);
             props.Add("serviceprincipalnames", spn);
             props.Add("hasspn", spn.Length > 0);
@@ -237,6 +239,7 @@ namespace SharpHoundCommonLib.Processors {
         ///     Reads specific LDAP properties related to Computers
         /// </summary>
         /// <param name="entry"></param>
+        /// <param name="domain"></param>
         /// <returns></returns>
         public async Task<ComputerProperties> ReadComputerProperties(IDirectoryObject entry, string domain) {
             var compProps = new ComputerProperties();
