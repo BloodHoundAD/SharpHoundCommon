@@ -168,8 +168,8 @@ namespace CommonLibTest
                 {
                     {"description", "Test"},
                     {"useraccountcontrol", 0x1000000.ToString()},
-                    {"lastlogon", "132673011142753043"},
-                    {"lastlogontimestamp", "132670318095676525"},
+                    {LDAPProperties.LastLogon, "132673011142753043"},
+                    {LDAPProperties.LastLogonTimestamp, "132670318095676525"},
                     {"homedirectory", @"\\win10\testdir"},
                     {
                         "serviceprincipalname", new[]
