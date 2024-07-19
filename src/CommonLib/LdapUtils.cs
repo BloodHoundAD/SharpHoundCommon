@@ -1052,11 +1052,10 @@ namespace SharpHoundCommonLib {
 
             if (_hostResolutionMap.TryGetValue(strippedHost, out var sid)) return (true, sid);
 
-            //Immediately start with NetWekstaGetInfo as its our most reliable indicator if successful
-            var workstationInfo = await GetWorkstationInfo(strippedHost);
-            if (workstationInfo.HasValue) {
-                var tempName = workstationInfo.Value.ComputerName;
-                var tempDomain = workstationInfo.Value.LanGroup;
+            //Immediately start with NetWkstaGetInfo as it's our most reliable indicator if successful
+            if (await GetWorkstationInfo(strippedHost) is (true, var workstationInfo)) {
+                var tempName = workstationInfo.ComputerName;
+                var tempDomain = workstationInfo.LanGroup;
 
                 if (string.IsNullOrWhiteSpace(tempDomain)) {
                     tempDomain = domain;
@@ -1138,14 +1137,14 @@ namespace SharpHoundCommonLib {
         /// </summary>
         /// <param name="hostname"></param>
         /// <returns></returns>
-        private async Task<NetAPIStructs.WorkstationInfo100?> GetWorkstationInfo(string hostname) {
+        private async Task<(bool Success, NetAPIStructs.WorkstationInfo100 Info)> GetWorkstationInfo(string hostname) {
             if (!await _portScanner.CheckPort(hostname))
-                return null;
+                return (false, default);
 
             var result = _nativeMethods.CallNetWkstaGetInfo(hostname);
-            if (result.IsSuccess) return result.Value;
+            if (result.IsSuccess) return (true, result.Value);
 
-            return null;
+            return (false, default);
         }
 
         public async Task<(bool Success, string[] Sids)> GetGlobalCatalogMatches(string name, string domain) {

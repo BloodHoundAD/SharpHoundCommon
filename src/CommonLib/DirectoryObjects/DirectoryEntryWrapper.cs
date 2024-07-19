@@ -39,6 +39,7 @@ public class DirectoryEntryWrapper : IDirectoryObject {
         var s = _entry.Properties[propertyName][0];
         value = s switch {
             string st => st,
+            int i => i.ToString(),
             _ => null
         };
 

@@ -22,7 +22,10 @@ namespace SharpHoundCommonLib {
         }
 
         public void ReleaseConnection(LdapConnectionWrapper connectionWrapper, bool connectionFaulted = false) {
-            //I dont think this is possible, but at least account for it
+            if (connectionWrapper == null) {
+                return;
+            }
+            //I don't think this is possible, but at least account for it
             if (!_pools.TryGetValue(connectionWrapper.PoolIdentifier, out var pool)) {
                 _log.LogWarning("Could not find pool for {Identifier}", connectionWrapper.PoolIdentifier);
                 connectionWrapper.Connection.Dispose();
