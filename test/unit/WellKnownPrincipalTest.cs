@@ -13,8 +13,6 @@ namespace CommonLibTest
         public WellKnownPrincipalTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _testDomainName = "TESTLAB.LOCAL";
-            _testForestName = "FOREST.LOCAL";
         }
 
         #endregion
@@ -123,8 +121,6 @@ namespace CommonLibTest
         #region Private Members
 
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly string _testDomainName;
-        private readonly string _testForestName;
 
         #endregion
 
