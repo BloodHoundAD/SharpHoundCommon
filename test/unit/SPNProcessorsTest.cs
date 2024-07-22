@@ -14,7 +14,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ReadSPNTargets_SPNLengthZero_YieldBreak()
         {
-            var processor = new SPNProcessors(new MockLDAPUtils());
+            var processor = new SPNProcessors(new MockLdapUtils());
             var servicePrincipalNames = Array.Empty<string>();
             const string distinguishedName = "cn=policies,cn=system,DC=testlab,DC=local";
             await foreach (var spn in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))
@@ -24,7 +24,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ReadSPNTargets_NoPortSupplied_ParsedCorrectly()
         {
-            var processor = new SPNProcessors(new MockLDAPUtils());
+            var processor = new SPNProcessors(new MockLdapUtils());
             string[] servicePrincipalNames = {"MSSQLSvc/PRIMARY.TESTLAB.LOCAL"};
             const string distinguishedName = "cn=policies,cn=system,DC=testlab,DC=local";
 
@@ -45,7 +45,7 @@ namespace CommonLibTest
         [Fact]
         public async Task ReadSPNTargets_BadPortSupplied_ParsedCorrectly()
         {
-            var processor = new SPNProcessors(new MockLDAPUtils());
+            var processor = new SPNProcessors(new MockLdapUtils());
             string[] servicePrincipalNames = {"MSSQLSvc/PRIMARY.TESTLAB.LOCAL:abcd"};
             const string distinguishedName = "cn=policies,cn=system,DC=testlab,DC=local";
 
@@ -66,7 +66,7 @@ namespace CommonLibTest
         [Fact]
         public async void ReadSPNTargets_SuppliedPort_ParsedCorrectly()
         {
-            var processor = new SPNProcessors(new MockLDAPUtils());
+            var processor = new SPNProcessors(new MockLdapUtils());
             string[] servicePrincipalNames = {"MSSQLSvc/PRIMARY.TESTLAB.LOCAL:2345"};
             const string distinguishedName = "cn=policies,cn=system,DC=testlab,DC=local";
 
@@ -87,7 +87,7 @@ namespace CommonLibTest
         [Fact]
         public async void ReadSPNTargets_MissingMssqlSvc_NotRead()
         {
-            var processor = new SPNProcessors(new MockLDAPUtils());
+            var processor = new SPNProcessors(new MockLdapUtils());
             string[] servicePrincipalNames = {"myhost.redmond.microsoft.com:1433"};
             const string distinguishedName = "CN=Jeff Smith,OU=Sales,DC=Fabrikam,DC=COM";
             await foreach (var spn in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))
@@ -97,7 +97,7 @@ namespace CommonLibTest
         [Fact]
         public async void ReadSPNTargets_SPNWithAddressSign_NotRead()
         {
-            var processor = new SPNProcessors(new MockLDAPUtils());
+            var processor = new SPNProcessors(new MockLdapUtils());
             string[] servicePrincipalNames = {"MSSQLSvc/myhost.redmond.microsoft.com:1433 user@domain"};
             const string distinguishedName = "CN=Jeff Smith,OU=Sales,DC=Fabrikam,DC=COM";
             await foreach (var spn in processor.ReadSPNTargets(servicePrincipalNames, distinguishedName))

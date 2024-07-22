@@ -15,8 +15,6 @@ namespace CommonLibTest
 {
     public class GroupProcessorTest
     {
-        private readonly string _testDomainName;
-
         private readonly Result<string>[] _testMembershipReturn =
         {
             Result<string>.Ok("CN=Domain Admins,CN=Users,DC=testlab,DC=local"),
@@ -40,26 +38,25 @@ namespace CommonLibTest
         public GroupProcessorTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _testDomainName = "TESTLAB.LOCAL";
             _baseProcessor = new GroupProcessor(new LdapUtils());
         }
 
         [Fact]
-        public async Task GroupProcessor_GetPrimaryGroupInfo_NullPrimaryGroupID_ReturnsNull()
+        public void GroupProcessor_GetPrimaryGroupInfo_NullPrimaryGroupID_ReturnsNull()
         {
             var result = GroupProcessor.GetPrimaryGroupInfo(null, null);
             Assert.Null(result);
         }
 
         [WindowsOnlyFact]
-        public async Task GroupProcessor_GetPrimaryGroupInfo_ReturnsCorrectSID()
+        public void GroupProcessor_GetPrimaryGroupInfo_ReturnsCorrectSID()
         {
             var result = GroupProcessor.GetPrimaryGroupInfo("513", "S-1-5-21-3130019616-2776909439-2417379446-1105");
             Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446-513", result);
         }
 
         [Fact]
-        public async Task GroupProcessor_GetPrimaryGroupInfo_BadSID_ReturnsNull()
+        public void GroupProcessor_GetPrimaryGroupInfo_BadSID_ReturnsNull()
         {
             var result = GroupProcessor.GetPrimaryGroupInfo("513", "ABC123");
             Assert.Null(result);
@@ -68,7 +65,7 @@ namespace CommonLibTest
         [Fact]
         public async Task GroupProcessor_ReadGroupMembers_EmptyMembers_DoesRangedRetrieval()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var expected = new TypedPrincipal[]
             {
                 new()
@@ -105,7 +102,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task GroupProcessor_ReadGroupMembers_ReturnsCorrectMembers()
         {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var processor = new GroupProcessor(utils);
             var expected = new TypedPrincipal[]
             {

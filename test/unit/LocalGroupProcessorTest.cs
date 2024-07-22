@@ -27,7 +27,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task LocalGroupProcessor_TestWorkstation()
         {
-            var mockProcessor = new Mock<LocalGroupProcessor>(new MockLDAPUtils(), null);
+            var mockProcessor = new Mock<LocalGroupProcessor>(new MockLdapUtils(), null);
             var mockSamServer = new MockWorkstationSAMServer();
             mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Returns(mockSamServer);
             var processor = mockProcessor.Object;
@@ -58,7 +58,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task LocalGroupProcessor_TestDomainController()
         {
-            var mockProcessor = new Mock<LocalGroupProcessor>(new MockLDAPUtils(), null);
+            var mockProcessor = new Mock<LocalGroupProcessor>(new MockLdapUtils(), null);
             var mockSamServer = new MockDCSAMServer();
             mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Returns(mockSamServer);
             var processor = mockProcessor.Object;
@@ -76,7 +76,7 @@ namespace CommonLibTest
         [Fact]
         public async Task LocalGroupProcessor_ResolveGroupName_NonDC()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var proc = new LocalGroupProcessor(mockUtils.Object);
 
             var resultTask = TestPrivateMethod.InstanceMethod<Task<NamedPrincipal>>(proc, "ResolveGroupName",
@@ -95,7 +95,7 @@ namespace CommonLibTest
         [Fact]
         public async Task LocalGroupProcessor_ResolveGroupName_DC()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var proc = new LocalGroupProcessor(mockUtils.Object);
 
             var resultTask = TestPrivateMethod.InstanceMethod<Task<NamedPrincipal>>(proc, "ResolveGroupName",

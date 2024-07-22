@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
@@ -18,13 +19,13 @@ namespace SharpHoundCommonLib.Processors
         }
 
         public IAsyncEnumerable<SPNPrivilege> ReadSPNTargets(ResolvedSearchResult result,
-            ISearchResultEntry entry)
+            IDirectoryObject entry)
         {
-            var members = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
-            var name = result.DisplayName;
-            var dn = entry.DistinguishedName;
-
-            return ReadSPNTargets(members, dn, name);
+            if (entry.TryGetArrayProperty(LDAPProperties.ServicePrincipalNames, out var members) && entry.TryGetDistinguishedName(out var dn)) {
+                return ReadSPNTargets(members, dn, result.DisplayName);    
+            }
+            
+            return AsyncEnumerable.Empty<SPNPrivilege>();
         }
 
         public async IAsyncEnumerable<SPNPrivilege> ReadSPNTargets(string[] servicePrincipalNames,

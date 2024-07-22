@@ -5,7 +5,7 @@ using SharpHoundCommonLib.Enums;
 namespace SharpHoundCommonLib {
     public class LdapConnectionWrapper {
         public LdapConnection Connection { get; private set; }
-        private readonly ISearchResultEntry _searchResultEntry;
+        private readonly IDirectoryObject _rootDseEntry;
         private string _domainSearchBase;
         private string _configurationSearchBase;
         private string _schemaSearchBase;
@@ -14,10 +14,10 @@ namespace SharpHoundCommonLib {
         public readonly bool GlobalCatalog;
         public readonly string PoolIdentifier;
 
-        public LdapConnectionWrapper(LdapConnection connection, ISearchResultEntry entry, bool globalCatalog,
+        public LdapConnectionWrapper(LdapConnection connection, IDirectoryObject rootDseEntry, bool globalCatalog,
             string poolIdentifier) {
             Connection = connection;
-            _searchResultEntry = entry;
+            _rootDseEntry = rootDseEntry;
             Guid = new Guid().ToString();
             GlobalCatalog = globalCatalog;
             PoolIdentifier = poolIdentifier;
@@ -28,7 +28,7 @@ namespace SharpHoundCommonLib {
                 return _server;
             }
 
-            _server = _searchResultEntry.GetProperty(LDAPProperties.DNSHostName);
+            _server = _rootDseEntry.GetProperty(LDAPProperties.DNSHostName);
             return _server;
         }
 
@@ -39,10 +39,10 @@ namespace SharpHoundCommonLib {
             }
 
             searchBase = context switch {
-                NamingContext.Default => _searchResultEntry.GetProperty(LDAPProperties.DefaultNamingContext),
+                NamingContext.Default => _rootDseEntry.GetProperty(LDAPProperties.DefaultNamingContext),
                 NamingContext.Configuration =>
-                    _searchResultEntry.GetProperty(LDAPProperties.ConfigurationNamingContext),
-                NamingContext.Schema => _searchResultEntry.GetProperty(LDAPProperties.SchemaNamingContext),
+                    _rootDseEntry.GetProperty(LDAPProperties.ConfigurationNamingContext),
+                NamingContext.Schema => _rootDseEntry.GetProperty(LDAPProperties.SchemaNamingContext),
                 _ => throw new ArgumentOutOfRangeException(nameof(context), context, null)
             };
 

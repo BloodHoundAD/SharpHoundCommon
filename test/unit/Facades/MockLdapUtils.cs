@@ -16,23 +16,23 @@ using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace CommonLibTest.Facades
 {
-    public class MockLDAPUtils : ILdapUtils
+    public class MockLdapUtils : ILdapUtils
     {
         private readonly ConcurrentDictionary<string, byte> _domainControllers = new();
         private readonly Forest _forest;
         private readonly ConcurrentDictionary<string, string> _seenWellKnownPrincipals = new();
 
-        public MockLDAPUtils()
+        public MockLdapUtils()
         {
             _forest = MockableForest.Construct("FOREST.LOCAL");
         }
 
-        public virtual IAsyncEnumerable<LdapResult<ISearchResultEntry>> Query(LdapQueryParameters queryParameters,
+        public virtual IAsyncEnumerable<LdapResult<IDirectoryObject>> Query(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new CancellationToken()) {
             throw new NotImplementedException();
         }
 
-        public virtual IAsyncEnumerable<LdapResult<ISearchResultEntry>> PagedQuery(LdapQueryParameters queryParameters,
+        public virtual IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(LdapQueryParameters queryParameters,
             CancellationToken cancellationToken = new CancellationToken()) {
             throw new NotImplementedException();
         }
@@ -674,8 +674,12 @@ namespace CommonLibTest.Facades
             return (true, commonPrincipal);
         }
 
-        Task<(bool Success, string DomainName)> ILdapUtils.GetDomainNameFromSid(string sid) {
-            throw new NotImplementedException();
+        async Task<(bool Success, string DomainName)> ILdapUtils.GetDomainNameFromSid(string sid) {
+            if (sid.StartsWith("S-1-5-21-3130019616-2776909439-2417379446", StringComparison.OrdinalIgnoreCase)) {
+                return (true, "TESTLAB.LOCAL");
+            }
+
+            return (false, default);
         }
 
         public async Task<(bool Success, string DomainSid)> GetDomainSidFromDomainName(string domainName) {
@@ -998,7 +1002,7 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        public void SetLdapConfig(LDAPConfig config) {
+        public void SetLdapConfig(LdapConfig config) {
             throw new NotImplementedException();
         }
 

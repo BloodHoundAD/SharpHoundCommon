@@ -35,7 +35,7 @@ namespace SharpHoundCommonLib.OutputTypes
         public string Error { get; set; }
 
         public static string NonWindowsOS => "NonWindowsOS";
-        public static string OldPwd => "PwdLastSetOutOfRange";
+        public static string NotActive => "NotActive";
         public static string PortNotOpen => "PortNotOpen";
         public static string Success => "Success";
 

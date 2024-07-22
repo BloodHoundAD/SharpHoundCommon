@@ -49,10 +49,12 @@ namespace SharpHoundCommonLib.Processors {
             _log = log ?? Logging.LogProvider.CreateLogger("GPOLocalGroupProc");
         }
 
-        public Task<ResultingGPOChanges> ReadGPOLocalGroups(ISearchResultEntry entry) {
-            var links = entry.GetProperty(LDAPProperties.GPLink);
-            var dn = entry.DistinguishedName;
-            return ReadGPOLocalGroups(links, dn);
+        public Task<ResultingGPOChanges> ReadGPOLocalGroups(IDirectoryObject entry) {
+            if (entry.TryGetProperty(LDAPProperties.GPLink, out var links) && entry.TryGetDistinguishedName(out var dn)) {
+                return ReadGPOLocalGroups(links, dn);    
+            }
+
+            return default;
         }
 
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName) {
@@ -65,7 +67,7 @@ namespace SharpHoundCommonLib.Processors {
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks
             var affectedComputers = new List<TypedPrincipal>();
             await foreach (var result in _utils.Query(new LdapQueryParameters() {
-                               LDAPFilter = new LDAPFilter().AddComputersNoMSAs().GetFilter(),
+                               LDAPFilter = new LdapFilter().AddComputersNoMSAs().GetFilter(),
                                Attributes = CommonProperties.ObjectSID,
                                SearchBase = distinguishedName
                            })) {
@@ -74,8 +76,7 @@ namespace SharpHoundCommonLib.Processors {
                 }
 
                 var entry = result.Value;
-                var sid = entry.GetSid();
-                if (string.IsNullOrWhiteSpace(sid)) {
+                if (!entry.TryGetSecurityIdentifier(out var sid)) {
                     continue;
                 }
 
@@ -115,18 +116,17 @@ namespace SharpHoundCommonLib.Processors {
 
                     var gpoDomain = Helpers.DistinguishedNameToDomain(linkDn);
                     var result = await _utils.Query(new LdapQueryParameters() {
-                        LDAPFilter = new LDAPFilter().AddAllObjects().GetFilter(),
+                        LDAPFilter = new LdapFilter().AddAllObjects().GetFilter(),
                         SearchScope = SearchScope.Base,
                         Attributes = CommonProperties.GPCFileSysPath,
                         SearchBase = linkDn
-                    }).DefaultIfEmpty(null).FirstOrDefaultAsync();
+                    }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
-                    if (result is not { IsSuccess: true }) {
+                    if (!result.IsSuccess) {
                         continue;
                     }
 
-                    var filePath = result.Value.GetProperty(LDAPProperties.GPCFileSYSPath);
-                    if (string.IsNullOrWhiteSpace(filePath)) {
+                    if (!result.Value.TryGetProperty(LDAPProperties.GPCFileSYSPath, out var filePath)) {
                         GpoActionCache.TryAdd(linkDn, actions);
                         continue;
                     }

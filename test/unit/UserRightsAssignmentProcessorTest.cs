@@ -24,7 +24,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task UserRightsAssignmentProcessor_TestWorkstation()
         {
-            var mockProcessor = new Mock<UserRightsAssignmentProcessor>(new MockLDAPUtils(), null);
+            var mockProcessor = new Mock<UserRightsAssignmentProcessor>(new MockLdapUtils(), null);
             var mockLSAPolicy = new MockWorkstationLSAPolicy();
             mockProcessor.Setup(x => x.OpenLSAPolicy(It.IsAny<string>())).Returns(mockLSAPolicy);
             var processor = mockProcessor.Object;
@@ -46,7 +46,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task UserRightsAssignmentProcessor_TestDC()
         {
-            var mockProcessor = new Mock<UserRightsAssignmentProcessor>(new MockLDAPUtils(), null);
+            var mockProcessor = new Mock<UserRightsAssignmentProcessor>(new MockLdapUtils(), null);
             var mockLSAPolicy = new MockDCLSAPolicy();
             mockProcessor.Setup(x => x.OpenLSAPolicy(It.IsAny<string>())).Returns(mockLSAPolicy);
             var processor = mockProcessor.Object;
