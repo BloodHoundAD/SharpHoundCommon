@@ -88,29 +88,22 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
-            if (!_skipPasswordCheck)
+            if (!_skipPasswordCheck && !IsComputerActive(pwdLastSet, lastLogon))
             {
-                var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
-                var lastLogonTimeStamp = Helpers.ConvertLdapTimeToLong(lastLogon);
-                var threshold = DateTime.Now.AddDays(_computerExpiryDays * -1).ToFileTimeUtc();
-
-                if (passwordLastSet < threshold && lastLogonTimeStamp < threshold)
+                _log.LogDebug(
+                    "{ComputerName} is not available because password last set and lastlogontimestamp are out of range",
+                    computerName);
+                await SendComputerStatus(new CSVComputerStatus
                 {
-                    _log.LogDebug(
-                        "{ComputerName} is not available because password last set and lastlogontimestamp are out of range",
-                        computerName);
-                    await SendComputerStatus(new CSVComputerStatus
-                    {
-                        Status = ComputerStatus.NotActive,
-                        Task = "ComputerAvailability",
-                        ComputerName = computerName
-                    });
-                    return new ComputerStatus
-                    {
-                        Connectable = false,
-                        Error = ComputerStatus.NotActive
-                    };
-                }
+                    Status = ComputerStatus.NotActive,
+                    Task = "ComputerAvailability",
+                    ComputerName = computerName
+                });
+                return new ComputerStatus
+                {
+                    Connectable = false,
+                    Error = ComputerStatus.NotActive
+                };
             }
 
             if (_skipPortScan)
@@ -151,6 +144,20 @@ namespace SharpHoundCommonLib.Processors
                 Connectable = true,
                 Error = null
             };
+        }
+
+        /// <summary>
+        /// Checks if a computer's passwordlastset/lastlogontimestamp attributes are within a certain range
+        /// </summary>
+        /// <param name="pwdLastSet"></param>
+        /// <param name="lastLogonTimestamp"></param>
+        /// <returns></returns>
+        private bool IsComputerActive(string pwdLastSet, string lastLogonTimestamp) {
+            var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
+            var lastLogonTimeStamp = Helpers.ConvertLdapTimeToLong(lastLogonTimestamp);
+            var threshold = DateTime.Now.AddDays(_computerExpiryDays * -1).ToFileTimeUtc();
+
+            return passwordLastSet >= threshold || lastLogonTimeStamp >= threshold;
         }
 
         private async Task SendComputerStatus(CSVComputerStatus status)
