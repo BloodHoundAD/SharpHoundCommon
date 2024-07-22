@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using SharpHoundRPC;
 using SharpHoundRPC.Shared;
@@ -7,6 +8,7 @@ using SharpHoundRPC.Wrappers;
 
 namespace CommonLibTest.Facades.LSAMocks.DCMocks
 {
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public class MockDCLSAPolicy : ILSAPolicy
     {
         public Result<(string Name, string Sid)> GetLocalDomainInformation()

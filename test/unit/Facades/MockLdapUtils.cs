@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Security.Principal;
@@ -16,6 +17,7 @@ using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace CommonLibTest.Facades
 {
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public class MockLdapUtils : ILdapUtils
     {
         private readonly ConcurrentDictionary<string, byte> _domainControllers = new();

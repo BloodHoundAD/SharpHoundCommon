@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using SharpHoundRPC;
 using SharpHoundRPC.Wrappers;
 
 namespace CommonLibTest.Facades
 {
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public class MockDCAliasUsers : ISAMAlias
     {
         public Result<IEnumerable<SecurityIdentifier>> GetMembers()

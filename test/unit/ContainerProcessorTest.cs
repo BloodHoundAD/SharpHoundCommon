@@ -121,7 +121,7 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public async Task ContainerProcessor_ReadBlocksInheritance_ReturnsCorrectValues()
+        public void ContainerProcessor_ReadBlocksInheritance_ReturnsCorrectValues()
         {
             var test = ContainerProcessor.ReadBlocksInheritance(null);
             var test2 = ContainerProcessor.ReadBlocksInheritance("3");
