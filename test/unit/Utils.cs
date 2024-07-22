@@ -24,16 +24,6 @@ namespace CommonLibTest
 
     internal static class Extensions
     {
-        // internal static async Task<T[]> ToArrayAsync<T>(this IAsyncEnumerable<T> items,
-        //     CancellationToken cancellationToken = default)
-        // {
-        //     var results = new List<T>();
-        //     await foreach (var item in items.WithCancellation(cancellationToken)
-        //                        .ConfigureAwait(false))
-        //         results.Add(item);
-        //     return results.ToArray();
-        // }
-
         internal static bool IsArray(this object obj)
         {
             var valueType = obj?.GetType();
