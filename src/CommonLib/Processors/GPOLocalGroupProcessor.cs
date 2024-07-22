@@ -120,9 +120,9 @@ namespace SharpHoundCommonLib.Processors {
                         SearchScope = SearchScope.Base,
                         Attributes = CommonProperties.GPCFileSysPath,
                         SearchBase = linkDn
-                    }).DefaultIfEmpty(null).FirstOrDefaultAsync();
+                    }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
-                    if (result is not { IsSuccess: true }) {
+                    if (!result.IsSuccess) {
                         continue;
                     }
 

@@ -1303,8 +1303,8 @@ namespace SharpHoundCommonLib {
                 DomainName = resDomain,
                 Attributes = CommonProperties.ObjectID,
                 LDAPFilter = filter.GetFilter(),
-            }).DefaultIfEmpty(null).FirstOrDefaultAsync();
-            return result is { IsSuccess: true };
+            }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
+            return result.IsSuccess;
         }
 
         public async Task<(bool Success, TypedPrincipal Principal)> ResolveDistinguishedName(string distinguishedName) {
