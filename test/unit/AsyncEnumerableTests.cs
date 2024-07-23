@@ -21,6 +21,13 @@ public class AsyncEnumerableTests {
         var res = await enumerable.FirstOrDefaultAsync();
         Assert.Equal(0, res);
     }
+    
+    [Fact]
+    public async Task AsyncEnumerable_FirstOrDefault_WithDefault() {
+        var enumerable = AsyncEnumerable.Empty<int>();
+        var res = await enumerable.FirstOrDefaultAsync(10);
+        Assert.Equal(10, res);
+    }
 
     [Fact]
     public async Task AsyncEnumerable_CombinedOperators() {

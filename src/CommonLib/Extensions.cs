@@ -54,7 +54,19 @@ namespace SharpHoundCommonLib
                 return first;
             }
         }
+        
+        public static async Task<T> FirstOrDefaultAsync<T>(this IAsyncEnumerable<T> source, T defaultValue,
+            CancellationToken cancellationToken = default) {
+            if (source == null) {
+                return defaultValue;
+            }
 
+            await using (var enumerator = source.GetAsyncEnumerator(cancellationToken)) {
+                var first = await enumerator.MoveNextAsync() ? enumerator.Current : defaultValue;
+                return first;
+            }
+        }
+        
         public static IAsyncEnumerable<T> DefaultIfEmpty<T>(this IAsyncEnumerable<T> source,
             T defaultValue, CancellationToken cancellationToken = default) {
             return new DefaultIfEmptyAsyncEnumerable<T>(source, defaultValue);
