@@ -264,19 +264,19 @@ namespace SharpHoundCommonLib {
 
                 data.Collected = true;
             } catch (IOException e) {
-                log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                log.LogDebug(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
                     target, subkey, subvalue);
                 data.FailureReason = "Target machine was not found or not connectable";
             } catch (SecurityException e) {
-                log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                log.LogDebug(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
                     target, subkey, subvalue);
                 data.FailureReason = "User does not have the proper permissions to perform this operation";
             } catch (UnauthorizedAccessException e) {
-                log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                log.LogDebug(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
                     target, subkey, subvalue);
                 data.FailureReason = "User does not have the necessary registry rights";
             } catch (Exception e) {
-                log.LogError(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
+                log.LogDebug(e, "Error getting data from registry for {Target}: {RegSubKey}:{RegValue}",
                     target, subkey, subvalue);
                 data.FailureReason = e.Message;
             }
