@@ -664,7 +664,7 @@ namespace SharpHoundCommonLib {
                 LDAPFilter = new LdapFilter().AddAllObjects().GetFilter(),
             };
 
-            var result = await Query(queryParameters).FirstAsync();
+            var result = await Query(queryParameters).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
             if (result.IsSuccess &&
                 result.Value.TryGetProperty(LDAPProperties.RootDomainNamingContext, out var rootNamingContext)) {
                 return (true, Helpers.DistinguishedNameToDomain(rootNamingContext).ToUpper());
@@ -1296,6 +1296,9 @@ namespace SharpHoundCommonLib {
         }
 
         public async Task<bool> IsDomainController(string computerObjectId, string domainName) {
+            if (DomainControllers.ContainsKey(computerObjectId)) {
+                return true;
+            }
             var resDomain = await GetDomainNameFromSid(domainName) is (false, var tempDomain) ? tempDomain : domainName;
             var filter = new LdapFilter().AddFilter(CommonFilters.SpecificSID(computerObjectId), true)
                 .AddFilter(CommonFilters.DomainControllers, true);
@@ -1304,6 +1307,9 @@ namespace SharpHoundCommonLib {
                 Attributes = CommonProperties.ObjectID,
                 LDAPFilter = filter.GetFilter(),
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
+            if (result.IsSuccess) {
+                DomainControllers.TryAdd(computerObjectId, new byte());
+            }
             return result.IsSuccess;
         }
 

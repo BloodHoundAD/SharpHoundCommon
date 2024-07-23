@@ -671,7 +671,7 @@ namespace CommonLibTest.Facades
 
         public async Task<(bool Success, TypedPrincipal WellKnownPrincipal)> GetWellKnownPrincipal(string securityIdentifier, string objectDomain) {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(securityIdentifier, out var commonPrincipal)) return (false, default);
-            commonPrincipal.ObjectIdentifier = ConvertWellKnownPrincipal(securityIdentifier, objectDomain);
+            commonPrincipal.ObjectIdentifier = await ConvertWellKnownPrincipal(securityIdentifier, objectDomain);
             _seenWellKnownPrincipals.TryAdd(commonPrincipal.ObjectIdentifier, securityIdentifier);
             return (true, commonPrincipal);
         }
@@ -747,13 +747,13 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        public string ConvertWellKnownPrincipal(string sid, string domain)
+        public async Task<string> ConvertWellKnownPrincipal(string sid, string domain)
         {
             if (!WellKnownPrincipal.GetWellKnownPrincipal(sid, out _)) return sid;
 
             if (sid != "S-1-5-9") return $"{domain}-{sid}".ToUpper();
 
-            var forest = GetForest(domain)?.Name;
+            var (success, forest) = await GetForest(domain);
             return $"{forest}-{sid}".ToUpper();
         }
 
@@ -1052,9 +1052,9 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
-        public Forest GetForest(string domainName = null)
+        public async Task<(bool Success, string ForestName)> GetForest(string domainName = null)
         {
-            return _forest;
+            return (true, _forest.Name);
         }
 
         public ActiveDirectorySecurityDescriptor MakeSecurityDescriptor()
