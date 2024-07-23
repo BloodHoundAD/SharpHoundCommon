@@ -88,6 +88,8 @@ namespace SharpHoundCommonLib {
         /// <param name="domain">The Domain object</param>
         /// <returns>True if the domain was found, false if not</returns>
         bool GetDomain(out System.DirectoryServices.ActiveDirectory.Domain domain);
+
+        Task<(bool Success, string ForestName)> GetForest(string domain);
         /// <summary>
         /// Attempts to resolve an account name to its corresponding typed principal
         /// </summary>

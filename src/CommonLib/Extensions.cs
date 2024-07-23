@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 
@@ -16,14 +19,109 @@ namespace SharpHoundCommonLib
             Log = Logging.LogProvider.CreateLogger("Extensions");
         }
         
-        // internal static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items)
-        // {
-        //     var results = new List<T>();
-        //     await foreach (var item in items
-        //                        .ConfigureAwait(false))
-        //         results.Add(item);
-        //     return results;
-        // }
+        public static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items)
+        {
+            if (items == null) {
+                return new List<T>();
+            }
+            var results = new List<T>();
+            await foreach (var item in items
+                               .ConfigureAwait(false))
+                results.Add(item);
+            return results;
+        }
+        
+        public static async Task<T[]> ToArrayAsync<T>(this IAsyncEnumerable<T> items)
+        {
+            if (items == null) {
+                return Array.Empty<T>();
+            }
+            var results = new List<T>();
+            await foreach (var item in items
+                               .ConfigureAwait(false))
+                results.Add(item);
+            return results.ToArray();
+        }
+
+        public static async Task<T> FirstOrDefaultAsync<T>(this IAsyncEnumerable<T> source,
+            CancellationToken cancellationToken = default) {
+            if (source == null) {
+                return default;
+            }
+
+            await using (var enumerator = source.GetAsyncEnumerator(cancellationToken)) {
+                var first = await enumerator.MoveNextAsync() ? enumerator.Current : default;
+                return first;
+            }
+        }
+        
+        public static async Task<T> FirstOrDefaultAsync<T>(this IAsyncEnumerable<T> source, T defaultValue,
+            CancellationToken cancellationToken = default) {
+            if (source == null) {
+                return defaultValue;
+            }
+
+            await using (var enumerator = source.GetAsyncEnumerator(cancellationToken)) {
+                var first = await enumerator.MoveNextAsync() ? enumerator.Current : defaultValue;
+                return first;
+            }
+        }
+        
+        public static IAsyncEnumerable<T> DefaultIfEmpty<T>(this IAsyncEnumerable<T> source,
+            T defaultValue, CancellationToken cancellationToken = default) {
+            return new DefaultIfEmptyAsyncEnumerable<T>(source, defaultValue);
+        }
+
+        private sealed class DefaultIfEmptyAsyncEnumerable<T> : IAsyncEnumerable<T> {
+            private readonly DefaultIfEmptyAsyncEnumerator<T> _enumerator;
+            public DefaultIfEmptyAsyncEnumerable(IAsyncEnumerable<T> source, T defaultValue) {
+                _enumerator = new DefaultIfEmptyAsyncEnumerator<T>(source, defaultValue);
+            }
+            public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new CancellationToken()) {
+                return _enumerator;
+            }
+        }
+
+        private sealed class DefaultIfEmptyAsyncEnumerator<T> : IAsyncEnumerator<T> {
+            private readonly IAsyncEnumerable<T> _source;
+            private readonly T _defaultValue;
+            private T _current;
+            private bool _enumeratorDisposed;
+
+            private IAsyncEnumerator<T> _enumerator;
+            
+            public DefaultIfEmptyAsyncEnumerator(IAsyncEnumerable<T> source, T defaultValue) {
+                _source = source;
+                _defaultValue = defaultValue;
+            }
+            
+            public async ValueTask DisposeAsync() {
+                _enumeratorDisposed = true;
+                if (_enumerator != null) {
+                    await _enumerator.DisposeAsync().ConfigureAwait(false);
+                    _enumerator = null;
+                }
+            }
+
+            public async ValueTask<bool> MoveNextAsync() {
+                if (_enumeratorDisposed) {
+                    return false;
+                }
+                _enumerator ??= _source.GetAsyncEnumerator();
+
+                if (await _enumerator.MoveNextAsync().ConfigureAwait(false)) {
+                    _current = _enumerator.Current;
+                    return true;
+                }
+
+                _current = _defaultValue;
+                await DisposeAsync().ConfigureAwait(false);
+                return true;
+            }
+
+            public T Current => _current;
+        }
+
 
         public static string LdapValue(this SecurityIdentifier s)
         {

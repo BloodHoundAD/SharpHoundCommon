@@ -15,7 +15,7 @@ public class SearchResultEntryWrapper : IDirectoryObject {
     }
 
     public bool TryGetDistinguishedName(out string value) {
-        return TryGetProperty(LDAPProperties.DistinguishedName, out value);
+        return TryGetProperty(LDAPProperties.DistinguishedName, out value) && !string.IsNullOrWhiteSpace(value);
     }
 
     public bool TryGetProperty(string propertyName, out string value) {
