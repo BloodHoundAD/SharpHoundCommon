@@ -55,7 +55,7 @@ namespace CommonLibTest
                 _enumerator = new IAsyncEnumeratorCollectionAdapter<T>(source);
             }
             public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new CancellationToken()) {
-                throw new NotImplementedException();
+                return _enumerator;
             }
         }
 

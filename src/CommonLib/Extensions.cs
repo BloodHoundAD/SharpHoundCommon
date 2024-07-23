@@ -115,7 +115,7 @@ namespace SharpHoundCommonLib
                 }
 
                 _current = _defaultValue;
-                await _enumerator.DisposeAsync().ConfigureAwait(false);
+                await DisposeAsync().ConfigureAwait(false);
                 return true;
             }
 
