@@ -1191,7 +1191,7 @@ namespace SharpHoundCommonLib {
             if (!result.IsSuccess) {
                 _log.LogWarning(
                     "Could not find certificate template with {PropertyName}:{PropertyValue}: {Error}",
-                    propertyName, propertyName, result.Error);
+                    propertyName, propertyValue, result.Error);
                 return (false, null);
             }
 
