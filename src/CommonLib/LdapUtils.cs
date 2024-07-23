@@ -89,370 +89,247 @@ namespace SharpHoundCommonLib {
             _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
         }
 
-        public async IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName,
-            string attributeName, [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
+        public async IAsyncEnumerable<Result<string>> RangedRetrieval(
+        string distinguishedName,
+        string attributeName,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
             var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
-
             var connectionResult = await _connectionPool.GetLdapConnection(domain, false);
-            if (!connectionResult.Success) {
+
+            if (!connectionResult.Success)
+            {
                 yield return Result<string>.Fail(connectionResult.Message);
                 yield break;
             }
 
-            var index = 0;
-            var step = 0;
-
-            //Start by using * as our upper index, which will automatically give us the range size
-            var currentRange = $"{attributeName};range={index}-*";
-            var complete = false;
-
-            var queryParameters = new LdapQueryParameters {
-                DomainName = domain,
-                LDAPFilter = $"{attributeName}=*",
-                Attributes = new[] { currentRange },
-                SearchScope = SearchScope.Base,
-                SearchBase = distinguishedName
-            };
             var connectionWrapper = connectionResult.ConnectionWrapper;
+            var queryParameters = CreateQueryParameters(domain, attributeName, distinguishedName);
+            var searchRequest = CreateSearchRequest(queryParameters, connectionWrapper);
 
-            if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest)) {
+            if (searchRequest == null)
+            {
                 _connectionPool.ReleaseConnection(connectionWrapper);
                 yield return Result<string>.Fail("Failed to create search request");
                 yield break;
             }
 
-            var queryRetryCount = 0;
-            var busyRetryCount = 0;
-
-            LdapResult<string> tempResult = null;
-
-            while (!cancellationToken.IsCancellationRequested) {
-                SearchResponse response = null;
-                try {
-                    response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
-                } catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
-                    busyRetryCount++;
-                    var backoffDelay = GetNextBackoff(busyRetryCount);
-                    await Task.Delay(backoffDelay, cancellationToken);
-                } catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
-                                                 queryRetryCount < MaxRetries) {
-                    queryRetryCount++;
-                    _connectionPool.ReleaseConnection(connectionWrapper, true);
-                    for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
-                        var backoffDelay = GetNextBackoff(retryCount);
-                        await Task.Delay(backoffDelay, cancellationToken);
-                        var (success, newConnectionWrapper, message) =
-                            await _connectionPool.GetLdapConnection(domain,
-                                false);
-                        if (success) {
-                            _log.LogDebug(
-                                "RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}",
-                                newConnectionWrapper.GetServer());
-                            connectionWrapper = newConnectionWrapper;
-                            break;
-                        }
-
-                        //If we hit our max retries for making a new connection, set tempResult so we can yield it after this logic
-                        if (retryCount == MaxRetries - 1) {
-                            _log.LogError(
-                                "RangedRetrieval - Failed to get a new connection after ServerDown for path {Path}",
-                                distinguishedName);
-                            tempResult =
-                                LdapResult<string>.Fail(
-                                    "RangedRetrieval - Failed to get a new connection after ServerDown.",
-                                    queryParameters, le.ErrorCode);
-                        }
-                    }
-                } catch (LdapException le) {
-                    tempResult = LdapResult<string>.Fail(
-                        $"Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
-                        queryParameters, le.ErrorCode);
-                } catch (Exception e) {
-                    tempResult =
-                        LdapResult<string>.Fail($"Caught unrecoverable exception: {e.Message}", queryParameters);
-                }
-
-                //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
-                //We handle connection release in the relevant exception blocks
-                if (tempResult != null) {
-                    if (tempResult.ErrorCode == (int)LdapErrorCodes.ServerDown) {
-                        _connectionPool.ReleaseConnection(connectionWrapper, true);
-                    } else {
-                        _connectionPool.ReleaseConnection(connectionWrapper);
-                    }
-
-                    yield return tempResult;
-                    yield break;
-                }
-
-                if (response?.Entries.Count == 1) {
-                    var entry = response.Entries[0];
-                    //We dont know the name of our attribute, but there should only be one, so we're safe to just use a loop here
-                    foreach (string attr in entry.Attributes.AttributeNames) {
-                        currentRange = attr;
-                        complete = currentRange.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
-                        step = entry.Attributes[currentRange].Count;
-                    }
-
-                    foreach (string dn in entry.Attributes[currentRange].GetValues(typeof(string))) {
-                        yield return Result<string>.Ok(dn);
-                        index++;
-                    }
-
-                    if (complete) {
-                        _connectionPool.ReleaseConnection(connectionWrapper);
-                        yield break;
-                    }
-
-                    currentRange = $"{attributeName};range={index}-{index + step}";
-                    searchRequest.Attributes.Clear();
-                    searchRequest.Attributes.Add(currentRange);
-                } else {
-                    //I dont know what can cause a RR to have multiple entries, but its nothing good. Break out
-                    _connectionPool.ReleaseConnection(connectionWrapper);
-                    yield break;
-                }
+            await foreach (var result in ExecuteRangedRetrieval(searchRequest, connectionWrapper, queryParameters, cancellationToken))
+            {
+                yield return result;
             }
 
             _connectionPool.ReleaseConnection(connectionWrapper);
         }
 
-        public async IAsyncEnumerable<LdapResult<IDirectoryObject>> Query(LdapQueryParameters queryParameters,
-            [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
+        private LdapQueryParameters CreateQueryParameters(string domain, string attributeName, string distinguishedName)
+        {
+            return new LdapQueryParameters
+            {
+                DomainName = domain,
+                LDAPFilter = $"{attributeName}=*",
+                Attributes = new[] { $"{attributeName};range=0-*" },
+                SearchScope = SearchScope.Base,
+                SearchBase = distinguishedName
+            };
+        }
+
+        private SearchRequest CreateSearchRequest(LdapQueryParameters queryParameters, LdapConnectionWrapper connectionWrapper)
+        {
+            if (!CreateSearchRequest(queryParameters, connectionWrapper, out var searchRequest))
+            {
+                return null;
+            }
+            return searchRequest;
+        }
+
+        private async IAsyncEnumerable<Result<string>> ExecuteRangedRetrieval(
+            SearchRequest searchRequest,
+            LdapConnectionWrapper connectionWrapper,
+            LdapQueryParameters queryParameters,
+            [EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            var index = 0;
+            var step = 0;
+            var currentRange = $"{queryParameters.Attributes[0]}";
+            var complete = false;
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                var response = await ExecuteSearchRequest(searchRequest, connectionWrapper, queryParameters);
+
+                if (response.IsFailure)
+                {
+                    yield return Result<string>.Fail(response.Error);
+                    yield break;
+                }
+
+                var entry = response.Value.Entries[0];
+                (currentRange, complete, step) = UpdateRangeInfo(entry);
+
+                foreach (string dn in entry.Attributes[currentRange].GetValues(typeof(string)))
+                {
+                    yield return Result<string>.Ok(dn);
+                    index++;
+                }
+
+                if (complete)
+                {
+                    yield break;
+                }
+
+                UpdateSearchRequest(searchRequest, attributeName, index, step);
+            }
+        }
+
+        private async Task<Result<SearchResponse>> ExecuteSearchRequest(
+            SearchRequest searchRequest,
+            LdapConnectionWrapper connectionWrapper,
+            LdapQueryParameters queryParameters)
+        {
+            var queryRetryCount = 0;
+            var busyRetryCount = 0;
+
+            while (true)
+            {
+                try
+                {
+                    var response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+                    return Result<SearchResponse>.Ok(response);
+                }
+                catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries)
+                {
+                    busyRetryCount++;
+                    await Task.Delay(GetNextBackoff(busyRetryCount));
+                }
+                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && queryRetryCount < MaxRetries)
+                {
+                    queryRetryCount++;
+                    var newConnectionResult = await RecoverFromServerDown(queryParameters.DomainName);
+                    if (newConnectionResult.IsFailure)
+                    {
+                        return Result<SearchResponse>.Fail(newConnectionResult.Error);
+                    }
+                    connectionWrapper = newConnectionResult.Value;
+                }
+                catch (LdapException le)
+                {
+                    return Result<SearchResponse>.Fail($"Caught unrecoverable LDAP exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})");
+                }
+                catch (Exception e)
+                {
+                    return Result<SearchResponse>.Fail($"Caught unrecoverable exception: {e.Message}");
+                }
+            }
+        }
+
+        private (string currentRange, bool complete, int step) UpdateRangeInfo(SearchResultEntry entry)
+        {
+            var attr = entry.Attributes.AttributeNames.Cast<string>().First();
+            var complete = attr.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
+            var step = entry.Attributes[attr].Count;
+            return (attr, complete, step);
+        }
+
+        private void UpdateSearchRequest(SearchRequest searchRequest, string attributeName, int index, int step)
+        {
+            var newRange = $"{attributeName};range={index}-{index + step}";
+            searchRequest.Attributes.Clear();
+            searchRequest.Attributes.Add(newRange);
+        }
+
+        private async Task<Result<LdapConnectionWrapper>> RecoverFromServerDown(string domain)
+        {
+            for (var retryCount = 0; retryCount < MaxRetries; retryCount++)
+            {
+                await Task.Delay(GetNextBackoff(retryCount));
+                var (success, newConnectionWrapper, message) = await _connectionPool.GetLdapConnection(domain, false);
+                if (success)
+                {
+                    _log.LogDebug("RangedRetrieval - Recovered from ServerDown successfully, connection made to {NewServer}", newConnectionWrapper.GetServer());
+                    return Result<LdapConnectionWrapper>.Ok(newConnectionWrapper);
+                }
+            }
+
+            _log.LogError("RangedRetrieval - Failed to get a new connection after ServerDown for domain {Domain}", domain);
+            return Result<LdapConnectionWrapper>.Fail("Failed to get a new connection after ServerDown.");
+        }
+
+        public async IAsyncEnumerable<LdapResult<IDirectoryObject>> Query(
+        LdapQueryParameters queryParameters,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
             var setupResult = await SetupLdapQuery(queryParameters);
 
-            if (!setupResult.Success) {
-                _log.LogInformation("Query - Failure during query setup: {Reason}\n{Info}", setupResult.Message,
-                    queryParameters.GetQueryInfo());
+            if (!setupResult.Success)
+            {
+                _log.LogInformation("Query - Failure during query setup: {Reason}\n{Info}", setupResult.Message, queryParameters.GetQueryInfo());
                 yield break;
             }
 
-            var searchRequest = setupResult.SearchRequest;
-            var connectionWrapper = setupResult.ConnectionWrapper;
+            var (searchRequest, connectionWrapper) = setupResult;
 
-            if (cancellationToken.IsCancellationRequested) {
+            if (cancellationToken.IsCancellationRequested)
+            {
                 _connectionPool.ReleaseConnection(connectionWrapper);
                 yield break;
             }
 
-            var queryRetryCount = 0;
-            var busyRetryCount = 0;
-            LdapResult<IDirectoryObject> tempResult = null;
-            var querySuccess = false;
-            SearchResponse response = null;
-            while (!cancellationToken.IsCancellationRequested) {
-                try {
-                    _log.LogTrace("Sending ldap request - {Info}", queryParameters.GetQueryInfo());
-                    response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+            var queryResult = await ExecuteQuery(searchRequest, connectionWrapper, queryParameters, cancellationToken);
 
-                    if (response != null) {
-                        querySuccess = true;
-                    } else if (queryRetryCount == MaxRetries) {
-                        tempResult =
-                            LdapResult<IDirectoryObject>.Fail($"Failed to get a response after {MaxRetries} attempts",
-                                queryParameters);
-                    } else {
-                        queryRetryCount++;
-                        continue;
-                    }
-                } catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
-                                                 queryRetryCount < MaxRetries) {
-                    /*
-                     * A ServerDown exception indicates that our connection is no longer valid for one of many reasons.
-                     * We'll want to release our connection back to the pool, but dispose it. We need a new connection,
-                     * and because this is not a paged query, we can get this connection from anywhere.
-                     */
-
-                    //Increment our query retry count
-                    queryRetryCount++;
-                    _connectionPool.ReleaseConnection(connectionWrapper, true);
-
-                    for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
-                        var backoffDelay = GetNextBackoff(retryCount);
-                        await Task.Delay(backoffDelay, cancellationToken);
-                        var (success, newConnectionWrapper, message) =
-                            await _connectionPool.GetLdapConnection(queryParameters.DomainName,
-                                queryParameters.GlobalCatalog);
-                        if (success) {
-                            _log.LogDebug(
-                                "Query - Recovered from ServerDown successfully, connection made to {NewServer}",
-                                newConnectionWrapper.GetServer());
-                            connectionWrapper = newConnectionWrapper;
-                            break;
-                        }
-
-                        //If we hit our max retries for making a new connection, set tempResult so we can yield it after this logic
-                        if (retryCount == MaxRetries - 1) {
-                            _log.LogError("Query - Failed to get a new connection after ServerDown.\n{Info}",
-                                queryParameters.GetQueryInfo());
-                            tempResult =
-                                LdapResult<IDirectoryObject>.Fail(
-                                    "Query - Failed to get a new connection after ServerDown.", queryParameters);
-                        }
-                    }
-                } catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
-                    /*
-                     * If we get a busy error, we want to do an exponential backoff, but maintain the current connection
-                     * The expectation is that given enough time, the server should stop being busy and service our query appropriately
-                     */
-                    busyRetryCount++;
-                    var backoffDelay = GetNextBackoff(busyRetryCount);
-                    await Task.Delay(backoffDelay, cancellationToken);
-                } catch (LdapException le) {
-                    tempResult = LdapResult<IDirectoryObject>.Fail(
-                        $"Query - Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
-                        queryParameters);
-                } catch (Exception e) {
-                    tempResult =
-                        LdapResult<IDirectoryObject>.Fail($"Query - Caught unrecoverable exception: {e.Message}",
-                            queryParameters);
-                }
-
-                //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
-                if (tempResult != null) {
-                    if (tempResult.ErrorCode == (int)LdapErrorCodes.ServerDown) {
-                        _connectionPool.ReleaseConnection(connectionWrapper, true);
-                    } else {
-                        _connectionPool.ReleaseConnection(connectionWrapper);
-                    }
-
-                    yield return tempResult;
-                    yield break;
-                }
-
-                //If we've successfully made our query, break out of the while loop
-                if (querySuccess) {
-                    break;
-                }
-            }
-
-            _connectionPool.ReleaseConnection(connectionWrapper);
-            foreach (SearchResultEntry entry in response.Entries) {
-                yield return LdapResult<IDirectoryObject>.Ok(new SearchResultEntryWrapper(entry));
-            }
-        }
-
-        public async IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(LdapQueryParameters queryParameters,
-            [EnumeratorCancellation] CancellationToken cancellationToken = new()) {
-            var setupResult = await SetupLdapQuery(queryParameters);
-
-            if (!setupResult.Success) {
-                _log.LogInformation("PagedQuery - Failure during query setup: {Reason}\n{Info}", setupResult.Message,
-                    queryParameters.GetQueryInfo());
+            if (!queryResult.Success)
+            {
+                yield return queryResult;
                 yield break;
             }
 
-            var searchRequest = setupResult.SearchRequest;
-            var connectionWrapper = setupResult.ConnectionWrapper;
-            var serverName = setupResult.Server;
+            foreach (SearchResultEntry entry in queryResult.Value.Entries)
+            {
+                yield return LdapResult<IDirectoryObject>.Ok(new SearchResultEntryWrapper(entry));
+            }
 
-            if (serverName == null) {
+            _connectionPool.ReleaseConnection(connectionWrapper);
+        }
+
+        public async IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(
+            LdapQueryParameters queryParameters,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            var setupResult = await SetupLdapQuery(queryParameters);
+
+            if (!setupResult.Success)
+            {
+                _log.LogInformation("PagedQuery - Failure during query setup: {Reason}\n{Info}", setupResult.Message, queryParameters.GetQueryInfo());
+                yield break;
+            }
+
+            var (searchRequest, connectionWrapper, serverName) = setupResult;
+
+            if (string.IsNullOrEmpty(serverName))
+            {
                 _log.LogWarning("PagedQuery - Failed to get a server name for connection, retry not possible");
             }
 
             var pageControl = new PageResultRequestControl(500);
             searchRequest.Controls.Add(pageControl);
 
-            PageResultResponseControl pageResponse = null;
-            var busyRetryCount = 0;
-            var queryRetryCount = 0;
-            LdapResult<IDirectoryObject> tempResult = null;
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                var queryResult = await ExecutePagedQuery(searchRequest, connectionWrapper, queryParameters, serverName, cancellationToken);
 
-            while (!cancellationToken.IsCancellationRequested) {
-                SearchResponse response = null;
-                try {
-                    _log.LogTrace("Sending paged ldap request - {Info}", queryParameters.GetQueryInfo());
-                    response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
-                    if (response != null) {
-                        pageResponse = (PageResultResponseControl)response.Controls
-                            .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
-                        queryRetryCount = 0;
-                    } else if (queryRetryCount == MaxRetries) {
-                        tempResult = LdapResult<IDirectoryObject>.Fail(
-                            $"PagedQuery - Failed to get a response after {MaxRetries} attempts",
-                            queryParameters);
-                    } else {
-                        queryRetryCount++;
-                    }
-                } catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown) {
-                    /*
-                     * If we dont have a servername, we're not going to be able to re-establish a connection here. Page cookies are only valid for the server they were generated on. Bail out.
-                     */
-                    if (serverName == null) {
-                        _log.LogError(
-                            "PagedQuery - Received server down exception without a known servername. Unable to generate new connection\n{Info}",
-                            queryParameters.GetQueryInfo());
-                        _connectionPool.ReleaseConnection(connectionWrapper, true);
-                        yield break;
-                    }
-
-                    /*
-                     * Paged queries will not use the cached ldap connections, as the intention is to only have 1 or a couple of these queries running at once.
-                     * The connection logic here is simplified accordingly
-                     */
-                    _connectionPool.ReleaseConnection(connectionWrapper, true);
-                    for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
-                        var backoffDelay = GetNextBackoff(retryCount);
-                        await Task.Delay(backoffDelay, cancellationToken);
-                        var (success, ldapConnectionWrapperNew, message) =
-                            await _connectionPool.GetLdapConnectionForServer(
-                                queryParameters.DomainName, serverName, queryParameters.GlobalCatalog);
-
-                        if (success) {
-                            _log.LogDebug("PagedQuery - Recovered from ServerDown successfully");
-                            connectionWrapper = ldapConnectionWrapperNew;
-                            break;
-                        }
-
-                        if (retryCount == MaxRetries - 1) {
-                            _log.LogError("PagedQuery - Failed to get a new connection after ServerDown.\n{Info}",
-                                queryParameters.GetQueryInfo());
-                            tempResult =
-                                LdapResult<IDirectoryObject>.Fail("Failed to get a new connection after serverdown",
-                                    queryParameters, le.ErrorCode);
-                        }
-                    }
-                } catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
-                    /*
-                     * If we get a busy error, we want to do an exponential backoff, but maintain the current connection
-                     * The expectation is that given enough time, the server should stop being busy and service our query appropriately
-                     */
-                    busyRetryCount++;
-                    var backoffDelay = GetNextBackoff(busyRetryCount);
-                    await Task.Delay(backoffDelay, cancellationToken);
-                } catch (LdapException le) {
-                    tempResult = LdapResult<IDirectoryObject>.Fail(
-                        $"PagedQuery - Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
-                        queryParameters, le.ErrorCode);
-                } catch (Exception e) {
-                    tempResult =
-                        LdapResult<IDirectoryObject>.Fail($"PagedQuery - Caught unrecoverable exception: {e.Message}",
-                            queryParameters);
-                }
-
-                if (tempResult != null) {
-                    if (tempResult.ErrorCode == (int)LdapErrorCodes.ServerDown) {
-                        _connectionPool.ReleaseConnection(connectionWrapper, true);
-                    } else {
-                        _connectionPool.ReleaseConnection(connectionWrapper);
-                    }
-
-                    yield return tempResult;
-                    yield break;
-                }
-
-                if (cancellationToken.IsCancellationRequested) {
+                if (!queryResult.Success)
+                {
+                    yield return queryResult;
                     _connectionPool.ReleaseConnection(connectionWrapper);
                     yield break;
                 }
 
-                //I'm not sure why this happens sometimes, but if we try the request again, it works sometimes, other times we get an exception
-                if (response == null || pageResponse == null) {
-                    continue;
-                }
+                var (response, pageResponse) = queryResult.Value;
 
-                foreach (SearchResultEntry entry in response.Entries) {
-                    if (cancellationToken.IsCancellationRequested) {
+                foreach (SearchResultEntry entry in response.Entries)
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
                         _connectionPool.ReleaseConnection(connectionWrapper);
                         yield break;
                     }
@@ -460,14 +337,155 @@ namespace SharpHoundCommonLib {
                     yield return LdapResult<IDirectoryObject>.Ok(new SearchResultEntryWrapper(entry));
                 }
 
-                if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 ||
-                    cancellationToken.IsCancellationRequested) {
+                if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 || cancellationToken.IsCancellationRequested)
+                {
                     _connectionPool.ReleaseConnection(connectionWrapper);
                     yield break;
                 }
 
                 pageControl.Cookie = pageResponse.Cookie;
             }
+        }
+
+        private async Task<LdapResult<(SearchResponse response, PageResultResponseControl pageResponse)>> ExecutePagedQuery(
+            SearchRequest searchRequest,
+            LdapConnectionWrapper connectionWrapper,
+            LdapQueryParameters queryParameters,
+            string serverName,
+            CancellationToken cancellationToken)
+        {
+            var busyRetryCount = 0;
+            var queryRetryCount = 0;
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    _log.LogTrace("Sending paged ldap request - {Info}", queryParameters.GetQueryInfo());
+                    var response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+
+                    if (response != null)
+                    {
+                        var pageResponse = (PageResultResponseControl)response.Controls
+                            .FirstOrDefault(x => x is PageResultResponseControl);
+
+                        if (pageResponse != null)
+                        {
+                            return LdapResult<(SearchResponse, PageResultResponseControl)>.Ok((response, pageResponse));
+                        }
+                    }
+
+                    if (queryRetryCount == MaxRetries)
+                    {
+                        return LdapResult<(SearchResponse, PageResultResponseControl)>.Fail(
+                            $"PagedQuery - Failed to get a valid response after {MaxRetries} attempts",
+                            queryParameters);
+                    }
+
+                    queryRetryCount++;
+                }
+                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown)
+                {
+                    if (string.IsNullOrEmpty(serverName))
+                    {
+                        _log.LogError("PagedQuery - Received server down exception without a known servername. Unable to generate new connection\n{Info}", queryParameters.GetQueryInfo());
+                        return LdapResult<(SearchResponse, PageResultResponseControl)>.Fail("Server down, unable to reconnect", queryParameters, le.ErrorCode);
+                    }
+
+                    var reconnectionResult = await ReconnectToServer(queryParameters, serverName);
+                    if (!reconnectionResult.Success)
+                    {
+                        return LdapResult<(SearchResponse, PageResultResponseControl)>.Fail(reconnectionResult.Message, queryParameters, le.ErrorCode);
+                    }
+                    connectionWrapper = reconnectionResult.Value;
+                }
+                catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries)
+                {
+                    busyRetryCount++;
+                    await Task.Delay(GetNextBackoff(busyRetryCount), cancellationToken);
+                }
+                catch (LdapException le)
+                {
+                    return LdapResult<(SearchResponse, PageResultResponseControl)>.Fail(
+                        $"PagedQuery - Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
+                        queryParameters, le.ErrorCode);
+                }
+                catch (Exception e)
+                {
+                    return LdapResult<(SearchResponse, PageResultResponseControl)>.Fail(
+                        $"PagedQuery - Caught unrecoverable exception: {e.Message}",
+                        queryParameters);
+                }
+            }
+
+            return LdapResult<(SearchResponse, PageResultResponseControl)>.Fail("Operation cancelled", queryParameters);
+        }
+
+        private async Task<Result<LdapConnectionWrapper>> ReconnectToServer(LdapQueryParameters queryParameters, string serverName)
+        {
+            for (var retryCount = 0; retryCount < MaxRetries; retryCount++)
+            {
+                var backoffDelay = GetNextBackoff(retryCount);
+                await Task.Delay(backoffDelay);
+                var (success, ldapConnectionWrapperNew, message) = await _connectionPool.GetLdapConnectionForServer(
+                    queryParameters.DomainName, serverName, queryParameters.GlobalCatalog);
+
+                if (success)
+                {
+                    _log.LogDebug("PagedQuery - Recovered from ServerDown successfully");
+                    return Result<LdapConnectionWrapper>.Ok(ldapConnectionWrapperNew);
+                }
+            }
+
+            _log.LogError("PagedQuery - Failed to get a new connection after ServerDown.\n{Info}", queryParameters.GetQueryInfo());
+            return Result<LdapConnectionWrapper>.Fail("Failed to get a new connection after serverdown");
+        }
+
+        private async Task<LdapResult<SearchResponse>> ExecuteQuery(
+            SearchRequest searchRequest,
+            LdapConnectionWrapper connectionWrapper,
+            LdapQueryParameters queryParameters,
+            CancellationToken cancellationToken)
+        {
+            var queryRetryCount = 0;
+            var busyRetryCount = 0;
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    _log.LogTrace("Sending ldap request - {Info}", queryParameters.GetQueryInfo());
+                    var response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+                    return LdapResult<SearchResponse>.Ok(response);
+                }
+                catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown && queryRetryCount < MaxRetries)
+                {
+                    queryRetryCount++;
+                    var reconnectionResult = await RecoverFromServerDown(queryParameters.DomainName);
+                    if (!reconnectionResult.Success)
+                    {
+                        return LdapResult<SearchResponse>.Fail(reconnectionResult.Error, queryParameters, le.ErrorCode);
+                    }
+                    connectionWrapper = reconnectionResult.Value;
+                }
+                catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries)
+                {
+                    busyRetryCount++;
+                    await Task.Delay(GetNextBackoff(busyRetryCount), cancellationToken);
+                }
+                catch (LdapException le)
+                {
+                    return LdapResult<SearchResponse>.Fail(
+                        $"Query - Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
+                        queryParameters, le.ErrorCode);
+                }
+                catch (Exception e)
+                {
+                    return LdapResult<SearchResponse>.Fail($"Query - Caught unrecoverable exception: {e.Message}", queryParameters);
+                }
+            }
+
+            return LdapResult<SearchResponse>.Fail("Operation cancelled", queryParameters);
         }
 
         public async Task<(bool Success, TypedPrincipal Principal)> ResolveIDAndType(
