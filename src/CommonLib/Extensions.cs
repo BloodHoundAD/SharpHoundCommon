@@ -21,6 +21,9 @@ namespace SharpHoundCommonLib
         
         public static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> items)
         {
+            if (items == null) {
+                return new List<T>();
+            }
             var results = new List<T>();
             await foreach (var item in items
                                .ConfigureAwait(false))
@@ -30,6 +33,9 @@ namespace SharpHoundCommonLib
         
         public static async Task<T[]> ToArrayAsync<T>(this IAsyncEnumerable<T> items)
         {
+            if (items == null) {
+                return Array.Empty<T>();
+            }
             var results = new List<T>();
             await foreach (var item in items
                                .ConfigureAwait(false))
@@ -78,6 +84,7 @@ namespace SharpHoundCommonLib
             }
             
             public async ValueTask DisposeAsync() {
+                _enumeratorDisposed = true;
                 if (_enumerator != null) {
                     await _enumerator.DisposeAsync().ConfigureAwait(false);
                     _enumerator = null;
@@ -97,7 +104,6 @@ namespace SharpHoundCommonLib
 
                 _current = _defaultValue;
                 await _enumerator.DisposeAsync().ConfigureAwait(false);
-                _enumeratorDisposed = true;
                 return true;
             }
 
