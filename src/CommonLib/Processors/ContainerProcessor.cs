@@ -62,7 +62,11 @@ namespace SharpHoundCommonLib.Processors
             {
                 //This is always safe
                 var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
-                return (true, new TypedPrincipal(domain, Label.Domain));
+                if (await _utils.GetDomainSidFromDomainName(domain) is (true, var domainSid)) {
+                    return (true, new TypedPrincipal(domainSid, Label.Domain));    
+                }
+
+                return (false, default);
             }
 
             return await _utils.ResolveDistinguishedName(containerDn);
