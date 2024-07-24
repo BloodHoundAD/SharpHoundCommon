@@ -73,7 +73,7 @@ namespace SharpHoundCommonLib.Processors
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
-                _log.LogDebug("{ComputerName} is not available because operating system {OperatingSystem} is not valid",
+                _log.LogTrace("{ComputerName} is not available because operating system {OperatingSystem} is not valid",
                     computerName, operatingSystem);
                 await SendComputerStatus(new CSVComputerStatus
                 {
@@ -90,7 +90,7 @@ namespace SharpHoundCommonLib.Processors
 
             if (!_skipPasswordCheck && !IsComputerActive(pwdLastSet, lastLogon))
             {
-                _log.LogDebug(
+                _log.LogTrace(
                     "{ComputerName} is not available because password last set and lastlogontimestamp are out of range",
                     computerName);
                 await SendComputerStatus(new CSVComputerStatus
@@ -112,11 +112,10 @@ namespace SharpHoundCommonLib.Processors
                     Connectable = true,
                     Error = null
                 };
-
-
+            
             if (!await _scanner.CheckPort(computerName, timeout: _scanTimeout))
             {
-                _log.LogDebug("{ComputerName} is not available because port 445 is unavailable", computerName);
+                _log.LogTrace("{ComputerName} is not available because port 445 is unavailable", computerName);
                 await SendComputerStatus(new CSVComputerStatus
                 {
                     Status = ComputerStatus.PortNotOpen,
@@ -130,7 +129,7 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
-            _log.LogDebug("{ComputerName} is available for enumeration", computerName);
+            _log.LogTrace("{ComputerName} is available for enumeration", computerName);
 
             await SendComputerStatus(new CSVComputerStatus
             {

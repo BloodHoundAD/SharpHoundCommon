@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.DirectoryServices;
-using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -12,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.DirectoryObjects;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
-using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 
 namespace SharpHoundCommonLib.Processors {
     public class ACLProcessor {
@@ -53,7 +51,7 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         private async Task BuildGuidCache(string domain) {
             BuiltDomainCaches.Add(domain);
-            await foreach (var result in _utils.Query(new LdapQueryParameters() {
+            await foreach (var result in _utils.Query(new LdapQueryParameters {
                                DomainName = domain,
                                LDAPFilter = "(schemaIDGUID=*)",
                                NamingContext = NamingContext.Schema,
@@ -67,8 +65,11 @@ namespace SharpHoundCommonLib.Processors {
 
                     name = name.ToLower();
                     if (name is LDAPProperties.LAPSPassword or LDAPProperties.LegacyLAPSPassword) {
+                        _log.LogDebug("Found GUID for ACL Right {Name}: {Guid} in domain {Domain}", name, guid, domain);
                         GuidMap.TryAdd(guid, name);
                     }
+                } else {
+                    _log.LogDebug("Error while building GUID cache for {Domain}: {Message}", domain, result.Error);
                 }
             }
         }
@@ -123,6 +124,10 @@ namespace SharpHoundCommonLib.Processors {
         internal static string CalculateInheritanceHash(string identityReference, ActiveDirectoryRights rights,
             string aceType, string inheritedObjectType) {
             var hash = identityReference + rights + aceType + inheritedObjectType;
+            /*
+             * We're using MD5 because its fast and this data isn't cryptographically important.
+             * Additionally, the chances of a collision in our data size is miniscule and irrelevant.
+             */
             using (var md5 = MD5.Create()) {
                 var bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(hash));
                 var builder = new StringBuilder();
@@ -159,7 +164,8 @@ namespace SharpHoundCommonLib.Processors {
             if (ntSecurityDescriptor == null) {
                 yield break;
             }
-
+            
+            _log.LogDebug("Processing Inherited ACE hashes for {Name}", objectName);
             var descriptor = _utils.MakeSecurityDescriptor();
             try {
                 descriptor.SetSecurityDescriptorBinaryForm(ntSecurityDescriptor);
@@ -181,7 +187,6 @@ namespace SharpHoundCommonLib.Processors {
 
                 //Skip aces for filtered principals
                 if (principalSid == null) {
-                    _log.LogTrace("Pre-Process excluded SID {SID} on {Name}", ir ?? "null", objectName);
                     continue;
                 }
 
@@ -200,8 +205,8 @@ namespace SharpHoundCommonLib.Processors {
         }
 
         /// <summary>
-        ///     Read's the ntSecurityDescriptor from a SearchResultEntry and processes the ACEs in the ACL, filtering out ACEs that
-        ///     BloodHound is not interested in
+        ///     Read's a raw ntSecurityDescriptor and processes the ACEs in the ACL, filtering out ACEs that
+        ///     BloodHound is not interested in as well as principals we don't care about
         /// </summary>
         /// <param name="ntSecurityDescriptor"></param>
         /// <param name="objectDomain"></param>
@@ -230,7 +235,8 @@ namespace SharpHoundCommonLib.Processors {
                     objectName);
                 yield break;
             }
-
+            
+            _log.LogDebug("Processing ACL for {ObjectName}", objectName);
             var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
 
             if (ownerSid != null) {
@@ -241,38 +247,35 @@ namespace SharpHoundCommonLib.Processors {
                         RightName = EdgeNames.Owns,
                         IsInherited = false
                     };
+                } else {
+                    _log.LogTrace("Failed to resolve owner for {Name}", objectName);
+                    yield return new ACE {
+                        PrincipalType = Label.Base,
+                        PrincipalSID = ownerSid,
+                        RightName = EdgeNames.Owns,
+                        IsInherited = false
+                    };
                 }
-            } else {
-                _log.LogDebug("Owner is null for {Name}", objectName);
             }
-
+            
             foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier))) {
-                if (ace == null) {
-                    _log.LogTrace("Skipping null ACE for {Name}", objectName);
-                    continue;
-                }
-
-                if (ace.AccessControlType() == AccessControlType.Deny) {
-                    _log.LogTrace("Skipping deny ACE for {Name}", objectName);
-                    continue;
-                }
-
-                if (!ace.IsAceInheritedFrom(BaseGuids[objectType])) {
-                    _log.LogTrace("Skipping ACE with unmatched GUID/inheritance for {Name}", objectName);
+                if (ace == null || ace.AccessControlType() == AccessControlType.Deny || !ace.IsAceInheritedFrom(BaseGuids[objectType])) {
                     continue;
                 }
 
                 var ir = ace.IdentityReference();
                 var principalSid = Helpers.PreProcessSID(ir);
 
+                //Preprocess returns null if this is an ignored sid
                 if (principalSid == null) {
-                    _log.LogTrace("Pre-Process excluded SID {SID} on {Name}", ir ?? "null", objectName);
                     continue;
                 }
 
                 var (success, resolvedPrincipal) = await _utils.ResolveIDAndType(principalSid, objectDomain);
                 if (!success) {
-                    _log.LogDebug("Failed to resolve type for principal {Sid}", principalSid);
+                    _log.LogTrace("Failed to resolve type for principal {Sid} on ACE for {Object}", principalSid, objectName);
+                    resolvedPrincipal.ObjectIdentifier = principalSid;
+                    resolvedPrincipal.ObjectType = Label.Base;
                 }
 
                 var aceRights = ace.ActiveDirectoryRights();
@@ -602,17 +605,12 @@ namespace SharpHoundCommonLib.Processors {
             } catch (OverflowException) {
                 _log.LogWarning("GMSA ACL length on object {Name} exceeds allowable length. Unable to process",
                     objectName);
+                yield break;
             }
-
-
+            
+            _log.LogDebug("Processing GMSA Readers for {ObjectName}", objectName);
             foreach (var ace in descriptor.GetAccessRules(true, true, typeof(SecurityIdentifier))) {
-                if (ace == null) {
-                    _log.LogTrace("Skipping null GMSA ACE for {Name}", objectName);
-                    continue;
-                }
-
-                if (ace.AccessControlType() == AccessControlType.Deny) {
-                    _log.LogTrace("Skipping deny GMSA ACE for {Name}", objectName);
+                if (ace == null || ace.AccessControlType() == AccessControlType.Deny) {
                     continue;
                 }
 
@@ -620,14 +618,12 @@ namespace SharpHoundCommonLib.Processors {
                 var principalSid = Helpers.PreProcessSID(ir);
 
                 if (principalSid == null) {
-                    _log.LogTrace("Pre-Process excluded SID {SID} on {Name}", ir ?? "null", objectName);
                     continue;
                 }
 
                 _log.LogTrace("Processing GMSA ACE with principal {Principal}", principalSid);
 
-                var (success, resolvedPrincipal) = await _utils.ResolveIDAndType(principalSid, objectDomain);
-                if (success) {
+                if (await _utils.ResolveIDAndType(principalSid, objectDomain) is (true, var resolvedPrincipal)) {
                     yield return new ACE {
                         RightName = EdgeNames.ReadGMSAPassword,
                         PrincipalType = resolvedPrincipal.ObjectType,
