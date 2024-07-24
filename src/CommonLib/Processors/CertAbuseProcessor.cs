@@ -299,13 +299,13 @@ namespace SharpHoundCommonLib.Processors
 
             if (isDomainController)
             {
-                var result = ResolveDomainControllerPrincipal(sid.Value, computerDomain);
+                var result = _utils.ResolveIDAndType(sid.Value, computerDomain);
                 if (result != null)
                     return result;
             }
 
             //If we get a local well known principal, we need to convert it using the computer's domain sid
-            if (ConvertLocalWellKnownPrincipal(sid, computerObjectId, computerDomain, out var principal))
+            if (_utils.ConvertLocalWellKnownPrincipal(sid, computerObjectId, computerDomain, out var principal))
             {
                 _log.LogTrace("Got Well Known Principal {SID} on computer {Computer} with type {Type}", principal.ObjectIdentifier, computerName, principal.ObjectType);
                 return principal;
@@ -382,46 +382,7 @@ namespace SharpHoundCommonLib.Processors
         }
 
         // TODO: Copied from URA processor. Find a way to have this function in a shared spot
-        private TypedPrincipal ResolveDomainControllerPrincipal(string sid, string computerDomain)
-        {
-            //If the server is a domain controller and we have a well known group, use the domain value
-            if (_utils.GetWellKnownPrincipal(sid, computerDomain, out var wellKnown))
-                return wellKnown;
-            //Otherwise, do a domain lookup
-            return _utils.ResolveIDAndType(sid, computerDomain);
-        }
-
-        // TODO: Copied from URA processor. Find a way to have this function in a shared spot
-        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerDomainSid,
-            string computerDomain, out TypedPrincipal principal)
-        {
-            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
-            {
-                //The everyone and auth users principals are special and will be converted to the domain equivalent
-                if (sid.Value is "S-1-1-0" or "S-1-5-11")
-                {
-                    _utils.GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
-                    return true;
-                }
-
-                //Use the computer object id + the RID of the sid we looked up to create our new principal
-                principal = new TypedPrincipal
-                {
-                    ObjectIdentifier = $"{computerDomainSid}-{sid.Rid()}",
-                    ObjectType = common.ObjectType switch
-                    {
-                        Label.User => Label.LocalUser,
-                        Label.Group => Label.LocalGroup,
-                        _ => common.ObjectType
-                    }
-                };
-
-                return true;
-            }
-
-            principal = null;
-            return false;
-        }
+        
 
         public virtual Result<ISAMServer> OpenSamServer(string computerName)
         {
