@@ -37,6 +37,10 @@ namespace SharpHoundCommonLib {
             _nativeMethods = nativeMethods ?? new NativeMethods();
         }
 
+        /// <summary>
+        /// Get a new Domain Controller connection.
+        /// </summary>
+        /// <returns></returns>
         public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetConnectionAsync() {
             await _semaphore.WaitAsync();
             if (!_connections.TryTake(out var connectionWrapper)) {
@@ -53,6 +57,12 @@ namespace SharpHoundCommonLib {
             return (true, connectionWrapper, null);
         }
 
+        /// <summary>
+        /// Get a new Domain Controller connection to a specififed DC.
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="globalCatalog"></param>
+        /// <returns></returns>
         public async Task<(bool Success, LdapConnectionWrapper connectionWrapper, string Message)>
             GetConnectionForSpecificServerAsync(string server, bool globalCatalog) {
             await _semaphore.WaitAsync();
@@ -66,6 +76,10 @@ namespace SharpHoundCommonLib {
             return (true, result.Value, null);
         }
 
+        /// <summary>
+        /// Get a new Domain Controller connection using Global Catalog.
+        /// </summary>
+        /// <returns></returns>
         public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
             await _semaphore.WaitAsync();
             if (!_globalCatalogConnection.TryTake(out var connectionWrapper)) {
@@ -82,6 +96,11 @@ namespace SharpHoundCommonLib {
             return (true, connectionWrapper, null);
         }
 
+        /// <summary>
+        /// Return a DC connection to the pool.
+        /// </summary>
+        /// <param name="connectionWrapper"></param>
+        /// <param name="connectionFaulted"></param>
         public void ReleaseConnection(LdapConnectionWrapper connectionWrapper, bool connectionFaulted = false) {
             _semaphore.Release();
             if (!connectionFaulted) {
@@ -97,6 +116,9 @@ namespace SharpHoundCommonLib {
             }
         }
     
+        /// <summary>
+        /// Close all open DC connections.
+        /// </summary>
         public void Dispose() {
             while (_connections.TryTake(out var wrapper)) {
                 wrapper.Connection.Dispose();

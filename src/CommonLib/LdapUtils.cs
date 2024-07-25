@@ -89,6 +89,13 @@ namespace SharpHoundCommonLib {
             _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
         }
 
+        /// <summary>
+        /// Retrieves large sets of data from LDAP servers in chunks or "ranges."
+        /// </summary>
+        /// <param name="distinguishedName"></param>
+        /// <param name="attributeName"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async IAsyncEnumerable<Result<string>> RangedRetrieval(
         string distinguishedName,
         string attributeName,
@@ -243,6 +250,12 @@ namespace SharpHoundCommonLib {
             return Result<LdapConnectionWrapper>.Fail("Failed to get a new connection after ServerDown.");
         }
 
+        /// <summary>
+        /// Retrieves data from LDAP servers per query parameters.
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async IAsyncEnumerable<LdapResult<IDirectoryObject>> Query(
         LdapQueryParameters queryParameters,
         [EnumeratorCancellation] CancellationToken cancellationToken = new())
@@ -277,6 +290,13 @@ namespace SharpHoundCommonLib {
             _connectionPool.ReleaseConnection(setupResult.ConnectionWrapper);
         }
 
+        /// <summary>
+        /// Retrieves query results in chunks or "pages".
+        /// Unlike RangedRetrieval, may be cross-server between pages.
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(
             LdapQueryParameters queryParameters,
             [EnumeratorCancellation] CancellationToken cancellationToken = new())
