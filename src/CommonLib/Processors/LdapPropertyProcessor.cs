@@ -20,7 +20,7 @@ namespace SharpHoundCommonLib.Processors {
             .Concat(CommonProperties.ComputerMethodProps).Concat(CommonProperties.ACLProps)
             .Concat(CommonProperties.ObjectPropsProps).Concat(CommonProperties.ContainerProps)
             .Concat(CommonProperties.SPNTargetProps).Concat(CommonProperties.DomainTrustProps)
-            .Concat(CommonProperties.GPOLocalGroupProps).ToArray();
+            .Concat(CommonProperties.GPOLocalGroupProps).Concat(CommonProperties.CertAbuseProps).ToArray();
 
         private readonly ILdapUtils _utils;
 
@@ -520,13 +520,8 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="entry"></param>
         public Dictionary<string, object> ParseAllProperties(IDirectoryObject entry) {
             var props = new Dictionary<string, object>();
-
-            var type = typeof(LDAPProperties);
-            var reserved = type.GetFields(BindingFlags.Static | BindingFlags.Public)
-                .Select(x => x.GetValue(null).ToString()).ToArray();
-
             foreach (var property in entry.PropertyNames()) {
-                if (reserved.Contains(property, StringComparer.OrdinalIgnoreCase))
+                if (ReservedAttributes.Contains(property, StringComparer.OrdinalIgnoreCase))
                     continue;
 
                 var collCount = entry.PropertyCount(property);
@@ -537,7 +532,7 @@ namespace SharpHoundCommonLib.Processors {
                     var testString = entry.GetProperty(property);
 
                     if (!string.IsNullOrEmpty(testString))
-                        if (property == "badpasswordtime")
+                        if (property.Equals("badpasswordtime", StringComparison.OrdinalIgnoreCase))
                             props.Add(property, Helpers.ConvertFileTimeToUnixEpoch(testString));
                         else
                             props.Add(property, BestGuessConvert(testString));
