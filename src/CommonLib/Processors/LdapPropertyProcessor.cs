@@ -532,25 +532,39 @@ namespace SharpHoundCommonLib.Processors {
                     continue;
 
                 var collCount = entry.PropertyCount(property);
+                Console.WriteLine("Before guid check {0}", collCount);
                 if (collCount == 0)
                     continue;
 
                 if (collCount == 1) {
-                    var testBytes = entry.GetByteProperty(property);
-                    if (testBytes == null || testBytes.Length == 0) continue;
+                    entry.TryGetByteProperty(property, out var testBytes);
+                    if (testBytes == null || testBytes.Length == 0) {
+                        Console.WriteLine("failure", testBytes);
+                        continue;
+                    };
+                    Console.WriteLine("Before guid check {0}", testBytes.Length);
+                    foreach (byte b in testBytes) {
+                        Console.Write(b);
+                    }
+
                     // SIDs
                     try {
                         var sid = new SecurityIdentifier(testBytes, 0);
                         props.Add(property, sid.Value);
                         continue;
-                    } catch {/* Ignore */}
+                    } catch { /* Ignore */ }
 
                     // GUIDs
                     try {
+                        Console.WriteLine(testBytes);
                         var guid = new Guid(testBytes);
+                        Console.Write("woooooooooooookkkkkk");
                         props.Add(property, guid.ToString());
                         continue;
-                    } catch {/* Ignore */}
+                    } catch (Exception e) {
+                        /* Ignore */
+                        Console.WriteLine(e);
+                    }
 
                     var testString = entry.GetProperty(property);
 

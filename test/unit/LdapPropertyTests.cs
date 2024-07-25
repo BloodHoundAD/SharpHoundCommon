@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -855,7 +855,8 @@ namespace CommonLibTest
                     {"name", "NTAUTHCERTIFICATES@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                }, "","2F9F3630-F46A-49BF-B186-6629994EBCF9");
+                    {"dsasignature", "jkr"}
+                }, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
@@ -865,6 +866,7 @@ namespace CommonLibTest
             Assert.DoesNotContain("description", keys);
             Assert.DoesNotContain("whencreated", keys);
             Assert.DoesNotContain("name", keys);
+            Assert.DoesNotContain("dsasignature", keys);
 
             Assert.Contains("domainsid", keys);
             Assert.Contains("domain", keys);
@@ -929,5 +931,58 @@ namespace CommonLibTest
             Assert.Single(keys);
         }
 
+        [Fact]
+        public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_ControlCharactersAreEncoded() {
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                    {{"usercertificate", "\u0000"}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
+
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
+            var props = processor.ParseAllProperties(mock);
+            var keys = props.Keys;
+
+            Assert.Contains("usercertificate", keys);
+            Assert.Single(keys);
+            var hasCert = props.TryGetValue("usercertificate", out var usercert);
+            Assert.True(hasCert);
+            Assert.Equal("\u0000", System.Text.Encoding.UTF8.GetString(usercert as byte[]));
+        }
+
+        [WindowsOnlyFact]
+        public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_SID() {
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                    {{"ms-ds-creatorsid", "S-1-5-21-2697957641-2271029196-387917394"}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
+
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
+            var props = processor.ParseAllProperties(mock);
+            var keys = props.Keys;
+
+            Assert.Contains("ms-ds-creatorsid", keys);
+            Assert.Single(keys);
+            var hasSID = props.TryGetValue("ms-ds-creatorsid", out var creatorSID);
+            Assert.True(hasSID);
+            Assert.Equal("S-1-5-21-2697957641-2271029196-387917394", props["ms-ds-creatorsid"]);
+        }
+
+        [Fact]
+        public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_GUID() {
+            var guid = Guid.NewGuid().ToString();
+            Console.WriteLine(guid);
+            var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
+                new Dictionary<string, object>
+                    {{"guid", guid}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
+
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
+            var props = processor.ParseAllProperties(mock);
+            var keys = props.Keys;
+
+            Assert.Contains("guid", keys);
+            Assert.Single(keys);
+            var hasGuid = props.TryGetValue("guid", out var guid2);
+            Assert.True(hasGuid);
+            Console.WriteLine(guid);
+            Assert.Equal(guid, guid2);
+        }
     }
 }
