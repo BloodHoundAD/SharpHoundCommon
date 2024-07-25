@@ -365,7 +365,3 @@ namespace SharpHoundCommonLib {
         }
     }
 }
-
-//TESTLAB
-//TESTLAB.LOCAL
-//PRIMARY.TESTLAB.LOCAL

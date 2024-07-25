@@ -2,7 +2,7 @@ using System;
 
 namespace SharpHoundCommonLib.Exceptions
 {
-    public class NoLdapDataException : Exception
+    internal class NoLdapDataException : Exception
     {
         public NoLdapDataException()
         {
