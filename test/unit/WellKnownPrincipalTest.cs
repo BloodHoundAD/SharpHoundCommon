@@ -88,7 +88,7 @@ namespace CommonLibTest
                 ("S-1-5-13", "Terminal Server Users", Label.Group),
                 ("S-1-5-14", "Remote Interactive Logon", Label.Group),
                 ("S-1-5-15", "This Organization", Label.Group),
-                ("S-1-5-17", "IUSR", Label.Group),
+                ("S-1-5-17", "IUSR", Label.User),
                 ("S-1-5-18", "Local System", Label.User),
                 ("S-1-5-19", "Local Service", Label.User),
                 ("S-1-5-20", "Network Service", Label.User),
