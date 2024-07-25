@@ -150,22 +150,22 @@ namespace SharpHoundCommonLib {
             [EnumeratorCancellation] CancellationToken cancellationToken)
         {
             var index = 0;
-            var step = 0;
             var currentRange = $"{queryParameters.Attributes[0]}";
-            var complete = false;
 
             while (!cancellationToken.IsCancellationRequested)
             {
                 var response = await ExecuteSearchRequest(searchRequest, connectionWrapper, queryParameters);
 
-                if (response.IsFailure)
+                if (!response.IsSuccess)
                 {
                     yield return Result<string>.Fail(response.Error);
                     yield break;
                 }
 
                 var entry = response.Value.Entries[0];
-                (currentRange, complete, step) = UpdateRangeInfo(entry);
+                var attributeName = entry.Attributes.AttributeNames.Cast<string>().First();
+                var complete = attributeName.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
+                var step = entry.Attributes[attributeName].Count;
 
                 foreach (string dn in entry.Attributes[currentRange].GetValues(typeof(string)))
                 {
@@ -178,7 +178,9 @@ namespace SharpHoundCommonLib {
                     yield break;
                 }
 
-                UpdateSearchRequest(searchRequest, attributeName, index, step);
+                var newRange = $"{attributeName};range={index}-{index + step}";
+                searchRequest.Attributes.Clear();
+                searchRequest.Attributes.Add(newRange);
             }
         }
 
@@ -206,7 +208,7 @@ namespace SharpHoundCommonLib {
                 {
                     queryRetryCount++;
                     var newConnectionResult = await RecoverFromServerDown(queryParameters.DomainName);
-                    if (newConnectionResult.IsFailure)
+                    if (!newConnectionResult.IsSuccess)
                     {
                         return Result<SearchResponse>.Fail(newConnectionResult.Error);
                     }
@@ -221,21 +223,6 @@ namespace SharpHoundCommonLib {
                     return Result<SearchResponse>.Fail($"Caught unrecoverable exception: {e.Message}");
                 }
             }
-        }
-
-        private (string currentRange, bool complete, int step) UpdateRangeInfo(SearchResultEntry entry)
-        {
-            var attr = entry.Attributes.AttributeNames.Cast<string>().First();
-            var complete = attr.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
-            var step = entry.Attributes[attr].Count;
-            return (attr, complete, step);
-        }
-
-        private void UpdateSearchRequest(SearchRequest searchRequest, string attributeName, int index, int step)
-        {
-            var newRange = $"{attributeName};range={index}-{index + step}";
-            searchRequest.Attributes.Clear();
-            searchRequest.Attributes.Add(newRange);
         }
 
         private async Task<Result<LdapConnectionWrapper>> RecoverFromServerDown(string domain)
@@ -267,19 +254,17 @@ namespace SharpHoundCommonLib {
                 yield break;
             }
 
-            var (searchRequest, connectionWrapper) = setupResult;
-
             if (cancellationToken.IsCancellationRequested)
             {
-                _connectionPool.ReleaseConnection(connectionWrapper);
+                _connectionPool.ReleaseConnection(setupResult.ConnectionWrapper);
                 yield break;
             }
 
-            var queryResult = await ExecuteQuery(searchRequest, connectionWrapper, queryParameters, cancellationToken);
+            var queryResult = await ExecuteQuery(setupResult.SearchRequest, setupResult.ConnectionWrapper, queryParameters, cancellationToken);
 
-            if (!queryResult.Success)
+            if (!queryResult.IsSuccess)
             {
-                yield return queryResult;
+                yield return LdapResult<IDirectoryObject>.Fail(queryResult.Error, queryParameters, queryResult.ErrorCode);
                 yield break;
             }
 
@@ -288,7 +273,7 @@ namespace SharpHoundCommonLib {
                 yield return LdapResult<IDirectoryObject>.Ok(new SearchResultEntryWrapper(entry));
             }
 
-            _connectionPool.ReleaseConnection(connectionWrapper);
+            _connectionPool.ReleaseConnection(setupResult.ConnectionWrapper);
         }
 
         public async IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(
@@ -303,24 +288,22 @@ namespace SharpHoundCommonLib {
                 yield break;
             }
 
-            var (searchRequest, connectionWrapper, serverName) = setupResult;
-
-            if (string.IsNullOrEmpty(serverName))
+            if (string.IsNullOrEmpty(setupResult.Server))
             {
                 _log.LogWarning("PagedQuery - Failed to get a server name for connection, retry not possible");
             }
 
             var pageControl = new PageResultRequestControl(500);
-            searchRequest.Controls.Add(pageControl);
+            setupResult.SearchRequest.Controls.Add(pageControl);
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                var queryResult = await ExecutePagedQuery(searchRequest, connectionWrapper, queryParameters, serverName, cancellationToken);
+                var queryResult = await ExecutePagedQuery(setupResult.SearchRequest, setupResult.ConnectionWrapper, queryParameters, setupResult.Server, cancellationToken);
 
-                if (!queryResult.Success)
+                if (!queryResult.IsSuccess)
                 {
-                    yield return queryResult;
-                    _connectionPool.ReleaseConnection(connectionWrapper);
+                    yield return LdapResult<IDirectoryObject>.Fail(queryResult.Error, queryParameters, queryResult.ErrorCode);
+                    _connectionPool.ReleaseConnection(setupResult.ConnectionWrapper);
                     yield break;
                 }
 
@@ -330,7 +313,7 @@ namespace SharpHoundCommonLib {
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        _connectionPool.ReleaseConnection(connectionWrapper);
+                        _connectionPool.ReleaseConnection(setupResult.ConnectionWrapper);
                         yield break;
                     }
 
@@ -339,7 +322,7 @@ namespace SharpHoundCommonLib {
 
                 if (pageResponse.Cookie.Length == 0 || response.Entries.Count == 0 || cancellationToken.IsCancellationRequested)
                 {
-                    _connectionPool.ReleaseConnection(connectionWrapper);
+                    _connectionPool.ReleaseConnection(setupResult.ConnectionWrapper);
                     yield break;
                 }
 
@@ -393,9 +376,9 @@ namespace SharpHoundCommonLib {
                     }
 
                     var reconnectionResult = await ReconnectToServer(queryParameters, serverName);
-                    if (!reconnectionResult.Success)
+                    if (!reconnectionResult.IsSuccess)
                     {
-                        return LdapResult<(SearchResponse, PageResultResponseControl)>.Fail(reconnectionResult.Message, queryParameters, le.ErrorCode);
+                        return LdapResult<(SearchResponse, PageResultResponseControl)>.Fail(reconnectionResult.Error, queryParameters, le.ErrorCode);
                     }
                     connectionWrapper = reconnectionResult.Value;
                 }
@@ -462,7 +445,7 @@ namespace SharpHoundCommonLib {
                 {
                     queryRetryCount++;
                     var reconnectionResult = await RecoverFromServerDown(queryParameters.DomainName);
-                    if (!reconnectionResult.Success)
+                    if (!reconnectionResult.IsSuccess)
                     {
                         return LdapResult<SearchResponse>.Fail(reconnectionResult.Error, queryParameters, le.ErrorCode);
                     }
