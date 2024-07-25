@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -520,8 +520,15 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="entry"></param>
         public Dictionary<string, object> ParseAllProperties(IDirectoryObject entry) {
             var props = new Dictionary<string, object>();
+            var type = typeof(LDAPProperties);
+
+            var reserved = new HashSet<string>(type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(x => x.GetValue(null).ToString()));
+            _ = reserved.Add("dsasignature");
+            foreach (var reservedAttr in ReservedAttributes) {
+                reserved.Add(reservedAttr.ToLower());
+            }
             foreach (var property in entry.PropertyNames()) {
-                if (ReservedAttributes.Contains(property, StringComparer.OrdinalIgnoreCase))
+                if (reserved.Contains(property.ToLower()))
                     continue;
 
                 var collCount = entry.PropertyCount(property);
@@ -529,13 +536,30 @@ namespace SharpHoundCommonLib.Processors {
                     continue;
 
                 if (collCount == 1) {
+                    var testBytes = entry.GetByteProperty(property);
+                    if (testBytes == null || testBytes.Length == 0) continue;
+                    // SIDs
+                    try {
+                        var sid = new SecurityIdentifier(testBytes, 0);
+                        props.Add(property, sid.Value);
+                        continue;
+                    } catch {/* Ignore */}
+
+                    // GUIDs
+                    try {
+                        var guid = new Guid(testBytes);
+                        props.Add(property, guid.ToString());
+                        continue;
+                    } catch {/* Ignore */}
+
                     var testString = entry.GetProperty(property);
 
-                    if (!string.IsNullOrEmpty(testString))
+                    if (!string.IsNullOrEmpty(testString)) {
                         if (property.Equals("badpasswordtime", StringComparison.OrdinalIgnoreCase))
                             props.Add(property, Helpers.ConvertFileTimeToUnixEpoch(testString));
                         else
                             props.Add(property, BestGuessConvert(testString));
+                    }
                 } else {
                     if (entry.TryGetArrayProperty(property, out var arr) && arr.Length > 0) {
                         props.Add(property, arr.Select(BestGuessConvert).ToArray());
@@ -577,23 +601,28 @@ namespace SharpHoundCommonLib.Processors {
         /// <summary>
         ///     Does a best guess conversion of the property to a type useable by the UI
         /// </summary>
-        /// <param name="property"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        private static object BestGuessConvert(string property) {
+        private static object BestGuessConvert(string value) {
             //Parse boolean values
-            if (bool.TryParse(property, out var boolResult)) return boolResult;
+            if (bool.TryParse(value, out var boolResult)) return boolResult;
 
             //A string ending with 0Z is likely a timestamp
-            if (property.EndsWith("0Z")) return Helpers.ConvertTimestampToUnixEpoch(property);
+            if (value.EndsWith("0Z")) return Helpers.ConvertTimestampToUnixEpoch(value);
 
             //This string corresponds to the max int, and is usually set in accountexpires
-            if (property == "9223372036854775807") return -1;
+            if (value == "9223372036854775807") return -1;
 
             //Try parsing as an int
-            if (int.TryParse(property, out var num)) return num;
+            if (int.TryParse(value, out var num)) return num;
+
+            // If we have binary unicode, encode it
+            foreach (char c in value) {
+                if (char.IsControl(c)) return System.Text.Encoding.UTF8.GetBytes(value);
+            }
 
             //Just return the property as a string
-            return property;
+            return value;
         }
 
         /// <summary>
