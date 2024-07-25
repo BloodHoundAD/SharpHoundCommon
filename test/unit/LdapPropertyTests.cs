@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -950,9 +950,10 @@ namespace CommonLibTest
 
         [WindowsOnlyFact]
         public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_SID() {
+            var creatorSIDExpected = "S-1-5-21-2697957641-2271029196-387917394";
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                    {{"ms-ds-creatorsid", "S-1-5-21-2697957641-2271029196-387917394"}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
+                    {{"ms-ds-creatorsid", System.Text.Encoding.UTF8.GetBytes(creatorSIDExpected)}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
@@ -960,29 +961,26 @@ namespace CommonLibTest
 
             Assert.Contains("ms-ds-creatorsid", keys);
             Assert.Single(keys);
-            var hasSID = props.TryGetValue("ms-ds-creatorsid", out var creatorSID);
+            var hasSID = props.TryGetValue("ms-ds-creatorsid", out var creatorSIDActual);
             Assert.True(hasSID);
-            Assert.Equal("S-1-5-21-2697957641-2271029196-387917394", props["ms-ds-creatorsid"]);
+            Assert.Equal(creatorSIDExpected, creatorSIDActual.ToString());
         }
 
         [Fact]
-        public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_GUID() {
-            var guid = Guid.NewGuid();
-            Console.WriteLine(guid);
+        public void LDAPPropertyProcessor_ParseAllProperties_GUID() {
+            var guidExpected = Guid.NewGuid();
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                    {{"guid", guid.ToByteArray()}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
+                    {{"guid", guidExpected.ToByteArray()}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
             var keys = props.Keys;
 
-            Assert.Contains("guid", keys);
             Assert.Single(keys);
-            var hasGuid = props.TryGetValue("guid", out var guid2);
+            var hasGuid = props.TryGetValue("guid", out var guidActual);
             Assert.True(hasGuid);
-            Console.WriteLine(guid);
-            Assert.Equal(guid.ToString(), guid2);
+            Assert.Equal(guidExpected.ToString(), guidActual);
         }
     }
 }

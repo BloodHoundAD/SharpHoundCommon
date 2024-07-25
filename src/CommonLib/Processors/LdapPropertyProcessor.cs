@@ -520,35 +520,24 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="entry"></param>
         public Dictionary<string, object> ParseAllProperties(IDirectoryObject entry) {
             var props = new Dictionary<string, object>();
-            var type = typeof(LDAPProperties);
 
+            var type = typeof(LDAPProperties);
             var reserved = new HashSet<string>(type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(x => x.GetValue(null).ToString()));
             _ = reserved.Add("dsasignature");
             foreach (var reservedAttr in ReservedAttributes) {
                 reserved.Add(reservedAttr.ToLower());
             }
+
             foreach (var property in entry.PropertyNames()) {
                 if (reserved.Contains(property.ToLower()))
                     continue;
 
                 var collCount = entry.PropertyCount(property);
-                Console.WriteLine("Before guid check {0}", collCount);
                 if (collCount == 0)
                     continue;
 
                 if (collCount == 1) {
-                    entry.TryGetByteProperty(property, out var testBytes);
-                    if (testBytes == null || testBytes.Length == 0) {
-                        Console.WriteLine("failure", testBytes);
-                        continue;
-                    };
-                    Console.WriteLine("Before guid check {0}", testBytes.Length);
-                    foreach (byte b in testBytes) {
-                        Console.Write(b);
-                    }
-
                     var testString = entry.GetProperty(property);
-
                     if (!string.IsNullOrEmpty(testString)) {
                         if (property.Equals("badpasswordtime", StringComparison.OrdinalIgnoreCase))
                             props.Add(property, Helpers.ConvertFileTimeToUnixEpoch(testString));
@@ -556,25 +545,23 @@ namespace SharpHoundCommonLib.Processors {
                             props.Add(property, BestGuessConvert(testString));
                     }
                 } else {
-                    if (entry.TryGetByteProperty(property, out var bArr)) {
+                    if (entry.TryGetByteProperty(property, out var testBytes)) {
+                        if (testBytes == null || testBytes.Length == 0) {
+                            continue;
+                        };
                         // SIDs
                         try {
-                            var sid = new SecurityIdentifier(bArr, 0);
+                            var sid = new SecurityIdentifier(testBytes, 0);
                             props.Add(property, sid.Value);
                             continue;
                         } catch { /* Ignore */ }
 
                         // GUIDs
                         try {
-                            Console.WriteLine(bArr);
-                            var guid = new Guid(bArr);
-                            Console.Write("woooooooooooookkkkkk");
+                            var guid = new Guid(testBytes);
                             props.Add(property, guid.ToString());
                             continue;
-                        } catch (Exception e) {
-                            /* Ignore */
-                            Console.WriteLine(e);
-                        }
+                        } catch { /* Ignore */ }
                     }
                     if (entry.TryGetArrayProperty(property, out var arr) && arr.Length > 0) {
                         props.Add(property, arr.Select(BestGuessConvert).ToArray());
