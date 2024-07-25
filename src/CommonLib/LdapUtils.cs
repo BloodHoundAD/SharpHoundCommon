@@ -92,7 +92,7 @@ namespace SharpHoundCommonLib {
         public async IAsyncEnumerable<Result<string>> RangedRetrieval(
         string distinguishedName,
         string attributeName,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        [EnumeratorCancellation] CancellationToken cancellationToken = new())
         {
             var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
             var connectionResult = await _connectionPool.GetLdapConnection(domain, false);
@@ -245,7 +245,7 @@ namespace SharpHoundCommonLib {
 
         public async IAsyncEnumerable<LdapResult<IDirectoryObject>> Query(
         LdapQueryParameters queryParameters,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        [EnumeratorCancellation] CancellationToken cancellationToken = new())
         {
             var setupResult = await SetupLdapQuery(queryParameters);
 
@@ -279,7 +279,7 @@ namespace SharpHoundCommonLib {
 
         public async IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(
             LdapQueryParameters queryParameters,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+            [EnumeratorCancellation] CancellationToken cancellationToken = new())
         {
             var setupResult = await SetupLdapQuery(queryParameters);
 
