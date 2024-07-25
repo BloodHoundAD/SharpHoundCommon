@@ -26,6 +26,7 @@ namespace SharpHoundCommonLib.Processors
         /// <returns></returns>
         public async IAsyncEnumerable<DomainTrust> EnumerateDomainTrusts(string domain)
         {
+            _log.LogDebug("Running trust enumeration for {Domain}", domain);
             await foreach (var result in _utils.Query(new LdapQueryParameters {
                                    LDAPFilter = CommonFilters.TrustedDomains,
                                    Attributes = CommonProperties.DomainTrustProps,
@@ -39,7 +40,7 @@ namespace SharpHoundCommonLib.Processors
                 var entry = result.Value;
                 var trust = new DomainTrust();
                 if (!entry.TryGetByteProperty(LDAPProperties.SecurityIdentifier, out var targetSidBytes) || targetSidBytes.Length == 0) {
-                    _log.LogTrace("Trust sid is null or empty for target: {Domain}", domain);
+                    _log.LogDebug("Trust sid is null or empty for target: {Domain}", domain);
                     continue;
                 }
 

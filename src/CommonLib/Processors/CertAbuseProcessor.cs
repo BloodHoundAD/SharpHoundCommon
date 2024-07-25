@@ -57,15 +57,14 @@ namespace SharpHoundCommonLib.Processors
             descriptor.SetSecurityDescriptorBinaryForm(aceData.Value as byte[], AccessControlSections.All);
 
             var ownerSid = Helpers.PreProcessSID(descriptor.GetOwner(typeof(SecurityIdentifier)));
-            var (success,computerDomain) = await _utils.GetDomainNameFromSid(computerObjectId);
-            var isDomainController = await _utils.IsDomainController(computerObjectId, computerDomain);
+            var isDomainController = await _utils.IsDomainController(computerObjectId, objectDomain);
             var machineSid = await GetMachineSid(computerName, computerObjectId);
 
             var aces = new List<ACE>();
 
-            if (ownerSid != null)
-            {
-                if (await GetRegistryPrincipal(new SecurityIdentifier(ownerSid), computerDomain, computerName,
+            if (ownerSid != null) {
+                var processed = new SecurityIdentifier(ownerSid);
+                if (await GetRegistryPrincipal(processed, objectDomain, computerName,
                         isDomainController, computerObjectId, machineSid) is (true, var resolvedOwner)) {
                     aces.Add(new ACE
                     {
@@ -74,8 +73,15 @@ namespace SharpHoundCommonLib.Processors
                         RightName = EdgeNames.Owns,
                         IsInherited = false
                     }); 
+                } else {
+                    aces.Add(new ACE
+                    {
+                        PrincipalType = Label.Base,
+                        PrincipalSID = processed.Value,
+                        RightName = EdgeNames.Owns,
+                        IsInherited = false
+                    }); 
                 }
-                    
             }
             else
             {
@@ -96,7 +102,8 @@ namespace SharpHoundCommonLib.Processors
 
                 var (getDomainSuccess, principalDomain) = await _utils.GetDomainNameFromSid(principalSid);
                 if (!getDomainSuccess) {
-                       
+                    //Fallback to computer's domain in case we cant resolve the principal domain
+                    principalDomain = objectDomain;
                 }
                 var (resSuccess, resolvedPrincipal) = await GetRegistryPrincipal(new SecurityIdentifier(principalSid), principalDomain, computerName, isDomainController, computerObjectId, machineSid);
                 if (!resSuccess)

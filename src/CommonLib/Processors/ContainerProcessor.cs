@@ -40,6 +40,7 @@ namespace SharpHoundCommonLib.Processors
         public async Task<(bool Success, TypedPrincipal principal)> GetContainingObject(IDirectoryObject entry)
         {
             if (entry.TryGetDistinguishedName(out var dn)) {
+                _log.LogTrace("Reading containing object for {DN}", dn);
                 return await GetContainingObject(dn);
             }
 
@@ -56,11 +57,12 @@ namespace SharpHoundCommonLib.Processors
         {
             var containerDn = Helpers.RemoveDistinguishedNamePrefix(distinguishedName);
 
+            //If the container is the builtin container, we want to redirect the containing object to the domain of the object
             if (containerDn.StartsWith("CN=BUILTIN", StringComparison.OrdinalIgnoreCase))
             {
+                //This is always safe
                 var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
-                var (success, domainSid) = await _utils.GetDomainSidFromDomainName(domain);
-                if (success) {
+                if (await _utils.GetDomainSidFromDomainName(domain) is (true, var domainSid)) {
                     return (true, new TypedPrincipal(domainSid, Label.Domain));    
                 }
 
