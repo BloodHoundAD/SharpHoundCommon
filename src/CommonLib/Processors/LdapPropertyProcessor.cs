@@ -547,25 +547,6 @@ namespace SharpHoundCommonLib.Processors {
                         Console.Write(b);
                     }
 
-                    // SIDs
-                    try {
-                        var sid = new SecurityIdentifier(testBytes, 0);
-                        props.Add(property, sid.Value);
-                        continue;
-                    } catch { /* Ignore */ }
-
-                    // GUIDs
-                    try {
-                        Console.WriteLine(testBytes);
-                        var guid = new Guid(testBytes);
-                        Console.Write("woooooooooooookkkkkk");
-                        props.Add(property, guid.ToString());
-                        continue;
-                    } catch (Exception e) {
-                        /* Ignore */
-                        Console.WriteLine(e);
-                    }
-
                     var testString = entry.GetProperty(property);
 
                     if (!string.IsNullOrEmpty(testString)) {
@@ -575,6 +556,26 @@ namespace SharpHoundCommonLib.Processors {
                             props.Add(property, BestGuessConvert(testString));
                     }
                 } else {
+                    if (entry.TryGetByteProperty(property, out var bArr)) {
+                        // SIDs
+                        try {
+                            var sid = new SecurityIdentifier(bArr, 0);
+                            props.Add(property, sid.Value);
+                            continue;
+                        } catch { /* Ignore */ }
+
+                        // GUIDs
+                        try {
+                            Console.WriteLine(bArr);
+                            var guid = new Guid(bArr);
+                            Console.Write("woooooooooooookkkkkk");
+                            props.Add(property, guid.ToString());
+                            continue;
+                        } catch (Exception e) {
+                            /* Ignore */
+                            Console.WriteLine(e);
+                        }
+                    }
                     if (entry.TryGetArrayProperty(property, out var arr) && arr.Length > 0) {
                         props.Add(property, arr.Select(BestGuessConvert).ToArray());
                     }

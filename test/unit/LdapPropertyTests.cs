@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -967,11 +967,11 @@ namespace CommonLibTest
 
         [Fact]
         public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_GUID() {
-            var guid = Guid.NewGuid().ToString();
+            var guid = Guid.NewGuid();
             Console.WriteLine(guid);
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                    {{"guid", guid}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
+                    {{"guid", guid.ToByteArray()}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
@@ -982,7 +982,7 @@ namespace CommonLibTest
             var hasGuid = props.TryGetValue("guid", out var guid2);
             Assert.True(hasGuid);
             Console.WriteLine(guid);
-            Assert.Equal(guid, guid2);
+            Assert.Equal(guid.ToString(), guid2);
         }
     }
 }
