@@ -151,10 +151,11 @@ namespace SharpHoundCommonLib {
         {
             var index = 0;
             var currentRange = $"{queryParameters.Attributes[0]}";
+            var complete = false;
 
-            while (!cancellationToken.IsCancellationRequested)
+            while (!complete || !cancellationToken.IsCancellationRequested)
             {
-                var response = await ExecuteSearchRequest(searchRequest, connectionWrapper, queryParameters);
+                var response = await ExecuteSearchRequest(searchRequest, connectionWrapper, queryParameters, cancellationToken);
 
                 if (!response.IsSuccess)
                 {
@@ -164,7 +165,7 @@ namespace SharpHoundCommonLib {
 
                 var entry = response.Value.Entries[0];
                 var attributeName = entry.Attributes.AttributeNames.Cast<string>().First();
-                var complete = attributeName.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
+                complete = attributeName.IndexOf("*", 0, StringComparison.OrdinalIgnoreCase) > 0;
                 var step = entry.Attributes[attributeName].Count;
 
                 foreach (string dn in entry.Attributes[currentRange].GetValues(typeof(string)))
@@ -173,26 +174,24 @@ namespace SharpHoundCommonLib {
                     index++;
                 }
 
-                if (complete)
-                {
-                    yield break;
-                }
-
                 var newRange = $"{attributeName};range={index}-{index + step}";
                 searchRequest.Attributes.Clear();
                 searchRequest.Attributes.Add(newRange);
             }
+
+            yield break;
         }
 
         private async Task<Result<SearchResponse>> ExecuteSearchRequest(
             SearchRequest searchRequest,
             LdapConnectionWrapper connectionWrapper,
-            LdapQueryParameters queryParameters)
+            LdapQueryParameters queryParameters,
+            CancellationToken cancellationToken)
         {
             var queryRetryCount = 0;
             var busyRetryCount = 0;
 
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -223,6 +222,8 @@ namespace SharpHoundCommonLib {
                     return Result<SearchResponse>.Fail($"Caught unrecoverable exception: {e.Message}");
                 }
             }
+
+            return Result<SearchResponse>.Fail($"Cancellation requested.");
         }
 
         private async Task<Result<LdapConnectionWrapper>> RecoverFromServerDown(string domain)
