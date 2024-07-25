@@ -17,24 +17,21 @@ namespace SharpHoundCommonLib.Processors {
 
         public IAsyncEnumerable<SPNPrivilege> ReadSPNTargets(ResolvedSearchResult result,
             IDirectoryObject entry) {
-            if (entry.TryGetArrayProperty(LDAPProperties.ServicePrincipalNames, out var members) &&
-                entry.TryGetDistinguishedName(out var dn)) {
-                return ReadSPNTargets(members, dn, result.DisplayName);
+            if (entry.TryGetArrayProperty(LDAPProperties.ServicePrincipalNames, out var members)) {
+                return ReadSPNTargets(members, result.Domain, result.DisplayName);
             }
 
             return AsyncEnumerable.Empty<SPNPrivilege>();
         }
 
         public async IAsyncEnumerable<SPNPrivilege> ReadSPNTargets(string[] servicePrincipalNames,
-            string distinguishedName, string objectName = "") {
+            string domainName, string objectName = "") {
             if (servicePrincipalNames.Length == 0) {
                 _log.LogTrace("SPN Array is empty for {Name}", objectName);
                 yield break;
             }
             
             _log.LogDebug("Processing SPN targets for {ObjectName}", objectName);
-
-            var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
 
             foreach (var spn in servicePrincipalNames) {
                 //This SPN format isn't useful for us right now (username@domain)
@@ -53,7 +50,7 @@ namespace SharpHoundCommonLib.Processors {
                         if (!int.TryParse(spn.Split(':')[1], out port))
                             port = 1433;
 
-                    if (await _utils.ResolveHostToSid(spn, domain) is (true, var host) && host.StartsWith("S-1")) {
+                    if (await _utils.ResolveHostToSid(spn, domainName) is (true, var host) && host.StartsWith("S-1")) {
                         _log.LogTrace("Resolved {SPN} to {Hostname}", spn, host);
                         yield return new SPNPrivilege {
                             ComputerSID = host,

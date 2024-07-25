@@ -79,5 +79,6 @@
         public const string DnsRoot = "dnsroot";
         public const string ServerName = "servername";
         public const string OU = "ou";
+        public const string ProfilePath = "profilepath";
     }
 }

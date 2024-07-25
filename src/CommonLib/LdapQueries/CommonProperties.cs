@@ -88,5 +88,9 @@
             LDAPProperties.CertificateApplicationPolicy, LDAPProperties.CertificatePolicy, LDAPProperties.IssuancePolicies, LDAPProperties.CrossCertificatePair,
             LDAPProperties.ApplicationPolicies, LDAPProperties.PKIPrivateKeyFlag, LDAPProperties.OIDGroupLink
         };
+
+        public static readonly string[] StealthProperties = {
+            LDAPProperties.HomeDirectory, LDAPProperties.ScriptPath, LDAPProperties.ProfilePath
+        };
     }
 }
