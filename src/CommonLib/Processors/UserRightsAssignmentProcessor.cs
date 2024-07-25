@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
-using SharpHoundRPC;
 using SharpHoundRPC.Shared;
 using SharpHoundRPC.Wrappers;
 
@@ -15,9 +14,9 @@ namespace SharpHoundCommonLib.Processors
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
 
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtils _utils;
 
-        public UserRightsAssignmentProcessor(ILDAPUtils utils, ILogger log = null)
+        public UserRightsAssignmentProcessor(ILdapUtils  utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("UserRightsAssignmentProcessor");
@@ -25,12 +24,12 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
-        public virtual Result<ILSAPolicy> OpenLSAPolicy(string computerName)
+        public virtual SharpHoundRPC.Result<ILSAPolicy> OpenLSAPolicy(string computerName)
         {
             var result = LSAPolicy.OpenPolicy(computerName);
-            if (result.IsFailed) return Result<ILSAPolicy>.Fail(result.SError);
+            if (result.IsFailed) return SharpHoundRPC.Result<ILSAPolicy>.Fail(result.SError);
 
-            return Result<ILSAPolicy>.Ok(result.Value);
+            return SharpHoundRPC.Result<ILSAPolicy>.Ok(result.Value);
         }
 
         public IAsyncEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(ResolvedSearchResult result,
@@ -53,15 +52,15 @@ namespace SharpHoundCommonLib.Processors
             string computerObjectId, string computerDomain, bool isDomainController, string[] desiredPrivileges = null)
         {
             var policyOpenResult = OpenLSAPolicy(computerName);
-            if (policyOpenResult.IsFailed)
+            if (!policyOpenResult.IsSuccess)
             {
                 _log.LogDebug("LSAOpenPolicy failed on {ComputerName} with status {Status}", computerName,
-                    policyOpenResult.SError);
+                    policyOpenResult.Error);
                 await SendComputerStatus(new CSVComputerStatus
                 {
                     Task = "LSAOpenPolicy",
                     ComputerName = computerName,
-                    Status = policyOpenResult.SError
+                    Status = policyOpenResult.Error
                 });
                 yield break;
             }
@@ -109,7 +108,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     _log.LogDebug(
                         "LSAEnumerateAccountsWithUserRight failed on {ComputerName} with status {Status} for privilege {Privilege}",
-                        computerName, policyOpenResult.SError, privilege);
+                        computerName, policyOpenResult.Error, privilege);
                     await SendComputerStatus(new CSVComputerStatus
                     {
                         ComputerName = computerName,
@@ -142,14 +141,14 @@ namespace SharpHoundCommonLib.Processors
 
                     if (isDomainController)
                     {
-                        var result = ResolveDomainControllerPrincipal(sid.Value, computerDomain);
+                        var result = await ResolveDomainControllerPrincipal(sid.Value, computerDomain);
                         if (result != null)
                             resolved.Add(result);
                         continue;
                     }
 
                     //If we get a local well known principal, we need to convert it using the computer's domain sid
-                    if (_utils.ConvertLocalWellKnownPrincipal(sid, computerObjectId, computerDomain, out var principal))
+                    if (await _utils.ConvertLocalWellKnownPrincipal(sid, computerObjectId, computerDomain) is (true, var principal))
                     {
                         _log.LogTrace("Got Well Known Principal {SID} on computer {Computer} for privilege {Privilege} and type {Type}", principal.ObjectIdentifier, computerName, privilege, principal.ObjectType);
                         resolved.Add(principal);
@@ -191,8 +190,8 @@ namespace SharpHoundCommonLib.Processors
                     }
 
                     //If we get here, we most likely have a domain principal in a local group. Do a lookup
-                    var resolvedPrincipal = _utils.ResolveIDAndType(sid.Value, computerDomain);
-                    if (resolvedPrincipal != null) resolved.Add(resolvedPrincipal);
+                    var resolvedPrincipal = await _utils.ResolveIDAndType(sid.Value, computerDomain);
+                    if (resolvedPrincipal.Success) resolved.Add(resolvedPrincipal.Principal);
                 }
 
                 ret.Collected = true;
@@ -202,13 +201,14 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        private TypedPrincipal ResolveDomainControllerPrincipal(string sid, string computerDomain)
+        private async Task<TypedPrincipal> ResolveDomainControllerPrincipal(string sid, string computerDomain)
         {
             //If the server is a domain controller and we have a well known group, use the domain value
-            if (_utils.GetWellKnownPrincipal(sid, computerDomain, out var wellKnown))
+            if (await _utils.GetWellKnownPrincipal(sid, computerDomain) is (true, var wellKnown))
                 return wellKnown;
             //Otherwise, do a domain lookup
-            return _utils.ResolveIDAndType(sid, computerDomain);
+            var domainPrinciple =  await _utils.ResolveIDAndType(sid, computerDomain);
+            return domainPrinciple.Principal;
         }
 
 

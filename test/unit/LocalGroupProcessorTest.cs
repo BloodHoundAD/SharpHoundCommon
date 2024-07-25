@@ -27,7 +27,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task LocalGroupProcessor_TestWorkstation()
         {
-            var mockProcessor = new Mock<LocalGroupProcessor>(new MockLDAPUtils(), null);
+            var mockProcessor = new Mock<LocalGroupProcessor>(new MockLdapUtils(), null);
             var mockSamServer = new MockWorkstationSAMServer();
             mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Returns(mockSamServer);
             var processor = mockProcessor.Object;
@@ -58,7 +58,7 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public async Task LocalGroupProcessor_TestDomainController()
         {
-            var mockProcessor = new Mock<LocalGroupProcessor>(new MockLDAPUtils(), null);
+            var mockProcessor = new Mock<LocalGroupProcessor>(new MockLdapUtils(), null);
             var mockSamServer = new MockDCSAMServer();
             mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Returns(mockSamServer);
             var processor = mockProcessor.Object;
@@ -76,14 +76,16 @@ namespace CommonLibTest
         [Fact]
         public async Task LocalGroupProcessor_ResolveGroupName_NonDC()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var proc = new LocalGroupProcessor(mockUtils.Object);
 
-            var result = TestPrivateMethod.InstanceMethod<NamedPrincipal>(proc, "ResolveGroupName",
+            var resultTask = TestPrivateMethod.InstanceMethod<Task<NamedPrincipal>>(proc, "ResolveGroupName",
                 new object[]
                 {
                     "ADMINISTRATORS", "WIN10.TESTLAB.LOCAL", "S-1-5-32-123-123-500", "TESTLAB.LOCAL", 544, false, false
                 });
+
+            var result = await resultTask;
 
             Assert.Equal("ADMINISTRATORS@WIN10.TESTLAB.LOCAL", result.PrincipalName);
             ;
@@ -93,14 +95,16 @@ namespace CommonLibTest
         [Fact]
         public async Task LocalGroupProcessor_ResolveGroupName_DC()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var proc = new LocalGroupProcessor(mockUtils.Object);
 
-            var result = TestPrivateMethod.InstanceMethod<NamedPrincipal>(proc, "ResolveGroupName",
+            var resultTask = TestPrivateMethod.InstanceMethod<Task<NamedPrincipal>>(proc, "ResolveGroupName",
                 new object[]
                 {
                     "ADMINISTRATORS", "PRIMARY.TESTLAB.LOCAL", "S-1-5-32-123-123-1000", "TESTLAB.LOCAL", 544, true, true
                 });
+
+            var result = await resultTask;
 
             Assert.Equal("IGNOREME", result.PrincipalName);
             ;

@@ -2,12 +2,13 @@
 
 namespace SharpHoundCommonLib
 {
-    public class LDAPConfig
+    public class LdapConfig
     {
         public string Username { get; set; } = null;
         public string Password { get; set; } = null;
         public string Server { get; set; } = null;
         public int Port { get; set; } = 0;
+        public int SSLPort { get; set; } = 0;
         public bool ForceSSL { get; set; } = false;
         public bool DisableSigning { get; set; } = false;
         public bool DisableCertVerification { get; set; } = false;
@@ -16,7 +17,10 @@ namespace SharpHoundCommonLib
         //Returns the port for connecting to LDAP. Will always respect a user's overridden config over anything else
         public int GetPort(bool ssl)
         {
-            if (Port != 0)
+            if (ssl && SSLPort != 0) {
+                return SSLPort;
+            }
+            if (!ssl && Port != 0)
             {
                 return Port;
             }

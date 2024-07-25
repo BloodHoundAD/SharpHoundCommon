@@ -11,9 +11,9 @@ namespace SharpHoundCommonLib.Processors
     public class DomainTrustProcessor
     {
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtils _utils;
 
-        public DomainTrustProcessor(ILDAPUtils utils, ILogger log = null)
+        public DomainTrustProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("DomainTrustProc");
@@ -24,17 +24,23 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public IEnumerable<DomainTrust> EnumerateDomainTrusts(string domain)
+        public async IAsyncEnumerable<DomainTrust> EnumerateDomainTrusts(string domain)
         {
-            var query = CommonFilters.TrustedDomains;
-            foreach (var result in _utils.QueryLDAP(query, SearchScope.Subtree, CommonProperties.DomainTrustProps,
-                         domain))
+            _log.LogDebug("Running trust enumeration for {Domain}", domain);
+            await foreach (var result in _utils.Query(new LdapQueryParameters {
+                                   LDAPFilter = CommonFilters.TrustedDomains,
+                                   Attributes = CommonProperties.DomainTrustProps,
+                                   DomainName = domain
+                               }))
             {
+                if (!result.IsSuccess) {
+                    yield break;
+                }
+
+                var entry = result.Value;
                 var trust = new DomainTrust();
-                var targetSidBytes = result.GetByteProperty(LDAPProperties.SecurityIdentifier);
-                if (targetSidBytes == null || targetSidBytes.Length == 0)
-                {
-                    _log.LogTrace("Trust sid is null or empty for target: {Domain}", domain);
+                if (!entry.TryGetByteProperty(LDAPProperties.SecurityIdentifier, out var targetSidBytes) || targetSidBytes.Length == 0) {
+                    _log.LogDebug("Trust sid is null or empty for target: {Domain}", domain);
                     continue;
                 }
 
@@ -51,33 +57,26 @@ namespace SharpHoundCommonLib.Processors
 
                 trust.TargetDomainSid = sid;
 
-                if (int.TryParse(result.GetProperty(LDAPProperties.TrustDirection), out var td))
-                {
-                    trust.TrustDirection = (TrustDirection) td;
-                }
-                else
-                {
+                if (!entry.TryGetIntProperty(LDAPProperties.TrustDirection, out var td)) {
                     _log.LogTrace("Failed to convert trustdirection for target: {Domain}", domain);
                     continue;
                 }
 
-
+                trust.TrustDirection = (TrustDirection) td;
+                
                 TrustAttributes attributes;
 
-                if (int.TryParse(result.GetProperty(LDAPProperties.TrustAttributes), out var ta))
-                {
-                    attributes = (TrustAttributes) ta;
-                }
-                else
-                {
+                if (!entry.TryGetIntProperty(LDAPProperties.TrustAttributes, out var ta)) {
                     _log.LogTrace("Failed to convert trustattributes for target: {Domain}", domain);
                     continue;
                 }
+                
+                attributes = (TrustAttributes) ta;
 
                 trust.IsTransitive = !attributes.HasFlag(TrustAttributes.NonTransitive);
-                var name = result.GetProperty(LDAPProperties.CanonicalName)?.ToUpper();
-                if (name != null)
-                    trust.TargetDomainName = name;
+                if (entry.TryGetProperty(LDAPProperties.CanonicalName, out var cn)) {
+                    trust.TargetDomainName = cn.ToUpper();
+                }
 
                 trust.SidFilteringEnabled = attributes.HasFlag(TrustAttributes.FilterSids);
                 trust.TrustType = TrustAttributesToType(attributes);

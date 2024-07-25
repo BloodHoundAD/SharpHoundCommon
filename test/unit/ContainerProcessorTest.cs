@@ -1,8 +1,11 @@
 ﻿using System;
 using System.DirectoryServices.Protocols;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using Moq;
+using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
@@ -28,29 +31,29 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void ContainerProcessor_ReadContainerGPLinks_IgnoresNull()
+        public async Task ContainerProcessor_ReadContainerGPLinks_IgnoresNull()
         {
-            var processor = new ContainerProcessor(new MockLDAPUtils());
-            var test = processor.ReadContainerGPLinks(null);
+            var processor = new ContainerProcessor(new MockLdapUtils());
+            var test = await processor.ReadContainerGPLinks(null).ToArrayAsync();
             Assert.Empty(test);
         }
 
         [Fact]
-        public void ContainerProcessor_ReadContainerGPLinks_UnresolvedGPLink_IsIgnored()
+        public async Task ContainerProcessor_ReadContainerGPLinks_UnresolvedGPLink_IsIgnored()
         {
-            var processor = new ContainerProcessor(new MockLDAPUtils());
+            var processor = new ContainerProcessor(new MockLdapUtils());
             //GPLink that doesn't exist
             const string s =
                 "[LDAP://cn={94DD0260-38B5-497E-8876-ABCDEFG},cn=policies,cn=system,DC=testlab,DC=local;0]";
-            var test = processor.ReadContainerGPLinks(s);
+            var test = await processor.ReadContainerGPLinks(s).ToArrayAsync();
             Assert.Empty(test);
         }
 
         [Fact]
-        public void ContainerProcessor_ReadContainerGPLinks_ReturnsCorrectValues()
+        public async Task ContainerProcessor_ReadContainerGPLinks_ReturnsCorrectValues()
         {
-            var processor = new ContainerProcessor(new MockLDAPUtils());
-            var test = processor.ReadContainerGPLinks(_testGpLinkString).ToArray();
+            var processor = new ContainerProcessor(new MockLdapUtils());
+            var test = await processor.ReadContainerGPLinks(_testGpLinkString).ToArrayAsync();
 
             var expected = new GPLink[]
             {
@@ -76,34 +79,32 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void ContainerProcessor_GetContainerChildObjects_ReturnsCorrectData()
+        public async Task ContainerProcessor_GetContainerChildObjects_ReturnsCorrectData()
         {
-            var mock = new Mock<MockLDAPUtils>();
+            var mock = new Mock<MockLdapUtils>();
 
-            var searchResults = new MockSearchResultEntry[]
+            var searchResults = new[]
             {
                 //These first 4 should be filtered by our DN filters
-                new(
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject(
                     "CN=7868d4c8-ac41-4e05-b401-776280e8e9f1,CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local"
-                    , null, null, Label.Base),
-                new("CN=Microsoft,CN=Program Data,DC=testlab,DC=local", null, null, Label.Base),
-                new("CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local", null, null, Label.Base),
-                new("CN=User,CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=Policies,CN=System,DC=testlab,DC=local", null,
-                    null, Label.Base),
+                    , null, null,null)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Microsoft,CN=Program Data,DC=testlab,DC=local", null, null,null)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local", null, null,null)),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=User,CN={C52F168C-CD05-4487-B405-564934DA8EFF},CN=Policies,CN=System,DC=testlab,DC=local", null,
+                    null,null)),
                 //This is a real object in our mock
-                new("CN=Users,DC=testlab,DC=local", null, "ECAD920E-8EB1-4E31-A80E-DD36367F81F4", Label.Container),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, "","ECAD920E-8EB1-4E31-A80E-DD36367F81F4")),
                 //This object does not exist in our mock
-                new("CN=Users,DC=testlab,DC=local", null, "ECAD920E-8EB1-4E31-A80E-DD36367F81FD", Label.Container),
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, "","ECAD920E-8EB1-4E31-A80E-DD36367F81FD")),
                 //Test null objectid
-                new("CN=Users,DC=testlab,DC=local", null, null, Label.Container)
+                LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject("CN=Users,DC=testlab,DC=local", null, null, ""))
             };
 
-            mock.Setup(x => x.QueryLDAP(It.IsAny<string>(), It.IsAny<SearchScope>(), It.IsAny<string[]>(),
-                It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(),
-                It.IsAny<bool>(), It.IsAny<bool>())).Returns(searchResults);
+            mock.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>())).Returns(searchResults.ToAsyncEnumerable);
 
             var processor = new ContainerProcessor(mock.Object);
-            var test = processor.GetContainerChildObjects(_testGpLinkString).ToArray();
+            var test = await processor.GetContainerChildObjects(_testGpLinkString).ToArrayAsync();
 
             var expected = new TypedPrincipal[]
             {
@@ -114,8 +115,9 @@ namespace CommonLibTest
                 }
             };
 
-            Assert.Single(test);
             Assert.Equal(expected, test);
+            Assert.Single(test);
+            
         }
 
         [Fact]
@@ -131,32 +133,35 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void ContainerProcessor_GetContainingObject_ExpectedResult()
+        public async Task ContainerProcessor_GetContainingObject_ExpectedResult()
         {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var proc = new ContainerProcessor(utils);
 
-            var result = proc.GetContainingObject("OU=TESTOU,DC=TESTLAB,DC=LOCAL");
+            var (success, result) = await proc.GetContainingObject("OU=TESTOU,DC=TESTLAB,DC=LOCAL");
             Assert.Equal(Label.Domain, result.ObjectType);
             Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.ObjectIdentifier);
+            Assert.True(success);
 
-            result = proc.GetContainingObject("CN=PRIMARY,OU=DOMAIN CONTROLLERS,DC=TESTLAB,DC=LOCAL");
+            (success, result) = await proc.GetContainingObject("CN=PRIMARY,OU=DOMAIN CONTROLLERS,DC=TESTLAB,DC=LOCAL");
             Assert.Equal(Label.OU, result.ObjectType);
             Assert.Equal("0DE400CD-2FF3-46E0-8A26-2C917B403C65", result.ObjectIdentifier);
+            Assert.True(success);
 
-            result = proc.GetContainingObject("CN=ADMINISTRATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL");
+            (success, result) = await proc.GetContainingObject("CN=ADMINISTRATORS,CN=BUILTIN,DC=TESTLAB,DC=LOCAL");
             Assert.Equal(Label.Domain, result.ObjectType);
             Assert.Equal("S-1-5-21-3130019616-2776909439-2417379446", result.ObjectIdentifier);
+            Assert.True(success);
         }
 
         [Fact]
-        public void ContainerProcessor_GetContainingObject_BadDN_ReturnsNull()
+        public async Task ContainerProcessor_GetContainingObject_BadDN_ReturnsNull()
         {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var proc = new ContainerProcessor(utils);
 
-            var result = proc.GetContainingObject("abc123");
-            Assert.Equal(null, result);
+            var (success, result) = await proc.GetContainingObject("abc123");
+            Assert.False(success);
         }
     }
 }

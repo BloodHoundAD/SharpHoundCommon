@@ -7,5 +7,6 @@ namespace SharpHoundCommonLib.OutputTypes
         public ResultingGPOChanges GPOChanges = new();
         public GPLink[] Links { get; set; } = Array.Empty<GPLink>();
         public TypedPrincipal[] ChildObjects { get; set; } = Array.Empty<TypedPrincipal>();
+        public string[] InheritanceHashes { get; set; } = Array.Empty<string>();
     }
 }

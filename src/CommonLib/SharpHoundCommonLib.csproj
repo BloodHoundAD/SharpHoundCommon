@@ -3,13 +3,13 @@
         <TargetFramework>net462</TargetFramework>
         <OutputType>library</OutputType>
         <PackageId>SharpHoundCommon</PackageId>
-        <LangVersion>11</LangVersion>
+        <LangVersion>default</LangVersion>
         <Authors>Rohan Vazarkar</Authors>
         <Company>SpecterOps</Company>
         <PackageDescription>Common library for C# BloodHound enumeration tasks</PackageDescription>
         <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/BloodHoundAD/SharpHoundCommon</RepositoryUrl>
-        <Version>3.2.0-rc1</Version>
+        <Version>4.0.0-rc1</Version>
         <AssemblyName>SharpHoundCommonLib</AssemblyName>
         <RootNamespace>SharpHoundCommonLib</RootNamespace>
     </PropertyGroup>
@@ -19,11 +19,12 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AntiXSS" Version="4.3.0" />
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="System.DirectoryServices" />
+        <Reference Include="System.DirectoryServices.AccountManagement" />
         <Reference Include="System.DirectoryServices.Protocols" />
     </ItemGroup>
     <ItemGroup>

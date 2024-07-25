@@ -85,11 +85,6 @@ namespace SharpHoundCommonLib
             return false;
         }
 
-        internal static void AddConvertedValue(string key, string value)
-        {
-            CacheInstance?.ValueToIdCache.TryAdd(key, value);
-        }
-
         internal static void AddPrefixedValue(string key, string domain, string value)
         {
             CacheInstance?.ValueToIdCache.TryAdd(GetPrefixKey(key, domain), value);
@@ -107,14 +102,7 @@ namespace SharpHoundCommonLib
 
         internal static bool GetGCCache(string key, out string[] value)
         {
-            if (CacheInstance != null) return CacheInstance.GlobalCatalogCache.TryGetValue(key, out value);
-            value = null;
-            return false;
-        }
-
-        internal static bool GetConvertedValue(string key, out string value)
-        {
-            if (CacheInstance != null) return CacheInstance.ValueToIdCache.TryGetValue(key, out value);
+            if (CacheInstance != null) return CacheInstance.GlobalCatalogCache.TryGetValue(key.ToUpper(), out value);
             value = null;
             return false;
         }

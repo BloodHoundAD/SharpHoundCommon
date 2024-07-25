@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
 namespace CommonLibTest
 {
+    [ExcludeFromCodeCoverage]
     public class TestLogger : ILogger
     {
         private readonly LogLevel _level;
