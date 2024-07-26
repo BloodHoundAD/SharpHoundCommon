@@ -43,6 +43,9 @@ namespace SharpHoundCommonLib {
 
         public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetLdapConnection(
             string identifier, bool globalCatalog) {
+            if (identifier == null) {
+                return (false, default, "Provided a null identifier for the connection");
+            }
             var resolved = ResolveIdentifier(identifier);
 
             if (!_pools.TryGetValue(resolved, out var pool)) {
@@ -72,8 +75,7 @@ namespace SharpHoundCommonLib {
             if (_resolvedIdentifiers.TryGetValue(identifier, out var resolved)) {
                 return resolved;
             }
-
-
+            
             if (GetDomainSidFromDomainName(identifier, out var sid)) {
                 _log.LogDebug("Resolved identifier {Identifier} to {Resolved}", identifier, sid);
                 _resolvedIdentifiers.TryAdd(identifier, sid);
