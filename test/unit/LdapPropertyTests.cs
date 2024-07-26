@@ -855,7 +855,7 @@ namespace CommonLibTest
                     {"name", "NTAUTHCERTIFICATES@DUMPSTER.FIRE"},
                     {"domainsid", "S-1-5-21-2697957641-2271029196-387917394"},
                     {"whencreated", 1683986131},
-                    {"dsasignature", "jkr"}
+                    {LDAPProperties.DSASignature, "jkr"}
                 }, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
@@ -866,7 +866,7 @@ namespace CommonLibTest
             Assert.DoesNotContain("description", keys);
             Assert.DoesNotContain("whencreated", keys);
             Assert.DoesNotContain("name", keys);
-            Assert.DoesNotContain("dsasignature", keys);
+            Assert.DoesNotContain(LDAPProperties.DSASignature, keys);
 
             Assert.Contains("domainsid", keys);
             Assert.Contains("domain", keys);

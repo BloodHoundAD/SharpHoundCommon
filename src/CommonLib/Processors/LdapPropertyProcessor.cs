@@ -15,12 +15,13 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors {
     public class LdapPropertyProcessor {
-        private static readonly string[] ReservedAttributes = CommonProperties.TypeResolutionProps
+        private static readonly HashSet<string> ReservedAttributes = new HashSet<string>(CommonProperties.TypeResolutionProps
             .Concat(CommonProperties.BaseQueryProps).Concat(CommonProperties.GroupResolutionProps)
             .Concat(CommonProperties.ComputerMethodProps).Concat(CommonProperties.ACLProps)
             .Concat(CommonProperties.ObjectPropsProps).Concat(CommonProperties.ContainerProps)
             .Concat(CommonProperties.SPNTargetProps).Concat(CommonProperties.DomainTrustProps)
-            .Concat(CommonProperties.GPOLocalGroupProps).Concat(CommonProperties.CertAbuseProps).ToArray();
+            .Concat(CommonProperties.GPOLocalGroupProps).Concat(CommonProperties.CertAbuseProps)
+            .Concat(new string[] { LDAPProperties.DSASignature }));
 
         private readonly ILdapUtils _utils;
 
@@ -521,15 +522,8 @@ namespace SharpHoundCommonLib.Processors {
         public Dictionary<string, object> ParseAllProperties(IDirectoryObject entry) {
             var props = new Dictionary<string, object>();
 
-            var type = typeof(LDAPProperties);
-            var reserved = new HashSet<string>(type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(x => x.GetValue(null).ToString()));
-            _ = reserved.Add("dsasignature");
-            foreach (var reservedAttr in ReservedAttributes) {
-                reserved.Add(reservedAttr.ToLower());
-            }
-
             foreach (var property in entry.PropertyNames()) {
-                if (reserved.Contains(property.ToLower()))
+                if (ReservedAttributes.Contains(property, StringComparer.OrdinalIgnoreCase))
                     continue;
 
                 var collCount = entry.PropertyCount(property);
