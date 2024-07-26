@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
+using SharpHoundRPC;
 using Xunit;
 using Xunit.Abstractions;
 using static System.Text.Encoding;
@@ -953,9 +955,10 @@ namespace CommonLibTest
         [WindowsOnlyFact]
         public void LDAPPropertyProcessor_ParseAllProperties_CollectionCountOne_SID() {
             var creatorSIDExpected = "S-1-5-21-2697957641-2271029196-387917394";
+            var sidBytes = new SecurityIdentifier(creatorSIDExpected).GetBytes();
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                    {{"ms-ds-creatorsid", UTF8.GetBytes(creatorSIDExpected)}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
+                    {{"ms-ds-creatorsid", sidBytes}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
