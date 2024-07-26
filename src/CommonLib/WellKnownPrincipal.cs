@@ -44,7 +44,7 @@ namespace SharpHoundCommonLib
                 "S-1-5-13" => new TypedPrincipal("Terminal Server Users", Label.Group),
                 "S-1-5-14" => new TypedPrincipal("Remote Interactive Logon", Label.Group),
                 "S-1-5-15" => new TypedPrincipal("This Organization", Label.Group),
-                "S-1-5-17" => new TypedPrincipal("IUSR", Label.Group),
+                "S-1-5-17" => new TypedPrincipal("IUSR", Label.User),
                 "S-1-5-18" => new TypedPrincipal("Local System", Label.User),
                 "S-1-5-19" => new TypedPrincipal("Local Service", Label.User),
                 "S-1-5-20" => new TypedPrincipal("Network Service", Label.User),
