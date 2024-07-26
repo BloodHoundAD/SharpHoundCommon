@@ -15,13 +15,22 @@ using SharpHoundCommonLib.OutputTypes;
 
 namespace SharpHoundCommonLib.Processors {
     public class LdapPropertyProcessor {
-        private static readonly HashSet<string> ReservedAttributes = new HashSet<string>(CommonProperties.TypeResolutionProps
-            .Concat(CommonProperties.BaseQueryProps).Concat(CommonProperties.GroupResolutionProps)
-            .Concat(CommonProperties.ComputerMethodProps).Concat(CommonProperties.ACLProps)
-            .Concat(CommonProperties.ObjectPropsProps).Concat(CommonProperties.ContainerProps)
-            .Concat(CommonProperties.SPNTargetProps).Concat(CommonProperties.DomainTrustProps)
-            .Concat(CommonProperties.GPOLocalGroupProps).Concat(CommonProperties.CertAbuseProps)
-            .Concat(new string[] { LDAPProperties.DSASignature }));
+        private static readonly HashSet<string> ReservedAttributes = new();
+
+        static LdapPropertyProcessor() {
+            ReservedAttributes.IntersectWith(CommonProperties.TypeResolutionProps);
+            ReservedAttributes.IntersectWith(CommonProperties.BaseQueryProps);
+            ReservedAttributes.IntersectWith(CommonProperties.GroupResolutionProps);
+            ReservedAttributes.IntersectWith(CommonProperties.ComputerMethodProps);
+            ReservedAttributes.IntersectWith(CommonProperties.ACLProps);
+            ReservedAttributes.IntersectWith(CommonProperties.ObjectPropsProps);
+            ReservedAttributes.IntersectWith(CommonProperties.ContainerProps);
+            ReservedAttributes.IntersectWith(CommonProperties.SPNTargetProps);
+            ReservedAttributes.IntersectWith(CommonProperties.DomainTrustProps);
+            ReservedAttributes.IntersectWith(CommonProperties.GPOLocalGroupProps);
+            ReservedAttributes.IntersectWith(CommonProperties.CertAbuseProps);
+            ReservedAttributes.Add(LDAPProperties.DSASignature);
+        }
 
         private readonly ILdapUtils _utils;
 
