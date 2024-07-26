@@ -17,11 +17,11 @@
 <tr><th>Class:</th><td>SharpHoundRPC.Extensions</td></tr>
 <tr><th>Assembly:</th><td>SharpHoundRPC</td></tr>
 <tr><th>File(s):</th><td><a href="#DaSharpHoundCommonSharpHoundCommonsrcSharpHoundRPCExtensionscs" class="navigatetohash">D:\a\SharpHoundCommon\SharpHoundCommon\src\SharpHoundRPC\Extensions.cs</a></td></tr>
-<tr><th>Covered lines:</th><td>0</td></tr>
-<tr><th>Uncovered lines:</th><td>16</td></tr>
+<tr><th>Covered lines:</th><td>5</td></tr>
+<tr><th>Uncovered lines:</th><td>11</td></tr>
 <tr><th>Coverable lines:</th><td>16</td></tr>
 <tr><th>Total lines:</th><td>36</td></tr>
-<tr><th>Line coverage:</th><td>0% (0 of 16)</td></tr>
+<tr><th>Line coverage:</th><td>31.2% (5 of 16)</td></tr>
 <tr><th>Covered branches:</th><td>0</td></tr>
 <tr><th>Total branches:</th><td>8</td></tr>
 <tr><th>Branch coverage:</th><td>0% (0 of 8)</td></tr>
@@ -33,7 +33,7 @@
 <tbody>
 <tr><td title="System.Boolean SharpHoundRPC.Extensions::IsError(SharpHoundRPC.NtStatus)"><a href="#file0_line9" class="navigatetohash">IsError(...)</a></td><td>0%</td><td>8</td><td>0</td><td>0%</td></tr>
 <tr><td title="System.Int32 SharpHoundRPC.Extensions::Rid(System.Security.Principal.SecurityIdentifier)"><a href="#file0_line23" class="navigatetohash">Rid(...)</a></td><td>100%</td><td>1</td><td>0</td><td>0%</td></tr>
-<tr><td title="System.Byte[] SharpHoundRPC.Extensions::GetBytes(System.Security.Principal.SecurityIdentifier)"><a href="#file0_line30" class="navigatetohash">GetBytes(...)</a></td><td>100%</td><td>1</td><td>0</td><td>0%</td></tr>
+<tr><td title="System.Byte[] SharpHoundRPC.Extensions::GetBytes(System.Security.Principal.SecurityIdentifier)"><a href="#file0_line30" class="navigatetohash">GetBytes(...)</a></td><td>100%</td><td>1</td><td>0</td><td>100%</td></tr>
 </tbody>
 </table>
 <h1>File(s)</h1>
@@ -70,22 +70,22 @@
 <tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line27"></a><code>27</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line28"></a><code>28</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line29"></a><code>29</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;byte[]&nbsp;GetBytes(this&nbsp;SecurityIdentifier&nbsp;identifier)</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line30"></a><code>30</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line31"></a><code>31</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;bytes&nbsp;=&nbsp;new&nbsp;byte[identifier.BinaryLength];</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line32"></a><code>32</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier.GetBinaryForm(bytes,&nbsp;0);</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line33"></a><code>33</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;bytes;</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line34"></a><code>34</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line30"></a><code>30</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line31"></a><code>31</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;bytes&nbsp;=&nbsp;new&nbsp;byte[identifier.BinaryLength];</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line32"></a><code>32</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier.GetBinaryForm(bytes,&nbsp;0);</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line33"></a><code>33</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;bytes;</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line34"></a><code>34</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line35"></a><code>35</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line36"></a><code>36</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />7/26/2024 - 4:58:54 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />7/26/2024 - 8:45:55 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
 <a href="#file0_line9" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - IsError(SharpHoundRPC.NtStatus)"><i class="icon-cube"></i>IsError(SharpHoundRPC.NtStatus)</a><br />
 <a href="#file0_line23" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - Rid(System.Security.Principal.SecurityIdentifier)"><i class="icon-cube"></i>Rid(System.Security.Principal.SecurityIdentifier)</a><br />
-<a href="#file0_line30" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - GetBytes(System.Security.Principal.SecurityIdentifier)"><i class="icon-cube"></i>GetBytes(System.Security.Principal.SecurityIdentifier)</a><br />
+<a href="#file0_line30" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - GetBytes(System.Security.Principal.SecurityIdentifier)"><i class="icon-cube"></i>GetBytes(System.Security.Principal.SecurityIdentifier)</a><br />
 <br/></div>
 </div></div>
 <script type="text/javascript">

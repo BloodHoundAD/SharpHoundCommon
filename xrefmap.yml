@@ -4263,6 +4263,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.DomainFunctionalLevel
   fullName: SharpHoundCommonLib.LDAPProperties.DomainFunctionalLevel
   nameWithType: LDAPProperties.DomainFunctionalLevel
+- uid: SharpHoundCommonLib.LDAPProperties.DSASignature
+  name: DSASignature
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_DSASignature
+  commentId: F:SharpHoundCommonLib.LDAPProperties.DSASignature
+  fullName: SharpHoundCommonLib.LDAPProperties.DSASignature
+  nameWithType: LDAPProperties.DSASignature
 - uid: SharpHoundCommonLib.LDAPProperties.Email
   name: Email
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Email
