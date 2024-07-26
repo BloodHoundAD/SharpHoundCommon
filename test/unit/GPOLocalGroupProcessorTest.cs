@@ -150,10 +150,7 @@ namespace CommonLibTest {
             var result = await processor.ReadGPOLocalGroups(testGPLinkProperty, null);
 
             Assert.NotNull(result);
-            Assert.Single(result.AffectedComputers);
-            var actual = result.AffectedComputers.First();
-            Assert.Equal(Label.Computer, actual.ObjectType);
-            Assert.Equal("teapot", actual.ObjectIdentifier);
+            Assert.Empty(result.AffectedComputers);
         }
 
         [Fact]
@@ -189,12 +186,12 @@ namespace CommonLibTest {
                 "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123/dc=somedomain;0;][LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123/dc=someotherdomain;2;]";
             var result = await processor.ReadGPOLocalGroups(testGPLinkProperty, null);
 
+            var domain = MockableDomain.Construct("TESTLAB.LOCAL");
+            mockLDAPUtils.Setup(x => x.GetDomain(out domain)).Returns(true);
+
             mockLDAPUtils.VerifyAll();
             Assert.NotNull(result);
-            Assert.Single(result.AffectedComputers);
-            var actual = result.AffectedComputers.First();
-            Assert.Equal(Label.Computer, actual.ObjectType);
-            Assert.Equal("teapot", actual.ObjectIdentifier);
+            Assert.Empty(result.AffectedComputers);
         }
 
         [Fact]

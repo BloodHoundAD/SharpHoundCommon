@@ -63,7 +63,18 @@ namespace SharpHoundCommonLib.Processors {
             if (gpLink == null)
                 return ret;
 
-            var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
+            string domain;
+            //If our dn is null, use our default domain
+            if (string.IsNullOrEmpty(distinguishedName)) {
+                if (!_utils.GetDomain(out var d)) {
+                    return ret;    
+                }
+
+                domain = d.Name;
+            } else {
+                domain = Helpers.DistinguishedNameToDomain(distinguishedName);    
+            }
+            
             // First lets check if this OU actually has computers that it contains. If not, then we'll ignore it.
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks
             var affectedComputers = new List<TypedPrincipal>();
