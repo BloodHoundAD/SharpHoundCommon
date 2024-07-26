@@ -17,14 +17,14 @@
 <tr><th>Class:</th><td>SharpHoundRPC.NetAPINative.NetAPIMethods</td></tr>
 <tr><th>Assembly:</th><td>SharpHoundRPC</td></tr>
 <tr><th>File(s):</th><td><a href="#DaSharpHoundCommonSharpHoundCommonsrcSharpHoundRPCNetAPINativeNetAPIMethodscs" class="navigatetohash">D:\a\SharpHoundCommon\SharpHoundCommon\src\SharpHoundRPC\NetAPINative\NetAPIMethods.cs</a></td></tr>
-<tr><th>Covered lines:</th><td>0</td></tr>
-<tr><th>Uncovered lines:</th><td>30</td></tr>
+<tr><th>Covered lines:</th><td>4</td></tr>
+<tr><th>Uncovered lines:</th><td>26</td></tr>
 <tr><th>Coverable lines:</th><td>30</td></tr>
 <tr><th>Total lines:</th><td>104</td></tr>
-<tr><th>Line coverage:</th><td>0% (0 of 30)</td></tr>
-<tr><th>Covered branches:</th><td>0</td></tr>
+<tr><th>Line coverage:</th><td>13.3% (4 of 30)</td></tr>
+<tr><th>Covered branches:</th><td>1</td></tr>
 <tr><th>Total branches:</th><td>12</td></tr>
-<tr><th>Branch coverage:</th><td>0% (0 of 12)</td></tr>
+<tr><th>Branch coverage:</th><td>8.3% (1 of 12)</td></tr>
 </tbody>
 </table>
 <h1>Metrics</h1>
@@ -34,7 +34,7 @@
 <tr><td title="SharpHoundRPC.NetAPINative.NetAPIResult`1&lt;System.Collections.Generic.IEnumerable`1&lt;SharpHoundRPC.NetAPINative.NetWkstaUserEnumResults&gt;&gt; SharpHoundRPC.NetAPINative.NetAPIMethods::NetWkstaUserEnum(System.String)"><a href="#file0_line20" class="navigatetohash">NetWkstaUserEnum(...)</a></td><td>0%</td><td>4</td><td>0</td><td>0%</td></tr>
 <tr><td title="SharpHoundRPC.NetAPINative.NetAPIResult`1&lt;System.Collections.Generic.IEnumerable`1&lt;SharpHoundRPC.NetAPINative.NetSessionEnumResults&gt;&gt; SharpHoundRPC.NetAPINative.NetAPIMethods::NetSessionEnum(System.String)"><a href="#file0_line44" class="navigatetohash">NetSessionEnum(...)</a></td><td>0%</td><td>4</td><td>0</td><td>0%</td></tr>
 <tr><td title="SharpHoundRPC.NetAPINative.NetAPIResult`1&lt;SharpHoundRPC.NetAPINative.NetAPIStructs/WorkstationInfo100&gt; SharpHoundRPC.NetAPINative.NetAPIMethods::NetWkstaGetInfo(System.String)"><a href="#file0_line70" class="navigatetohash">NetWkstaGetInfo(...)</a></td><td>0%</td><td>2</td><td>0</td><td>0%</td></tr>
-<tr><td title="SharpHoundRPC.NetAPINative.NetAPIResult`1&lt;SharpHoundRPC.NetAPINative.NetAPIStructs/DomainControllerInfo&gt; SharpHoundRPC.NetAPINative.NetAPIMethods::DsGetDcName(System.String,System.String,System.UInt32)"><a href="#file0_line86" class="navigatetohash">DsGetDcName(...)</a></td><td>0%</td><td>2</td><td>0</td><td>0%</td></tr>
+<tr><td title="SharpHoundRPC.NetAPINative.NetAPIResult`1&lt;SharpHoundRPC.NetAPINative.NetAPIStructs/DomainControllerInfo&gt; SharpHoundRPC.NetAPINative.NetAPIMethods::DsGetDcName(System.String,System.String,System.UInt32)"><a href="#file0_line86" class="navigatetohash">DsGetDcName(...)</a></td><td>50%</td><td>2</td><td>0</td><td>80%</td></tr>
 </tbody>
 </table>
 <h1>File(s)</h1>
@@ -127,12 +127,12 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line83"></a><code>83</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line84"></a><code>84</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;NetAPIResult&lt;NetAPIStructs.DomainControllerInfo&gt;&nbsp;DsGetDcName(string&nbsp;computerName,</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line85"></a><code>85</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;domainName,&nbsp;uint&nbsp;flags)</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line86"></a><code>86</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line87"></a><code>87</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;result&nbsp;=&nbsp;DsGetDcName(computerName,&nbsp;domainName,&nbsp;null,&nbsp;null,&nbsp;flags,&nbsp;out&nbsp;var&nbsp;buffer);</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits, 0 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line88"></a><code>88</code></td><td class="percentagebar percentagebar0"><i class="icon-fork"></i></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(result&nbsp;!=&nbsp;NetAPIEnums.NetAPIStatus.Success)&nbsp;return&nbsp;result;</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line86"></a><code>86</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line87"></a><code>87</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;result&nbsp;=&nbsp;DsGetDcName(computerName,&nbsp;domainName,&nbsp;null,&nbsp;null,&nbsp;flags,&nbsp;out&nbsp;var&nbsp;buffer);</code></td></tr>
+<tr class="coverableline" title="Partially covered (2 visits, 1 of 2 branches are covered)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'orange'}}"><td class="orange">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line88"></a><code>88</code></td><td class="percentagebar percentagebar50"><i class="icon-fork"></i></td><td class="lightorange"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(result&nbsp;!=&nbsp;NetAPIEnums.NetAPIStatus.Success)&nbsp;return&nbsp;result;</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line89"></a><code>89</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line90"></a><code>90</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;buffer.GetData&lt;NetAPIStructs.DomainControllerInfo&gt;();</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line91"></a><code>91</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line91"></a><code>91</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line92"></a><code>92</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line93"></a><code>93</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[DllImport(&quot;Netapi32.dll&quot;,&nbsp;CharSet&nbsp;=&nbsp;CharSet.Auto,&nbsp;SetLastError&nbsp;=&nbsp;true)]</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line94"></a><code>94</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;static&nbsp;extern&nbsp;NetAPIEnums.NetAPIStatus&nbsp;DsGetDcName</code></td></tr>
@@ -148,14 +148,14 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line104"></a><code>104</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />7/8/2024 - 4:16:05 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 4.8.9.0<br />7/26/2024 - 4:58:54 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
 <a href="#file0_line20" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - NetWkstaUserEnum(System.String)"><i class="icon-cube"></i>NetWkstaUserEnum(System.String)</a><br />
 <a href="#file0_line44" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - NetSessionEnum(System.String)"><i class="icon-cube"></i>NetSessionEnum(System.String)</a><br />
 <a href="#file0_line70" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - NetWkstaGetInfo(System.String)"><i class="icon-cube"></i>NetWkstaGetInfo(System.String)</a><br />
-<a href="#file0_line86" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - DsGetDcName(System.String,System.String,System.UInt32)"><i class="icon-cube"></i>DsGetDcName(System.String,System.String,System.UInt32)</a><br />
+<a href="#file0_line86" class="navigatetohash percentagebar percentagebar80" title="Line coverage: 80% - DsGetDcName(System.String,System.String,System.UInt32)"><i class="icon-cube"></i>DsGetDcName(System.String,System.String,System.UInt32)</a><br />
 <br/></div>
 </div></div>
 <script type="text/javascript">

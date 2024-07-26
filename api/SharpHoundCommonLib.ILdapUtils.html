@@ -115,10 +115,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_AddDomainController_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.AddDomainController(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_AddDomainController_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.AddDomainController(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L44">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L151">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_AddDomainController_" data-uid="SharpHoundCommonLib.ILdapUtils.AddDomainController*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_AddDomainController_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.AddDomainController(System.String)">AddDomainController(String)</h4>
@@ -147,14 +147,15 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ConvertLocalWellKnownPrincipal_System_Security_Principal_SecurityIdentifier_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ConvertLocalWellKnownPrincipal_System_Security_Principal_SecurityIdentifier_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L39">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L135">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_ConvertLocalWellKnownPrincipal_" data-uid="SharpHoundCommonLib.ILdapUtils.ConvertLocalWellKnownPrincipal*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_ConvertLocalWellKnownPrincipal_System_Security_Principal_SecurityIdentifier_System_String_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.ConvertLocalWellKnownPrincipal(System.Security.Principal.SecurityIdentifier,System.String,System.String)">ConvertLocalWellKnownPrincipal(SecurityIdentifier, String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to convert a local-to-computer well known principal</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -173,17 +174,20 @@
       <tr>
         <td><span class="xref">System.Security.Principal.SecurityIdentifier</span></td>
         <td><span class="parametername">sid</span></td>
-        <td></td>
+        <td><p>The security identifier to convert</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">computerDomainSid</span></td>
-        <td></td>
+        <td><p>The sid of the computer in the domain</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">computerDomain</span></td>
-        <td></td>
+        <td><p>The domain of the computer</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -198,20 +202,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <a class="xref" href="SharpHoundCommonLib.OutputTypes.TypedPrincipal.html">TypedPrincipal</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved principal if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetDomain_System_DirectoryServices_ActiveDirectory_Domain__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetDomain(System.DirectoryServices.ActiveDirectory.Domain%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetDomain_System_DirectoryServices_ActiveDirectory_Domain__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetDomain(System.DirectoryServices.ActiveDirectory.Domain%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L32">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L90">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_GetDomain_" data-uid="SharpHoundCommonLib.ILdapUtils.GetDomain*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_GetDomain_System_DirectoryServices_ActiveDirectory_Domain__" data-uid="SharpHoundCommonLib.ILdapUtils.GetDomain(System.DirectoryServices.ActiveDirectory.Domain@)">GetDomain(out Domain)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to retrieve the Domain object for the user's current domain</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -230,7 +236,8 @@
       <tr>
         <td><span class="xref">System.DirectoryServices.ActiveDirectory.Domain</span></td>
         <td><span class="parametername">domain</span></td>
-        <td></td>
+        <td><p>The Domain object</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -245,20 +252,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td></td>
+        <td><p>True if the domain was found, false if not</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetDomain_System_String_System_DirectoryServices_ActiveDirectory_Domain__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetDomain(System.String%2CSystem.DirectoryServices.ActiveDirectory.Domain%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetDomain_System_String_System_DirectoryServices_ActiveDirectory_Domain__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetDomain(System.String%2CSystem.DirectoryServices.ActiveDirectory.Domain%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L31">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L84">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_GetDomain_" data-uid="SharpHoundCommonLib.ILdapUtils.GetDomain*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_GetDomain_System_String_System_DirectoryServices_ActiveDirectory_Domain__" data-uid="SharpHoundCommonLib.ILdapUtils.GetDomain(System.String,System.DirectoryServices.ActiveDirectory.Domain@)">GetDomain(String, out Domain)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to retrieve the Domain object for the specified domain</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -277,12 +286,14 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domainName</span></td>
-        <td></td>
+        <td><p>The domain name to retrieve the Domain object for</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.DirectoryServices.ActiveDirectory.Domain</span></td>
         <td><span class="parametername">domain</span></td>
-        <td></td>
+        <td><p>The domain object</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -297,20 +308,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td></td>
+        <td><p>True if the domain was found, false if not</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetDomainNameFromSid_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetDomainNameFromSid(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetDomainNameFromSid_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetDomainNameFromSid(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L29">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L71">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_GetDomainNameFromSid_" data-uid="SharpHoundCommonLib.ILdapUtils.GetDomainNameFromSid*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_GetDomainNameFromSid_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.GetDomainNameFromSid(System.String)">GetDomainNameFromSid(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve the domain name for a security identifier.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -329,7 +342,8 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">sid</span></td>
-        <td></td>
+        <td><p>String security identifier for an object</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -344,20 +358,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <span class="xref">System.String</span>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved domain name if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetDomainSidFromDomainName_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetDomainSidFromDomainName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetDomainSidFromDomainName_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetDomainSidFromDomainName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L30">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L77">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_GetDomainSidFromDomainName_" data-uid="SharpHoundCommonLib.ILdapUtils.GetDomainSidFromDomainName*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_GetDomainSidFromDomainName_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.GetDomainSidFromDomainName(System.String)">GetDomainSidFromDomainName(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve the sid for a domain given its name</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -376,6 +392,55 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domainName</span></td>
+        <td><p>The domain name to resolve</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <span class="xref">System.String</span>&gt;&gt;</td>
+        <td><p>A tuple containing success state as well as the resolved domain sid if successful</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetForest_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetForest(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L92">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_ILdapUtils_GetForest_" data-uid="SharpHoundCommonLib.ILdapUtils.GetForest*"></a>
+  <h4 id="SharpHoundCommonLib_ILdapUtils_GetForest_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.GetForest(System.String)">GetForest(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;(bool Success, string ForestName)&gt; GetForest(string domain)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">domain</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -397,14 +462,15 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetGlobalCatalogMatches_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetGlobalCatalogMatches(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetGlobalCatalogMatches_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetGlobalCatalogMatches(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L35">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L113">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_GetGlobalCatalogMatches_" data-uid="SharpHoundCommonLib.ILdapUtils.GetGlobalCatalogMatches*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_GetGlobalCatalogMatches_System_String_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.GetGlobalCatalogMatches(System.String,System.String)">GetGlobalCatalogMatches(String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to look up possible matches for a user in the global catalog</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -423,12 +489,14 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The name of the account to look up</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domain</span></td>
-        <td></td>
+        <td><p>The domain to connect to a global catalog for</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -443,20 +511,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <span class="xref">System.String</span>[]&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as all potential account matches in the global catalog</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetNamingContextPath_System_String_SharpHoundCommonLib_Enums_NamingContext_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetNamingContextPath(System.String%2CSharpHoundCommonLib.Enums.NamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetNamingContextPath_System_String_SharpHoundCommonLib_Enums_NamingContext_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetNamingContextPath(System.String%2CSharpHoundCommonLib.Enums.NamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L48">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L170">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_GetNamingContextPath_" data-uid="SharpHoundCommonLib.ILdapUtils.GetNamingContextPath*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_GetNamingContextPath_System_String_SharpHoundCommonLib_Enums_NamingContext_" data-uid="SharpHoundCommonLib.ILdapUtils.GetNamingContextPath(System.String,SharpHoundCommonLib.Enums.NamingContext)">GetNamingContextPath(String, NamingContext)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to get the distinguished name corresponding to a specific naming context for a domain</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -475,12 +545,14 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domain</span></td>
-        <td></td>
+        <td><p>The domain to get the context for</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="SharpHoundCommonLib.Enums.NamingContext.html">NamingContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td></td>
+        <td><p>The naming context being retrieved</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -495,20 +567,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <span class="xref">System.String</span>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved distinguished name if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetWellKnownPrincipal_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetWellKnownPrincipal(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetWellKnownPrincipal_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetWellKnownPrincipal(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L26">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L63">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_GetWellKnownPrincipal_" data-uid="SharpHoundCommonLib.ILdapUtils.GetWellKnownPrincipal*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_GetWellKnownPrincipal_System_String_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.GetWellKnownPrincipal(System.String,System.String)">GetWellKnownPrincipal(String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve a security identifier to its corresponding well known principal</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -547,16 +621,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <a class="xref" href="SharpHoundCommonLib.OutputTypes.TypedPrincipal.html">TypedPrincipal</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved principal if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetWellKnownPrincipalOutput.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetWellKnownPrincipalOutput%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_GetWellKnownPrincipalOutput.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.GetWellKnownPrincipalOutput%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L45">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L152">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_GetWellKnownPrincipalOutput_" data-uid="SharpHoundCommonLib.ILdapUtils.GetWellKnownPrincipalOutput*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_GetWellKnownPrincipalOutput" data-uid="SharpHoundCommonLib.ILdapUtils.GetWellKnownPrincipalOutput">GetWellKnownPrincipalOutput()</h4>
@@ -583,14 +658,15 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_IsDomainController_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.IsDomainController(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_IsDomainController_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.IsDomainController(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L42">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L144">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_IsDomainController_" data-uid="SharpHoundCommonLib.ILdapUtils.IsDomainController*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_IsDomainController_System_String_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.IsDomainController(System.String,System.String)">IsDomainController(String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to determine if a computer sid corresponds to a domain controller</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -609,12 +685,14 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">computerObjectId</span></td>
-        <td></td>
+        <td><p>The sid of the computer being tested</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domainName</span></td>
-        <td></td>
+        <td><p>The domain to lookup the computer</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -629,20 +707,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
-        <td></td>
+        <td><p>True if the SID is a domain controller, false if not or if the object is not found</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_MakeSecurityDescriptor.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.MakeSecurityDescriptor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_MakeSecurityDescriptor.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.MakeSecurityDescriptor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L37">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L126">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_MakeSecurityDescriptor_" data-uid="SharpHoundCommonLib.ILdapUtils.MakeSecurityDescriptor*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_MakeSecurityDescriptor" data-uid="SharpHoundCommonLib.ILdapUtils.MakeSecurityDescriptor">MakeSecurityDescriptor()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Makes a new security descriptor object. This is a testing shim</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -659,24 +739,26 @@
     <tbody>
       <tr>
         <td><a class="xref" href="SharpHoundCommonLib.ActiveDirectorySecurityDescriptor.html">ActiveDirectorySecurityDescriptor</a></td>
-        <td></td>
+        <td><p>An ActiveDirectorySecurityDescriptor object</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_PagedQuery_SharpHoundCommonLib_LdapQueryParameters_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.PagedQuery(SharpHoundCommonLib.LdapQueryParameters%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_PagedQuery_SharpHoundCommonLib_LdapQueryParameters_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.PagedQuery(SharpHoundCommonLib.LdapQueryParameters%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L14">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L26">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_PagedQuery_" data-uid="SharpHoundCommonLib.ILdapUtils.PagedQuery*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_PagedQuery_SharpHoundCommonLib_LdapQueryParameters_System_Threading_CancellationToken_" data-uid="SharpHoundCommonLib.ILdapUtils.PagedQuery(SharpHoundCommonLib.LdapQueryParameters,System.Threading.CancellationToken)">PagedQuery(LdapQueryParameters, CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Performs a LDAP query with paging support.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IAsyncEnumerable&lt;LdapResult&lt;ISearchResultEntry&gt;&gt; PagedQuery(LdapQueryParameters queryParameters, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">IAsyncEnumerable&lt;LdapResult&lt;IDirectoryObject&gt;&gt; PagedQuery(LdapQueryParameters queryParameters, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -691,12 +773,14 @@
       <tr>
         <td><a class="xref" href="SharpHoundCommonLib.LdapQueryParameters.html">LdapQueryParameters</a></td>
         <td><span class="parametername">queryParameters</span></td>
-        <td></td>
+        <td><p>Parameters for the LDAP query</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td></td>
+        <td><p>Optional cancellation token to support early exit</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -710,25 +794,27 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IAsyncEnumerable</span>&lt;<a class="xref" href="SharpHoundCommonLib.LdapResult-1.html">LdapResult</a>&lt;<a class="xref" href="SharpHoundCommonLib.ISearchResultEntry.html">ISearchResultEntry</a>&gt;&gt;</td>
-        <td></td>
+        <td><span class="xref">IAsyncEnumerable</span>&lt;<a class="xref" href="SharpHoundCommonLib.LdapResult-1.html">LdapResult</a>&lt;<a class="xref" href="SharpHoundCommonLib.IDirectoryObject.html">IDirectoryObject</a>&gt;&gt;</td>
+        <td><p>An IEnumerable containing Result objects containing Directory Objects</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_Query_SharpHoundCommonLib_LdapQueryParameters_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.Query(SharpHoundCommonLib.LdapQueryParameters%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_Query_SharpHoundCommonLib_LdapQueryParameters_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.Query(SharpHoundCommonLib.LdapQueryParameters%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L11">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L17">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_Query_" data-uid="SharpHoundCommonLib.ILdapUtils.Query*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_Query_SharpHoundCommonLib_LdapQueryParameters_System_Threading_CancellationToken_" data-uid="SharpHoundCommonLib.ILdapUtils.Query(SharpHoundCommonLib.LdapQueryParameters,System.Threading.CancellationToken)">Query(LdapQueryParameters, CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Performs a non-paged LDAP query.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IAsyncEnumerable&lt;LdapResult&lt;ISearchResultEntry&gt;&gt; Query(LdapQueryParameters queryParameters, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">IAsyncEnumerable&lt;LdapResult&lt;IDirectoryObject&gt;&gt; Query(LdapQueryParameters queryParameters, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -743,12 +829,14 @@
       <tr>
         <td><a class="xref" href="SharpHoundCommonLib.LdapQueryParameters.html">LdapQueryParameters</a></td>
         <td><span class="parametername">queryParameters</span></td>
-        <td></td>
+        <td><p>Parameters for the LDAP query</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td></td>
+        <td><p>Optional cancellation token to support early exit</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -762,21 +850,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IAsyncEnumerable</span>&lt;<a class="xref" href="SharpHoundCommonLib.LdapResult-1.html">LdapResult</a>&lt;<a class="xref" href="SharpHoundCommonLib.ISearchResultEntry.html">ISearchResultEntry</a>&gt;&gt;</td>
-        <td></td>
+        <td><span class="xref">IAsyncEnumerable</span>&lt;<a class="xref" href="SharpHoundCommonLib.LdapResult-1.html">LdapResult</a>&lt;<a class="xref" href="SharpHoundCommonLib.IDirectoryObject.html">IDirectoryObject</a>&gt;&gt;</td>
+        <td><p>An IEnumerable containing Result objects containing Directory Objects</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_RangedRetrieval_System_String_System_String_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.RangedRetrieval(System.String%2CSystem.String%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_RangedRetrieval_System_String_System_String_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.RangedRetrieval(System.String%2CSystem.String%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L17">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L36">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_RangedRetrieval_" data-uid="SharpHoundCommonLib.ILdapUtils.RangedRetrieval*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_RangedRetrieval_System_String_System_String_System_Threading_CancellationToken_" data-uid="SharpHoundCommonLib.ILdapUtils.RangedRetrieval(System.String,System.String,System.Threading.CancellationToken)">RangedRetrieval(String, String, CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Performs a ranged retrieval operation</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -795,17 +885,20 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">distinguishedName</span></td>
-        <td></td>
+        <td><p>The base distinguished name to search on</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">attributeName</span></td>
-        <td></td>
+        <td><p>The attribute being retrieved</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td></td>
+        <td><p>A cancellation token for early exit</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -820,20 +913,22 @@
     <tbody>
       <tr>
         <td><span class="xref">IAsyncEnumerable</span>&lt;<a class="xref" href="SharpHoundCommonLib.Result-1.html">Result</a>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
-        <td></td>
+        <td><p>An IEnumerable of result objects containing string results from the query</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveAccountName_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveAccountName(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveAccountName_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveAccountName(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L33">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L99">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_ResolveAccountName_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveAccountName*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_ResolveAccountName_System_String_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveAccountName(System.String,System.String)">ResolveAccountName(String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve an account name to its corresponding typed principal</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -852,12 +947,14 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The account name to resolve</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domain</span></td>
-        <td></td>
+        <td><p>The domain to resolve the account in</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -872,20 +969,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <a class="xref" href="SharpHoundCommonLib.OutputTypes.TypedPrincipal.html">TypedPrincipal</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved TypedPrincipal if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveCertTemplateByProperty_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveCertTemplateByProperty(System.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveCertTemplateByProperty_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveCertTemplateByProperty(System.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L36">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L121">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_ResolveCertTemplateByProperty_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveCertTemplateByProperty*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_ResolveCertTemplateByProperty_System_String_System_String_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveCertTemplateByProperty(System.String,System.String,System.String)">ResolveCertTemplateByProperty(String, String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve a certificate template by a specific property</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -904,17 +1003,20 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">propValue</span></td>
-        <td></td>
+        <td><p>The value of the property being matched</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">propName</span></td>
-        <td></td>
+        <td><p>The name of the property being matched</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domainName</span></td>
-        <td></td>
+        <td><p>The domain to lookup the certificate template in</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -929,20 +1031,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <a class="xref" href="SharpHoundCommonLib.OutputTypes.TypedPrincipal.html">TypedPrincipal</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved certificate template if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveDistinguishedName_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveDistinguishedName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveDistinguishedName_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveDistinguishedName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L43">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L150">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_ResolveDistinguishedName_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveDistinguishedName*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_ResolveDistinguishedName_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveDistinguishedName(System.String)">ResolveDistinguishedName(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve a distinguished name to its corresponding principal</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -961,7 +1065,8 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">distinguishedName</span></td>
-        <td></td>
+        <td><p>The distinguished name to resolve</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -976,20 +1081,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <a class="xref" href="SharpHoundCommonLib.OutputTypes.TypedPrincipal.html">TypedPrincipal</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved principal sid if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveHostToSid_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveHostToSid(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveHostToSid_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveHostToSid(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L34">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L106">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_ResolveHostToSid_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveHostToSid*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_ResolveHostToSid_System_String_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveHostToSid(System.String,System.String)">ResolveHostToSid(String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve a host to its corresponding security identifier in AD</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1008,12 +1115,14 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">host</span></td>
-        <td></td>
+        <td><p>The hostname to resolve. Will accept an IP or a hostname</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domain</span></td>
-        <td></td>
+        <td><p>The domain to lookup the account in</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1028,20 +1137,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <span class="xref">System.String</span>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved computer sid if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveIDAndType_System_Security_Principal_SecurityIdentifier_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveIDAndType(System.Security.Principal.SecurityIdentifier%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveIDAndType_System_Security_Principal_SecurityIdentifier_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveIDAndType(System.Security.Principal.SecurityIdentifier%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L20">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L45">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_ResolveIDAndType_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveIDAndType*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_ResolveIDAndType_System_Security_Principal_SecurityIdentifier_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveIDAndType(System.Security.Principal.SecurityIdentifier,System.String)">ResolveIDAndType(SecurityIdentifier, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve a SecurityIdentifier to its corresponding TypedPrincipal</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1060,12 +1171,14 @@
       <tr>
         <td><span class="xref">System.Security.Principal.SecurityIdentifier</span></td>
         <td><span class="parametername">securityIdentifier</span></td>
-        <td></td>
+        <td><p>SecurityIdentifier object to resolve</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">objectDomain</span></td>
-        <td></td>
+        <td><p>The domain the object belongs too</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1080,20 +1193,22 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <a class="xref" href="SharpHoundCommonLib.OutputTypes.TypedPrincipal.html">TypedPrincipal</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved principal if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveIDAndType_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveIDAndType(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_ResolveIDAndType_System_String_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.ResolveIDAndType(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L23">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L54">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_ResolveIDAndType_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveIDAndType*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_ResolveIDAndType_System_String_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.ResolveIDAndType(System.String,System.String)">ResolveIDAndType(String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve an object identifier to its corresponding TypedPrincipal</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1112,12 +1227,14 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">identifier</span></td>
-        <td></td>
+        <td><p>String identifier for an object, usually a guid or sid</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">objectDomain</span></td>
-        <td></td>
+        <td><p>The domain the object belongs too</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1132,24 +1249,26 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <a class="xref" href="SharpHoundCommonLib.OutputTypes.TypedPrincipal.html">TypedPrincipal</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as the resolved principal if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_SetLdapConfig_SharpHoundCommonLib_LDAPConfig_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.SetLdapConfig(SharpHoundCommonLib.LDAPConfig)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_SetLdapConfig_SharpHoundCommonLib_LdapConfig_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.SetLdapConfig(SharpHoundCommonLib.LdapConfig)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L46">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L157">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_SetLdapConfig_" data-uid="SharpHoundCommonLib.ILdapUtils.SetLdapConfig*"></a>
-  <h4 id="SharpHoundCommonLib_ILdapUtils_SetLdapConfig_SharpHoundCommonLib_LDAPConfig_" data-uid="SharpHoundCommonLib.ILdapUtils.SetLdapConfig(SharpHoundCommonLib.LDAPConfig)">SetLdapConfig(LDAPConfig)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="SharpHoundCommonLib_ILdapUtils_SetLdapConfig_SharpHoundCommonLib_LdapConfig_" data-uid="SharpHoundCommonLib.ILdapUtils.SetLdapConfig(SharpHoundCommonLib.LdapConfig)">SetLdapConfig(LdapConfig)</h4>
+  <div class="markdown level1 summary"><p>Sets the ldap config for this utils instance. Will dispose if any existing ldap connections when set</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void SetLdapConfig(LDAPConfig config)</code></pre>
+    <pre><code class="lang-csharp hljs">void SetLdapConfig(LdapConfig config)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1162,22 +1281,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="SharpHoundCommonLib.LDAPConfig.html">LDAPConfig</a></td>
+        <td><a class="xref" href="SharpHoundCommonLib.LdapConfig.html">LdapConfig</a></td>
         <td><span class="parametername">config</span></td>
-        <td></td>
+        <td><p>The new ldap config</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_TestLdapConnection_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.TestLdapConnection(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_ILdapUtils_TestLdapConnection_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.ILdapUtils.TestLdapConnection(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/ILdapUtils.cs/#L47">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/ILdapUtils.cs/#L163">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_ILdapUtils_TestLdapConnection_" data-uid="SharpHoundCommonLib.ILdapUtils.TestLdapConnection*"></a>
   <h4 id="SharpHoundCommonLib_ILdapUtils_TestLdapConnection_System_String_" data-uid="SharpHoundCommonLib.ILdapUtils.TestLdapConnection(System.String)">TestLdapConnection(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Tests if a LDAP connection can be made successfully to a domain</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1196,7 +1317,8 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">domain</span></td>
-        <td></td>
+        <td><p>The domain to test</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1211,7 +1333,8 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <span class="xref">System.String</span>&gt;&gt;</td>
-        <td></td>
+        <td><p>A tuple containing success state as well as a message if unsuccessful</p>
+</td>
       </tr>
     </tbody>
   </table>

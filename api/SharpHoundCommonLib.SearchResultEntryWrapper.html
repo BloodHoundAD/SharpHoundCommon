@@ -106,7 +106,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="SharpHoundCommonLib.ISearchResultEntry.html">ISearchResultEntry</a></div>
+    <div><a class="xref" href="SharpHoundCommonLib.IDirectoryObject.html">IDirectoryObject</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -136,24 +136,24 @@
   <h6><strong>Assembly</strong>: SharpHoundCommonLib.dll</h6>
   <h5 id="SharpHoundCommonLib_SearchResultEntryWrapper_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SearchResultEntryWrapper : ISearchResultEntry</code></pre>
+    <pre><code class="lang-csharp hljs">public class SearchResultEntryWrapper : IDirectoryObject</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper__ctor_System_DirectoryServices_Protocols_SearchResultEntry_SharpHoundCommonLib_ILdapUtils_ILogger_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.%23ctor(System.DirectoryServices.Protocols.SearchResultEntry%2CSharpHoundCommonLib.ILdapUtils%2CILogger)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper__ctor_System_DirectoryServices_Protocols_SearchResultEntry_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.%23ctor(System.DirectoryServices.Protocols.SearchResultEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L44">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L13">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_SearchResultEntryWrapper__ctor_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.#ctor*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper__ctor_System_DirectoryServices_Protocols_SearchResultEntry_SharpHoundCommonLib_ILdapUtils_ILogger_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry,SharpHoundCommonLib.ILdapUtils,ILogger)">SearchResultEntryWrapper(SearchResultEntry, ILdapUtils, ILogger)</h4>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper__ctor_System_DirectoryServices_Protocols_SearchResultEntry_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.#ctor(System.DirectoryServices.Protocols.SearchResultEntry)">SearchResultEntryWrapper(SearchResultEntry)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SearchResultEntryWrapper(SearchResultEntry entry, ILdapUtils utils = null, ILogger log = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public SearchResultEntryWrapper(SearchResultEntry entry)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -170,152 +170,16 @@
         <td><span class="parametername">entry</span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><a class="xref" href="SharpHoundCommonLib.ILdapUtils.html">ILdapUtils</a></td>
-        <td><span class="parametername">utils</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">ILogger</span></td>
-        <td><span class="parametername">log</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_DistinguishedName.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.DistinguishedName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L51">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_DistinguishedName_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.DistinguishedName*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_DistinguishedName" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.DistinguishedName">DistinguishedName</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string DistinguishedName { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetArrayProperty_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetArrayProperty(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetByteProperty_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetByteProperty(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L209">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetArrayProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetArrayProperty*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetArrayProperty_System_String_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetArrayProperty(System.String)">GetArrayProperty(String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string[] GetArrayProperty(string propertyName)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">propertyName</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetByteArrayProperty_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetByteArrayProperty(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L214">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetByteArrayProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetByteArrayProperty*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetByteArrayProperty_System_String_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetByteArrayProperty(System.String)">GetByteArrayProperty(String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public byte[][] GetByteArrayProperty(string propertyName)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">propertyName</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Byte</span>[][]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetByteProperty_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetByteProperty(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L204">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L176">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetByteProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetByteProperty*"></a>
   <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetByteProperty_System_String_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetByteProperty(System.String)">GetByteProperty(String)</h4>
@@ -359,229 +223,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetCertificateArrayProperty_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetProperty_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetProperty(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L224">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetCertificateArrayProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetCertificateArrayProperty_System_String_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetCertificateArrayProperty(System.String)">GetCertificateArrayProperty(String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public X509Certificate2[] GetCertificateArrayProperty(string propertyName)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">propertyName</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Security.Cryptography.X509Certificates.X509Certificate2</span>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetEntry.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L283">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetEntry_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetEntry*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetEntry" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetEntry">GetEntry()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SearchResultEntry GetEntry()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.DirectoryServices.Protocols.SearchResultEntry</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetGuid.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetGuid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L250">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetGuid_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetGuid*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetGuid" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetGuid">GetGuid()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetGuid()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetIntProperty_System_String_System_Int32__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty(System.String%2CSystem.Int32%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L219">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetIntProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetIntProperty_System_String_System_Int32__" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetIntProperty(System.String,System.Int32@)">GetIntProperty(String, out Int32)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool GetIntProperty(string propertyName, out int value)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">propertyName</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">value</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetLabel.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetLabel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L239">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetLabel_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetLabel*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetLabel" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetLabel">GetLabel()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Label GetLabel()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="SharpHoundCommonLib.Enums.Label.html">Label</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetObjectIdentifier.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetObjectIdentifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L229">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetObjectIdentifier_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetObjectIdentifier*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetObjectIdentifier" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetObjectIdentifier">GetObjectIdentifier()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetObjectIdentifier()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetProperty_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetProperty(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L199">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L160">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetProperty*"></a>
   <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetProperty_System_String_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetProperty(System.String)">GetProperty(String)</h4>
@@ -625,168 +270,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_GetSid.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.GetSid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_PropertyCount_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.PropertyCount(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L245">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L192">View Source</a>
   </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_GetSid_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetSid*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_GetSid" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.GetSid">GetSid()</h4>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_PropertyCount_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.PropertyCount*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_PropertyCount_System_String_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.PropertyCount(System.String)">PropertyCount(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetSid()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_HasLAPS.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L278">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_HasLAPS_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_HasLAPS" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.HasLAPS">HasLAPS()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HasLAPS()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_IsDeleted.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.IsDeleted%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L234">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_IsDeleted_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.IsDeleted*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_IsDeleted" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.IsDeleted">IsDeleted()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsDeleted()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_IsGMSA.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L272">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_IsGMSA_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_IsGMSA" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.IsGMSA">IsGMSA()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsGMSA()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_IsMSA.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L266">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_IsMSA_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_IsMSA" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.IsMSA">IsMSA()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsMSA()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_PropCount_System_String_.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.PropCount(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L255">View Source</a>
-  </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_PropCount_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.PropCount*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_PropCount_System_String_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.PropCount(System.String)">PropCount(String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int PropCount(string prop)</code></pre>
+    <pre><code class="lang-csharp hljs">public int PropertyCount(string propertyName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -800,7 +295,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">prop</span></td>
+        <td><span class="parametername">propertyName</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -822,10 +317,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_PropertyNames.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_PropertyNames.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L261">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L198">View Source</a>
   </span>
   <a id="SharpHoundCommonLib_SearchResultEntryWrapper_PropertyNames_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames*"></a>
   <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_PropertyNames" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.PropertyNames">PropertyNames()</h4>
@@ -852,19 +347,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/de7bcf8e85d9c4875acec3e0efd97004b61ad889/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_ResolveBloodHoundInfo.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetArrayProperty_System_String_System_String____.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetArrayProperty(System.String%2CSystem.String%5B%5D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/de7bcf8e85d9c4875acec3e0efd97004b61ad889/src/CommonLib/SearchResultEntryWrapper.cs/#L53">View Source</a>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L57">View Source</a>
   </span>
-  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_ResolveBloodHoundInfo_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo*"></a>
-  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_ResolveBloodHoundInfo" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.ResolveBloodHoundInfo">ResolveBloodHoundInfo()</h4>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetArrayProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetArrayProperty*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetArrayProperty_System_String_System_String____" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetArrayProperty(System.String,System.String[]@)">TryGetArrayProperty(String, out String[])</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ResolvedSearchResult&gt; ResolveBloodHoundInfo()</code></pre>
+    <pre><code class="lang-csharp hljs">public bool TryGetArrayProperty(string propertyName, out string[] value)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -875,14 +392,434 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="SharpHoundCommonLib.ResolvedSearchResult.html">ResolvedSearchResult</a>&gt;</td>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetByteArrayProperty_System_String_System_Byte______.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetByteArrayProperty(System.String%2CSystem.Byte%5B%5D%5B%5D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L72">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetByteArrayProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetByteArrayProperty*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetByteArrayProperty_System_String_System_Byte______" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetByteArrayProperty(System.String,System.Byte[][]@)">TryGetByteArrayProperty(String, out Byte[][])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetByteArrayProperty(string propertyName, out byte[][] value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[][]</td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetByteProperty_System_String_System_Byte____.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetByteProperty(System.String%2CSystem.Byte%5B%5D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L39">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetByteProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetByteProperty*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetByteProperty_System_String_System_Byte____" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetByteProperty(System.String,System.Byte[]@)">TryGetByteProperty(String, out Byte[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetByteProperty(string propertyName, out byte[] value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetCertificateArrayProperty_System_String_System_Security_Cryptography_X509Certificates_X509Certificate2____.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetCertificateArrayProperty(System.String%2CSystem.Security.Cryptography.X509Certificates.X509Certificate2%5B%5D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L94">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetCertificateArrayProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetCertificateArrayProperty*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetCertificateArrayProperty_System_String_System_Security_Cryptography_X509Certificates_X509Certificate2____" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetCertificateArrayProperty(System.String,System.Security.Cryptography.X509Certificates.X509Certificate2[]@)">TryGetCertificateArrayProperty(String, out X509Certificate2[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetCertificateArrayProperty(string propertyName, out X509Certificate2[] value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Security.Cryptography.X509Certificates.X509Certificate2</span>[]</td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetDistinguishedName_System_String__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetDistinguishedName(System.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L17">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetDistinguishedName_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetDistinguishedName*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetDistinguishedName_System_String__" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetDistinguishedName(System.String@)">TryGetDistinguishedName(out String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetDistinguishedName(out string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetGuid_System_String__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetGuid(System.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L146">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetGuid_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetGuid*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetGuid_System_String__" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetGuid(System.String@)">TryGetGuid(out String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetGuid(out string guid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">guid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetIntProperty_System_String_System_Int32__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty(System.String%2CSystem.Int32%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L85">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetIntProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetIntProperty_System_String_System_Int32__" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty(System.String,System.Int32@)">TryGetIntProperty(String, out Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetIntProperty(string propertyName, out int value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetProperty_System_String_System_String__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetProperty(System.String%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L21">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetProperty_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetProperty*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetProperty_System_String_System_String__" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetProperty(System.String,System.String@)">TryGetProperty(String, out String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetProperty(string propertyName, out string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/new/b114fb9dbffbeec446e571f5385747969a4f0c29/apiSpec/new?filename=SharpHoundCommonLib_SearchResultEntryWrapper_TryGetSecurityIdentifier_System_String__.md&amp;value=---%0Auid%3A%20SharpHoundCommonLib.SearchResultEntryWrapper.TryGetSecurityIdentifier(System.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BloodHoundAD/SharpHoundCommon/blob/b114fb9dbffbeec446e571f5385747969a4f0c29/src/CommonLib/DirectoryObjects/SearchResultEntryWrapper.cs/#L120">View Source</a>
+  </span>
+  <a id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetSecurityIdentifier_" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetSecurityIdentifier*"></a>
+  <h4 id="SharpHoundCommonLib_SearchResultEntryWrapper_TryGetSecurityIdentifier_System_String__" data-uid="SharpHoundCommonLib.SearchResultEntryWrapper.TryGetSecurityIdentifier(System.String@)">TryGetSecurityIdentifier(out String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetSecurityIdentifier(out string securityIdentifier)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">securityIdentifier</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="SharpHoundCommonLib.ISearchResultEntry.html">ISearchResultEntry</a>
+      <a class="xref" href="SharpHoundCommonLib.IDirectoryObject.html">IDirectoryObject</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="SharpHoundCommonLib.DirectoryObjects.DirectoryObjectExtensions.html#SharpHoundCommonLib_DirectoryObjects_DirectoryObjectExtensions_IsMSA_SharpHoundCommonLib_IDirectoryObject_">DirectoryObjectExtensions.IsMSA(IDirectoryObject)</a>
+  </div>
+  <div>
+      <a class="xref" href="SharpHoundCommonLib.DirectoryObjects.DirectoryObjectExtensions.html#SharpHoundCommonLib_DirectoryObjects_DirectoryObjectExtensions_IsGMSA_SharpHoundCommonLib_IDirectoryObject_">DirectoryObjectExtensions.IsGMSA(IDirectoryObject)</a>
+  </div>
+  <div>
+      <a class="xref" href="SharpHoundCommonLib.DirectoryObjects.DirectoryObjectExtensions.html#SharpHoundCommonLib_DirectoryObjects_DirectoryObjectExtensions_GetObjectIdentifier_SharpHoundCommonLib_IDirectoryObject_System_String__">DirectoryObjectExtensions.GetObjectIdentifier(IDirectoryObject, out String)</a>
+  </div>
+  <div>
+      <a class="xref" href="SharpHoundCommonLib.DirectoryObjects.DirectoryObjectExtensions.html#SharpHoundCommonLib_DirectoryObjects_DirectoryObjectExtensions_GetLabel_SharpHoundCommonLib_IDirectoryObject_SharpHoundCommonLib_Enums_Label__">DirectoryObjectExtensions.GetLabel(IDirectoryObject, out Label)</a>
+  </div>
+  <div>
+      <a class="xref" href="SharpHoundCommonLib.DirectoryObjects.DirectoryObjectExtensions.html#SharpHoundCommonLib_DirectoryObjects_DirectoryObjectExtensions_IsDeleted_SharpHoundCommonLib_IDirectoryObject_">DirectoryObjectExtensions.IsDeleted(IDirectoryObject)</a>
+  </div>
+  <div>
+      <a class="xref" href="SharpHoundCommonLib.DirectoryObjects.DirectoryObjectExtensions.html#SharpHoundCommonLib_DirectoryObjects_DirectoryObjectExtensions_HasLAPS_SharpHoundCommonLib_IDirectoryObject_">DirectoryObjectExtensions.HasLAPS(IDirectoryObject)</a>
   </div>
 </article>
               
