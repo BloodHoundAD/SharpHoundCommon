@@ -54,7 +54,7 @@ namespace SharpHoundCommonLib.Processors {
                 return ReadGPOLocalGroups(links, dn);    
             }
 
-            return default;
+            return Task.FromResult(new ResultingGPOChanges());
         }
 
         public async Task<ResultingGPOChanges> ReadGPOLocalGroups(string gpLink, string distinguishedName) {
@@ -63,13 +63,26 @@ namespace SharpHoundCommonLib.Processors {
             if (gpLink == null)
                 return ret;
 
+            string domain;
+            //If our dn is null, use our default domain
+            if (string.IsNullOrEmpty(distinguishedName)) {
+                if (!_utils.GetDomain(out var d)) {
+                    return ret;    
+                }
+
+                domain = d.Name;
+            } else {
+                domain = Helpers.DistinguishedNameToDomain(distinguishedName);    
+            }
+            
             // First lets check if this OU actually has computers that it contains. If not, then we'll ignore it.
             // Its cheaper to fetch the affected computers from LDAP first and then process the GPLinks
             var affectedComputers = new List<TypedPrincipal>();
             await foreach (var result in _utils.Query(new LdapQueryParameters() {
                                LDAPFilter = new LdapFilter().AddComputersNoMSAs().GetFilter(),
                                Attributes = CommonProperties.ObjectSID,
-                               SearchBase = distinguishedName
+                               SearchBase = distinguishedName,
+                               DomainName = domain
                            })) {
                 if (!result.IsSuccess) {
                     break;
@@ -119,7 +132,8 @@ namespace SharpHoundCommonLib.Processors {
                         LDAPFilter = new LdapFilter().AddAllObjects().GetFilter(),
                         SearchScope = SearchScope.Base,
                         Attributes = CommonProperties.GPCFileSysPath,
-                        SearchBase = linkDn
+                        SearchBase = linkDn,
+                        DomainName = gpoDomain
                     }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
                     if (!result.IsSuccess) {
