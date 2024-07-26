@@ -19,17 +19,17 @@ namespace SharpHoundCommonLib.Processors {
         private static readonly HashSet<string> ReservedAttributes = new();
 
         static LdapPropertyProcessor() {
-            ReservedAttributes.IntersectWith(CommonProperties.TypeResolutionProps);
-            ReservedAttributes.IntersectWith(CommonProperties.BaseQueryProps);
-            ReservedAttributes.IntersectWith(CommonProperties.GroupResolutionProps);
-            ReservedAttributes.IntersectWith(CommonProperties.ComputerMethodProps);
-            ReservedAttributes.IntersectWith(CommonProperties.ACLProps);
-            ReservedAttributes.IntersectWith(CommonProperties.ObjectPropsProps);
-            ReservedAttributes.IntersectWith(CommonProperties.ContainerProps);
-            ReservedAttributes.IntersectWith(CommonProperties.SPNTargetProps);
-            ReservedAttributes.IntersectWith(CommonProperties.DomainTrustProps);
-            ReservedAttributes.IntersectWith(CommonProperties.GPOLocalGroupProps);
-            ReservedAttributes.IntersectWith(CommonProperties.CertAbuseProps);
+            ReservedAttributes.UnionWith(CommonProperties.TypeResolutionProps);
+            ReservedAttributes.UnionWith(CommonProperties.BaseQueryProps);
+            ReservedAttributes.UnionWith(CommonProperties.GroupResolutionProps);
+            ReservedAttributes.UnionWith(CommonProperties.ComputerMethodProps);
+            ReservedAttributes.UnionWith(CommonProperties.ACLProps);
+            ReservedAttributes.UnionWith(CommonProperties.ObjectPropsProps);
+            ReservedAttributes.UnionWith(CommonProperties.ContainerProps);
+            ReservedAttributes.UnionWith(CommonProperties.SPNTargetProps);
+            ReservedAttributes.UnionWith(CommonProperties.DomainTrustProps);
+            ReservedAttributes.UnionWith(CommonProperties.GPOLocalGroupProps);
+            ReservedAttributes.UnionWith(CommonProperties.CertAbuseProps);
             ReservedAttributes.Add(LDAPProperties.DSASignature);
         }
 
