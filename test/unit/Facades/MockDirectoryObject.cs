@@ -75,7 +75,11 @@ public class MockDirectoryObject : IDirectoryObject {
 
         var temp = Properties[propertyName];
         if (temp.IsArray()) {
-            value = temp as string[];
+            if (temp is string[] s) {
+                value = s;
+                return true;
+            }
+            value = Array.Empty<string>(); 
             return true;
         }
 

@@ -556,8 +556,7 @@ namespace SharpHoundCommonLib.Processors {
                         if (testBytes == null || testBytes.Length == 0) {
                             continue;
                         }
-
-                        ;
+                        
                         // SIDs
                         try {
                             var sid = new SecurityIdentifier(testBytes, 0);

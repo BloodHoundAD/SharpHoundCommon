@@ -10,6 +10,8 @@ using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using Xunit;
 using Xunit.Abstractions;
+using static System.Text.Encoding;
+
 // ReSharper disable StringLiteralTypo
 
 namespace CommonLibTest
@@ -945,7 +947,7 @@ namespace CommonLibTest
             Assert.Single(keys);
             var hasCert = props.TryGetValue("usercertificate", out var usercert);
             Assert.True(hasCert);
-            Assert.Equal("\u0000", System.Text.Encoding.UTF8.GetString(usercert as byte[]));
+            Assert.Equal("\u0000", UTF8.GetString(usercert as byte[]));
         }
 
         [WindowsOnlyFact]
@@ -953,7 +955,7 @@ namespace CommonLibTest
             var creatorSIDExpected = "S-1-5-21-2697957641-2271029196-387917394";
             var mock = new MockDirectoryObject("CN\u003dNTAUTHCERTIFICATES,CN\u003dPUBLIC KEY SERVICES,CN\u003dSERVICES,CN\u003dCONFIGURATION,DC\u003dDUMPSTER,DC\u003dFIRE",
                 new Dictionary<string, object>
-                    {{"ms-ds-creatorsid", System.Text.Encoding.UTF8.GetBytes(creatorSIDExpected)}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
+                    {{"ms-ds-creatorsid", UTF8.GetBytes(creatorSIDExpected)}}, "", "2F9F3630-F46A-49BF-B186-6629994EBCF9");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
             var props = processor.ParseAllProperties(mock);
