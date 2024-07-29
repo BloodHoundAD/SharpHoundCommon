@@ -53,7 +53,7 @@ namespace SharpHoundCommonLib {
         private readonly string[] _translateNames = { "Administrator", "admin" };
         private LdapConfig _ldapConfig = new();
 
-        private ConnectionPoolManager _connectionPool;
+        private ILdapConnectionProvider _connectionPool;
 
         private static readonly TimeSpan MinBackoffDelay = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(20);
@@ -80,6 +80,13 @@ namespace SharpHoundCommonLib {
             _portScanner = new PortScanner();
             _log = Logging.LogProvider.CreateLogger("LDAPUtils");
             _connectionPool = new ConnectionPoolManager(_ldapConfig, _log);
+        }
+
+        public LdapUtils(ILdapConnectionProvider ldapConnectionProvider) {
+            _nativeMethods = new NativeMethods();
+            _portScanner = new PortScanner();
+            _log = Logging.LogProvider.CreateLogger("LDAPUtils");
+            _connectionPool = ldapConnectionProvider;
         }
 
         public LdapUtils(NativeMethods nativeMethods = null, PortScanner scanner = null, ILogger log = null) {

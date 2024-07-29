@@ -7,7 +7,17 @@ using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib {
-    public class ConnectionPoolManager : IDisposable{
+    public interface ILdapConnectionProvider {
+        Task<(bool Success, string Message)> TestDomainConnection(string identifier, bool globalCatalog);
+        Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetLdapConnection(
+            string identifier, bool globalCatalog);
+        Task<(bool Success, LdapConnectionWrapper connectionWrapper, string Message)> GetLdapConnectionForServer(
+            string identifier, string server, bool globalCatalog);
+        void ReleaseConnection(LdapConnectionWrapper connectionWrapper, bool connectionFaulted = false);
+        void Dispose();
+    }
+
+    public class ConnectionPoolManager : ILdapConnectionProvider, IDisposable{
         private readonly ConcurrentDictionary<string, LdapConnectionPool> _pools = new();
         private readonly LdapConfig _ldapConfig;
         private readonly string[] _translateNames = { "Administrator", "admin" };
