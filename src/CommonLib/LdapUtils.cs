@@ -704,10 +704,10 @@ namespace SharpHoundCommonLib {
                 };
 
                 connectionWrapper.SaveContext(queryParameters.NamingContext, basePath);
-
-                if (!string.IsNullOrWhiteSpace(queryParameters.RelativeSearchBase)) {
-                    basePath = $"{queryParameters.RelativeSearchBase},{basePath}";
-                }
+            }
+            
+            if (string.IsNullOrWhiteSpace(queryParameters.SearchBase) && !string.IsNullOrWhiteSpace(queryParameters.RelativeSearchBase)) {
+                basePath = $"{queryParameters.RelativeSearchBase},{basePath}";
             }
 
             searchRequest = new SearchRequest(basePath, queryParameters.LDAPFilter, queryParameters.SearchScope,
