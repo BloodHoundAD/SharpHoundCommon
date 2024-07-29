@@ -709,8 +709,6 @@ namespace SharpHoundCommonLib {
             if (string.IsNullOrWhiteSpace(queryParameters.SearchBase) && !string.IsNullOrWhiteSpace(queryParameters.RelativeSearchBase)) {
                 basePath = $"{queryParameters.RelativeSearchBase},{basePath}";
             }
-            
-            _log.LogInformation(basePath);
 
             searchRequest = new SearchRequest(basePath, queryParameters.LDAPFilter, queryParameters.SearchScope,
                 queryParameters.Attributes);
