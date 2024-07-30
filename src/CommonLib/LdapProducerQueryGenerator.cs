@@ -28,6 +28,10 @@ public class LdapProducerQueryGenerator {
                 properties.AddRange(CommonProperties.ACLProps);
             }
 
+            if (methods.HasFlag(CollectionMethod.ObjectProps)) {
+                properties.AddRange(CommonProperties.ObjectPropsProps);
+            }
+
             if (methods.IsComputerCollectionSet()) {
                 properties.AddRange(CommonProperties.ComputerMethodProps);
             }
