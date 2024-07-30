@@ -22,6 +22,7 @@ using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
 using SharpHoundRPC.NetAPINative;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
+using Group = SharpHoundCommonLib.OutputTypes.Group;
 using SearchScope = System.DirectoryServices.Protocols.SearchScope;
 using SecurityMasks = System.DirectoryServices.Protocols.SecurityMasks;
 
@@ -478,7 +479,7 @@ namespace SharpHoundCommonLib {
 
         public async Task<(bool Success, TypedPrincipal Principal)>
             ResolveIDAndType(string identifier, string objectDomain) {
-            if (identifier.Contains("0ACNF")) {
+            if (identifier.IndexOf("0ACNF", StringComparison.OrdinalIgnoreCase) >= 0) {
                 return (false, new TypedPrincipal(identifier, Label.Base));
             }
 
@@ -905,7 +906,7 @@ namespace SharpHoundCommonLib {
                 try {
                     var account = new NTAccount(domainName, name);
                     var sid = (SecurityIdentifier)account.Translate(typeof(SecurityIdentifier));
-                    domainSid = sid.AccountDomainSid.ToString();
+                    domainSid = sid.AccountDomainSid.ToString().ToUpper();
                     Cache.AddDomainSidMapping(domainName, domainSid);
                     return (true, domainSid);
                 } catch {
@@ -919,7 +920,7 @@ namespace SharpHoundCommonLib {
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
 
             if (result.IsSuccess && result.Value.TryGetSecurityIdentifier(out var securityIdentifier)) {
-                domainSid = new SecurityIdentifier(securityIdentifier).AccountDomainSid.Value;
+                domainSid = new SecurityIdentifier(securityIdentifier).AccountDomainSid.Value.ToUpper();
                 Cache.AddDomainSidMapping(domainName, domainSid);
                 return (true, domainSid);
             }
@@ -1394,6 +1395,41 @@ namespace SharpHoundCommonLib {
                 output.ObjectIdentifier = wkp.Key;
                 yield return output;
             }
+
+            await foreach (var entdc in GetEnterpriseDCGroups()) {
+                yield return entdc;
+            }
+        }
+        
+        private async IAsyncEnumerable<Group> GetEnterpriseDCGroups() {
+            var grouped = new Dictionary<string, List<string>>();
+            var forestSidToName = new Dictionary<string, string>();
+            foreach (var domainSid in DomainControllers.GroupBy(x => new SecurityIdentifier(x.Key).AccountDomainSid.Value)) {
+                if (await GetDomainNameFromSid(domainSid.Key) is (true, var domainName) &&
+                    await GetForest(domainName) is (true, var forestName) &&
+                    await GetDomainSidFromDomainName(forestName) is (true, var forestDomainSid)) {
+                    forestSidToName.Add(forestDomainSid, forestName);
+                    if (grouped.ContainsKey(forestDomainSid)) {
+                        foreach (var k in domainSid) {
+                            grouped[forestDomainSid].Add(k.Key);    
+                        }
+                    } else {
+                        grouped[forestDomainSid] = new List<string>();
+                        foreach (var k in domainSid) {
+                            grouped[forestDomainSid].Add(k.Key);    
+                        }
+                    }
+                }
+            }
+
+            foreach (var f in grouped) {
+                var group = new Group() { ObjectIdentifier = $"{f.Key}-S-1-5-9" };
+                group.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forestSidToName[f.Key]}".ToUpper());
+                group.Properties.Add("domainsid", f.Key);
+                group.Properties.Add("domain", forestSidToName[f.Key]);
+                group.Members = f.Value.Select(x => new TypedPrincipal(x, Label.Computer)).ToArray();
+                yield return group;
+            }
         }
 
         public void SetLdapConfig(LdapConfig config) {
@@ -1516,11 +1552,11 @@ namespace SharpHoundCommonLib {
                 type = Label.EnterpriseCA;
             else if (objectClasses.Contains(ObjectClass.CertificationAuthorityClass,
                          StringComparer.OrdinalIgnoreCase)) {
-                if (distinguishedName.IndexOf(DirectoryPaths.RootCALocation, StringComparison.OrdinalIgnoreCase) > 0)
+                if (distinguishedName.IndexOf(DirectoryPaths.RootCALocation, StringComparison.OrdinalIgnoreCase) >= 0)
                     type = Label.RootCA;
-                if (distinguishedName.IndexOf(DirectoryPaths.AIACALocation, StringComparison.OrdinalIgnoreCase) > 0)
+                if (distinguishedName.IndexOf(DirectoryPaths.AIACALocation, StringComparison.OrdinalIgnoreCase) >= 0)
                     type = Label.AIACA;
-                if (distinguishedName.IndexOf(DirectoryPaths.NTAuthStoreLocation, StringComparison.OrdinalIgnoreCase) >
+                if (distinguishedName.IndexOf(DirectoryPaths.NTAuthStoreLocation, StringComparison.OrdinalIgnoreCase) >=
                     0)
                     type = Label.NTAuthStore;
             } else if (objectClasses.Contains(ObjectClass.OIDContainerClass, StringComparer.OrdinalIgnoreCase)) {
@@ -1551,7 +1587,7 @@ namespace SharpHoundCommonLib {
                 return (true, res);
             }
 
-            if (directoryObject.TryGetIntProperty(LDAPProperties.UserAccountControl, out var rawUac)) {
+            if (directoryObject.TryGetLongProperty(LDAPProperties.UserAccountControl, out var rawUac)) {
                 var flags = (UacFlags)rawUac;
                 if (flags.HasFlag(UacFlags.ServerTrustAccount)) {
                     res.IsDomainController = true;

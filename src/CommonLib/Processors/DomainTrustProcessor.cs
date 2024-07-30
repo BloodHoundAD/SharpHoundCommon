@@ -57,7 +57,7 @@ namespace SharpHoundCommonLib.Processors
 
                 trust.TargetDomainSid = sid;
 
-                if (!entry.TryGetIntProperty(LDAPProperties.TrustDirection, out var td)) {
+                if (!entry.TryGetLongProperty(LDAPProperties.TrustDirection, out var td)) {
                     _log.LogTrace("Failed to convert trustdirection for target: {Domain}", domain);
                     continue;
                 }
@@ -66,7 +66,7 @@ namespace SharpHoundCommonLib.Processors
                 
                 TrustAttributes attributes;
 
-                if (!entry.TryGetIntProperty(LDAPProperties.TrustAttributes, out var ta)) {
+                if (!entry.TryGetLongProperty(LDAPProperties.TrustAttributes, out var ta)) {
                     _log.LogTrace("Failed to convert trustattributes for target: {Domain}", domain);
                     continue;
                 }

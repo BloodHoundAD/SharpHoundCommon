@@ -102,7 +102,7 @@ public class MockDirectoryObject : IDirectoryObject {
         return false;
     }
 
-    public bool TryGetIntProperty(string propertyName, out int value) {
+    public bool TryGetLongProperty(string propertyName, out long value) {
         if (!Properties.Contains(propertyName)) {
             value = default;
             return false;
@@ -114,6 +114,9 @@ public class MockDirectoryObject : IDirectoryObject {
                 return true;
             case string s when int.TryParse(s, out var val):
                 value = val;
+                return true;
+            case long i:
+                value = i;
                 return true;
             default:
                 value = 0;

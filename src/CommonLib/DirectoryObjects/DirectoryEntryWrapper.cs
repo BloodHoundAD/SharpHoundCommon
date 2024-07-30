@@ -89,7 +89,7 @@ public class DirectoryEntryWrapper : IDirectoryObject {
         return true;
     }
 
-    public bool TryGetIntProperty(string propertyName, out int value) {
+    public bool TryGetLongProperty(string propertyName, out long value) {
         value = 0;
         if (!CheckCache(propertyName)) return false;
 
@@ -97,7 +97,7 @@ public class DirectoryEntryWrapper : IDirectoryObject {
             return false;
         }
 
-        return int.TryParse(s, out value);
+        return long.TryParse(s, out value);
     }
 
     public bool TryGetCertificateArrayProperty(string propertyName, out X509Certificate2[] value) {

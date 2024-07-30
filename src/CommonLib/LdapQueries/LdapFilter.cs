@@ -124,7 +124,7 @@ namespace SharpHoundCommonLib.LDAPQueries {
         /// <param name="conditions"></param>
         /// <returns></returns>
         public LdapFilter AddContainers(params string[] conditions) {
-            _filterParts.Add(BuildString("(objectClass=container)", conditions));
+            _filterParts.Add(BuildString("(&(!(objectClass=groupPolicyContainer))(objectClass=container))", conditions));
 
             return this;
         }
