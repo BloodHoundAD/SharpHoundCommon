@@ -6,17 +6,8 @@ using Moq;
 using System.DirectoryServices.Protocols;
 using SharpHoundCommonLib;
 
-public class RangedRetrievalTests
+public class LdapUtilsQueryTest
 {
-    private Mock<ILdapConnectionProvider> _mockConnectionPool;
-    private LdapUtils _utils;
-
-    public RangedRetrievalTests()
-    {
-        _mockConnectionPool = new Mock<ILdapConnectionProvider>();
-        _utils = new LdapUtils();
-    }
-
     // [Fact]
     // public async Task RangedRetrieval_SuccessfulRetrieval_ReturnsExpectedResults()
     // {
@@ -28,9 +19,12 @@ public class RangedRetrievalTests
     //     var connectionWrapper = new Mock<LdapConnectionWrapper>();
     //     var connection = new Mock<LdapConnection>();
     //     connectionWrapper.SetupGet(x => x.Connection).Returns(connection.Object);
-        
-    //     _mockConnectionPool.Setup(x => x.GetLdapConnection(domain, false))
+
+    //     var mockConnectionPool = new Mock<ILdapConnectionProvider>();
+    //     mockConnectionPool.Setup(x => x.GetLdapConnection(domain, false))
     //             .ReturnsAsync((true, connectionWrapper.Object, null));
+
+    //     var utils = new LdapUtils(mockConnectionPool.Object);
 
     //     var searchResponse = new Mock<SearchResponse>();
     //     var entry = new SearchResultEntry
@@ -47,7 +41,7 @@ public class RangedRetrievalTests
 
     //     // Act
     //     var results = new List<Result<string>>();
-    //     await foreach (var result in _utils.RangedRetrieval(distinguishedName, attributeName))
+    //     await foreach (var result in utils.RangedRetrieval(distinguishedName, attributeName))
     //     {
     //         results.Add(result);
     //     }
@@ -67,9 +61,11 @@ public class RangedRetrievalTests
         var distinguishedName = "CN=TestUser,DC=example,DC=com";
         var attributeName = "member";
 
+        var utils = new LdapUtils();
+
         // Act
         var results = new List<Result<string>>();
-        await foreach (var result in _utils.RangedRetrieval(distinguishedName, attributeName))
+        await foreach (var result in utils.RangedRetrieval(distinguishedName, attributeName))
         {
             results.Add(result);
         }
@@ -113,23 +109,72 @@ public class RangedRetrievalTests
 
         var connectionWrapper = new Mock<LdapConnectionWrapper>(null, null, false, string.Empty);
         var connection = new Mock<LdapConnection>();
+        var mockConnectionPool = new Mock<ILdapConnectionProvider>();
 
-        _mockConnectionPool.Setup(x => x.GetLdapConnection(domain, false))
+        mockConnectionPool.Setup(x => x.GetLdapConnection(domain, false))
                 .ReturnsAsync((true, connectionWrapper.Object, null));
 
-        _utils = new LdapUtils(_mockConnectionPool.Object);
+        var utils = new LdapUtils(mockConnectionPool.Object);
 
         var cts = new CancellationTokenSource();
         cts.Cancel();
 
         // Act
         var results = new List<Result<string>>();
-        await foreach (var result in _utils.RangedRetrieval(distinguishedName, attributeName, cts.Token))
+        await foreach (var result in utils.RangedRetrieval(distinguishedName, attributeName, cts.Token))
         {
             results.Add(result);
         }
 
         // Assert
         Assert.False(results[0].IsSuccess);
+    }
+
+    [Fact]
+    public async Task Query_ConnectionFailure_ReturnsEmptyResult()
+    {
+        // Arrange
+        var queryParams = new LdapQueryParameters();
+        var utils = new LdapUtils();
+
+        // Act
+        var results = new List<LdapResult<IDirectoryObject>>();
+        await foreach (var result in utils.Query(queryParams))
+        {
+            results.Add(result);
+        }
+
+        // Assert
+        Assert.Empty(results);
+    }
+
+    [Fact]
+    public async Task Query_CancellationRequested_StopsRetrieval()
+    {
+        // Arrange
+        var queryParams = new LdapQueryParameters();
+        var domain = "example.com";
+
+        var connectionWrapper = new Mock<LdapConnectionWrapper>(null, null, false, string.Empty);
+        var connection = new Mock<LdapConnection>();
+        var mockConnectionPool = new Mock<ILdapConnectionProvider>();
+
+        mockConnectionPool.Setup(x => x.GetLdapConnection(domain, false))
+                .ReturnsAsync((true, connectionWrapper.Object, null));
+
+        var utils = new LdapUtils(mockConnectionPool.Object);
+
+        var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act
+        var results = new List<LdapResult<IDirectoryObject>>();
+        await foreach (var result in utils.Query(queryParams, cts.Token))
+        {
+            results.Add(result);
+        }
+
+        // Assert
+        Assert.Empty(results);
     }
 }
