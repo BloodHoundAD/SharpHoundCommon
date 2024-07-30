@@ -902,22 +902,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetGuid
   nameWithType: DirectoryEntryWrapper.TryGetGuid
-- uid: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetIntProperty(System.String,System.Int32@)
-  name: TryGetIntProperty(String, out Int32)
-  href: api/SharpHoundCommonLib.DirectoryEntryWrapper.html#SharpHoundCommonLib_DirectoryEntryWrapper_TryGetIntProperty_System_String_System_Int32__
-  commentId: M:SharpHoundCommonLib.DirectoryEntryWrapper.TryGetIntProperty(System.String,System.Int32@)
-  name.vb: TryGetIntProperty(String, ByRef Int32)
-  fullName: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetIntProperty(System.String, out System.Int32)
-  fullName.vb: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetIntProperty(System.String, ByRef System.Int32)
-  nameWithType: DirectoryEntryWrapper.TryGetIntProperty(String, out Int32)
-  nameWithType.vb: DirectoryEntryWrapper.TryGetIntProperty(String, ByRef Int32)
-- uid: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetIntProperty*
-  name: TryGetIntProperty
-  href: api/SharpHoundCommonLib.DirectoryEntryWrapper.html#SharpHoundCommonLib_DirectoryEntryWrapper_TryGetIntProperty_
-  commentId: Overload:SharpHoundCommonLib.DirectoryEntryWrapper.TryGetIntProperty
+- uid: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetLongProperty(System.String,System.Int64@)
+  name: TryGetLongProperty(String, out Int64)
+  href: api/SharpHoundCommonLib.DirectoryEntryWrapper.html#SharpHoundCommonLib_DirectoryEntryWrapper_TryGetLongProperty_System_String_System_Int64__
+  commentId: M:SharpHoundCommonLib.DirectoryEntryWrapper.TryGetLongProperty(System.String,System.Int64@)
+  name.vb: TryGetLongProperty(String, ByRef Int64)
+  fullName: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetLongProperty(System.String, out System.Int64)
+  fullName.vb: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetLongProperty(System.String, ByRef System.Int64)
+  nameWithType: DirectoryEntryWrapper.TryGetLongProperty(String, out Int64)
+  nameWithType.vb: DirectoryEntryWrapper.TryGetLongProperty(String, ByRef Int64)
+- uid: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetLongProperty*
+  name: TryGetLongProperty
+  href: api/SharpHoundCommonLib.DirectoryEntryWrapper.html#SharpHoundCommonLib_DirectoryEntryWrapper_TryGetLongProperty_
+  commentId: Overload:SharpHoundCommonLib.DirectoryEntryWrapper.TryGetLongProperty
   isSpec: "True"
-  fullName: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetIntProperty
-  nameWithType: DirectoryEntryWrapper.TryGetIntProperty
+  fullName: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetLongProperty
+  nameWithType: DirectoryEntryWrapper.TryGetLongProperty
 - uid: SharpHoundCommonLib.DirectoryEntryWrapper.TryGetProperty(System.String,System.String@)
   name: TryGetProperty(String, out String)
   href: api/SharpHoundCommonLib.DirectoryEntryWrapper.html#SharpHoundCommonLib_DirectoryEntryWrapper_TryGetProperty_System_String_System_String__
@@ -3383,22 +3383,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.IDirectoryObject.TryGetGuid
   nameWithType: IDirectoryObject.TryGetGuid
-- uid: SharpHoundCommonLib.IDirectoryObject.TryGetIntProperty(System.String,System.Int32@)
-  name: TryGetIntProperty(String, out Int32)
-  href: api/SharpHoundCommonLib.IDirectoryObject.html#SharpHoundCommonLib_IDirectoryObject_TryGetIntProperty_System_String_System_Int32__
-  commentId: M:SharpHoundCommonLib.IDirectoryObject.TryGetIntProperty(System.String,System.Int32@)
-  name.vb: TryGetIntProperty(String, ByRef Int32)
-  fullName: SharpHoundCommonLib.IDirectoryObject.TryGetIntProperty(System.String, out System.Int32)
-  fullName.vb: SharpHoundCommonLib.IDirectoryObject.TryGetIntProperty(System.String, ByRef System.Int32)
-  nameWithType: IDirectoryObject.TryGetIntProperty(String, out Int32)
-  nameWithType.vb: IDirectoryObject.TryGetIntProperty(String, ByRef Int32)
-- uid: SharpHoundCommonLib.IDirectoryObject.TryGetIntProperty*
-  name: TryGetIntProperty
-  href: api/SharpHoundCommonLib.IDirectoryObject.html#SharpHoundCommonLib_IDirectoryObject_TryGetIntProperty_
-  commentId: Overload:SharpHoundCommonLib.IDirectoryObject.TryGetIntProperty
+- uid: SharpHoundCommonLib.IDirectoryObject.TryGetLongProperty(System.String,System.Int64@)
+  name: TryGetLongProperty(String, out Int64)
+  href: api/SharpHoundCommonLib.IDirectoryObject.html#SharpHoundCommonLib_IDirectoryObject_TryGetLongProperty_System_String_System_Int64__
+  commentId: M:SharpHoundCommonLib.IDirectoryObject.TryGetLongProperty(System.String,System.Int64@)
+  name.vb: TryGetLongProperty(String, ByRef Int64)
+  fullName: SharpHoundCommonLib.IDirectoryObject.TryGetLongProperty(System.String, out System.Int64)
+  fullName.vb: SharpHoundCommonLib.IDirectoryObject.TryGetLongProperty(System.String, ByRef System.Int64)
+  nameWithType: IDirectoryObject.TryGetLongProperty(String, out Int64)
+  nameWithType.vb: IDirectoryObject.TryGetLongProperty(String, ByRef Int64)
+- uid: SharpHoundCommonLib.IDirectoryObject.TryGetLongProperty*
+  name: TryGetLongProperty
+  href: api/SharpHoundCommonLib.IDirectoryObject.html#SharpHoundCommonLib_IDirectoryObject_TryGetLongProperty_
+  commentId: Overload:SharpHoundCommonLib.IDirectoryObject.TryGetLongProperty
   isSpec: "True"
-  fullName: SharpHoundCommonLib.IDirectoryObject.TryGetIntProperty
-  nameWithType: IDirectoryObject.TryGetIntProperty
+  fullName: SharpHoundCommonLib.IDirectoryObject.TryGetLongProperty
+  nameWithType: IDirectoryObject.TryGetLongProperty
 - uid: SharpHoundCommonLib.IDirectoryObject.TryGetProperty(System.String,System.String@)
   name: TryGetProperty(String, out String)
   href: api/SharpHoundCommonLib.IDirectoryObject.html#SharpHoundCommonLib_IDirectoryObject_TryGetProperty_System_String_System_String__
@@ -9961,22 +9961,22 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetGuid
   nameWithType: SearchResultEntryWrapper.TryGetGuid
-- uid: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty(System.String,System.Int32@)
-  name: TryGetIntProperty(String, out Int32)
-  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_TryGetIntProperty_System_String_System_Int32__
-  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty(System.String,System.Int32@)
-  name.vb: TryGetIntProperty(String, ByRef Int32)
-  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty(System.String, out System.Int32)
-  fullName.vb: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty(System.String, ByRef System.Int32)
-  nameWithType: SearchResultEntryWrapper.TryGetIntProperty(String, out Int32)
-  nameWithType.vb: SearchResultEntryWrapper.TryGetIntProperty(String, ByRef Int32)
-- uid: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty*
-  name: TryGetIntProperty
-  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_TryGetIntProperty_
-  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetLongProperty(System.String,System.Int64@)
+  name: TryGetLongProperty(String, out Int64)
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_TryGetLongProperty_System_String_System_Int64__
+  commentId: M:SharpHoundCommonLib.SearchResultEntryWrapper.TryGetLongProperty(System.String,System.Int64@)
+  name.vb: TryGetLongProperty(String, ByRef Int64)
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetLongProperty(System.String, out System.Int64)
+  fullName.vb: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetLongProperty(System.String, ByRef System.Int64)
+  nameWithType: SearchResultEntryWrapper.TryGetLongProperty(String, out Int64)
+  nameWithType.vb: SearchResultEntryWrapper.TryGetLongProperty(String, ByRef Int64)
+- uid: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetLongProperty*
+  name: TryGetLongProperty
+  href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_TryGetLongProperty_
+  commentId: Overload:SharpHoundCommonLib.SearchResultEntryWrapper.TryGetLongProperty
   isSpec: "True"
-  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetIntProperty
-  nameWithType: SearchResultEntryWrapper.TryGetIntProperty
+  fullName: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetLongProperty
+  nameWithType: SearchResultEntryWrapper.TryGetLongProperty
 - uid: SharpHoundCommonLib.SearchResultEntryWrapper.TryGetProperty(System.String,System.String@)
   name: TryGetProperty(String, out String)
   href: api/SharpHoundCommonLib.SearchResultEntryWrapper.html#SharpHoundCommonLib_SearchResultEntryWrapper_TryGetProperty_System_String_System_String__
