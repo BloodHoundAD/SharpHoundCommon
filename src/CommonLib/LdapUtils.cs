@@ -478,7 +478,7 @@ namespace SharpHoundCommonLib {
 
         public async Task<(bool Success, TypedPrincipal Principal)>
             ResolveIDAndType(string identifier, string objectDomain) {
-            if (identifier.Contains("0ACNF")) {
+            if (identifier.IndexOf("0ACNF", StringComparison.OrdinalIgnoreCase) >= 0) {
                 return (false, new TypedPrincipal(identifier, Label.Base));
             }
 
