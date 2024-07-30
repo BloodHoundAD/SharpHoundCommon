@@ -35,7 +35,7 @@ public static class DirectoryObjectExtensions {
             return false;
         }
         
-        if (!directoryObject.TryGetIntProperty(LDAPProperties.Flags, out var flags)) {
+        if (!directoryObject.TryGetLongProperty(LDAPProperties.Flags, out var flags)) {
             flags = 0;
         }
 
@@ -43,7 +43,7 @@ public static class DirectoryObjectExtensions {
         directoryObject.TryGetProperty(LDAPProperties.SAMAccountType, out var samAccountType);
         directoryObject.TryGetArrayProperty(LDAPProperties.ObjectClass, out var objectClasses);
 
-        return LdapUtils.ResolveLabel(objectIdentifier, distinguishedName, samAccountType, objectClasses, flags,
+        return LdapUtils.ResolveLabel(objectIdentifier, distinguishedName, samAccountType, objectClasses, (int)flags,
             out type);
     }
     
@@ -56,12 +56,12 @@ public static class DirectoryObjectExtensions {
     }
     
     public static bool HasLAPS(this IDirectoryObject directoryObject) {
-        if (directoryObject.TryGetIntProperty(LDAPProperties.LAPSExpirationTime, out var lapsExpiration) &&
+        if (directoryObject.TryGetLongProperty(LDAPProperties.LAPSExpirationTime, out var lapsExpiration) &&
             lapsExpiration > 0) {
             return true;
         }
 
-        if (directoryObject.TryGetIntProperty(LDAPProperties.LegacyLAPSExpirationTime, out var legacyLapsExpiration) &&
+        if (directoryObject.TryGetLongProperty(LDAPProperties.LegacyLAPSExpirationTime, out var legacyLapsExpiration) &&
             legacyLapsExpiration > 0) {
             return true;
         }

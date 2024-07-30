@@ -60,11 +60,11 @@ namespace SharpHoundCommonLib.Processors {
         public static Dictionary<string, object> ReadDomainProperties(IDirectoryObject entry) {
             var props = GetCommonProps(entry);
 
-            if (!entry.TryGetIntProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel)) {
+            if (!entry.TryGetLongProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel)) {
                 functionalLevel = -1;
             }
 
-            props.Add("functionallevel", FunctionalLevelToString(functionalLevel));
+            props.Add("functionallevel", FunctionalLevelToString((int)functionalLevel));
 
             return props;
         }
@@ -119,7 +119,7 @@ namespace SharpHoundCommonLib.Processors {
         /// <returns></returns>
         public static Dictionary<string, object> ReadGroupProperties(IDirectoryObject entry) {
             var props = GetCommonProps(entry);
-            entry.TryGetIntProperty(LDAPProperties.AdminCount, out var ac);
+            entry.TryGetLongProperty(LDAPProperties.AdminCount, out var ac);
             props.Add("admincount", ac != 0);
             return props;
         }
@@ -150,7 +150,7 @@ namespace SharpHoundCommonLib.Processors {
             var props = GetCommonProps(entry);
 
             var uacFlags = (UacFlags)0;
-            if (entry.TryGetIntProperty(LDAPProperties.UserAccountControl, out var uac)) {
+            if (entry.TryGetLongProperty(LDAPProperties.UserAccountControl, out var uac)) {
                 uacFlags = (UacFlags)uac;
             }
 
@@ -213,7 +213,7 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("sfupassword", entry.GetProperty(LDAPProperties.MsSFU30Password));
             props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
 
-            entry.TryGetIntProperty(LDAPProperties.AdminCount, out var ac);
+            entry.TryGetLongProperty(LDAPProperties.AdminCount, out var ac);
             props.Add("admincount", ac != 0);
 
             entry.TryGetByteArrayProperty(LDAPProperties.SIDHistory, out var sh);
@@ -258,7 +258,7 @@ namespace SharpHoundCommonLib.Processors {
             var props = GetCommonProps(entry);
 
             var flags = (UacFlags)0;
-            if (entry.TryGetIntProperty(LDAPProperties.UserAccountControl, out var uac)) {
+            if (entry.TryGetLongProperty(LDAPProperties.UserAccountControl, out var uac)) {
                 flags = (UacFlags)uac;
             }
 
@@ -399,7 +399,7 @@ namespace SharpHoundCommonLib.Processors {
 
         public static Dictionary<string, object> ReadEnterpriseCAProperties(IDirectoryObject entry) {
             var props = GetCommonProps(entry);
-            if (entry.TryGetIntProperty("flags", out var flags))
+            if (entry.TryGetLongProperty("flags", out var flags))
                 props.Add("flags", (PKICertificateAuthorityFlags)flags);
             props.Add("caname", entry.GetProperty(LDAPProperties.Name));
             props.Add("dnshostname", entry.GetProperty(LDAPProperties.DNSHostName));
@@ -438,13 +438,13 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("validityperiod", ConvertPKIPeriod(entry.GetByteProperty(LDAPProperties.PKIExpirationPeriod)));
             props.Add("renewalperiod", ConvertPKIPeriod(entry.GetByteProperty(LDAPProperties.PKIOverlappedPeriod)));
 
-            if (entry.TryGetIntProperty(LDAPProperties.TemplateSchemaVersion, out var schemaVersion))
+            if (entry.TryGetLongProperty(LDAPProperties.TemplateSchemaVersion, out var schemaVersion))
                 props.Add("schemaversion", schemaVersion);
 
             props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
             props.Add("oid", entry.GetProperty(LDAPProperties.CertTemplateOID));
 
-            if (entry.TryGetIntProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw)) {
+            if (entry.TryGetLongProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw)) {
                 var enrollmentFlags = (PKIEnrollmentFlag)enrollmentFlagsRaw;
 
                 props.Add("enrollmentflag", enrollmentFlags);
@@ -452,7 +452,7 @@ namespace SharpHoundCommonLib.Processors {
                 props.Add("nosecurityextension", enrollmentFlags.HasFlag(PKIEnrollmentFlag.NO_SECURITY_EXTENSION));
             }
 
-            if (entry.TryGetIntProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw)) {
+            if (entry.TryGetLongProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw)) {
                 var nameFlags = (PKICertificateNameFlag)nameFlagsRaw;
 
                 props.Add("certificatenameflag", nameFlags);
@@ -481,11 +481,11 @@ namespace SharpHoundCommonLib.Processors {
             entry.TryGetArrayProperty(LDAPProperties.CertificatePolicy, out var certificatePolicy);
             props.Add("certificatepolicy", certificatePolicy);
 
-            if (entry.TryGetIntProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
+            if (entry.TryGetLongProperty(LDAPProperties.NumSignaturesRequired, out var authorizedSignatures))
                 props.Add("authorizedsignatures", authorizedSignatures);
 
             var hasUseLegacyProvider = false;
-            if (entry.TryGetIntProperty(LDAPProperties.PKIPrivateKeyFlag, out var privateKeyFlagsRaw)) {
+            if (entry.TryGetLongProperty(LDAPProperties.PKIPrivateKeyFlag, out var privateKeyFlagsRaw)) {
                 var privateKeyFlags = (PKIPrivateKeyFlag)privateKeyFlagsRaw;
                 hasUseLegacyProvider = privateKeyFlags.HasFlag(PKIPrivateKeyFlag.USE_LEGACY_PROVIDER);
             }
@@ -494,7 +494,7 @@ namespace SharpHoundCommonLib.Processors {
 
             props.Add("applicationpolicies",
                 ParseCertTemplateApplicationPolicies(appPolicies,
-                    schemaVersion, hasUseLegacyProvider));
+                    (int)schemaVersion, hasUseLegacyProvider));
             entry.TryGetArrayProperty(LDAPProperties.IssuancePolicies, out var issuancePolicies);
             props.Add("issuancepolicies", issuancePolicies);
 

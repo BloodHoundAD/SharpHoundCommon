@@ -83,13 +83,13 @@ public class SearchResultEntryWrapper : IDirectoryObject {
         return true;
     }
 
-    public bool TryGetIntProperty(string propertyName, out int value) {
+    public bool TryGetLongProperty(string propertyName, out long value) {
         if (!TryGetProperty(propertyName, out var raw)) {
             value = 0;
             return false;
         }
         
-        return int.TryParse(raw, out value);
+        return long.TryParse(raw, out value);
     }
 
     public bool TryGetCertificateArrayProperty(string propertyName, out X509Certificate2[] value) {

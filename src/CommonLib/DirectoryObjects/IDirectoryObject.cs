@@ -9,7 +9,7 @@ public interface IDirectoryObject {
     bool TryGetByteProperty(string propertyName, out byte[] value);
     bool TryGetArrayProperty(string propertyName, out string[] value);
     bool TryGetByteArrayProperty(string propertyName, out byte[][] value);
-    bool TryGetIntProperty(string propertyName, out int value);
+    bool TryGetLongProperty(string propertyName, out long value);
     bool TryGetCertificateArrayProperty(string propertyName, out X509Certificate2[] value);
     bool TryGetSecurityIdentifier(out string securityIdentifier);
     bool TryGetGuid(out string guid);
