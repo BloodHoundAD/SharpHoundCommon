@@ -1516,11 +1516,11 @@ namespace SharpHoundCommonLib {
                 type = Label.EnterpriseCA;
             else if (objectClasses.Contains(ObjectClass.CertificationAuthorityClass,
                          StringComparer.OrdinalIgnoreCase)) {
-                if (distinguishedName.IndexOf(DirectoryPaths.RootCALocation, StringComparison.OrdinalIgnoreCase) > 0)
+                if (distinguishedName.IndexOf(DirectoryPaths.RootCALocation, StringComparison.OrdinalIgnoreCase) >= 0)
                     type = Label.RootCA;
-                if (distinguishedName.IndexOf(DirectoryPaths.AIACALocation, StringComparison.OrdinalIgnoreCase) > 0)
+                if (distinguishedName.IndexOf(DirectoryPaths.AIACALocation, StringComparison.OrdinalIgnoreCase) >= 0)
                     type = Label.AIACA;
-                if (distinguishedName.IndexOf(DirectoryPaths.NTAuthStoreLocation, StringComparison.OrdinalIgnoreCase) >
+                if (distinguishedName.IndexOf(DirectoryPaths.NTAuthStoreLocation, StringComparison.OrdinalIgnoreCase) >=
                     0)
                     type = Label.NTAuthStore;
             } else if (objectClasses.Contains(ObjectClass.OIDContainerClass, StringComparer.OrdinalIgnoreCase)) {

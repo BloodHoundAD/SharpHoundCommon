@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 
 namespace SharpHoundCommonLib;
-
+[DataContract]
 public class SearchResultEntryWrapper : IDirectoryObject {
+    [DataMember]
     private readonly SearchResultEntry _entry;
 
     public SearchResultEntryWrapper(SearchResultEntry entry) {
