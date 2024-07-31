@@ -1402,22 +1402,19 @@ namespace SharpHoundCommonLib {
         }
         
         private async IAsyncEnumerable<Group> GetEnterpriseDCGroups() {
-            var grouped = new Dictionary<string, List<string>>();
-            var forestSidToName = new Dictionary<string, string>();
+            var grouped = new ConcurrentDictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            var forestSidToName = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (var domainSid in DomainControllers.GroupBy(x => new SecurityIdentifier(x.Key).AccountDomainSid.Value)) {
                 if (await GetDomainNameFromSid(domainSid.Key) is (true, var domainName) &&
                     await GetForest(domainName) is (true, var forestName) &&
                     await GetDomainSidFromDomainName(forestName) is (true, var forestDomainSid)) {
-                    forestSidToName.Add(forestDomainSid, forestName);
-                    if (grouped.ContainsKey(forestDomainSid)) {
-                        foreach (var k in domainSid) {
-                            grouped[forestDomainSid].Add(k.Key);    
-                        }
-                    } else {
+                    forestSidToName.TryAdd(forestDomainSid, forestName);
+                    if (!grouped.ContainsKey(forestDomainSid)) {
                         grouped[forestDomainSid] = new List<string>();
-                        foreach (var k in domainSid) {
-                            grouped[forestDomainSid].Add(k.Key);    
-                        }
+                    }
+                    
+                    foreach (var k in domainSid) {
+                        grouped[forestDomainSid].Add(k.Key);    
                     }
                 }
             }

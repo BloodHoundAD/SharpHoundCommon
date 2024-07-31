@@ -55,7 +55,7 @@
             LDAPProperties.GroupPolicyOptions, LDAPProperties.AllowedToDelegateTo,
             LDAPProperties.AllowedToActOnBehalfOfOtherIdentity, LDAPProperties.WhenCreated,
             LDAPProperties.HostServiceAccount, LDAPProperties.UnixUserPassword, LDAPProperties.MsSFU30Password,
-            LDAPProperties.UnicodePassword
+            LDAPProperties.UnicodePassword, LDAPProperties.ProfilePath, LDAPProperties.ScriptPath
         };
 
         public static readonly string[] ContainerProps =
