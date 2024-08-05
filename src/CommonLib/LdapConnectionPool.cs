@@ -23,6 +23,7 @@ namespace SharpHoundCommonLib {
         private readonly ILogger _log;
         private readonly PortScanner _portScanner;
         private readonly NativeMethods _nativeMethods;
+        private bool _isUnreachable;
 
         public LdapConnectionPool(string identifier, string poolIdentifier, LdapConfig config, int maxConnections = 10, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
             _connections = new ConcurrentBag<LdapConnectionWrapper>();
@@ -38,6 +39,9 @@ namespace SharpHoundCommonLib {
 
         public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetConnectionAsync() {
             await _semaphore.WaitAsync();
+            if (_isUnreachable) {
+                return (false, null, "Domain is unreachable");
+            }
             if (!_connections.TryTake(out var connectionWrapper)) {
                 var (success, connection, message) = await CreateNewConnection();
                 if (!success) {
@@ -180,7 +184,9 @@ namespace SharpHoundCommonLib {
                     }
                 }
             } catch (Exception e) {
-                _log.LogInformation(e, "We will not be able to connect to domain {Domain} by any strategy, leaving it.", _identifier);
+                _log.LogInformation("We will not be able to connect to domain {Domain} by any strategy, leaving it. Reason: {Message}", _identifier, e.Message);
+                _isUnreachable = true;
+                return (false, null, e.Message);
             }
 
             return (false, null, "All attempted connections failed");
