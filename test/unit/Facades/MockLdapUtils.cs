@@ -1121,9 +1121,9 @@ namespace CommonLibTest.Facades
          
         }
 
-        public Task<(bool Success, string DSHeuristics)> GetDSHueristics(string dn)
+        public async Task<(bool Success, string DSHeuristics)> GetDSHueristics(string domain, string dn)
         {
-            throw new NotImplementedException();
+            return (true, "0");
         }
     }
 }

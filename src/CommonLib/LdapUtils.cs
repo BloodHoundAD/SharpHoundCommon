@@ -1367,21 +1367,23 @@ namespace SharpHoundCommonLib {
             }
         }
 
-        public async Task<(bool Success, string DSHeuristics)> GetDSHueristics(string dn)
+        public async Task<(bool Success, string DSHeuristics)> GetDSHueristics(string domain, string dn)
         {
             var configPath = CommonPaths.CreateDNPath(CommonPaths.DirectoryServicePath, dn);
             var queryParameters = new LdapQueryParameters {
                 Attributes = new[] { LDAPProperties.DSHeuristics },
                 SearchScope = SearchScope.Base,
+                DomainName = domain,
+                LDAPFilter = new LdapFilter().AddAllObjects().GetFilter(),
+                NamingContext = NamingContext.Configuration,
                 SearchBase = configPath
             };
-            var result = await Query(queryParameters).DefaultIfEmpty(null).FirstOrDefaultAsync();
 
-            if (result.IsSuccess && result.Value.GetObjectIdentifier(out var id)) {
-                var entry = result.Value;
-                return (true, entry.GetProperty(LDAPProperties.DSHeuristics));
+            var result = await Query(queryParameters).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
+            if (result.IsSuccess &&
+                result.Value.TryGetProperty(LDAPProperties.DSHeuristics, out var dsh)) {
+                return (true, dsh);
             }
-
             return (false, null);
         }
 

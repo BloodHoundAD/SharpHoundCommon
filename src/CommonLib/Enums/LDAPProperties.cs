@@ -74,7 +74,6 @@
         public const string ExpirePasswordsOnSmartCardOnlyAccounts = "msds-expirepasswordsonsmartcardonlyaccounts";
         public const string MachineAccountQuota = "ms-ds-machineaccountquota";
         public const string SupportedEncryptionTypes = "msds-supportedencryptiontypes";
-        public const string WhenChanged = "whenchanged";
         public const string DSHeuristics = "dsheuristics";
         public const string DefaultNamingContext = "defaultnamingcontext";
         public const string RootDomainNamingContext = "rootdomainnamingcontext";

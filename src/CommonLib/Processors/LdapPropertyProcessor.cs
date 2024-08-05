@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -57,29 +57,38 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public Dictionary<string, object> ReadDomainProperties(IDirectoryObject entry)
+        public async Task<Dictionary<string, object>> ReadDomainProperties(IDirectoryObject entry, string domain)
         {
             var props = GetCommonProps(entry);
 
-            if (!entry.TryGetLongProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel)) {
-                functionalLevel = -1;
-            }
-
-            props.Add("functionallevel", FunctionalLevelToString((int)functionalLevel));
 
             props.Add("expirepasswordsonsmartcardonlyaccounts", entry.GetProperty(LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts));
             props.Add("machineaccountquota", entry.GetProperty(LDAPProperties.MachineAccountQuota));
             props.Add("minpwdlength", entry.GetProperty(LDAPProperties.MinPwdLength));
             props.Add("pwdproperties", entry.GetProperty(LDAPProperties.PwdProperties));
-            props.Add("minpwdage", entry.GetProperty(LDAPProperties.MinPwdAge));
-            props.Add("maxpwdage", entry.GetProperty(LDAPProperties.MaxPwdAge));
             props.Add("pwdhistorylength", entry.GetProperty(LDAPProperties.PwdHistoryLength));
-            props.Add("lockoutduration", entry.GetProperty(LDAPProperties.LockoutDuration));
             props.Add("lockoutthreshold", entry.GetProperty(LDAPProperties.LockoutThreshold));
-            props.Add("lockoutobservationwindow", entry.GetProperty(LDAPProperties.LockOutObservationWindow));
+
+            if (entry.TryGetLongProperty(LDAPProperties.MinPwdAge, out var minpwdage)) {
+                props.Add("minpwdage", ConvertNanoDuration(minpwdage));
+            }
+            if (entry.TryGetLongProperty(LDAPProperties.MaxPwdAge, out var maxpwdage)) {
+                props.Add("maxpwdage", ConvertNanoDuration(maxpwdage));
+            }
+            if (entry.TryGetLongProperty(LDAPProperties.LockoutDuration, out var lockoutduration)) {
+                props.Add("lockoutduration", ConvertNanoDuration(lockoutduration));
+            }
+            if (entry.TryGetLongProperty(LDAPProperties.LockOutObservationWindow, out var lockoutobservationwindow)) {
+                props.Add("lockoutobservationwindow", ConvertNanoDuration(lockoutobservationwindow));
+            }
+            if (!entry.TryGetLongProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel)) {
+                functionalLevel = -1;
+            }
+            props.Add("functionallevel", FunctionalLevelToString((int)functionalLevel));
 
             var dn = entry.GetProperty(LDAPProperties.DistinguishedName);
-            props.Add("dsheuristics", _utils.GetDSHueristics(dn));
+            var dsh = await _utils.GetDSHueristics(domain, dn);
+            props.Add("dsheuristics", dsh.DSHeuristics);
 
             return props;
         }
@@ -99,6 +108,7 @@ namespace SharpHoundCommonLib.Processors {
                 5 => "2012",
                 6 => "2012 R2",
                 7 => "2016",
+                8 => "2025",
                 _ => "Unknown"
             };
 
@@ -234,12 +244,14 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("unicodepassword", entry.GetProperty(LDAPProperties.UnicodePassword));
             props.Add("sfupassword", entry.GetProperty(LDAPProperties.MsSFU30Password));
             props.Add("logonscript", entry.GetProperty(LDAPProperties.ScriptPath));
-            props.Add("supportedencryptiontypes", entry.GetProperty(LDAPProperties.SupportedEncryptionTypes));
             props.Add("useraccountcontrol", uac);
             props.Add("profilepath", entry.GetProperty(LDAPProperties.ProfilePath));
 
             entry.TryGetLongProperty(LDAPProperties.AdminCount, out var ac);
             props.Add("admincount", ac != 0);
+
+            var encryptionTypes = ConvertEncryptionTypes(entry.GetProperty(LDAPProperties.SupportedEncryptionTypes));
+            props.Add("supportedencryptiontypes", encryptionTypes);
 
             entry.TryGetByteArrayProperty(LDAPProperties.SIDHistory, out var sh);
             var sidHistoryList = new List<string>();
@@ -297,6 +309,9 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("lockedout", flags.HasFlag(UacFlags.Lockout));
             props.Add("passwordexpired", flags.HasFlag(UacFlags.PasswordExpired));
 
+            var encryptionTypes = ConvertEncryptionTypes(entry.GetProperty(LDAPProperties.SupportedEncryptionTypes));
+            props.Add("supportedencryptiontypes", encryptionTypes);
+
             var comps = new List<TypedPrincipal>();
             if (flags.HasFlag(UacFlags.TrustedToAuthForDelegation) &&
                 entry.TryGetArrayProperty(LDAPProperties.AllowedToDelegateTo, out var delegates)) {
@@ -337,7 +352,6 @@ namespace SharpHoundCommonLib.Processors {
             entry.TryGetArrayProperty(LDAPProperties.ServicePrincipalNames, out var spn);
             props.Add("serviceprincipalnames", spn);
             props.Add("email", entry.GetProperty(LDAPProperties.Email));
-            props.Add("supportedencryptiontypes", entry.GetProperty(LDAPProperties.SupportedEncryptionTypes));
             props.Add("useraccountcontrol", uac);
             var os = entry.GetProperty(LDAPProperties.OperatingSystem);
             var sp = entry.GetProperty(LDAPProperties.ServicePack);
@@ -670,6 +684,75 @@ namespace SharpHoundCommonLib.Processors {
 
             //Just return the property as a string
             return value;
+        }
+
+        private static List<string> ConvertEncryptionTypes(string encryptionTypes)
+        {
+            if (encryptionTypes == null) {
+                return null;
+            }
+
+            int encryptionTypesInt = Int32.Parse(encryptionTypes);
+            List<string> supportedEncryptionTypes = new List<string>();
+            if (encryptionTypesInt == 0) {
+                supportedEncryptionTypes.Add("Not defined");
+            }
+
+            if ((encryptionTypesInt & KerberosEncryptionTypes.DES_CBC_CRC) == KerberosEncryptionTypes.DES_CBC_CRC)
+            {
+                supportedEncryptionTypes.Add("DES-CBC-CRC");
+            }
+            if ((encryptionTypesInt & KerberosEncryptionTypes.DES_CBC_MD5) == KerberosEncryptionTypes.DES_CBC_MD5)
+            {
+                supportedEncryptionTypes.Add("DES-CBC-MD5");
+            }
+            if ((encryptionTypesInt & KerberosEncryptionTypes.RC4_HMAC_MD5) == KerberosEncryptionTypes.RC4_HMAC_MD5)
+            {
+                supportedEncryptionTypes.Add("RC4-HMAC-MD5");
+            }
+            if ((encryptionTypesInt & KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96) == KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96)
+            {
+                supportedEncryptionTypes.Add("AES128-CTS-HMAC-SHA1-96");
+            }
+            if ((encryptionTypesInt & KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96) == KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96)
+            {
+                supportedEncryptionTypes.Add("AES256-CTS-HMAC-SHA1-96");
+            }
+
+            return supportedEncryptionTypes;
+        }
+
+        private static string ConvertNanoDuration(long duration)
+        {
+            // duration is in 100-nanosecond intervals
+            // Convert it to TimeSpan (which uses 1 tick = 100 nanoseconds)
+            TimeSpan durationSpan = TimeSpan.FromTicks(Math.Abs(duration));
+
+            // Create a list to hold non-zero time components
+            List<string> timeComponents = new List<string>();
+
+            // Add each time component if it's greater than zero
+            if (durationSpan.Days > 0)
+            {
+                timeComponents.Add($"{durationSpan.Days} {(durationSpan.Days == 1 ? "day" : "days")}");
+            }
+            if (durationSpan.Hours > 0)
+            {
+                timeComponents.Add($"{durationSpan.Hours} {(durationSpan.Hours == 1 ? "hour" : "hours")}");
+            }
+            if (durationSpan.Minutes > 0)
+            {
+                timeComponents.Add($"{durationSpan.Minutes} {(durationSpan.Minutes == 1 ? "minute" : "minutes")}");
+            }
+            if (durationSpan.Seconds > 0)
+            {
+                timeComponents.Add($"{durationSpan.Seconds} {(durationSpan.Seconds == 1 ? "second" : "seconds")}");
+            }
+
+            // Join the non-zero components into a single readable string
+            string readableDuration = string.Join(", ", timeComponents);
+
+            return readableDuration;
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void LDAPPropertyProcessor_ReadDomainProperties_TestGoodData()
+        public async void LDAPPropertyProcessor_ReadDomainProperties_TestGoodData()
         {
             var mock = new MockDirectoryObject("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
             {
@@ -37,7 +37,7 @@ namespace CommonLibTest
             }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
-            var test = processor.ReadDomainProperties(mock);
+            var test = await processor.ReadDomainProperties(mock, "testlab.local");
             Assert.Contains("functionallevel", test.Keys);
             Assert.Equal("2012 R2", test["functionallevel"] as string);
             Assert.Contains("description", test.Keys);
@@ -45,7 +45,7 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void LDAPPropertyProcessor_ReadDomainProperties_TestBadFunctionalLevel()
+        public async void LDAPPropertyProcessor_ReadDomainProperties_TestBadFunctionalLevel()
         {
             var mock = new MockDirectoryObject("DC\u003dtestlab,DC\u003dlocal", new Dictionary<string, object>
             {
@@ -53,7 +53,7 @@ namespace CommonLibTest
             }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
             var processor = new LdapPropertyProcessor(new MockLdapUtils());
-            var test = processor.ReadDomainProperties(mock);
+            var test = await processor.ReadDomainProperties(mock,"testlab.local");
             Assert.Contains("functionallevel", test.Keys);
             Assert.Equal("Unknown", test["functionallevel"] as string);
         }
