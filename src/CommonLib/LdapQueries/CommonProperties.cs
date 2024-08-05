@@ -57,7 +57,10 @@
             LDAPProperties.HostServiceAccount, LDAPProperties.UnixUserPassword, LDAPProperties.MsSFU30Password,
             LDAPProperties.UnicodePassword, LDAPProperties.ProfilePath, LDAPProperties.ScriptPath,
             LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts, LDAPProperties.MachineAccountQuota, 
-            LDAPProperties.WhenChanged, LDAPProperties.SupportedEncryptionTypes, LDAPProperties.DSHeuristics
+            LDAPProperties.WhenChanged, LDAPProperties.SupportedEncryptionTypes, LDAPProperties.DSHeuristics,
+            LDAPProperties.MinPwdLength, LDAPProperties.PwdProperties, LDAPProperties.MinPwdAge, 
+            LDAPProperties.MaxPwdAge, LDAPProperties.PwdHistoryLength, LDAPProperties.LockoutDuration, 
+            LDAPProperties.LockoutThreshold, LDAPProperties.LockOutObservationWindow
         };
 
         public static readonly string[] ContainerProps =

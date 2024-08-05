@@ -36,7 +36,8 @@ namespace CommonLibTest
                 {"msds-behavior-version", "6"}
             }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
-            var test = LdapPropertyProcessor.ReadDomainProperties(mock);
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
+            var test = processor.ReadDomainProperties(mock);
             Assert.Contains("functionallevel", test.Keys);
             Assert.Equal("2012 R2", test["functionallevel"] as string);
             Assert.Contains("description", test.Keys);
@@ -51,7 +52,8 @@ namespace CommonLibTest
                 {"msds-behavior-version", "a"}
             }, "S-1-5-21-3130019616-2776909439-2417379446","");
 
-            var test = LdapPropertyProcessor.ReadDomainProperties(mock);
+            var processor = new LdapPropertyProcessor(new MockLdapUtils());
+            var test = processor.ReadDomainProperties(mock);
             Assert.Contains("functionallevel", test.Keys);
             Assert.Equal("Unknown", test["functionallevel"] as string);
         }

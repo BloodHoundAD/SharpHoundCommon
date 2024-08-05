@@ -1367,14 +1367,22 @@ namespace SharpHoundCommonLib {
             }
         }
 
-        public string GetDSHueristics(string dn)
+        public async Task<(bool Success, string DSHeuristics)> GetDSHueristics(string dn)
         {
             var configPath = CommonPaths.CreateDNPath(CommonPaths.DirectoryServicePath, dn);
-            var enumerable = QueryLDAP("(objectclass=*)", SearchScope.Base, null, adsPath: configPath);
-            if (enumerable == null)
-                return null;
-            var obj = enumerable.DefaultIfEmpty(null).FirstOrDefault();
-            return obj.GetProperty(LDAPProperties.DSHeuristics);
+            var queryParameters = new LdapQueryParameters {
+                Attributes = new[] { LDAPProperties.DSHeuristics },
+                SearchScope = SearchScope.Base,
+                SearchBase = configPath
+            };
+            var result = await Query(queryParameters).DefaultIfEmpty(null).FirstOrDefaultAsync();
+
+            if (result.IsSuccess && result.Value.GetObjectIdentifier(out var id)) {
+                var entry = result.Value;
+                return (true, entry.GetProperty(LDAPProperties.DSHeuristics));
+            }
+
+            return (false, null);
         }
 
         public void AddDomainController(string domainControllerSID) {

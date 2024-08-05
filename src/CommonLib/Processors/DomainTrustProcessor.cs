@@ -71,7 +71,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
                 
-                trust.TrustAttributes = trustAttributes;
+                trust.TrustAttributes = ta.ToString();
                 attributes = (TrustAttributes) ta;
 
                 trust.IsTransitive = !attributes.HasFlag(TrustAttributes.NonTransitive);

@@ -86,5 +86,13 @@
         public const string OU = "ou";
         public const string ProfilePath = "profilepath";
         public const string DSASignature = "dsasignature";
+        public const string MinPwdLength = "minpwdlength";
+        public const string PwdProperties = "pwdproperties";
+        public const string MinPwdAge = "minpwdage";
+        public const string MaxPwdAge = "maxpwdage";
+        public const string PwdHistoryLength = "pwdhistorylength";
+        public const string LockoutDuration = "lockoutduration";
+        public const string LockoutThreshold = "lockoutthreshold";
+        public const string LockOutObservationWindow = "lockoutobservationwindow";
     }
 }

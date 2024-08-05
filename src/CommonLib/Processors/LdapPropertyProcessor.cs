@@ -57,7 +57,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadDomainProperties(IDirectoryObject entry) {
+        public Dictionary<string, object> ReadDomainProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
 
             if (!entry.TryGetLongProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel)) {
@@ -68,9 +69,17 @@ namespace SharpHoundCommonLib.Processors {
 
             props.Add("expirepasswordsonsmartcardonlyaccounts", entry.GetProperty(LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts));
             props.Add("machineaccountquota", entry.GetProperty(LDAPProperties.MachineAccountQuota));
+            props.Add("minpwdlength", entry.GetProperty(LDAPProperties.MinPwdLength));
+            props.Add("pwdproperties", entry.GetProperty(LDAPProperties.PwdProperties));
+            props.Add("minpwdage", entry.GetProperty(LDAPProperties.MinPwdAge));
+            props.Add("maxpwdage", entry.GetProperty(LDAPProperties.MaxPwdAge));
+            props.Add("pwdhistorylength", entry.GetProperty(LDAPProperties.PwdHistoryLength));
+            props.Add("lockoutduration", entry.GetProperty(LDAPProperties.LockoutDuration));
+            props.Add("lockoutthreshold", entry.GetProperty(LDAPProperties.LockoutThreshold));
+            props.Add("lockoutobservationwindow", entry.GetProperty(LDAPProperties.LockOutObservationWindow));
 
-            var dsh = _utils.GetDSHueristics(entry.DistinguishedName);
-            props.Add("dsheuristics", dsh);
+            var dn = entry.GetProperty(LDAPProperties.DistinguishedName);
+            props.Add("dsheuristics", _utils.GetDSHueristics(dn));
 
             return props;
         }
