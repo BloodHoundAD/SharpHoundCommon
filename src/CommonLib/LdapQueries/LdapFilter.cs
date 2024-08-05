@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SharpHoundCommonLib.LDAPQueries
-{
+namespace SharpHoundCommonLib.LDAPQueries {
     /// <summary>
     ///     A class used to more easily build LDAP filters based on the common filters used by SharpHound
     /// </summary>
-    public class LDAPFilter
-    {
+    public class LdapFilter {
         private readonly List<string> _filterParts = new();
         private readonly List<string> _mandatory = new();
 
@@ -16,13 +14,11 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        private static string[] CheckConditions(IEnumerable<string> conditions)
-        {
+        private static string[] CheckConditions(IEnumerable<string> conditions) {
             return conditions.Select(FixFilter).ToArray();
         }
 
-        private static string FixFilter(string filter)
-        {
+        private static string FixFilter(string filter) {
             if (!filter.StartsWith("(")) filter = $"({filter}";
 
             if (!filter.EndsWith(")")) filter = $"{filter})";
@@ -37,8 +33,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// <param name="baseFilter"></param>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        private static string BuildString(string baseFilter, params string[] conditions)
-        {
+        private static string BuildString(string baseFilter, params string[] conditions) {
             if (conditions.Length == 0) return baseFilter;
 
             return $"(&{baseFilter}{string.Join("", CheckConditions(conditions))})";
@@ -49,8 +44,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddAllObjects(params string[] conditions)
-        {
+        public LdapFilter AddAllObjects(params string[] conditions) {
             _filterParts.Add(BuildString("(objectclass=*)", conditions));
 
             return this;
@@ -61,8 +55,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddUsers(params string[] conditions)
-        {
+        public LdapFilter AddUsers(params string[] conditions) {
             _filterParts.Add(BuildString("(samaccounttype=805306368)", conditions));
 
             return this;
@@ -73,8 +66,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddGroups(params string[] conditions)
-        {
+        public LdapFilter AddGroups(params string[] conditions) {
             _filterParts.Add(BuildString(
                 "(|(samaccounttype=268435456)(samaccounttype=268435457)(samaccounttype=536870912)(samaccounttype=536870913))",
                 conditions));
@@ -87,8 +79,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddPrimaryGroups(params string[] conditions)
-        {
+        public LdapFilter AddPrimaryGroups(params string[] conditions) {
             _filterParts.Add(BuildString("(primarygroupid=*)", conditions));
 
             return this;
@@ -99,8 +90,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddGPOs(params string[] conditions)
-        {
+        public LdapFilter AddGPOs(params string[] conditions) {
             _filterParts.Add(BuildString("(&(objectcategory=groupPolicyContainer)(flags=*))", conditions));
 
             return this;
@@ -111,8 +101,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddOUs(params string[] conditions)
-        {
+        public LdapFilter AddOUs(params string[] conditions) {
             _filterParts.Add(BuildString("(objectcategory=organizationalUnit)", conditions));
 
             return this;
@@ -123,8 +112,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddDomains(params string[] conditions)
-        {
+        public LdapFilter AddDomains(params string[] conditions) {
             _filterParts.Add(BuildString("(objectclass=domain)", conditions));
 
             return this;
@@ -135,9 +123,8 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddContainers(params string[] conditions)
-        {
-            _filterParts.Add(BuildString("(objectClass=container)", conditions));
+        public LdapFilter AddContainers(params string[] conditions) {
+            _filterParts.Add(BuildString("(&(!(objectClass=groupPolicyContainer))(objectClass=container))", conditions));
 
             return this;
         }
@@ -147,8 +134,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddConfiguration(params string[] conditions)
-        {
+        public LdapFilter AddConfiguration(params string[] conditions) {
             _filterParts.Add(BuildString("(objectClass=configuration)", conditions));
 
             return this;
@@ -161,8 +147,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddComputers(params string[] conditions)
-        {
+        public LdapFilter AddComputers(params string[] conditions) {
             _filterParts.Add(BuildString("(samaccounttype=805306369)", conditions));
             return this;
         }
@@ -172,8 +157,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddCertificateTemplates(params string[] conditions)
-        {
+        public LdapFilter AddCertificateTemplates(params string[] conditions) {
             _filterParts.Add(BuildString("(objectclass=pKICertificateTemplate)", conditions));
             return this;
         }
@@ -183,9 +167,8 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddCertificateAuthorities(params string[] conditions)
-        {
-            _filterParts.Add(BuildString("(|(objectClass=certificationAuthority)(objectClass=pkiEnrollmentService))",
+        public LdapFilter AddCertificateAuthorities(params string[] conditions) {
+            _filterParts.Add(BuildString("(objectClass=certificationAuthority)",
                 conditions));
             return this;
         }
@@ -195,8 +178,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddEnterpriseCertificationAuthorities(params string[] conditions)
-        {
+        public LdapFilter AddEnterpriseCertificationAuthorities(params string[] conditions) {
             _filterParts.Add(BuildString("(objectCategory=pKIEnrollmentService)", conditions));
             return this;
         }
@@ -206,8 +188,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddIssuancePolicies(params string[] conditions)
-        {
+        public LdapFilter AddIssuancePolicies(params string[] conditions) {
             _filterParts.Add(BuildString("(objectClass=msPKI-Enterprise-Oid)", conditions));
             return this;
         }
@@ -217,8 +198,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddSchemaID(params string[] conditions)
-        {
+        public LdapFilter AddSchemaID(params string[] conditions) {
             _filterParts.Add(BuildString("(schemaidguid=*)", conditions));
             return this;
         }
@@ -228,9 +208,10 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public LDAPFilter AddComputersNoMSAs(params string[] conditions)
-        {
-            _filterParts.Add(BuildString("(&(samaccounttype=805306369)(!(objectclass=msDS-GroupManagedServiceAccount))(!(objectclass=msDS-ManagedServiceAccount)))", conditions));
+        public LdapFilter AddComputersNoMSAs(params string[] conditions) {
+            _filterParts.Add(BuildString(
+                "(&(samaccounttype=805306369)(!(objectclass=msDS-GroupManagedServiceAccount))(!(objectclass=msDS-ManagedServiceAccount)))",
+                conditions));
             return this;
         }
 
@@ -240,8 +221,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         /// <param name="filter">LDAP Filter to add to query</param>
         /// <param name="enforce">If true, filter will be AND otherwise OR</param>
         /// <returns></returns>
-        public LDAPFilter AddFilter(string filter, bool enforce)
-        {
+        public LdapFilter AddFilter(string filter, bool enforce) {
             if (enforce)
                 _mandatory.Add(FixFilter(filter));
             else
@@ -254,9 +234,7 @@ namespace SharpHoundCommonLib.LDAPQueries
         ///     Combines all the specified parts of the LDAP filter and merges them into a single string
         /// </summary>
         /// <returns></returns>
-        public string GetFilter()
-        {
-
+        public string GetFilter() {
             var filterPartList = _filterParts.ToArray().Distinct();
             var mandatoryList = _mandatory.ToArray().Distinct();
 
@@ -270,14 +248,15 @@ namespace SharpHoundCommonLib.LDAPQueries
             else if (filterPartsExceptMandatory.Count > 1)
                 filterPartsDistinct = $"(|{filterPartsDistinct})";
 
-            filterPartsDistinct = _mandatory.Count > 0 ? $"(&{filterPartsDistinct}{mandatoryDistinct})" : filterPartsDistinct;
+            filterPartsDistinct = _mandatory.Count > 0
+                ? $"(&{filterPartsDistinct}{mandatoryDistinct})"
+                : filterPartsDistinct;
 
             return filterPartsDistinct;
         }
 
-        public IEnumerable<string> GetFilterList()
-        {
-            return _filterParts;
+        public IEnumerable<string> GetFilterList() {
+            return _filterParts.Distinct();
         }
     }
 }

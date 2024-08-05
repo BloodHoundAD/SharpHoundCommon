@@ -47,13 +47,14 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="result"></param>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public Task<ComputerStatus> IsComputerAvailable(ResolvedSearchResult result, ISearchResultEntry entry)
+        public Task<ComputerStatus> IsComputerAvailable(ResolvedSearchResult result, IDirectoryObject entry)
         {
             var name = result.DisplayName;
             var os = entry.GetProperty(LDAPProperties.OperatingSystem);
             var pwdlastset = entry.GetProperty(LDAPProperties.PasswordLastSet);
-
-            return IsComputerAvailable(name, os, pwdlastset);
+            var lastLogon = entry.GetProperty(LDAPProperties.LastLogonTimestamp);
+            
+            return IsComputerAvailable(name, os, pwdlastset, lastLogon);
         }
 
         /// <summary>
@@ -65,13 +66,14 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerName">The computer to check availability for</param>
         /// <param name="operatingSystem">The LDAP operatingsystem attribute value</param>
         /// <param name="pwdLastSet">The LDAP pwdlastset attribute value</param>
+        /// <param name="lastLogon">The LDAP lastlogontimestamp attribute value</param>
         /// <returns>A <cref>ComputerStatus</cref> object that represents the availability of the computer</returns>
         public async Task<ComputerStatus> IsComputerAvailable(string computerName, string operatingSystem,
-            string pwdLastSet)
+            string pwdLastSet, string lastLogon)
         {
             if (operatingSystem != null && !operatingSystem.StartsWith("Windows", StringComparison.OrdinalIgnoreCase))
             {
-                _log.LogDebug("{ComputerName} is not available because operating system {OperatingSystem} is not valid",
+                _log.LogTrace("{ComputerName} is not available because operating system {OperatingSystem} is not valid",
                     computerName, operatingSystem);
                 await SendComputerStatus(new CSVComputerStatus
                 {
@@ -86,28 +88,22 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
-            if (!_skipPasswordCheck)
+            if (!_skipPasswordCheck && !IsComputerActive(pwdLastSet, lastLogon))
             {
-                var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
-                var threshold = DateTime.Now.AddDays(_computerExpiryDays * -1).ToFileTimeUtc();
-
-                if (passwordLastSet < threshold)
+                _log.LogTrace(
+                    "{ComputerName} is not available because password last set and lastlogontimestamp are out of range",
+                    computerName);
+                await SendComputerStatus(new CSVComputerStatus
                 {
-                    _log.LogDebug(
-                        "{ComputerName} is not available because password last set {PwdLastSet} is out of range",
-                        computerName, passwordLastSet);
-                    await SendComputerStatus(new CSVComputerStatus
-                    {
-                        Status = ComputerStatus.OldPwd,
-                        Task = "ComputerAvailability",
-                        ComputerName = computerName
-                    });
-                    return new ComputerStatus
-                    {
-                        Connectable = false,
-                        Error = ComputerStatus.OldPwd
-                    };
-                }
+                    Status = ComputerStatus.NotActive,
+                    Task = "ComputerAvailability",
+                    ComputerName = computerName
+                });
+                return new ComputerStatus
+                {
+                    Connectable = false,
+                    Error = ComputerStatus.NotActive
+                };
             }
 
             if (_skipPortScan)
@@ -116,11 +112,10 @@ namespace SharpHoundCommonLib.Processors
                     Connectable = true,
                     Error = null
                 };
-
-
+            
             if (!await _scanner.CheckPort(computerName, timeout: _scanTimeout))
             {
-                _log.LogDebug("{ComputerName} is not available because port 445 is unavailable", computerName);
+                _log.LogTrace("{ComputerName} is not available because port 445 is unavailable", computerName);
                 await SendComputerStatus(new CSVComputerStatus
                 {
                     Status = ComputerStatus.PortNotOpen,
@@ -134,7 +129,7 @@ namespace SharpHoundCommonLib.Processors
                 };
             }
 
-            _log.LogDebug("{ComputerName} is available for enumeration", computerName);
+            _log.LogTrace("{ComputerName} is available for enumeration", computerName);
 
             await SendComputerStatus(new CSVComputerStatus
             {
@@ -148,6 +143,20 @@ namespace SharpHoundCommonLib.Processors
                 Connectable = true,
                 Error = null
             };
+        }
+
+        /// <summary>
+        /// Checks if a computer's passwordlastset/lastlogontimestamp attributes are within a certain range
+        /// </summary>
+        /// <param name="pwdLastSet"></param>
+        /// <param name="lastLogonTimestamp"></param>
+        /// <returns></returns>
+        private bool IsComputerActive(string pwdLastSet, string lastLogonTimestamp) {
+            var passwordLastSet = Helpers.ConvertLdapTimeToLong(pwdLastSet);
+            var lastLogonTimeStamp = Helpers.ConvertLdapTimeToLong(lastLogonTimestamp);
+            var threshold = DateTime.Now.AddDays(_computerExpiryDays * -1).ToFileTimeUtc();
+
+            return passwordLastSet >= threshold || lastLogonTimeStamp >= threshold;
         }
 
         private async Task SendComputerStatus(CSVComputerStatus status)

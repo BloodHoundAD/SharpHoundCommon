@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <CollectCoverage>true</CollectCoverage>
         <CoverletOutput>..\..\docfx\coverage\</CoverletOutput>
@@ -16,14 +16,14 @@
 
     <!-- Package references -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
         <PackageReference Include="Moq" Version="4.16.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="System.DirectoryServices" Version="5.0.0" />
-        <PackageReference Include="System.DirectoryServices.Protocols" Version="5.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="System.DirectoryServices" Version="8.0.0" />
+        <PackageReference Include="System.DirectoryServices.Protocols" Version="8.0.0" />
         <PackageReference Include="Xbehave" Version="2.4.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">

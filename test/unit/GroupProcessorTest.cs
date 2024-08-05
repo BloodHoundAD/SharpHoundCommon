@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using Moq;
 using SharpHoundCommonLib;
@@ -13,8 +15,14 @@ namespace CommonLibTest
 {
     public class GroupProcessorTest
     {
-        private readonly string _testDomainName;
-
+        private readonly Result<string>[] _testMembershipReturn =
+        {
+            Result<string>.Ok("CN=Domain Admins,CN=Users,DC=testlab,DC=local"),
+            Result<string>.Ok("CN=Enterprise Admins,CN=Users,DC=testlab,DC=local"),
+            Result<string>.Ok("CN=Administrator,CN=Users,DC=testlab,DC=local"),
+            Result<string>.Ok("CN=NonExistent,CN=Users,DC=testlab,DC=local")
+        };
+        
         private readonly string[] _testMembership =
         {
             "CN=Domain Admins,CN=Users,DC=testlab,DC=local",
@@ -22,6 +30,7 @@ namespace CommonLibTest
             "CN=Administrator,CN=Users,DC=testlab,DC=local",
             "CN=NonExistent,CN=Users,DC=testlab,DC=local"
         };
+        
 
         private readonly ITestOutputHelper _testOutputHelper;
         private GroupProcessor _baseProcessor;
@@ -29,8 +38,7 @@ namespace CommonLibTest
         public GroupProcessorTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _testDomainName = "TESTLAB.LOCAL";
-            _baseProcessor = new GroupProcessor(new LDAPUtils());
+            _baseProcessor = new GroupProcessor(new LdapUtils());
         }
 
         [Fact]
@@ -55,9 +63,9 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public void GroupProcessor_ReadGroupMembers_EmptyMembers_DoesRangedRetrieval()
+        public async Task GroupProcessor_ReadGroupMembers_EmptyMembers_DoesRangedRetrieval()
         {
-            var mockUtils = new Mock<MockLDAPUtils>();
+            var mockUtils = new Mock<MockLdapUtils>();
             var expected = new TypedPrincipal[]
             {
                 new()
@@ -81,20 +89,20 @@ namespace CommonLibTest
                     ObjectType = Label.Base
                 }
             };
-            mockUtils.Setup(x => x.DoRangedRetrieval(It.IsAny<string>(), It.IsAny<string>())).Returns(_testMembership);
+            mockUtils.Setup(x => x.RangedRetrieval(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(_testMembershipReturn.ToAsyncEnumerable());
             var processor = new GroupProcessor(mockUtils.Object);
 
-            var results = processor
-                .ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", Array.Empty<string>()).ToArray();
+            var results = await processor
+                .ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", Array.Empty<string>()).ToArrayAsync();
             foreach (var t in results) _testOutputHelper.WriteLine(t.ToString());
             Assert.Equal(4, results.Length);
             Assert.Equal(expected, results);
         }
 
         [WindowsOnlyFact]
-        public void GroupProcessor_ReadGroupMembers_ReturnsCorrectMembers()
+        public async Task GroupProcessor_ReadGroupMembers_ReturnsCorrectMembers()
         {
-            var utils = new MockLDAPUtils();
+            var utils = new MockLdapUtils();
             var processor = new GroupProcessor(utils);
             var expected = new TypedPrincipal[]
             {
@@ -120,8 +128,8 @@ namespace CommonLibTest
                 }
             };
 
-            var results = processor
-                .ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", _testMembership).ToArray();
+            var results = await processor
+                .ReadGroupMembers("CN=Administrators,CN=Builtin,DC=testlab,DC=local", _testMembership).ToArrayAsync();
             foreach (var t in results) _testOutputHelper.WriteLine(t.ToString());
             Assert.Equal(4, results.Length);
             Assert.Equal(expected, results);

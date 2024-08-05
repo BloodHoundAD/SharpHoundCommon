@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using SharpHoundRPC;
 using SharpHoundRPC.SAMRPCNative;
@@ -8,6 +9,7 @@ using SharpHoundRPC.Wrappers;
 
 namespace CommonLibTest.Facades
 {
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public class MockDCSAMServer : ISAMServer
     {
         public bool IsNull { get; }

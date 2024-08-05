@@ -36,7 +36,9 @@
         public const string ServicePack = "operatingsystemservicepack";
         public const string DNSHostName = "dnshostname";
         public const string LAPSExpirationTime = "mslaps-passwordexpirationtime";
+        public const string LAPSPassword = "mslaps-password";
         public const string LegacyLAPSExpirationTime = "ms-mcs-admpwdexpirationtime";
+        public const string LegacyLAPSPassword = "ms-mcs-admpwd";
         public const string Members = "member";
         public const string SecurityDescriptor = "ntsecuritydescriptor";
         public const string SecurityIdentifier = "securityidentifier";
@@ -74,5 +76,15 @@
         public const string SupportedEncryptionTypes = "msds-supportedencryptiontypes";
         public const string WhenChanged = "whenchanged";
         public const string DSHeuristics = "dsheuristics";
+        public const string DefaultNamingContext = "defaultnamingcontext";
+        public const string RootDomainNamingContext = "rootdomainnamingcontext";
+        public const string ConfigurationNamingContext = "configurationnamingcontext";
+        public const string SchemaNamingContext = "schemanamingcontext";
+        public const string NetbiosName = "netbiosName";
+        public const string DnsRoot = "dnsroot";
+        public const string ServerName = "servername";
+        public const string OU = "ou";
+        public const string ProfilePath = "profilepath";
+        public const string DSASignature = "dsasignature";
     }
 }

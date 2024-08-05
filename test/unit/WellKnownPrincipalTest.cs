@@ -6,14 +6,6 @@ using Xunit.Abstractions;
 
 namespace CommonLibTest
 {
-    public struct WKP
-    {
-        public string SID { get; set; }
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-    }
-
     public class WellKnownPrincipalTest : IDisposable
     {
         #region Constructor(s)
@@ -21,8 +13,6 @@ namespace CommonLibTest
         public WellKnownPrincipalTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _testDomainName = "TESTLAB.LOCAL";
-            _testForestName = "FOREST.LOCAL";
         }
 
         #endregion
@@ -88,7 +78,7 @@ namespace CommonLibTest
                 ("S-1-5-13", "Terminal Server Users", Label.Group),
                 ("S-1-5-14", "Remote Interactive Logon", Label.Group),
                 ("S-1-5-15", "This Organization", Label.Group),
-                ("S-1-5-17", "IUSR", Label.Group),
+                ("S-1-5-17", "IUSR", Label.User),
                 ("S-1-5-18", "Local System", Label.User),
                 ("S-1-5-19", "Local Service", Label.User),
                 ("S-1-5-20", "Network Service", Label.User),
@@ -131,8 +121,6 @@ namespace CommonLibTest
         #region Private Members
 
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly string _testDomainName;
-        private readonly string _testForestName;
 
         #endregion
 

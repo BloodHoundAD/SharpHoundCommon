@@ -82,11 +82,9 @@ namespace SharpHoundRPC.NetAPINative
             out NetAPIPointer bufPtr);
 
         public static NetAPIResult<NetAPIStructs.DomainControllerInfo> DsGetDcName(string computerName,
-            string domainName)
+            string domainName, uint flags)
         {
-            var result = DsGetDcName(computerName, domainName, null, null,
-                (uint) (NetAPIEnums.DSGETDCNAME_FLAGS.DS_IS_FLAT_NAME |
-                        NetAPIEnums.DSGETDCNAME_FLAGS.DS_RETURN_DNS_NAME), out var buffer);
+            var result = DsGetDcName(computerName, domainName, null, null, flags, out var buffer);
             if (result != NetAPIEnums.NetAPIStatus.Success) return result;
 
             return buffer.GetData<NetAPIStructs.DomainControllerInfo>();

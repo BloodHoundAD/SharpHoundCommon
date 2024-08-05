@@ -1,55 +1,48 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Logging;
+using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 
-namespace SharpHoundCommonLib.Processors
-{
-    public class SPNProcessors
-    {
+namespace SharpHoundCommonLib.Processors {
+    public class SPNProcessors {
         private const string MSSQLSPNString = "mssqlsvc";
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtils _utils;
 
-        public SPNProcessors(ILDAPUtils utils, ILogger log = null)
-        {
+        public SPNProcessors(ILdapUtils utils, ILogger log = null) {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("SPNProc");
         }
 
         public IAsyncEnumerable<SPNPrivilege> ReadSPNTargets(ResolvedSearchResult result,
-            ISearchResultEntry entry)
-        {
-            var members = entry.GetArrayProperty(LDAPProperties.ServicePrincipalNames);
-            var name = result.DisplayName;
-            var dn = entry.DistinguishedName;
+            IDirectoryObject entry) {
+            if (entry.TryGetArrayProperty(LDAPProperties.ServicePrincipalNames, out var members)) {
+                return ReadSPNTargets(members, result.Domain, result.DisplayName);
+            }
 
-            return ReadSPNTargets(members, dn, name);
+            return AsyncEnumerable.Empty<SPNPrivilege>();
         }
 
         public async IAsyncEnumerable<SPNPrivilege> ReadSPNTargets(string[] servicePrincipalNames,
-            string distinguishedName, string objectName = "")
-        {
-            if (servicePrincipalNames.Length == 0)
-            {
+            string domainName, string objectName = "") {
+            if (servicePrincipalNames.Length == 0) {
                 _log.LogTrace("SPN Array is empty for {Name}", objectName);
                 yield break;
             }
+            
+            _log.LogDebug("Processing SPN targets for {ObjectName}", objectName);
 
-            var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
-
-            foreach (var spn in servicePrincipalNames)
-            {
+            foreach (var spn in servicePrincipalNames) {
                 //This SPN format isn't useful for us right now (username@domain)
-                if (spn.Contains("@"))
-                {
+                if (spn.Contains("@")) {
                     _log.LogTrace("Skipping spn without @ {SPN} for {Name}", spn, objectName);
                     continue;
                 }
 
                 _log.LogTrace("Processing SPN {SPN} for {Name}", spn, objectName);
 
-                if (spn.ToLower().Contains(MSSQLSPNString))
-                {
+                if (spn.ToLower().Contains(MSSQLSPNString)) {
                     _log.LogTrace("Matched SQL SPN {SPN} for {Name}", spn, objectName);
                     var port = 1433;
 
@@ -57,15 +50,14 @@ namespace SharpHoundCommonLib.Processors
                         if (!int.TryParse(spn.Split(':')[1], out port))
                             port = 1433;
 
-                    var host = await _utils.ResolveHostToSid(spn, domain);
-                    _log.LogTrace("Resolved {SPN} to {Hostname}", spn, host);
-                    if (host != null && host.StartsWith("S-1-"))
-                        yield return new SPNPrivilege
-                        {
+                    if (await _utils.ResolveHostToSid(spn, domainName) is (true, var host) && host.StartsWith("S-1")) {
+                        _log.LogTrace("Resolved {SPN} to {Hostname}", spn, host);
+                        yield return new SPNPrivilege {
                             ComputerSID = host,
                             Port = port,
                             Service = EdgeNames.SQLAdmin
                         };
+                    }
                 }
             }
         }

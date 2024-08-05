@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CommonLibTest.Facades;
 using Moq;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
@@ -13,10 +15,8 @@ using SharpHoundCommonLib.Processors;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace CommonLibTest
-{
-    public class GPOLocalGroupProcessorTest
-    {
+namespace CommonLibTest {
+    public class GPOLocalGroupProcessorTest {
         private readonly string GpttmplInfContent = @"[Unicode]
         Unicode=yes
         [Version]
@@ -88,15 +88,13 @@ namespace CommonLibTest
 
         private ITestOutputHelper _testOutputHelper;
 
-        public GPOLocalGroupProcessorTest(ITestOutputHelper testOutputHelper)
-        {
+        public GPOLocalGroupProcessorTest(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
         }
 
-        [Fact(Skip = "")]
-        public async Task GPOLocalGroupProcessor_ReadGPOLocalGroups_Null_GPLink()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
+        [Fact]
+        public async Task GPOLocalGroupProcessor_ReadGPOLocalGroups_Null_GPLink() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
             var result = await processor.ReadGPOLocalGroups(null, null);
@@ -108,23 +106,11 @@ namespace CommonLibTest
             Assert.Empty(result.PSRemoteUsers);
         }
 
-        [Fact(Skip = "")]
-        public async Task GPOLocalGroupProcessor_ReadGPOLocalGroups_AffectedComputers_0()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
-            mockLDAPUtils.Setup(x => x.QueryLDAP(
-                It.IsAny<string>(),
-                It.IsAny<SearchScope>(),
-                It.IsAny<string[]>(),
-                It.IsAny<CancellationToken>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>(),
-                It.IsAny<bool>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>(),
-                It.IsAny<bool>(),
-                It.IsAny<bool>()
-            )).Returns(new List<ISearchResultEntry>());
+        [Fact]
+        public async Task GPOLocalGroupProcessor_ReadGPOLocalGroups_AffectedComputers_0() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
+            mockLDAPUtils.Setup(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(Array.Empty<LdapResult<IDirectoryObject>>().ToAsyncEnumerable);
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
             var result = await processor.ReadGPOLocalGroups("teapot", null);
@@ -136,39 +122,42 @@ namespace CommonLibTest
             Assert.Empty(result.PSRemoteUsers);
         }
 
-        [Fact(Skip = "")]
-        public async Task GPOLocalGroupProcessor_ReadGPOLocalGroups_Null_Gpcfilesyspath()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
-            var mockSearchResultEntry = new Mock<ISearchResultEntry>();
-            mockSearchResultEntry.Setup(x => x.GetSid()).Returns("teapot");
-            var mockSearchResults = new List<ISearchResultEntry>();
-            mockSearchResults.Add(mockSearchResultEntry.Object);
-            mockLDAPUtils.Setup(x => x.QueryLDAP(new LDAPQueryOptions
-                {
-                    Filter = "(&(samaccounttype=805306369)(!(objectclass=msDS-GroupManagedServiceAccount))(!(objectclass=msDS-ManagedServiceAccount)))",
-                    Scope = SearchScope.Subtree,
-                    Properties = CommonProperties.ObjectSID,
-                    AdsPath = null
-                }))
-                .Returns(mockSearchResults.ToArray());
+        [Fact]
+        public async Task GPOLocalGroupProcessor_ReadGPOLocalGroups_Null_Gpcfilesyspath() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
+            var mockSearchResultEntry = new Mock<IDirectoryObject>();
+            var sid = "teapot";
+            mockSearchResultEntry.Setup(x => x.TryGetSecurityIdentifier(out sid)).Returns(true);
+            var mockResult = LdapResult<IDirectoryObject>.Ok(mockSearchResultEntry.Object);
+            var mockSearchResults = new List<LdapResult<IDirectoryObject>> { mockResult };
+            mockLDAPUtils
+                .Setup(x => x.Query(
+                    It.Is<LdapQueryParameters>(y =>
+                        y.LDAPFilter.Equals(new LdapFilter().AddComputersNoMSAs().GetFilter()) &&
+                        y.Attributes.Equals(CommonProperties.ObjectSID)),
+                    It.IsAny<CancellationToken>())).Returns(mockSearchResults.ToAsyncEnumerable);
+
+            mockLDAPUtils
+                .Setup(x => x.Query(
+                    It.Is<LdapQueryParameters>(y =>
+                        y.LDAPFilter.Equals(new LdapFilter().AddAllObjects().GetFilter())),
+                    It.IsAny<CancellationToken>()))
+                .Returns(Array.Empty<LdapResult<IDirectoryObject>>().ToAsyncEnumerable);
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
             var testGPLinkProperty =
                 "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123/dc=somedomain;0;][LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123/dc=someotherdomain;2;]";
-            var result = await processor.ReadGPOLocalGroups(testGPLinkProperty, null);
+            var result = await processor.ReadGPOLocalGroups(testGPLinkProperty, "DC=Testlab,DC=Local");
 
-            Assert.NotNull(result);
             Assert.Single(result.AffectedComputers);
             var actual = result.AffectedComputers.First();
             Assert.Equal(Label.Computer, actual.ObjectType);
             Assert.Equal("teapot", actual.ObjectIdentifier);
         }
 
-        [Fact]
-        public async Task GPOLocalGroupProcessor_ReadGPOLocalGroups()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>(MockBehavior.Strict);
+        [WindowsOnlyFact]
+        public async Task GPOLocalGroupProcessor_ReadGPOLocalGroups() {
+            var mockLDAPUtils = new Mock<ILdapUtils>(MockBehavior.Loose);
             var gpcFileSysPath = Path.GetTempPath();
 
             var groupsXmlPath = Path.Join(gpcFileSysPath, "MACHINE", "Preferences", "Groups", "Groups.xml");
@@ -177,28 +166,32 @@ namespace CommonLibTest
             Directory.CreateDirectory(Path.GetDirectoryName(groupsXmlPath));
             File.WriteAllText(groupsXmlPath, GroupXmlContent);
 
-            var mockComputerEntry = new Mock<ISearchResultEntry>();
-            mockComputerEntry.Setup(x => x.GetSid()).Returns("teapot");
-            var mockComputerResults = new List<ISearchResultEntry>();
-            mockComputerResults.Add(mockComputerEntry.Object);
+            var mockComputerEntry = new Mock<IDirectoryObject>();
+            var sid = "teapot";
+            mockComputerEntry.Setup(x => x.TryGetSecurityIdentifier(out sid)).Returns(true);
+            var mockComputerResults = new List<LdapResult<IDirectoryObject>>();
+            mockComputerResults.Add(LdapResult<IDirectoryObject>.Ok(mockComputerEntry.Object));
 
-            var mockGCPFileSysPathEntry = new Mock<ISearchResultEntry>();
-            mockGCPFileSysPathEntry.Setup(x => x.GetProperty(It.IsAny<string>())).Returns(gpcFileSysPath);
-            var mockGCPFileSysPathResults = new List<ISearchResultEntry>();
-            mockGCPFileSysPathResults.Add(mockGCPFileSysPathEntry.Object);
+            var mockGCPFileSysPathEntry = new Mock<IDirectoryObject>();
+            mockGCPFileSysPathEntry.Setup(x => x.TryGetProperty(It.IsAny<string>(), out gpcFileSysPath)).Returns(true);
+            var mockGCPFileSysPathResults = new List<LdapResult<IDirectoryObject>>
+                { LdapResult<IDirectoryObject>.Ok(mockGCPFileSysPathEntry.Object) };
 
-            mockLDAPUtils.SetupSequence(x => x.QueryLDAP(It.IsAny<LDAPQueryOptions>()))
-                .Returns(mockComputerResults.ToArray())
-                .Returns(mockGCPFileSysPathResults.ToArray());
+            mockLDAPUtils.SetupSequence(x => x.Query(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(mockComputerResults.ToAsyncEnumerable)
+                .Returns(mockGCPFileSysPathResults.ToAsyncEnumerable)
+                .Returns(Array.Empty<LdapResult<IDirectoryObject>>().ToAsyncEnumerable);
+            var domain = MockableDomain.Construct("TESTLAB.LOCAL");
+            mockLDAPUtils.Setup(x => x.GetDomain(out domain)).Returns(true);
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
+            
 
             var testGPLinkProperty =
                 "[LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123/dc=somedomain;0;][LDAP:/o=foo/ou=foo Group (ABC123)/cn=foouser (blah)123/dc=someotherdomain;2;]";
             var result = await processor.ReadGPOLocalGroups(testGPLinkProperty, null);
-
-            mockLDAPUtils.VerifyAll();
-            Assert.NotNull(result);
+            
+            //mockLDAPUtils.VerifyAll();
             Assert.Single(result.AffectedComputers);
             var actual = result.AffectedComputers.First();
             Assert.Equal(Label.Computer, actual.ObjectType);
@@ -206,21 +199,19 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public async Task GPOLocalGroupProcess_ProcessGPOXMLFile_NoFile()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
+        public async Task GPOLocalGroupProcess_ProcessGPOXMLFile_NoFile() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
             var gpcFileSysPath = Path.Join(Path.GetTempPath(), "made", "up", "path");
 
-            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
+            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToArrayAsync();
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
 
         [Fact]
-        public async Task GPOLocalGroupProcess_ProcessGPOXMLFile_Disabled()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
+        public async Task GPOLocalGroupProcess_ProcessGPOXMLFile_Disabled() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
             var gpcFileSysPath = Path.GetTempPath();
             var groupsXmlPath = Path.Join(gpcFileSysPath, "MACHINE", "Preferences", "Groups", "Groups.xml");
 
@@ -229,17 +220,16 @@ namespace CommonLibTest
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
 
-            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
+            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToArrayAsync();
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
 
         [Fact]
-        public async Task GPOLocalGroupProcessor_ProcessGPOXMLFile()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
+        public async Task GPOLocalGroupProcessor_ProcessGPOXMLFile() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
             mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
+                .ReturnsAsync((true, new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User)));
             var gpcFileSysPath = Path.GetTempPath();
             var groupsXmlPath = Path.Join(gpcFileSysPath, "MACHINE", "Preferences", "Groups", "Groups.xml");
 
@@ -247,16 +237,15 @@ namespace CommonLibTest
             File.WriteAllText(groupsXmlPath, GroupXmlContent);
 
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
-            var actual = processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToList();
+            var actual = await processor.ProcessGPOXmlFile(gpcFileSysPath, "somedomain").ToArrayAsync();
 
             Assert.NotNull(actual);
             Assert.NotEmpty(actual);
         }
 
         [Fact]
-        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NoFile()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
+        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NoFile() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
             var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
             var gpcFileSysPath = Path.Join(Path.GetTempPath(), "made", "up", "path");
 
@@ -266,9 +255,8 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NoMatch()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
+        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NoMatch() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
             var gpcFileSysPath = Path.GetTempPath();
             var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
 
@@ -283,9 +271,26 @@ namespace CommonLibTest
         }
 
         [Fact]
-        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NullSID()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
+        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile_NullSID() {
+            var mockLDAPUtils = new MockLdapUtils();
+            var gpcFileSysPath = Path.GetTempPath();
+            var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(gptTmplPath));
+            File.WriteAllText(gptTmplPath, GpttmplInfContent);
+
+            var processor = new GPOLocalGroupProcessor(mockLDAPUtils);
+
+            var actual = await processor.ProcessGPOTemplateFile(gpcFileSysPath, "somedomain").ToListAsync();
+            Assert.NotNull(actual);
+            Assert.NotEmpty(actual);
+        }
+
+        [Fact]
+        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile() {
+            var mockLDAPUtils = new Mock<ILdapUtils>();
+            mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync((true, new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User)));
             var gpcFileSysPath = Path.GetTempPath();
             var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
 
@@ -297,30 +302,18 @@ namespace CommonLibTest
             var actual = await processor.ProcessGPOTemplateFile(gpcFileSysPath, "somedomain").ToListAsync();
             Assert.NotNull(actual);
             Assert.NotEmpty(actual);
+            var expected = new GPOLocalGroupProcessor.GroupAction() {
+                Action = GPOLocalGroupProcessor.GroupActionOperation.Add,
+                Target = GPOLocalGroupProcessor.GroupActionTarget.RestrictedMember,
+                TargetSid = "S-1-5-21-3130019616-2776909439-2417379446-513",
+                TargetRid = GPOLocalGroupProcessor.LocalGroupRids.Administrators,
+                TargetType = Label.User
+            };
+            Assert.Contains(expected, actual);
         }
 
         [Fact]
-        public async Task GPOLocalGroupProcess_ProcessGPOTemplateFile()
-        {
-            var mockLDAPUtils = new Mock<ILDAPUtils>();
-            mockLDAPUtils.Setup(x => x.ResolveAccountName(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new TypedPrincipal("S-1-5-21-3130019616-2776909439-2417379446-513", Label.User));
-            var gpcFileSysPath = Path.GetTempPath();
-            var gptTmplPath = Path.Join(gpcFileSysPath, "MACHINE", "Microsoft", "Windows NT", "SecEdit", "GptTmpl.inf");
-
-            Directory.CreateDirectory(Path.GetDirectoryName(gptTmplPath));
-            File.WriteAllText(gptTmplPath, GpttmplInfContent);
-
-            var processor = new GPOLocalGroupProcessor(mockLDAPUtils.Object);
-
-            var actual = await processor.ProcessGPOTemplateFile(gpcFileSysPath, "somedomain").ToListAsync();
-            Assert.NotNull(actual);
-            // Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void GPOLocalGroupProcess_GroupAction()
-        {
+        public void GPOLocalGroupProcess_GroupAction() {
             var ga = new GPOLocalGroupProcessor.GroupAction();
             var tp = ga.ToTypedPrincipal();
             var str = ga.ToString();

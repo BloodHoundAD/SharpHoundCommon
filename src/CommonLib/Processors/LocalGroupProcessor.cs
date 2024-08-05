@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
-using SharpHoundRPC;
 using SharpHoundRPC.Shared;
 using SharpHoundRPC.Wrappers;
 
@@ -16,9 +15,9 @@ namespace SharpHoundCommonLib.Processors
     {
         public delegate Task ComputerStatusDelegate(CSVComputerStatus status);
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtils _utils;
 
-        public LocalGroupProcessor(ILDAPUtils utils, ILogger log = null)
+        public LocalGroupProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("LocalGroupProcessor");
@@ -26,15 +25,15 @@ namespace SharpHoundCommonLib.Processors
 
         public event ComputerStatusDelegate ComputerStatusEvent;
 
-        public virtual Result<ISAMServer> OpenSamServer(string computerName)
+        public virtual SharpHoundRPC.Result<ISAMServer> OpenSamServer(string computerName)
         {
             var result = SAMServer.OpenServer(computerName);
             if (result.IsFailed)
             {
-                return Result<ISAMServer>.Fail(result.SError);
+                return SharpHoundRPC.Result<ISAMServer>.Fail(result.SError);
             }
 
-            return Result<ISAMServer>.Ok(result.Value);
+            return SharpHoundRPC.Result<ISAMServer>.Ok(result.Value);
         }
 
         public IAsyncEnumerable<LocalGroupAPIResult> GetLocalGroups(ResolvedSearchResult result)
@@ -153,7 +152,7 @@ namespace SharpHoundCommonLib.Processors
                 {
                     _log.LogTrace("Opening alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}", alias.Name, alias.Rid, domainResult.Name, computerName);
                     //Try and resolve the group name using several different criteria
-                    var resolvedName = ResolveGroupName(alias.Name, computerName, computerObjectId, computerDomain, alias.Rid,
+                    var resolvedName = await ResolveGroupName(alias.Name, computerName, computerObjectId, computerDomain, alias.Rid,
                         isDomainController,
                         domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase));
 
@@ -219,17 +218,16 @@ namespace SharpHoundCommonLib.Processors
 
                         if (isDomainController)
                         {
-                            var result = ResolveDomainControllerPrincipal(sidValue, computerDomain);
+                            var result = await ResolveDomainControllerPrincipal(sidValue, computerDomain);
                             if (result != null) results.Add(result);
                             continue;
                         }
                         
                         //If we get a local well known principal, we need to convert it using the computer's objectid
-                        if (ConvertLocalWellKnownPrincipal(securityIdentifier, computerObjectId, computerDomain, out var principal))
+                        if (await _utils.ConvertLocalWellKnownPrincipal(securityIdentifier, computerObjectId, computerDomain) is (true, var principal))
                         {
                             //If the principal is null, it means we hit a weird edge case, but this is a local well known principal 
-                            if (principal != null)
-                                results.Add(principal);
+                            results.Add(principal);
                             continue;
                         }
 
@@ -295,8 +293,8 @@ namespace SharpHoundCommonLib.Processors
                         }
                         
                         //If we get here, we most likely have a domain principal in a local group
-                        var resolvedPrincipal = _utils.ResolveIDAndType(sidValue, computerDomain);
-                        if (resolvedPrincipal != null) results.Add(resolvedPrincipal);
+                        var resolvedPrincipal = await _utils.ResolveIDAndType(sidValue, computerDomain);
+                        if (resolvedPrincipal.Success) results.Add(resolvedPrincipal.Principal);
                     }
 
                     ret.Collected = true;
@@ -307,43 +305,15 @@ namespace SharpHoundCommonLib.Processors
             }
         }
 
-        private TypedPrincipal ResolveDomainControllerPrincipal(string sid, string computerDomain)
+        private async Task<TypedPrincipal> ResolveDomainControllerPrincipal(string sid, string computerDomain)
         {
             //If the server is a domain controller and we have a well known group, use the domain value
-            if (_utils.GetWellKnownPrincipal(sid, computerDomain, out var wellKnown))
+            if (await _utils.GetWellKnownPrincipal(sid, computerDomain) is (true, var wellKnown))
                 return wellKnown;
-            return _utils.ResolveIDAndType(sid, computerDomain);
+            return (await _utils.ResolveIDAndType(sid, computerDomain)).Principal;
         }
 
-        private bool ConvertLocalWellKnownPrincipal(SecurityIdentifier sid, string computerObjectId, string computerDomain, out TypedPrincipal principal)
-        {
-            if (WellKnownPrincipal.GetWellKnownPrincipal(sid.Value, out var common))
-            {
-                if (sid.Value is "S-1-1-0" or "S-1-5-11")
-                {
-                    _utils.GetWellKnownPrincipal(sid.Value, computerDomain, out principal);
-                    return true;
-                }
-
-                principal = new TypedPrincipal
-                {
-                    ObjectIdentifier = $"{computerObjectId}-{sid.Rid()}",
-                    ObjectType = common.ObjectType switch
-                    {
-                        Label.User => Label.LocalUser,
-                        Label.Group => Label.LocalGroup,
-                        _ => common.ObjectType
-                    }
-                };
-
-                return true;
-            }
-
-            principal = null;
-            return false;
-        }
-
-        private NamedPrincipal ResolveGroupName(string baseName, string computerName, string computerDomainSid,
+        private async Task<NamedPrincipal> ResolveGroupName(string baseName, string computerName, string computerDomainSid,
             string domainName, int groupRid, bool isDc, bool isBuiltIn)
         {
             if (isDc)
@@ -351,12 +321,12 @@ namespace SharpHoundCommonLib.Processors
                 if (isBuiltIn)
                 {
                     //If this is the builtin group on the DC, the groups correspond to the domain well known groups
-                    _utils.GetWellKnownPrincipal($"S-1-5-32-{groupRid}".ToUpper(), domainName, out var principal);
-                    return new NamedPrincipal
-                    {
-                        ObjectId = principal.ObjectIdentifier,
-                        PrincipalName = "IGNOREME"
-                    };
+                    if (await _utils.GetWellKnownPrincipal($"S-1-5-32-{groupRid}".ToUpper(), domainName) is (true, var principal))
+                        return new NamedPrincipal
+                        {
+                            ObjectId = principal.ObjectIdentifier,
+                            PrincipalName = "IGNOREME"
+                        };
                 }
 
                 if (computerDomainSid == null)

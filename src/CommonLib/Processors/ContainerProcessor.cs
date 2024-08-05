@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using SharpHoundCommonLib.DirectoryObjects;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -11,9 +14,9 @@ namespace SharpHoundCommonLib.Processors
     public class ContainerProcessor
     {
         private readonly ILogger _log;
-        private readonly ILDAPUtils _utils;
+        private readonly ILdapUtils _utils;
 
-        public ContainerProcessor(ILDAPUtils utils, ILogger log = null)
+        public ContainerProcessor(ILdapUtils utils, ILogger log = null)
         {
             _utils = utils;
             _log = log ?? Logging.LogProvider.CreateLogger("ContainerProc");
@@ -34,9 +37,14 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public TypedPrincipal GetContainingObject(ISearchResultEntry entry)
+        public async Task<(bool Success, TypedPrincipal principal)> GetContainingObject(IDirectoryObject entry)
         {
-            return GetContainingObject(entry.DistinguishedName);
+            if (entry.TryGetDistinguishedName(out var dn)) {
+                _log.LogTrace("Reading containing object for {DN}", dn);
+                return await GetContainingObject(dn);
+            }
+
+            return (false, default);
         }
 
         /// <summary>
@@ -45,21 +53,23 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="distinguishedName"></param>
         /// <returns></returns>
-        public TypedPrincipal GetContainingObject(string distinguishedName)
+        public async Task<(bool Success, TypedPrincipal Principal)> GetContainingObject(string distinguishedName)
         {
             var containerDn = Helpers.RemoveDistinguishedNamePrefix(distinguishedName);
 
+            //If the container is the builtin container, we want to redirect the containing object to the domain of the object
             if (containerDn.StartsWith("CN=BUILTIN", StringComparison.OrdinalIgnoreCase))
             {
+                //This is always safe
                 var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
-                var domainSid = _utils.GetSidFromDomainName(domain);
-                return new TypedPrincipal(domainSid, Label.Domain);
+                if (await _utils.GetDomainSidFromDomainName(domain) is (true, var domainSid)) {
+                    return (true, new TypedPrincipal(domainSid, Label.Domain));    
+                }
+
+                return (false, default);
             }
 
-            if (string.IsNullOrEmpty(containerDn))
-                return null;
-
-            return _utils.ResolveDistinguishedName(containerDn);
+            return await _utils.ResolveDistinguishedName(containerDn);
         }
 
         /// <summary>
@@ -68,13 +78,15 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="result"></param>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public IEnumerable<TypedPrincipal> GetContainerChildObjects(ResolvedSearchResult result,
-            ISearchResultEntry entry)
+        public IAsyncEnumerable<TypedPrincipal> GetContainerChildObjects(ResolvedSearchResult result,
+            IDirectoryObject entry)
         {
             var name = result.DisplayName;
-            var dn = entry.DistinguishedName;
-
-            return GetContainerChildObjects(dn, name);
+            if (entry.TryGetDistinguishedName(out var dn)) {
+                return GetContainerChildObjects(dn, name);    
+            }
+            
+            return AsyncEnumerable.Empty<TypedPrincipal>();
         }
 
         /// <summary>
@@ -83,45 +95,48 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="distinguishedName"></param>
         /// <param name="containerName"></param>
         /// <returns></returns>
-        public IEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName = "")
+        public async IAsyncEnumerable<TypedPrincipal> GetContainerChildObjects(string distinguishedName, string containerName = "")
         {
-            var filter = new LDAPFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
+            var filter = new LdapFilter().AddComputers().AddUsers().AddGroups().AddOUs().AddContainers();
             filter.AddCertificateAuthorities().AddCertificateTemplates().AddEnterpriseCertificationAuthorities();
-            foreach (var childEntry in _utils.QueryLDAP(filter.GetFilter(), SearchScope.OneLevel,
-                         CommonProperties.ObjectID, Helpers.DistinguishedNameToDomain(distinguishedName),
-                         adsPath: distinguishedName))
-            {
-                var dn = childEntry.DistinguishedName;
-                if (IsDistinguishedNameFiltered(dn))
-                {
+            await foreach (var childEntryResult in _utils.Query(new LdapQueryParameters {
+                               DomainName = Helpers.DistinguishedNameToDomain(distinguishedName),
+                               SearchScope = SearchScope.OneLevel,
+                               Attributes = CommonProperties.ObjectID,
+                               LDAPFilter = filter.GetFilter(),
+                               SearchBase = distinguishedName
+                           })) {
+                if (!childEntryResult.IsSuccess) {
+                    _log.LogWarning("Error while getting container child objects for {DistinguishedName}: {Reason}", distinguishedName, childEntryResult.Error);
+                    yield break;
+                }
+
+                var childEntry = childEntryResult.Value;
+                if (!childEntry.TryGetDistinguishedName(out var dn) || IsDistinguishedNameFiltered(dn)) {
                     _log.LogTrace("Skipping filtered child {Child} for {Container}", dn, containerName);
                     continue;
                 }
 
-                var id = childEntry.GetObjectIdentifier();
-                if (id == null)
-                {
-                    _log.LogTrace("Got null ID for {ChildDN} under {Container}", childEntry.DistinguishedName,
+                if (!childEntry.GetObjectIdentifier(out var id)) {
+                    _log.LogTrace("Got null ID for {ChildDN} under {Container}", dn,
                         containerName);
                     continue;
                 }
 
-                var res = _utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(dn));
-                if (res == null)
-                {
-                    _log.LogTrace("Failed to resolve principal for {ID}", id);
-                    continue;
+                var res = await _utils.ResolveIDAndType(id, Helpers.DistinguishedNameToDomain(dn));
+                if (res.Success) {
+                    yield return res.Principal;
                 }
-
-                yield return res;
             }
         }
 
-        public IEnumerable<GPLink> ReadContainerGPLinks(ResolvedSearchResult result, ISearchResultEntry entry)
+        public IAsyncEnumerable<GPLink> ReadContainerGPLinks(ResolvedSearchResult result, IDirectoryObject entry)
         {
-            var links = entry.GetProperty(LDAPProperties.GPLink);
+            if (entry.TryGetProperty(LDAPProperties.GPLink, out var links)) {
+                return ReadContainerGPLinks(links);    
+            }
 
-            return ReadContainerGPLinks(links);
+            return AsyncEnumerable.Empty<GPLink>();
         }
 
         /// <summary>
@@ -129,7 +144,7 @@ namespace SharpHoundCommonLib.Processors
         /// </summary>
         /// <param name="gpLink"></param>
         /// <returns></returns>
-        public IEnumerable<GPLink> ReadContainerGPLinks(string gpLink)
+        public async IAsyncEnumerable<GPLink> ReadContainerGPLinks(string gpLink)
         {
             if (gpLink == null)
                 yield break;
@@ -138,19 +153,15 @@ namespace SharpHoundCommonLib.Processors
             {
                 var enforced = link.Status.Equals("2");
 
-                var res = _utils.ResolveDistinguishedName(link.DistinguishedName);
+                var res = await _utils.ResolveDistinguishedName(link.DistinguishedName);
 
-                if (res == null)
-                {
-                    _log.LogTrace("Failed to resolve DN {DN}", link.DistinguishedName);
-                    continue;
+                if (res.Success) {
+                    yield return new GPLink
+                    {
+                        GUID = res.Principal.ObjectIdentifier,
+                        IsEnforced = enforced
+                    };
                 }
-
-                yield return new GPLink
-                {
-                    GUID = res.ObjectIdentifier,
-                    IsEnforced = enforced
-                };
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace SharpHoundCommonLib
+﻿namespace SharpHoundCommonLib.Enums
 {
     public static class EdgeNames
     {

@@ -34,7 +34,7 @@ namespace CommonLibTest
 
         #endregion
 
-        [WindowsOnlyFact]
+        [Fact]
         public async Task ComputerSessionProcessor_ReadUserSessions_FilteringWorks()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
@@ -47,13 +47,13 @@ namespace CommonLibTest
             };
             mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Returns(apiResult);
 
-            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(), "dfm", mockNativeMethods.Object);
             var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Empty(result.Results);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public async Task ComputerSessionProcessor_ReadUserSessions_ResolvesHost()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
@@ -72,13 +72,13 @@ namespace CommonLibTest
                 }
             };
 
-            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(), "dfm", mockNativeMethods.Object);
             var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Equal(expected, result.Results);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public async Task ComputerSessionProcessor_ReadUserSessions_ResolvesLocalHostEquivalent()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
@@ -97,13 +97,13 @@ namespace CommonLibTest
                 }
             };
 
-            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(), "dfm", mockNativeMethods.Object);
             var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Equal(expected, result.Results);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public async Task ComputerSessionProcessor_ReadUserSessions_MultipleMatches_AddsAll()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
@@ -127,13 +127,13 @@ namespace CommonLibTest
                 }
             };
 
-            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(), "dfm", mockNativeMethods.Object);
             var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Equal(expected, result.Results);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public async Task ComputerSessionProcessor_ReadUserSessions_NoGCMatch_TriesResolve()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
@@ -152,39 +152,39 @@ namespace CommonLibTest
                 }
             };
 
-            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(), "dfm", mockNativeMethods.Object);
             var result = await processor.ReadUserSessions("win10", _computerSid, _computerDomain);
             Assert.True(result.Collected);
             Assert.Equal(expected, result.Results);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public async Task ComputerSessionProcessor_ReadUserSessions_ComputerAccessDenied_Handled()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
             mockNativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>()))
                 .Returns(NetAPIEnums.NetAPIStatus.ErrorAccessDenied);
-            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(), "dfm", mockNativeMethods.Object);
             var test = await processor.ReadUserSessions("test", "test", "test");
             Assert.False(test.Collected);
             Assert.Equal(NetAPIEnums.NetAPIStatus.ErrorAccessDenied.ToString(), test.FailureReason);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public async Task ComputerSessionProcessor_ReadUserSessionsPrivileged_ComputerAccessDenied_ExceptionCaught()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
             //mockNativeMethods.Setup(x => x.CallSamConnect(ref It.Ref<NativeMethods.UNICODE_STRING>.IsAny, out It.Ref<IntPtr>.IsAny, It.IsAny<NativeMethods.SamAccessMasks>(), ref It.Ref<NativeMethods.OBJECT_ATTRIBUTES>.IsAny)).Returns(NativeMethods.NtStatus.StatusAccessDenied);
             mockNativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>()))
                 .Returns(NetAPIEnums.NetAPIStatus.ErrorAccessDenied);
-            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), "dfm", mockNativeMethods.Object);
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(), "dfm", mockNativeMethods.Object);
             var test = await processor.ReadUserSessionsPrivileged("test", "test", "test");
             Assert.False(test.Collected);
             Assert.Equal(NetAPIEnums.NetAPIStatus.ErrorAccessDenied.ToString(), test.FailureReason);
         }
 
-        [WindowsOnlyFact]
+        [Fact]
         public async Task ComputerSessionProcessor_ReadUserSessionsPrivileged_FilteringWorks()
         {
             var mockNativeMethods = new Mock<NativeMethods>();
@@ -220,7 +220,7 @@ namespace CommonLibTest
                 }
             };
 
-            var processor = new ComputerSessionProcessor(new MockLDAPUtils(), nativeMethods: mockNativeMethods.Object);
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(), nativeMethods: mockNativeMethods.Object, currentUserName:"ADMINISTRATOR");
             var test = await processor.ReadUserSessionsPrivileged("WIN10.TESTLAB.LOCAL", samAccountName, _computerSid);
             Assert.True(test.Collected);
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(test.Results));

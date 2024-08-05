@@ -50,7 +50,7 @@ namespace SharpHoundCommonLib
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        internal static void AddSidToDomain(string key, string value)
+        internal static void AddDomainSidMapping(string key, string value)
         {
             CacheInstance?.SIDToDomainCache.TryAdd(key, value);
         }
@@ -85,11 +85,6 @@ namespace SharpHoundCommonLib
             return false;
         }
 
-        internal static void AddConvertedValue(string key, string value)
-        {
-            CacheInstance?.ValueToIdCache.TryAdd(key, value);
-        }
-
         internal static void AddPrefixedValue(string key, string domain, string value)
         {
             CacheInstance?.ValueToIdCache.TryAdd(GetPrefixKey(key, domain), value);
@@ -107,14 +102,7 @@ namespace SharpHoundCommonLib
 
         internal static bool GetGCCache(string key, out string[] value)
         {
-            if (CacheInstance != null) return CacheInstance.GlobalCatalogCache.TryGetValue(key, out value);
-            value = null;
-            return false;
-        }
-
-        internal static bool GetConvertedValue(string key, out string value)
-        {
-            if (CacheInstance != null) return CacheInstance.ValueToIdCache.TryGetValue(key, out value);
+            if (CacheInstance != null) return CacheInstance.GlobalCatalogCache.TryGetValue(key.ToUpper(), out value);
             value = null;
             return false;
         }

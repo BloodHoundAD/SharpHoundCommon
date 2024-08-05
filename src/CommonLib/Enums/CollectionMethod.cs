@@ -3,7 +3,7 @@
 namespace SharpHoundCommonLib.Enums
 {
     [Flags]
-    public enum ResolvedCollectionMethod
+    public enum CollectionMethod
     {
         None = 0,
         Group = 1,

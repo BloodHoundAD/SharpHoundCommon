@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using SharpHoundRPC;
 using SharpHoundRPC.SAMRPCNative;
@@ -8,6 +9,7 @@ using SharpHoundRPC.Wrappers;
 
 namespace CommonLibTest.Facades
 {
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public class MockWorkstationSAMServer : ISAMServer
     {
         public bool IsNull { get; }
@@ -23,7 +25,7 @@ namespace CommonLibTest.Facades
 
         public Result<SecurityIdentifier> LookupDomain(string name)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Result<SecurityIdentifier> GetMachineSid(string testName = null)

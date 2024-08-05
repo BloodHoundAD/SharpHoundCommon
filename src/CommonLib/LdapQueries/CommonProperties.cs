@@ -5,7 +5,8 @@
         public static readonly string[] TypeResolutionProps =
         {
             LDAPProperties.SAMAccountType, LDAPProperties.ObjectSID, LDAPProperties.ObjectGUID,
-            LDAPProperties.ObjectClass, LDAPProperties.SAMAccountName, LDAPProperties.GroupMSAMembership
+            LDAPProperties.ObjectClass, LDAPProperties.SAMAccountName, LDAPProperties.GroupMSAMembership,
+            LDAPProperties.Flags
         };
 
         public static readonly string[] ObjectID = { LDAPProperties.ObjectSID, LDAPProperties.ObjectGUID };
@@ -29,7 +30,8 @@
         public static readonly string[] ComputerMethodProps =
         {
             LDAPProperties.SAMAccountName, LDAPProperties.DistinguishedName, LDAPProperties.DNSHostName,
-            LDAPProperties.SAMAccountType, LDAPProperties.OperatingSystem, LDAPProperties.PasswordLastSet
+            LDAPProperties.SAMAccountType, LDAPProperties.OperatingSystem, LDAPProperties.PasswordLastSet,
+            LDAPProperties.LastLogonTimestamp
         };
 
         public static readonly string[] ACLProps =
@@ -53,9 +55,9 @@
             LDAPProperties.GroupPolicyOptions, LDAPProperties.AllowedToDelegateTo,
             LDAPProperties.AllowedToActOnBehalfOfOtherIdentity, LDAPProperties.WhenCreated,
             LDAPProperties.HostServiceAccount, LDAPProperties.UnixUserPassword, LDAPProperties.MsSFU30Password,
-            LDAPProperties.UnicodePassword, LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts, 
-            LDAPProperties.MachineAccountQuota, LDAPProperties.WhenChanged, LDAPProperties.SupportedEncryptionTypes,
-            LDAPProperties.DSHeuristics
+            LDAPProperties.UnicodePassword, LDAPProperties.ProfilePath, LDAPProperties.ScriptPath,
+            LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts, LDAPProperties.MachineAccountQuota, 
+            LDAPProperties.WhenChanged, LDAPProperties.SupportedEncryptionTypes, LDAPProperties.DSHeuristics
         };
 
         public static readonly string[] ContainerProps =
@@ -87,6 +89,10 @@
             LDAPProperties.PKIOverlappedPeriod, LDAPProperties.PKIExpirationPeriod, LDAPProperties.ExtendedKeyUsage, LDAPProperties.NumSignaturesRequired,
             LDAPProperties.CertificateApplicationPolicy, LDAPProperties.CertificatePolicy, LDAPProperties.IssuancePolicies, LDAPProperties.CrossCertificatePair,
             LDAPProperties.ApplicationPolicies, LDAPProperties.PKIPrivateKeyFlag, LDAPProperties.OIDGroupLink
+        };
+
+        public static readonly string[] StealthProperties = {
+            LDAPProperties.HomeDirectory, LDAPProperties.ScriptPath, LDAPProperties.ProfilePath
         };
     }
 }
