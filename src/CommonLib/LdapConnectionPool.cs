@@ -38,10 +38,10 @@ namespace SharpHoundCommonLib {
         }
 
         public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetConnectionAsync() {
-            await _semaphore.WaitAsync();
             if (_isUnreachable) {
                 return (false, null, "Domain is unreachable");
             }
+            await _semaphore.WaitAsync();
             if (!_connections.TryTake(out var connectionWrapper)) {
                 var (success, connection, message) = await CreateNewConnection();
                 if (!success) {
@@ -70,6 +70,9 @@ namespace SharpHoundCommonLib {
         }
 
         public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
+            if (_isUnreachable) {
+                return (false, null, "Domain is unreachable");
+            }
             await _semaphore.WaitAsync();
             if (!_globalCatalogConnection.TryTake(out var connectionWrapper)) {
                 var (success, connection, message) = await CreateNewConnection(true);
