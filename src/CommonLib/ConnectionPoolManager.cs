@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.DirectoryServices;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Processors;
 
 namespace SharpHoundCommonLib {
-    public class ConnectionPoolManager : IDisposable{
+    internal class ConnectionPoolManager : IDisposable{
         private readonly ConcurrentDictionary<string, LdapConnectionPool> _pools = new();
         private readonly LdapConfig _ldapConfig;
         private readonly string[] _translateNames = { "Administrator", "admin" };
@@ -19,6 +22,35 @@ namespace SharpHoundCommonLib {
             _ldapConfig = config;
             _log = log ?? Logging.LogProvider.CreateLogger("ConnectionPoolManager");
             _portScanner = scanner ?? new PortScanner();
+        }
+
+        public IAsyncEnumerable<Result<string>> RangedRetrieval(string distinguishedName,
+            string attributeName, CancellationToken cancellationToken = new()) {
+            var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
+
+            if (!GetPool(domain, out var pool)) {
+                return new List<Result<string>> {Result<string>.Fail("Failed to resolve a connection pool")}.ToAsyncEnumerable();
+            }
+
+            return pool.RangedRetrieval(distinguishedName, attributeName, cancellationToken);
+        }
+
+        public IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(LdapQueryParameters queryParameters,
+            CancellationToken cancellationToken = new()) {
+            if (!GetPool(queryParameters.DomainName, out var pool)) {
+                return new List<LdapResult<IDirectoryObject>> {LdapResult<IDirectoryObject>.Fail("Failed to resolve a connection pool", queryParameters)}.ToAsyncEnumerable();
+            }
+
+            return pool.PagedQuery(queryParameters, cancellationToken);
+        }
+
+        public IAsyncEnumerable<LdapResult<IDirectoryObject>> Query(LdapQueryParameters queryParameters,
+            CancellationToken cancellationToken = new()) {
+            if (!GetPool(queryParameters.DomainName, out var pool)) {
+                return new List<LdapResult<IDirectoryObject>> {LdapResult<IDirectoryObject>.Fail("Failed to resolve a connection pool", queryParameters)}.ToAsyncEnumerable();
+            }
+
+            return pool.Query(queryParameters, cancellationToken);
         }
 
         public void ReleaseConnection(LdapConnectionWrapper connectionWrapper, bool connectionFaulted = false) {
@@ -39,6 +71,21 @@ namespace SharpHoundCommonLib {
             var (success, connection, message) = await GetLdapConnection(identifier, globalCatalog);
             ReleaseConnection(connection);
             return (success, message);
+        }
+
+        private bool GetPool(string identifier, out LdapConnectionPool pool) {
+            if (identifier == null) {
+                pool = default;
+                return false;
+            }
+
+            var resolved = ResolveIdentifier(identifier);
+            if (!_pools.TryGetValue(resolved, out pool)) {
+                pool = new LdapConnectionPool(identifier, resolved, _ldapConfig,scanner: _portScanner);
+                _pools.TryAdd(resolved, pool);
+            }
+
+            return true;
         }
 
         public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetLdapConnection(

@@ -1,4 +1,5 @@
 ﻿using System.DirectoryServices.Protocols;
+using System.Text;
 
 namespace SharpHoundCommonLib
 {
@@ -31,6 +32,18 @@ namespace SharpHoundCommonLib
         public int GetGCPort(bool ssl)
         {
             return ssl ? 3269 : 3268;
+        }
+
+        public override string ToString() {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Server: {Server}");
+            sb.AppendLine($"Port: {Port}");
+            sb.AppendLine($"SSLPort: {SSLPort}");
+            sb.AppendLine($"ForceSSL: {ForceSSL}");
+            sb.AppendLine($"AuthType: {AuthType.ToString()}");
+            sb.AppendLine($"Username: {Username}");
+            sb.AppendLine($"Password: {new string('*', Password.Length)}");
+            return sb.ToString();
         }
     }
 }

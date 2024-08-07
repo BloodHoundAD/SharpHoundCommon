@@ -121,6 +121,47 @@ namespace SharpHoundCommonLib
 
             public T Current => _current;
         }
+        
+        internal static IAsyncEnumerable<T> ToAsyncEnumerable<T>(this IEnumerable<T> source) {
+            return source switch {
+                ICollection<T> collection => new IAsyncEnumerableCollectionAdapter<T>(collection),
+                _ => null
+            };
+        }
+
+        private sealed class IAsyncEnumerableCollectionAdapter<T> : IAsyncEnumerable<T> {
+            private readonly IAsyncEnumerator<T> _enumerator;
+
+            public IAsyncEnumerableCollectionAdapter(ICollection<T> source) {
+                _enumerator = new IAsyncEnumeratorCollectionAdapter<T>(source);
+            }
+            public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = new CancellationToken()) {
+                return _enumerator;
+            }
+        }
+
+        private sealed class IAsyncEnumeratorCollectionAdapter<T> : IAsyncEnumerator<T> {
+            private readonly IEnumerable<T> _source;
+            private IEnumerator<T> _enumerator;
+
+            public IAsyncEnumeratorCollectionAdapter(ICollection<T> source) {
+                _source = source;
+            }
+            
+            public ValueTask DisposeAsync() {
+                _enumerator = null;
+                return new ValueTask(Task.CompletedTask);
+            }
+
+            public ValueTask<bool> MoveNextAsync() {
+                if (_enumerator == null) {
+                    _enumerator = _source.GetEnumerator();
+                }
+                return new ValueTask<bool>(_enumerator.MoveNext());
+            }
+
+            public T Current => _enumerator.Current;
+        }
 
 
         public static string LdapValue(this SecurityIdentifier s)
