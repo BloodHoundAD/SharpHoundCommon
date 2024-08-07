@@ -75,6 +75,7 @@ namespace SharpHoundCommonLib {
             var querySuccess = false;
             SearchResponse response = null;
             while (!cancellationToken.IsCancellationRequested) {
+                //Grab our semaphore here to take one of our query slots
                 await _semaphore.WaitAsync(cancellationToken);
                 try {
                     _log.LogTrace("Sending ldap request - {Info}", queryParameters.GetQueryInfo());
@@ -95,9 +96,12 @@ namespace SharpHoundCommonLib {
                      * A ServerDown exception indicates that our connection is no longer valid for one of many reasons.
                      * We'll want to release our connection back to the pool, but dispose it. We need a new connection,
                      * and because this is not a paged query, we can get this connection from anywhere.
+                     *
+                     * We use queryRetryCount here to prevent an infinite retry loop from occurring
+                     *
+                     * Release our connection in a faulted state since the connection is defunct. Attempt to get a new connection to any server in the domain
+                     * since non-paged queries do not require same server connections
                      */
-
-                    //Increment our query retry count
                     queryRetryCount++;
                     ReleaseConnection(connectionWrapper, true);
 
@@ -132,17 +136,23 @@ namespace SharpHoundCommonLib {
                     var backoffDelay = GetNextBackoff(busyRetryCount);
                     await Task.Delay(backoffDelay, cancellationToken);
                 } catch (LdapException le) {
+                    /*
+                     * This is our fallback catch. If our retry counts have been exhausted this will trigger and break us out of our loop
+                     */
                     tempResult = LdapResult<IDirectoryObject>.Fail(
                         $"Query - Caught unrecoverable ldap exception: {le.Message} (ServerMessage: {le.ServerErrorMessage}) (ErrorCode: {le.ErrorCode})",
                         queryParameters);
                 } catch (Exception e) {
+                    /*
+                     * Generic exception handling for unforeseen circumstances
+                     */
                     tempResult =
                         LdapResult<IDirectoryObject>.Fail($"Query - Caught unrecoverable exception: {e.Message}",
                             queryParameters);
                 } finally {
+                    // Always release our semaphore to prevent deadlocks
                     _semaphore.Release(); 
                 }
-                
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
                 if (tempResult != null) {
@@ -213,8 +223,15 @@ namespace SharpHoundCommonLib {
                     }
                 } catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown) {
                     /*
-                     * If we dont have a servername, we're not going to be able to re-establish a connection here. Page cookies are only valid for the server they were generated on. Bail out.
-                     */
+                    * A ServerDown exception indicates that our connection is no longer valid for one of many reasons.
+                    * We'll want to release our connection back to the pool, but dispose it. We need a new connection,
+                    * and because this is not a paged query, we can get this connection from anywhere.
+                    *
+                    * We use queryRetryCount here to prevent an infinite retry loop from occurring
+                    *
+                    * Release our connection in a faulted state since the connection is defunct.
+                    * Paged queries require a connection to be made to the same server which we started the paged query on 
+                    */
                     if (serverName == null) {
                         _log.LogError(
                             "PagedQuery - Received server down exception without a known servername. Unable to generate new connection\n{Info}",
