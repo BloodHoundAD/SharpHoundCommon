@@ -139,10 +139,10 @@ namespace SharpHoundCommonLib {
                     tempResult =
                         LdapResult<IDirectoryObject>.Fail($"Query - Caught unrecoverable exception: {e.Message}",
                             queryParameters);
+                } finally {
+                    _semaphore.Release(); 
                 }
-
-                //All of our catch blocks fall through to this, so even when handling errors, we will always release the semaphore no matter what
-                _semaphore.Release();
+                
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
                 if (tempResult != null) {
@@ -222,6 +222,7 @@ namespace SharpHoundCommonLib {
                         ReleaseConnection(connectionWrapper, true);
                         yield break;
                     }
+
                     ReleaseConnection(connectionWrapper, true);
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
                         var backoffDelay = GetNextBackoff(retryCount);
@@ -259,9 +260,9 @@ namespace SharpHoundCommonLib {
                     tempResult =
                         LdapResult<IDirectoryObject>.Fail($"PagedQuery - Caught unrecoverable exception: {e.Message}",
                             queryParameters);
+                } finally {
+                    _semaphore.Release();
                 }
-
-                _semaphore.Release();
 
                 if (tempResult != null) {
                     if (tempResult.ErrorCode == (int)LdapErrorCodes.ServerDown) {
@@ -415,8 +416,9 @@ namespace SharpHoundCommonLib {
                 } catch (Exception e) {
                     tempResult =
                         LdapResult<string>.Fail($"Caught unrecoverable exception: {e.Message}", queryParameters);
+                } finally {
+                    _semaphore.Release();
                 }
-                _semaphore.Release();
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
                 //We handle connection release in the relevant exception blocks
