@@ -41,8 +41,13 @@ namespace SharpHoundCommonLib
             sb.AppendLine($"SSLPort: {SSLPort}");
             sb.AppendLine($"ForceSSL: {ForceSSL}");
             sb.AppendLine($"AuthType: {AuthType.ToString()}");
-            sb.AppendLine($"Username: {Username}");
-            sb.AppendLine($"Password: {new string('*', Password.Length)}");
+            if (!string.IsNullOrWhiteSpace(Username)) {
+                sb.AppendLine($"Username: {Username}");    
+            }
+
+            if (!string.IsNullOrWhiteSpace(Password)) {
+                sb.AppendLine($"Password: {new string('*', Password.Length)}");    
+            }
             return sb.ToString();
         }
     }
