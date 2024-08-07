@@ -141,6 +141,7 @@ namespace SharpHoundCommonLib {
                             queryParameters);
                 }
 
+                //All of our catch blocks fall through to this, so even when handling errors, we will always release the semaphore no matter what
                 _semaphore.Release();
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
@@ -194,7 +195,7 @@ namespace SharpHoundCommonLib {
             LdapResult<IDirectoryObject> tempResult = null;
 
             while (!cancellationToken.IsCancellationRequested) {
-                _semaphore.WaitAsync(cancellationToken);
+                await _semaphore.WaitAsync(cancellationToken);
                 SearchResponse response = null;
                 try {
                     _log.LogTrace("Sending paged ldap request - {Info}", queryParameters.GetQueryInfo());
