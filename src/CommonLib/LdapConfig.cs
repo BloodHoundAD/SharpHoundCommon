@@ -14,6 +14,7 @@ namespace SharpHoundCommonLib
         public bool DisableSigning { get; set; } = false;
         public bool DisableCertVerification { get; set; } = false;
         public AuthType AuthType { get; set; } = AuthType.Kerberos;
+        public int MaxConcurrentQueries { get; set; } = 20;
 
         //Returns the port for connecting to LDAP. Will always respect a user's overridden config over anything else
         public int GetPort(bool ssl)
@@ -38,9 +39,10 @@ namespace SharpHoundCommonLib
             var sb = new StringBuilder();
             sb.AppendLine($"Server: {Server}");
             sb.AppendLine($"Port: {Port}");
-            sb.AppendLine($"SSLPort: {SSLPort}");
-            sb.AppendLine($"ForceSSL: {ForceSSL}");
+            sb.AppendLine($"SSLPort: {GetPort(true)}");
+            sb.AppendLine($"ForceSSL: {GetPort(false)}");
             sb.AppendLine($"AuthType: {AuthType.ToString()}");
+            sb.AppendLine($"MaxConcurrentQueries: {MaxConcurrentQueries}");
             if (!string.IsNullOrWhiteSpace(Username)) {
                 sb.AppendLine($"Username: {Username}");    
             }

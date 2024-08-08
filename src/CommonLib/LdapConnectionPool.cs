@@ -32,10 +32,16 @@ namespace SharpHoundCommonLib {
         private const int MaxRetries = 3;
         private static readonly ConcurrentDictionary<string, NetAPIStructs.DomainControllerInfo?> DCInfoCache = new();
 
-        public LdapConnectionPool(string identifier, string poolIdentifier, LdapConfig config, int maxConnections = 10, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
+        public LdapConnectionPool(string identifier, string poolIdentifier, LdapConfig config, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
             _connections = new ConcurrentBag<LdapConnectionWrapper>();
             _globalCatalogConnection = new ConcurrentBag<LdapConnectionWrapper>();
-            _semaphore = new SemaphoreSlim(maxConnections, maxConnections);
+            if (config.MaxConcurrentQueries > 0) {
+                _semaphore = new SemaphoreSlim(config.MaxConcurrentQueries, config.MaxConcurrentQueries);    
+            } else {
+                //If MaxConcurrentQueries is 0, we'll just disable the semaphore entirely
+                _semaphore = null;
+            }
+            
             _identifier = identifier;
             _poolIdentifier = poolIdentifier;
             _ldapConfig = config;
@@ -76,7 +82,9 @@ namespace SharpHoundCommonLib {
             SearchResponse response = null;
             while (!cancellationToken.IsCancellationRequested) {
                 //Grab our semaphore here to take one of our query slots
-                await _semaphore.WaitAsync(cancellationToken);
+                if (_semaphore != null){
+                    await _semaphore.WaitAsync(cancellationToken);
+                }
                 try {
                     _log.LogTrace("Sending ldap request - {Info}", queryParameters.GetQueryInfo());
                     response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
@@ -108,7 +116,7 @@ namespace SharpHoundCommonLib {
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
                         var backoffDelay = GetNextBackoff(retryCount);
                         await Task.Delay(backoffDelay, cancellationToken);
-                        var (success, newConnectionWrapper, message) =
+                        var (success, newConnectionWrapper, _) =
                             await GetLdapConnection(queryParameters.GlobalCatalog);
                         if (success) {
                             _log.LogDebug(
@@ -151,7 +159,7 @@ namespace SharpHoundCommonLib {
                             queryParameters);
                 } finally {
                     // Always release our semaphore to prevent deadlocks
-                    _semaphore.Release(); 
+                    _semaphore?.Release(); 
                 }
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
@@ -205,7 +213,9 @@ namespace SharpHoundCommonLib {
             LdapResult<IDirectoryObject> tempResult = null;
 
             while (!cancellationToken.IsCancellationRequested) {
-                await _semaphore.WaitAsync(cancellationToken);
+                if (_semaphore != null){
+                    await _semaphore.WaitAsync(cancellationToken);
+                }
                 SearchResponse response = null;
                 try {
                     _log.LogTrace("Sending paged ldap request - {Info}", queryParameters.GetQueryInfo());
@@ -244,7 +254,7 @@ namespace SharpHoundCommonLib {
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
                         var backoffDelay = GetNextBackoff(retryCount);
                         await Task.Delay(backoffDelay, cancellationToken);
-                        var (success, ldapConnectionWrapperNew, message) =
+                        var (success, ldapConnectionWrapperNew, _) =
                             await GetConnectionForSpecificServerAsync(serverName, queryParameters.GlobalCatalog);
 
                         if (success) {
@@ -278,7 +288,7 @@ namespace SharpHoundCommonLib {
                         LdapResult<IDirectoryObject>.Fail($"PagedQuery - Caught unrecoverable exception: {e.Message}",
                             queryParameters);
                 } finally {
-                    _semaphore.Release();
+                    _semaphore?.Release();
                 }
 
                 if (tempResult != null) {
@@ -391,7 +401,9 @@ namespace SharpHoundCommonLib {
 
             while (!cancellationToken.IsCancellationRequested) {
                 SearchResponse response = null;
-                await _semaphore.WaitAsync(cancellationToken);
+                if (_semaphore != null){
+                    await _semaphore.WaitAsync(cancellationToken);
+                }
                 try {
                     response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
                 } catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
@@ -434,7 +446,7 @@ namespace SharpHoundCommonLib {
                     tempResult =
                         LdapResult<string>.Fail($"Caught unrecoverable exception: {e.Message}", queryParameters);
                 } finally {
-                    _semaphore.Release();
+                    _semaphore?.Release();
                 }
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function

@@ -959,7 +959,7 @@ namespace SharpHoundCommonLib {
 
         public void SetLdapConfig(LdapConfig config) {
             _ldapConfig = config;
-            _log.LogInformation("New LDAP Config Set: {ConfigString}", config.ToString());
+            _log.LogInformation("New LDAP Config Set:\n {ConfigString}", config.ToString());
             _connectionPool.Dispose();
             _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
         }
