@@ -89,14 +89,8 @@ namespace SharpHoundCommonLib {
 
         public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetLdapConnection(
             string identifier, bool globalCatalog) {
-            if (identifier == null) {
-                return (false, default, "Provided a null identifier for the connection");
-            }
-            var resolved = ResolveIdentifier(identifier);
-
-            if (!_pools.TryGetValue(resolved, out var pool)) {
-                pool = new LdapConnectionPool(identifier, resolved, _ldapConfig,scanner: _portScanner);
-                _pools.TryAdd(resolved, pool);
+            if (!GetPool(identifier, out var pool)) {
+                return (false, default, $"Unable to resolve a pool for {identifier}");
             }
 
             if (globalCatalog) {
@@ -107,11 +101,8 @@ namespace SharpHoundCommonLib {
     
         public async Task<(bool Success, LdapConnectionWrapper connectionWrapper, string Message)> GetLdapConnectionForServer(
             string identifier, string server, bool globalCatalog) {
-            var resolved = ResolveIdentifier(identifier);
-
-            if (!_pools.TryGetValue(resolved, out var pool)) {
-                pool = new LdapConnectionPool(resolved, identifier, _ldapConfig,scanner: _portScanner);
-                _pools.TryAdd(resolved, pool);
+            if (!GetPool(identifier, out var pool)) {
+                return (false, default, $"Unable to resolve a pool for {identifier}");
             }
         
             return await pool.GetConnectionForSpecificServerAsync(server, globalCatalog);
