@@ -1,4 +1,5 @@
 ﻿using System.DirectoryServices.Protocols;
+using System.Text;
 
 namespace SharpHoundCommonLib
 {
@@ -13,6 +14,7 @@ namespace SharpHoundCommonLib
         public bool DisableSigning { get; set; } = false;
         public bool DisableCertVerification { get; set; } = false;
         public AuthType AuthType { get; set; } = AuthType.Kerberos;
+        public int MaxConcurrentQueries { get; set; } = 15;
 
         //Returns the port for connecting to LDAP. Will always respect a user's overridden config over anything else
         public int GetPort(bool ssl)
@@ -31,6 +33,24 @@ namespace SharpHoundCommonLib
         public int GetGCPort(bool ssl)
         {
             return ssl ? 3269 : 3268;
+        }
+
+        public override string ToString() {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Server: {Server}");
+            sb.AppendLine($"Port: {Port}");
+            sb.AppendLine($"SSLPort: {GetPort(true)}");
+            sb.AppendLine($"ForceSSL: {GetPort(false)}");
+            sb.AppendLine($"AuthType: {AuthType.ToString()}");
+            sb.AppendLine($"MaxConcurrentQueries: {MaxConcurrentQueries}");
+            if (!string.IsNullOrWhiteSpace(Username)) {
+                sb.AppendLine($"Username: {Username}");    
+            }
+
+            if (!string.IsNullOrWhiteSpace(Password)) {
+                sb.AppendLine($"Password: {new string('*', Password.Length)}");    
+            }
+            return sb.ToString();
         }
     }
 }

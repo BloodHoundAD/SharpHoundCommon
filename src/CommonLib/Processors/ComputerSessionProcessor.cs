@@ -44,31 +44,53 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="computerName"></param>
         /// <param name="computerSid"></param>
         /// <param name="computerDomain"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
         public async Task<SessionAPIResult> ReadUserSessions(string computerName, string computerSid,
-            string computerDomain) {
+            string computerDomain, TimeSpan timeout = default) {
+
+            if (timeout == default) {
+                timeout = TimeSpan.FromMinutes(2);
+            }
             var ret = new SessionAPIResult();
-            NetAPIResult<IEnumerable<NetSessionEnumResults>> result;
             
             _log.LogDebug("Running NetSessionEnum for {ObjectName}", computerName);
 
-            if (_doLocalAdminSessionEnum) {
-                // If we are authenticating using a local admin, we need to impersonate for this
-                using (new Impersonator(_localAdminUsername, ".", _localAdminPassword,
-                           LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50)) {
+            var apiTask = Task.Run(() => {
+                NetAPIResult<IEnumerable<NetSessionEnumResults>> result;
+                if (_doLocalAdminSessionEnum) {
+                    // If we are authenticating using a local admin, we need to impersonate for this
+                    using (new Impersonator(_localAdminUsername, ".", _localAdminPassword,
+                               LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50)) {
+                        result = _nativeMethods.NetSessionEnum(computerName);
+                    }
+
+                    if (result.IsFailed) {
+                        // Fall back to default User
+                        _log.LogDebug(
+                            "NetSessionEnum failed on {ComputerName} with local admin credentials: {Status}. Fallback to default user.",
+                            computerName, result.Status);
+                        result = _nativeMethods.NetSessionEnum(computerName);
+                    }
+                } else {
                     result = _nativeMethods.NetSessionEnum(computerName);
                 }
 
-                if (result.IsFailed) {
-                    // Fall back to default User
-                    _log.LogDebug(
-                        "NetSessionEnum failed on {ComputerName} with local admin credentials: {Status}. Fallback to default user.",
-                        computerName, result.Status);
-                    result = _nativeMethods.NetSessionEnum(computerName);
-                }
-            } else {
-                result = _nativeMethods.NetSessionEnum(computerName);
+                return result;
+            });
+
+            if (await Task.WhenAny(Task.Delay(timeout), apiTask) != apiTask) {
+                await SendComputerStatus(new CSVComputerStatus {
+                    Status = "Timeout",
+                    Task = "NetSessionEnum",
+                    ComputerName = computerName
+                });
+                ret.Collected = false;
+                ret.FailureReason = "Timeout";
+                return ret;
             }
+
+            var result = apiTask.Result;
 
             if (result.IsFailed) {
                 await SendComputerStatus(new CSVComputerStatus {
@@ -153,32 +175,53 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="computerName"></param>
         /// <param name="computerSamAccountName"></param>
         /// <param name="computerSid"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
         public async Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName,
-            string computerSamAccountName, string computerSid) {
+            string computerSamAccountName, string computerSid, TimeSpan timeout = default) {
             var ret = new SessionAPIResult();
-            NetAPIResult<IEnumerable<NetWkstaUserEnumResults>>
-                result;
+            if (timeout == default) {
+                timeout = TimeSpan.FromMinutes(2);
+            }
             
             _log.LogDebug("Running NetWkstaUserEnum for {ObjectName}", computerName);
 
-            if (_doLocalAdminSessionEnum) {
-                // If we are authenticating using a local admin, we need to impersonate for this
-                using (new Impersonator(_localAdminUsername, ".", _localAdminPassword,
-                           LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50)) {
+            var apiTask = Task.Run(() => {
+                NetAPIResult<IEnumerable<NetWkstaUserEnumResults>>
+                    result;
+                if (_doLocalAdminSessionEnum) {
+                    // If we are authenticating using a local admin, we need to impersonate for this
+                    using (new Impersonator(_localAdminUsername, ".", _localAdminPassword,
+                               LogonType.LOGON32_LOGON_NEW_CREDENTIALS, LogonProvider.LOGON32_PROVIDER_WINNT50)) {
+                        result = _nativeMethods.NetWkstaUserEnum(computerName);
+                    }
+
+                    if (result.IsFailed) {
+                        // Fall back to default User
+                        _log.LogDebug(
+                            "NetWkstaUserEnum failed on {ComputerName} with local admin credentials: {Status}. Fallback to default user.",
+                            computerName, result.Status);
+                        result = _nativeMethods.NetWkstaUserEnum(computerName);
+                    }
+                } else {
                     result = _nativeMethods.NetWkstaUserEnum(computerName);
                 }
 
-                if (result.IsFailed) {
-                    // Fall back to default User
-                    _log.LogDebug(
-                        "NetWkstaUserEnum failed on {ComputerName} with local admin credentials: {Status}. Fallback to default user.",
-                        computerName, result.Status);
-                    result = _nativeMethods.NetWkstaUserEnum(computerName);
-                }
-            } else {
-                result = _nativeMethods.NetWkstaUserEnum(computerName);
+                return result;
+            });
+            
+            if (await Task.WhenAny(Task.Delay(timeout), apiTask) != apiTask) {
+                await SendComputerStatus(new CSVComputerStatus {
+                    Status = "Timeout",
+                    Task = "NetWkstaUserEnum",
+                    ComputerName = computerName
+                });
+                ret.Collected = false;
+                ret.FailureReason = "Timeout";
+                return ret;
             }
+
+            var result = apiTask.Result;
 
             if (result.IsFailed) {
                 await SendComputerStatus(new CSVComputerStatus {
