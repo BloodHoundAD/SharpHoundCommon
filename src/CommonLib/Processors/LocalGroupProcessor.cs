@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
@@ -52,6 +53,8 @@ namespace SharpHoundCommonLib.Processors
         public async IAsyncEnumerable<LocalGroupAPIResult> GetLocalGroups(string computerName, string computerObjectId,
             string computerDomain, bool isDomainController)
         {
+            using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
+
             //Open a handle to the server
             var openServerResult = OpenSamServer(computerName);
             if (openServerResult.IsFailed)
@@ -70,6 +73,10 @@ namespace SharpHoundCommonLib.Processors
             var typeCache = new ConcurrentDictionary<string, CachedLocalItem>();
 
             //Try to get the machine sid for the computer if its not already cached
+            if (cts.Token.IsCancellationRequested) {
+                yield break;
+            }
+
             SecurityIdentifier machineSid;
             if (!Cache.GetMachineSid(computerObjectId, out var tempMachineSid))
             {
@@ -97,6 +104,10 @@ namespace SharpHoundCommonLib.Processors
             }
 
             //Get all available domains in the server
+            if (cts.Token.IsCancellationRequested) {
+                yield break;
+            }
+
             var getDomainsResult = server.GetDomains();
             if (getDomainsResult.IsFailed)
             {
@@ -113,6 +124,10 @@ namespace SharpHoundCommonLib.Processors
             //Loop over each domain result and process its member groups
             foreach (var domainResult in getDomainsResult.Value)
             {
+                if (cts.Token.IsCancellationRequested) {
+                    yield break;
+                }
+
                 //Skip non-builtin domains on domain controllers
                 if (isDomainController && !domainResult.Name.Equals("builtin", StringComparison.OrdinalIgnoreCase))
                     continue;
@@ -150,6 +165,10 @@ namespace SharpHoundCommonLib.Processors
 
                 foreach (var alias in getAliasesResult.Value)
                 {
+                    if (cts.Token.IsCancellationRequested) {
+                        yield break;
+                    }
+
                     _log.LogTrace("Opening alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}", alias.Name, alias.Rid, domainResult.Name, computerName);
                     //Try and resolve the group name using several different criteria
                     var resolvedName = await ResolveGroupName(alias.Name, computerName, computerObjectId, computerDomain, alias.Rid,
@@ -209,6 +228,10 @@ namespace SharpHoundCommonLib.Processors
 
                     foreach (var securityIdentifier in getMembersResult.Value)
                     {
+                        if (cts.Token.IsCancellationRequested) {
+                            yield break;
+                        }
+
                         _log.LogTrace("Got member sid {Sid} in alias {Alias} with RID {Rid} in domain {Domain} on computer {ComputerName}", securityIdentifier.Value, alias.Name, alias.Rid, domainResult.Name, computerName);
                         //Check if the sid is one of our filtered ones. Throw it out if it is
                         if (Helpers.IsSidFiltered(securityIdentifier.Value))
