@@ -235,11 +235,8 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_TestTimeout() {
             var nativeMethods = new Mock<NativeMethods>();
             nativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Callback(() => {
-                Thread.Sleep(200);
+                Task.Delay(1000).Wait();
             }).Returns(Array.Empty<NetSessionEnumResults>());
-            nativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>())).Callback(() => {
-                Thread.Sleep(200);
-            }).Returns(Array.Empty<NetWkstaUserEnumResults>());
             var processor = new ComputerSessionProcessor(new MockLdapUtils(),"", nativeMethods.Object);
             var receivedStatus = new List<CSVComputerStatus>();
             var machineDomainSid = $"{Consts.MockDomainSid}-1000";
@@ -258,7 +255,7 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_TestTimeoutPrivileged() {
             var nativeMethods = new Mock<NativeMethods>();
             nativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>())).Callback(() => {
-                Thread.Sleep(200);
+                Task.Delay(1000).Wait();
             }).Returns(Array.Empty<NetWkstaUserEnumResults>());
             var processor = new ComputerSessionProcessor(new MockLdapUtils(),"", nativeMethods.Object);
             var receivedStatus = new List<CSVComputerStatus>();
