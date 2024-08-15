@@ -8,6 +8,7 @@ using Impersonate;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundRPC;
 using SharpHoundRPC.NetAPINative;
 
 namespace SharpHoundCommonLib.Processors {
@@ -56,7 +57,7 @@ namespace SharpHoundCommonLib.Processors {
             
             _log.LogDebug("Running NetSessionEnum for {ObjectName}", computerName);
 
-            var apiTask = Task.Run(() => {
+            var result = await Task.Run(() => {
                 NetAPIResult<IEnumerable<NetSessionEnumResults>> result;
                 if (_doLocalAdminSessionEnum) {
                     // If we are authenticating using a local admin, we need to impersonate for this
@@ -77,20 +78,7 @@ namespace SharpHoundCommonLib.Processors {
                 }
 
                 return result;
-            });
-
-            if (await Task.WhenAny(Task.Delay(timeout), apiTask) != apiTask) {
-                await SendComputerStatus(new CSVComputerStatus {
-                    Status = "Timeout",
-                    Task = "NetSessionEnum",
-                    ComputerName = computerName
-                });
-                ret.Collected = false;
-                ret.FailureReason = "Timeout";
-                return ret;
-            }
-
-            var result = apiTask.Result;
+            }).TimeoutAfter(timeout);
 
             if (result.IsFailed) {
                 await SendComputerStatus(new CSVComputerStatus {
@@ -186,7 +174,7 @@ namespace SharpHoundCommonLib.Processors {
             
             _log.LogDebug("Running NetWkstaUserEnum for {ObjectName}", computerName);
 
-            var apiTask = Task.Run(() => {
+            var result = await Task.Run(() => {
                 NetAPIResult<IEnumerable<NetWkstaUserEnumResults>>
                     result;
                 if (_doLocalAdminSessionEnum) {
@@ -208,21 +196,8 @@ namespace SharpHoundCommonLib.Processors {
                 }
 
                 return result;
-            });
+            }).TimeoutAfter(timeout);
             
-            if (await Task.WhenAny(Task.Delay(timeout), apiTask) != apiTask) {
-                await SendComputerStatus(new CSVComputerStatus {
-                    Status = "Timeout",
-                    Task = "NetWkstaUserEnum",
-                    ComputerName = computerName
-                });
-                ret.Collected = false;
-                ret.FailureReason = "Timeout";
-                return ret;
-            }
-
-            var result = apiTask.Result;
-
             if (result.IsFailed) {
                 await SendComputerStatus(new CSVComputerStatus {
                     Status = result.Status.ToString(),

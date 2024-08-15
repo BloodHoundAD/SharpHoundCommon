@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
+using SharpHoundRPC;
 using SharpHoundRPC.Shared;
 using SharpHoundRPC.Wrappers;
 
@@ -47,11 +49,15 @@ namespace SharpHoundCommonLib.Processors
         /// <param name="computerDomain"></param>
         /// <param name="isDomainController">Is the computer a domain controller</param>
         /// <param name="desiredPrivileges"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
         public async IAsyncEnumerable<UserRightsAssignmentAPIResult> GetUserRightsAssignments(string computerName,
-            string computerObjectId, string computerDomain, bool isDomainController, string[] desiredPrivileges = null)
+            string computerObjectId, string computerDomain, bool isDomainController, string[] desiredPrivileges = null, TimeSpan timeout = default)
         {
-            var policyOpenResult = OpenLSAPolicy(computerName);
+            if (timeout == default) {
+                timeout = TimeSpan.FromMinutes(2);
+            }
+            var policyOpenResult = await Task.Run(() => OpenLSAPolicy(computerName)).TimeoutAfter(timeout);
             if (!policyOpenResult.IsSuccess)
             {
                 _log.LogDebug("LSAOpenPolicy failed on {ComputerName} with status {Status}", computerName,
@@ -71,7 +77,7 @@ namespace SharpHoundCommonLib.Processors
             SecurityIdentifier machineSid;
             if (!Cache.GetMachineSid(computerObjectId, out var temp))
             {
-                var getMachineSidResult = server.GetLocalDomainInformation();
+                var getMachineSidResult = await Task.Run(() => server.GetLocalDomainInformation()).TimeoutAfter(timeout);
                 if (getMachineSidResult.IsFailed)
                 {
                     _log.LogWarning("Failed to get machine sid for {Server}: {Status}. Abandoning URA collection",
@@ -103,7 +109,7 @@ namespace SharpHoundCommonLib.Processors
                 };
 
                 //Ask for all principals with the specified privilege. 
-                var enumerateAccountsResult = server.GetResolvedPrincipalsWithPrivilege(privilege);
+                var enumerateAccountsResult = await Task.Run(() => server.GetResolvedPrincipalsWithPrivilege(privilege)).TimeoutAfter(timeout);
                 if (enumerateAccountsResult.IsFailed)
                 {
                     _log.LogDebug(
@@ -118,6 +124,9 @@ namespace SharpHoundCommonLib.Processors
                     ret.FailureReason =
                         $"LSAEnumerateAccountsWithUserRights returned {enumerateAccountsResult.SError}";
                     yield return ret;
+                    if (enumerateAccountsResult.IsTimeout) {
+                        yield break;
+                    }
                     continue;
                 }
 

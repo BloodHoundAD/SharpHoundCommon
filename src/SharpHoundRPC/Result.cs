@@ -7,6 +7,7 @@
         public T Value { get; private set; }
         public string Error { get; private set; }
         public bool IsFailed => !IsSuccess;
+        public bool IsTimeout { get; set; }
 
         public static Result<T> Ok(T value)
         {
