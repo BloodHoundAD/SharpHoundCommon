@@ -1,12 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using CommonLibTest.Facades.LSAMocks.DCMocks;
 using CommonLibTest.Facades.LSAMocks.WorkstationMocks;
 using Moq;
 using Newtonsoft.Json;
+using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.Processors;
+using SharpHoundRPC;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -61,6 +66,26 @@ namespace CommonLibTest
             var adminResult = privilege.Results.First(x => x.ObjectIdentifier.EndsWith("-544"));
             Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", adminResult.ObjectIdentifier);
             Assert.Equal(Label.Group, adminResult.ObjectType);
+        }
+
+        [Fact]
+        public async Task UserRightsAssignmentProcessor_TestTimeout() {
+            var mockProcessor = new Mock<UserRightsAssignmentProcessor>(new MockLdapUtils(), null);
+            mockProcessor.Setup(x => x.OpenLSAPolicy(It.IsAny<string>())).Callback(() => {
+                Task.Delay(100).Wait();
+            }).Returns(NtStatus.StatusAccessDenied);
+            var processor = mockProcessor.Object;
+            var machineDomainSid = $"{Consts.MockDomainSid}-1000";
+            var receivedStatus = new List<CSVComputerStatus>();
+            processor.ComputerStatusEvent += async status =>  {
+                receivedStatus.Add(status);
+            };
+            var results = await processor.GetUserRightsAssignments("primary.testlab.local", machineDomainSid, "testlab.local", true, null,TimeSpan.FromMilliseconds(1))
+                .ToArrayAsync();
+            Assert.Empty(results);
+            Assert.Single(receivedStatus);
+            var status = receivedStatus[0];
+            Assert.Equal("Timeout", status.Status);
         }
     }
 }
