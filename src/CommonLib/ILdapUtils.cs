@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
@@ -150,6 +150,7 @@ namespace SharpHoundCommonLib {
         Task<(bool Success, TypedPrincipal Principal)> ResolveDistinguishedName(string distinguishedName);
         void AddDomainController(string domainControllerSID);
         IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput();
+        Task<(bool Success, string DSHeuristics)> GetDSHueristics(string domain, string dn);
         /// <summary>
         /// Sets the ldap config for this utils instance. Will dispose if any existing ldap connections when set
         /// </summary>
