@@ -71,6 +71,7 @@ namespace SharpHoundCommonLib.Processors
                     continue;
                 }
                 
+                trust.TrustAttributes = ta.ToString();
                 attributes = (TrustAttributes) ta;
 
                 trust.IsTransitive = !attributes.HasFlag(TrustAttributes.NonTransitive);
@@ -78,7 +79,15 @@ namespace SharpHoundCommonLib.Processors
                     trust.TargetDomainName = cn.ToUpper();
                 }
 
-                trust.SidFilteringEnabled = attributes.HasFlag(TrustAttributes.FilterSids);
+                trust.SidFilteringEnabled = 
+                    attributes.HasFlag(TrustAttributes.QuarantinedDomain) || 
+                    (attributes.HasFlag(TrustAttributes.ForestTransitive) && 
+                    !attributes.HasFlag(TrustAttributes.TreatAsExternal));
+
+                trust.TGTDelegationEnabled = 
+                    !attributes.HasFlag(TrustAttributes.QuarantinedDomain) &&
+                    (attributes.HasFlag(TrustAttributes.CrossOrganizationEnableTGTDelegation)
+                    || !attributes.HasFlag(TrustAttributes.CrossOrganizationNoTGTDelegation));
                 trust.TrustType = TrustAttributesToType(attributes);
 
                 yield return trust;

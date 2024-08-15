@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using Moq;
+using SharpHoundCommonLib;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
+using SharpHoundRPC;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -109,6 +112,28 @@ namespace CommonLibTest
             Assert.Equal("IGNOREME", result.PrincipalName);
             ;
             Assert.Equal("TESTLAB.LOCAL-S-1-5-32-544", result.ObjectId);
+        }
+
+        [Fact]
+        public async Task LocalGroupProcessor_TestTimeout() {
+            var mockUtils = new Mock<MockLdapUtils>();
+            var mockProcessor = new Mock<LocalGroupProcessor>(mockUtils.Object, null);
+            
+            mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Callback(() => {
+                Task.Delay(100).Wait();
+            }).Returns(NtStatus.StatusAccessDenied);
+            var processor = mockProcessor.Object;
+            var machineDomainSid = $"{Consts.MockDomainSid}-1000";
+            var receivedStatus = new List<CSVComputerStatus>();
+            processor.ComputerStatusEvent += async status =>  {
+                receivedStatus.Add(status);
+            };
+            var results = await processor.GetLocalGroups("primary.testlab.local", machineDomainSid, "testlab.local", true,TimeSpan.FromMilliseconds(1))
+                .ToArrayAsync();
+            Assert.Empty(results);
+            Assert.Single(receivedStatus);
+            var status = receivedStatus[0];
+            Assert.Equal("Timeout", status.Status);
         }
     }
 }

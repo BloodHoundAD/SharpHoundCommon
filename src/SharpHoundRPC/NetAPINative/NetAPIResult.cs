@@ -37,5 +37,13 @@
         {
             return Fail(error);
         }
+
+        public string GetErrorStatus() {
+            if (!string.IsNullOrEmpty(Error)) {
+                return Error;
+            }
+
+            return Status.ToString();
+        }
     }
 }

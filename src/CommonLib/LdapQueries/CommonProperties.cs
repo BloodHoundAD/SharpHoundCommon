@@ -55,7 +55,12 @@
             LDAPProperties.GroupPolicyOptions, LDAPProperties.AllowedToDelegateTo,
             LDAPProperties.AllowedToActOnBehalfOfOtherIdentity, LDAPProperties.WhenCreated,
             LDAPProperties.HostServiceAccount, LDAPProperties.UnixUserPassword, LDAPProperties.MsSFU30Password,
-            LDAPProperties.UnicodePassword, LDAPProperties.ProfilePath, LDAPProperties.ScriptPath
+            LDAPProperties.UnicodePassword, LDAPProperties.ProfilePath, LDAPProperties.ScriptPath,
+            LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts, LDAPProperties.MachineAccountQuota, 
+            LDAPProperties.SupportedEncryptionTypes, LDAPProperties.DSHeuristics,
+            LDAPProperties.MinPwdLength, LDAPProperties.PwdProperties, LDAPProperties.MinPwdAge, 
+            LDAPProperties.MaxPwdAge, LDAPProperties.PwdHistoryLength, LDAPProperties.LockoutDuration, 
+            LDAPProperties.LockoutThreshold, LDAPProperties.LockOutObservationWindow
         };
 
         public static readonly string[] ContainerProps =
