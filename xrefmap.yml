@@ -587,90 +587,6 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.CommonLib.ReconfigureLogging
   nameWithType: CommonLib.ReconfigureLogging
-- uid: SharpHoundCommonLib.ConnectionPoolManager
-  name: ConnectionPoolManager
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html
-  commentId: T:SharpHoundCommonLib.ConnectionPoolManager
-  fullName: SharpHoundCommonLib.ConnectionPoolManager
-  nameWithType: ConnectionPoolManager
-- uid: SharpHoundCommonLib.ConnectionPoolManager.#ctor(SharpHoundCommonLib.LdapConfig,ILogger,SharpHoundCommonLib.Processors.PortScanner)
-  name: ConnectionPoolManager(LdapConfig, ILogger, PortScanner)
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager__ctor_SharpHoundCommonLib_LdapConfig_ILogger_SharpHoundCommonLib_Processors_PortScanner_
-  commentId: M:SharpHoundCommonLib.ConnectionPoolManager.#ctor(SharpHoundCommonLib.LdapConfig,ILogger,SharpHoundCommonLib.Processors.PortScanner)
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.ConnectionPoolManager(SharpHoundCommonLib.LdapConfig, ILogger, SharpHoundCommonLib.Processors.PortScanner)
-  nameWithType: ConnectionPoolManager.ConnectionPoolManager(LdapConfig, ILogger, PortScanner)
-- uid: SharpHoundCommonLib.ConnectionPoolManager.#ctor*
-  name: ConnectionPoolManager
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager__ctor_
-  commentId: Overload:SharpHoundCommonLib.ConnectionPoolManager.#ctor
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.ConnectionPoolManager
-  nameWithType: ConnectionPoolManager.ConnectionPoolManager
-- uid: SharpHoundCommonLib.ConnectionPoolManager.Dispose
-  name: Dispose()
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_Dispose
-  commentId: M:SharpHoundCommonLib.ConnectionPoolManager.Dispose
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.Dispose()
-  nameWithType: ConnectionPoolManager.Dispose()
-- uid: SharpHoundCommonLib.ConnectionPoolManager.Dispose*
-  name: Dispose
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_Dispose_
-  commentId: Overload:SharpHoundCommonLib.ConnectionPoolManager.Dispose
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.Dispose
-  nameWithType: ConnectionPoolManager.Dispose
-- uid: SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnection(System.String,System.Boolean)
-  name: GetLdapConnection(String, Boolean)
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_GetLdapConnection_System_String_System_Boolean_
-  commentId: M:SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnection(System.String,System.Boolean)
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnection(System.String, System.Boolean)
-  nameWithType: ConnectionPoolManager.GetLdapConnection(String, Boolean)
-- uid: SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnection*
-  name: GetLdapConnection
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_GetLdapConnection_
-  commentId: Overload:SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnection
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnection
-  nameWithType: ConnectionPoolManager.GetLdapConnection
-- uid: SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnectionForServer(System.String,System.String,System.Boolean)
-  name: GetLdapConnectionForServer(String, String, Boolean)
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_GetLdapConnectionForServer_System_String_System_String_System_Boolean_
-  commentId: M:SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnectionForServer(System.String,System.String,System.Boolean)
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnectionForServer(System.String, System.String, System.Boolean)
-  nameWithType: ConnectionPoolManager.GetLdapConnectionForServer(String, String, Boolean)
-- uid: SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnectionForServer*
-  name: GetLdapConnectionForServer
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_GetLdapConnectionForServer_
-  commentId: Overload:SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnectionForServer
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.GetLdapConnectionForServer
-  nameWithType: ConnectionPoolManager.GetLdapConnectionForServer
-- uid: SharpHoundCommonLib.ConnectionPoolManager.ReleaseConnection(SharpHoundCommonLib.LdapConnectionWrapper,System.Boolean)
-  name: ReleaseConnection(LdapConnectionWrapper, Boolean)
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_ReleaseConnection_SharpHoundCommonLib_LdapConnectionWrapper_System_Boolean_
-  commentId: M:SharpHoundCommonLib.ConnectionPoolManager.ReleaseConnection(SharpHoundCommonLib.LdapConnectionWrapper,System.Boolean)
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.ReleaseConnection(SharpHoundCommonLib.LdapConnectionWrapper, System.Boolean)
-  nameWithType: ConnectionPoolManager.ReleaseConnection(LdapConnectionWrapper, Boolean)
-- uid: SharpHoundCommonLib.ConnectionPoolManager.ReleaseConnection*
-  name: ReleaseConnection
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_ReleaseConnection_
-  commentId: Overload:SharpHoundCommonLib.ConnectionPoolManager.ReleaseConnection
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.ReleaseConnection
-  nameWithType: ConnectionPoolManager.ReleaseConnection
-- uid: SharpHoundCommonLib.ConnectionPoolManager.TestDomainConnection(System.String,System.Boolean)
-  name: TestDomainConnection(String, Boolean)
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_TestDomainConnection_System_String_System_Boolean_
-  commentId: M:SharpHoundCommonLib.ConnectionPoolManager.TestDomainConnection(System.String,System.Boolean)
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.TestDomainConnection(System.String, System.Boolean)
-  nameWithType: ConnectionPoolManager.TestDomainConnection(String, Boolean)
-- uid: SharpHoundCommonLib.ConnectionPoolManager.TestDomainConnection*
-  name: TestDomainConnection
-  href: api/SharpHoundCommonLib.ConnectionPoolManager.html#SharpHoundCommonLib_ConnectionPoolManager_TestDomainConnection_
-  commentId: Overload:SharpHoundCommonLib.ConnectionPoolManager.TestDomainConnection
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.ConnectionPoolManager.TestDomainConnection
-  nameWithType: ConnectionPoolManager.TestDomainConnection
 - uid: SharpHoundCommonLib.CSVComputerStatus
   name: CSVComputerStatus
   href: api/SharpHoundCommonLib.CSVComputerStatus.html
@@ -1634,6 +1550,42 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.EdgeNames.WriteSPN
   fullName: SharpHoundCommonLib.Enums.EdgeNames.WriteSPN
   nameWithType: EdgeNames.WriteSPN
+- uid: SharpHoundCommonLib.Enums.KerberosEncryptionTypes
+  name: KerberosEncryptionTypes
+  href: api/SharpHoundCommonLib.Enums.KerberosEncryptionTypes.html
+  commentId: T:SharpHoundCommonLib.Enums.KerberosEncryptionTypes
+  fullName: SharpHoundCommonLib.Enums.KerberosEncryptionTypes
+  nameWithType: KerberosEncryptionTypes
+- uid: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96
+  name: AES128_CTS_HMAC_SHA1_96
+  href: api/SharpHoundCommonLib.Enums.KerberosEncryptionTypes.html#SharpHoundCommonLib_Enums_KerberosEncryptionTypes_AES128_CTS_HMAC_SHA1_96
+  commentId: F:SharpHoundCommonLib.Enums.KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96
+  fullName: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96
+  nameWithType: KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96
+- uid: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96
+  name: AES256_CTS_HMAC_SHA1_96
+  href: api/SharpHoundCommonLib.Enums.KerberosEncryptionTypes.html#SharpHoundCommonLib_Enums_KerberosEncryptionTypes_AES256_CTS_HMAC_SHA1_96
+  commentId: F:SharpHoundCommonLib.Enums.KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96
+  fullName: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96
+  nameWithType: KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96
+- uid: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.DES_CBC_CRC
+  name: DES_CBC_CRC
+  href: api/SharpHoundCommonLib.Enums.KerberosEncryptionTypes.html#SharpHoundCommonLib_Enums_KerberosEncryptionTypes_DES_CBC_CRC
+  commentId: F:SharpHoundCommonLib.Enums.KerberosEncryptionTypes.DES_CBC_CRC
+  fullName: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.DES_CBC_CRC
+  nameWithType: KerberosEncryptionTypes.DES_CBC_CRC
+- uid: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.DES_CBC_MD5
+  name: DES_CBC_MD5
+  href: api/SharpHoundCommonLib.Enums.KerberosEncryptionTypes.html#SharpHoundCommonLib_Enums_KerberosEncryptionTypes_DES_CBC_MD5
+  commentId: F:SharpHoundCommonLib.Enums.KerberosEncryptionTypes.DES_CBC_MD5
+  fullName: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.DES_CBC_MD5
+  nameWithType: KerberosEncryptionTypes.DES_CBC_MD5
+- uid: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.RC4_HMAC_MD5
+  name: RC4_HMAC_MD5
+  href: api/SharpHoundCommonLib.Enums.KerberosEncryptionTypes.html#SharpHoundCommonLib_Enums_KerberosEncryptionTypes_RC4_HMAC_MD5
+  commentId: F:SharpHoundCommonLib.Enums.KerberosEncryptionTypes.RC4_HMAC_MD5
+  fullName: SharpHoundCommonLib.Enums.KerberosEncryptionTypes.RC4_HMAC_MD5
+  nameWithType: KerberosEncryptionTypes.RC4_HMAC_MD5
 - uid: SharpHoundCommonLib.Enums.Label
   name: Label
   href: api/SharpHoundCommonLib.Enums.Label.html
@@ -2570,18 +2522,24 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.CrossOrganization
   fullName: SharpHoundCommonLib.Enums.TrustAttributes.CrossOrganization
   nameWithType: TrustAttributes.CrossOrganization
+- uid: SharpHoundCommonLib.Enums.TrustAttributes.CrossOrganizationEnableTGTDelegation
+  name: CrossOrganizationEnableTGTDelegation
+  href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_CrossOrganizationEnableTGTDelegation
+  commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.CrossOrganizationEnableTGTDelegation
+  fullName: SharpHoundCommonLib.Enums.TrustAttributes.CrossOrganizationEnableTGTDelegation
+  nameWithType: TrustAttributes.CrossOrganizationEnableTGTDelegation
 - uid: SharpHoundCommonLib.Enums.TrustAttributes.CrossOrganizationNoTGTDelegation
   name: CrossOrganizationNoTGTDelegation
   href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_CrossOrganizationNoTGTDelegation
   commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.CrossOrganizationNoTGTDelegation
   fullName: SharpHoundCommonLib.Enums.TrustAttributes.CrossOrganizationNoTGTDelegation
   nameWithType: TrustAttributes.CrossOrganizationNoTGTDelegation
-- uid: SharpHoundCommonLib.Enums.TrustAttributes.FilterSids
-  name: FilterSids
-  href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_FilterSids
-  commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.FilterSids
-  fullName: SharpHoundCommonLib.Enums.TrustAttributes.FilterSids
-  nameWithType: TrustAttributes.FilterSids
+- uid: SharpHoundCommonLib.Enums.TrustAttributes.DisableAuthTargetValidation
+  name: DisableAuthTargetValidation
+  href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_DisableAuthTargetValidation
+  commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.DisableAuthTargetValidation
+  fullName: SharpHoundCommonLib.Enums.TrustAttributes.DisableAuthTargetValidation
+  nameWithType: TrustAttributes.DisableAuthTargetValidation
 - uid: SharpHoundCommonLib.Enums.TrustAttributes.ForestTransitive
   name: ForestTransitive
   href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_ForestTransitive
@@ -2600,6 +2558,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.PIMTrust
   fullName: SharpHoundCommonLib.Enums.TrustAttributes.PIMTrust
   nameWithType: TrustAttributes.PIMTrust
+- uid: SharpHoundCommonLib.Enums.TrustAttributes.QuarantinedDomain
+  name: QuarantinedDomain
+  href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_QuarantinedDomain
+  commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.QuarantinedDomain
+  fullName: SharpHoundCommonLib.Enums.TrustAttributes.QuarantinedDomain
+  nameWithType: TrustAttributes.QuarantinedDomain
 - uid: SharpHoundCommonLib.Enums.TrustAttributes.TreatAsExternal
   name: TreatAsExternal
   href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_TreatAsExternal
@@ -2612,12 +2576,6 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.TrustUsesAes
   fullName: SharpHoundCommonLib.Enums.TrustAttributes.TrustUsesAes
   nameWithType: TrustAttributes.TrustUsesAes
-- uid: SharpHoundCommonLib.Enums.TrustAttributes.TrustUsesRc4
-  name: TrustUsesRc4
-  href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_TrustUsesRc4
-  commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.TrustUsesRc4
-  fullName: SharpHoundCommonLib.Enums.TrustAttributes.TrustUsesRc4
-  nameWithType: TrustAttributes.TrustUsesRc4
 - uid: SharpHoundCommonLib.Enums.TrustAttributes.Unknown
   name: Unknown
   href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_Unknown
@@ -2630,6 +2588,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.UplevelOnly
   fullName: SharpHoundCommonLib.Enums.TrustAttributes.UplevelOnly
   nameWithType: TrustAttributes.UplevelOnly
+- uid: SharpHoundCommonLib.Enums.TrustAttributes.UsesRc4Encryption
+  name: UsesRc4Encryption
+  href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_UsesRc4Encryption
+  commentId: F:SharpHoundCommonLib.Enums.TrustAttributes.UsesRc4Encryption
+  fullName: SharpHoundCommonLib.Enums.TrustAttributes.UsesRc4Encryption
+  nameWithType: TrustAttributes.UsesRc4Encryption
 - uid: SharpHoundCommonLib.Enums.TrustAttributes.WithinForest
   name: WithinForest
   href: api/SharpHoundCommonLib.Enums.TrustAttributes.html#SharpHoundCommonLib_Enums_TrustAttributes_WithinForest
@@ -3514,6 +3478,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILdapUtils.GetDomainSidFromDomainName
   nameWithType: ILdapUtils.GetDomainSidFromDomainName
+- uid: SharpHoundCommonLib.ILdapUtils.GetDSHueristics(System.String,System.String)
+  name: GetDSHueristics(String, String)
+  href: api/SharpHoundCommonLib.ILdapUtils.html#SharpHoundCommonLib_ILdapUtils_GetDSHueristics_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.ILdapUtils.GetDSHueristics(System.String,System.String)
+  fullName: SharpHoundCommonLib.ILdapUtils.GetDSHueristics(System.String, System.String)
+  nameWithType: ILdapUtils.GetDSHueristics(String, String)
+- uid: SharpHoundCommonLib.ILdapUtils.GetDSHueristics*
+  name: GetDSHueristics
+  href: api/SharpHoundCommonLib.ILdapUtils.html#SharpHoundCommonLib_ILdapUtils_GetDSHueristics_
+  commentId: Overload:SharpHoundCommonLib.ILdapUtils.GetDSHueristics
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILdapUtils.GetDSHueristics
+  nameWithType: ILdapUtils.GetDSHueristics
 - uid: SharpHoundCommonLib.ILdapUtils.GetForest(System.String)
   name: GetForest(String)
   href: api/SharpHoundCommonLib.ILdapUtils.html#SharpHoundCommonLib_ILdapUtils_GetForest_System_String_
@@ -3844,6 +3821,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LdapConfig.GetPort
   nameWithType: LdapConfig.GetPort
+- uid: SharpHoundCommonLib.LdapConfig.MaxConcurrentQueries
+  name: MaxConcurrentQueries
+  href: api/SharpHoundCommonLib.LdapConfig.html#SharpHoundCommonLib_LdapConfig_MaxConcurrentQueries
+  commentId: P:SharpHoundCommonLib.LdapConfig.MaxConcurrentQueries
+  fullName: SharpHoundCommonLib.LdapConfig.MaxConcurrentQueries
+  nameWithType: LdapConfig.MaxConcurrentQueries
+- uid: SharpHoundCommonLib.LdapConfig.MaxConcurrentQueries*
+  name: MaxConcurrentQueries
+  href: api/SharpHoundCommonLib.LdapConfig.html#SharpHoundCommonLib_LdapConfig_MaxConcurrentQueries_
+  commentId: Overload:SharpHoundCommonLib.LdapConfig.MaxConcurrentQueries
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LdapConfig.MaxConcurrentQueries
+  nameWithType: LdapConfig.MaxConcurrentQueries
 - uid: SharpHoundCommonLib.LdapConfig.Password
   name: Password
   href: api/SharpHoundCommonLib.LdapConfig.html#SharpHoundCommonLib_LdapConfig_Password
@@ -3896,6 +3886,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LdapConfig.SSLPort
   nameWithType: LdapConfig.SSLPort
+- uid: SharpHoundCommonLib.LdapConfig.ToString
+  name: ToString()
+  href: api/SharpHoundCommonLib.LdapConfig.html#SharpHoundCommonLib_LdapConfig_ToString
+  commentId: M:SharpHoundCommonLib.LdapConfig.ToString
+  fullName: SharpHoundCommonLib.LdapConfig.ToString()
+  nameWithType: LdapConfig.ToString()
+- uid: SharpHoundCommonLib.LdapConfig.ToString*
+  name: ToString
+  href: api/SharpHoundCommonLib.LdapConfig.html#SharpHoundCommonLib_LdapConfig_ToString_
+  commentId: Overload:SharpHoundCommonLib.LdapConfig.ToString
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LdapConfig.ToString
+  nameWithType: LdapConfig.ToString
 - uid: SharpHoundCommonLib.LdapConfig.Username
   name: Username
   href: api/SharpHoundCommonLib.LdapConfig.html#SharpHoundCommonLib_LdapConfig_Username
@@ -3909,90 +3912,6 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LdapConfig.Username
   nameWithType: LdapConfig.Username
-- uid: SharpHoundCommonLib.LdapConnectionPool
-  name: LdapConnectionPool
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html
-  commentId: T:SharpHoundCommonLib.LdapConnectionPool
-  fullName: SharpHoundCommonLib.LdapConnectionPool
-  nameWithType: LdapConnectionPool
-- uid: SharpHoundCommonLib.LdapConnectionPool.#ctor(System.String,System.String,SharpHoundCommonLib.LdapConfig,System.Int32,SharpHoundCommonLib.Processors.PortScanner,SharpHoundCommonLib.NativeMethods,ILogger)
-  name: LdapConnectionPool(String, String, LdapConfig, Int32, PortScanner, NativeMethods, ILogger)
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool__ctor_System_String_System_String_SharpHoundCommonLib_LdapConfig_System_Int32_SharpHoundCommonLib_Processors_PortScanner_SharpHoundCommonLib_NativeMethods_ILogger_
-  commentId: M:SharpHoundCommonLib.LdapConnectionPool.#ctor(System.String,System.String,SharpHoundCommonLib.LdapConfig,System.Int32,SharpHoundCommonLib.Processors.PortScanner,SharpHoundCommonLib.NativeMethods,ILogger)
-  fullName: SharpHoundCommonLib.LdapConnectionPool.LdapConnectionPool(System.String, System.String, SharpHoundCommonLib.LdapConfig, System.Int32, SharpHoundCommonLib.Processors.PortScanner, SharpHoundCommonLib.NativeMethods, ILogger)
-  nameWithType: LdapConnectionPool.LdapConnectionPool(String, String, LdapConfig, Int32, PortScanner, NativeMethods, ILogger)
-- uid: SharpHoundCommonLib.LdapConnectionPool.#ctor*
-  name: LdapConnectionPool
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool__ctor_
-  commentId: Overload:SharpHoundCommonLib.LdapConnectionPool.#ctor
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.LdapConnectionPool.LdapConnectionPool
-  nameWithType: LdapConnectionPool.LdapConnectionPool
-- uid: SharpHoundCommonLib.LdapConnectionPool.Dispose
-  name: Dispose()
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_Dispose
-  commentId: M:SharpHoundCommonLib.LdapConnectionPool.Dispose
-  fullName: SharpHoundCommonLib.LdapConnectionPool.Dispose()
-  nameWithType: LdapConnectionPool.Dispose()
-- uid: SharpHoundCommonLib.LdapConnectionPool.Dispose*
-  name: Dispose
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_Dispose_
-  commentId: Overload:SharpHoundCommonLib.LdapConnectionPool.Dispose
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.LdapConnectionPool.Dispose
-  nameWithType: LdapConnectionPool.Dispose
-- uid: SharpHoundCommonLib.LdapConnectionPool.GetConnectionAsync
-  name: GetConnectionAsync()
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_GetConnectionAsync
-  commentId: M:SharpHoundCommonLib.LdapConnectionPool.GetConnectionAsync
-  fullName: SharpHoundCommonLib.LdapConnectionPool.GetConnectionAsync()
-  nameWithType: LdapConnectionPool.GetConnectionAsync()
-- uid: SharpHoundCommonLib.LdapConnectionPool.GetConnectionAsync*
-  name: GetConnectionAsync
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_GetConnectionAsync_
-  commentId: Overload:SharpHoundCommonLib.LdapConnectionPool.GetConnectionAsync
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.LdapConnectionPool.GetConnectionAsync
-  nameWithType: LdapConnectionPool.GetConnectionAsync
-- uid: SharpHoundCommonLib.LdapConnectionPool.GetConnectionForSpecificServerAsync(System.String,System.Boolean)
-  name: GetConnectionForSpecificServerAsync(String, Boolean)
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_GetConnectionForSpecificServerAsync_System_String_System_Boolean_
-  commentId: M:SharpHoundCommonLib.LdapConnectionPool.GetConnectionForSpecificServerAsync(System.String,System.Boolean)
-  fullName: SharpHoundCommonLib.LdapConnectionPool.GetConnectionForSpecificServerAsync(System.String, System.Boolean)
-  nameWithType: LdapConnectionPool.GetConnectionForSpecificServerAsync(String, Boolean)
-- uid: SharpHoundCommonLib.LdapConnectionPool.GetConnectionForSpecificServerAsync*
-  name: GetConnectionForSpecificServerAsync
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_GetConnectionForSpecificServerAsync_
-  commentId: Overload:SharpHoundCommonLib.LdapConnectionPool.GetConnectionForSpecificServerAsync
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.LdapConnectionPool.GetConnectionForSpecificServerAsync
-  nameWithType: LdapConnectionPool.GetConnectionForSpecificServerAsync
-- uid: SharpHoundCommonLib.LdapConnectionPool.GetGlobalCatalogConnectionAsync
-  name: GetGlobalCatalogConnectionAsync()
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_GetGlobalCatalogConnectionAsync
-  commentId: M:SharpHoundCommonLib.LdapConnectionPool.GetGlobalCatalogConnectionAsync
-  fullName: SharpHoundCommonLib.LdapConnectionPool.GetGlobalCatalogConnectionAsync()
-  nameWithType: LdapConnectionPool.GetGlobalCatalogConnectionAsync()
-- uid: SharpHoundCommonLib.LdapConnectionPool.GetGlobalCatalogConnectionAsync*
-  name: GetGlobalCatalogConnectionAsync
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_GetGlobalCatalogConnectionAsync_
-  commentId: Overload:SharpHoundCommonLib.LdapConnectionPool.GetGlobalCatalogConnectionAsync
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.LdapConnectionPool.GetGlobalCatalogConnectionAsync
-  nameWithType: LdapConnectionPool.GetGlobalCatalogConnectionAsync
-- uid: SharpHoundCommonLib.LdapConnectionPool.ReleaseConnection(SharpHoundCommonLib.LdapConnectionWrapper,System.Boolean)
-  name: ReleaseConnection(LdapConnectionWrapper, Boolean)
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_ReleaseConnection_SharpHoundCommonLib_LdapConnectionWrapper_System_Boolean_
-  commentId: M:SharpHoundCommonLib.LdapConnectionPool.ReleaseConnection(SharpHoundCommonLib.LdapConnectionWrapper,System.Boolean)
-  fullName: SharpHoundCommonLib.LdapConnectionPool.ReleaseConnection(SharpHoundCommonLib.LdapConnectionWrapper, System.Boolean)
-  nameWithType: LdapConnectionPool.ReleaseConnection(LdapConnectionWrapper, Boolean)
-- uid: SharpHoundCommonLib.LdapConnectionPool.ReleaseConnection*
-  name: ReleaseConnection
-  href: api/SharpHoundCommonLib.LdapConnectionPool.html#SharpHoundCommonLib_LdapConnectionPool_ReleaseConnection_
-  commentId: Overload:SharpHoundCommonLib.LdapConnectionPool.ReleaseConnection
-  isSpec: "True"
-  fullName: SharpHoundCommonLib.LdapConnectionPool.ReleaseConnection
-  nameWithType: LdapConnectionPool.ReleaseConnection
 - uid: SharpHoundCommonLib.LdapConnectionWrapper
   name: LdapConnectionWrapper
   href: api/SharpHoundCommonLib.LdapConnectionWrapper.html
@@ -4269,12 +4188,24 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.DSASignature
   fullName: SharpHoundCommonLib.LDAPProperties.DSASignature
   nameWithType: LDAPProperties.DSASignature
+- uid: SharpHoundCommonLib.LDAPProperties.DSHeuristics
+  name: DSHeuristics
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_DSHeuristics
+  commentId: F:SharpHoundCommonLib.LDAPProperties.DSHeuristics
+  fullName: SharpHoundCommonLib.LDAPProperties.DSHeuristics
+  nameWithType: LDAPProperties.DSHeuristics
 - uid: SharpHoundCommonLib.LDAPProperties.Email
   name: Email
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Email
   commentId: F:SharpHoundCommonLib.LDAPProperties.Email
   fullName: SharpHoundCommonLib.LDAPProperties.Email
   nameWithType: LDAPProperties.Email
+- uid: SharpHoundCommonLib.LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts
+  name: ExpirePasswordsOnSmartCardOnlyAccounts
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ExpirePasswordsOnSmartCardOnlyAccounts
+  commentId: F:SharpHoundCommonLib.LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts
+  fullName: SharpHoundCommonLib.LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts
+  nameWithType: LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts
 - uid: SharpHoundCommonLib.LDAPProperties.ExtendedKeyUsage
   name: ExtendedKeyUsage
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_ExtendedKeyUsage
@@ -4377,12 +4308,54 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.LegacyLAPSPassword
   fullName: SharpHoundCommonLib.LDAPProperties.LegacyLAPSPassword
   nameWithType: LDAPProperties.LegacyLAPSPassword
+- uid: SharpHoundCommonLib.LDAPProperties.LockoutDuration
+  name: LockoutDuration
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LockoutDuration
+  commentId: F:SharpHoundCommonLib.LDAPProperties.LockoutDuration
+  fullName: SharpHoundCommonLib.LDAPProperties.LockoutDuration
+  nameWithType: LDAPProperties.LockoutDuration
+- uid: SharpHoundCommonLib.LDAPProperties.LockOutObservationWindow
+  name: LockOutObservationWindow
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LockOutObservationWindow
+  commentId: F:SharpHoundCommonLib.LDAPProperties.LockOutObservationWindow
+  fullName: SharpHoundCommonLib.LDAPProperties.LockOutObservationWindow
+  nameWithType: LDAPProperties.LockOutObservationWindow
+- uid: SharpHoundCommonLib.LDAPProperties.LockoutThreshold
+  name: LockoutThreshold
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LockoutThreshold
+  commentId: F:SharpHoundCommonLib.LDAPProperties.LockoutThreshold
+  fullName: SharpHoundCommonLib.LDAPProperties.LockoutThreshold
+  nameWithType: LDAPProperties.LockoutThreshold
+- uid: SharpHoundCommonLib.LDAPProperties.MachineAccountQuota
+  name: MachineAccountQuota
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_MachineAccountQuota
+  commentId: F:SharpHoundCommonLib.LDAPProperties.MachineAccountQuota
+  fullName: SharpHoundCommonLib.LDAPProperties.MachineAccountQuota
+  nameWithType: LDAPProperties.MachineAccountQuota
+- uid: SharpHoundCommonLib.LDAPProperties.MaxPwdAge
+  name: MaxPwdAge
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_MaxPwdAge
+  commentId: F:SharpHoundCommonLib.LDAPProperties.MaxPwdAge
+  fullName: SharpHoundCommonLib.LDAPProperties.MaxPwdAge
+  nameWithType: LDAPProperties.MaxPwdAge
 - uid: SharpHoundCommonLib.LDAPProperties.Members
   name: Members
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_Members
   commentId: F:SharpHoundCommonLib.LDAPProperties.Members
   fullName: SharpHoundCommonLib.LDAPProperties.Members
   nameWithType: LDAPProperties.Members
+- uid: SharpHoundCommonLib.LDAPProperties.MinPwdAge
+  name: MinPwdAge
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_MinPwdAge
+  commentId: F:SharpHoundCommonLib.LDAPProperties.MinPwdAge
+  fullName: SharpHoundCommonLib.LDAPProperties.MinPwdAge
+  nameWithType: LDAPProperties.MinPwdAge
+- uid: SharpHoundCommonLib.LDAPProperties.MinPwdLength
+  name: MinPwdLength
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_MinPwdLength
+  commentId: F:SharpHoundCommonLib.LDAPProperties.MinPwdLength
+  fullName: SharpHoundCommonLib.LDAPProperties.MinPwdLength
+  nameWithType: LDAPProperties.MinPwdLength
 - uid: SharpHoundCommonLib.LDAPProperties.MsSFU30Password
   name: MsSFU30Password
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_MsSFU30Password
@@ -4491,6 +4464,18 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.ProfilePath
   fullName: SharpHoundCommonLib.LDAPProperties.ProfilePath
   nameWithType: LDAPProperties.ProfilePath
+- uid: SharpHoundCommonLib.LDAPProperties.PwdHistoryLength
+  name: PwdHistoryLength
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PwdHistoryLength
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PwdHistoryLength
+  fullName: SharpHoundCommonLib.LDAPProperties.PwdHistoryLength
+  nameWithType: LDAPProperties.PwdHistoryLength
+- uid: SharpHoundCommonLib.LDAPProperties.PwdProperties
+  name: PwdProperties
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_PwdProperties
+  commentId: F:SharpHoundCommonLib.LDAPProperties.PwdProperties
+  fullName: SharpHoundCommonLib.LDAPProperties.PwdProperties
+  nameWithType: LDAPProperties.PwdProperties
 - uid: SharpHoundCommonLib.LDAPProperties.RootDomainNamingContext
   name: RootDomainNamingContext
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_RootDomainNamingContext
@@ -4563,6 +4548,12 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.SIDHistory
   fullName: SharpHoundCommonLib.LDAPProperties.SIDHistory
   nameWithType: LDAPProperties.SIDHistory
+- uid: SharpHoundCommonLib.LDAPProperties.SupportedEncryptionTypes
+  name: SupportedEncryptionTypes
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_SupportedEncryptionTypes
+  commentId: F:SharpHoundCommonLib.LDAPProperties.SupportedEncryptionTypes
+  fullName: SharpHoundCommonLib.LDAPProperties.SupportedEncryptionTypes
+  nameWithType: LDAPProperties.SupportedEncryptionTypes
 - uid: SharpHoundCommonLib.LDAPProperties.TemplateSchemaVersion
   name: TemplateSchemaVersion
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_TemplateSchemaVersion
@@ -4764,6 +4755,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LDAPQueries.CommonPaths.CreateDNPath
   nameWithType: CommonPaths.CreateDNPath
+- uid: SharpHoundCommonLib.LDAPQueries.CommonPaths.DirectoryServicePath
+  name: DirectoryServicePath
+  href: api/SharpHoundCommonLib.LDAPQueries.CommonPaths.html#SharpHoundCommonLib_LDAPQueries_CommonPaths_DirectoryServicePath
+  commentId: F:SharpHoundCommonLib.LDAPQueries.CommonPaths.DirectoryServicePath
+  fullName: SharpHoundCommonLib.LDAPQueries.CommonPaths.DirectoryServicePath
+  nameWithType: CommonPaths.DirectoryServicePath
 - uid: SharpHoundCommonLib.LDAPQueries.CommonPaths.QueryPolicyPath
   name: QueryPolicyPath
   href: api/SharpHoundCommonLib.LDAPQueries.CommonPaths.html#SharpHoundCommonLib_LDAPQueries_CommonPaths_QueryPolicyPath
@@ -5621,6 +5618,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LdapUtils.GetDomainSidFromDomainName
   nameWithType: LdapUtils.GetDomainSidFromDomainName
+- uid: SharpHoundCommonLib.LdapUtils.GetDSHueristics(System.String,System.String)
+  name: GetDSHueristics(String, String)
+  href: api/SharpHoundCommonLib.LdapUtils.html#SharpHoundCommonLib_LdapUtils_GetDSHueristics_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.LdapUtils.GetDSHueristics(System.String,System.String)
+  fullName: SharpHoundCommonLib.LdapUtils.GetDSHueristics(System.String, System.String)
+  nameWithType: LdapUtils.GetDSHueristics(String, String)
+- uid: SharpHoundCommonLib.LdapUtils.GetDSHueristics*
+  name: GetDSHueristics
+  href: api/SharpHoundCommonLib.LdapUtils.html#SharpHoundCommonLib_LdapUtils_GetDSHueristics_
+  commentId: Overload:SharpHoundCommonLib.LdapUtils.GetDSHueristics
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LdapUtils.GetDSHueristics
+  nameWithType: LdapUtils.GetDSHueristics
 - uid: SharpHoundCommonLib.LdapUtils.GetForest(System.String)
   name: GetForest(String)
   href: api/SharpHoundCommonLib.LdapUtils.html#SharpHoundCommonLib_LdapUtils_GetForest_System_String_
@@ -6799,6 +6809,32 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TargetDomainSid
   nameWithType: DomainTrust.TargetDomainSid
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TGTDelegationEnabled
+  name: TGTDelegationEnabled
+  href: api/SharpHoundCommonLib.OutputTypes.DomainTrust.html#SharpHoundCommonLib_OutputTypes_DomainTrust_TGTDelegationEnabled
+  commentId: P:SharpHoundCommonLib.OutputTypes.DomainTrust.TGTDelegationEnabled
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TGTDelegationEnabled
+  nameWithType: DomainTrust.TGTDelegationEnabled
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TGTDelegationEnabled*
+  name: TGTDelegationEnabled
+  href: api/SharpHoundCommonLib.OutputTypes.DomainTrust.html#SharpHoundCommonLib_OutputTypes_DomainTrust_TGTDelegationEnabled_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DomainTrust.TGTDelegationEnabled
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TGTDelegationEnabled
+  nameWithType: DomainTrust.TGTDelegationEnabled
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustAttributes
+  name: TrustAttributes
+  href: api/SharpHoundCommonLib.OutputTypes.DomainTrust.html#SharpHoundCommonLib_OutputTypes_DomainTrust_TrustAttributes
+  commentId: P:SharpHoundCommonLib.OutputTypes.DomainTrust.TrustAttributes
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustAttributes
+  nameWithType: DomainTrust.TrustAttributes
+- uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustAttributes*
+  name: TrustAttributes
+  href: api/SharpHoundCommonLib.OutputTypes.DomainTrust.html#SharpHoundCommonLib_OutputTypes_DomainTrust_TrustAttributes_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.DomainTrust.TrustAttributes
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustAttributes
+  nameWithType: DomainTrust.TrustAttributes
 - uid: SharpHoundCommonLib.OutputTypes.DomainTrust.TrustDirection
   name: TrustDirection
   href: api/SharpHoundCommonLib.OutputTypes.DomainTrust.html#SharpHoundCommonLib_OutputTypes_DomainTrust_TrustDirection
@@ -8478,12 +8514,12 @@ references:
   commentId: E:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerStatusEvent
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerStatusEvent
   nameWithType: ComputerSessionProcessor.ComputerStatusEvent
-- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String,System.String,System.String)
-  name: ReadUserSessions(String, String, String)
-  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessions_System_String_System_String_System_String_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String,System.String,System.String)
-  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String, System.String, System.String)
-  nameWithType: ComputerSessionProcessor.ReadUserSessions(String, String, String)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String,System.String,System.String,System.TimeSpan)
+  name: ReadUserSessions(String, String, String, TimeSpan)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessions_System_String_System_String_System_String_System_TimeSpan_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String,System.String,System.String,System.TimeSpan)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions(System.String, System.String, System.String, System.TimeSpan)
+  nameWithType: ComputerSessionProcessor.ReadUserSessions(String, String, String, TimeSpan)
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions*
   name: ReadUserSessions
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessions_
@@ -8491,12 +8527,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessions
   nameWithType: ComputerSessionProcessor.ReadUserSessions
-- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String,System.String,System.String)
-  name: ReadUserSessionsPrivileged(String, String, String)
-  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessionsPrivileged_System_String_System_String_System_String_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String,System.String,System.String)
-  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String, System.String, System.String)
-  nameWithType: ComputerSessionProcessor.ReadUserSessionsPrivileged(String, String, String)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String,System.String,System.String,System.TimeSpan)
+  name: ReadUserSessionsPrivileged(String, String, String, TimeSpan)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessionsPrivileged_System_String_System_String_System_String_System_TimeSpan_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String,System.String,System.String,System.TimeSpan)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged(System.String, System.String, System.String, System.TimeSpan)
+  nameWithType: ComputerSessionProcessor.ReadUserSessionsPrivileged(String, String, String, TimeSpan)
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ReadUserSessionsPrivileged*
   name: ReadUserSessionsPrivileged
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor_ReadUserSessionsPrivileged_
@@ -9030,12 +9066,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.LdapPropertyProcessor.ReadContainerProperties
   nameWithType: LdapPropertyProcessor.ReadContainerProperties
-- uid: SharpHoundCommonLib.Processors.LdapPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.IDirectoryObject)
-  name: ReadDomainProperties(IDirectoryObject)
-  href: api/SharpHoundCommonLib.Processors.LdapPropertyProcessor.html#SharpHoundCommonLib_Processors_LdapPropertyProcessor_ReadDomainProperties_SharpHoundCommonLib_IDirectoryObject_
-  commentId: M:SharpHoundCommonLib.Processors.LdapPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.IDirectoryObject)
-  fullName: SharpHoundCommonLib.Processors.LdapPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.IDirectoryObject)
-  nameWithType: LdapPropertyProcessor.ReadDomainProperties(IDirectoryObject)
+- uid: SharpHoundCommonLib.Processors.LdapPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.IDirectoryObject,System.String)
+  name: ReadDomainProperties(IDirectoryObject, String)
+  href: api/SharpHoundCommonLib.Processors.LdapPropertyProcessor.html#SharpHoundCommonLib_Processors_LdapPropertyProcessor_ReadDomainProperties_SharpHoundCommonLib_IDirectoryObject_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.LdapPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.IDirectoryObject,System.String)
+  fullName: SharpHoundCommonLib.Processors.LdapPropertyProcessor.ReadDomainProperties(SharpHoundCommonLib.IDirectoryObject, System.String)
+  nameWithType: LdapPropertyProcessor.ReadDomainProperties(IDirectoryObject, String)
 - uid: SharpHoundCommonLib.Processors.LdapPropertyProcessor.ReadDomainProperties*
   name: ReadDomainProperties
   href: api/SharpHoundCommonLib.Processors.LdapPropertyProcessor.html#SharpHoundCommonLib_Processors_LdapPropertyProcessor_ReadDomainProperties_
@@ -9190,12 +9226,12 @@ references:
   commentId: M:SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups(SharpHoundCommonLib.ResolvedSearchResult)
   fullName: SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups(SharpHoundCommonLib.ResolvedSearchResult)
   nameWithType: LocalGroupProcessor.GetLocalGroups(ResolvedSearchResult)
-- uid: SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups(System.String,System.String,System.String,System.Boolean)
-  name: GetLocalGroups(String, String, String, Boolean)
-  href: api/SharpHoundCommonLib.Processors.LocalGroupProcessor.html#SharpHoundCommonLib_Processors_LocalGroupProcessor_GetLocalGroups_System_String_System_String_System_String_System_Boolean_
-  commentId: M:SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups(System.String,System.String,System.String,System.Boolean)
-  fullName: SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups(System.String, System.String, System.String, System.Boolean)
-  nameWithType: LocalGroupProcessor.GetLocalGroups(String, String, String, Boolean)
+- uid: SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups(System.String,System.String,System.String,System.Boolean,System.TimeSpan)
+  name: GetLocalGroups(String, String, String, Boolean, TimeSpan)
+  href: api/SharpHoundCommonLib.Processors.LocalGroupProcessor.html#SharpHoundCommonLib_Processors_LocalGroupProcessor_GetLocalGroups_System_String_System_String_System_String_System_Boolean_System_TimeSpan_
+  commentId: M:SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups(System.String,System.String,System.String,System.Boolean,System.TimeSpan)
+  fullName: SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups(System.String, System.String, System.String, System.Boolean, System.TimeSpan)
+  nameWithType: LocalGroupProcessor.GetLocalGroups(String, String, String, Boolean, TimeSpan)
 - uid: SharpHoundCommonLib.Processors.LocalGroupProcessor.GetLocalGroups*
   name: GetLocalGroups
   href: api/SharpHoundCommonLib.Processors.LocalGroupProcessor.html#SharpHoundCommonLib_Processors_LocalGroupProcessor_GetLocalGroups_
@@ -9499,15 +9535,15 @@ references:
   fullName.vb: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(SharpHoundCommonLib.ResolvedSearchResult, System.String())
   nameWithType: UserRightsAssignmentProcessor.GetUserRightsAssignments(ResolvedSearchResult, String[])
   nameWithType.vb: UserRightsAssignmentProcessor.GetUserRightsAssignments(ResolvedSearchResult, String())
-- uid: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(System.String,System.String,System.String,System.Boolean,System.String[])
-  name: GetUserRightsAssignments(String, String, String, Boolean, String[])
-  href: api/SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.html#SharpHoundCommonLib_Processors_UserRightsAssignmentProcessor_GetUserRightsAssignments_System_String_System_String_System_String_System_Boolean_System_String___
-  commentId: M:SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(System.String,System.String,System.String,System.Boolean,System.String[])
-  name.vb: GetUserRightsAssignments(String, String, String, Boolean, String())
-  fullName: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(System.String, System.String, System.String, System.Boolean, System.String[])
-  fullName.vb: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(System.String, System.String, System.String, System.Boolean, System.String())
-  nameWithType: UserRightsAssignmentProcessor.GetUserRightsAssignments(String, String, String, Boolean, String[])
-  nameWithType.vb: UserRightsAssignmentProcessor.GetUserRightsAssignments(String, String, String, Boolean, String())
+- uid: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(System.String,System.String,System.String,System.Boolean,System.String[],System.TimeSpan)
+  name: GetUserRightsAssignments(String, String, String, Boolean, String[], TimeSpan)
+  href: api/SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.html#SharpHoundCommonLib_Processors_UserRightsAssignmentProcessor_GetUserRightsAssignments_System_String_System_String_System_String_System_Boolean_System_String___System_TimeSpan_
+  commentId: M:SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(System.String,System.String,System.String,System.Boolean,System.String[],System.TimeSpan)
+  name.vb: GetUserRightsAssignments(String, String, String, Boolean, String(), TimeSpan)
+  fullName: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(System.String, System.String, System.String, System.Boolean, System.String[], System.TimeSpan)
+  fullName.vb: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments(System.String, System.String, System.String, System.Boolean, System.String(), System.TimeSpan)
+  nameWithType: UserRightsAssignmentProcessor.GetUserRightsAssignments(String, String, String, Boolean, String[], TimeSpan)
+  nameWithType.vb: UserRightsAssignmentProcessor.GetUserRightsAssignments(String, String, String, Boolean, String(), TimeSpan)
 - uid: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.GetUserRightsAssignments*
   name: GetUserRightsAssignments
   href: api/SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.html#SharpHoundCommonLib_Processors_UserRightsAssignmentProcessor_GetUserRightsAssignments_
@@ -10114,6 +10150,31 @@ references:
   isSpec: "True"
   fullName: SharpHoundRPC.Extensions.Rid
   nameWithType: Extensions.Rid
+- uid: SharpHoundRPC.Extensions.TimeoutAfter*
+  name: TimeoutAfter
+  href: api/SharpHoundRPC.Extensions.html#SharpHoundRPC_Extensions_TimeoutAfter_
+  commentId: Overload:SharpHoundRPC.Extensions.TimeoutAfter
+  isSpec: "True"
+  fullName: SharpHoundRPC.Extensions.TimeoutAfter
+  nameWithType: Extensions.TimeoutAfter
+- uid: SharpHoundRPC.Extensions.TimeoutAfter``1(System.Threading.Tasks.Task{SharpHoundRPC.NetAPINative.NetAPIResult{``0}},System.TimeSpan)
+  name: TimeoutAfter<T>(Task<NetAPIResult<T>>, TimeSpan)
+  href: api/SharpHoundRPC.Extensions.html#SharpHoundRPC_Extensions_TimeoutAfter__1_System_Threading_Tasks_Task_SharpHoundRPC_NetAPINative_NetAPIResult___0___System_TimeSpan_
+  commentId: M:SharpHoundRPC.Extensions.TimeoutAfter``1(System.Threading.Tasks.Task{SharpHoundRPC.NetAPINative.NetAPIResult{``0}},System.TimeSpan)
+  name.vb: TimeoutAfter(Of T)(Task(Of NetAPIResult(Of T)), TimeSpan)
+  fullName: SharpHoundRPC.Extensions.TimeoutAfter<T>(System.Threading.Tasks.Task<SharpHoundRPC.NetAPINative.NetAPIResult<T>>, System.TimeSpan)
+  fullName.vb: SharpHoundRPC.Extensions.TimeoutAfter(Of T)(System.Threading.Tasks.Task(Of SharpHoundRPC.NetAPINative.NetAPIResult(Of T)), System.TimeSpan)
+  nameWithType: Extensions.TimeoutAfter<T>(Task<NetAPIResult<T>>, TimeSpan)
+  nameWithType.vb: Extensions.TimeoutAfter(Of T)(Task(Of NetAPIResult(Of T)), TimeSpan)
+- uid: SharpHoundRPC.Extensions.TimeoutAfter``1(System.Threading.Tasks.Task{SharpHoundRPC.Result{``0}},System.TimeSpan)
+  name: TimeoutAfter<T>(Task<Result<T>>, TimeSpan)
+  href: api/SharpHoundRPC.Extensions.html#SharpHoundRPC_Extensions_TimeoutAfter__1_System_Threading_Tasks_Task_SharpHoundRPC_Result___0___System_TimeSpan_
+  commentId: M:SharpHoundRPC.Extensions.TimeoutAfter``1(System.Threading.Tasks.Task{SharpHoundRPC.Result{``0}},System.TimeSpan)
+  name.vb: TimeoutAfter(Of T)(Task(Of Result(Of T)), TimeSpan)
+  fullName: SharpHoundRPC.Extensions.TimeoutAfter<T>(System.Threading.Tasks.Task<SharpHoundRPC.Result<T>>, System.TimeSpan)
+  fullName.vb: SharpHoundRPC.Extensions.TimeoutAfter(Of T)(System.Threading.Tasks.Task(Of SharpHoundRPC.Result(Of T)), System.TimeSpan)
+  nameWithType: Extensions.TimeoutAfter<T>(Task<Result<T>>, TimeSpan)
+  nameWithType.vb: Extensions.TimeoutAfter(Of T)(Task(Of Result(Of T)), TimeSpan)
 - uid: SharpHoundRPC.Handles
   name: SharpHoundRPC.Handles
   href: api/SharpHoundRPC.Handles.html
@@ -11435,6 +11496,23 @@ references:
   fullName.vb: SharpHoundRPC.NetAPINative.NetAPIResult(Of T).Fail
   nameWithType: NetAPIResult<T>.Fail
   nameWithType.vb: NetAPIResult(Of T).Fail
+- uid: SharpHoundRPC.NetAPINative.NetAPIResult`1.GetErrorStatus
+  name: GetErrorStatus()
+  href: api/SharpHoundRPC.NetAPINative.NetAPIResult-1.html#SharpHoundRPC_NetAPINative_NetAPIResult_1_GetErrorStatus
+  commentId: M:SharpHoundRPC.NetAPINative.NetAPIResult`1.GetErrorStatus
+  fullName: SharpHoundRPC.NetAPINative.NetAPIResult<T>.GetErrorStatus()
+  fullName.vb: SharpHoundRPC.NetAPINative.NetAPIResult(Of T).GetErrorStatus()
+  nameWithType: NetAPIResult<T>.GetErrorStatus()
+  nameWithType.vb: NetAPIResult(Of T).GetErrorStatus()
+- uid: SharpHoundRPC.NetAPINative.NetAPIResult`1.GetErrorStatus*
+  name: GetErrorStatus
+  href: api/SharpHoundRPC.NetAPINative.NetAPIResult-1.html#SharpHoundRPC_NetAPINative_NetAPIResult_1_GetErrorStatus_
+  commentId: Overload:SharpHoundRPC.NetAPINative.NetAPIResult`1.GetErrorStatus
+  isSpec: "True"
+  fullName: SharpHoundRPC.NetAPINative.NetAPIResult<T>.GetErrorStatus
+  fullName.vb: SharpHoundRPC.NetAPINative.NetAPIResult(Of T).GetErrorStatus
+  nameWithType: NetAPIResult<T>.GetErrorStatus
+  nameWithType.vb: NetAPIResult(Of T).GetErrorStatus
 - uid: SharpHoundRPC.NetAPINative.NetAPIResult`1.IsFailed
   name: IsFailed
   href: api/SharpHoundRPC.NetAPINative.NetAPIResult-1.html#SharpHoundRPC_NetAPINative_NetAPIResult_1_IsFailed
@@ -11978,6 +12056,23 @@ references:
   fullName.vb: SharpHoundRPC.Result(Of T).IsSuccess
   nameWithType: Result<T>.IsSuccess
   nameWithType.vb: Result(Of T).IsSuccess
+- uid: SharpHoundRPC.Result`1.IsTimeout
+  name: IsTimeout
+  href: api/SharpHoundRPC.Result-1.html#SharpHoundRPC_Result_1_IsTimeout
+  commentId: P:SharpHoundRPC.Result`1.IsTimeout
+  fullName: SharpHoundRPC.Result<T>.IsTimeout
+  fullName.vb: SharpHoundRPC.Result(Of T).IsTimeout
+  nameWithType: Result<T>.IsTimeout
+  nameWithType.vb: Result(Of T).IsTimeout
+- uid: SharpHoundRPC.Result`1.IsTimeout*
+  name: IsTimeout
+  href: api/SharpHoundRPC.Result-1.html#SharpHoundRPC_Result_1_IsTimeout_
+  commentId: Overload:SharpHoundRPC.Result`1.IsTimeout
+  isSpec: "True"
+  fullName: SharpHoundRPC.Result<T>.IsTimeout
+  fullName.vb: SharpHoundRPC.Result(Of T).IsTimeout
+  nameWithType: Result<T>.IsTimeout
+  nameWithType.vb: Result(Of T).IsTimeout
 - uid: SharpHoundRPC.Result`1.Ok(`0)
   name: Ok(T)
   href: api/SharpHoundRPC.Result-1.html#SharpHoundRPC_Result_1_Ok__0_
