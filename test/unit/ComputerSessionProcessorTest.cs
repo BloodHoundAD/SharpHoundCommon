@@ -237,6 +237,9 @@ namespace CommonLibTest
             nativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Callback(() => {
                 Thread.Sleep(200);
             }).Returns(Array.Empty<NetSessionEnumResults>());
+            nativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>())).Callback(() => {
+                Thread.Sleep(200);
+            }).Returns(Array.Empty<NetWkstaUserEnumResults>());
             var processor = new ComputerSessionProcessor(new MockLdapUtils(),"", nativeMethods.Object);
             var receivedStatus = new List<CSVComputerStatus>();
             var machineDomainSid = $"{Consts.MockDomainSid}-1000";
