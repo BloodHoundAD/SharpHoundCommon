@@ -82,7 +82,7 @@ namespace SharpHoundCommonLib.Processors {
 
             if (result.IsFailed) {
                 await SendComputerStatus(new CSVComputerStatus {
-                    Status = result.Status.ToString(),
+                    Status = result.GetErrorStatus(),
                     Task = "NetSessionEnum",
                     ComputerName = computerName
                 });
@@ -200,7 +200,7 @@ namespace SharpHoundCommonLib.Processors {
             
             if (result.IsFailed) {
                 await SendComputerStatus(new CSVComputerStatus {
-                    Status = result.Status.ToString(),
+                    Status = result.GetErrorStatus(),
                     Task = "NetWkstaUserEnum",
                     ComputerName = computerName
                 });

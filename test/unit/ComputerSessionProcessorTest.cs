@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using CommonLibTest.Facades;
 using Moq;
@@ -6,6 +8,7 @@ using Newtonsoft.Json;
 using SharpHoundCommonLib;
 using SharpHoundCommonLib.OutputTypes;
 using SharpHoundCommonLib.Processors;
+using SharpHoundRPC;
 using SharpHoundRPC.NetAPINative;
 using Xunit;
 using Xunit.Abstractions;
@@ -226,6 +229,35 @@ namespace CommonLibTest
             _testOutputHelper.WriteLine(JsonConvert.SerializeObject(test.Results));
             Assert.Equal(2, test.Results.Length);
             Assert.Equal(expected, test.Results);
+        }
+
+        [Fact]
+        public async Task ComputerSessionProcessor_TestTimeout() {
+            var nativeMethods = new Mock<NativeMethods>();
+            nativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Callback(() => {
+                Thread.Sleep(200);
+            }).Returns(Array.Empty<NetSessionEnumResults>());
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(),"", nativeMethods.Object);
+            var receivedStatus = new List<CSVComputerStatus>();
+            var machineDomainSid = $"{Consts.MockDomainSid}-1000";
+            processor.ComputerStatusEvent += async status =>  {
+                receivedStatus.Add(status);
+            };
+            var results = await processor.ReadUserSessions("primary.testlab.local", machineDomainSid, "testlab.local",
+                TimeSpan.FromMilliseconds(1));
+            Assert.Empty(results.Results);
+            Assert.Single(receivedStatus);
+            var status = receivedStatus[0];
+            Assert.Equal("Timeout", status.Status);
+            
+            receivedStatus.Clear();
+            
+            results = await processor.ReadUserSessionsPrivileged("primary.testlab.local", machineDomainSid, "testlab.local",
+                TimeSpan.FromMilliseconds(1));
+            Assert.Empty(results.Results);
+            Assert.Single(receivedStatus);
+            status = receivedStatus[0];
+            Assert.Equal("Timeout", status.Status);
         }
     }
 }
