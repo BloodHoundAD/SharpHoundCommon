@@ -1120,5 +1120,10 @@ namespace CommonLibTest.Facades
         public void Dispose() {
          
         }
+
+        public async Task<(bool Success, string DSHeuristics)> GetDSHueristics(string domain, string dn)
+        {
+            return (true, "0");
+        }
     }
 }
