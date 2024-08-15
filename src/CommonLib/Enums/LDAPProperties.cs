@@ -71,6 +71,10 @@
         public const string CertificateTemplates = "certificatetemplates";
         public const string CrossCertificatePair = "crosscertificatepair";
         public const string Flags = "flags";
+        public const string ExpirePasswordsOnSmartCardOnlyAccounts = "msds-expirepasswordsonsmartcardonlyaccounts";
+        public const string MachineAccountQuota = "ms-ds-machineaccountquota";
+        public const string SupportedEncryptionTypes = "msds-supportedencryptiontypes";
+        public const string DSHeuristics = "dsheuristics";
         public const string DefaultNamingContext = "defaultnamingcontext";
         public const string RootDomainNamingContext = "rootdomainnamingcontext";
         public const string ConfigurationNamingContext = "configurationnamingcontext";
@@ -81,5 +85,13 @@
         public const string OU = "ou";
         public const string ProfilePath = "profilepath";
         public const string DSASignature = "dsasignature";
+        public const string MinPwdLength = "minpwdlength";
+        public const string PwdProperties = "pwdproperties";
+        public const string MinPwdAge = "minpwdage";
+        public const string MaxPwdAge = "maxpwdage";
+        public const string PwdHistoryLength = "pwdhistorylength";
+        public const string LockoutDuration = "lockoutduration";
+        public const string LockoutThreshold = "lockoutthreshold";
+        public const string LockOutObservationWindow = "lockoutobservationwindow";
     }
 }
