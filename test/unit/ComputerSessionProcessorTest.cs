@@ -235,11 +235,8 @@ namespace CommonLibTest
         public async Task ComputerSessionProcessor_TestTimeout() {
             var nativeMethods = new Mock<NativeMethods>();
             nativeMethods.Setup(x => x.NetSessionEnum(It.IsAny<string>())).Callback(() => {
-                Thread.Sleep(200);
+                Task.Delay(1000).Wait();
             }).Returns(Array.Empty<NetSessionEnumResults>());
-            nativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>())).Callback(() => {
-                Thread.Sleep(200);
-            }).Returns(Array.Empty<NetWkstaUserEnumResults>());
             var processor = new ComputerSessionProcessor(new MockLdapUtils(),"", nativeMethods.Object);
             var receivedStatus = new List<CSVComputerStatus>();
             var machineDomainSid = $"{Consts.MockDomainSid}-1000";
@@ -252,14 +249,26 @@ namespace CommonLibTest
             Assert.Single(receivedStatus);
             var status = receivedStatus[0];
             Assert.Equal("Timeout", status.Status);
+        }
+        
+        [Fact]
+        public async Task ComputerSessionProcessor_TestTimeoutPrivileged() {
+            var nativeMethods = new Mock<NativeMethods>();
+            nativeMethods.Setup(x => x.NetWkstaUserEnum(It.IsAny<string>())).Callback(() => {
+                Task.Delay(1000).Wait();
+            }).Returns(Array.Empty<NetWkstaUserEnumResults>());
+            var processor = new ComputerSessionProcessor(new MockLdapUtils(),"", nativeMethods.Object);
+            var receivedStatus = new List<CSVComputerStatus>();
+            var machineDomainSid = $"{Consts.MockDomainSid}-1000";
+            processor.ComputerStatusEvent += async status =>  {
+                receivedStatus.Add(status);
+            };
             
-            receivedStatus.Clear();
-            
-            results = await processor.ReadUserSessionsPrivileged("primary.testlab.local", machineDomainSid, "testlab.local",
+            var results = await processor.ReadUserSessionsPrivileged("primary.testlab.local", machineDomainSid, "testlab.local",
                 TimeSpan.FromMilliseconds(1));
             Assert.Empty(results.Results);
             Assert.Single(receivedStatus);
-            status = receivedStatus[0];
+            var status = receivedStatus[0];
             Assert.Equal("Timeout", status.Status);
         }
     }

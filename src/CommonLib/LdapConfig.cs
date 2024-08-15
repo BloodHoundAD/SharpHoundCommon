@@ -38,9 +38,9 @@ namespace SharpHoundCommonLib
         public override string ToString() {
             var sb = new StringBuilder();
             sb.AppendLine($"Server: {Server}");
-            sb.AppendLine($"Port: {Port}");
-            sb.AppendLine($"SSLPort: {GetPort(true)}");
-            sb.AppendLine($"ForceSSL: {GetPort(false)}");
+            sb.AppendLine($"LdapPort: {GetPort(false)}");
+            sb.AppendLine($"LdapSSLPort: {GetPort(true)}");
+            sb.AppendLine($"ForceSSL: {ForceSSL}");
             sb.AppendLine($"AuthType: {AuthType.ToString()}");
             sb.AppendLine($"MaxConcurrentQueries: {MaxConcurrentQueries}");
             if (!string.IsNullOrWhiteSpace(Username)) {
