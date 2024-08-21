@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docfx", "docfx\Docfx.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpHoundRPC", "src\SharpHoundRPC\SharpHoundRPC.csproj", "{4F06116D-88A7-4601-AB28-B48F2857D458}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpHoundProcessors", "SharpHoundProcessors\SharpHoundProcessors.csproj", "{0736FEA8-AD91-45FF-B0A4-7E041CE44808}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,5 +33,9 @@ Global
 		{4F06116D-88A7-4601-AB28-B48F2857D458}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F06116D-88A7-4601-AB28-B48F2857D458}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F06116D-88A7-4601-AB28-B48F2857D458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0736FEA8-AD91-45FF-B0A4-7E041CE44808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0736FEA8-AD91-45FF-B0A4-7E041CE44808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0736FEA8-AD91-45FF-B0A4-7E041CE44808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0736FEA8-AD91-45FF-B0A4-7E041CE44808}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
