@@ -485,7 +485,8 @@ namespace SharpHoundCommonLib.Processors {
                             PrincipalType = resolvedPrincipal.ObjectType,
                             PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                             IsInherited = inherited,
-                            RightName = EdgeNames.WriteGPLink
+                            RightName = EdgeNames.WriteGPLink,
+                            InheritanceHash = aceInheritanceHash
                         };
                     else if (objectType == Label.Group && aceType == ACEGuids.WriteMember)
                         yield return new ACE {
