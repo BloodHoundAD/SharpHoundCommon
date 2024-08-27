@@ -24,8 +24,9 @@ namespace SharpHoundCommonLib.Processors {
         private readonly string _localAdminUsername;
         private readonly string _localAdminPassword;
 
-        public ComputerSessionProcessor(ILdapUtils utils, string currentUserName = null,
-            NativeMethods nativeMethods = null, ILogger log = null, bool doLocalAdminSessionEnum = false,
+        public ComputerSessionProcessor(ILdapUtils utils,
+            NativeMethods nativeMethods = null, ILogger log = null, string currentUserName = null,
+            bool doLocalAdminSessionEnum = false,
             string localAdminUsername = null, string localAdminPassword = null) {
             _utils = utils;
             _nativeMethods = nativeMethods ?? new NativeMethods();
@@ -92,7 +93,7 @@ namespace SharpHoundCommonLib.Processors {
                 return ret;
             }
 
-            _log.LogTrace("NetSessionEnum succeeded on {ComputerName}", computerName);
+            _log.LogDebug("NetSessionEnum succeeded on {ComputerName}", computerName);
             await SendComputerStatus(new CSVComputerStatus {
                 Status = CSVComputerStatus.StatusSuccess,
                 Task = "NetSessionEnum",

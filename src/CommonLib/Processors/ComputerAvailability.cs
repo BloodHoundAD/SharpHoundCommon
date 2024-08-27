@@ -16,7 +16,7 @@ namespace SharpHoundCommonLib.Processors
         private readonly bool _skipPasswordCheck;
         private readonly bool _skipPortScan;
 
-        public ComputerAvailability(int timeout = 500, int computerExpiryDays = 60, bool skipPortScan = false,
+        public ComputerAvailability(int timeout = 10000, int computerExpiryDays = 60, bool skipPortScan = false,
             bool skipPasswordCheck = false, ILogger log = null)
         {
             _scanner = new PortScanner();

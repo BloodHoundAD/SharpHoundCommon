@@ -1,10 +1,11 @@
 using System;
 using System.DirectoryServices.Protocols;
+using System.Threading;
 using SharpHoundCommonLib.Enums;
 
 namespace SharpHoundCommonLib {
-    public class LdapQueryParameters
-    {
+    public class LdapQueryParameters {
+        private static int _queryIDIndex;
         private string _searchBase;
         private string _relativeSearchBase;
         public string LDAPFilter { get; set; }
@@ -14,6 +15,12 @@ namespace SharpHoundCommonLib {
         public bool GlobalCatalog { get; set; }
         public bool IncludeSecurityDescriptor { get; set; } = false;
         public bool IncludeDeleted { get; set; } = false;
+        private int QueryID { get; }
+
+        public LdapQueryParameters() {
+            QueryID = _queryIDIndex;
+            Interlocked.Increment(ref _queryIDIndex);
+        }
 
         public string SearchBase {
             get => _searchBase;
@@ -35,7 +42,7 @@ namespace SharpHoundCommonLib {
 
         public string GetQueryInfo()
         {
-            return $"Query Information - Filter: {LDAPFilter}, Domain: {DomainName}, GlobalCatalog: {GlobalCatalog}, ADSPath: {SearchBase}";
+            return $"Query Information - Filter: {LDAPFilter}, Domain: {DomainName}, GlobalCatalog: {GlobalCatalog}, ADSPath: {SearchBase}, ID: {QueryID}";
         }
     }
 }
