@@ -434,15 +434,17 @@ namespace SharpHoundCommonLib.Processors {
                 //GenericWrite encapsulates WriteProperty, so process them in tandem to avoid duplicate edges
                 if (aceRights.HasFlag(ActiveDirectoryRights.GenericWrite) ||
                     aceRights.HasFlag(ActiveDirectoryRights.WriteProperty)) {
-                    if (objectType is Label.User
-                        or Label.Group
-                        or Label.Computer
-                        or Label.GPO
-                        or Label.CertTemplate
-                        or Label.RootCA
-                        or Label.EnterpriseCA
-                        or Label.AIACA
-                        or Label.NTAuthStore
+                    if (objectType is Label.User 
+                        or Label.Group 
+                        or Label.Computer 
+                        or Label.GPO 
+                        or Label.OU 
+                        or Label.Domain
+                        or Label.CertTemplate 
+                        or Label.RootCA 
+                        or Label.EnterpriseCA 
+                        or Label.AIACA 
+                        or Label.NTAuthStore 
                         or Label.IssuancePolicy)
                         if (aceType is ACEGuids.AllGuid or "")
                             yield return new ACE {
@@ -475,6 +477,15 @@ namespace SharpHoundCommonLib.Processors {
                             PrincipalSID = resolvedPrincipal.ObjectIdentifier,
                             IsInherited = inherited,
                             RightName = EdgeNames.WriteAccountRestrictions,
+                            InheritanceHash = aceInheritanceHash
+                        };
+                    else if (objectType is Label.OU or Label.Domain && aceType == ACEGuids.WriteGPLink)
+                        yield return new ACE
+                        {
+                            PrincipalType = resolvedPrincipal.ObjectType,
+                            PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                            IsInherited = inherited,
+                            RightName = EdgeNames.WriteGPLink,
                             InheritanceHash = aceInheritanceHash
                         };
                     else if (objectType == Label.Group && aceType == ACEGuids.WriteMember)
