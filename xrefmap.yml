@@ -1526,6 +1526,12 @@ references:
   commentId: F:SharpHoundCommonLib.Enums.EdgeNames.WriteDacl
   fullName: SharpHoundCommonLib.Enums.EdgeNames.WriteDacl
   nameWithType: EdgeNames.WriteDacl
+- uid: SharpHoundCommonLib.Enums.EdgeNames.WriteGPLink
+  name: WriteGPLink
+  href: api/SharpHoundCommonLib.Enums.EdgeNames.html#SharpHoundCommonLib_Enums_EdgeNames_WriteGPLink
+  commentId: F:SharpHoundCommonLib.Enums.EdgeNames.WriteGPLink
+  fullName: SharpHoundCommonLib.Enums.EdgeNames.WriteGPLink
+  nameWithType: EdgeNames.WriteGPLink
 - uid: SharpHoundCommonLib.Enums.EdgeNames.WriteOwner
   name: WriteOwner
   href: api/SharpHoundCommonLib.Enums.EdgeNames.html#SharpHoundCommonLib_Enums_EdgeNames_WriteOwner
@@ -5170,6 +5176,19 @@ references:
   commentId: T:SharpHoundCommonLib.LdapQueryParameters
   fullName: SharpHoundCommonLib.LdapQueryParameters
   nameWithType: LdapQueryParameters
+- uid: SharpHoundCommonLib.LdapQueryParameters.#ctor
+  name: LdapQueryParameters()
+  href: api/SharpHoundCommonLib.LdapQueryParameters.html#SharpHoundCommonLib_LdapQueryParameters__ctor
+  commentId: M:SharpHoundCommonLib.LdapQueryParameters.#ctor
+  fullName: SharpHoundCommonLib.LdapQueryParameters.LdapQueryParameters()
+  nameWithType: LdapQueryParameters.LdapQueryParameters()
+- uid: SharpHoundCommonLib.LdapQueryParameters.#ctor*
+  name: LdapQueryParameters
+  href: api/SharpHoundCommonLib.LdapQueryParameters.html#SharpHoundCommonLib_LdapQueryParameters__ctor_
+  commentId: Overload:SharpHoundCommonLib.LdapQueryParameters.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LdapQueryParameters.LdapQueryParameters
+  nameWithType: LdapQueryParameters.LdapQueryParameters
 - uid: SharpHoundCommonLib.LdapQueryParameters.Attributes
   name: Attributes
   href: api/SharpHoundCommonLib.LdapQueryParameters.html#SharpHoundCommonLib_LdapQueryParameters_Attributes
@@ -8058,6 +8077,12 @@ references:
   commentId: F:SharpHoundCommonLib.Processors.ACEGuids.WriteAllowedToAct
   fullName: SharpHoundCommonLib.Processors.ACEGuids.WriteAllowedToAct
   nameWithType: ACEGuids.WriteAllowedToAct
+- uid: SharpHoundCommonLib.Processors.ACEGuids.WriteGPLink
+  name: WriteGPLink
+  href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_WriteGPLink
+  commentId: F:SharpHoundCommonLib.Processors.ACEGuids.WriteGPLink
+  fullName: SharpHoundCommonLib.Processors.ACEGuids.WriteGPLink
+  nameWithType: ACEGuids.WriteGPLink
 - uid: SharpHoundCommonLib.Processors.ACEGuids.WriteMember
   name: WriteMember
   href: api/SharpHoundCommonLib.Processors.ACEGuids.html#SharpHoundCommonLib_Processors_ACEGuids_WriteMember
@@ -8489,12 +8514,12 @@ references:
   commentId: T:SharpHoundCommonLib.Processors.ComputerSessionProcessor
   fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor
   nameWithType: ComputerSessionProcessor
-- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILdapUtils,System.String,SharpHoundCommonLib.NativeMethods,ILogger,System.Boolean,System.String,System.String)
-  name: ComputerSessionProcessor(ILdapUtils, String, NativeMethods, ILogger, Boolean, String, String)
-  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_SharpHoundCommonLib_ILdapUtils_System_String_SharpHoundCommonLib_NativeMethods_ILogger_System_Boolean_System_String_System_String_
-  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILdapUtils,System.String,SharpHoundCommonLib.NativeMethods,ILogger,System.Boolean,System.String,System.String)
-  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor(SharpHoundCommonLib.ILdapUtils, System.String, SharpHoundCommonLib.NativeMethods, ILogger, System.Boolean, System.String, System.String)
-  nameWithType: ComputerSessionProcessor.ComputerSessionProcessor(ILdapUtils, String, NativeMethods, ILogger, Boolean, String, String)
+- uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILdapUtils,SharpHoundCommonLib.NativeMethods,ILogger,System.String,System.Boolean,System.String,System.String)
+  name: ComputerSessionProcessor(ILdapUtils, NativeMethods, ILogger, String, Boolean, String, String)
+  href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_SharpHoundCommonLib_ILdapUtils_SharpHoundCommonLib_NativeMethods_ILogger_System_String_System_Boolean_System_String_System_String_
+  commentId: M:SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor(SharpHoundCommonLib.ILdapUtils,SharpHoundCommonLib.NativeMethods,ILogger,System.String,System.Boolean,System.String,System.String)
+  fullName: SharpHoundCommonLib.Processors.ComputerSessionProcessor.ComputerSessionProcessor(SharpHoundCommonLib.ILdapUtils, SharpHoundCommonLib.NativeMethods, ILogger, System.String, System.Boolean, System.String, System.String)
+  nameWithType: ComputerSessionProcessor.ComputerSessionProcessor(ILdapUtils, NativeMethods, ILogger, String, Boolean, String, String)
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor.#ctor*
   name: ComputerSessionProcessor
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html#SharpHoundCommonLib_Processors_ComputerSessionProcessor__ctor_
