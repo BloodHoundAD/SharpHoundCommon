@@ -119,9 +119,10 @@ namespace CommonLibTest
             var mockUtils = new Mock<MockLdapUtils>();
             var mockProcessor = new Mock<LocalGroupProcessor>(mockUtils.Object, null);
             
-            mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Callback(() => {
+            mockProcessor.Setup(x => x.OpenSamServer(It.IsAny<string>())).Returns(() => {
                 Task.Delay(100).Wait();
-            }).Returns(NtStatus.StatusAccessDenied);
+                return NtStatus.StatusAccessDenied;
+            });
             var processor = mockProcessor.Object;
             var machineDomainSid = $"{Consts.MockDomainSid}-1000";
             var receivedStatus = new List<CSVComputerStatus>();

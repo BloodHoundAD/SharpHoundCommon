@@ -99,13 +99,13 @@ namespace SharpHoundCommonLib {
             return await pool.GetConnectionAsync();
         }
     
-        public async Task<(bool Success, LdapConnectionWrapper connectionWrapper, string Message)> GetLdapConnectionForServer(
+        public (bool Success, LdapConnectionWrapper connectionWrapper, string Message) GetLdapConnectionForServer(
             string identifier, string server, bool globalCatalog) {
             if (!GetPool(identifier, out var pool)) {
                 return (false, default, $"Unable to resolve a pool for {identifier}");
             }
         
-            return await pool.GetConnectionForSpecificServerAsync(server, globalCatalog);
+            return pool.GetConnectionForSpecificServerAsync(server, globalCatalog);
         }
 
         private string ResolveIdentifier(string identifier) {
