@@ -32,6 +32,10 @@ namespace SharpHoundCommonLib {
             return _server;
         }
 
+        public virtual DirectoryResponse SendRequest(SearchRequest searchRequest) {
+            return Connection.SendRequest(searchRequest);
+        }
+
         public bool GetSearchBase(NamingContext context, out string searchBase) {
             searchBase = GetSavedContext(context);
             if (searchBase != null) {

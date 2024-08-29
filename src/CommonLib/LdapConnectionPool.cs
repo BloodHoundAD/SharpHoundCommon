@@ -90,7 +90,7 @@ namespace SharpHoundCommonLib {
                 }
                 try {
                     _log.LogTrace("Sending ldap request - {Info}", queryParameters.GetQueryInfo());
-                    response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+                    response = (SearchResponse)connectionWrapper.SendRequest(searchRequest);
 
                     if (response != null) {
                         querySuccess = true;
@@ -114,6 +114,7 @@ namespace SharpHoundCommonLib {
                      * since non-paged queries do not require same server connections
                      */
                     queryRetryCount++;
+                    _log.LogDebug("Query - Attempting to get new connection after ServerDown for query {Info}", queryParameters.GetQueryInfo());
                     ReleaseConnection(connectionWrapper, true);
 
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
@@ -145,6 +146,7 @@ namespace SharpHoundCommonLib {
                      */
                     busyRetryCount++;
                     var backoffDelay = GetNextBackoff(busyRetryCount);
+                    _log.LogDebug("Query - Executing {Time} second backoff for query {Info}", backoffDelay.TotalSeconds, queryParameters.GetQueryInfo());
                     await Task.Delay(backoffDelay, cancellationToken);
                 } catch (LdapException le) {
                     /*
@@ -228,7 +230,7 @@ namespace SharpHoundCommonLib {
                 SearchResponse response = null;
                 try {
                     _log.LogTrace("Sending paged ldap request - {Info}", queryParameters.GetQueryInfo());
-                    response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+                    response = (SearchResponse)connectionWrapper.SendRequest(searchRequest);
                     if (response != null) {
                         pageResponse = (PageResultResponseControl)response.Controls
                             .Where(x => x is PageResultResponseControl).DefaultIfEmpty(null).FirstOrDefault();
@@ -420,7 +422,7 @@ namespace SharpHoundCommonLib {
                     _log.LogTrace("RangedRetrieval entered semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
                 }
                 try {
-                    response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
+                    response = (SearchResponse)connectionWrapper.SendRequest(searchRequest);
                 } catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
                     busyRetryCount++;
                     var backoffDelay = GetNextBackoff(busyRetryCount);
@@ -587,7 +589,7 @@ namespace SharpHoundCommonLib {
             return true;
         }
 
-        public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetConnectionAsync() {
+        public virtual async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetConnectionAsync() {
             if (!_connections.TryTake(out var connectionWrapper)) {
                 var (success, connection, message) = await CreateNewConnection();
                 if (!success) {
@@ -605,11 +607,10 @@ namespace SharpHoundCommonLib {
             return CreateNewConnectionForServer(server, globalCatalog);
         }
 
-        public async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
+        public virtual async Task<(bool Success, LdapConnectionWrapper ConnectionWrapper, string Message)> GetGlobalCatalogConnectionAsync() {
             if (!_globalCatalogConnection.TryTake(out var connectionWrapper)) {
                 var (success, connection, message) = await CreateNewConnection(true);
                 if (!success) {
-                    //If we didn't get a connection, immediately release the semaphore so we don't have hanging ones
                     return (false, null, message);
                 }
 
