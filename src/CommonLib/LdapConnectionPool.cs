@@ -114,6 +114,7 @@ namespace SharpHoundCommonLib {
                      * since non-paged queries do not require same server connections
                      */
                     queryRetryCount++;
+                    _log.LogDebug("Query - Attempting to recover from ServerDown for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), queryRetryCount);
                     ReleaseConnection(connectionWrapper, true);
 
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
@@ -144,6 +145,7 @@ namespace SharpHoundCommonLib {
                      * The expectation is that given enough time, the server should stop being busy and service our query appropriately
                      */
                     busyRetryCount++;
+                    _log.LogDebug("Query - Executing busy backoff for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), busyRetryCount);
                     var backoffDelay = GetNextBackoff(busyRetryCount);
                     await Task.Delay(backoffDelay, cancellationToken);
                 } catch (LdapException le) {
@@ -258,7 +260,9 @@ namespace SharpHoundCommonLib {
                         ReleaseConnection(connectionWrapper, true);
                         yield break;
                     }
-
+                    
+                    _log.LogDebug("PagedQuery - Attempting to recover from ServerDown for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), queryRetryCount);
+                    
                     ReleaseConnection(connectionWrapper, true);
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
                         var backoffDelay = GetNextBackoff(retryCount);
@@ -286,6 +290,7 @@ namespace SharpHoundCommonLib {
                      * The expectation is that given enough time, the server should stop being busy and service our query appropriately
                      */
                     busyRetryCount++;
+                    _log.LogDebug("PagedQuery - Executing busy backoff for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), busyRetryCount);
                     var backoffDelay = GetNextBackoff(busyRetryCount);
                     await Task.Delay(backoffDelay, cancellationToken);
                 } catch (LdapException le) {
@@ -423,11 +428,13 @@ namespace SharpHoundCommonLib {
                     response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
                 } catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
                     busyRetryCount++;
+                    _log.LogDebug("RangedRetrieval - Executing busy backoff for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), busyRetryCount);
                     var backoffDelay = GetNextBackoff(busyRetryCount);
                     await Task.Delay(backoffDelay, cancellationToken);
                 } catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
                                                  queryRetryCount < MaxRetries) {
                     queryRetryCount++;
+                    _log.LogDebug("RangedRetrieval - Attempting to recover from ServerDown for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), queryRetryCount);
                     ReleaseConnection(connectionWrapper, true);
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
                         var backoffDelay = GetNextBackoff(retryCount);
