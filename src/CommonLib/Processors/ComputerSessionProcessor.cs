@@ -231,7 +231,7 @@ namespace SharpHoundCommonLib.Processors {
                 }
 
                 //These are local computer accounts.
-                if (domain.Equals(computerSamAccountName, StringComparison.CurrentCultureIgnoreCase)) {
+                if (domain.Equals(computerSamAccountName, StringComparison.OrdinalIgnoreCase)) {
                     continue;
                 }
 

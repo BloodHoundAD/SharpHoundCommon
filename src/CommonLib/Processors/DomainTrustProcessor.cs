@@ -34,6 +34,7 @@ namespace SharpHoundCommonLib.Processors
                                }))
             {
                 if (!result.IsSuccess) {
+                    _log.LogWarning("Error during trust enumeration for domain {Domain}: {Error}", domain, result.Error);
                     yield break;
                 }
 
