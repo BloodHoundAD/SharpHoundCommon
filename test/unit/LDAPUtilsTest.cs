@@ -222,5 +222,14 @@ namespace CommonLibTest {
             Assert.Equal("TESTLAB.LOCAL", result.Domain);
             Assert.False(result.Deleted);
         }
+
+        [Fact]
+        public async Task Test_ResolveHostToSid_BlankHost() {
+            var spn = "MSSQLSvc/:1433";
+            var utils = new LdapUtils();
+
+            var (success, sid) = await utils.ResolveHostToSid(spn, "");
+            Assert.False(success);
+        }
     }
 }
