@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net462</TargetFramework>
+        <OutputType>library</OutputType>
+        <PackageId>SharpHoundProcessors</PackageId>
+        <LangVersion>9</LangVersion>
+        <Authors>Rohan Vazarkar</Authors>
+        <Company>SpecterOps</Company>
+        <PackageDescription>SAM/LSA Wrapper for C# BloodHound tasks</PackageDescription>
+        <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+        <Version>3.0.8</Version>
+        <AssemblyName>SharpHoundProcessors</AssemblyName>
+        <RootNamespace>SharpHoundProcessors</RootNamespace>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="System.ValueTuple" Version="4.5.0"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Properties"/>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\src\CommonLib\SharpHoundCommonLib.csproj" />
+      <ProjectReference Include="..\src\SharpHoundRPC\SharpHoundRPC.csproj" />
+    </ItemGroup>
+</Project>
