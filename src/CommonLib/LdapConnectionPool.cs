@@ -35,12 +35,13 @@ namespace SharpHoundCommonLib {
         public LdapConnectionPool(string identifier, string poolIdentifier, LdapConfig config, PortScanner scanner = null, NativeMethods nativeMethods = null, ILogger log = null) {
             _connections = new ConcurrentBag<LdapConnectionWrapper>();
             _globalCatalogConnection = new ConcurrentBag<LdapConnectionWrapper>();
-            if (config.MaxConcurrentQueries > 0) {
-                _semaphore = new SemaphoreSlim(config.MaxConcurrentQueries, config.MaxConcurrentQueries);    
-            } else {
-                //If MaxConcurrentQueries is 0, we'll just disable the semaphore entirely
-                _semaphore = null;
-            }
+            //TODO: Re-enable this once we track down the semaphore deadlock
+            // if (config.MaxConcurrentQueries > 0) {
+            //     _semaphore = new SemaphoreSlim(config.MaxConcurrentQueries, config.MaxConcurrentQueries);    
+            // } else {
+            //     //If MaxConcurrentQueries is 0, we'll just disable the semaphore entirely
+            //     _semaphore = null;
+            // }
             
             _identifier = identifier;
             _poolIdentifier = poolIdentifier;
@@ -83,7 +84,9 @@ namespace SharpHoundCommonLib {
             while (!cancellationToken.IsCancellationRequested) {
                 //Grab our semaphore here to take one of our query slots
                 if (_semaphore != null){
+                    _log.LogTrace("Query entering semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
                     await _semaphore.WaitAsync(cancellationToken);
+                    _log.LogTrace("Query entered semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
                 }
                 try {
                     _log.LogTrace("Sending ldap request - {Info}", queryParameters.GetQueryInfo());
@@ -111,6 +114,7 @@ namespace SharpHoundCommonLib {
                      * since non-paged queries do not require same server connections
                      */
                     queryRetryCount++;
+                    _log.LogDebug("Query - Attempting to recover from ServerDown for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), queryRetryCount);
                     ReleaseConnection(connectionWrapper, true);
 
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
@@ -141,6 +145,7 @@ namespace SharpHoundCommonLib {
                      * The expectation is that given enough time, the server should stop being busy and service our query appropriately
                      */
                     busyRetryCount++;
+                    _log.LogDebug("Query - Executing busy backoff for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), busyRetryCount);
                     var backoffDelay = GetNextBackoff(busyRetryCount);
                     await Task.Delay(backoffDelay, cancellationToken);
                 } catch (LdapException le) {
@@ -159,7 +164,11 @@ namespace SharpHoundCommonLib {
                             queryParameters);
                 } finally {
                     // Always release our semaphore to prevent deadlocks
-                    _semaphore?.Release(); 
+                    if (_semaphore != null) {
+                        _log.LogTrace("Query releasing semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());    
+                        _semaphore.Release();
+                        _log.LogTrace("Query released semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
+                    }
                 }
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
@@ -214,7 +223,9 @@ namespace SharpHoundCommonLib {
 
             while (!cancellationToken.IsCancellationRequested) {
                 if (_semaphore != null){
+                    _log.LogTrace("PagedQuery entering semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
                     await _semaphore.WaitAsync(cancellationToken);
+                    _log.LogTrace("PagedQuery entered semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
                 }
                 SearchResponse response = null;
                 try {
@@ -249,13 +260,15 @@ namespace SharpHoundCommonLib {
                         ReleaseConnection(connectionWrapper, true);
                         yield break;
                     }
-
+                    
+                    _log.LogDebug("PagedQuery - Attempting to recover from ServerDown for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), queryRetryCount);
+                    
                     ReleaseConnection(connectionWrapper, true);
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
                         var backoffDelay = GetNextBackoff(retryCount);
                         await Task.Delay(backoffDelay, cancellationToken);
                         var (success, ldapConnectionWrapperNew, _) =
-                            await GetConnectionForSpecificServerAsync(serverName, queryParameters.GlobalCatalog);
+                            GetConnectionForSpecificServerAsync(serverName, queryParameters.GlobalCatalog);
 
                         if (success) {
                             _log.LogDebug("PagedQuery - Recovered from ServerDown successfully");
@@ -277,6 +290,7 @@ namespace SharpHoundCommonLib {
                      * The expectation is that given enough time, the server should stop being busy and service our query appropriately
                      */
                     busyRetryCount++;
+                    _log.LogDebug("PagedQuery - Executing busy backoff for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), busyRetryCount);
                     var backoffDelay = GetNextBackoff(busyRetryCount);
                     await Task.Delay(backoffDelay, cancellationToken);
                 } catch (LdapException le) {
@@ -288,7 +302,11 @@ namespace SharpHoundCommonLib {
                         LdapResult<IDirectoryObject>.Fail($"PagedQuery - Caught unrecoverable exception: {e.Message}",
                             queryParameters);
                 } finally {
-                    _semaphore?.Release();
+                    if (_semaphore != null) {
+                        _log.LogTrace("PagedQuery releasing semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());    
+                        _semaphore.Release();
+                        _log.LogTrace("PagedQuery released semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
+                    }
                 }
 
                 if (tempResult != null) {
@@ -402,17 +420,21 @@ namespace SharpHoundCommonLib {
             while (!cancellationToken.IsCancellationRequested) {
                 SearchResponse response = null;
                 if (_semaphore != null){
+                    _log.LogTrace("RangedRetrieval entering semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
                     await _semaphore.WaitAsync(cancellationToken);
+                    _log.LogTrace("RangedRetrieval entered semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
                 }
                 try {
                     response = (SearchResponse)connectionWrapper.Connection.SendRequest(searchRequest);
                 } catch (LdapException le) when (le.ErrorCode == (int)ResultCode.Busy && busyRetryCount < MaxRetries) {
                     busyRetryCount++;
+                    _log.LogDebug("RangedRetrieval - Executing busy backoff for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), busyRetryCount);
                     var backoffDelay = GetNextBackoff(busyRetryCount);
                     await Task.Delay(backoffDelay, cancellationToken);
                 } catch (LdapException le) when (le.ErrorCode == (int)LdapErrorCodes.ServerDown &&
                                                  queryRetryCount < MaxRetries) {
                     queryRetryCount++;
+                    _log.LogDebug("RangedRetrieval - Attempting to recover from ServerDown for query {Info} (Attempt {Count})", queryParameters.GetQueryInfo(), queryRetryCount);
                     ReleaseConnection(connectionWrapper, true);
                     for (var retryCount = 0; retryCount < MaxRetries; retryCount++) {
                         var backoffDelay = GetNextBackoff(retryCount);
@@ -446,7 +468,11 @@ namespace SharpHoundCommonLib {
                     tempResult =
                         LdapResult<string>.Fail($"Caught unrecoverable exception: {e.Message}", queryParameters);
                 } finally {
-                    _semaphore?.Release();
+                    if (_semaphore != null) {
+                        _log.LogTrace("RangedRetrieval releasing semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());    
+                        _semaphore.Release();
+                        _log.LogTrace("RangedRetrieval released semaphore with {Count} remaining for query {Info}", _semaphore.CurrentCount, queryParameters.GetQueryInfo());
+                    }
                 }
 
                 //If we have a tempResult set it means we hit an error we couldn't recover from, so yield that result and then break out of the function
@@ -471,13 +497,17 @@ namespace SharpHoundCommonLib {
                         step = entry.Attributes[currentRange].Count;
                     }
 
+                    //Release our connection before we iterate
+                    if (complete) {
+                        ReleaseConnection(connectionWrapper);
+                    }
+
                     foreach (string dn in entry.Attributes[currentRange].GetValues(typeof(string))) {
                         yield return Result<string>.Ok(dn);
                         index++;
                     }
 
                     if (complete) {
-                        ReleaseConnection(connectionWrapper);
                         yield break;
                     }
 
@@ -577,7 +607,7 @@ namespace SharpHoundCommonLib {
             return (true, connectionWrapper, null);
         }
 
-        public async Task<(bool Success, LdapConnectionWrapper connectionWrapper, string Message)>
+        public (bool Success, LdapConnectionWrapper connectionWrapper, string Message)
             GetConnectionForSpecificServerAsync(string server, bool globalCatalog) {
             return CreateNewConnectionForServer(server, globalCatalog);
         }

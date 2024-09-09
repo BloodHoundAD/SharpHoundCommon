@@ -71,9 +71,10 @@ namespace CommonLibTest
         [Fact]
         public async Task UserRightsAssignmentProcessor_TestTimeout() {
             var mockProcessor = new Mock<UserRightsAssignmentProcessor>(new MockLdapUtils(), null);
-            mockProcessor.Setup(x => x.OpenLSAPolicy(It.IsAny<string>())).Callback(() => {
+            mockProcessor.Setup(x => x.OpenLSAPolicy(It.IsAny<string>())).Returns(()=> {
                 Task.Delay(100).Wait();
-            }).Returns(NtStatus.StatusAccessDenied);
+                return NtStatus.StatusAccessDenied;
+            });
             var processor = mockProcessor.Object;
             var machineDomainSid = $"{Consts.MockDomainSid}-1000";
             var receivedStatus = new List<CSVComputerStatus>();
