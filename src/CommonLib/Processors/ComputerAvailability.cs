@@ -40,6 +40,21 @@ namespace SharpHoundCommonLib.Processors
         }
 
         public event ComputerStatusDelegate ComputerStatusEvent;
+        
+        /// <summary>
+        ///     Helper function to use commonlib types for IsComputerAvailable
+        /// </summary>
+        /// <param name="computerName"></param>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public Task<ComputerStatus> IsComputerAvailable(string computerName, IDirectoryObject entry)
+        {
+            var os = entry.GetProperty(LDAPProperties.OperatingSystem);
+            var pwdlastset = entry.GetProperty(LDAPProperties.PasswordLastSet);
+            var lastLogon = entry.GetProperty(LDAPProperties.LastLogonTimestamp);
+            
+            return IsComputerAvailable(computerName, os, pwdlastset, lastLogon);
+        }
 
         /// <summary>
         ///     Helper function to use commonlib types for IsComputerAvailable

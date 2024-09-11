@@ -154,7 +154,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadContainerProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> 
+            ReadContainerProperties(IDirectoryObject entry) {
             var props = GetCommonProps(entry);
             return props;
         }

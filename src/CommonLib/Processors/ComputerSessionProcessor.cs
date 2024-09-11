@@ -157,6 +157,14 @@ namespace SharpHoundCommonLib.Processors {
             return ret;
         }
 
+        public Task<SessionAPIResult> ReadUserSessionsPrivileged(string computerName, IDirectoryObject entry,
+            ResolvedSearchResult resolvedSearchResult, TimeSpan timeout = default) {
+            var samAccountName = entry.GetProperty(LDAPProperties.SAMAccountName)?.TrimEnd('$');
+            var sid = resolvedSearchResult.ObjectId;
+
+            return ReadUserSessionsPrivileged(computerName, samAccountName, sid, timeout);
+        }
+
         /// <summary>
         ///     Uses the privileged win32 API, NetWkstaUserEnum, to return the logged on users on a remote computer.
         ///     Requires administrator rights on the target system

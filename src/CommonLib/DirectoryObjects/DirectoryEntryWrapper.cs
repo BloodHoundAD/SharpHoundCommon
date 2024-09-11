@@ -185,4 +185,24 @@ public class DirectoryEntryWrapper : IDirectoryObject {
         foreach (var property in _entry.Properties.PropertyNames)
             yield return property.ToString().ToLower();
     }
+
+    public string GetDNSName(string overrideDomainName) {
+        var shortName = GetProperty(LDAPProperties.SAMAccountName);
+        var dns = GetProperty(LDAPProperties.DNSHostName);
+        var cn = GetProperty(LDAPProperties.CanonicalName);
+
+        if (dns != null) {
+            return dns;
+        }
+
+        if (shortName == null && cn == null) {
+            return null;
+        }
+
+        if (shortName != null) {
+            return $"{shortName}.{overrideDomainName}";
+        }
+
+        return $"{cn}.{overrideDomainName}";
+    }
 }

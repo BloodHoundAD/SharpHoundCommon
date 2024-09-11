@@ -17,4 +17,5 @@ public interface IDirectoryObject {
     byte[] GetByteProperty(string propertyName);
     int PropertyCount(string propertyName);
     IEnumerable<string> PropertyNames();
+    public string GetDNSName(string overrideDomainName);
 }

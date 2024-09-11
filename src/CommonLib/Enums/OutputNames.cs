@@ -1,8 +1,13 @@
 namespace SharpHoundCommonLib.Enums;
 
 public static class OutputNames {
-    public static string Domain = "domain";
-    public static string Name = "name";
-    public static string DistinguishedName = "distinguishedname";
-    public static string DomainSID = "domainsid";
+    public const string Domain = "domain";
+    public const string Name = "name";
+    public const string DistinguishedName = "distinguishedname";
+    public const string DomainSID = "domainsid";
+    public const string SAMAccountName = "samaccountname";
+    public const string IsACLProtected = "isaclprotected";
+    public const string MSA = "msa";
+    public const string GMSA = "gmsa";
+    public const string HasLAPS = "haslaps";
 }
