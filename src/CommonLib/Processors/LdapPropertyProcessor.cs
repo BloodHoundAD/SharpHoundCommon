@@ -724,6 +724,11 @@ namespace SharpHoundCommonLib.Processors {
 
         private static string ConvertNanoDuration(long duration)
         {
+            // In case duration is long.MinValue, Math.Abs will overflow.  Value represents Forever or Never
+            if (duration == long.MinValue) {
+                return "Forever";
+            }
+
             // duration is in 100-nanosecond intervals
             // Convert it to TimeSpan (which uses 1 tick = 100 nanoseconds)
             TimeSpan durationSpan = TimeSpan.FromTicks(Math.Abs(duration));
