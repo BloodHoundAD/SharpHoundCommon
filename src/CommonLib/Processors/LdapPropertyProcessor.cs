@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -861,8 +860,8 @@ namespace SharpHoundCommonLib.Processors {
     public class ParsedCertificate {
         public string Thumbprint { get; set; }
         public string Name { get; set; }
-        public string[] Chain { get; set; } = Array.Empty<string>();
-        public bool HasBasicConstraints { get; set; } = false;
+        public string[] Chain { get; set; }
+        public bool HasBasicConstraints { get; set; }
         public int BasicConstraintPathLength { get; set; }
 
         public ParsedCertificate(byte[] rawCertificate) {
@@ -872,21 +871,26 @@ namespace SharpHoundCommonLib.Processors {
             Name = string.IsNullOrEmpty(name) ? Thumbprint : name;
 
             // Chain
-            X509Chain chain = new X509Chain();
-            chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
-            chain.Build(parsedCertificate);
-            var temp = new List<string>();
-            foreach (X509ChainElement cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
-            Chain = temp.ToArray();
+            try {
+                var chain = new X509Chain();
+                chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+                chain.Build(parsedCertificate);
+                var temp = new List<string>();
+                foreach (var cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
+                Chain = temp.ToArray();
+            } catch (Exception e) {
+                Logging.LogProvider.CreateLogger("ParsedCertificate").LogWarning(e, "Failed to read certificate chain for certificate {Name} with Algo {Algorithm}", name, parsedCertificate.SignatureAlgorithm.FriendlyName);
+                Chain = Array.Empty<string>();
+            }
+            
 
             // Extensions
-            X509ExtensionCollection extensions = parsedCertificate.Extensions;
-            List<CertificateExtension> certificateExtensions = new List<CertificateExtension>();
-            foreach (X509Extension extension in extensions) {
-                CertificateExtension certificateExtension = new CertificateExtension(extension);
+            var extensions = parsedCertificate.Extensions;
+            foreach (var extension in extensions) {
+                var certificateExtension = new CertificateExtension(extension);
                 switch (certificateExtension.Oid.Value) {
                     case CAExtensionTypes.BasicConstraints:
-                        X509BasicConstraintsExtension ext = (X509BasicConstraintsExtension)extension;
+                        var ext = (X509BasicConstraintsExtension)extension;
                         HasBasicConstraints = ext.HasPathLengthConstraint;
                         BasicConstraintPathLength = ext.PathLengthConstraint;
                         break;
