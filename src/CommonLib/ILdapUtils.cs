@@ -169,5 +169,10 @@ namespace SharpHoundCommonLib {
         /// <param name="context">The naming context being retrieved</param>
         /// <returns>A tuple containing success state as well as the resolved distinguished name if successful</returns>
         Task<(bool Success, string Path)> GetNamingContextPath(string domain, NamingContext context);
+
+        /// <summary>
+        /// Resets temporary caches in LDAPUtils
+        /// </summary>
+        void ResetUtils();
     }
 }

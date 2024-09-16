@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.ActiveDirectory;
-using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,13 +22,13 @@ using SharpHoundRPC.NetAPINative;
 using Domain = System.DirectoryServices.ActiveDirectory.Domain;
 using Group = SharpHoundCommonLib.OutputTypes.Group;
 using SearchScope = System.DirectoryServices.Protocols.SearchScope;
-using SecurityMasks = System.DirectoryServices.Protocols.SecurityMasks;
 
 namespace SharpHoundCommonLib {
     public class LdapUtils : ILdapUtils {
         //This cache is indexed by domain sid
-        private static readonly ConcurrentDictionary<string, Domain> DomainCache = new();
-        private static readonly ConcurrentDictionary<string, byte> DomainControllers = new();
+        private static ConcurrentDictionary<string, Domain> _domainCache = new();
+        private static ConcurrentHashSet _domainControllers = new(StringComparer.OrdinalIgnoreCase);
+        private static ConcurrentHashSet _unresolvablePrincipals = new(StringComparer.OrdinalIgnoreCase);
 
         private static readonly ConcurrentDictionary<string, string> DomainToForestCache =
             new(StringComparer.OrdinalIgnoreCase);
@@ -54,11 +52,6 @@ namespace SharpHoundCommonLib {
         private LdapConfig _ldapConfig = new();
 
         private ConnectionPoolManager _connectionPool;
-
-        private static readonly TimeSpan MinBackoffDelay = TimeSpan.FromSeconds(2);
-        private static readonly TimeSpan MaxBackoffDelay = TimeSpan.FromSeconds(20);
-        private const int BackoffDelayMultiplier = 2;
-        private const int MaxRetries = 3;
 
         private static readonly byte[] NameRequest = {
             0x80, 0x94, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
@@ -99,7 +92,8 @@ namespace SharpHoundCommonLib {
             return _connectionPool.Query(queryParameters, cancellationToken);
         }
 
-        public IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(LdapQueryParameters queryParameters, CancellationToken cancellationToken = new()) {
+        public IAsyncEnumerable<LdapResult<IDirectoryObject>> PagedQuery(LdapQueryParameters queryParameters,
+            CancellationToken cancellationToken = new()) {
             return _connectionPool.PagedQuery(queryParameters, cancellationToken);
         }
 
@@ -119,12 +113,24 @@ namespace SharpHoundCommonLib {
                 return (true, principal);
             }
 
+            if (_unresolvablePrincipals.Contains(identifier)) {
+                return (false, new TypedPrincipal(identifier, Label.Base));
+            }
+
             if (identifier.StartsWith("S-")) {
                 var result = await LookupSidType(identifier, objectDomain);
+                if (!result.Success) {
+                    _unresolvablePrincipals.Add(identifier);
+                }
+
                 return (result.Success, new TypedPrincipal(identifier, result.Type));
             }
 
             var (success, type) = await LookupGuidType(identifier, objectDomain);
+            if (!success) {
+                _unresolvablePrincipals.Add(identifier);
+            }
+
             return (success, new TypedPrincipal(identifier, type));
         }
 
@@ -297,19 +303,14 @@ namespace SharpHoundCommonLib {
                 LDAPFilter = new LdapFilter().AddAllObjects().GetFilter(),
             };
 
-            var result = await Query(queryParameters).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
+            var result = await Query(queryParameters).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail())
+                .FirstOrDefaultAsync();
             if (result.IsSuccess &&
                 result.Value.TryGetProperty(LDAPProperties.RootDomainNamingContext, out var rootNamingContext)) {
                 return (true, Helpers.DistinguishedNameToDomain(rootNamingContext).ToUpper());
             }
 
             return (false, null);
-        }
-
-        private static TimeSpan GetNextBackoff(int retryCount) {
-            return TimeSpan.FromSeconds(Math.Min(
-                MinBackoffDelay.TotalSeconds * Math.Pow(BackoffDelayMultiplier, retryCount),
-                MaxBackoffDelay.TotalSeconds));
         }
 
         public async Task<(bool Success, string DomainName)> GetDomainNameFromSid(string sid) {
@@ -465,7 +466,7 @@ namespace SharpHoundCommonLib {
         /// <returns></returns>
         public bool GetDomain(string domainName, out Domain domain) {
             var cacheKey = domainName ?? _nullCacheKey;
-            if (DomainCache.TryGetValue(cacheKey, out domain)) return true;
+            if (_domainCache.TryGetValue(cacheKey, out domain)) return true;
 
             try {
                 DirectoryContext context;
@@ -482,7 +483,7 @@ namespace SharpHoundCommonLib {
 
                 domain = Domain.GetDomain(context);
                 if (domain == null) return false;
-                DomainCache.TryAdd(cacheKey, domain);
+                _domainCache.TryAdd(cacheKey, domain);
                 return true;
             } catch (Exception e) {
                 _log.LogDebug(e, "GetDomain call failed for domain name {Name}", domainName);
@@ -491,7 +492,7 @@ namespace SharpHoundCommonLib {
         }
 
         public static bool GetDomain(string domainName, LdapConfig ldapConfig, out Domain domain) {
-            if (DomainCache.TryGetValue(domainName, out domain)) return true;
+            if (_domainCache.TryGetValue(domainName, out domain)) return true;
 
             try {
                 DirectoryContext context;
@@ -508,7 +509,7 @@ namespace SharpHoundCommonLib {
 
                 domain = Domain.GetDomain(context);
                 if (domain == null) return false;
-                DomainCache.TryAdd(domainName, domain);
+                _domainCache.TryAdd(domainName, domain);
                 return true;
             } catch (Exception e) {
                 Logging.Logger.LogDebug("Static GetDomain call failed for domain {DomainName}: {Error}", domainName,
@@ -525,8 +526,7 @@ namespace SharpHoundCommonLib {
         /// <param name="domainName"></param>
         /// <returns></returns>
         public bool GetDomain(out Domain domain) {
-            var cacheKey = _nullCacheKey;
-            if (DomainCache.TryGetValue(cacheKey, out domain)) return true;
+            if (_domainCache.TryGetValue(_nullCacheKey, out domain)) return true;
 
             try {
                 var context = _ldapConfig.Username != null
@@ -535,7 +535,7 @@ namespace SharpHoundCommonLib {
                     : new DirectoryContext(DirectoryContextType.Domain);
 
                 domain = Domain.GetDomain(context);
-                DomainCache.TryAdd(cacheKey, domain);
+                _domainCache.TryAdd(_nullCacheKey, domain);
                 return true;
             } catch (Exception e) {
                 _log.LogDebug(e, "GetDomain call failed for blank domain");
@@ -579,7 +579,7 @@ namespace SharpHoundCommonLib {
                 return (false, string.Empty);
             }
 
-            if (_hostResolutionMap.TryGetValue(strippedHost, out var sid)) return (true, sid);
+            if (_hostResolutionMap.TryGetValue(strippedHost, out var sid)) return (sid != null, sid);
 
             //Immediately start with NetWkstaGetInfo as it's our most reliable indicator if successful
             if (await GetWorkstationInfo(strippedHost) is (true, var workstationInfo)) {
@@ -658,6 +658,7 @@ namespace SharpHoundCommonLib {
                 //pass
             }
 
+            _hostResolutionMap.TryAdd(strippedHost, null);
             return (false, "");
         }
 
@@ -693,7 +694,7 @@ namespace SharpHoundCommonLib {
                     if (await GetWellKnownPrincipal(sid, domain) is (true, var principal)) {
                         sids.Add(principal.ObjectIdentifier);
                     } else {
-                        sids.Add(sid);    
+                        sids.Add(sid);
                     }
                 } else {
                     return (false, Array.Empty<string>());
@@ -825,9 +826,10 @@ namespace SharpHoundCommonLib {
         }
 
         public async Task<bool> IsDomainController(string computerObjectId, string domainName) {
-            if (DomainControllers.ContainsKey(computerObjectId)) {
+            if (_domainControllers.Contains(computerObjectId)) {
                 return true;
             }
+
             var resDomain = await GetDomainNameFromSid(domainName) is (false, var tempDomain) ? tempDomain : domainName;
             var filter = new LdapFilter().AddFilter(CommonFilters.SpecificSID(computerObjectId), true)
                 .AddFilter(CommonFilters.DomainControllers, true);
@@ -837,14 +839,19 @@ namespace SharpHoundCommonLib {
                 LDAPFilter = filter.GetFilter(),
             }).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
             if (result.IsSuccess) {
-                DomainControllers.TryAdd(computerObjectId, new byte());
+                _domainControllers.Add(computerObjectId);
             }
+
             return result.IsSuccess;
         }
 
         public async Task<(bool Success, TypedPrincipal Principal)> ResolveDistinguishedName(string distinguishedName) {
             if (_distinguishedNameCache.TryGetValue(distinguishedName, out var principal)) {
                 return (true, principal);
+            }
+
+            if (_unresolvablePrincipals.Contains(distinguishedName)) {
+                return (false, default);
             }
 
             var domain = Helpers.DistinguishedNameToDomain(distinguishedName);
@@ -890,13 +897,13 @@ namespace SharpHoundCommonLib {
 
                     return (false, default);
                 } catch {
+                    _unresolvablePrincipals.Add(distinguishedName);
                     return (false, default);
                 }
             }
         }
 
-        public async Task<(bool Success, string DSHeuristics)> GetDSHueristics(string domain, string dn)
-        {
+        public async Task<(bool Success, string DSHeuristics)> GetDSHueristics(string domain, string dn) {
             var configPath = CommonPaths.CreateDNPath(CommonPaths.DirectoryServicePath, dn);
             var queryParameters = new LdapQueryParameters {
                 Attributes = new[] { LDAPProperties.DSHeuristics },
@@ -907,16 +914,18 @@ namespace SharpHoundCommonLib {
                 SearchBase = configPath
             };
 
-            var result = await Query(queryParameters).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail()).FirstOrDefaultAsync();
+            var result = await Query(queryParameters).DefaultIfEmpty(LdapResult<IDirectoryObject>.Fail())
+                .FirstOrDefaultAsync();
             if (result.IsSuccess &&
                 result.Value.TryGetProperty(LDAPProperties.DSHeuristics, out var dsh)) {
                 return (true, dsh);
             }
+
             return (false, null);
         }
 
         public void AddDomainController(string domainControllerSID) {
-            DomainControllers.TryAdd(domainControllerSID, new byte());
+            _domainControllers.Add(domainControllerSID);
         }
 
         public async IAsyncEnumerable<OutputBase> GetWellKnownPrincipalOutput() {
@@ -948,11 +957,12 @@ namespace SharpHoundCommonLib {
                 yield return entdc;
             }
         }
-        
+
         private async IAsyncEnumerable<Group> GetEnterpriseDCGroups() {
             var grouped = new ConcurrentDictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
             var forestSidToName = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var domainSid in DomainControllers.GroupBy(x => new SecurityIdentifier(x.Key).AccountDomainSid.Value)) {
+            foreach (var domainSid in _domainControllers.Values().GroupBy(x =>
+                         new SecurityIdentifier(x).AccountDomainSid.Value)) {
                 if (await GetDomainNameFromSid(domainSid.Key) is (true, var domainName) &&
                     await GetForest(domainName) is (true, var forestName) &&
                     await GetDomainSidFromDomainName(forestName) is (true, var forestDomainSid)) {
@@ -960,15 +970,15 @@ namespace SharpHoundCommonLib {
                     if (!grouped.ContainsKey(forestDomainSid)) {
                         grouped[forestDomainSid] = new List<string>();
                     }
-                    
+
                     foreach (var k in domainSid) {
-                        grouped[forestDomainSid].Add(k.Key);    
+                        grouped[forestDomainSid].Add(k);
                     }
                 }
             }
 
             foreach (var f in grouped) {
-                var group = new Group() { ObjectIdentifier = $"{f.Key}-S-1-5-9" };
+                var group = new Group { ObjectIdentifier = $"{f.Key}-S-1-5-9" };
                 group.Properties.Add("name", $"ENTERPRISE DOMAIN CONTROLLERS@{forestSidToName[f.Key]}".ToUpper());
                 group.Properties.Add("domainsid", f.Key);
                 group.Properties.Add("domain", forestSidToName[f.Key]);
@@ -1038,6 +1048,14 @@ namespace SharpHoundCommonLib {
             }
 
             return (false, default);
+        }
+
+        public void ResetUtils() {
+            _unresolvablePrincipals = new ConcurrentHashSet();
+            _domainCache = new ConcurrentDictionary<string, Domain>();
+            _domainControllers = new ConcurrentHashSet();
+            _connectionPool?.Dispose();
+            _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
         }
 
         private IDirectoryObject CreateDirectoryEntry(string path) {
@@ -1122,11 +1140,11 @@ namespace SharpHoundCommonLib {
             if (!directoryObject.GetObjectIdentifier(out var objectIdentifier)) {
                 return (false, default);
             }
-            
+
             var res = new ResolvedSearchResult {
                 ObjectId = objectIdentifier
             };
-            
+
             //If the object is deleted, we can short circuit the rest of this logic as we don't really care about anything else
             if (directoryObject.IsDeleted()) {
                 res.Deleted = true;
@@ -1140,7 +1158,7 @@ namespace SharpHoundCommonLib {
                     utils.AddDomainController(objectIdentifier);
                 }
             }
-            
+
             string domain;
 
             if (directoryObject.TryGetDistinguishedName(out var distinguishedName)) {
