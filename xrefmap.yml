@@ -587,6 +587,96 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.CommonLib.ReconfigureLogging
   nameWithType: CommonLib.ReconfigureLogging
+- uid: SharpHoundCommonLib.ConcurrentHashSet
+  name: ConcurrentHashSet
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html
+  commentId: T:SharpHoundCommonLib.ConcurrentHashSet
+  fullName: SharpHoundCommonLib.ConcurrentHashSet
+  nameWithType: ConcurrentHashSet
+- uid: SharpHoundCommonLib.ConcurrentHashSet.#ctor
+  name: ConcurrentHashSet()
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet__ctor
+  commentId: M:SharpHoundCommonLib.ConcurrentHashSet.#ctor
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.ConcurrentHashSet()
+  nameWithType: ConcurrentHashSet.ConcurrentHashSet()
+- uid: SharpHoundCommonLib.ConcurrentHashSet.#ctor(System.StringComparer)
+  name: ConcurrentHashSet(StringComparer)
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet__ctor_System_StringComparer_
+  commentId: M:SharpHoundCommonLib.ConcurrentHashSet.#ctor(System.StringComparer)
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.ConcurrentHashSet(System.StringComparer)
+  nameWithType: ConcurrentHashSet.ConcurrentHashSet(StringComparer)
+- uid: SharpHoundCommonLib.ConcurrentHashSet.#ctor*
+  name: ConcurrentHashSet
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet__ctor_
+  commentId: Overload:SharpHoundCommonLib.ConcurrentHashSet.#ctor
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.ConcurrentHashSet
+  nameWithType: ConcurrentHashSet.ConcurrentHashSet
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Add(System.String)
+  name: Add(String)
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Add_System_String_
+  commentId: M:SharpHoundCommonLib.ConcurrentHashSet.Add(System.String)
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Add(System.String)
+  nameWithType: ConcurrentHashSet.Add(String)
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Add*
+  name: Add
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Add_
+  commentId: Overload:SharpHoundCommonLib.ConcurrentHashSet.Add
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Add
+  nameWithType: ConcurrentHashSet.Add
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Contains(System.String)
+  name: Contains(String)
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Contains_System_String_
+  commentId: M:SharpHoundCommonLib.ConcurrentHashSet.Contains(System.String)
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Contains(System.String)
+  nameWithType: ConcurrentHashSet.Contains(String)
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Contains*
+  name: Contains
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Contains_
+  commentId: Overload:SharpHoundCommonLib.ConcurrentHashSet.Contains
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Contains
+  nameWithType: ConcurrentHashSet.Contains
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Dispose
+  name: Dispose()
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Dispose
+  commentId: M:SharpHoundCommonLib.ConcurrentHashSet.Dispose
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Dispose()
+  nameWithType: ConcurrentHashSet.Dispose()
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Dispose*
+  name: Dispose
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Dispose_
+  commentId: Overload:SharpHoundCommonLib.ConcurrentHashSet.Dispose
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Dispose
+  nameWithType: ConcurrentHashSet.Dispose
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Remove(System.String)
+  name: Remove(String)
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Remove_System_String_
+  commentId: M:SharpHoundCommonLib.ConcurrentHashSet.Remove(System.String)
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Remove(System.String)
+  nameWithType: ConcurrentHashSet.Remove(String)
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Remove*
+  name: Remove
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Remove_
+  commentId: Overload:SharpHoundCommonLib.ConcurrentHashSet.Remove
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Remove
+  nameWithType: ConcurrentHashSet.Remove
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Values
+  name: Values()
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Values
+  commentId: M:SharpHoundCommonLib.ConcurrentHashSet.Values
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Values()
+  nameWithType: ConcurrentHashSet.Values()
+- uid: SharpHoundCommonLib.ConcurrentHashSet.Values*
+  name: Values
+  href: api/SharpHoundCommonLib.ConcurrentHashSet.html#SharpHoundCommonLib_ConcurrentHashSet_Values_
+  commentId: Overload:SharpHoundCommonLib.ConcurrentHashSet.Values
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ConcurrentHashSet.Values
+  nameWithType: ConcurrentHashSet.Values
 - uid: SharpHoundCommonLib.CSVComputerStatus
   name: CSVComputerStatus
   href: api/SharpHoundCommonLib.CSVComputerStatus.html
@@ -3173,6 +3263,12 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Helpers.SamAccountTypeToType
   nameWithType: Helpers.SamAccountTypeToType
+- uid: SharpHoundCommonLib.Helpers.SchannelAuthenticationOIDs
+  name: SchannelAuthenticationOIDs
+  href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_SchannelAuthenticationOIDs
+  commentId: F:SharpHoundCommonLib.Helpers.SchannelAuthenticationOIDs
+  fullName: SharpHoundCommonLib.Helpers.SchannelAuthenticationOIDs
+  nameWithType: Helpers.SchannelAuthenticationOIDs
 - uid: SharpHoundCommonLib.Helpers.SplitGPLinkProperty(System.String,System.Boolean)
   name: SplitGPLinkProperty(String, Boolean)
   href: api/SharpHoundCommonLib.Helpers.html#SharpHoundCommonLib_Helpers_SplitGPLinkProperty_System_String_System_Boolean_
@@ -3627,6 +3723,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.ILdapUtils.RangedRetrieval
   nameWithType: ILdapUtils.RangedRetrieval
+- uid: SharpHoundCommonLib.ILdapUtils.ResetUtils
+  name: ResetUtils()
+  href: api/SharpHoundCommonLib.ILdapUtils.html#SharpHoundCommonLib_ILdapUtils_ResetUtils
+  commentId: M:SharpHoundCommonLib.ILdapUtils.ResetUtils
+  fullName: SharpHoundCommonLib.ILdapUtils.ResetUtils()
+  nameWithType: ILdapUtils.ResetUtils()
+- uid: SharpHoundCommonLib.ILdapUtils.ResetUtils*
+  name: ResetUtils
+  href: api/SharpHoundCommonLib.ILdapUtils.html#SharpHoundCommonLib_ILdapUtils_ResetUtils_
+  commentId: Overload:SharpHoundCommonLib.ILdapUtils.ResetUtils
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.ILdapUtils.ResetUtils
+  nameWithType: ILdapUtils.ResetUtils
 - uid: SharpHoundCommonLib.ILdapUtils.ResolveAccountName(System.String,System.String)
   name: ResolveAccountName(String, String)
   href: api/SharpHoundCommonLib.ILdapUtils.html#SharpHoundCommonLib_ILdapUtils_ResolveAccountName_System_String_System_String_
@@ -5780,6 +5889,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.LdapUtils.RangedRetrieval
   nameWithType: LdapUtils.RangedRetrieval
+- uid: SharpHoundCommonLib.LdapUtils.ResetUtils
+  name: ResetUtils()
+  href: api/SharpHoundCommonLib.LdapUtils.html#SharpHoundCommonLib_LdapUtils_ResetUtils
+  commentId: M:SharpHoundCommonLib.LdapUtils.ResetUtils
+  fullName: SharpHoundCommonLib.LdapUtils.ResetUtils()
+  nameWithType: LdapUtils.ResetUtils()
+- uid: SharpHoundCommonLib.LdapUtils.ResetUtils*
+  name: ResetUtils
+  href: api/SharpHoundCommonLib.LdapUtils.html#SharpHoundCommonLib_LdapUtils_ResetUtils_
+  commentId: Overload:SharpHoundCommonLib.LdapUtils.ResetUtils
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.LdapUtils.ResetUtils
+  nameWithType: LdapUtils.ResetUtils
 - uid: SharpHoundCommonLib.LdapUtils.ResolveAccountName(System.String,System.String)
   name: ResolveAccountName(String, String)
   href: api/SharpHoundCommonLib.LdapUtils.html#SharpHoundCommonLib_LdapUtils_ResolveAccountName_System_String_System_String_
