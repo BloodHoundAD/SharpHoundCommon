@@ -70,7 +70,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download Coverage Report
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: report
           path: docfx/coverage/report
