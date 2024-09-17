@@ -34,7 +34,7 @@ jobs:
         run: dotnet test # coverage happens by default
 
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: report
           path: docfx/coverage/report/
