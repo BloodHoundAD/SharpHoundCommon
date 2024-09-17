@@ -8,6 +8,7 @@ using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Abstractions;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -70,16 +71,28 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("lockoutthreshold", entry.GetProperty(LDAPProperties.LockoutThreshold));
 
             if (entry.TryGetLongProperty(LDAPProperties.MinPwdAge, out var minpwdage)) {
-                props.Add("minpwdage", ConvertNanoDuration(minpwdage));
+                var duration = ConvertNanoDuration(minpwdage);
+                if (duration != null) {
+                    props.Add("minpwdage", duration);
+                }
             }
             if (entry.TryGetLongProperty(LDAPProperties.MaxPwdAge, out var maxpwdage)) {
-                props.Add("maxpwdage", ConvertNanoDuration(maxpwdage));
+                var duration = ConvertNanoDuration(maxpwdage);
+                if (duration != null) {
+                    props.Add("maxpwdage", duration);
+                }
             }
             if (entry.TryGetLongProperty(LDAPProperties.LockoutDuration, out var lockoutduration)) {
-                props.Add("lockoutduration", ConvertNanoDuration(lockoutduration));
+                var duration = ConvertNanoDuration(lockoutduration);
+                if (duration != null) {
+                    props.Add("lockoutduration", duration);
+                }
             }
             if (entry.TryGetLongProperty(LDAPProperties.LockOutObservationWindow, out var lockoutobservationwindow)) {
-                props.Add("lockoutobservationwindow", ConvertNanoDuration(lockoutobservationwindow));
+                var duration = ConvertNanoDuration(lockoutobservationwindow);
+                if (duration != null) {
+                    props.Add("lockoutobservationwindow", lockoutobservationwindow);
+                }
             }
             if (!entry.TryGetLongProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel)) {
                 functionalLevel = -1;
@@ -729,6 +742,14 @@ namespace SharpHoundCommonLib.Processors {
 
         private static string ConvertNanoDuration(long duration)
         {
+            // In case duration is long.MinValue, Math.Abs will overflow.  Value represents Forever or Never
+            if (duration == long.MinValue) {
+                return "Forever";
+            // And if the value is positive, it indicates an error code
+            } else if (duration > 0) {
+                return null;
+            }
+
             // duration is in 100-nanosecond intervals
             // Convert it to TimeSpan (which uses 1 tick = 100 nanoseconds)
             TimeSpan durationSpan = TimeSpan.FromTicks(Math.Abs(duration));
