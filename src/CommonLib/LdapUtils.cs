@@ -1051,9 +1051,9 @@ namespace SharpHoundCommonLib {
         }
 
         public void ResetUtils() {
-            _unresolvablePrincipals = new ConcurrentHashSet();
+            _unresolvablePrincipals = new ConcurrentHashSet(StringComparer.OrdinalIgnoreCase);
             _domainCache = new ConcurrentDictionary<string, Domain>();
-            _domainControllers = new ConcurrentHashSet();
+            _domainControllers = new ConcurrentHashSet(StringComparer.OrdinalIgnoreCase);
             _connectionPool?.Dispose();
             _connectionPool = new ConnectionPoolManager(_ldapConfig, scanner: _portScanner);
         }
