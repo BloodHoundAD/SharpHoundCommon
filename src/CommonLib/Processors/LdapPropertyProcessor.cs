@@ -566,6 +566,11 @@ namespace SharpHoundCommonLib.Processors {
                 effectiveekus.Intersect(Helpers.AuthenticationOIDs).Any() | effectiveekus.Length == 0;
             props.Add("authenticationenabled", authenticationEnabled);
 
+            // Construct schannelauthenticationenabled
+            var schannelAuthenticationEnabled =
+                effectiveekus.Intersect(Helpers.SchannelAuthenticationOIDs).Any() | effectiveekus.Length == 0;
+            props.Add("schannelauthenticationenabled", schannelAuthenticationEnabled);
+
             return props;
         }
 

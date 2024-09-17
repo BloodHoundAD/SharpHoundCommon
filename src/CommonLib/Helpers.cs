@@ -295,6 +295,11 @@ namespace SharpHoundCommonLib {
             CommonOids.SmartcardLogon,
             CommonOids.AnyPurpose
         };
+
+        public static string[] SchannelAuthenticationOIDs = new string[] {
+            CommonOids.ClientAuthentication,
+            CommonOids.AnyPurpose
+        };
     }
 
     public class ParsedGPLink {
