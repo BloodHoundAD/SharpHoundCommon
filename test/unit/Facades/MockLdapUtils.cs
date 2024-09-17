@@ -1016,6 +1016,10 @@ namespace CommonLibTest.Facades
             throw new NotImplementedException();
         }
 
+        public void ResetUtils() {
+            throw new NotImplementedException();
+        }
+
         public Domain GetDomain(string domainName = null)
         {
             throw new NotImplementedException();
