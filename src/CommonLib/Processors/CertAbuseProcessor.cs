@@ -107,8 +107,10 @@ namespace SharpHoundCommonLib.Processors
                 }
                 var (resSuccess, resolvedPrincipal) = await GetRegistryPrincipal(new SecurityIdentifier(principalSid), principalDomain, computerName, isDomainController, computerObjectId, machineSid);
                 if (!resSuccess) {
-                    resolvedPrincipal.ObjectType = Label.Base;
-                    resolvedPrincipal.ObjectIdentifier = principalSid;
+                    resolvedPrincipal = new TypedPrincipal {
+                        ObjectType = Label.Base,
+                        ObjectIdentifier = principalSid
+                    };
                 }
                 var isInherited = rule.IsInherited();
 

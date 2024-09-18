@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib.Enums;
 using SharpHoundCommonLib.LDAPQueries;
 using SharpHoundCommonLib.OutputTypes;
@@ -70,16 +70,28 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("lockoutthreshold", entry.GetProperty(LDAPProperties.LockoutThreshold));
 
             if (entry.TryGetLongProperty(LDAPProperties.MinPwdAge, out var minpwdage)) {
-                props.Add("minpwdage", ConvertNanoDuration(minpwdage));
+                var duration = ConvertNanoDuration(minpwdage);
+                if (duration != null) {
+                    props.Add("minpwdage", duration);
+                }
             }
             if (entry.TryGetLongProperty(LDAPProperties.MaxPwdAge, out var maxpwdage)) {
-                props.Add("maxpwdage", ConvertNanoDuration(maxpwdage));
+                var duration = ConvertNanoDuration(maxpwdage);
+                if (duration != null) {
+                    props.Add("maxpwdage", duration);
+                }
             }
             if (entry.TryGetLongProperty(LDAPProperties.LockoutDuration, out var lockoutduration)) {
-                props.Add("lockoutduration", ConvertNanoDuration(lockoutduration));
+                var duration = ConvertNanoDuration(lockoutduration);
+                if (duration != null) {
+                    props.Add("lockoutduration", duration);
+                }
             }
             if (entry.TryGetLongProperty(LDAPProperties.LockOutObservationWindow, out var lockoutobservationwindow)) {
-                props.Add("lockoutobservationwindow", ConvertNanoDuration(lockoutobservationwindow));
+                var duration = ConvertNanoDuration(lockoutobservationwindow);
+                if (duration != null) {
+                    props.Add("lockoutobservationwindow", lockoutobservationwindow);
+                }
             }
             if (!entry.TryGetLongProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel)) {
                 functionalLevel = -1;
@@ -554,6 +566,11 @@ namespace SharpHoundCommonLib.Processors {
                 effectiveekus.Intersect(Helpers.AuthenticationOIDs).Any() | effectiveekus.Length == 0;
             props.Add("authenticationenabled", authenticationEnabled);
 
+            // Construct schannelauthenticationenabled
+            var schannelAuthenticationEnabled =
+                effectiveekus.Intersect(Helpers.SchannelAuthenticationOIDs).Any() | effectiveekus.Length == 0;
+            props.Add("schannelauthenticationenabled", schannelAuthenticationEnabled);
+
             return props;
         }
 
@@ -725,6 +742,14 @@ namespace SharpHoundCommonLib.Processors {
 
         private static string ConvertNanoDuration(long duration)
         {
+            // In case duration is long.MinValue, Math.Abs will overflow.  Value represents Forever or Never
+            if (duration == long.MinValue) {
+                return "Forever";
+            // And if the value is positive, it indicates an error code
+            } else if (duration > 0) {
+                return null;
+            }
+
             // duration is in 100-nanosecond intervals
             // Convert it to TimeSpan (which uses 1 tick = 100 nanoseconds)
             TimeSpan durationSpan = TimeSpan.FromTicks(Math.Abs(duration));
@@ -841,8 +866,8 @@ namespace SharpHoundCommonLib.Processors {
     public class ParsedCertificate {
         public string Thumbprint { get; set; }
         public string Name { get; set; }
-        public string[] Chain { get; set; } = Array.Empty<string>();
-        public bool HasBasicConstraints { get; set; } = false;
+        public string[] Chain { get; set; }
+        public bool HasBasicConstraints { get; set; }
         public int BasicConstraintPathLength { get; set; }
 
         public ParsedCertificate(byte[] rawCertificate) {
@@ -852,21 +877,26 @@ namespace SharpHoundCommonLib.Processors {
             Name = string.IsNullOrEmpty(name) ? Thumbprint : name;
 
             // Chain
-            X509Chain chain = new X509Chain();
-            chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
-            chain.Build(parsedCertificate);
-            var temp = new List<string>();
-            foreach (X509ChainElement cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
-            Chain = temp.ToArray();
+            try {
+                var chain = new X509Chain();
+                chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+                chain.Build(parsedCertificate);
+                var temp = new List<string>();
+                foreach (var cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
+                Chain = temp.ToArray();
+            } catch (Exception e) {
+                Logging.LogProvider.CreateLogger("ParsedCertificate").LogWarning(e, "Failed to read certificate chain for certificate {Name} with Algo {Algorithm}", name, parsedCertificate.SignatureAlgorithm.FriendlyName);
+                Chain = Array.Empty<string>();
+            }
+            
 
             // Extensions
-            X509ExtensionCollection extensions = parsedCertificate.Extensions;
-            List<CertificateExtension> certificateExtensions = new List<CertificateExtension>();
-            foreach (X509Extension extension in extensions) {
-                CertificateExtension certificateExtension = new CertificateExtension(extension);
+            var extensions = parsedCertificate.Extensions;
+            foreach (var extension in extensions) {
+                var certificateExtension = new CertificateExtension(extension);
                 switch (certificateExtension.Oid.Value) {
                     case CAExtensionTypes.BasicConstraints:
-                        X509BasicConstraintsExtension ext = (X509BasicConstraintsExtension)extension;
+                        var ext = (X509BasicConstraintsExtension)extension;
                         HasBasicConstraints = ext.HasPathLengthConstraint;
                         BasicConstraintPathLength = ext.PathLengthConstraint;
                         break;
