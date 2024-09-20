@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharpHoundCommonLib;
@@ -74,41 +75,27 @@ namespace SharpHoundProcessors {
                 return default;
             }
 
-            switch (resolvedSearchResult.ObjectType) {
-                case Label.User:
-                    return await ProcessUserObject(directoryObject, resolvedSearchResult);
-                case Label.Computer:
-                    return await ProcessComputerObject(directoryObject, resolvedSearchResult);
-                case Label.Group:
-                    return await ProcessGroupObject(directoryObject, resolvedSearchResult);
-                case Label.GPO:
-                    return await ProcessGPOObject(directoryObject, resolvedSearchResult);
-                case Label.Domain:
-                    return await ProcessDomainObject(directoryObject, resolvedSearchResult);
-                case Label.OU:
-                    break;
-                case Label.Container:
-                    break;
-                case Label.Configuration:
-                    break;
-                case Label.CertTemplate:
-                    break;
-                case Label.RootCA:
-                    break;
-                case Label.AIACA:
-                    break;
-                case Label.EnterpriseCA:
-                    break;
-                case Label.NTAuthStore:
-                    break;
-                case Label.IssuancePolicy:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            return resolvedSearchResult.ObjectType switch {
+                Label.User => await ProcessUserObject(directoryObject, resolvedSearchResult),
+                Label.Computer => await ProcessComputerObject(directoryObject, resolvedSearchResult),
+                Label.Group => await ProcessGroupObject(directoryObject, resolvedSearchResult),
+                Label.GPO => await ProcessGPOObject(directoryObject, resolvedSearchResult),
+                Label.Domain => await ProcessDomainObject(directoryObject, resolvedSearchResult),
+                Label.OU => await ProcessOUObject(directoryObject, resolvedSearchResult),
+                Label.Container or Label.Configuration => await ProcessContainerObject(directoryObject,
+                    resolvedSearchResult),
+                Label.CertTemplate => await ProcessCertTemplateObject(directoryObject, resolvedSearchResult),
+                Label.RootCA => await ProcessRootCAObject(directoryObject, resolvedSearchResult),
+                Label.AIACA => await ProcessAIACAObject(directoryObject, resolvedSearchResult),
+                Label.EnterpriseCA => await ProcessEnterpriseCAObject(directoryObject, resolvedSearchResult),
+                Label.NTAuthStore => await ProcessNTAuthStoreObject(directoryObject, resolvedSearchResult),
+                Label.IssuancePolicy => await ProcessIssuancePolicyObject(directoryObject, resolvedSearchResult),
+                _ => default
+            };
         }
 
-        private async Task<User> ProcessUserObject(IDirectoryObject directoryObject, ResolvedSearchResult resolvedSearchResult) {
+        private async Task<User> ProcessUserObject(IDirectoryObject directoryObject,
+            ResolvedSearchResult resolvedSearchResult) {
             var output = new User {
                 ObjectIdentifier = resolvedSearchResult.ObjectId
             };
@@ -118,7 +105,7 @@ namespace SharpHoundProcessors {
             await CollectAclData(directoryObject, resolvedSearchResult, output);
             await CollectGroupData(directoryObject, resolvedSearchResult, output);
             await CollectContainerData(directoryObject, resolvedSearchResult, output);
-                    
+
             if (_collectionMethod.HasFlag(CollectionMethod.SPNTargets)) {
                 output.SPNTargets = await _spnProcessor.ReadSPNTargets(resolvedSearchResult, directoryObject)
                     .ToArrayAsync();
@@ -126,7 +113,7 @@ namespace SharpHoundProcessors {
 
             return output;
         }
-        
+
         private async Task<Computer> ProcessComputerObject(IDirectoryObject directoryObject,
             ResolvedSearchResult resolvedSearchResult) {
             var output = new Computer {
@@ -167,7 +154,8 @@ namespace SharpHoundProcessors {
 
             if (_collectionMethod.HasFlag(CollectionMethod.Session)) {
                 await _processorConfig.Delay();
-                output.Sessions = await _computerSessionProcessor.ReadUserSessions(apiName, resolvedSearchResult.ObjectId, resolvedSearchResult.DomainSid);
+                output.Sessions = await _computerSessionProcessor.ReadUserSessions(apiName,
+                    resolvedSearchResult.ObjectId, resolvedSearchResult.DomainSid);
             }
 
             if (_collectionMethod.HasFlag(CollectionMethod.LoggedOn)) {
@@ -241,7 +229,8 @@ namespace SharpHoundProcessors {
             await CollectContainerData(entry, resolvedSearchResult, output);
 
             if (_collectionMethod.HasFlag(CollectionMethod.Trusts)) {
-                output.Trusts = await _domainTrustProcessor.EnumerateDomainTrusts(resolvedSearchResult.DisplayName).ToArrayAsync();
+                output.Trusts = await _domainTrustProcessor.EnumerateDomainTrusts(resolvedSearchResult.DisplayName)
+                    .ToArrayAsync();
             }
 
             if (_collectionMethod.HasFlag(CollectionMethod.GPOLocalGroup)) {
@@ -251,9 +240,160 @@ namespace SharpHoundProcessors {
             return output;
         }
 
+        public async Task<OU> ProcessOUObject(IDirectoryObject entry, ResolvedSearchResult resolvedSearchResult) {
+            var output = new OU {
+                ObjectIdentifier = resolvedSearchResult.ObjectId
+            };
+
+            await CollectObjectProperties(entry, resolvedSearchResult, output);
+            await CollectAclData(entry, resolvedSearchResult, output);
+            await CollectContainerData(entry, resolvedSearchResult, output);
+
+            if (_collectionMethod.HasFlag(CollectionMethod.GPOLocalGroup)) {
+                output.GPOChanges = await _gpoLocalGroupProcessor.ReadGPOLocalGroups(entry);
+            }
+
+            return output;
+        }
+
+        public async Task<Container> ProcessContainerObject(IDirectoryObject entry,
+            ResolvedSearchResult resolvedSearchResult) {
+            var output = new Container {
+                ObjectIdentifier = resolvedSearchResult.ObjectId
+            };
+
+            await CollectObjectProperties(entry, resolvedSearchResult, output);
+            await CollectAclData(entry, resolvedSearchResult, output);
+            await CollectContainerData(entry, resolvedSearchResult, output);
+
+            return output;
+        }
+
+        public async Task<CertTemplate> ProcessCertTemplateObject(IDirectoryObject entry,
+            ResolvedSearchResult resolvedSearchResult) {
+            var output = new CertTemplate {
+                ObjectIdentifier = resolvedSearchResult.ObjectId
+            };
+
+            await CollectObjectProperties(entry, resolvedSearchResult, output);
+            await CollectAclData(entry, resolvedSearchResult, output);
+            await CollectContainerData(entry, resolvedSearchResult, output);
+
+            return output;
+        }
+
+        public async Task<RootCA>
+            ProcessRootCAObject(IDirectoryObject entry, ResolvedSearchResult resolvedSearchResult) {
+            var output = new RootCA {
+                ObjectIdentifier = resolvedSearchResult.ObjectId,
+                DomainSID = resolvedSearchResult.DomainSid
+            };
+
+            await CollectObjectProperties(entry, resolvedSearchResult, output);
+            await CollectAclData(entry, resolvedSearchResult, output);
+            await CollectContainerData(entry, resolvedSearchResult, output);
+
+            return output;
+        }
+
+        public async Task<AIACA> ProcessAIACAObject(IDirectoryObject entry, ResolvedSearchResult resolvedSearchResult) {
+            var output = new AIACA {
+                ObjectIdentifier = resolvedSearchResult.ObjectId
+            };
+
+            await CollectObjectProperties(entry, resolvedSearchResult, output);
+            await CollectAclData(entry, resolvedSearchResult, output);
+            await CollectContainerData(entry, resolvedSearchResult, output);
+
+            return output;
+        }
+
+        public async Task<EnterpriseCA> ProcessEnterpriseCAObject(IDirectoryObject entry,
+            ResolvedSearchResult resolvedSearchResult) {
+            var output = new EnterpriseCA {
+                ObjectIdentifier = resolvedSearchResult.ObjectId
+            };
+
+            await CollectObjectProperties(entry, resolvedSearchResult, output);
+            await CollectAclData(entry, resolvedSearchResult, output);
+            await CollectContainerData(entry, resolvedSearchResult, output);
+
+            if (_collectionMethod.HasFlag(CollectionMethod.CARegistry)) {
+                // Collect properties from CA server registry
+                var cASecurityCollected = false;
+                var enrollmentAgentRestrictionsCollected = false;
+                var isUserSpecifiesSanEnabledCollected = false;
+                var roleSeparationEnabledCollected = false;
+                var caName = entry.GetProperty(LDAPProperties.Name);
+                var dnsHostName = entry.GetProperty(LDAPProperties.DNSHostName);
+                if (caName != null && dnsHostName != null) {
+                    if (await _utils.ResolveHostToSid(dnsHostName, resolvedSearchResult.DomainSid) is
+                            (true, var sid) && sid.StartsWith("S-1-")) {
+                        output.HostingComputer = sid;
+                    } else {
+                        _log.LogWarning("CA {Name} host ({Dns}) could not be resolved to a SID.", caName, dnsHostName);
+                    }
+
+                    CARegistryData cARegistryData = new() {
+                        IsUserSpecifiesSanEnabled = _certAbuseProcessor.IsUserSpecifiesSanEnabled(dnsHostName, caName),
+                        EnrollmentAgentRestrictions = await _certAbuseProcessor.ProcessEAPermissions(caName,
+                            resolvedSearchResult.Domain, dnsHostName, output.HostingComputer),
+                        RoleSeparationEnabled = _certAbuseProcessor.RoleSeparationEnabled(dnsHostName, caName),
+
+                        // The CASecurity exist in the AD object DACL and in registry of the CA server. We prefer to use the values from registry as they are the ground truth.
+                        // If changes are made on the CA server, registry and the AD object is updated. If changes are made directly on the AD object, the CA server registry is not updated.
+                        CASecurity = await _certAbuseProcessor.ProcessRegistryEnrollmentPermissions(caName,
+                            resolvedSearchResult.Domain, dnsHostName, output.HostingComputer)
+                    };
+
+                    cASecurityCollected = cARegistryData.CASecurity.Collected;
+                    enrollmentAgentRestrictionsCollected = cARegistryData.EnrollmentAgentRestrictions.Collected;
+                    isUserSpecifiesSanEnabledCollected = cARegistryData.IsUserSpecifiesSanEnabled.Collected;
+                    roleSeparationEnabledCollected = cARegistryData.RoleSeparationEnabled.Collected;
+                    output.CARegistryData = cARegistryData;
+                }
+
+                output.Properties.Add(OutputNames.CASecurityCollected, cASecurityCollected);
+                output.Properties.Add(OutputNames.EnrollmentAgentRestrictionsCollected,
+                    enrollmentAgentRestrictionsCollected);
+                output.Properties.Add(OutputNames.IsUserSpecifiesSANCollected, isUserSpecifiesSanEnabledCollected);
+                output.Properties.Add(OutputNames.RoleSeparationCollected, roleSeparationEnabledCollected);
+            }
+
+            return output;
+        }
+
+        private async Task<NTAuthStore> ProcessNTAuthStoreObject(IDirectoryObject entry,
+            ResolvedSearchResult resolvedSearchResult) {
+            var output = new NTAuthStore {
+                ObjectIdentifier = resolvedSearchResult.ObjectId,
+                DomainSID = resolvedSearchResult.DomainSid
+            };
+
+            await CollectObjectProperties(entry, resolvedSearchResult, output);
+            await CollectAclData(entry, resolvedSearchResult, output);
+            await CollectContainerData(entry, resolvedSearchResult, output);
+
+            return output;
+        }
+
+        private async Task<IssuancePolicy> ProcessIssuancePolicyObject(IDirectoryObject entry,
+            ResolvedSearchResult resolvedSearchResult) {
+            var output = new IssuancePolicy {
+                ObjectIdentifier = resolvedSearchResult.ObjectId
+            };
+
+            await CollectObjectProperties(entry, resolvedSearchResult, output);
+            await CollectAclData(entry, resolvedSearchResult, output);
+            await CollectContainerData(entry, resolvedSearchResult, output);
+
+            return output;
+        }
+
         private async Task CollectContainerData(IDirectoryObject entry, ResolvedSearchResult resolvedSearchResult,
             OutputBase output) {
-            if (!_collectionMethod.HasFlag(CollectionMethod.Container)) {
+            if (!_collectionMethod.HasFlag(CollectionMethod.Container) &&
+                !_collectionMethod.HasFlag(CollectionMethod.CertServices)) {
                 return;
             }
 
@@ -264,17 +404,23 @@ namespace SharpHoundProcessors {
 
             switch (output) {
                 case Domain d:
-                    d.Links = await _containerProcessor.ReadContainerGPLinks(resolvedSearchResult, entry).ToArrayAsync();
+                    d.Links = await _containerProcessor.ReadContainerGPLinks(resolvedSearchResult, entry)
+                        .ToArrayAsync();
                     break;
                 case OU o:
-                    o.Links = await _containerProcessor.ReadContainerGPLinks(resolvedSearchResult, entry).ToArrayAsync();
+                    o.Links = await _containerProcessor.ReadContainerGPLinks(resolvedSearchResult, entry)
+                        .ToArrayAsync();
+                    output.Properties.Add(OutputNames.BlocksInheritance,
+                        ContainerProcessor.ReadBlocksInheritance(
+                            entry.GetProperty(LDAPProperties.GroupPolicyOptions)));
                     break;
             }
         }
 
         private async Task CollectAclData(IDirectoryObject entry, ResolvedSearchResult resolvedSearchResult,
             OutputBase output) {
-            if (!_collectionMethod.HasFlag(CollectionMethod.ACL)) {
+            if (!_collectionMethod.HasFlag(CollectionMethod.ACL) &&
+                !_collectionMethod.HasFlag(CollectionMethod.CertServices)) {
                 return;
             }
 
@@ -290,28 +436,33 @@ namespace SharpHoundProcessors {
 
             switch (output) {
                 case Container c:
-                    c.InheritanceHashes = _aclProcessor.GetInheritedAceHashes(entry, resolvedSearchResult).ToArray();
+                    c.InheritanceHashes =
+                        _aclProcessor.GetInheritedAceHashes(entry, resolvedSearchResult).ToArray();
                     break;
                 case Domain d:
-                    d.InheritanceHashes = _aclProcessor.GetInheritedAceHashes(entry, resolvedSearchResult).ToArray();
+                    d.InheritanceHashes =
+                        _aclProcessor.GetInheritedAceHashes(entry, resolvedSearchResult).ToArray();
                     break;
                 case OU o:
-                    o.InheritanceHashes = _aclProcessor.GetInheritedAceHashes(entry, resolvedSearchResult).ToArray();
+                    o.InheritanceHashes =
+                        _aclProcessor.GetInheritedAceHashes(entry, resolvedSearchResult).ToArray();
                     break;
             }
         }
 
-        private async Task CollectObjectProperties(IDirectoryObject entry, ResolvedSearchResult resolvedSearchResult,
+        private async Task CollectObjectProperties(IDirectoryObject entry,
+            ResolvedSearchResult resolvedSearchResult,
             OutputBase output) {
             //Always process common properties
             var commonProperties = CollectCommonProperties(entry, resolvedSearchResult);
             commonProperties.ToList().ForEach(x => output.Properties[x.Key] = x.Value);
 
             //Quick exit if the collection method isn't set
-            if (!_collectionMethod.HasFlag(CollectionMethod.ObjectProps)) {
+            if (!_collectionMethod.HasFlag(CollectionMethod.ObjectProps) &&
+                !_collectionMethod.HasFlag(CollectionMethod.CertServices)) {
                 return;
             }
-            
+
             if (output is User u) {
                 var userProperties = await _ldapPropertyProcessor.ReadUserProperties(entry, resolvedSearchResult);
                 userProperties.Props.ToList().ForEach(x => output.Properties[x.Key] = x.Value);
@@ -325,6 +476,19 @@ namespace SharpHoundProcessors {
                 c.AllowedToDelegate = computerProperties.AllowedToDelegate;
                 c.HasSIDHistory = computerProperties.SidHistory;
                 c.DumpSMSAPassword = computerProperties.DumpSMSAPassword;
+            } else if (output is EnterpriseCA e) {
+                LdapPropertyProcessor.ReadEnterpriseCAProperties(entry).ToList()
+                    .ForEach(x => e.Properties[x.Key] = x.Value);
+                if (entry.TryGetArrayProperty(LDAPProperties.CertificateTemplates, out var rawTemplates)) {
+                    var (resolvedTemplates, unresolvedTemplates) = await _certAbuseProcessor.ProcessCertTemplates(
+                        rawTemplates, resolvedSearchResult.Domain);
+                    e.EnabledCertTemplates = resolvedTemplates.ToArray();
+                    e.Properties.Add(OutputNames.UnresolvedTemplates, unresolvedTemplates.ToArray());
+                }
+            } else if (output is IssuancePolicy i) {
+                var issuancePolicyProps = await _ldapPropertyProcessor.ReadIssuancePolicyProperties(entry);
+                issuancePolicyProps.Props.ToList().ForEach(x => output.Properties[x.Key] = x.Value);
+                i.GroupLink = issuancePolicyProps.GroupLink;
             } else {
                 switch (resolvedSearchResult.ObjectType) {
                     case Label.Group:
@@ -356,16 +520,19 @@ namespace SharpHoundProcessors {
                         LdapPropertyProcessor.ReadAIACAProperties(entry).ToList()
                             .ForEach(x => output.Properties[x.Key] = x.Value);
                         break;
-                    case Label.EnterpriseCA:
-                        LdapPropertyProcessor.ReadEnterpriseCAProperties(entry).ToList()
-                            .ForEach(x => output.Properties[x.Key] = x.Value);
-                        break;
                     case Label.NTAuthStore:
                         LdapPropertyProcessor.ReadNTAuthStoreProperties(entry).ToList()
                             .ForEach(x => output.Properties[x.Key] = x.Value);
+                        if (entry.TryGetByteArrayProperty(LDAPProperties.CACertificate, out var rawCertificates)) {
+                            var certificates = from rawCertificate in rawCertificates
+                                select new X509Certificate2(rawCertificate).Thumbprint;
+                            output.Properties.Add(OutputNames.CertThumbprints, certificates.ToArray());
+                        }
+
                         break;
                     case Label.Domain:
-                        var domainProperties = await _ldapPropertyProcessor.ReadDomainProperties(entry, resolvedSearchResult.Domain);
+                        var domainProperties =
+                            await _ldapPropertyProcessor.ReadDomainProperties(entry, resolvedSearchResult.Domain);
                         domainProperties.ToList().ForEach(x => output.Properties[x.Key] = x.Value);
                         break;
                 }
