@@ -64,7 +64,7 @@ namespace SharpHoundCommonLib.Processors {
                     }
 
                     name = name.ToLower();
-                    if (name is LDAPProperties.LAPSPassword or LDAPProperties.LegacyLAPSPassword) {
+                    if (name is LDAPProperties.LAPSPlaintextPassword or LDAPProperties.LAPSEncryptedPassword or LDAPProperties.LegacyLAPSPassword) {
                         _log.LogDebug("Found GUID for ACL Right {Name}: {Guid} in domain {Domain}", name, guid, domain);
                         GuidMap.TryAdd(guid, name);
                     }
