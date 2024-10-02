@@ -402,7 +402,7 @@ namespace SharpHoundCommonLib.Processors {
                                     RightName = EdgeNames.AllExtendedRights,
                                     InheritanceHash = aceInheritanceHash
                                 };
-                            else if (mappedGuid is LDAPProperties.LegacyLAPSPassword or LDAPProperties.LAPSPassword)
+                            else if (mappedGuid is LDAPProperties.LegacyLAPSPassword or LDAPProperties.LAPSPlaintextPassword or LDAPProperties.LAPSEncryptedPassword)
                                 yield return new ACE {
                                     PrincipalType = resolvedPrincipal.ObjectType,
                                     PrincipalSID = resolvedPrincipal.ObjectIdentifier,
