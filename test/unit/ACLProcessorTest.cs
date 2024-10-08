@@ -1043,13 +1043,12 @@ namespace CommonLibTest {
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
             mockLDAPUtils.Setup(x => x.ResolveIDAndType(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync((true, new TypedPrincipal(expectedPrincipalSID, expectedPrincipalType)));
-
             
+            //Return a directory object from pagedquery for the schemaid to simulate LAPS
             var searchResults = new[]
             {
-                //These first 4 should be filtered by our DN filters
                 LdapResult<IDirectoryObject>.Ok(new MockDirectoryObject(
-                    "CN=7868d4c8-ac41-4e05-b401-776280e8e9f1,CN=Operations,CN=DomainUpdates,CN=System,DC=testlab,DC=local"
+                    "abc123"
                     , new Dictionary<string, object>()
                     {
                         {LDAPProperties.SchemaIDGUID, lapsGuid.ToByteArray()},
