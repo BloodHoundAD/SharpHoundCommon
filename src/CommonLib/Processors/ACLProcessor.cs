@@ -15,10 +15,10 @@ using SharpHoundCommonLib.OutputTypes;
 namespace SharpHoundCommonLib.Processors {
     public class ACLProcessor {
         private static readonly Dictionary<Label, string> BaseGuids;
-        private static readonly ConcurrentDictionary<string, string> GuidMap = new();
+        private readonly ConcurrentDictionary<string, string> _guidMap = new();
         private readonly ILogger _log;
         private readonly ILdapUtils _utils;
-        private static readonly ConcurrentHashSet BuiltDomainCaches = new(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentHashSet _builtDomainCaches = new(StringComparer.OrdinalIgnoreCase);
 
         static ACLProcessor() {
             //Create a dictionary with the base GUIDs of each object type
@@ -76,7 +76,7 @@ namespace SharpHoundCommonLib.Processors {
                     
                     if (name is LDAPProperties.LAPSPassword or LDAPProperties.LegacyLAPSPassword) {
                         _log.LogInformation("Found GUID for ACL Right {Name}: {Guid} in domain {Domain}", name, guid, domain);
-                        GuidMap.TryAdd(guid, name);
+                        _guidMap.TryAdd(guid, name);
                     }
                 } else {
                     _log.LogDebug("Error while building GUID cache for {Domain}: {Message}", domain, result.Error);
@@ -227,8 +227,8 @@ namespace SharpHoundCommonLib.Processors {
         public async IAsyncEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain,
             Label objectType,
             bool hasLaps, string objectName = "") {
-            if (!BuiltDomainCaches.Contains(objectDomain)) {
-                BuiltDomainCaches.Add(objectDomain);
+            if (!_builtDomainCaches.Contains(objectDomain)) {
+                _builtDomainCaches.Add(objectDomain);
                 await BuildGuidCache(objectDomain);
             }
 
@@ -299,7 +299,7 @@ namespace SharpHoundCommonLib.Processors {
                     aceInheritanceHash = CalculateInheritanceHash(ir, aceRights, aceType, ace.InheritedObjectType());
                 }
 
-                GuidMap.TryGetValue(aceType, out var mappedGuid);
+                _guidMap.TryGetValue(aceType, out var mappedGuid);
 
                 _log.LogTrace("Processing ACE with rights {Rights} and guid {GUID} on object {Name}", aceRights,
                     aceType, objectName);
