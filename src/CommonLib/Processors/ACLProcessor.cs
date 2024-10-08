@@ -18,7 +18,7 @@ namespace SharpHoundCommonLib.Processors {
         private static readonly ConcurrentDictionary<string, string> GuidMap = new();
         private readonly ILogger _log;
         private readonly ILdapUtils _utils;
-        private static readonly HashSet<string> BuiltDomainCaches = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentHashSet BuiltDomainCaches = new(StringComparer.OrdinalIgnoreCase);
 
         static ACLProcessor() {
             //Create a dictionary with the base GUIDs of each object type
@@ -50,8 +50,8 @@ namespace SharpHoundCommonLib.Processors {
         ///     LAPS
         /// </summary>
         private async Task BuildGuidCache(string domain) {
-            BuiltDomainCaches.Add(domain);
-            await foreach (var result in _utils.Query(new LdapQueryParameters {
+            _log.LogInformation("Building GUID Cache for {Domain}", domain);
+            await foreach (var result in _utils.PagedQuery(new LdapQueryParameters {
                                DomainName = domain,
                                LDAPFilter = "(schemaIDGUID=*)",
                                NamingContext = NamingContext.Schema,
@@ -59,13 +59,23 @@ namespace SharpHoundCommonLib.Processors {
                            })) {
                 if (result.IsSuccess) {
                     if (!result.Value.TryGetProperty(LDAPProperties.Name, out var name) ||
-                        !result.Value.TryGetGuid(out var guid)) {
+                        !result.Value.TryGetByteProperty(LDAPProperties.SchemaIDGUID, out var schemaGuid)) {
                         continue;
                     }
 
                     name = name.ToLower();
+                    string guid;
+                    try
+                    {
+                        guid = new Guid(schemaGuid).ToString();
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                    
                     if (name is LDAPProperties.LAPSPassword or LDAPProperties.LegacyLAPSPassword) {
-                        _log.LogDebug("Found GUID for ACL Right {Name}: {Guid} in domain {Domain}", name, guid, domain);
+                        _log.LogInformation("Found GUID for ACL Right {Name}: {Guid} in domain {Domain}", name, guid, domain);
                         GuidMap.TryAdd(guid, name);
                     }
                 } else {
@@ -218,6 +228,7 @@ namespace SharpHoundCommonLib.Processors {
             Label objectType,
             bool hasLaps, string objectName = "") {
             if (!BuiltDomainCaches.Contains(objectDomain)) {
+                BuiltDomainCaches.Add(objectDomain);
                 await BuildGuidCache(objectDomain);
             }
 
