@@ -212,8 +212,13 @@ namespace CommonLibTest {
         }
 
         [Fact]
-        public async Task ACLProcessor_ProcessACL_Null_NTSecurityDescriptor() {
-            var processor = new ACLProcessor(new MockLdapUtils());
+        public async Task ACLProcessor_ProcessACL_Null_NTSecurityDescriptor()
+        {
+            var mock = new Mock<MockLdapUtils>();
+            mock.Setup(x => x.PagedQuery(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(AsyncEnumerable.Empty<LdapResult<IDirectoryObject>>());
+            var processor = new ACLProcessor(mock.Object);
+            
             var result = await processor.ProcessACL(null, _testDomainName, Label.User, false).ToArrayAsync();
 
             Assert.Empty(result);
@@ -261,6 +266,8 @@ namespace CommonLibTest {
                 .Returns(collection);
             mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+            mockLDAPUtils.Setup(x => x.PagedQuery(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(AsyncEnumerable.Empty<LdapResult<IDirectoryObject>>());
 
             var processor = new ACLProcessor(mockLDAPUtils.Object);
             var bytes = Utils.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
@@ -279,6 +286,8 @@ namespace CommonLibTest {
                 .Returns(collection);
             mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+            mockLDAPUtils.Setup(x => x.PagedQuery(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(AsyncEnumerable.Empty<LdapResult<IDirectoryObject>>());
 
             var processor = new ACLProcessor(mockLDAPUtils.Object);
             var bytes = Utils.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
@@ -300,6 +309,8 @@ namespace CommonLibTest {
                 .Returns(collection);
             mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+            mockLDAPUtils.Setup(x => x.PagedQuery(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(AsyncEnumerable.Empty<LdapResult<IDirectoryObject>>());
 
             var processor = new ACLProcessor(mockLDAPUtils.Object);
             var bytes = Utils.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
@@ -322,6 +333,8 @@ namespace CommonLibTest {
                 .Returns(collection);
             mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+            mockLDAPUtils.Setup(x => x.PagedQuery(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(AsyncEnumerable.Empty<LdapResult<IDirectoryObject>>());
 
             var processor = new ACLProcessor(mockLDAPUtils.Object);
             var bytes = Utils.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
@@ -345,6 +358,8 @@ namespace CommonLibTest {
                 .Returns(collection);
             mockSecurityDescriptor.Setup(m => m.GetOwner(It.IsAny<Type>())).Returns((string)null);
             mockLDAPUtils.Setup(x => x.MakeSecurityDescriptor()).Returns(mockSecurityDescriptor.Object);
+            mockLDAPUtils.Setup(x => x.PagedQuery(It.IsAny<LdapQueryParameters>(), It.IsAny<CancellationToken>()))
+                .Returns(AsyncEnumerable.Empty<LdapResult<IDirectoryObject>>());
 
             var processor = new ACLProcessor(mockLDAPUtils.Object);
             var bytes = Utils.B64ToBytes(UnProtectedUserNtSecurityDescriptor);
