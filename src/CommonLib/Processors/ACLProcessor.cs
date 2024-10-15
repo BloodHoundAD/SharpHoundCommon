@@ -15,10 +15,10 @@ using SharpHoundCommonLib.OutputTypes;
 namespace SharpHoundCommonLib.Processors {
     public class ACLProcessor {
         private static readonly Dictionary<Label, string> BaseGuids;
-        private static readonly ConcurrentDictionary<string, string> GuidMap = new();
+        private readonly ConcurrentDictionary<string, string> _guidMap = new();
         private readonly ILogger _log;
         private readonly ILdapUtils _utils;
-        private static readonly HashSet<string> BuiltDomainCaches = new(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentHashSet _builtDomainCaches = new(StringComparer.OrdinalIgnoreCase);
 
         static ACLProcessor() {
             //Create a dictionary with the base GUIDs of each object type
@@ -50,8 +50,8 @@ namespace SharpHoundCommonLib.Processors {
         ///     LAPS
         /// </summary>
         private async Task BuildGuidCache(string domain) {
-            BuiltDomainCaches.Add(domain);
-            await foreach (var result in _utils.Query(new LdapQueryParameters {
+            _log.LogInformation("Building GUID Cache for {Domain}", domain);
+            await foreach (var result in _utils.PagedQuery(new LdapQueryParameters {
                                DomainName = domain,
                                LDAPFilter = "(schemaIDGUID=*)",
                                NamingContext = NamingContext.Schema,
@@ -59,14 +59,25 @@ namespace SharpHoundCommonLib.Processors {
                            })) {
                 if (result.IsSuccess) {
                     if (!result.Value.TryGetProperty(LDAPProperties.Name, out var name) ||
-                        !result.Value.TryGetGuid(out var guid)) {
+                        !result.Value.TryGetByteProperty(LDAPProperties.SchemaIDGUID, out var schemaGuid)) {
                         continue;
                     }
 
                     name = name.ToLower();
+
+                    string guid;
+                    try
+                    {
+                        guid = new Guid(schemaGuid).ToString();
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                    
                     if (name is LDAPProperties.LAPSPlaintextPassword or LDAPProperties.LAPSEncryptedPassword or LDAPProperties.LegacyLAPSPassword) {
-                        _log.LogDebug("Found GUID for ACL Right {Name}: {Guid} in domain {Domain}", name, guid, domain);
-                        GuidMap.TryAdd(guid, name);
+                        _log.LogInformation("Found GUID for ACL Right {Name}: {Guid} in domain {Domain}", name, guid, domain);
+                        _guidMap.TryAdd(guid, name);
                     }
                 } else {
                     _log.LogDebug("Error while building GUID cache for {Domain}: {Message}", domain, result.Error);
@@ -217,7 +228,8 @@ namespace SharpHoundCommonLib.Processors {
         public async IAsyncEnumerable<ACE> ProcessACL(byte[] ntSecurityDescriptor, string objectDomain,
             Label objectType,
             bool hasLaps, string objectName = "") {
-            if (!BuiltDomainCaches.Contains(objectDomain)) {
+            if (!_builtDomainCaches.Contains(objectDomain)) {
+                _builtDomainCaches.Add(objectDomain);
                 await BuildGuidCache(objectDomain);
             }
 
@@ -288,7 +300,7 @@ namespace SharpHoundCommonLib.Processors {
                     aceInheritanceHash = CalculateInheritanceHash(ir, aceRights, aceType, ace.InheritedObjectType());
                 }
 
-                GuidMap.TryGetValue(aceType, out var mappedGuid);
+                _guidMap.TryGetValue(aceType, out var mappedGuid);
 
                 _log.LogTrace("Processing ACE with rights {Rights} and guid {GUID} on object {Name}", aceRights,
                     aceType, objectName);
