@@ -300,8 +300,6 @@ namespace SharpHoundCommonLib.Processors {
                     aceInheritanceHash = CalculateInheritanceHash(ir, aceRights, aceType, ace.InheritedObjectType());
                 }
 
-                _guidMap.TryGetValue(aceType, out var mappedGuid);
-
                 _log.LogTrace("Processing ACE with rights {Rights} and guid {GUID} on object {Name}", aceRights,
                     aceType, objectName);
 
@@ -414,14 +412,23 @@ namespace SharpHoundCommonLib.Processors {
                                     RightName = EdgeNames.AllExtendedRights,
                                     InheritanceHash = aceInheritanceHash
                                 };
-                            else if (mappedGuid is LDAPProperties.LegacyLAPSPassword or LDAPProperties.LAPSPlaintextPassword or LDAPProperties.LAPSEncryptedPassword)
-                                yield return new ACE {
-                                    PrincipalType = resolvedPrincipal.ObjectType,
-                                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                                    IsInherited = inherited,
-                                    RightName = EdgeNames.ReadLAPSPassword,
-                                    InheritanceHash = aceInheritanceHash
-                                };
+                            else if (_guidMap.TryGetValue(aceType, out var lapsAttribute))
+                            {
+                                // Compare the retrieved attribute name against LDAPProperties values
+                                if (lapsAttribute == LDAPProperties.LegacyLAPSPassword ||
+                                    lapsAttribute == LDAPProperties.LAPSPlaintextPassword ||
+                                    lapsAttribute == LDAPProperties.LAPSEncryptedPassword)
+                                {
+                                    yield return new ACE
+                                    {
+                                        PrincipalType = resolvedPrincipal.ObjectType,
+                                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                        IsInherited = inherited,
+                                        RightName = EdgeNames.ReadLAPSPassword,
+                                        InheritanceHash = aceInheritanceHash
+                                    };
+                                }
+                            }
                         }
                     } else if (objectType == Label.CertTemplate) {
                         if (aceType is ACEGuids.AllGuid or "")
