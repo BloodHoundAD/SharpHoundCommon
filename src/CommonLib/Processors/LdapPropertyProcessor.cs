@@ -14,11 +14,14 @@ using SharpHoundCommonLib.OutputTypes;
 
 // ReSharper disable StringLiteralTypo
 
-namespace SharpHoundCommonLib.Processors {
-    public class LdapPropertyProcessor {
+namespace SharpHoundCommonLib.Processors
+{
+    public class LdapPropertyProcessor
+    {
         private static readonly HashSet<string> ReservedAttributes = new();
 
-        static LdapPropertyProcessor() {
+        static LdapPropertyProcessor()
+        {
             ReservedAttributes.UnionWith(CommonProperties.TypeResolutionProps);
             ReservedAttributes.UnionWith(CommonProperties.BaseQueryProps);
             ReservedAttributes.UnionWith(CommonProperties.GroupResolutionProps);
@@ -35,17 +38,21 @@ namespace SharpHoundCommonLib.Processors {
 
         private readonly ILdapUtils _utils;
 
-        public LdapPropertyProcessor(ILdapUtils utils) {
+        public LdapPropertyProcessor(ILdapUtils utils)
+        {
             _utils = utils;
         }
 
-        private static Dictionary<string, object> GetCommonProps(IDirectoryObject entry) {
+        private static Dictionary<string, object> GetCommonProps(IDirectoryObject entry)
+        {
             var ret = new Dictionary<string, object>();
-            if (entry.TryGetProperty(LDAPProperties.Description, out var description)) {
+            if (entry.TryGetProperty(LDAPProperties.Description, out var description))
+            {
                 ret["description"] = description;
             }
 
-            if (entry.TryGetProperty(LDAPProperties.WhenCreated, out var wc)) {
+            if (entry.TryGetProperty(LDAPProperties.WhenCreated, out var wc))
+            {
                 ret["whencreated"] = Helpers.ConvertTimestampToUnixEpoch(wc);
             }
 
@@ -60,42 +67,78 @@ namespace SharpHoundCommonLib.Processors {
         public async Task<Dictionary<string, object>> ReadDomainProperties(IDirectoryObject entry, string domain)
         {
             var props = GetCommonProps(entry);
+            
+            if (entry.TryGetProperty(LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts, out var expirePassword) && bool.TryParse(expirePassword, out var expirePasswordBool))
+            {
+                props.Add("expirepasswordsonsmartcardonlyaccounts", expirePasswordBool);
+            }
 
+            if (entry.TryGetLongProperty(LDAPProperties.MachineAccountQuota, out var machineAccountQuota))
+            {
+                props.Add("machineaccountquota", machineAccountQuota);
+            }
 
-            props.Add("expirepasswordsonsmartcardonlyaccounts", entry.GetProperty(LDAPProperties.ExpirePasswordsOnSmartCardOnlyAccounts));
-            props.Add("machineaccountquota", entry.GetProperty(LDAPProperties.MachineAccountQuota));
-            props.Add("minpwdlength", entry.GetProperty(LDAPProperties.MinPwdLength));
-            props.Add("pwdproperties", entry.GetProperty(LDAPProperties.PwdProperties));
-            props.Add("pwdhistorylength", entry.GetProperty(LDAPProperties.PwdHistoryLength));
-            props.Add("lockoutthreshold", entry.GetProperty(LDAPProperties.LockoutThreshold));
+            if (entry.TryGetLongProperty(LDAPProperties.MinPwdLength, out var minPwdLength))
+            {
+                props.Add("minpwdlength", minPwdLength);
+            }
 
-            if (entry.TryGetLongProperty(LDAPProperties.MinPwdAge, out var minpwdage)) {
+            if (entry.TryGetLongProperty(LDAPProperties.PwdProperties, out var pwdProperties))
+            {
+                props.Add("pwdproperties", pwdProperties);
+            }
+
+            if (entry.TryGetLongProperty(LDAPProperties.PwdHistoryLength, out var pwdHistoryLength))
+            {
+                props.Add("pwdhistorylength", pwdHistoryLength);
+            }
+
+            if (entry.TryGetLongProperty(LDAPProperties.LockoutThreshold, out var lockoutThreshold))
+            {
+                props.Add("lockoutthreshold", lockoutThreshold);
+            }
+
+            if (entry.TryGetLongProperty(LDAPProperties.MinPwdAge, out var minpwdage))
+            {
                 var duration = ConvertNanoDuration(minpwdage);
-                if (duration != null) {
+                if (duration != null)
+                {
                     props.Add("minpwdage", duration);
                 }
             }
-            if (entry.TryGetLongProperty(LDAPProperties.MaxPwdAge, out var maxpwdage)) {
+
+            if (entry.TryGetLongProperty(LDAPProperties.MaxPwdAge, out var maxpwdage))
+            {
                 var duration = ConvertNanoDuration(maxpwdage);
-                if (duration != null) {
+                if (duration != null)
+                {
                     props.Add("maxpwdage", duration);
                 }
             }
-            if (entry.TryGetLongProperty(LDAPProperties.LockoutDuration, out var lockoutduration)) {
+
+            if (entry.TryGetLongProperty(LDAPProperties.LockoutDuration, out var lockoutduration))
+            {
                 var duration = ConvertNanoDuration(lockoutduration);
-                if (duration != null) {
+                if (duration != null)
+                {
                     props.Add("lockoutduration", duration);
                 }
             }
-            if (entry.TryGetLongProperty(LDAPProperties.LockOutObservationWindow, out var lockoutobservationwindow)) {
+
+            if (entry.TryGetLongProperty(LDAPProperties.LockOutObservationWindow, out var lockoutobservationwindow))
+            {
                 var duration = ConvertNanoDuration(lockoutobservationwindow);
-                if (duration != null) {
+                if (duration != null)
+                {
                     props.Add("lockoutobservationwindow", lockoutobservationwindow);
                 }
             }
-            if (!entry.TryGetLongProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel)) {
+
+            if (!entry.TryGetLongProperty(LDAPProperties.DomainFunctionalLevel, out var functionalLevel))
+            {
                 functionalLevel = -1;
             }
+
             props.Add("functionallevel", FunctionalLevelToString((int)functionalLevel));
 
             var dn = entry.GetProperty(LDAPProperties.DistinguishedName);
@@ -110,8 +153,10 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public static string FunctionalLevelToString(int level) {
-            var functionalLevel = level switch {
+        public static string FunctionalLevelToString(int level)
+        {
+            var functionalLevel = level switch
+            {
                 0 => "2000 Mixed/Native",
                 1 => "2003 Interim",
                 2 => "2003",
@@ -132,7 +177,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadGPOProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadGPOProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
             entry.TryGetProperty(LDAPProperties.GPCFileSYSPath, out var path);
             props.Add("gpcpath", path.ToUpper());
@@ -144,7 +190,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadOUProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadOUProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
             return props;
         }
@@ -154,7 +201,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadGroupProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadGroupProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
             entry.TryGetLongProperty(LDAPProperties.AdminCount, out var ac);
             props.Add("admincount", ac != 0);
@@ -166,13 +214,15 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> ReadContainerProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadContainerProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
             return props;
         }
 
         public Task<UserProperties>
-            ReadUserProperties(IDirectoryObject entry, ResolvedSearchResult searchResult) {
+            ReadUserProperties(IDirectoryObject entry, ResolvedSearchResult searchResult)
+        {
             return ReadUserProperties(entry, searchResult.Domain);
         }
 
@@ -182,12 +232,14 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="entry"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public async Task<UserProperties> ReadUserProperties(IDirectoryObject entry, string domain) {
+        public async Task<UserProperties> ReadUserProperties(IDirectoryObject entry, string domain)
+        {
             var userProps = new UserProperties();
             var props = GetCommonProps(entry);
 
             var uacFlags = (UacFlags)0;
-            if (entry.TryGetLongProperty(LDAPProperties.UserAccountControl, out var uac)) {
+            if (entry.TryGetLongProperty(LDAPProperties.UserAccountControl, out var uac))
+            {
                 uacFlags = (UacFlags)uac;
             }
 
@@ -208,16 +260,19 @@ namespace SharpHoundCommonLib.Processors {
 
             var comps = new List<TypedPrincipal>();
             if (uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation) &&
-                entry.TryGetArrayProperty(LDAPProperties.AllowedToDelegateTo, out var delegates)) {
+                entry.TryGetArrayProperty(LDAPProperties.AllowedToDelegateTo, out var delegates))
+            {
                 props.Add("allowedtodelegate", delegates);
 
-                foreach (var d in delegates) {
+                foreach (var d in delegates)
+                {
                     if (d == null)
                         continue;
 
                     var resolvedHost = await _utils.ResolveHostToSid(d, domain);
                     if (resolvedHost.Success && resolvedHost.SecurityIdentifier.Contains("S-1"))
-                        comps.Add(new TypedPrincipal {
+                        comps.Add(new TypedPrincipal
+                        {
                             ObjectIdentifier = resolvedHost.SecurityIdentifier,
                             ObjectType = Label.Computer
                         });
@@ -226,19 +281,22 @@ namespace SharpHoundCommonLib.Processors {
 
             userProps.AllowedToDelegate = comps.Distinct().ToArray();
 
-            if (!entry.TryGetProperty(LDAPProperties.LastLogon, out var lastLogon)) {
+            if (!entry.TryGetProperty(LDAPProperties.LastLogon, out var lastLogon))
+            {
                 lastLogon = null;
             }
 
             props.Add("lastlogon", Helpers.ConvertFileTimeToUnixEpoch(lastLogon));
 
-            if (!entry.TryGetProperty(LDAPProperties.LastLogonTimestamp, out var lastLogonTimeStamp)) {
+            if (!entry.TryGetProperty(LDAPProperties.LastLogonTimestamp, out var lastLogonTimeStamp))
+            {
                 lastLogonTimeStamp = null;
             }
 
             props.Add("lastlogontimestamp", Helpers.ConvertFileTimeToUnixEpoch(lastLogonTimeStamp));
 
-            if (!entry.TryGetProperty(LDAPProperties.PasswordLastSet, out var passwordLastSet)) {
+            if (!entry.TryGetProperty(LDAPProperties.PasswordLastSet, out var passwordLastSet))
+            {
                 passwordLastSet = null;
             }
 
@@ -268,11 +326,15 @@ namespace SharpHoundCommonLib.Processors {
             entry.TryGetByteArrayProperty(LDAPProperties.SIDHistory, out var sh);
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();
-            foreach (var sid in sh) {
+            foreach (var sid in sh)
+            {
                 string sSid;
-                try {
+                try
+                {
                     sSid = new SecurityIdentifier(sid, 0).Value;
-                } catch {
+                }
+                catch
+                {
                     continue;
                 }
 
@@ -292,7 +354,8 @@ namespace SharpHoundCommonLib.Processors {
         }
 
         public Task<ComputerProperties> ReadComputerProperties(IDirectoryObject entry,
-            ResolvedSearchResult searchResult) {
+            ResolvedSearchResult searchResult)
+        {
             return ReadComputerProperties(entry, searchResult.Domain);
         }
 
@@ -302,12 +365,14 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="entry"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public async Task<ComputerProperties> ReadComputerProperties(IDirectoryObject entry, string domain) {
+        public async Task<ComputerProperties> ReadComputerProperties(IDirectoryObject entry, string domain)
+        {
             var compProps = new ComputerProperties();
             var props = GetCommonProps(entry);
 
             var flags = (UacFlags)0;
-            if (entry.TryGetLongProperty(LDAPProperties.UserAccountControl, out var uac)) {
+            if (entry.TryGetLongProperty(LDAPProperties.UserAccountControl, out var uac))
+            {
                 flags = (UacFlags)uac;
             }
 
@@ -326,16 +391,19 @@ namespace SharpHoundCommonLib.Processors {
 
             var comps = new List<TypedPrincipal>();
             if (flags.HasFlag(UacFlags.TrustedToAuthForDelegation) &&
-                entry.TryGetArrayProperty(LDAPProperties.AllowedToDelegateTo, out var delegates)) {
+                entry.TryGetArrayProperty(LDAPProperties.AllowedToDelegateTo, out var delegates))
+            {
                 props.Add("allowedtodelegate", delegates);
 
-                foreach (var d in delegates) {
+                foreach (var d in delegates)
+                {
                     if (d == null)
                         continue;
 
                     var resolvedHost = await _utils.ResolveHostToSid(d, domain);
                     if (resolvedHost.Success && resolvedHost.SecurityIdentifier.Contains("S-1"))
-                        comps.Add(new TypedPrincipal {
+                        comps.Add(new TypedPrincipal
+                        {
                             ObjectIdentifier = resolvedHost.SecurityIdentifier,
                             ObjectType = Label.Computer
                         });
@@ -345,10 +413,12 @@ namespace SharpHoundCommonLib.Processors {
             compProps.AllowedToDelegate = comps.Distinct().ToArray();
 
             var allowedToActPrincipals = new List<TypedPrincipal>();
-            if (entry.TryGetByteProperty(LDAPProperties.AllowedToActOnBehalfOfOtherIdentity, out var rawAllowedToAct)) {
+            if (entry.TryGetByteProperty(LDAPProperties.AllowedToActOnBehalfOfOtherIdentity, out var rawAllowedToAct))
+            {
                 var sd = _utils.MakeSecurityDescriptor();
                 sd.SetSecurityDescriptorBinaryForm(rawAllowedToAct, AccessControlSections.Access);
-                foreach (var rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier))) {
+                foreach (var rule in sd.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+                {
                     if (await _utils.ResolveIDAndType(rule.IdentityReference(), domain) is (true, var res))
                         allowedToActPrincipals.Add(res);
                 }
@@ -375,11 +445,15 @@ namespace SharpHoundCommonLib.Processors {
             entry.TryGetByteArrayProperty(LDAPProperties.SIDHistory, out var sh);
             var sidHistoryList = new List<string>();
             var sidHistoryPrincipals = new List<TypedPrincipal>();
-            foreach (var sid in sh) {
+            foreach (var sid in sh)
+            {
                 string sSid;
-                try {
+                try
+                {
                     sSid = new SecurityIdentifier(sid, 0).Value;
-                } catch {
+                }
+                catch
+                {
                     continue;
                 }
 
@@ -394,8 +468,10 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("sidhistory", sidHistoryList.ToArray());
 
             var smsaPrincipals = new List<TypedPrincipal>();
-            if (entry.TryGetArrayProperty(LDAPProperties.HostServiceAccount, out var hsa)) {
-                foreach (var dn in hsa) {
+            if (entry.TryGetArrayProperty(LDAPProperties.HostServiceAccount, out var hsa))
+            {
+                foreach (var dn in hsa)
+                {
                     if (await _utils.ResolveDistinguishedName(dn) is (true, var resolvedPrincipal))
                         smsaPrincipals.Add(resolvedPrincipal);
                 }
@@ -413,11 +489,13 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns>Returns a dictionary with the common properties of the RootCA</returns>
-        public static Dictionary<string, object> ReadRootCAProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadRootCAProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
 
             // Certificate
-            if (entry.TryGetByteProperty(LDAPProperties.CACertificate, out var rawCertificate)) {
+            if (entry.TryGetByteProperty(LDAPProperties.CACertificate, out var rawCertificate))
+            {
                 var cert = new ParsedCertificate(rawCertificate);
                 props.Add("certthumbprint", cert.Thumbprint);
                 props.Add("certname", cert.Name);
@@ -434,7 +512,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns>Returns a dictionary with the common properties and the crosscertificatepair property of the AICA</returns>
-        public static Dictionary<string, object> ReadAIACAProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadAIACAProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
             entry.TryGetByteArrayProperty(LDAPProperties.CrossCertificatePair, out var crossCertificatePair);
             var hasCrossCertificatePair = crossCertificatePair.Length > 0;
@@ -443,7 +522,8 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("hascrosscertificatepair", hasCrossCertificatePair);
 
             // Certificate
-            if (entry.TryGetByteProperty(LDAPProperties.CACertificate, out var rawCertificate)) {
+            if (entry.TryGetByteProperty(LDAPProperties.CACertificate, out var rawCertificate))
+            {
                 var cert = new ParsedCertificate(rawCertificate);
                 props.Add("certthumbprint", cert.Thumbprint);
                 props.Add("certname", cert.Name);
@@ -455,7 +535,8 @@ namespace SharpHoundCommonLib.Processors {
             return props;
         }
 
-        public static Dictionary<string, object> ReadEnterpriseCAProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadEnterpriseCAProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
             if (entry.TryGetLongProperty("flags", out var flags))
                 props.Add("flags", (PKICertificateAuthorityFlags)flags);
@@ -463,7 +544,8 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("dnshostname", entry.GetProperty(LDAPProperties.DNSHostName));
 
             // Certificate
-            if (entry.TryGetByteProperty(LDAPProperties.CACertificate, out var rawCertificate)) {
+            if (entry.TryGetByteProperty(LDAPProperties.CACertificate, out var rawCertificate))
+            {
                 var cert = new ParsedCertificate(rawCertificate);
                 props.Add("certthumbprint", cert.Thumbprint);
                 props.Add("certname", cert.Name);
@@ -480,7 +562,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns>Returns a dictionary with the common properties of the NTAuthStore</returns>
-        public static Dictionary<string, object> ReadNTAuthStoreProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadNTAuthStoreProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
             return props;
         }
@@ -490,7 +573,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="entry"></param>
         /// <returns>Returns a dictionary associated with the CertTemplate properties that were read</returns>
-        public static Dictionary<string, object> ReadCertTemplateProperties(IDirectoryObject entry) {
+        public static Dictionary<string, object> ReadCertTemplateProperties(IDirectoryObject entry)
+        {
             var props = GetCommonProps(entry);
 
             props.Add("validityperiod", ConvertPKIPeriod(entry.GetByteProperty(LDAPProperties.PKIExpirationPeriod)));
@@ -502,7 +586,8 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
             props.Add("oid", entry.GetProperty(LDAPProperties.CertTemplateOID));
 
-            if (entry.TryGetLongProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw)) {
+            if (entry.TryGetLongProperty(LDAPProperties.PKIEnrollmentFlag, out var enrollmentFlagsRaw))
+            {
                 var enrollmentFlags = (PKIEnrollmentFlag)enrollmentFlagsRaw;
 
                 props.Add("enrollmentflag", enrollmentFlags);
@@ -510,7 +595,8 @@ namespace SharpHoundCommonLib.Processors {
                 props.Add("nosecurityextension", enrollmentFlags.HasFlag(PKIEnrollmentFlag.NO_SECURITY_EXTENSION));
             }
 
-            if (entry.TryGetLongProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw)) {
+            if (entry.TryGetLongProperty(LDAPProperties.PKINameFlag, out var nameFlagsRaw))
+            {
                 var nameFlags = (PKICertificateNameFlag)nameFlagsRaw;
 
                 props.Add("certificatenameflag", nameFlags);
@@ -543,7 +629,8 @@ namespace SharpHoundCommonLib.Processors {
                 props.Add("authorizedsignatures", authorizedSignatures);
 
             var hasUseLegacyProvider = false;
-            if (entry.TryGetLongProperty(LDAPProperties.PKIPrivateKeyFlag, out var privateKeyFlagsRaw)) {
+            if (entry.TryGetLongProperty(LDAPProperties.PKIPrivateKeyFlag, out var privateKeyFlagsRaw))
+            {
                 var privateKeyFlags = (PKIPrivateKeyFlag)privateKeyFlagsRaw;
                 hasUseLegacyProvider = privateKeyFlags.HasFlag(PKIPrivateKeyFlag.USE_LEGACY_PROVIDER);
             }
@@ -573,14 +660,17 @@ namespace SharpHoundCommonLib.Processors {
             return props;
         }
 
-        public async Task<IssuancePolicyProperties> ReadIssuancePolicyProperties(IDirectoryObject entry) {
+        public async Task<IssuancePolicyProperties> ReadIssuancePolicyProperties(IDirectoryObject entry)
+        {
             var ret = new IssuancePolicyProperties();
             var props = GetCommonProps(entry);
             props.Add("displayname", entry.GetProperty(LDAPProperties.DisplayName));
             props.Add("certtemplateoid", entry.GetProperty(LDAPProperties.CertTemplateOID));
 
-            if (entry.TryGetProperty(LDAPProperties.OIDGroupLink, out var link)) {
-                if (await _utils.ResolveDistinguishedName(link) is (true, var linkedGroup)) {
+            if (entry.TryGetProperty(LDAPProperties.OIDGroupLink, out var link))
+            {
+                if (await _utils.ResolveDistinguishedName(link) is (true, var linkedGroup))
+                {
                     props.Add("oidgrouplink", linkedGroup.ObjectIdentifier);
                     ret.GroupLink = linkedGroup;
                 }
@@ -595,10 +685,12 @@ namespace SharpHoundCommonLib.Processors {
         ///     format using a best guess
         /// </summary>
         /// <param name="entry"></param>
-        public Dictionary<string, object> ParseAllProperties(IDirectoryObject entry) {
+        public Dictionary<string, object> ParseAllProperties(IDirectoryObject entry)
+        {
             var props = new Dictionary<string, object>();
 
-            foreach (var property in entry.PropertyNames()) {
+            foreach (var property in entry.PropertyNames())
+            {
                 if (ReservedAttributes.Contains(property, StringComparer.OrdinalIgnoreCase))
                     continue;
 
@@ -606,40 +698,53 @@ namespace SharpHoundCommonLib.Processors {
                 if (collCount == 0)
                     continue;
 
-                if (collCount == 1) {
+                if (collCount == 1)
+                {
                     var testString = entry.GetProperty(property);
-                    if (!string.IsNullOrEmpty(testString)) {
+                    if (!string.IsNullOrEmpty(testString))
+                    {
                         if (property.Equals("badpasswordtime", StringComparison.OrdinalIgnoreCase))
                             props.Add(property, Helpers.ConvertFileTimeToUnixEpoch(testString));
                         else
                             props.Add(property, BestGuessConvert(testString));
                     }
-                } else {
-                    if (entry.TryGetByteProperty(property, out var testBytes)) {
-                        if (testBytes == null || testBytes.Length == 0) {
+                }
+                else
+                {
+                    if (entry.TryGetByteProperty(property, out var testBytes))
+                    {
+                        if (testBytes == null || testBytes.Length == 0)
+                        {
                             continue;
                         }
-                        
+
                         // SIDs
-                        try {
+                        try
+                        {
                             var sid = new SecurityIdentifier(testBytes, 0);
                             props.Add(property, sid.Value);
                             continue;
-                        } catch {
+                        }
+                        catch
+                        {
                             /* Ignore */
                         }
 
                         // GUIDs
-                        try {
+                        try
+                        {
                             var guid = new Guid(testBytes);
                             props.Add(property, guid.ToString());
                             continue;
-                        } catch {
+                        }
+                        catch
+                        {
                             /* Ignore */
                         }
                     }
 
-                    if (entry.TryGetArrayProperty(property, out var arr) && arr.Length > 0) {
+                    if (entry.TryGetArrayProperty(property, out var arr) && arr.Length > 0)
+                    {
                         props.Add(property, arr.Select(BestGuessConvert).ToArray());
                     }
                 }
@@ -655,14 +760,18 @@ namespace SharpHoundCommonLib.Processors {
         /// <param name="schemaVersion"></param>
         /// <param name="hasUseLegacyProvider"></param>
         private static string[] ParseCertTemplateApplicationPolicies(string[] applicationPolicies, int schemaVersion,
-            bool hasUseLegacyProvider) {
+            bool hasUseLegacyProvider)
+        {
             if (applicationPolicies == null
                 || applicationPolicies.Length == 0
                 || schemaVersion == 1
                 || schemaVersion == 2
-                || (schemaVersion == 4 && hasUseLegacyProvider)) {
+                || (schemaVersion == 4 && hasUseLegacyProvider))
+            {
                 return applicationPolicies;
-            } else {
+            }
+            else
+            {
                 // Format: "Name`Type`Value`Name`Type`Value`..."
                 // (https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-crtd/c55ec697-be3f-4117-8316-8895e4399237)
                 // Return the Value of Name = "msPKI-RA-Application-Policies" entries
@@ -681,7 +790,8 @@ namespace SharpHoundCommonLib.Processors {
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private static object BestGuessConvert(string value) {
+        private static object BestGuessConvert(string value)
+        {
             //Parse boolean values
             if (bool.TryParse(value, out var boolResult)) return boolResult;
 
@@ -695,7 +805,8 @@ namespace SharpHoundCommonLib.Processors {
             if (int.TryParse(value, out var num)) return num;
 
             // If we have binary unicode, encode it
-            foreach (char c in value) {
+            foreach (char c in value)
+            {
                 if (char.IsControl(c)) return System.Text.Encoding.UTF8.GetBytes(value);
             }
 
@@ -705,13 +816,15 @@ namespace SharpHoundCommonLib.Processors {
 
         private static List<string> ConvertEncryptionTypes(string encryptionTypes)
         {
-            if (encryptionTypes == null) {
+            if (encryptionTypes == null)
+            {
                 return null;
             }
 
             int encryptionTypesInt = Int32.Parse(encryptionTypes);
             List<string> supportedEncryptionTypes = new List<string>();
-            if (encryptionTypesInt == 0) {
+            if (encryptionTypesInt == 0)
+            {
                 supportedEncryptionTypes.Add("Not defined");
             }
 
@@ -719,19 +832,25 @@ namespace SharpHoundCommonLib.Processors {
             {
                 supportedEncryptionTypes.Add("DES-CBC-CRC");
             }
+
             if ((encryptionTypesInt & KerberosEncryptionTypes.DES_CBC_MD5) == KerberosEncryptionTypes.DES_CBC_MD5)
             {
                 supportedEncryptionTypes.Add("DES-CBC-MD5");
             }
+
             if ((encryptionTypesInt & KerberosEncryptionTypes.RC4_HMAC_MD5) == KerberosEncryptionTypes.RC4_HMAC_MD5)
             {
                 supportedEncryptionTypes.Add("RC4-HMAC-MD5");
             }
-            if ((encryptionTypesInt & KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96) == KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96)
+
+            if ((encryptionTypesInt & KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96) ==
+                KerberosEncryptionTypes.AES128_CTS_HMAC_SHA1_96)
             {
                 supportedEncryptionTypes.Add("AES128-CTS-HMAC-SHA1-96");
             }
-            if ((encryptionTypesInt & KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96) == KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96)
+
+            if ((encryptionTypesInt & KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96) ==
+                KerberosEncryptionTypes.AES256_CTS_HMAC_SHA1_96)
             {
                 supportedEncryptionTypes.Add("AES256-CTS-HMAC-SHA1-96");
             }
@@ -742,10 +861,13 @@ namespace SharpHoundCommonLib.Processors {
         private static string ConvertNanoDuration(long duration)
         {
             // In case duration is long.MinValue, Math.Abs will overflow.  Value represents Forever or Never
-            if (duration == long.MinValue) {
+            if (duration == long.MinValue)
+            {
                 return "Forever";
-            // And if the value is positive, it indicates an error code
-            } else if (duration > 0) {
+                // And if the value is positive, it indicates an error code
+            }
+            else if (duration > 0)
+            {
                 return null;
             }
 
@@ -761,14 +883,17 @@ namespace SharpHoundCommonLib.Processors {
             {
                 timeComponents.Add($"{durationSpan.Days} {(durationSpan.Days == 1 ? "day" : "days")}");
             }
+
             if (durationSpan.Hours > 0)
             {
                 timeComponents.Add($"{durationSpan.Hours} {(durationSpan.Hours == 1 ? "hour" : "hours")}");
             }
+
             if (durationSpan.Minutes > 0)
             {
                 timeComponents.Add($"{durationSpan.Minutes} {(durationSpan.Minutes == 1 ? "minute" : "minutes")}");
             }
+
             if (durationSpan.Seconds > 0)
             {
                 timeComponents.Add($"{durationSpan.Seconds} {(durationSpan.Seconds == 1 ? "second" : "seconds")}");
@@ -786,47 +911,56 @@ namespace SharpHoundCommonLib.Processors {
         /// <remarks>https://www.sysadmins.lv/blog-en/how-to-convert-pkiexirationperiod-and-pkioverlapperiod-active-directory-attributes.aspx</remarks>
         /// <param name="bytes"></param>
         /// <returns>Returns a string representing the time period associated with the input byte array in a human readable form</returns>
-        private static string ConvertPKIPeriod(byte[] bytes) {
+        private static string ConvertPKIPeriod(byte[] bytes)
+        {
             if (bytes == null || bytes.Length == 0)
                 return "Unknown";
 
-            try {
+            try
+            {
                 Array.Reverse(bytes);
                 var temp = BitConverter.ToString(bytes).Replace("-", "");
                 var value = Convert.ToInt64(temp, 16) * -.0000001;
 
-                if (value % 31536000 == 0 && value / 31536000 >= 1) {
+                if (value % 31536000 == 0 && value / 31536000 >= 1)
+                {
                     if (value / 31536000 == 1) return "1 year";
 
                     return $"{value / 31536000} years";
                 }
 
-                if (value % 2592000 == 0 && value / 2592000 >= 1) {
+                if (value % 2592000 == 0 && value / 2592000 >= 1)
+                {
                     if (value / 2592000 == 1) return "1 month";
 
                     return $"{value / 2592000} months";
                 }
 
-                if (value % 604800 == 0 && value / 604800 >= 1) {
+                if (value % 604800 == 0 && value / 604800 >= 1)
+                {
                     if (value / 604800 == 1) return "1 week";
 
                     return $"{value / 604800} weeks";
                 }
 
-                if (value % 86400 == 0 && value / 86400 >= 1) {
+                if (value % 86400 == 0 && value / 86400 >= 1)
+                {
                     if (value / 86400 == 1) return "1 day";
 
                     return $"{value / 86400} days";
                 }
 
-                if (value % 3600 == 0 && value / 3600 >= 1) {
+                if (value % 3600 == 0 && value / 3600 >= 1)
+                {
                     if (value / 3600 == 1) return "1 hour";
 
                     return $"{value / 3600} hours";
                 }
 
                 return "";
-            } catch (Exception) {
+            }
+            catch (Exception)
+            {
                 return "Unknown";
             }
         }
@@ -837,7 +971,8 @@ namespace SharpHoundCommonLib.Processors {
         [Flags]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
-        private enum IsTextUnicodeFlags {
+        private enum IsTextUnicodeFlags
+        {
             IS_TEXT_UNICODE_ASCII16 = 0x0001,
             IS_TEXT_UNICODE_REVERSE_ASCII16 = 0x0010,
 
@@ -862,38 +997,47 @@ namespace SharpHoundCommonLib.Processors {
         }
     }
 
-    public class ParsedCertificate {
+    public class ParsedCertificate
+    {
         public string Thumbprint { get; set; }
         public string Name { get; set; }
         public string[] Chain { get; set; }
         public bool HasBasicConstraints { get; set; }
         public int BasicConstraintPathLength { get; set; }
 
-        public ParsedCertificate(byte[] rawCertificate) {
+        public ParsedCertificate(byte[] rawCertificate)
+        {
             var parsedCertificate = new X509Certificate2(rawCertificate);
             Thumbprint = parsedCertificate.Thumbprint;
             var name = parsedCertificate.FriendlyName;
             Name = string.IsNullOrEmpty(name) ? Thumbprint : name;
 
             // Chain
-            try {
+            try
+            {
                 var chain = new X509Chain();
                 chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
                 chain.Build(parsedCertificate);
                 var temp = new List<string>();
                 foreach (var cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
                 Chain = temp.ToArray();
-            } catch (Exception e) {
-                Logging.LogProvider.CreateLogger("ParsedCertificate").LogWarning(e, "Failed to read certificate chain for certificate {Name} with Algo {Algorithm}", name, parsedCertificate.SignatureAlgorithm.FriendlyName);
+            }
+            catch (Exception e)
+            {
+                Logging.LogProvider.CreateLogger("ParsedCertificate").LogWarning(e,
+                    "Failed to read certificate chain for certificate {Name} with Algo {Algorithm}", name,
+                    parsedCertificate.SignatureAlgorithm.FriendlyName);
                 Chain = Array.Empty<string>();
             }
-            
+
 
             // Extensions
             var extensions = parsedCertificate.Extensions;
-            foreach (var extension in extensions) {
+            foreach (var extension in extensions)
+            {
                 var certificateExtension = new CertificateExtension(extension);
-                switch (certificateExtension.Oid.Value) {
+                switch (certificateExtension.Oid.Value)
+                {
                     case CAExtensionTypes.BasicConstraints:
                         var ext = (X509BasicConstraintsExtension)extension;
                         HasBasicConstraints = ext.HasPathLengthConstraint;
@@ -904,13 +1048,15 @@ namespace SharpHoundCommonLib.Processors {
         }
     }
 
-    public class UserProperties {
+    public class UserProperties
+    {
         public Dictionary<string, object> Props { get; set; } = new();
         public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
     }
 
-    public class ComputerProperties {
+    public class ComputerProperties
+    {
         public Dictionary<string, object> Props { get; set; } = new();
         public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
@@ -918,7 +1064,8 @@ namespace SharpHoundCommonLib.Processors {
         public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
     }
 
-    public class IssuancePolicyProperties {
+    public class IssuancePolicyProperties
+    {
         public Dictionary<string, object> Props { get; set; } = new();
         public TypedPrincipal GroupLink { get; set; } = new TypedPrincipal();
     }
