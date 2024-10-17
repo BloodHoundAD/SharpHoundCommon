@@ -270,7 +270,8 @@ namespace SharpHoundCommonLib.Processors {
                         PrincipalType = resolvedOwner.ObjectType,
                         PrincipalSID = resolvedOwner.ObjectIdentifier,
                         RightName = EdgeNames.Owns,
-                        IsInherited = false
+                        IsInherited = false,
+                        InheritanceHash = ""
                     };
                 } else {
                     _log.LogTrace("Failed to resolve owner for {Name}", objectName);
@@ -278,7 +279,8 @@ namespace SharpHoundCommonLib.Processors {
                         PrincipalType = Label.Base,
                         PrincipalSID = ownerSid,
                         RightName = EdgeNames.Owns,
-                        IsInherited = false
+                        IsInherited = false,
+                        InheritanceHash = ""
                     };
                 }
             }
