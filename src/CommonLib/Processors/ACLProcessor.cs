@@ -135,17 +135,27 @@ namespace SharpHoundCommonLib.Processors {
             string aceType, string inheritedObjectType) {
             var hash = identityReference + rights + aceType + inheritedObjectType;
             /*
-             * We're using MD5 because its fast and this data isn't cryptographically important.
+             * We're using SHA1 because its fast and this data isn't cryptographically important.
              * Additionally, the chances of a collision in our data size is miniscule and irrelevant.
+             * We cannot use MD5 as it is not FIPS compliant and environments can enforce this setting
              */
-            using (var md5 = MD5.Create()) {
-                var bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(hash));
-                var builder = new StringBuilder();
-                foreach (var b in bytes) {
-                    builder.Append(b.ToString("x2"));
-                }
+            try
+            {
+                using (var sha1 = SHA1.Create())
+                {
+                    var bytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(hash));
+                    var builder = new StringBuilder();
+                    foreach (var b in bytes)
+                    {
+                        builder.Append(b.ToString("x2"));
+                    }
 
-                return builder.ToString();
+                    return builder.ToString();
+                }
+            }
+            catch
+            {
+                return "";
             }
         }
 
@@ -209,8 +219,12 @@ namespace SharpHoundCommonLib.Processors {
                 //Lowercase this just in case. As far as I know it should always come back that way anyways, but better safe than sorry
                 var aceType = ace.ObjectType().ToString().ToLower();
                 var inheritanceType = ace.InheritedObjectType();
-                
-                yield return CalculateInheritanceHash(ir, aceRights, aceType, inheritanceType);
+
+                var hash = CalculateInheritanceHash(ir, aceRights, aceType, inheritanceType);
+                if (!string.IsNullOrEmpty(hash))
+                {
+                    yield return hash;
+                }
             }
         }
 
