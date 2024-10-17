@@ -144,13 +144,7 @@ namespace SharpHoundCommonLib.Processors {
                 using (var sha1 = SHA1.Create())
                 {
                     var bytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(hash));
-                    var builder = new StringBuilder();
-                    foreach (var b in bytes)
-                    {
-                        builder.Append(b.ToString("x2"));
-                    }
-
-                    return builder.ToString();
+                    return BitConverter.ToString(bytes).Replace("-", string.Empty).ToUpper();
                 }
             }
             catch
