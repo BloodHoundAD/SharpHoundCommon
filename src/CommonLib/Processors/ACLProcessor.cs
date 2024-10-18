@@ -64,6 +64,7 @@ namespace SharpHoundCommonLib.Processors {
                     }
 
                     name = name.ToLower();
+
                     string guid;
                     try
                     {
@@ -74,7 +75,7 @@ namespace SharpHoundCommonLib.Processors {
                         continue;
                     }
                     
-                    if (name is LDAPProperties.LAPSPassword or LDAPProperties.LegacyLAPSPassword) {
+                    if (name is LDAPProperties.LAPSPlaintextPassword or LDAPProperties.LAPSEncryptedPassword or LDAPProperties.LegacyLAPSPassword) {
                         _log.LogInformation("Found GUID for ACL Right {Name}: {Guid} in domain {Domain}", name, guid, domain);
                         _guidMap.TryAdd(guid, name);
                     }
@@ -135,17 +136,21 @@ namespace SharpHoundCommonLib.Processors {
             string aceType, string inheritedObjectType) {
             var hash = identityReference + rights + aceType + inheritedObjectType;
             /*
-             * We're using MD5 because its fast and this data isn't cryptographically important.
+             * We're using SHA1 because its fast and this data isn't cryptographically important.
              * Additionally, the chances of a collision in our data size is miniscule and irrelevant.
+             * We cannot use MD5 as it is not FIPS compliant and environments can enforce this setting
              */
-            using (var md5 = MD5.Create()) {
-                var bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(hash));
-                var builder = new StringBuilder();
-                foreach (var b in bytes) {
-                    builder.Append(b.ToString("x2"));
+            try
+            {
+                using (var sha1 = SHA1.Create())
+                {
+                    var bytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(hash));
+                    return BitConverter.ToString(bytes).Replace("-", string.Empty).ToUpper();
                 }
-
-                return builder.ToString();
+            }
+            catch
+            {
+                return "";
             }
         }
 
@@ -209,8 +214,12 @@ namespace SharpHoundCommonLib.Processors {
                 //Lowercase this just in case. As far as I know it should always come back that way anyways, but better safe than sorry
                 var aceType = ace.ObjectType().ToString().ToLower();
                 var inheritanceType = ace.InheritedObjectType();
-                
-                yield return CalculateInheritanceHash(ir, aceRights, aceType, inheritanceType);
+
+                var hash = CalculateInheritanceHash(ir, aceRights, aceType, inheritanceType);
+                if (!string.IsNullOrEmpty(hash))
+                {
+                    yield return hash;
+                }
             }
         }
 
@@ -256,7 +265,8 @@ namespace SharpHoundCommonLib.Processors {
                         PrincipalType = resolvedOwner.ObjectType,
                         PrincipalSID = resolvedOwner.ObjectIdentifier,
                         RightName = EdgeNames.Owns,
-                        IsInherited = false
+                        IsInherited = false,
+                        InheritanceHash = ""
                     };
                 } else {
                     _log.LogTrace("Failed to resolve owner for {Name}", objectName);
@@ -264,7 +274,8 @@ namespace SharpHoundCommonLib.Processors {
                         PrincipalType = Label.Base,
                         PrincipalSID = ownerSid,
                         RightName = EdgeNames.Owns,
-                        IsInherited = false
+                        IsInherited = false,
+                        InheritanceHash = ""
                     };
                 }
             }
@@ -298,8 +309,6 @@ namespace SharpHoundCommonLib.Processors {
                 if (inherited) {
                     aceInheritanceHash = CalculateInheritanceHash(ir, aceRights, aceType, ace.InheritedObjectType());
                 }
-
-                _guidMap.TryGetValue(aceType, out var mappedGuid);
 
                 _log.LogTrace("Processing ACE with rights {Rights} and guid {GUID} on object {Name}", aceRights,
                     aceType, objectName);
@@ -413,14 +422,23 @@ namespace SharpHoundCommonLib.Processors {
                                     RightName = EdgeNames.AllExtendedRights,
                                     InheritanceHash = aceInheritanceHash
                                 };
-                            else if (mappedGuid is LDAPProperties.LegacyLAPSPassword or LDAPProperties.LAPSPassword)
-                                yield return new ACE {
-                                    PrincipalType = resolvedPrincipal.ObjectType,
-                                    PrincipalSID = resolvedPrincipal.ObjectIdentifier,
-                                    IsInherited = inherited,
-                                    RightName = EdgeNames.ReadLAPSPassword,
-                                    InheritanceHash = aceInheritanceHash
-                                };
+                            else if (_guidMap.TryGetValue(aceType, out var lapsAttribute))
+                            {
+                                // Compare the retrieved attribute name against LDAPProperties values
+                                if (lapsAttribute == LDAPProperties.LegacyLAPSPassword ||
+                                    lapsAttribute == LDAPProperties.LAPSPlaintextPassword ||
+                                    lapsAttribute == LDAPProperties.LAPSEncryptedPassword)
+                                {
+                                    yield return new ACE
+                                    {
+                                        PrincipalType = resolvedPrincipal.ObjectType,
+                                        PrincipalSID = resolvedPrincipal.ObjectIdentifier,
+                                        IsInherited = inherited,
+                                        RightName = EdgeNames.ReadLAPSPassword,
+                                        InheritanceHash = aceInheritanceHash
+                                    };
+                                }
+                            }
                         }
                     } else if (objectType == Label.CertTemplate) {
                         if (aceType is ACEGuids.AllGuid or "")
