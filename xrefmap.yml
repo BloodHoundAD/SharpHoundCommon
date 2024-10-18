@@ -4381,18 +4381,24 @@ references:
   commentId: F:SharpHoundCommonLib.LDAPProperties.IssuancePolicies
   fullName: SharpHoundCommonLib.LDAPProperties.IssuancePolicies
   nameWithType: LDAPProperties.IssuancePolicies
+- uid: SharpHoundCommonLib.LDAPProperties.LAPSEncryptedPassword
+  name: LAPSEncryptedPassword
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LAPSEncryptedPassword
+  commentId: F:SharpHoundCommonLib.LDAPProperties.LAPSEncryptedPassword
+  fullName: SharpHoundCommonLib.LDAPProperties.LAPSEncryptedPassword
+  nameWithType: LDAPProperties.LAPSEncryptedPassword
 - uid: SharpHoundCommonLib.LDAPProperties.LAPSExpirationTime
   name: LAPSExpirationTime
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LAPSExpirationTime
   commentId: F:SharpHoundCommonLib.LDAPProperties.LAPSExpirationTime
   fullName: SharpHoundCommonLib.LDAPProperties.LAPSExpirationTime
   nameWithType: LDAPProperties.LAPSExpirationTime
-- uid: SharpHoundCommonLib.LDAPProperties.LAPSPassword
-  name: LAPSPassword
-  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LAPSPassword
-  commentId: F:SharpHoundCommonLib.LDAPProperties.LAPSPassword
-  fullName: SharpHoundCommonLib.LDAPProperties.LAPSPassword
-  nameWithType: LDAPProperties.LAPSPassword
+- uid: SharpHoundCommonLib.LDAPProperties.LAPSPlaintextPassword
+  name: LAPSPlaintextPassword
+  href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LAPSPlaintextPassword
+  commentId: F:SharpHoundCommonLib.LDAPProperties.LAPSPlaintextPassword
+  fullName: SharpHoundCommonLib.LDAPProperties.LAPSPlaintextPassword
+  nameWithType: LDAPProperties.LAPSPlaintextPassword
 - uid: SharpHoundCommonLib.LDAPProperties.LastLogon
   name: LastLogon
   href: api/SharpHoundCommonLib.LDAPProperties.html#SharpHoundCommonLib_LDAPProperties_LastLogon
@@ -6641,6 +6647,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.Computer.Status
   nameWithType: Computer.Status
+- uid: SharpHoundCommonLib.OutputTypes.Computer.UnconstrainedDelegation
+  name: UnconstrainedDelegation
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_UnconstrainedDelegation
+  commentId: P:SharpHoundCommonLib.OutputTypes.Computer.UnconstrainedDelegation
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.UnconstrainedDelegation
+  nameWithType: Computer.UnconstrainedDelegation
+- uid: SharpHoundCommonLib.OutputTypes.Computer.UnconstrainedDelegation*
+  name: UnconstrainedDelegation
+  href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_UnconstrainedDelegation_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.Computer.UnconstrainedDelegation
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.Computer.UnconstrainedDelegation
+  nameWithType: Computer.UnconstrainedDelegation
 - uid: SharpHoundCommonLib.OutputTypes.Computer.UserRights
   name: UserRights
   href: api/SharpHoundCommonLib.OutputTypes.Computer.html#SharpHoundCommonLib_OutputTypes_Computer_UserRights
@@ -7986,6 +8005,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.User.AllowedToDelegate
   nameWithType: User.AllowedToDelegate
+- uid: SharpHoundCommonLib.OutputTypes.User.DomainSID
+  name: DomainSID
+  href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_DomainSID
+  commentId: P:SharpHoundCommonLib.OutputTypes.User.DomainSID
+  fullName: SharpHoundCommonLib.OutputTypes.User.DomainSID
+  nameWithType: User.DomainSID
+- uid: SharpHoundCommonLib.OutputTypes.User.DomainSID*
+  name: DomainSID
+  href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_DomainSID_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.User.DomainSID
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.User.DomainSID
+  nameWithType: User.DomainSID
 - uid: SharpHoundCommonLib.OutputTypes.User.HasSIDHistory
   name: HasSIDHistory
   href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_HasSIDHistory
@@ -8025,6 +8057,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.OutputTypes.User.SPNTargets
   nameWithType: User.SPNTargets
+- uid: SharpHoundCommonLib.OutputTypes.User.UnconstrainedDelegation
+  name: UnconstrainedDelegation
+  href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_UnconstrainedDelegation
+  commentId: P:SharpHoundCommonLib.OutputTypes.User.UnconstrainedDelegation
+  fullName: SharpHoundCommonLib.OutputTypes.User.UnconstrainedDelegation
+  nameWithType: User.UnconstrainedDelegation
+- uid: SharpHoundCommonLib.OutputTypes.User.UnconstrainedDelegation*
+  name: UnconstrainedDelegation
+  href: api/SharpHoundCommonLib.OutputTypes.User.html#SharpHoundCommonLib_OutputTypes_User_UnconstrainedDelegation_
+  commentId: Overload:SharpHoundCommonLib.OutputTypes.User.UnconstrainedDelegation
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.OutputTypes.User.UnconstrainedDelegation
+  nameWithType: User.UnconstrainedDelegation
 - uid: SharpHoundCommonLib.OutputTypes.UserRightsAssignmentAPIResult
   name: UserRightsAssignmentAPIResult
   href: api/SharpHoundCommonLib.OutputTypes.UserRightsAssignmentAPIResult.html
@@ -8630,6 +8675,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.ComputerProperties.SidHistory
   nameWithType: ComputerProperties.SidHistory
+- uid: SharpHoundCommonLib.Processors.ComputerProperties.UnconstrainedDelegation
+  name: UnconstrainedDelegation
+  href: api/SharpHoundCommonLib.Processors.ComputerProperties.html#SharpHoundCommonLib_Processors_ComputerProperties_UnconstrainedDelegation
+  commentId: P:SharpHoundCommonLib.Processors.ComputerProperties.UnconstrainedDelegation
+  fullName: SharpHoundCommonLib.Processors.ComputerProperties.UnconstrainedDelegation
+  nameWithType: ComputerProperties.UnconstrainedDelegation
+- uid: SharpHoundCommonLib.Processors.ComputerProperties.UnconstrainedDelegation*
+  name: UnconstrainedDelegation
+  href: api/SharpHoundCommonLib.Processors.ComputerProperties.html#SharpHoundCommonLib_Processors_ComputerProperties_UnconstrainedDelegation_
+  commentId: Overload:SharpHoundCommonLib.Processors.ComputerProperties.UnconstrainedDelegation
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.ComputerProperties.UnconstrainedDelegation
+  nameWithType: ComputerProperties.UnconstrainedDelegation
 - uid: SharpHoundCommonLib.Processors.ComputerSessionProcessor
   name: ComputerSessionProcessor
   href: api/SharpHoundCommonLib.Processors.ComputerSessionProcessor.html
@@ -9642,6 +9700,19 @@ references:
   isSpec: "True"
   fullName: SharpHoundCommonLib.Processors.UserProperties.SidHistory
   nameWithType: UserProperties.SidHistory
+- uid: SharpHoundCommonLib.Processors.UserProperties.UnconstrainedDelegation
+  name: UnconstrainedDelegation
+  href: api/SharpHoundCommonLib.Processors.UserProperties.html#SharpHoundCommonLib_Processors_UserProperties_UnconstrainedDelegation
+  commentId: P:SharpHoundCommonLib.Processors.UserProperties.UnconstrainedDelegation
+  fullName: SharpHoundCommonLib.Processors.UserProperties.UnconstrainedDelegation
+  nameWithType: UserProperties.UnconstrainedDelegation
+- uid: SharpHoundCommonLib.Processors.UserProperties.UnconstrainedDelegation*
+  name: UnconstrainedDelegation
+  href: api/SharpHoundCommonLib.Processors.UserProperties.html#SharpHoundCommonLib_Processors_UserProperties_UnconstrainedDelegation_
+  commentId: Overload:SharpHoundCommonLib.Processors.UserProperties.UnconstrainedDelegation
+  isSpec: "True"
+  fullName: SharpHoundCommonLib.Processors.UserProperties.UnconstrainedDelegation
+  nameWithType: UserProperties.UnconstrainedDelegation
 - uid: SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor
   name: UserRightsAssignmentProcessor
   href: api/SharpHoundCommonLib.Processors.UserRightsAssignmentProcessor.html
