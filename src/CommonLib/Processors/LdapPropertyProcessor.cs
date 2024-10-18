@@ -206,6 +206,8 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("passwordcantchange", uacFlags.HasFlag(UacFlags.PasswordCantChange));
             props.Add("passwordexpired", uacFlags.HasFlag(UacFlags.PasswordExpired));
 
+            userProps.UnconstrainedDelegation = uacFlags.HasFlag(UacFlags.TrustedForDelegation);
+
             var comps = new List<TypedPrincipal>();
             if (uacFlags.HasFlag(UacFlags.TrustedToAuthForDelegation) &&
                 entry.TryGetArrayProperty(LDAPProperties.AllowedToDelegateTo, out var delegates)) {
@@ -320,6 +322,8 @@ namespace SharpHoundCommonLib.Processors {
             props.Add("logonscriptenabled", flags.HasFlag(UacFlags.Script));
             props.Add("lockedout", flags.HasFlag(UacFlags.Lockout));
             props.Add("passwordexpired", flags.HasFlag(UacFlags.PasswordExpired));
+
+            compProps.UnconstrainedDelegation = flags.HasFlag(UacFlags.TrustedForDelegation);
 
             var encryptionTypes = ConvertEncryptionTypes(entry.GetProperty(LDAPProperties.SupportedEncryptionTypes));
             props.Add("supportedencryptiontypes", encryptionTypes);
@@ -908,6 +912,7 @@ namespace SharpHoundCommonLib.Processors {
         public Dictionary<string, object> Props { get; set; } = new();
         public TypedPrincipal[] AllowedToDelegate { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
+        public bool UnconstrainedDelegation { get; set; }
     }
 
     public class ComputerProperties {
@@ -916,6 +921,7 @@ namespace SharpHoundCommonLib.Processors {
         public TypedPrincipal[] AllowedToAct { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] SidHistory { get; set; } = Array.Empty<TypedPrincipal>();
         public TypedPrincipal[] DumpSMSAPassword { get; set; } = Array.Empty<TypedPrincipal>();
+        public bool UnconstrainedDelegation { get; set; }
     }
 
     public class IssuancePolicyProperties {
