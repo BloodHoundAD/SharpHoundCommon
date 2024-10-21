@@ -293,8 +293,7 @@ namespace SharpHoundCommonLib.Processors {
                 string sSid;
                 try {
                     sSid = new SecurityIdentifier(sid, 0).Value;
-                }
-                catch {
+                } catch {
                     continue;
                 }
 
@@ -401,8 +400,7 @@ namespace SharpHoundCommonLib.Processors {
                 string sSid;
                 try {
                     sSid = new SecurityIdentifier(sid, 0).Value;
-                }
-                catch {
+                } catch {
                     continue;
                 }
 
@@ -637,8 +635,7 @@ namespace SharpHoundCommonLib.Processors {
                         else
                             props.Add(property, BestGuessConvert(testString));
                     }
-                }
-                else {
+                } else {
                     if (entry.TryGetByteProperty(property, out var testBytes)) {
                         if (testBytes == null || testBytes.Length == 0) {
                             continue;
@@ -649,8 +646,7 @@ namespace SharpHoundCommonLib.Processors {
                             var sid = new SecurityIdentifier(testBytes, 0);
                             props.Add(property, sid.Value);
                             continue;
-                        }
-                        catch {
+                        } catch {
                             /* Ignore */
                         }
 
@@ -659,8 +655,7 @@ namespace SharpHoundCommonLib.Processors {
                             var guid = new Guid(testBytes);
                             props.Add(property, guid.ToString());
                             continue;
-                        }
-                        catch {
+                        } catch {
                             /* Ignore */
                         }
                     }
@@ -688,8 +683,7 @@ namespace SharpHoundCommonLib.Processors {
                 || schemaVersion == 2
                 || (schemaVersion == 4 && hasUseLegacyProvider)) {
                 return applicationPolicies;
-            }
-            else {
+            } else {
                 // Format: "Name`Type`Value`Name`Type`Value`..."
                 // (https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-crtd/c55ec697-be3f-4117-8316-8895e4399237)
                 // Return the Value of Name = "msPKI-RA-Application-Policies" entries
@@ -771,8 +765,7 @@ namespace SharpHoundCommonLib.Processors {
             if (duration == long.MinValue) {
                 return "Forever";
                 // And if the value is positive, it indicates an error code
-            }
-            else if (duration > 0) {
+            } else if (duration > 0) {
                 return null;
             }
 
@@ -852,8 +845,7 @@ namespace SharpHoundCommonLib.Processors {
                 }
 
                 return "";
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 return "Unknown";
             }
         }
@@ -910,8 +902,7 @@ namespace SharpHoundCommonLib.Processors {
                 var temp = new List<string>();
                 foreach (var cert in chain.ChainElements) temp.Add(cert.Certificate.Thumbprint);
                 Chain = temp.ToArray();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Logging.LogProvider.CreateLogger("ParsedCertificate").LogWarning(e,
                     "Failed to read certificate chain for certificate {Name} with Algo {Algorithm}", name,
                     parsedCertificate.SignatureAlgorithm.FriendlyName);
